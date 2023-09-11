@@ -21,6 +21,8 @@
           <div class="col-12 col-md-7">
 
             <!-- List group -->
+            <!-- 반복문 시작 -->
+            <div th:each="lists : ${list}">
             <ul class="list-group list-group-lg list-group-flush-x mb-6">
               <li class="list-group-item">
                 <div class="row align-items-center">
@@ -33,10 +35,9 @@
 
                   </div>
                   <div class="col">
-
                     <!-- Title -->
                     <div class="d-flex mb-2 fw-bold">
-                      <a class="text-body" href="product.html">Cotton floral print</a> <span class="ms-auto">$40.00</span>
+                      <a class="text-body" href="product.html"><span th:text="${lists.productName}"></span></a><span class="ms-auto" th:text="${lists.productsPrice}"></span>
                     </div>
 
                     <!-- Text -->
@@ -66,7 +67,7 @@
                 </div>
               </li>           
             </ul>
-
+			</div>
             <!-- Footer -->
             <div class="row align-items-end justify-content-between mb-10 mb-md-0">
               <div class="col-12 col-md-7">
