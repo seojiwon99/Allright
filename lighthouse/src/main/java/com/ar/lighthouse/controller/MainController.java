@@ -10,4 +10,9 @@ public class MainController {
 	public void Test() {
 		
 	}
+	
+	@GetMapping("page/body")
+	public void Body() {
+		
+	}
 }
