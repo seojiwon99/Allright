@@ -13,12 +13,12 @@ public class loginController {
 	@Autowired
 	MemberService memberService;
 	
-	@GetMapping("login")
+	@GetMapping("page/member/join")
 	public void loginForm() {
 		
 	}
 	
-	@GetMapping("idCheck")
+	@GetMapping("page/member/idCheck")
 	@ResponseBody
 	public int idCheck(String memberId) {
 		System.out.println(memberId);

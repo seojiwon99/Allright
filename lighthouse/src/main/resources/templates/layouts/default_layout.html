@@ -15,14 +15,26 @@
     <!-- Theme CSS -->
 </head>
 <body>
+
+
+
     <!-- header fragment 사용 -->
-<th:block th:replace="fragments/header :: headerFragment">
-	 
-</th:block>
-    <th:block layout:fragment="content"></th:block>
+<th:block th:replace="fragments/header :: headerFragment"></th:block>
+
+
+
+
+<th:block layout:fragment="content"></th:block>
     <!-- <th:block layout:fragment="test"></th:block> -->
     <!-- footer fragment 사용 -->
+    
+    
+    
 <th:block th:replace="fragments/footer :: footerFragment"></th:block>
+
+
+
+
 </body>
 <!-- JAVASCRIPT -->
     <!-- Map (replace the API key to enable) -->
