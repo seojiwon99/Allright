@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.ar.lighthouse.member.mapper.MemberMapper;
 import com.ar.lighthouse.member.service.MemberService;
+import com.ar.lighthouse.member.service.MemberVO;
 
 @Service
 public class MemberServiceImpl implements MemberService{
@@ -16,6 +17,12 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public int MemberCheck(String memberId) {
 		return memberMapper.MemberCheck(memberId);
+	}
+
+
+	@Override
+	public int MemberJoin(MemberVO memberVO) {
+		return memberMapper.MemberJoin(memberVO);
 	}
 	
 }

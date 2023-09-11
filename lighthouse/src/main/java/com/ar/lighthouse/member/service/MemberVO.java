@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 
+
 @Data
 public class MemberVO {
 	private String memberId;

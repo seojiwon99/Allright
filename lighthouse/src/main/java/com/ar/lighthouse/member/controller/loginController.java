@@ -13,8 +13,13 @@ public class loginController {
 	@Autowired
 	MemberService memberService;
 	
-	@GetMapping("page/member/join")
+	@GetMapping("page/member/login")
 	public void loginForm() {
+		
+	}
+	
+	@GetMapping("page/member/join")
+	public void joinForm() {
 		
 	}
 	
