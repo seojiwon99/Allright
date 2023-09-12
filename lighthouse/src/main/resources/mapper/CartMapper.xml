@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.ar.lighthouse.cart.mapper.CartMapper">
+  	<select id="cartList" resultType="com.ar.lighthouse.cart.service.CartVO" parameterType="String">
+  		select CART_CODE, MEMBER_ID, OPTION_CODE, CART_COUNT
+		from AR_CART
+		where member_id = #{memberId}
+  	</select>
+  
+  </mapper>
