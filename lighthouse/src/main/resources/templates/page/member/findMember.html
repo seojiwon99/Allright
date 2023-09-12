@@ -6,6 +6,95 @@
 
 <!-- Content -->
 <div layout:fragment="content">
-    <h1>Content2@</h1>
+    <section class="py-12">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 col-md-6 container">
+					<!-- Card -->
+					<div class="card card-lg mb-10 mb-md-0">
+              			<div class="card-body">
+
+		                <!-- Heading -->
+		                <h6 class="mb-7">로그인</h6>
+		
+		                <!-- Form -->
+		                <form>
+		                  <div class="row">
+		                    <div class="col-12">
+		
+		                      <!-- Email -->
+		                      <div class="form-group">
+		                        <label class="visually-hidden" for="loginEmail">
+		                          아이디 *
+		                        </label>
+		                        <input class="form-control form-control-sm" id="loginId" type="text" placeholder="ID *" required>
+		                      </div>
+		
+		                    </div>
+		                    <div class="col-12">
+		
+		                      <!-- Password -->
+		                      <div class="form-group">
+		                        <label class="visually-hidden" for="loginPassword">
+		                          비밀번호 *
+		                        </label>
+		                        <input class="form-control form-control-sm" id="loginPassword" type="password" placeholder="Password *" required>
+		                      </div>
+		
+		                    </div>
+		                      <!-- Remember -->
+		                    <div class="col-md-4">
+		                      <div class="form-group">
+		                        <div class="form-check">
+		                          <input class="form-check-input" name="loginHow" id="Buyer"  value="buyer" type="radio" checked="checked">
+		                          <label class="form-check-label" for="Buyer">
+		                          	구매자 회원
+		                          </label>
+		                        </div>
+		                      </div>
+		                    </div>
+		                      <!-- Remember -->
+		                    <div class="col-md-4 offset-md-4">
+		                      <div class="form-group">
+		                        <div class="form-check">
+		                          <input class="form-check-input" name="loginHow" id="Seller"  value="seller"type="radio" style="margin-left:10px;">
+		                          <label class="form-check-label" for="Seller">
+		                          	판매자 회원
+		                          </label>
+		                        </div>
+		                      </div>
+		                    </div>
+		                    
+		                      <!-- Button -->
+					
+	                    		<div class="col-md-4">
+			                      <button class="btn btn-sm btn-dark" id="loginBtn" type="button" style="width:100px">
+			                        Sign In
+			                      </button>
+		                      	</div>	
+		                      
+		                      	<div class="col-md-4 offset-md-4">
+		                      		<a class="list-styled-link" data-bs-toggle="modal" href="#modalNewsletterVertical">
+			                      <button class="btn btn-sm btn-dark" id="joinBtn" type="button" style="width:100px; margin-left:36px;">
+			                        Sign Up
+			                      </button>
+                      				</a>
+		                      	</div>
+
+		
+		                    
+
+		                  </div>
+		                </form>
+		
+		              	</div>
+		            </div>
+
+						
+				</div><!-- class col -->
+			</div>
+		</div>
+
+	</section>
 </div>
 </html>

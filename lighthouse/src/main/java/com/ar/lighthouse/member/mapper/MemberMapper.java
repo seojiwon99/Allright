@@ -13,4 +13,6 @@ public interface MemberMapper {
 	public int MemberJoin(MemberVO memberVO);
 	//멤버 로그인
 	public MemberVO MemberLogin(MemberVO memberVO);
+	//멤버 존재 체크 
+	public int MemberLoginBefore(MemberVO memberVO);
 }

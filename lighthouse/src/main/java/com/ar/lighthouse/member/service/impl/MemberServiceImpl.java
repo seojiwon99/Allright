@@ -28,7 +28,10 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public MemberVO memberLogin(MemberVO memberVO) {
-		
+		if(memberMapper.MemberLoginBefore(memberVO)==0) {
+			MemberVO nullMember = new MemberVO();
+			return nullMember;
+		}
 		return memberMapper.MemberLogin(memberVO);
 	}
 	

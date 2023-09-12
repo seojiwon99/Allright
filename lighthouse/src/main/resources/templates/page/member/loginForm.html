@@ -75,9 +75,11 @@
 		                      	</div>	
 		                      
 		                      	<div class="col-md-4 offset-md-4">
+		                      		<a class="list-styled-link" data-bs-toggle="modal" href="#modalNewsletterVertical">
 			                      <button class="btn btn-sm btn-dark" id="joinBtn" type="button" style="width:100px; margin-left:36px;">
 			                        Sign Up
 			                      </button>
+                      				</a>
 		                      	</div>
 
 		                    
@@ -87,8 +89,7 @@
 
 			                      <!-- Link -->
 			                      <div class="col align-self-end" style="text-align:right">
-			                        <a class="fs-sm text-reset" id="findMember" data-bs-toggle="modal" href="#modalPasswordReset">아이디 찾기</a>
-	                                / <a class="fs-sm text-reset" id="findMember" data-bs-toggle="modal" href="#modalPasswordReset">비밀번호 찾기</a>
+			                        <a class="fs-sm text-reset" id="findMember" href="findMember">아이디 찾기 / 비밀번호 찾기</a>
 			                      </div>
 
 		                    </div>
@@ -100,12 +101,53 @@
 		
 		              	</div>
 		            </div>
-						
+
 						
 				</div><!-- class col -->
 			</div>
 		</div>
+
 	</section>
+		
+	<!-- modal -->
+	<div class="modal fade" id="modalNewsletterVertical" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+    
+          <!-- Close -->
+          <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close">
+            <i class="fe fe-x" aria-hidden="true"></i>
+          </button>
+                    <!-- Body -->
+          <div class="modal-body py-9">
+    
+            <!-- Form -->
+              <div class="row">
+              
+                <div class="col">
+                  <!-- Button -->
+                  <button class="btn btn-secondary col-12" type="button" id="buyJoinBtn"style="margin:30px 0 30px 0;">
+                    구매자
+                  </button>
+                </div>
+                
+                <div class="col">
+                  <!-- Button -->
+                  <button class="btn btn-secondary col-12" type="button" id="sellJoinBtn"style="margin:30px 0 30px 0; bold">
+                    판매자
+                  </button>
+                </div>
+                
+              </div>
+    
+          </div>
+    
+        
+
+        </div>
+    
+      </div>
+    </div>
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 	<script>
 		//글자 호버 굵기 이벤트
@@ -134,11 +176,13 @@
 			}
 			
 		})
-		
-		$('#joinBtn').on('click', function(){
-			
+		$('#buyJoinBtn').on('click',function(){
+			location.href="joinBuyerForm";
 		})
-		
+		$('#sellJoinBtn').on('click',function(){
+			location.href="joinSellerForm";
+		})
+
 		function MemberLogin(id,pw,memberAuthor){
 			
 			let obj = {
@@ -152,7 +196,12 @@
 				data : JSON.stringify(obj),
 				contentType : 'application/json',
 				success : function(rs){
-					console.log(rs)
+					console.log(rs);
+					if(rs == "success"){
+						
+					}else if(rs == "fail"){
+						alert("아이디 혹은 비밀번호가 잘못되었습니다.")
+					}
 				},
 				error : function(err){
 					console.log(err)
@@ -163,5 +212,6 @@
 		
 
 	</script>
+
 </div>
 </html>
