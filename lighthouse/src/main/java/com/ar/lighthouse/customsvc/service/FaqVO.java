@@ -1,5 +1,6 @@
 package com.ar.lighthouse.customsvc.service;
 
+
 import lombok.Data;
 
 @Data
@@ -9,5 +10,6 @@ public class FaqVO {
 	private String questionTitle;
 	private String questionAnswer;
 	private String faqType;
+	
 	
 }
