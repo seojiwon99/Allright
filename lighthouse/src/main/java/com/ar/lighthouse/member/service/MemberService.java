@@ -6,4 +6,6 @@ public interface MemberService {
 	public int MemberJoin(MemberVO memberVO);
 	//멤버 중복 체크
 	public int MemberCheck(String memberId);
+	//멤버 로그인 체크
+	public MemberVO memberLogin(MemberVO memberVO);
 }

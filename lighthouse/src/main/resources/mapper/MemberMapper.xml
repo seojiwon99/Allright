@@ -35,5 +35,14 @@
 		      	<if test='businessNumber != null'> , #{businessNumber}</if>
 		      	)
   	</insert>
+  	
+  	<select id="MemberLogin" resultType="MemberVO">
+  		select *
+		from ar_member
+		where member_author = #{memberAuthor}
+		AND member_id = #{memberId}
+		AND member_pw = #{memberPw}
+  	
+  	</select>
   
   </mapper>

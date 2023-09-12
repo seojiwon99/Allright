@@ -24,5 +24,12 @@ public class MemberServiceImpl implements MemberService{
 	public int MemberJoin(MemberVO memberVO) {
 		return memberMapper.MemberJoin(memberVO);
 	}
+
+
+	@Override
+	public MemberVO memberLogin(MemberVO memberVO) {
+		
+		return memberMapper.MemberLogin(memberVO);
+	}
 	
 }

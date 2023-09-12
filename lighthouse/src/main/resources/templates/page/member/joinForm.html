@@ -243,6 +243,10 @@
 		</div> <!-- class container -->
 	</section>
 <script>
+
+/*
+ * 전화번호는 문자 api 사용횟수 특성상 번호 인증 없이 자동 true 
+ */
 let checkBeforeInsert = {};
 let idTrue = "idTrue"
 let pwTrue = "pwTrue";
@@ -541,8 +545,10 @@ function chkPW(){
 		}
 
 }
+
+// 비밀번호 확인 입력 후 포커스 아웃 될 때 일치 and pw에 입력값이 있는지 체크
 $('#pwChk').on('focusout', function(){
-	if($('#pwChk').val() == $('#pw').val()){
+	if($('#pwChk').val() == $('#pw').val() && $('#pw').val() != ''){
 		checkBeforeInsert[pwTrue] = true;
 		console.log('일치');
 	}else{
@@ -551,6 +557,7 @@ $('#pwChk').on('focusout', function(){
 	}
 });
 
+// 사업자 번호 유효성 체크 및 변경 시 bsns false
 $('#bsnsNo').on('keyup', function(event){
   const regBsnsExp = /[^0-9]/g; // 숫자만 허용
   const del = event.target;
@@ -559,6 +566,7 @@ $('#bsnsNo').on('keyup', function(event){
   }
   checkBeforeInsert[bsnsTrue] = false;
 })
+
 
 $('#bsnsChkBtn').on('click', function(){
 	
@@ -591,15 +599,10 @@ $('#bsnsChkBtn').on('click', function(){
 		},
 		error : function(err){
 			checkBeforeInsert[bsnsTrue] = false;
-			console.log(err);
 		}
 	})
 })
 </script>
-
-
-
-
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 //주소 api로 입력

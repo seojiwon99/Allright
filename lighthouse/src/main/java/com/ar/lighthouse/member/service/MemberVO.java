@@ -3,6 +3,7 @@ package com.ar.lighthouse.member.service;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.Data;
 
@@ -23,4 +24,10 @@ public class MemberVO {
 	private String businessNumber;
 	private int memberAuthor;
 	private String memberTel;
+	
+	
+	public MemberVO hashPassword(PasswordEncoder passwordEncoder) {
+		    this.memberPw = passwordEncoder.encode(this.memberPw);
+		    return this;
+	}
 }

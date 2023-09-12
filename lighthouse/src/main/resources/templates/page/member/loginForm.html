@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+
+<!-- Content -->
+<div layout:fragment="content">
+
+   	<section class="py-12">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 col-md-6 container">
+					<!-- Card -->
+					<div class="card card-lg mb-10 mb-md-0">
+              			<div class="card-body">
+
+		                <!-- Heading -->
+		                <h6 class="mb-7">로그인</h6>
+		
+		                <!-- Form -->
+		                <form>
+		                  <div class="row">
+		                    <div class="col-12">
+		
+		                      <!-- Email -->
+		                      <div class="form-group">
+		                        <label class="visually-hidden" for="loginEmail">
+		                          아이디 *
+		                        </label>
+		                        <input class="form-control form-control-sm" id="loginId" type="text" placeholder="ID *" required>
+		                      </div>
+		
+		                    </div>
+		                    <div class="col-12">
+		
+		                      <!-- Password -->
+		                      <div class="form-group">
+		                        <label class="visually-hidden" for="loginPassword">
+		                          비밀번호 *
+		                        </label>
+		                        <input class="form-control form-control-sm" id="loginPassword" type="password" placeholder="Password *" required>
+		                      </div>
+		
+		                    </div>
+		                      <!-- Remember -->
+		                    <div class="col-md-4">
+		                      <div class="form-group">
+		                        <div class="form-check">
+		                          <input class="form-check-input" name="loginHow" id="Buyer"  value="buyer" type="radio" checked="checked">
+		                          <label class="form-check-label" for="Buyer">
+		                          	구매자 회원
+		                          </label>
+		                        </div>
+		                      </div>
+		                    </div>
+		                      <!-- Remember -->
+		                    <div class="col-md-4 offset-md-4">
+		                      <div class="form-group">
+		                        <div class="form-check">
+		                          <input class="form-check-input" name="loginHow" id="Seller"  value="seller"type="radio" style="margin-left:10px;">
+		                          <label class="form-check-label" for="Seller">
+		                          	판매자 회원
+		                          </label>
+		                        </div>
+		                      </div>
+		                    </div>
+		                    
+		                      <!-- Button -->
+					
+	                    		<div class="col-md-4">
+			                      <button class="btn btn-sm btn-dark" id="loginBtn" type="button" style="width:100px">
+			                        Sign In
+			                      </button>
+		                      	</div>	
+		                      
+		                      	<div class="col-md-4 offset-md-4">
+			                      <button class="btn btn-sm btn-dark" id="joinBtn" type="button" style="width:100px; margin-left:36px;">
+			                        Sign Up
+			                      </button>
+		                      	</div>
+
+		                    
+		                    
+		                    <div class="col-12" style="margin-top:20px">
+		                    	
+
+			                      <!-- Link -->
+			                      <div class="col align-self-end" style="text-align:right">
+			                        <a class="fs-sm text-reset" id="findMember" data-bs-toggle="modal" href="#modalPasswordReset">아이디 찾기</a>
+	                                / <a class="fs-sm text-reset" id="findMember" data-bs-toggle="modal" href="#modalPasswordReset">비밀번호 찾기</a>
+			                      </div>
+
+		                    </div>
+		
+		                    
+
+		                  </div>
+		                </form>
+		
+		              	</div>
+		            </div>
+						
+						
+				</div><!-- class col -->
+			</div>
+		</div>
+	</section>
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<script>
+		//글자 호버 굵기 이벤트
+		$('.fs-sm').hover(function(){
+			$(this).css('font-weight', 'bold')
+		},function(){
+			$(this).css('font-weight', 'normal')
+		})
+		
+		//로그인버튼 클릭
+		let memberAuthor = 0
+		$('#loginBtn').on('click', function(){
+			let checked = $("input[name='loginHow']:checked").val();
+				let id = $('#loginId').val();
+				let pw = $('#loginPassword').val();
+			if(checked == 'seller'){
+				console.log('sel',checked);
+				memberAuthor = 2;
+				MemberLogin(id,pw,memberAuthor);
+				
+			}else if(checked == 'buyer'){
+				console.log('buy',checked);
+				memberAuthor = 1;
+				MemberLogin(id,pw,memberAuthor);
+				
+			}
+			
+		})
+		
+		$('#joinBtn').on('click', function(){
+			
+		})
+		
+		function MemberLogin(id,pw,memberAuthor){
+			
+			let obj = {
+				'memberId' : id,
+				'memberPw' : pw,
+				'memberAuthor' : memberAuthor
+			};
+			$.ajax({
+				url : 'login',
+				type : 'POST',
+				data : JSON.stringify(obj),
+				contentType : 'application/json',
+				success : function(rs){
+					console.log(rs)
+				},
+				error : function(err){
+					console.log(err)
+				}
+				
+			})
+		}
+		
+
+	</script>
+</div>
+</html>
