@@ -10,4 +10,10 @@ import com.ar.lighthouse.product.service.ProductVO;
 public interface ProductMapper {
 	
 	public List<ProductVO> productList();
+	
+	public int modifyProduct(ProductVO productVO);
+	
+	public int insertProduct(ProductVO productVO);
+	
+	public int deleteProduct(String productCode);
 }

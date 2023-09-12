@@ -14,9 +14,17 @@ public class ProductServiceImpl implements ProductService{
 
 	@Autowired
 	ProductMapper productMapper;
+	
 	@Override
 	public List<ProductVO> productList() {
 		return productMapper.productList();
+	}
+
+	
+
+	@Override
+	public int deleteProduct(String productCode) {
+		return productMapper.deleteProduct(productCode);
 	}
 	
 	

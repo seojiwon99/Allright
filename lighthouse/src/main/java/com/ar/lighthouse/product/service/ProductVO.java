@@ -1,5 +1,10 @@
 package com.ar.lighthouse.product.service;
 
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -12,23 +17,21 @@ public class ProductVO {
 	 	String productLocation;
 	 	String productOrigin;
 	 	String productMakeorigin;
-	 	String deliveryCost;
-	 	String returnCost;
-	 	String exchangeCost;
+	 	int deliveryCost;
+	 	int returnCost;
+	 	int exchangeCost;
 	 	String deliveryService;
-	 	String productStatus;
-	 	String productRegdate;
-	 	String productUpdatedate;
+	 	boolean productStatus;
+	 	@DateTimeFormat(pattern="yyyy-MM-dd")
+	 	Date productRegdate;
 	 	
-	 	int optionCode;
-	 	int optionOrder;
-	 	String optionName;
-	 	String optionValue;
-	 	int optionPrice;
-	 	boolean optionSalesStatus;
-	 	boolean optionExStatus;
-	 	int optionCount;
-	 	int minOrder;
-	 	int maxOrder;
-	 	int salePrice;
+	 	@DateTimeFormat(pattern="yyyy-MM-dd")
+	 	Date productUpdatedate;
+	 	int productCost;
+	 	int saleCost;
+	 	
+	 	
+	 	List<OptionVO> option;
+	 	
+	 	
 }
