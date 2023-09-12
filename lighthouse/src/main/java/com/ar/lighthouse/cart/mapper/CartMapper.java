@@ -10,4 +10,6 @@ public interface CartMapper {
 	
 	List<CartVO> cartList(String memberId);
 	
+	int deleteCart(String memberId, int cartCode);
+	
 }

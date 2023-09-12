@@ -3,13 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default_layout}">
-<script>
-  init();
 
-  function init() {
-      check();
-  } 
-</script>
 <!-- Content -->
 <div layout:fragment="content">
     <!-- CONTENT -->
@@ -71,7 +65,7 @@
                       </select>
 
                       <!-- Remove -->
-                      <a class="fs-xs text-gray-400 ms-auto" href="#!">
+                      <a class="fs-xs text-gray-400 ms-auto" th:href="@{/cart/delete/(cartCode=${lists.cartCode})}">
                         <i class="fe fe-x"></i> 상품삭제
                       </a>
 
@@ -120,7 +114,7 @@
               <div class="card-body">
                 <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
                   <li class="list-group-item d-flex">
-                    <span>상품금액</span> <span class="ms-auto fs-sm">$89.00</span>
+                    <span>상품금액</span> <span class="ms-auto fs-sm" id="productPrice"></span>
                   </li>
                   <li class="list-group-item d-flex">
                     <span>상품할인금액</span> <span class="ms-auto fs-sm">0원</span>
@@ -149,17 +143,17 @@
       </div>
     </section>
     <script>
+    
+    let checkboxs = document.querySelectorAll("input[name='[price]']");
+    let result = 0;
 
-    function check(e) {
-        
-     let len = $('input[name="price"]:checked').length;
-     if(len >= 1) {
-        $('input[name="price"]:checked').each(function(e){
-
+      function checkboxed() {
+      checkboxs.forEach((checkbox) => {
+        checkbox.addEventListener("click", (e) => {
+          console.log("체크확인", e.currentTarget.checked);
         })
-     }
-      
-    }
+      })
+  }
 
     </script>
 </div>

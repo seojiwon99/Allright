@@ -1,7 +1,5 @@
 package com.ar.lighthouse.cart.service;
 
-import com.ar.lighthouse.member.service.MemberVO;
-import com.ar.lighthouse.option.service.OptionVO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

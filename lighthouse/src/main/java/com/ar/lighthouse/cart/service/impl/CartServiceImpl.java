@@ -20,4 +20,10 @@ public class CartServiceImpl implements CartService {
 		return cartMapper.cartList(memberId);
 	}
 
+	@Override
+	public int removeCart(String memberId, int cartCode) {
+		cartMapper.deleteCart(memberId, cartCode);
+		return 0;
+	}
+
 }
