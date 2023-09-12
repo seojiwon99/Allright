@@ -1,5 +1,8 @@
 package com.ar.lighthouse.cart.service;
 
+import com.ar.lighthouse.member.service.MemberVO;
+import com.ar.lighthouse.option.service.OptionVO;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,9 +15,19 @@ import lombok.NoArgsConstructor;
 public class CartVO {
 	
 	private int cartCode;
-	private String memberId;
-	private Long optionCode;
 	private int cartCount;
+	
+	private String memberId;
+	
+	//옵션 조인해서 받은 값
+	private int salePrice;
+	private String optionName;
+	private String optionValue;
+	
+	//상품명 조인해서 받은 값
+	private String productName; 
+	private int productCost;
+	
 	
 	
 }
