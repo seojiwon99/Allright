@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default_layout}">
+
+<div layout:fragment="content">
+
+	<div class="row gx-0">
+		<div class="col-12 col-lg-auto">
+
+			<!-- NAVBAR -->
+			<nav
+				class="navbar navbar-expand-lg navbar-vertical navbar-light sticky-start px-lg-7 ">
+				<div class="container-fluid">
+
+					<!-- Brand -->
+					<a class="navbar-brand" href="/sellerMain"> 판매자센터 </a>
+
+					<!-- Toggler -->
+					<button class="navbar-toggler" type="button"
+						data-bs-toggle="collapse"
+						data-bs-target="#navbarSidenavLeftCollapse"
+						aria-controls="navbarSidenavLeftCollapse" aria-expanded="false"
+						aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+
+					<!-- Collapse -->
+					<div class="collapse navbar-collapse"
+						id="navbarSidenavLeftCollapse">
+
+						<!-- Nav -->
+						<ul class="navbar-nav fs-lg mb-6 my-lg-12" id="sidenavParent">
+							<li class="nav-item">
+								<!-- Toggle --> <a class="nav-link dropdown-toggle"
+								data-bs-toggle="collapse" href="#sidenavHome"> 상품관리 </a> <!-- Collapse -->
+								<div class="collapse" id="sidenavHome"
+									data-bs-parent="#sidenavParent">
+									<ul class="list-styled fs-base fw-normal py-3 mb-0">
+										<li class="list-styled-item"><a class="list-styled-link"
+											href="/productList">상품 조회/수정</a></li>
+										<li class="list-styled-item"><a class="list-styled-link"
+											href="/productForm">상품등록</a></li>
+
+									</ul>
+								</div>
+
+							</li>
+							<li class="nav-item">
+								<!-- Toggle --> <a class="nav-link dropdown-toggle"
+								data-bs-toggle="collapse" href="#sidenavCatalog"> 판매관리 </a> <!-- Collapse -->
+								<div class="collapse" id="sidenavCatalog"
+									data-bs-parent="#sidenavParent">
+									<div class="row">
+										<div class="col-12 py-3">
+											<!-- Links -->
+											<ul class="list-styled fs-base">
+												<li class="list-styled-item"><a
+													class="list-styled-link" href="./shop.html">주문확인/발송관리</a></li>
+												<li class="list-styled-item"><a
+													class="list-styled-link" href="./shop.html">취소관리</a></li>
+												<li class="list-styled-item"><a
+													class="list-styled-link" href="./shop.html">교환반품관리</a></li>
+
+											</ul>
+
+										</div>
+
+										<li class="nav-item">
+											<!-- Toggle --> <a class="nav-link dropdown-toggle"
+											data-bs-toggle="collapse" href="#sidenavShop"> 정산/통계관리 </a>
+										<li class="nav-item">
+											<!-- Toggle --> <a class="nav-link dropdown-toggle"
+											data-bs-toggle="collapse" href="#sidenavPages"> 문의관리 </a>
+										<li class="nav-item">
+											<!-- Toggle --> <a class="nav-link dropdown-toggle"
+											data-bs-toggle="collapse" href="#sidenavBlog"> 판매자정보 </a>
+										<li class="nav-item"><a class="nav-link"
+											href="./docs/getting-started.html">고객센터</a></li>
+						</ul>
+
+
+					</div>
+
+				</div>
+			</nav>
+
+		</div>
+	
+
+		<div class="col-12 col-lg">
+			<div class="jumbotron">
+				<div class="container">
+					<h1 class="display-3">상품 등록</h1>
+				</div>
+			</div>
+
+			<div class="container">
+				<form id="insertProduct" class="form-horizontal" method="post">
+					<ul class="data-group"><!----><li ng-repeat="category1 in vm.categories1 track by $index" ng-class="{on: category1.id == vm.category1.id}" class="on" style=""><a role="button" href="" ng-click="vm.clickCategoryDepth(category1)">가구/인테리어</a></li><!----><li ng-repeat="category1 in vm.categories1 track by $index" ng-class="{on: category1.id == vm.category1.id}"><a role="button" href="" ng-click="vm.clickCategoryDepth(category1)">도서</a></li><!----><li ng-repeat="category1 in vm.categories1 track by $index" ng-class="{on: category1.id == vm.category1.id}"><a role="button" href="" ng-click="vm.clickCategoryDepth(category1)">디지털/가전</a></li><!----><li ng-repeat="category1 in vm.categories1 track by $index" ng-class="{on: category1.id == vm.category1.id}"><a role="button" href="" ng-click="vm.clickCategoryDepth(category1)">생활/건강</a></li><!----><li ng-repeat="category1 in vm.categories1 track by $index" ng-class="{on: category1.id == vm.category1.id}"><a role="button" href="" ng-click="vm.clickCategoryDepth(category1)">스포츠/레저</a></li><!----><li ng-repeat="category1 in vm.categories1 track by $index" ng-class="{on: category1.id == vm.category1.id}"><a role="button" href="" ng-click="vm.clickCategoryDepth(category1)">식품</a></li><!----><li ng-repeat="category1 in vm.categories1 track by $index" ng-class="{on: category1.id == vm.category1.id}"><a role="button" href="" ng-click="vm.clickCategoryDepth(category1)">여가/생활편의</a></li><!----><li ng-repeat="category1 in vm.categories1 track by $index" ng-class="{on: category1.id == vm.category1.id}"><a role="button" href="" ng-click="vm.clickCategoryDepth(category1)">출산/육아</a></li><!----><li ng-repeat="category1 in vm.categories1 track by $index" ng-class="{on: category1.id == vm.category1.id}"><a role="button" href="" ng-click="vm.clickCategoryDepth(category1)">패션의류</a></li><!----><li ng-repeat="category1 in vm.categories1 track by $index" ng-class="{on: category1.id == vm.category1.id}"><a role="button" href="" ng-click="vm.clickCategoryDepth(category1)">패션잡화</a></li><!----><li ng-repeat="category1 in vm.categories1 track by $index" ng-class="{on: category1.id == vm.category1.id}"><a role="button" href="" ng-click="vm.clickCategoryDepth(category1)">화장품/미용</a></li><!----></ul>
+
+					<div class="form-group row">
+						<label class="col-sm-2">상품 코드</label>
+						<div class="col-sm-3">
+							<input type="text" name="productId" class="form-control">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-2">상품명</label>
+						<div class="col-sm-3">
+							<input type="text" name="name" class="form-control">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-2">가격</label>
+						<div class="col-sm-3">
+							<input type="text" name="unitPrice" class="form-control">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-2">상세 정보</label>
+						<div class="col-sm-3">
+							<textarea name="description" cols="50" rows="2"></textarea>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-2">제조사</label>
+						<div class="col-sm-3">
+							<input type="text" name="manufacturer" class="form-control">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-2">분류</label>
+						<div class="col-sm-3">
+							<input type="text" name="category" class="form-control">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-2">재고 수</label>
+						<div class="col-sm-3">
+							<input type="text" name="unitsInStock" class="form-control">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-2">상태</label>
+						<div class="col-sm-5">
+							<input type="radio" name="condition" value="New "> 신규 제품
+							<input type="radio" name="condition" value="Old "> 중고 제품
+							<input type="radio" name="condition" value="Refurbished ">
+							재생 제품
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<div class="col-sm-offset-2 col-sm-10">
+							<input type="submit" class="btn btn-primary" value="등록">
+						</div>
+					</div>
+
+				</form>
+
+			</div>
+		</div>
+
+	</div>
