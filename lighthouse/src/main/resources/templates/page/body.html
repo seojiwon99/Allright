@@ -58,11 +58,11 @@
 						</button>
 
 						<!-- Image -->
-							<img th:src="@{/img/products/product-12.jpg}"
-								class="card-img-top" alt="...">
-								
-							<div style="display: none"
-								th:text="${product.productImg[0].imgContent}"></div>			
+						<img th:src="@{/img/products/product-12.jpg}" class="card-img-top"
+							alt="...">
+
+						<div style="display: none"
+							th:text="${product.productImg[0].imgContent}"></div>
 					</div>
 					<!-- <img class="card-img-top" th:src="@{/img/products/${product.uploadName}" alt="..."/> -->
 					<!-- 대체 콘텐트 -->
@@ -92,25 +92,22 @@
 
 				</div>
 			</div>
+
+			<!-- product -->
 			<div class="row">
-				<div class="col-6 col-sm-6 col-md-4 col-lg-3">
+				<div class="col-6 col-sm-6 col-md-4 col-lg-3" th:each="product:${productRand}">
 
 					<!-- Card -->
-					<div class="card mb-7" data-toggle="card-collapse">
-
-						<!-- Badge -->
-						<div
-							class="badge bg-white text-body card-badge card-badge-start text-uppercase">
-							New</div>
+					<div class="card mb-7" data-toggle="card-collapse" >
 
 						<!-- Image -->
 						<div class="card-img" data-flickity='{"draggable": false}'
 							id="productOneImg">
 							<a class="d-block w-100" href="product.html"> <img
-								class="card-img-top" src="assets/img/products/product-5.jpg"
+								class="card-img-top" src="../img/products/product-5.jpg"
 								alt="..." />
 							</a> <a class="d-block w-100" href="product.html"> <img
-								class="card-img-top" src="assets/img/products/product-142.jpg"
+								class="card-img-top" src="../img/products/product-142.jpg"
 								alt="..." />
 							</a>
 						</div>
@@ -124,8 +121,8 @@
 									<div class="col">
 
 										<!-- Title -->
-										<a class="d-block fw-bold text-body" href="product.html">
-											Leather mid-heel Sandals </a>
+										<a class="d-block fw-bold text-body" href="product.html" th:text="${product.productName}">
+											 </a>
 
 										<!-- Category -->
 										<a class="fs-xs text-muted" href="shop.html"> Shoes </a>
@@ -134,13 +131,14 @@
 									<div class="col-auto">
 
 										<!-- Price -->
-										<div class="fs-sm fw-bold text-muted">$129.00</div>
+										<div class="fs-sm fw-bold text-muted" th:text="${product.productCost}+원"></div>
 
 									</div>
 								</div>
 							</div>
 
 							<!-- Footer -->
+							<!-- 다른이미지도 볼수있게 -->
 							<div class="card-collapse collapse">
 								<div class="card-footer px-0 bg-white">
 									<form>
@@ -149,16 +147,27 @@
 												<input class="form-check-input" type="radio"
 													id="productOneColorOne" name="productOneColor"
 													data-toggle="flickity" data-target="#productOneImg"
-													data-slide="0" style="background-color: beige" checked />
+													data-slide="0" style="background-color: grey; width: 15px; height: 15px "  checked />
+
 											</div>
 											<div
 												class="form-check form-check-inline form-check-color ms-n2">
 												<input class="form-check-input" type="radio"
 													id="productOneColorTwo" name="productOneColor"
 													data-toggle="flickity" data-target="#productOneImg"
-													data-slide="1" style="background-color: black" />
+													data-slide="1" style="background-color: grey; width: 15px; height: 15px" />
+											</div>
+											<div
+												class="form-check form-check-inline form-check-color ms-n2">
+												<input class="form-check-input" type="radio"
+													id="productOneColorTwo" name="productOneColor"
+													data-toggle="flickity" data-target="#productOneImg"
+													data-slide="1" style="background-color: grey; width: 15px; height: 15px" />
 											</div>
 										</div>
+
+
+										<!-- 옵션 -->
 										<div>
 											<div
 												class="form-check form-check-inline form-check-text fs-xs">
@@ -166,594 +175,7 @@
 													id="productOneSizeOne" name="sizeRadio" /> <label
 													class="form-check-label" for="productOneSizeOne">6</label>
 											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productOneSizeTwo" name="sizeRadio" /> <label
-													class="form-check-label" for="productOneSizeTwo">6.5</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productOneSizeThree" name="sizeRadio" /> <label
-													class="form-check-label" for="productOneSizeThree">7</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productOneSizeFour" name="sizeRadio" /> <label
-													class="form-check-label" for="productOneSizeFour">7.5</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productOneSizeFive" name="sizeRadio" /> <label
-													class="form-check-label" for="productOneSizeFive">8.5</label>
-											</div>
-										</div>
-									</form>
-								</div>
-							</div>
 
-						</div>
-
-					</div>
-
-				</div>
-				<div class="col-6 col-sm-6 col-md-4 col-lg-3">
-
-					<!-- Card -->
-					<div class="card mb-7" data-toggle="card-collapse">
-
-						<!-- Image -->
-						<div class="card-img" data-flickity='{"draggable": false}'
-							id="productTwoImg">
-							<a class="d-block w-100" href="product.html"> <img
-								class="card-img-top" src="assets/img/products/product-6.jpg"
-								alt="..." />
-							</a> <a class="d-block w-100" href="product.html"> <img
-								class="card-img-top" src="assets/img/products/product-143.jpg"
-								alt="..." />
-							</a>
-						</div>
-
-						<!-- Collapse -->
-						<div class="card-collapse-parent">
-
-							<!-- Body -->
-							<div class="card-body px-0 pb-0 bg-white">
-								<div class="row gx-0">
-									<div class="col">
-
-										<!-- Title -->
-										<a class="d-block fw-bold text-body" href="product.html">
-											Cotton floral print Dress </a>
-
-										<!-- Category -->
-										<a class="fs-xs text-muted" href="shop.html"> Dresses </a>
-
-									</div>
-									<div class="col-auto">
-
-										<!-- Price -->
-										<div class="fs-sm fw-bold text-muted">$40.00</div>
-
-									</div>
-								</div>
-							</div>
-
-							<!-- Footer -->
-							<div class="card-collapse collapse">
-								<div class="card-footer px-0 bg-white">
-									<form>
-										<div class="mb-1">
-											<div class="form-check form-check-inline form-check-color">
-												<input class="form-check-input" type="radio"
-													id="productTwoColorOne" name="productTwoColor"
-													data-toggle="flickity" data-target="#productTwoImg"
-													data-slide="0" style="background-color: red" checked />
-											</div>
-											<div
-												class="form-check form-check-inline form-check-color ms-n2">
-												<input class="form-check-input" type="radio"
-													id="productTwoColorTwo" name="productTwoColor"
-													data-toggle="flickity" data-target="#productTwoImg"
-													data-slide="1" style="background-color: white" />
-											</div>
-										</div>
-										<div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productTwoSizeOne" name="sizeRadio" /> <label
-													class="form-check-label" for="productTwoSizeOne">6</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productTwoSizeTwo" name="sizeRadio" /> <label
-													class="form-check-label" for="productTwoSizeTwo">6.5</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productTwoSizeThree" name="sizeRadio" /> <label
-													class="form-check-label" for="productTwoSizeThree">7</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productTwoSizeFour" name="sizeRadio" /> <label
-													class="form-check-label" for="productTwoSizeFour">7.5</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productTwoSizeFive" name="sizeRadio" /> <label
-													class="form-check-label" for="productTwoSizeFive">8.5</label>
-											</div>
-										</div>
-									</form>
-								</div>
-							</div>
-
-						</div>
-
-					</div>
-
-				</div>
-				<div class="col-6 col-sm-6 col-md-4 col-lg-3">
-
-					<!-- Card -->
-					<div class="card mb-7" data-toggle="card-collapse">
-
-						<!-- Badge -->
-						<div
-							class="badge bg-dark card-badge card-badge-start text-uppercase letter-spacing-lg">
-							Sale</div>
-
-						<!-- Image -->
-						<img class="card-img-top" src="assets/img/products/product-7.jpg"
-							alt="..." />
-
-						<!-- Collapse -->
-						<div class="card-collapse-parent">
-
-							<!-- Body -->
-							<div class="card-body px-0 pb-0 bg-white">
-								<div class="row gx-0">
-									<div class="col">
-
-										<!-- Title -->
-										<a class="d-block fw-bold text-body" href="product.html">
-											Leather Sneakers </a>
-
-										<!-- Category -->
-										<a class="fs-xs text-muted" href="shop.html"> Shoes </a>
-
-									</div>
-									<div class="col-auto">
-
-										<!-- Price -->
-										<div
-											class="fs-xs fw-bold text-gray-350 text-decoration-line-through">
-											$115.00</div>
-										<div class="fs-sm fw-bold text-primary">$85.00</div>
-
-									</div>
-								</div>
-							</div>
-
-							<!-- Footer -->
-							<div class="card-collapse collapse">
-								<div class="card-footer px-0 bg-white">
-									<form>
-										<div class="mb-1">
-											<div class="form-check form-check-inline form-check-color">
-												<input class="form-check-input" type="radio"
-													id="productThreeColorOne" name="productThreeColor"
-													style="background-color: #f9f9f9;" checked />
-											</div>
-										</div>
-										<div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productThreeSizeOne" name="sizeRadio" /> <label
-													class="form-check-label" for="productThreeSizeOne">6</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productThreeSizeTwo" name="sizeRadio" /> <label
-													class="form-check-label" for="productThreeSizeTwo">6.5</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productThreeSizeThree" name="sizeRadio" /> <label
-													class="form-check-label" for="productThreeSizeThree">7</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productThreeSizeFour" name="sizeRadio" /> <label
-													class="form-check-label" for="productThreeSizeFour">7.5</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productThreeSizeFive" name="sizeRadio" /> <label
-													class="form-check-label" for="productThreeSizeFive">8.5</label>
-											</div>
-										</div>
-									</form>
-								</div>
-							</div>
-
-						</div>
-
-					</div>
-
-				</div>
-				<div class="col-6 col-sm-6 col-md-4 col-lg-3">
-
-					<!-- Card -->
-					<div class="card mb-7" data-toggle="card-collapse">
-
-						<!-- Image -->
-						<img class="card-img-top" src="assets/img/products/product-8.jpg"
-							alt="..." />
-
-						<!-- Collapse -->
-						<div class="card-collapse-parent">
-
-							<!-- Body -->
-							<div class="card-body px-0 pb-0 bg-white">
-								<div class="row gx-0">
-									<div class="col">
-
-										<!-- Title -->
-										<a class="d-block fw-bold text-body" href="product.html">
-											Cropped cotton Top </a>
-
-										<!-- Category -->
-										<a class="fs-xs text-muted" href="shop.html"> Top </a>
-
-									</div>
-									<div class="col-auto">
-
-										<!-- Price -->
-										<div class="fs-sm fw-bold text-muted">$29.00</div>
-
-									</div>
-								</div>
-							</div>
-
-							<!-- Footer -->
-							<div class="card-collapse collapse">
-								<div class="card-footer px-0 bg-white">
-									<form>
-										<div class="mb-1">
-											<div class="form-check form-check-inline form-check-color">
-												<input class="form-check-input" type="radio"
-													id="productFourColorOne" name="productFourColor"
-													style="background-color: #f9f9f9;" checked />
-											</div>
-										</div>
-										<div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productFourSizeOne" name="sizeRadio" /> <label
-													class="form-check-label" for="productFourSizeOne">6</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productFourSizeTwo" name="sizeRadio" /> <label
-													class="form-check-label" for="productFourSizeTwo">6.5</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productFourSizeThree" name="sizeRadio" /> <label
-													class="form-check-label" for="productFourSizeThree">7</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productFourSizeFour" name="sizeRadio" /> <label
-													class="form-check-label" for="productFourSizeFour">7.5</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productFourSizeFive" name="sizeRadio" /> <label
-													class="form-check-label" for="productFourSizeFive">8.5</label>
-											</div>
-										</div>
-									</form>
-								</div>
-							</div>
-
-						</div>
-
-					</div>
-
-				</div>
-				<div class="col-6 col-sm-6 col-md-4 col-lg-3">
-
-					<!-- Card -->
-					<div class="card mb-7" data-toggle="card-collapse">
-
-						<!-- Image -->
-						<img class="card-img-top" src="assets/img/products/product-9.jpg"
-							alt="..." />
-
-						<!-- Collapse -->
-						<div class="card-collapse-parent">
-
-							<!-- Body -->
-							<div class="card-body px-0 pb-0 bg-white">
-								<div class="row gx-0">
-									<div class="col">
-
-										<!-- Title -->
-										<a class="d-block fw-bold text-body" href="product.html">
-											Floral print midi Dress </a>
-
-										<!-- Category -->
-										<a class="fs-xs text-muted" href="shop.html"> Dresses </a>
-
-									</div>
-									<div class="col-auto">
-
-										<!-- Price -->
-										<div class="fs-sm fw-bold text-muted">$50.00</div>
-
-									</div>
-								</div>
-							</div>
-
-							<!-- Footer -->
-							<div class="card-collapse collapse">
-								<div class="card-footer px-0 bg-white">
-									<form>
-										<div class="mb-1">
-											<div class="form-check form-check-inline form-check-color">
-												<input class="form-check-input" type="radio"
-													id="productFiveColorOne" name="productFiveColor"
-													style="background-color: yellow;" checked />
-											</div>
-										</div>
-										<div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productFiveSizeOne" name="sizeRadio" /> <label
-													class="form-check-label" for="productFiveSizeOne">6</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productFiveSizeTwo" name="sizeRadio" /> <label
-													class="form-check-label" for="productFiveSizeTwo">6.5</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productFiveSizeThree" name="sizeRadio" /> <label
-													class="form-check-label" for="productFiveSizeThree">7</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productFiveSizeFour" name="sizeRadio" /> <label
-													class="form-check-label" for="productFiveSizeFour">7.5</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productFiveSizeFive" name="sizeRadio" /> <label
-													class="form-check-label" for="productFiveSizeFive">8.5</label>
-											</div>
-										</div>
-									</form>
-								</div>
-							</div>
-
-						</div>
-
-					</div>
-
-				</div>
-				<div class="col-6 col-sm-6 col-md-4 col-lg-3">
-
-					<!-- Card -->
-					<div class="card mb-7" data-toggle="card-collapse">
-
-						<!-- Badge -->
-						<div
-							class="badge bg-dark card-badge card-badge-start text-uppercase letter-spacing-lg">
-							Sale</div>
-
-						<!-- Image -->
-						<div class="card-img" data-flickity='{"draggable": false}'
-							id="productSixImg">
-							<a class="d-block w-100" href="product.html"> <img
-								class="card-img-top" src="assets/img/products/product-10.jpg"
-								alt="..." />
-							</a> <a class="d-block w-100" href="product.html"> <img
-								class="card-img-top" src="assets/img/products/product-144.jpg"
-								alt="..." />
-							</a>
-						</div>
-
-						<!-- Collapse -->
-						<div class="card-collapse-parent">
-
-							<!-- Body -->
-							<div class="card-body px-0 pb-0 bg-white">
-								<div class="row gx-0">
-									<div class="col">
-
-										<!-- Title -->
-										<a class="d-block fw-bold text-body" href="product.html">
-											Suede cross body Bag </a>
-
-										<!-- Category -->
-										<a class="fs-xs text-muted" href="shop.html"> Bags </a>
-
-									</div>
-									<div class="col-auto">
-
-										<!-- Price -->
-										<div
-											class="fs-xs fw-bold text-gray-350 text-decoration-line-through">
-											$79.00</div>
-										<div class="fs-sm fw-bold text-primary">$49.00</div>
-
-									</div>
-								</div>
-							</div>
-
-							<!-- Footer -->
-							<div class="card-collapse collapse">
-								<div class="card-footer px-0 bg-white">
-									<form>
-										<div class="mb-1">
-											<div class="form-check form-check-inline form-check-color">
-												<input class="form-check-input" type="radio"
-													id="productSixColorOne" name="productSixColor"
-													data-toggle="flickity" data-target="#productSixImg"
-													data-slide="0" style="background-color: beige;" checked />
-											</div>
-											<div
-												class="form-check form-check-inline form-check-color ms-n2">
-												<input class="form-check-input" type="radio"
-													id="productSixColorTwo" name="productSixColor"
-													data-toggle="flickity" data-target="#productSixImg"
-													data-slide="1" style="background-color: black;" />
-											</div>
-										</div>
-										<div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productSixSizeOne" name="sizeRadio" /> <label
-													class="form-check-label" for="productSixSizeOne">6</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productSixSizeTwo" name="sizeRadio" /> <label
-													class="form-check-label" for="productSixSizeTwo">6.5</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productSixSizeThree" name="sizeRadio" /> <label
-													class="form-check-label" for="productSixSizeThree">7</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productSixSizeFour" name="sizeRadio" /> <label
-													class="form-check-label" for="productSixSizeFour">7.5</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productSixSizeFive" name="sizeRadio" /> <label
-													class="form-check-label" for="productSixSizeFive">8.5</label>
-											</div>
-										</div>
-									</form>
-								</div>
-							</div>
-
-						</div>
-
-					</div>
-
-				</div>
-				<div class="col-6 col-sm-6 col-md-4 col-lg-3">
-
-					<!-- Card -->
-					<div class="card mb-7" data-toggle="card-collapse">
-
-						<!-- Image -->
-						<img class="card-img-top" src="assets/img/products/product-11.jpg"
-							alt="..." />
-
-						<!-- Collapse -->
-						<div class="card-collapse-parent">
-
-							<!-- Body -->
-							<div class="card-body px-0 pb-0 bg-white">
-								<div class="row gx-0">
-									<div class="col">
-
-										<!-- Title -->
-										<a class="d-block fw-bold text-body" href="product.html">
-											Printed A-line Skirt </a>
-
-										<!-- Category -->
-										<a class="fs-xs text-muted" href="shop.html"> Skirts </a>
-
-									</div>
-									<div class="col-auto">
-
-										<!-- Price -->
-										<div class="fs-sm fw-bold text-muted">$79.00</div>
-
-									</div>
-								</div>
-							</div>
-
-							<!-- Footer -->
-							<div class="card-collapse collapse">
-								<div class="card-footer px-0 bg-white">
-									<form>
-										<div class="mb-1">
-											<div class="form-check form-check-inline form-check-color">
-												<input class="form-check-input" type="radio"
-													id="productSevenColorOne" name="productSevenColor"
-													style="background-color: black;" checked />
-											</div>
-										</div>
-										<div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productSevenSizeOne" name="sizeRadio" /> <label
-													class="form-check-label" for="productSevenSizeOne">6</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productSevenSizeTwo" name="sizeRadio" /> <label
-													class="form-check-label" for="productSevenSizeTwo">6.5</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productSevenSizeThree" name="sizeRadio" /> <label
-													class="form-check-label" for="productSevenSizeThree">7</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productSevenSizeFour" name="sizeRadio" /> <label
-													class="form-check-label" for="productSevenSizeFour">7.5</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productSevenSizeFive" name="sizeRadio" /> <label
-													class="form-check-label" for="productSevenSizeFive">8.5</label>
-											</div>
 										</div>
 									</form>
 								</div>
@@ -778,10 +200,10 @@
 						<div class="card-img" data-flickity='{"draggable": false}'
 							id="productEightImg">
 							<a class="d-block w-100" href="product.html"> <img
-								class="card-img-top" src="assets/img/products/product-12.jpg"
+								class="card-img-top" src="../img/products/product-12.jpg"
 								alt="..." />
 							</a> <a class="d-block w-100" href="product.html"> <img
-								class="card-img-top" src="assets/img/products/product-145.jpg"
+								class="card-img-top" src="../img/products/product-145.jpg"
 								alt="..." />
 							</a>
 						</div>

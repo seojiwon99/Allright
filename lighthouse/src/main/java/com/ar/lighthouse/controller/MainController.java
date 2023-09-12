@@ -22,9 +22,11 @@ public class MainController {
 	public String Body(Model model) {
 	
 		model.addAttribute("productList",service.selProductList());
-		System.out.println(model);
 		
 		model.addAttribute("productbanner",service.showEventBanner());
+		System.out.println(model);
+	
+		model.addAttribute("productRand", service.randomGetProduct());
 		System.out.println(model);
 		
 		return "page/body";

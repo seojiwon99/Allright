@@ -32,6 +32,14 @@
 
 	</select>
 
+	<select id="randomSelProduct" resultType="ProductVO">
+	select product_name, upload_name, img_content, product_cost
+		from ar_products
+		p join ar_product_img i
+		on p.product_code = i.product_code
+		order by product_regdate DESC
+
+	</select>
 
 
 

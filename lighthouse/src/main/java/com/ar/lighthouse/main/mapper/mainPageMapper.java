@@ -13,4 +13,6 @@ public interface mainPageMapper {
 	public List<ProductVO> selProductList();
 	
 	public List<EventImgVO> showEventBanner();
+	
+	public List<EventImgVO> randomSelProduct();
 }

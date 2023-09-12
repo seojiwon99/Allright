@@ -25,6 +25,11 @@ public class MainServiceImpl implements MainPageService{
 	public List<EventImgVO> showEventBanner() {
 		return mapper.showEventBanner();
 	}
+
+	@Override
+	public List<EventImgVO> randomGetProduct() {
+		return mapper.randomSelProduct();
+	}
 	
 	
 	
