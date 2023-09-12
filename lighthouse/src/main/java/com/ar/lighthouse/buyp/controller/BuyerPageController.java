@@ -14,10 +14,10 @@ public class BuyerPageController {
 	@Autowired
 	BuyerPageService buyerPageService;
 	
-	@GetMapping("page/buyer/orderList")
-	public void Body() {
-		
-	}
+//	@GetMapping("page/buyer/orderList")
+//	public void Body() {
+//		
+//	}
 	
 
 	@GetMapping("page/buyer/orderList/{memberId}")
