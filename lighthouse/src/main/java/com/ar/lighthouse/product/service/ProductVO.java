@@ -1,5 +1,7 @@
 package com.ar.lighthouse.product.service;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -19,6 +21,11 @@ public class ProductVO {
 	 	String productStatus;
 	 	String productRegdate;
 	 	String productUpdatedate;
+	 	int productCost;
+	 	
+//	 	String uploadName;
+//	 	String imgContent;
+	 	List<ProductImgVO> productImg;
 	 	
 	 	int optionCode;
 	 	int optionOrder;
