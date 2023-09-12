@@ -23,35 +23,36 @@
             <!-- Nav -->
             <nav class="mb-10 mb-md-0">
               <div class="list-group list-group-sm list-group-strong list-group-flush-x">
-                <a class="list-group-item list-group-item-action dropend-toggle active" href="account-orders.html">
-                  Orders
+                <a class="list-group-item list-group-item-action dropend-toggle active" href="orderList.html">
+                  주문 목록
                 </a>
-                <a class="list-group-item list-group-item-action dropend-toggle " href="account-wishlist.html">
-                  Widhlist
+                <a class="list-group-item list-group-item-action dropend-toggle " href="tradeList.html">
+                  취소/반품/교환내역
                 </a>
-                <a class="list-group-item list-group-item-action dropend-toggle " href="account-personal-info.html">
-                  Personal Info
+                <a class="list-group-item list-group-item-action dropend-toggle " href="myCoupon.html">
+                  나의 쿠폰함
                 </a>
-                <a class="list-group-item list-group-item-action dropend-toggle " href="account-address.html">
-                  Addresses
+                <a class="list-group-item list-group-item-action dropend-toggle " href="myInquiry.html">
+                  문의내역
                 </a>
-                <a class="list-group-item list-group-item-action dropend-toggle " href="account-payment.html">
-                  Payment Methods
+                <a class="list-group-item list-group-item-action dropend-toggle " href="wishList.html">
+                  찜 목록
                 </a>
-                <a class="list-group-item list-group-item-action dropend-toggle" href="#!">
-                  Logout
+                <a class="list-group-item list-group-item-action dropend-toggle" href="personalInfo.html">
+                  개인정보 확인/수정
                 </a>
               </div>
             </nav>
 
           </div>
           <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
-
+			
             <!-- Order -->
             <div class="card card-lg mb-5 border">
               <div class="card-body pb-0">
-
+				<!-- 반복문 시작 -->
                 <!-- Info -->
+                <div th:each="lists : ${orderList}">
                 <div class="card card-sm">
                   <div class="card-body bg-light">
                     <div class="row">
@@ -62,7 +63,7 @@
 
                         <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
-                          673290789
+                          <span th:text= "|${lists.orderCode}|"></span>
                         </p>
 
                       </div>
@@ -74,7 +75,7 @@
                         <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
                           <time datetime="2019-10-01">
-                            01 Oct, 2019
+                           <span th:text= "|${lists.orderDate}|"></span>
                           </time>
                         </p>
 
@@ -86,7 +87,7 @@
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                          Awating Delivery
+                          <span th:text= "|${lists.orderStatus}|"></span>
                         </p>
 
                       </div>
@@ -196,106 +197,9 @@
               </div>
             </div>
 
-            <!-- Total -->
-            <div class="card card-lg mb-5 border">
-              <div class="card-body">
-
-                <!-- Heading -->
-                <h6 class="mb-7">Order Total</h6>
-
-                <!-- List group -->
-                <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
-                  <li class="list-group-item d-flex">
-                    <span>Subtotal</span>
-                    <span class="ms-auto">$128.00</span>
-                  </li>
-                  <li class="list-group-item d-flex">
-                    <span>Tax</span>
-                    <span class="ms-auto">$0.00</span>
-                  </li>
-                  <li class="list-group-item d-flex">
-                    <span>Shipping</span>
-                    <span class="ms-auto">$8.00</span>
-                  </li>
-                  <li class="list-group-item d-flex fs-lg fw-bold">
-                    <span>Total</span>
-                    <span class="ms-auto">$136.00</span>
-                  </li>
-                </ul>
-
-              </div>
-            </div>
-
-            <!-- Details -->
-            <div class="card card-lg border">
-              <div class="card-body">
-
-                <!-- Heading -->
-                <h6 class="mb-7">Billing & Shipping Details</h6>
-
-                <!-- Content -->
-                <div class="row">
-                  <div class="col-12 col-md-4">
-
-                    <!-- Heading -->
-                    <p class="mb-4 fw-bold">
-                      Billing Address:
-                    </p>
-
-                    <p class="mb-7 mb-md-0 text-gray-500">
-                      Daniel Robinson, <br>
-                      3997 Raccoon Run, <br>
-                      Kingston, 45644, <br>
-                      United States, <br>
-                      6146389574
-                    </p>
-
-                  </div>
-                  <div class="col-12 col-md-4">
-
-                    <!-- Heading -->
-                    <p class="mb-4 fw-bold">
-                      Shipping Address:
-                    </p>
-
-                    <p class="mb-7 mb-md-0 text-gray-500">
-                      Daniel Robinson, <br>
-                      3997 Raccoon Run, <br>
-                      Kingston, 45644, <br>
-                      United States, <br>
-                      6146389574
-                    </p>
-
-                  </div>
-                  <div class="col-12 col-md-4">
-
-                    <!-- Heading -->
-                    <p class="mb-4 fw-bold">
-                      Shipping Method:
-                    </p>
-
-                    <p class="mb-7 text-gray-500">
-                      Standart Shipping <br>
-                      (5 - 7 days)
-                    </p>
-
-                    <!-- Heading -->
-                    <p class="mb-4 fw-bold">
-                      Payment Method:
-                    </p>
-
-                    <p class="mb-0 text-gray-500">
-                      Debit Mastercard
-                    </p>
-
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
           </div>
         </div>
+      </div>
       </div>
     </section>
 

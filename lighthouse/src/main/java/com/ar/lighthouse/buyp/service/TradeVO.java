@@ -1,5 +1,5 @@
 package com.ar.lighthouse.buyp.service;
 
-public class BuyerPageVO {
-
+public class TradeVO {
+	
 }

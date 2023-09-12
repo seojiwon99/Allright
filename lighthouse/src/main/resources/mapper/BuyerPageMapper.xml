@@ -2,9 +2,22 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <mapper namespace="com.ar.lighthouse.member.mapper.MypageMapper">
-  	<select id="" resultType="int" parameterType="String">
-  		
+  <mapper namespace="com.ar.lighthouse.buyp.mapper.BuyerPageMapper">
+  	
+  	<select id="selectDetailList" resultType="int" parameterType="String">
+		SELECT c.product_name, d.product_code,d.order_cnt, d.order_price, d.payment_price, d.order_status, d.order_date, d.delivery_number, d.delivery_date, d.option_code
+		FROM ar_products c JOIN (select b.product_code,a.order_cnt, a.order_price, a.payment_price, a.order_status, a.order_date, a.delivery_number, a.delivery_date, a.option_code
+                         FROM  (select p.order_cnt, p.order_price, p.payment_price, p.order_status, p.order_date, p.delivery_number, p.delivery_date, p.option_code
+                                from ar_orders a JOIN ar_order_detail p ON a.order_code = p.order_code
+                                where a.member_id = #{memberId}) a 
+                         JOIN ar_option  b ON a.option_code = b.option_code) d ON c.product_code = d.product_code
   	</select>
   
+  	<select id="selectBuyInfo" resultType="int" parameterType="String">
+  		SELECT member_id, member_pw, member_name, member_birth, member_addr, member_details_addr, member_email, member_tel
+		FROM ar_member
+		WHERE member_id = #{memberId}
+  	</select>
+  	
+  	
   </mapper>
