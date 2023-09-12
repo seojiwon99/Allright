@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 
-import com.ar.lighthouse.main.service.CategoryVO;
 
 @Controller
 public class MainPageController {
