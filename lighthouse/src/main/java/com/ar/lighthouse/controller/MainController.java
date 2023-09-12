@@ -11,8 +11,8 @@ public class MainController {
 		return "page/test";
 	}
 	
-	@GetMapping("page/mypage")
-	public void Body() {
-		
+	@GetMapping("/")
+	public String Body() {
+		return "page/body";
 	}
 }
