@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+
+<!-- Content -->
+<div layout:fragment="content">
+    <!-- BREADCRUMB -->
+    <nav class="py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+
+            <!-- Breadcrumb -->
+            <ol class="breadcrumb mb-0 fs-xs text-gray-400">
+              <li class="breadcrumb-item">
+                <a class="text-gray-400" href="index.html">Home</a>
+              </li>
+              <li class="breadcrumb-item active">
+                FAQ
+              </li>
+            </ol>
+
+          </div>
+        </div>
+      </div>
+    </nav>
+    
+    <!-- CONTENT -->
+    <section class="pt-7 pb-12">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10 col-xl-8">
+
+            <!-- Heading -->
+            <h3 class="mb-10 text-center">Frequently Asked Questionss</h3>
+
+            <!-- Heading -->
+            <h5 class="mb-7">회원:</h5>
+
+            <!-- List group -->
+            <ul class="list-group list-group-flush-x mb-9" id="faqCollapseParentOne">
+            <th:block th:each="faq, status : ${faqList}">
+            	
+	              <li class="list-group-item" th:if="${faq.faqType eq '회원'}">
+	                <!-- Toggle -->
+	                <a class="dropdown-toggle d-block fs-lg fw-bold text-reset" data-bs-toggle="collapse" th:href="|#faqCollapse${status.index}|" th:text="|${status.index + 1}. [${faq.faqType}] ${faq.questionTitle}|">
+	
+	                </a>
+	                <!-- Collapse -->
+	                <div class="collapse" th:id="|faqCollapse${status.index}|" th:data-bs-parent="|faqCollapseParent${status.index}|">
+	                  <div class="mt-5">
+	                    <p class="mb-0 fs-lg text-gray-500" th:text="${faq.questionAnswer}">
+	                    </p>
+	                  </div>
+	                </div>
+	
+	              </li>
+              </th:block>
+            </ul>
+
+            <!-- Heading -->
+            <h5 class="mb-7">취소/교환/반품: </h5>
+            <!-- List group -->
+            <ul class="list-group list-group-flush-x mb-9" id="faqCollapseParentTwo">
+            <th:block th:each="faq, status : ${faqList}">
+              <li class="list-group-item" th:if="${faq.faqType eq '취소/교환/반품'}">
+                <!-- Toggle -->
+                <a class="dropdown-toggle d-block fs-lg fw-bold text-reset" data-bs-toggle="collapse" th:href="|#faqCollapse${status.index}|" th:text="|${status.index + 1}. [${faq.faqType}] ${faq.questionTitle}|">
+                </a>
+
+                <!-- Collapse -->
+                <div class="collapse"  th:id="|faqCollapse${status.index}|" th:data-bs-parent="|faqCollapseParent${status.index}|">
+                  <div class="mt-5">
+                    <p class="mb-0 fs-lg text-gray-500" th:text="${faq.questionAnswer}">
+   
+                    </p>
+                  </div>
+                </div>
+
+              </li>
+             </th:block>
+            </ul>
+
+            <!-- Heading -->
+            <h5 class="mb-7">주문/결제:</h5>
+
+            <!-- List group -->
+            <ul class="list-group list-group-flush-x" id="faqCollapseParentThree">
+            	<th:block th:each="faq, status : ${faqList}">
+              <li class="list-group-item" th:if="${faq.faqType eq '주문/결제'}">
+
+                <!-- Toggle -->
+                <a class="dropdown-toggle d-block fs-lg fw-bold text-reset" data-bs-toggle="collapse" th:href="|#faqCollapse${status.index}|" th:text="|${status.index + 1}. [${faq.faqType}] ${faq.questionTitle}|">
+                
+                </a>
+
+                <!-- Collapse -->
+                <div class="collapse" th:id="|faqCollapse${status.index}|" th:data-bs-parent="|faqCollapseParent${status.index}|">
+                  <div class="mt-5">
+                    <p class="mb-0 fs-lg text-gray-500" th:text="${faq.questionAnswer}">
+                
+                    </p>
+                  </div>
+                </div>
+
+              </li>
+ 
+            </th:block>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+    </section>
+    <script>
+    	
+    </script>
+</div>
+</html>
