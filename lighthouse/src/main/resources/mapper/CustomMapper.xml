@@ -10,7 +10,78 @@
   		     , question_answer
   		     , faq_type
   		  FROM ar_faq
+  		  <where>
+  		  	<if test="faqType != null and !faqType.equals('')">
+  		  		faq_type = #{faqType}
+  		  	</if>
+  		  </where>
+  		  ORDER BY faq_code
   	</select>
+  	
+  	<select id="selectAllNotice" resultType="NoticeVO" parameterType="Criteria">
+  		SELECT * 
+		  FROM (select rownum rn, nt.* from ( 
+            SELECT /*+INDEX_DESC(notice_code pk_notice) */
+				        notice_code
+				      , notice_title
+				      , notice_content
+				      , notice_writer
+				      , up_enddate
+				      , notice_type 
+				      , notice_regdate
+                      , notice_updatedate
+			       FROM ar_notice
+                order by notice_type desc, notice_regdate desc
+                )nt
+                <![CDATA[
+                where rownum <= #{pageNum} * #{amount}
+                )
+		 WHERE rn > ( #{pageNum} - 1) * #{amount}
+		 ]]>
+  	</select>
+  	
+  	<!-- 공지사항 갯수 -->
+  	<select id="getTotalCount" resultType="int">
+  		SELECT count(*)
+  		  FROM ar_notice
+  		 WHERE notice_code > 0 
+  	</select>
+  	
+  	<!-- 1:1 문의 등록 -->
+  	<insert id="insertInq" parameterType="InquiryVO">
+  		<selectKey order="BEFORE" keyProperty="inqCode" resultType="int">
+  			SELECT NVL(MAX(custom_inquiry_code),0) + 1
+			  FROM ar_custom_inquiry
+  		</selectKey>
+  		INSERT 
+  		  INTO ar_custom_inquiry (
+  		  custom_inquiry_code
+  		  <if test="memberId != null">
+	  		  , member_id  		  
+  		  </if>
+  		  <if test="customInquiryTitle != null">
+  		  , custom_inquiry_title
+  		  </if>
+  		  <if test="customInquiryContent != null">
+  		  , custom_inquiry_content
+  		  </if>
+  		  , custom_inquiry_answer
+  		  )
+  		VALUES (
+  			#{inqCode}
+  			<if test="memberId != null">
+  				, #{memberId}
+  			</if>
+  			<if test="customInquiryTitle != null">
+  				, #{customInquiryTitle}
+  			</if>
+  			<if test="customInquiryContent != null">
+  				, #{customInquiryContent}
+  			</if>
+  			, #{customInquiryAnswer}
+  			
+  		)
+  	</insert>
   	
   </mapper>
   

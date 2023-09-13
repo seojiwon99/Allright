@@ -2,23 +2,94 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ar.lighthouse.product.mapper.ProductMapper">
-<select id="productList" resultType="ProductVO">
-SELECT  p.product_code
-    , product_name
-    , option_name
-    , option_value
-    , delivery_cost
-    , product_regdate
-    , product_exstatus
-    , option_count
-    , option_price
-    , sale_price
-FROM ar_products p
-RIGHT OUTER JOIN ar_option o ON p.product_code = o.product_code
-ORDER BY product_code
-</select>
+<mapper
+	namespace="com.ar.lighthouse.product.mapper.ProductMapper">
 
+<!-- 조회 -->
+	<resultMap type="ProductVO" id="productList">
+		<result column="product_code" property="productCode" />
+		<result column="product_name" property="productName" />
+		<result column="delivery_cost" property="deliveryCost" />
+		<result column="product_regdate" property="productRegdate" />
+		<result column="product_cost" property="productCost" />
+		<result column="sale_cost" property="saleCost" />
+		<collection property="option" resultMap="optionList" />
+	</resultMap>
+	<resultMap type="OptionVO" id="optionList">
+		<result column="option_count" property="optionCount" />
+		<result column="option_price" property="optionPrice" />
+		<result column="option_exstatus" property="optionExStatus" />
+		
+	</resultMap>
+	<select id="productList" resultMap="productList">
+		select * from ar_products p,
+		(select product_code
+		,sum(option_count) AS option_count
+		, option_exstatus
+		from ar_option
+		group by product_code, product_code,option_exstatus) d 
+		where d.product_code = p.product_code
+	</select>
+
+
+<!-- 옵션선택 -->
+	<resultMap type="ProductVO" id="selectProduct">
+		<result column="product_code" property="productCode" />
+		<result column="product_name" property="productName" />
+		<result column="delivery_cost" property="deliveryCost" />
+		<result column="product_regdate" property="productRegdate" />
+		<result column="product_cost" property="productCost" />
+		<result column="sale_cost" property="saleCost" />
+		<collection property="option" resultMap="optionSelectList" />
+	</resultMap>
+	<resultMap type="OptionVO" id="optionSelectList">
+		<result column="option_count" property="optionCount" />
+		<result column="option_price" property="optionPrice" />
+		<result column="option_exstatus" property="optionExStatus" />
+		
+	</resultMap>
+	<select id="selectProduct" resultMap="selectProduct">
+		select * from ar_products p,
+	
+		(select product_code
+		,sum(option_count) AS option_count
+		, option_exstatus
+		from ar_option
+		group by product_code, product_code,option_exstatus) d 
+		<!-- 	<if test = "order != null and order =='상명품순'">
+		ORDER BY product_name
+		</if> -->
+		where d.product_code = p.product_code
+	</select>
+
+
+
+	<!-- 삭제 -->
+	<delete id="productDelete">
+		BEGIN
+
+		DELETE FROM
+		ar_products
+		WHERE product_code IN (
+		SELECT product_code
+		FROM
+		ar_option
+		WHERE product_code = #{productCode}
+		)
+
+		DELETE FROM ar_option
+		WHERE product_code = #{productCode}
+
+
+		EXCEPTION
+		WHEN OTHERS THEN
+
+		ROLLBACK
+		END
+		/
+	</delete>
+
+	
 
 
 </mapper>
