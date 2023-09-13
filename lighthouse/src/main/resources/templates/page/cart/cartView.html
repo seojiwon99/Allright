@@ -19,7 +19,11 @@
         </div>
         <div class="row">
           <div class="col-12 col-md-7" id="test">
-            <p><input type="checkbox" id="allCheckbox">전체선택</p>
+            <div>
+              <input type="checkbox" id="allCheckbox">전체선택
+             <button type="button" class="btn btn-sm btn-dark" id="chkDelBtn">선택삭제</button>
+            </div>
+
             <!-- List group -->
             <!-- 반복문 시작 -->
             <div th:each="lists : ${list}">
@@ -32,6 +36,7 @@
                     <input type="checkbox" name="price" th:value="${lists.productCost}">
                     <input type="hidden" name="sale" th:value="${lists.salePrice}">
                     <input type="hidden" name="delivery" th:value="${lists.deliveryCost}">
+                    <input type="hidden" name="cartNum" ty:value="${lists.cartCode}">
 
                     <!-- Image -->
                     <a href="product.html">
@@ -53,6 +58,7 @@
                     </div>
 
                     <!-- Text -->
+                    <!--옵션 종류, 옵션 값-->
                    <p class="mb-7 fs-sm text-muted" th:text="|${lists.optionName} :  ${lists.optionValue}|"></p>
                     
                       
@@ -146,6 +152,8 @@
       </div>
     </section>
     <script>
+    
+    // 상품 가격, 할인가격, 결제가격 
     let checkboxs = $('input[name="price"]');
     let result = 0;
     let saleResult = 0;
@@ -179,7 +187,7 @@
          document.getElementById('totalPrice').innerText = result - saleResult + deliveryResult + '원';
         }
         
-        
+      //삭제
     	function delteResult(code){
         	//console.log(code);
         	//e.preventDefault()
@@ -212,6 +220,30 @@
         	  $(el).trigger('click')
             
           })
+      }
+      //선택 삭제
+      $('#chkDelBtn').on('click',checkedDel);
+
+      function checkedDel(e) {
+        let cartList = [];
+
+        let checkboxs = $('input[type="checkbox"]:checked');
+        checkboxs.each((idx, tag) => {
+          let cartId = $(tag).next().next().next().val();
+          let obj = {'cartCode' : cartId};
+          cartList.push(obj);
+          console.log(cartList);
+        })
+        
+        $.ajax('http://localhost:8090/cart/delete', {
+          type : 'post',
+          contentType : 'application/json',
+          data : JSON.stringify(cartList)
+        })
+        .done(data => {
+          $('#test').replaceWith(data);
+        })
+        .fail(reject => consolo.log(reject))
       }
 
     </script>
