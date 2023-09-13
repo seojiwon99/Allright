@@ -1,5 +1,6 @@
 package com.ar.lighthouse.buyp.service.impl;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,6 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	public BuyInfoVO getInfo() {
 		return buyerPageMapper.selectBuyInfo();
 	}
-	
+
 
 }

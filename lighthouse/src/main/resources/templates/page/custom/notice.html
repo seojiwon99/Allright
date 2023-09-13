@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/default_layout}">
+
+<!-- Content -->
+<div layout:fragment="content">
+	<!-- BREADCRUMB -->
+	<nav class="py-5">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+
+					<!-- Breadcrumb -->
+					<ol class="breadcrumb mb-0 fs-xs text-gray-400">
+						<li class="breadcrumb-item">
+							<a class="text-gray-400" href="index.html">Home</a>
+						</li>
+						<li class="breadcrumb-item active">
+							공지사항
+						</li>
+					</ol>
+
+				</div>
+			</div>
+		</div>
+	</nav>
+
+	<!-- CONTENT -->
+	<section class="pt-7 pb-12">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-12 col-lg-10 col-xl-8">
+					<table class="table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>제목</th>
+								<th>작성자</th>
+								<th>작성날짜</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="notice,status : ${noticeList}">
+								<td th:text="${notice.noticeType} == 'Y' ? '공지' : ''"></td>
+								<td th:text="${notice.noticeTitle}"></td>
+								<td th:text="${notice.noticeWriter}"></td>
+								<td th:text="${#dates.format(notice.noticeRegdate,'yyyy-MM-dd')}"></td>
+		    		</tr>
+		    	</tbody>
+		    </table>
+		  
+			<!-- Pagination -->
+            <nav class="d-flex justify-content-center justify-content-md-end mt-10">
+				<ul class="pagination pagination-sm text-gray-400">
+				  <li class="page-item" th:if="${pageMaker.prev}">
+					<a class="page-link page-link-arrow" th:href="@{/custom/notice/(pageNum = ${pageMaker.startPage - 1})}">
+					  <i class="fa fa-caret-left"></i>
+					</a>
+				  </li>
+				  <th:block th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+					  <li 
+					   	th:if="${pageMaker.endPage} ne 0"
+						th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+						th:each="pageButtom : ${#numbers.sequence(start,end)}"
+						
+					  	th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'"
+					  >
+						<a class="page-link" href="#" th:href="@{/custom/notice/(pageNum= ${pageButtom} )}" th:text="${pageButtom}"></a>
+					  </li>
+				  </th:block>
+		
+				  <li class="page-item" th:if ="${pageMaker.next}">
+					<a class="page-link page-link-arrow" th:href="@{/custom/notice/(pageNum = ${pageMaker.endPage + 1})}">
+					  <i class="fa fa-caret-right"></i>
+					</a>
+				  </li>
+				</ul>
+			  </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script>
+
+    </script>
+</div>
+</html>

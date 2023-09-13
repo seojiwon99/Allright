@@ -34,19 +34,21 @@
           <div class="col-12 col-lg-10 col-xl-8">
 
             <!-- Heading -->
-            <h3 class="mb-10 text-center">Frequently Asked Questionss</h3>
-
+            <h3 class="mb-10 text-center"><a href="/custom/faqList">Frequently Asked Questionss</a></h3>
+            <a th:href="@{/custom/faqList/(faqType=user)}">회원</a>
+			<a th:href="@{/custom/faqList/(faqType=order)}">주문/결제</a>
+			<a th:href="@{/custom/faqList/(faqType=cancle)}">취소/반품/교화</a>
             <!-- Heading -->
-            <h5 class="mb-7">회원:</h5>
+            <!-- <h5 class="mb-7">회원:</h5> -->
 
             <!-- List group -->
             <ul class="list-group list-group-flush-x mb-9" id="faqCollapseParentOne">
             <th:block th:each="faq, status : ${faqList}">
             	
-	              <li class="list-group-item" th:if="${faq.faqType eq '회원'}">
+	              <li class="list-group-item">
 	                <!-- Toggle -->
-	                <a class="dropdown-toggle d-block fs-lg fw-bold text-reset" data-bs-toggle="collapse" th:href="|#faqCollapse${status.index}|" th:text="|${status.index + 1}. [${faq.faqType}] ${faq.questionTitle}|">
-	
+	                <a class="dropdown-toggle d-block fs-lg fw-bold text-reset" data-bs-toggle="collapse" th:href="|#faqCollapse${status.index}|" th:text="| ${faq.questionTitle}|">
+					
 	                </a>
 	                <!-- Collapse -->
 	                <div class="collapse" th:id="|faqCollapse${status.index}|" th:data-bs-parent="|faqCollapseParent${status.index}|">
@@ -61,16 +63,16 @@
             </ul>
 
             <!-- Heading -->
-            <h5 class="mb-7">취소/교환/반품: </h5>
-            <!-- List group -->
+<!--             <h5 class="mb-7">취소/교환/반품: </h5>
+            List group
             <ul class="list-group list-group-flush-x mb-9" id="faqCollapseParentTwo">
             <th:block th:each="faq, status : ${faqList}">
               <li class="list-group-item" th:if="${faq.faqType eq '취소/교환/반품'}">
-                <!-- Toggle -->
+                Toggle
                 <a class="dropdown-toggle d-block fs-lg fw-bold text-reset" data-bs-toggle="collapse" th:href="|#faqCollapse${status.index}|" th:text="|${status.index + 1}. [${faq.faqType}] ${faq.questionTitle}|">
                 </a>
 
-                <!-- Collapse -->
+                Collapse
                 <div class="collapse"  th:id="|faqCollapse${status.index}|" th:data-bs-parent="|faqCollapseParent${status.index}|">
                   <div class="mt-5">
                     <p class="mb-0 fs-lg text-gray-500" th:text="${faq.questionAnswer}">
@@ -82,21 +84,21 @@
               </li>
              </th:block>
             </ul>
-
+ -->
             <!-- Heading -->
-            <h5 class="mb-7">주문/결제:</h5>
+<!--             <h5 class="mb-7">주문/결제:</h5>
 
-            <!-- List group -->
+            List group
             <ul class="list-group list-group-flush-x" id="faqCollapseParentThree">
             	<th:block th:each="faq, status : ${faqList}">
               <li class="list-group-item" th:if="${faq.faqType eq '주문/결제'}">
 
-                <!-- Toggle -->
+                Toggle
                 <a class="dropdown-toggle d-block fs-lg fw-bold text-reset" data-bs-toggle="collapse" th:href="|#faqCollapse${status.index}|" th:text="|${status.index + 1}. [${faq.faqType}] ${faq.questionTitle}|">
                 
                 </a>
 
-                <!-- Collapse -->
+                Collapse
                 <div class="collapse" th:id="|faqCollapse${status.index}|" th:data-bs-parent="|faqCollapseParent${status.index}|">
                   <div class="mt-5">
                     <p class="mb-0 fs-lg text-gray-500" th:text="${faq.questionAnswer}">
@@ -108,14 +110,32 @@
               </li>
  
             </th:block>
-            </ul>
+            </ul> -->
 
           </div>
         </div>
       </div>
     </section>
     <script>
-    	
+    /* $('#user').on('click',function(e){
+		let type = $(this).val();
+		alert(type);
+		$.ajax({
+			type:"get",
+			url: "/custom/faqList",
+			data :{
+				type: type
+			},
+			success : function(data){
+				
+			},
+			error :function(err){
+				console.log(err);
+			}
+			
+		})
+		
+	}) */
     </script>
 </div>
 </html>
