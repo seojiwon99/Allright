@@ -1,5 +1,8 @@
 package com.ar.lighthouse.product.service;
 
+
+import java.util.List;
+
 import java.util.Date;
 import java.util.List;
 
@@ -21,15 +24,17 @@ public class ProductVO {
 	 	int returnCost;
 	 	int exchangeCost;
 	 	String deliveryService;
-	 	boolean productStatus;
+
+	 	String productStatus;
+	 	List<ProductImgVO> productImg;
+
 	 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	 	Date productRegdate;
 	 	
 	 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	 	Date productUpdatedate;
 	 	int productCost;
-	 	int saleCost;
-	 	
+	 	int salePrice;
 	 	
 	 	List<OptionVO> option;
 	 	
