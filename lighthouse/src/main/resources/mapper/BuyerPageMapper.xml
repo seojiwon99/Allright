@@ -6,15 +6,27 @@
   <mapper namespace="com.ar.lighthouse.buyp.mapper.BuyerPageMapper">
   	
   	<select id="selectDetailList" resultType="com.ar.lighthouse.buyp.service.DetailVO" parameterType="String">
-		select e.img_code, e.img_order, e.img_name, e.upload_name, e.img_content, e.img_regdate , f.product_name, f.product_code, f.order_cnt, f.order_price, f.payment_price, f.order_status, f.order_date, f.delivery_number, f.delivery_date, f.option_code, f.order_code
-		from ar_product_img e JOIN (select d.order_code,c.product_name, d.product_code,d.order_cnt, d.order_price, d.payment_price, d.order_status, d.order_date, d.delivery_number, d.delivery_date, d.option_code
-									from ar_products c JOIN (select b.product_code,a.order_cnt, a.order_price, a.payment_price, a.order_status, a.order_date, a.delivery_number, a.delivery_date, a.option_code, a.order_code
-															 from  (select p.order_cnt, p.order_price, p.payment_price, p.order_status, p.order_date, p.delivery_number, p.delivery_date, p.option_code, p.order_code
-																	from ar_orders a 
-																	JOIN ar_order_detail p ON a.order_code = p.order_code
-																	where a.member_id = 'user123456') a 
-															 JOIN ar_option  b ON a.option_code = b.option_code) d ON c.product_code = d.product_code) f 
-							  ON e.product_code = f.product_code
+		SELECT a.order_cnt
+		     , a.order_price
+		     , a.payment_price
+		     , a.order_status
+		     , a.order_date
+		     , a.delivery_number
+		     , a.delivery_date
+		     , a.option_code
+		     , a.order_code
+		     , d.product_name
+		     , e.img_code
+		     , e.img_order
+		     , e.img_name
+		     , e.upload_name
+		     , e.img_content
+		FROM ar_order_detail a
+		LEFT OUTER JOIN ar_orders b ON a.order_code = b.order_code
+		LEFT OUTER JOIN ar_option c ON a.option_code = c.option_code
+		LEFT OUTER JOIN ar_products d ON c.product_code = d.product_code
+		LEFT OUTER JOIN ar_product_img e ON e.product_code = d.product_code
+		WHERE b.member_id = #{memberId}
   	</select>
   
   	<select id="selectBuyInfo" resultType="com.ar.lighthouse.buyp.service.BuyInfoVO" parameterType="String">
@@ -46,6 +58,8 @@
 		LEFT OUTER JOIN ar_exchange d ON a.order_detail_code = d.order_detail_code
 		LEFT OUTER JOIN ar_option e ON a.option_code = e.option_code
 		LEFT OUTER JOIN ar_products f ON  e.product_code = f.product_code
+		LEFT OUTER JOIN ar_orders g ON g.order_code = a.order_code
+		WHERE g.member_id = #{memberId}
 	</select>
 	
 	
