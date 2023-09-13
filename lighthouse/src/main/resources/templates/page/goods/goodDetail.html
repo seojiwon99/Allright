@@ -191,9 +191,10 @@
 
 									<!-- Text -->
 									<p>
-										<span class="text-gray-500">아이디가 없나요?</span> <a
-											class="text-reset text-decoration-underline"
-											data-bs-toggle="modal" href="login">지금 바로 회원가입!</a>
+										<span class="text-gray-500">아이디가 없나요?</span> 
+										<a class="text-reset text-decoration-underline"
+										id="loginTag"
+											>지금 바로 회원가입!</a>
 									</p>
 
 
@@ -265,7 +266,9 @@
 							</div>
 
 							<!-- 상세이미지 -->
-							<div></div>
+							<div style="background-color: grey; padding: 48px 0px"  >
+								<img alt="" src="" style="width: 928px; height: 1120px" class="rounded mx-auto d-block">
+							</div>
 
 						</div>
 
@@ -737,6 +740,16 @@
 	</section>
 
 	<!-- REVIEWS -->
+
+<script>
+	$("#loginTag").on("click",function(){
+		let result = confirm("회원가입 창으로 이동하시겠습니까?");
+		
+		if(result){
+			location.replace("/login");
+		}else{}
+	})
+</script>
 
 </div>
 

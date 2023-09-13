@@ -44,6 +44,11 @@
 				<div class="card">
 					<!-- Image -->
 					<div class="card-img">
+					<!-- Badge -->
+						<div
+							class="badge bg-white text-body card-badge card-badge-start text-uppercase">
+							New</div>
+					
 						<!-- 상품 찜 하기 -->
 						<button
 							class="btn btn-xs btn-circle btn-white-primary card-action card-action-end"
@@ -52,12 +57,12 @@
 						</button>
 
 						<!-- 상품 페이지로 이동 -->
-						<a class="test btn btn-xs w-100 btn-dark card-btn"
-							id="detailBtn" data-bs-toggle="modal"
+						<button class="test btn btn-xs w-100 btn-dark card-btn"
+							data-bs-toggle="modal"
 							th:onclick="|location.href = '@{goodDetail(productCode=${product.productCode})}'|"
-							data-bs-target="#modalProduct">
+							> 
 							<i class="fe fe-eye me-2 mb-1"></i> 자세히 보기
-						</a>
+						</button>
 
 						<!-- Image -->
 						<img th:src="@{/img/products/product-12.jpg}" class="card-img-top"
@@ -72,8 +77,8 @@
 
 					<!-- Body -->
 					<div class="card-body fw-bold text-center">
-						<a class="text-body" th:onclick="|location.href = '@{/goodDetail(productCode=${product.productCode})}'|">
-							
+						<a class="text-body"
+							th:onclick="|location.href = '@{/goodDetail(productCode=${product.productCode})}'|">
 							<div th:text="${product.productName}">상품이름</div>
 							<div th:text="${product.productCost} + 원"></div>
 						</a>
@@ -199,11 +204,6 @@
 
 					<!-- Card -->
 					<div class="card mb-7" data-toggle="card-collapse">
-
-						<!-- Badge -->
-						<div
-							class="badge bg-white text-body card-badge card-badge-start text-uppercase">
-							New</div>
 
 						<!-- Image -->
 						<div class="card-img" data-flickity='{"draggable": false}'
