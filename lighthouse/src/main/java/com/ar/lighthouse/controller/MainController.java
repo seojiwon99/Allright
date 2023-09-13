@@ -28,7 +28,7 @@ public class MainController {
 	
 		model.addAttribute("productRand", service.randomGetProduct());
 		System.out.println(model);
-		
+	
 		return "page/body";
 		
 	}
