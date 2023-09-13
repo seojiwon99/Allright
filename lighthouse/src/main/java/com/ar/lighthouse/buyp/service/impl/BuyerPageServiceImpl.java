@@ -10,6 +10,7 @@ import com.ar.lighthouse.buyp.mapper.BuyerPageMapper;
 import com.ar.lighthouse.buyp.service.BuyInfoVO;
 import com.ar.lighthouse.buyp.service.BuyerPageService;
 import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.buyp.service.TradeVO;
 @Service
 public class BuyerPageServiceImpl implements BuyerPageService {
 	
@@ -22,9 +23,16 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 		return buyerPageMapper.selectDetailList(memberId);
 	}
 
+
 	@Override
-	public BuyInfoVO getInfo() {
-		return buyerPageMapper.selectBuyInfo();
+	public BuyInfoVO getInfo(String memberId) {
+		return buyerPageMapper.selectBuyInfo(memberId);
+	}
+
+
+	@Override
+	public List<TradeVO> getTradeList(String memberId) {
+		return buyerPageMapper.selectTradeList(memberId);
 	}
 
 

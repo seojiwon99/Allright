@@ -9,9 +9,9 @@ public interface BuyerPageService {
 	public List<DetailVO> getDetailList(String memberId);
 	
 	//개인 정보 가져오기
-	public BuyInfoVO getInfo();
+	public BuyInfoVO getInfo(String memberId);
 	
 	//취소,반품,교환내역 가져오기
-	
+	public List<TradeVO> getTradeList(String memberId);
 
 }

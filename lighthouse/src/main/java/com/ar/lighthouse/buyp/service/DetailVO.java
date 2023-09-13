@@ -20,5 +20,14 @@ public class DetailVO {
 	private int mycouponCode;
 	private String optionCouponCheck;
 	private int deliveryNumber;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date deliveryDate;
+	
+	//상품 테이블 조인
+	private String productName;
+	private String productCode;
+	
+	//이미지 테이블 조인
+	private int imgCode;
+	private String imgContent;
 }

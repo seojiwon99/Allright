@@ -6,12 +6,15 @@
   <mapper namespace="com.ar.lighthouse.buyp.mapper.BuyerPageMapper">
   	
   	<select id="selectDetailList" resultType="com.ar.lighthouse.buyp.service.DetailVO" parameterType="String">
-		SELECT c.product_name, d.product_code,d.order_cnt, d.order_price, d.payment_price, d.order_status, d.order_date, d.delivery_number, d.delivery_date, d.option_code
-		FROM ar_products c JOIN (select b.product_code,a.order_cnt, a.order_price, a.payment_price, a.order_status, a.order_date, a.delivery_number, a.delivery_date, a.option_code
-                         FROM  (select p.order_cnt, p.order_price, p.payment_price, p.order_status, p.order_date, p.delivery_number, p.delivery_date, p.option_code
-                                from ar_orders a JOIN ar_order_detail p ON a.order_code = p.order_code
-                                where a.member_id = #{memberId}) a 
-                         JOIN ar_option  b ON a.option_code = b.option_code) d ON c.product_code = d.product_code
+		select e.img_code, e.img_order, e.img_name, e.upload_name, e.img_content, e.img_regdate , f.product_name, f.product_code, f.order_cnt, f.order_price, f.payment_price, f.order_status, f.order_date, f.delivery_number, f.delivery_date, f.option_code, f.order_code
+		from ar_product_img e JOIN (select d.order_code,c.product_name, d.product_code,d.order_cnt, d.order_price, d.payment_price, d.order_status, d.order_date, d.delivery_number, d.delivery_date, d.option_code
+									from ar_products c JOIN (select b.product_code,a.order_cnt, a.order_price, a.payment_price, a.order_status, a.order_date, a.delivery_number, a.delivery_date, a.option_code, a.order_code
+															 from  (select p.order_cnt, p.order_price, p.payment_price, p.order_status, p.order_date, p.delivery_number, p.delivery_date, p.option_code, p.order_code
+																	from ar_orders a 
+																	JOIN ar_order_detail p ON a.order_code = p.order_code
+																	where a.member_id = 'user123456') a 
+															 JOIN ar_option  b ON a.option_code = b.option_code) d ON c.product_code = d.product_code) f 
+							  ON e.product_code = f.product_code
   	</select>
   
   	<select id="selectBuyInfo" resultType="com.ar.lighthouse.buyp.service.BuyInfoVO" parameterType="String">
@@ -20,5 +23,19 @@
 		WHERE member_id = #{memberId}
   	</select>
   	
-
+	<select id="selectTradeList" resultType="com.ar.lighthouse.buyp.service.TradeVO" parameterType="String">
+		SELECT k.product_code, k.product_name , k.product_cost, j.order_cnt, j.order_date, j.payment_price, j.cancel_regdate, j.exchange_regdate, j.return_regdate, j.return_status, j.exchange_status
+		FROM (select g.order_status, g.order_date, h.exchange_status, h.exchange_regdate, g.return_status, g.return_regdate, g.cancel_status, g.cancel_regdate, g.option_code, g.order_cnt, g.payment_price
+		        from (select f.return_status, f.return_regdate, e.cancel_status, e.order_detail_code, e.order_status, e.cancel_regdate, e.order_date, e.option_code, e.order_cnt, e.payment_price
+		                from (select b.cancel_code, c.order_detail_code, b.cancel_status, c.order_status, c.order_date, b.cancel_regdate, c.order_cnt, c.payment_price, c.option_code
+		                        from ar_order_detail c LEFT OUTER JOIN ar_cancel b ON c.order_detail_code = b.order_detail_code) e 
+		                LEFT OUTER JOIN ar_return f ON e.order_detail_code = f.order_detail_code) g
+		        LEFT OUTER JOIN ar_exchange h ON g.order_detail_code = h.order_detail_code) j
+		LEFT OUTER JOIN (select a.product_code, a.product_name , a.product_cost, a.sale_price, b.option_code
+		        FROM ar_products a
+		        LEFT OUTER JOIN ar_option b ON a.product_code = b.product_code) k ON j.option_code = k.option_code
+	</select>
+	
+	
+	
   </mapper>

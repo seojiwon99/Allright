@@ -6,6 +6,7 @@
 
 <!-- Content -->
 <div layout:fragment="content">
+
 <!-- CONTENT -->
     <section class="pt-7 pb-12">
       <div class="container">
@@ -13,7 +14,7 @@
           <div class="col-12 text-center">
 
             <!-- Heading -->
-            <h3 class="mb-10">My Account</h3>
+            <h3 class="mb-10">주문 목록</h3>
 
           </div>
         </div>
@@ -59,9 +60,9 @@
                   <div class="card-body bg-light">
                     <div class="row">
                       <div class="col-6 col-lg-3">
-
+    					
                         <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">Order No:</h6>
+                        <h6 class="heading-xxxs text-muted">주문 번호:</h6>
 
                         <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
@@ -72,7 +73,7 @@
                       <div class="col-6 col-lg-3">
 
                         <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">Shipped date:</h6>
+                        <h6 class="heading-xxxs text-muted">주문 날짜:</h6>
 
                         <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
@@ -85,22 +86,66 @@
                       <div class="col-6 col-lg-3">
 
                         <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">Status:</h6>
+                        <h6 class="heading-xxxs text-muted">배송 상태:</h6>
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text= "|${lists.orderStatus}|"></span>
+                          <span th:text="|${lists.orderStatus}|"></span>
                         </p>
 
                       </div>
                       <div class="col-6 col-lg-3">
 
                         <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">Order Amount:</h6>
+                        <h6 class="heading-xxxs text-muted">상품명:</h6>
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                          $259.00
+                          <span th:text="|${lists.productName}|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">수량:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${lists.orderCnt}|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">주문 금액:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${lists.paymentPrice}|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">배달 완료 날짜:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                         <span th:text="|${lists.deliveryDate}|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">이미지:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text=""></span>
                         </p>
 
                       </div>
@@ -109,94 +154,7 @@
                 </div>
 				</div>
               
-              <div class="card-footer">
 
-                <!-- Heading -->
-                <h6 class="mb-7">Order Items (3)</h6>
-
-                <!-- Divider -->
-                <hr class="my-5">
-
-                <!-- List group -->
-                <ul class="list-group list-group-lg list-group-flush-y list-group-flush-x">
-                  <li class="list-group-item">
-                    <div class="row align-items-center">
-                      <div class="col-4 col-md-3 col-xl-2">
-
-                        <!-- Image -->
-                        <a href="product.html"><img src="assets/img/products/product-6.jpg" alt="..." class="img-fluid"></a>
-
-                      </div>
-                      <div class="col">
-
-                        <!-- Title -->
-                        <p class="mb-4 fs-sm fw-bold">
-                          <a class="text-body" href="product.html">Cotton floral print Dress x 1</a> <br>
-                          <span class="text-muted">$40.00</span>
-                        </p>
-
-                        <!-- Text -->
-                        <div class="fs-sm text-muted">
-                          Size: M <br>
-                          Color: Red
-                        </div>
-
-                      </div>
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    <div class="row align-items-center">
-                      <div class="col-4 col-md-3 col-xl-2">
-
-                        <!-- Image -->
-                        <a href="product.html"><img src="assets/img/products/product-10.jpg" alt="..." class="img-fluid"></a>
-
-                      </div>
-                      <div class="col">
-
-                        <!-- Title -->
-                        <p class="mb-4 fs-sm fw-bold">
-                          <a class="text-body" href="product.html">Suede cross body Bag x 1</a> <br>
-                          <span class="text-muted">$49.00</span>
-                        </p>
-
-                        <!-- Text -->
-                        <div class="fs-sm text-muted">
-                          Color: Brown
-                        </div>
-
-                      </div>
-                    </div>
-                  </li>
-
-                  <li class="list-group-item">
-                    <div class="row align-items-center">
-                      <div class="col-4 col-md-3 col-xl-2">
-
-                        <!-- Image -->
-                        <a href="product.html"><img src="assets/img/products/product-48.jpg" alt="..." class="img-fluid"></a>
-
-                      </div>
-                      <div class="col">
-
-                        <!-- Title -->
-                        <p class="mb-4 fs-sm fw-bold">
-                          <a class="text-body" href="product.html">Sweatshirt with Pocket</a> <br>
-                          <span class="text-muted">$39.00</span>
-                        </p>
-
-                        <!-- Text -->
-                        <div class="fs-sm text-muted">
-                          Size: L <br>
-                          Color: Pink
-                        </div>
-
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-
-              </div>
             </div>
 
           </div>

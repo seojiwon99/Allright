@@ -7,12 +7,14 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.ar.lighthouse.buyp.service.BuyInfoVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.buyp.service.TradeVO;
 
 @Mapper
 public interface BuyerPageMapper {
 	
 	public List<DetailVO> selectDetailList(String memberId);
 	
-	public BuyInfoVO selectBuyInfo();
+	public BuyInfoVO selectBuyInfo(String memberId);
 
+	public List<TradeVO> selectTradeList(String memberId);
 }
