@@ -29,7 +29,7 @@
                   <div class="col-3">
 					
 					<!-- checkbox -->
-                    <input type="checkbox" name="price">
+                    <input type="checkbox" name="price" th:value="${lists.productCost}">
 
                     <!-- Image -->
                     <a href="product.html">
@@ -41,7 +41,7 @@
                     <!-- Title -->
                     <div class="d-flex mb-2 fw-bold">
                       <a class="text-body" href="product.html"><span th:text= "|상품명 : ${lists.productName}|"></span></a>
-                      <span class="ms-auto" th:text="| 상품금액 : ${lists.productCost}원|"></span>
+                      <span class="price ms-auto" th:text="| 상품금액 : ${lists.productCost}원|"></span>
                     </div>
                     <div class="d-flex mb-2 fw-bold">
                     	<span class="ms-auto" th:text="|할인금액 : ${lists.salePrice}원|"></span>
@@ -117,13 +117,13 @@
                     <span>상품금액</span> <span class="ms-auto fs-sm" id="productPrice"></span>
                   </li>
                   <li class="list-group-item d-flex">
-                    <span>상품할인금액</span> <span class="ms-auto fs-sm">0원</span>
+                    <span>상품할인금액</span> <span class="ms-auto fs-sm" id="salePrice">0원</span>
                   </li>
                   <li class="list-group-item d-flex">
                     <span>배송비</span> <span class="ms-auto fs-sm">0원</span>
                   </li>
                   <li class="list-group-item d-flex fs-lg fw-bold">
-                    <span>결제금액</span> <span class="ms-auto fs-sm">$89.00</span>
+                    <span>결제금액</span> <span class="ms-auto fs-sm" id="totalPrice">$89.00</span>
                   </li>
           
                 </ul>
@@ -144,16 +144,31 @@
     </section>
     <script>
     
-    let checkboxs = document.querySelectorAll("input[name='[price]']");
+    let checkboxs = $('input[name="price"]');
+    console.log(checkboxs)
     let result = 0;
 
-      function checkboxed() {
-      checkboxs.forEach((checkbox) => {
-        checkbox.addEventListener("click", (e) => {
-          console.log("체크확인", e.currentTarget.checked);
+        checkboxs.on('click',function(e){
+         let chk = checkboxs.is(':checked');
+         if(chk) {
+            let prices = $('.price ms-auto');
+
+            for(let p of prices){
+              console.log(p);
+            }
+            console.log($(checkboxs).val());
+
+         }
         })
-      })
-  }
+    
+
+  //     function checkboxed() {
+  //     checkboxs.forEach((checkbox) => {
+  //       checkbox.addEventListener("click", (e) => {
+  //         console.log("체크확인", e.currentTarget.checked);
+  //       })
+  //     })
+  // }
 
     </script>
 </div>
