@@ -18,18 +18,28 @@ public class MainController {
 		return "page/test";
 	}
 
+
+	
 	@GetMapping("/")
 	public String Body(Model model) {
 	
+		model.addAttribute("categories",service.getCategoryList());
+		
 		model.addAttribute("productList",service.selProductList());
+		System.out.println(model);
 		
 		model.addAttribute("productbanner",service.showEventBanner());
-		System.out.println(model);
 	
 		model.addAttribute("productRand", service.randomGetProduct());
-		System.out.println(model);
 	
 		return "page/body";
+		
+	}
+	
+	@GetMapping("goodsList")
+	public String goodsList() {
+		
+		return "page/goods/goodsList";
 		
 	}
 

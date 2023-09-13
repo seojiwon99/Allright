@@ -54,7 +54,17 @@ public class ProductController {
 	
 	
 	
-	
+	//상품 단건 조회
+	@GetMapping("goodDetail")
+	public String getGoodDetail(String productCode, Model model) {
+		ProductVO vo = new ProductVO();
+		vo.setProductCode(productCode);
+		
+		ProductVO productVO = productService.goodsDetail(vo);
+		model.addAttribute("goods", productVO);
+		
+		return "page/goods/goodDetail";
+	}
 	
 	
 }

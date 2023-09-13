@@ -92,4 +92,27 @@
 	
 
 
+
+<!-- 김무준의 상세페이지~~ -->
+	<select id="selectInfo" resultType="ProductVO">
+		select member_id
+             , category_code
+             , product_name
+             , product_content
+             , product_location
+             , product_cost
+             , product_regdate
+             , sale_price
+             , product_brand
+             , product_origin
+             , product_makeorigin
+             , delivery_cost
+             , return_cost
+             , exchange_cost
+                , delivery_service
+                , product_status
+		from ar_products p join ar_product_img i
+                           on p.product_code = i.product_code
+		where p.product_code = #{productCode}
+	</select>
 </mapper>
