@@ -13,25 +13,46 @@
 $('#chkDelBtn').on('click', checkedDelProduct);
 
 $(document).ready(function() {
-$("#optionList").on('change', function(){
-    let order = $("#optionList").val();
-    
-    // AJAX 요청을 보낼 때 order 값을 데이터로 전송
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:8090/productList",
-        data: { "order": order },
-        success: function(data) {
-            // 성공 시 처리
-            consolt.log(data);
-            
-            
-        },
-        error: function(error) {
-            // 에러 시 처리
-        }
+  console.log('ready ok')
+  function loadData(optionValue) {
+        $.ajax({
+            url: 'your_backend_endpoint_here', // Replace with the actual backend endpoint
+            type: 'GET',
+            data: { sortBy: optionValue }, // Send the selected option as a parameter to the backend
+            success: function (data) {
+                // Clear the existing table body
+                $('#getProductList tbody').empty();
+
+                // Loop through the data and populate the table rows
+                $.each(data, function (index, product) {
+                    // Create a new row and append it to the table
+                    var newRow = $('<tr>');
+                    newRow.append('<td><input type="checkbox"></td>');
+                    newRow.append('<td><a href="/modifyForm"><button id="modifyForm" type="button">수정</button></a></td>');
+                    newRow.append('<td>' + product.productCode + '</td>');
+                    newRow.append('<td>' + product.productName + '</td>');
+                    newRow.append('<td>' + product.option[0].optionCount + '</td>');
+                    newRow.append('<td>' + product.productCost + '</td>');
+                    newRow.append('<td>' + product.salePrice + '</td>');
+                    newRow.append('<td>' + product.deliveryCost + '</td>');
+                    newRow.append('<td>' + product.productRegdate + '</td>');
+                    newRow.append('<td>' + product.option[0].optionExStatus + '</td>');
+
+                    // Append the new row to the table body
+                    $('#getProductList tbody').append(newRow);
+                });
+            }
+        });
+    }
+
+    // Handle the select change event
+    $('#optionList').change(function () {
+        var selectedOption = $(this).val();
+        loadData(selectedOption);
     });
-});
+
+    // Initially load data based on the default selected option
+    loadData($('#optionList').val());
 
 
 function checkedDelProduct(e){
