@@ -24,16 +24,28 @@
   	</select>
   	
 	<select id="selectTradeList" resultType="com.ar.lighthouse.buyp.service.TradeVO" parameterType="String">
-		SELECT k.product_code, k.product_name , k.product_cost, j.order_cnt, j.order_date, j.payment_price, j.cancel_regdate, j.exchange_regdate, j.return_regdate, j.return_status, j.exchange_status
-		FROM (select g.order_status, g.order_date, h.exchange_status, h.exchange_regdate, g.return_status, g.return_regdate, g.cancel_status, g.cancel_regdate, g.option_code, g.order_cnt, g.payment_price
-		        from (select f.return_status, f.return_regdate, e.cancel_status, e.order_detail_code, e.order_status, e.cancel_regdate, e.order_date, e.option_code, e.order_cnt, e.payment_price
-		                from (select b.cancel_code, c.order_detail_code, b.cancel_status, c.order_status, c.order_date, b.cancel_regdate, c.order_cnt, c.payment_price, c.option_code
-		                        from ar_order_detail c LEFT OUTER JOIN ar_cancel b ON c.order_detail_code = b.order_detail_code) e 
-		                LEFT OUTER JOIN ar_return f ON e.order_detail_code = f.order_detail_code) g
-		        LEFT OUTER JOIN ar_exchange h ON g.order_detail_code = h.order_detail_code) j
-		LEFT OUTER JOIN (select a.product_code, a.product_name , a.product_cost, a.sale_price, b.option_code
-		        FROM ar_products a
-		        LEFT OUTER JOIN ar_option b ON a.product_code = b.product_code) k ON j.option_code = k.option_code
+		SELECT b.cancel_code
+		       , b.cancel_status
+		       , b.cancel_regdate
+		       , a.order_detail_code
+		       , a.order_status
+		       , a.order_date
+		       , a.order_cnt
+		       , a.payment_price
+		       , c.return_status
+		       , c.return_regdate
+		       , d.exchange_status
+		       , d.exchange_regdate
+		       , f.product_code
+		       , f.product_name
+		       , f.product_cost
+		       , e.option_code
+		FROM ar_order_detail a
+		LEFT OUTER JOIN ar_cancel b ON a.order_detail_code = b.order_detail_code 
+		LEFT OUTER JOIN ar_return c ON a.order_detail_code = c.order_detail_code
+		LEFT OUTER JOIN ar_exchange d ON a.order_detail_code = d.order_detail_code
+		LEFT OUTER JOIN ar_option e ON a.option_code = e.option_code
+		LEFT OUTER JOIN ar_products f ON  e.product_code = f.product_code
 	</select>
 	
 	
