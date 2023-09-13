@@ -18,8 +18,8 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-12 col-md-7">
-
+          <div class="col-12 col-md-7" id="test">
+            <p><input type="checkbox" id="allCheckbox">전체선택</p>
             <!-- List group -->
             <!-- 반복문 시작 -->
             <div th:each="lists : ${list}">
@@ -30,10 +30,12 @@
 					
 					<!-- checkbox -->
                     <input type="checkbox" name="price" th:value="${lists.productCost}">
+                    <input type="hidden" name="sale" th:value="${lists.salePrice}">
+                    <input type="hidden" name="delivery" th:value="${lists.deliveryCost}">
 
                     <!-- Image -->
                     <a href="product.html">
-                      <img src="assets/img/products/product-6.jpg" alt="..." class="img-fluid">
+                     <img th:src="@{/img/products/}+${lists.imgName}" alt="..." class="img-fluid">
                     </a>
 
                   </div>
@@ -45,6 +47,9 @@
                     </div>
                     <div class="d-flex mb-2 fw-bold">
                     	<span class="ms-auto" th:text="|할인금액 : ${lists.salePrice}원|"></span>
+                    </div>
+                    <div class="d-flex mb-2 fw-bold">
+                    	<span class="ms-auto" th:text="|배송비 : ${lists.deliveryCost}원|"></span>
                     </div>
 
                     <!-- Text -->
@@ -65,7 +70,7 @@
                       </select>
 
                       <!-- Remove -->
-                      <a class="fs-xs text-gray-400 ms-auto" th:href="@{/cart/delete/(cartCode=${lists.cartCode})}">
+                      <a class="fs-xs text-gray-400 ms-auto" th:onclick="delteResult([[${lists.cartCode}]])">
                         <i class="fe fe-x"></i> 상품삭제
                       </a>
 
@@ -83,20 +88,18 @@
                 <!-- Coupon -->
                 <form class="mb-7 mb-md-0">
                   <label class="form-label fs-sm fw-bold" for="cartCouponCode">
-                    쿠폰 번호:
+                   
                   </label>
                   <div class="row row gx-5">
                     <div class="col">
 
-                      <!-- Input -->
-                      <input class="form-control form-control-sm" id="cartCouponCode" type="text" placeholder="Enter coupon code*">
-
+                  
                     </div>
                     <div class="col-auto">
 
                       <!-- Button -->
                       <button class="btn btn-sm btn-dark" type="submit">
-                        확인
+                        나의 쿠폰함 가기
                       </button>
 
                     </div>
@@ -114,16 +117,16 @@
               <div class="card-body">
                 <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
                   <li class="list-group-item d-flex">
-                    <span>상품금액</span> <span class="ms-auto fs-sm" id="productPrice"></span>
+                    <span>상품금액</span> <span class="ms-auto fs-sm" id="productPrice">원</span>
                   </li>
                   <li class="list-group-item d-flex">
-                    <span>상품할인금액</span> <span class="ms-auto fs-sm" id="salePrice">0원</span>
+                    <span>상품할인금액</span> <span class="ms-auto fs-sm" id="salePrice">원</span>
                   </li>
                   <li class="list-group-item d-flex">
-                    <span>배송비</span> <span class="ms-auto fs-sm">0원</span>
+                    <span>배송비</span> <span class="ms-auto fs-sm" id="deliveryPrice">원</span>
                   </li>
                   <li class="list-group-item d-flex fs-lg fw-bold">
-                    <span>결제금액</span> <span class="ms-auto fs-sm" id="totalPrice">$89.00</span>
+                    <span>결제금액</span> <span class="ms-auto fs-sm" id="totalPrice">원</span>
                   </li>
           
                 </ul>
@@ -143,32 +146,73 @@
       </div>
     </section>
     <script>
-    
     let checkboxs = $('input[name="price"]');
-    console.log(checkboxs)
     let result = 0;
-
-        checkboxs.on('click',function(e){
-         let chk = checkboxs.is(':checked');
+    let saleResult = 0;
+    let deliveryResult = 0;
+    let totalResult = 0;
+        checkboxs.on('change', checkedCart)
+        
+        function checkedCart(e){
+         let chk = $(this).is(':checked');
+         let prices = $(this).val();
+         let salcePrices = $(this).next().val();
+         let deliveryPrices = $(this).next().next().val();
+         console.log($(this));
+         
          if(chk) {
-            let prices = $('.price ms-auto');
+            deliveryResult+=Number(deliveryPrices);
+            saleResult+=Number(salcePrices);
+            result+=Number(prices);
+           
 
-            for(let p of prices){
-              console.log(p);
-            }
-            console.log($(checkboxs).val());
-
+         } else {
+          deliveryResult-=Number(deliveryPrices);
+          saleResult-=Number(salcePrices);
+          result-=Number(prices);
+          
+          
          }
-        })
-    
-
-  //     function checkboxed() {
-  //     checkboxs.forEach((checkbox) => {
-  //       checkbox.addEventListener("click", (e) => {
-  //         console.log("체크확인", e.currentTarget.checked);
-  //       })
-  //     })
-  // }
+         document.getElementById('productPrice').innerText = result + '원';
+         document.getElementById('salePrice').innerText = saleResult + '원';
+         document.getElementById('deliveryPrice').innerText = deliveryResult + '원';
+         document.getElementById('totalPrice').innerText = result - saleResult + deliveryResult + '원';
+        }
+        
+        
+    	function delteResult(code){
+        	//console.log(code);
+        	//e.preventDefault()
+          let deleteForm = confirm('삭제를 하시겠습니까?');
+          if(deleteForm) {
+        	$.ajax('http://localhost:8090/cart/delete',{
+            type : 'get',
+            data : {
+              cartCode : code
+            }
+          })
+          .done(data => {
+            console.log(data);
+            $('#test').replaceWith(data);
+          })
+        	
+        } else {
+          return;
+        }
+      }
+      //전체 선택
+      document.getElementById('allCheckbox')
+      .addEventListener('click',allCheckEvent)
+      function allCheckEvent(e) {
+          let allCheckTag = document.getElementById('allCheckbox');
+          let checkTags = document.querySelectorAll('input[name="price"]');
+          checkTags.forEach(el => {
+        	  console.log(el)
+            //el.checked = allCheckTag.checked;
+        	  $(el).trigger('click')
+            
+          })
+      }
 
     </script>
 </div>

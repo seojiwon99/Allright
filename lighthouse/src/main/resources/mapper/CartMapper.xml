@@ -6,11 +6,11 @@
   	
   	<!-- 장바구니 상세정보 -->
   	<select id="cartList" resultType="com.ar.lighthouse.cart.service.CartVO" parameterType="String">
-  		select p.product_name as product_name, a.sale_price as sale_price, a.cart_count as cart_count,
-  			   a.option_name as option_name, a.option_value as option_value, p.product_cost as product_cost, a.cart_code as cart_code
-			from  (select  o.sale_price, o.product_code, c.cart_count, o.option_name, o.option_value, c.cart_code
-           		   from ar_cart c JOIN ar_option o ON c.option_code = o.option_code
-            	   where c.member_id = #{memberId}) a JOIN ar_products p ON a.product_code = p.product_code
+  		 select n.img_code, n.img_name, (n.option_price + n.product_cost) as product_cost, n.product_name, n.sale_price, n.option_name, n.option_value, n.delivery_cost, c.cart_code, c.cart_count
+   			from (select g.img_code, g.img_name ,o.option_code, g.product_code, g.sale_price, g.delivery_cost, g.product_cost, g.product_name, o.option_price, o.option_value, o.option_name
+    			from (select i.img_code, i.img_name , p.product_code, p.sale_price, p.delivery_cost, p.product_cost, p.product_name
+     				 from ar_product_img i LEFT join ar_products p on i.product_code = p.product_code) g LEFT join ar_option o on g.product_code = o.product_code) n LEFT join ar_cart c on n.option_code = c.option_code
+      	where c.member_id = #{memberId}
   	</select>
   	
   	<delete id="deleteCart">

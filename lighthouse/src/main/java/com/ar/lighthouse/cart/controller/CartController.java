@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ar.lighthouse.cart.service.CartService;
 import com.ar.lighthouse.cart.service.CartVO;
@@ -29,11 +30,14 @@ public class CartController {
 		
 		return "/page/cart/cartView";
 	}
-	@GetMapping("cart/delete/")
-	public String cartDelete(String memberId, int cartCode, HttpServletRequest request) {
+	@GetMapping("cart/delete")
+	public String cartDelete(String memberId, int cartCode, HttpServletRequest request,Model model) {
 		memberId = "user123456";
 		cartService.removeCart(memberId, cartCode);
 		String referer = request.getHeader("Referer");
-		return "redirect:" + referer;
+		
+		List<CartVO> list = cartService.cartGetList(memberId);
+		model.addAttribute("list", list);
+		return "/page/cart/cartView :: #test";
 	}
 }
