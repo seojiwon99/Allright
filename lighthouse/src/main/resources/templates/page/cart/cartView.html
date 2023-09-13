@@ -27,6 +27,9 @@
               <li class="list-group-item">
                 <div class="row align-items-center">
                   <div class="col-3">
+					
+					<!-- checkbox -->
+                    <input type="checkbox" name="price" th:value="${lists.productCost}">
 
                     <!-- Image -->
                     <a href="product.html">
@@ -37,14 +40,19 @@
                   <div class="col">
                     <!-- Title -->
                     <div class="d-flex mb-2 fw-bold">
-                      <a class="text-body" href="product.html"><span th:text="${lists.productName}"></span></a><span class="ms-auto" th:text="${lists.productsPrice}"></span>
+                      <a class="text-body" href="product.html"><span th:text= "|상품명 : ${lists.productName}|"></span></a>
+                      <span class="price ms-auto" th:text="| 상품금액 : ${lists.productCost}원|"></span>
+                    </div>
+                    <div class="d-flex mb-2 fw-bold">
+                    	<span class="ms-auto" th:text="|할인금액 : ${lists.salePrice}원|"></span>
                     </div>
 
                     <!-- Text -->
-                    <p class="mb-7 fs-sm text-muted">
-                      Size: M <br>
-                      Color: Red
-                    </p>
+                   <p class="mb-7 fs-sm text-muted" th:text="|${lists.optionName} :  ${lists.optionValue}|"></p>
+                    
+                      
+               
+         
 
                     <!--Footer -->
                     <div class="d-flex align-items-center">
@@ -57,8 +65,8 @@
                       </select>
 
                       <!-- Remove -->
-                      <a class="fs-xs text-gray-400 ms-auto" href="#!">
-                        <i class="fe fe-x"></i> Remove
+                      <a class="fs-xs text-gray-400 ms-auto" th:href="@{/cart/delete/(cartCode=${lists.cartCode})}">
+                        <i class="fe fe-x"></i> 상품삭제
                       </a>
 
                     </div>
@@ -75,7 +83,7 @@
                 <!-- Coupon -->
                 <form class="mb-7 mb-md-0">
                   <label class="form-label fs-sm fw-bold" for="cartCouponCode">
-                    Coupon code:
+                    쿠폰 번호:
                   </label>
                   <div class="row row gx-5">
                     <div class="col">
@@ -88,18 +96,12 @@
 
                       <!-- Button -->
                       <button class="btn btn-sm btn-dark" type="submit">
-                        Apply
+                        확인
                       </button>
 
                     </div>
                   </div>
                 </form>
-
-              </div>
-              <div class="col-12 col-md-auto">
-
-                <!-- Button -->
-                <button class="btn btn-sm btn-outline-dark">Update Cart</button>
 
               </div>
             </div>
@@ -112,32 +114,62 @@
               <div class="card-body">
                 <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
                   <li class="list-group-item d-flex">
-                    <span>Subtotal</span> <span class="ms-auto fs-sm">$89.00</span>
+                    <span>상품금액</span> <span class="ms-auto fs-sm" id="productPrice"></span>
                   </li>
                   <li class="list-group-item d-flex">
-                    <span>Tax</span> <span class="ms-auto fs-sm">$00.00</span>
+                    <span>상품할인금액</span> <span class="ms-auto fs-sm" id="salePrice">0원</span>
+                  </li>
+                  <li class="list-group-item d-flex">
+                    <span>배송비</span> <span class="ms-auto fs-sm">0원</span>
                   </li>
                   <li class="list-group-item d-flex fs-lg fw-bold">
-                    <span>Total</span> <span class="ms-auto fs-sm">$89.00</span>
+                    <span>결제금액</span> <span class="ms-auto fs-sm" id="totalPrice">$89.00</span>
                   </li>
-                  <li class="list-group-item fs-sm text-center text-gray-500">
-                    Shipping cost calculated at Checkout *
-                  </li>
+          
                 </ul>
               </div>
             </div>
 
             <!-- Button -->
-            <a class="btn w-100 btn-dark mb-2" href="checkout.html">Proceed to Checkout</a>
+            <a class="btn w-100 btn-dark mb-2" href="checkout.html">결제하기 or 로그인</a>
 
             <!-- Link -->
             <a class="btn btn-link btn-sm px-0 text-body" href="shop.html">
-              <i class="fe fe-arrow-left me-2"></i> Continue Shopping
+              <i class="fe fe-arrow-left me-2"></i> 쇼핑하러 가기
             </a>
 
           </div>
         </div>
       </div>
     </section>
+    <script>
+    
+    let checkboxs = $('input[name="price"]');
+    console.log(checkboxs)
+    let result = 0;
+
+        checkboxs.on('click',function(e){
+         let chk = checkboxs.is(':checked');
+         if(chk) {
+            let prices = $('.price ms-auto');
+
+            for(let p of prices){
+              console.log(p);
+            }
+            console.log($(checkboxs).val());
+
+         }
+        })
+    
+
+  //     function checkboxed() {
+  //     checkboxs.forEach((checkbox) => {
+  //       checkbox.addEventListener("click", (e) => {
+  //         console.log("체크확인", e.currentTarget.checked);
+  //       })
+  //     })
+  // }
+
+    </script>
 </div>
 </html>
