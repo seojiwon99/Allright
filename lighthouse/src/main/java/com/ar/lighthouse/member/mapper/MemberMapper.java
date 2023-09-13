@@ -15,4 +15,8 @@ public interface MemberMapper {
 	public MemberVO MemberLogin(MemberVO memberVO);
 	//멤버 존재 체크 
 	public int MemberLoginBefore(MemberVO memberVO);
+	//멤버 이메일 체크
+	public MemberVO memberEmailCheck(MemberVO memberVO);
+	//멤버 아이디,이메일 크로스체크
+	public int memberCrossCheck(MemberVO memberVO);
 }

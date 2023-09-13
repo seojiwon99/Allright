@@ -34,5 +34,24 @@ public class MemberServiceImpl implements MemberService{
 		}
 		return memberMapper.MemberLogin(memberVO);
 	}
+
+
+	@Override
+	public MemberVO memberEmailCheck(MemberVO memberVO) {
+		MemberVO tmpVO = new MemberVO();
+		tmpVO = memberMapper.memberEmailCheck(memberVO);
+		if(tmpVO == null) {
+			return new MemberVO();
+		}else {
+			return tmpVO;
+		}
+	}
+
+
+	@Override
+	public int memberCrossCheck(MemberVO memberVO) {
+		return memberMapper.memberCrossCheck(memberVO);
+	}
+	
 	
 }

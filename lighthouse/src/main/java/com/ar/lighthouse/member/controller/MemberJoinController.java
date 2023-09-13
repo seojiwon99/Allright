@@ -19,7 +19,7 @@ public class MemberJoinController {
 	@Autowired
 	MemberService memberService;
 	
-	@PostMapping("/page/member/AjaxJoin")
+	@PostMapping("page/member/AjaxJoin")
 	public String memberJoin(@RequestBody MemberVO memberVO) {
 		
 		memberVO.setMemberPw(passwordEncoder.encode(memberVO.getMemberPw()));
@@ -27,9 +27,9 @@ public class MemberJoinController {
 		
 		String result = "";
 		if(memberService.MemberJoin(memberVO)>0) {
-			result = "/page/member/loginForm";
+			result = "page/member/loginForm";
 		}else {
-			result = "/page/member/joinForm";
+			result = "page/member/joinForm";
 		}
 		return result;
 	}

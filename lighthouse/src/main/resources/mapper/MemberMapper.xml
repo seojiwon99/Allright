@@ -49,5 +49,20 @@
 		where member_author = #{memberAuthor}
 		AND member_id = #{memberId}
   	</select>
+  	
+  	<select id="memberEmailCheck" resultType="MemberVO">
+  		select *
+  		from ar_member
+  		where member_email = #{memberEmail}
+  		AND member_author = #{memberAuthor}
+  	</select>
+  	
+  	<select id="memberCrossCheck" resultType="int">
+  	select count(*)
+	from ar_member
+	where member_id = #{memberId}
+	AND member_email = #{memberEmail}
+	AND member_author = #{memberAuthor}
+  	</select>
   
   </mapper>

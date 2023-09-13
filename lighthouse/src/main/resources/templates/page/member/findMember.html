@@ -49,29 +49,29 @@
 		
 		                      <!-- Email -->
 		                      <div class="form-group">
-		                        <label class="visually-hidden" for="loginEmail">
-		                          전화번호 *
+		                        <label class="visually-hidden" for="findEmail">
+		                          이메일 *
 		                        </label>
-		                        <input class="form-control form-control-sm" id="loginId" type="text" placeholder="전화번호 *" required>
+		                        <input class="form-control form-control-sm" id="findEmail" type="text" placeholder="이메일 *" required>
 		                      </div>
 		
 		                    </div>
           	                <div class="col-md-4">
-		                      <button class="btn btn-sm btn-dark w-100" id="noBtn" type="button" style="width:100px">
+		                      <button class="btn btn-sm btn-dark w-100" id="emailSendBtn" type="button" style="width:100px">
 		                        확인
 		                      </button>
 	                      	</div>	
 		                    <div class="col-md-8">
 		                      <!-- Password -->
 		                      <div class="form-group">
-		                        <label class="visually-hidden" for="loginPassword">
+		                        <label class="visually-hidden" for="findEamilChk">
 		                          인증번호 *
 		                        </label>
-		                        <input class="form-control form-control-sm" id="loginPassword" type="text" placeholder="인증번호 *" required>
+		                        <input class="form-control form-control-sm" id="findEamilChk" type="text" placeholder="인증번호 *" required>
 		                      </div>
 		                    </div>
 	                    	<div class="col-md-4">
-			                      <button class="btn btn-sm btn-dark w-100" id="noChkBvtn" type="button" style="width:100px;">
+			                      <button class="btn btn-sm btn-dark w-100" id="emailChkBtn" type="button" style="width:100px;">
 			                        인증번호 확인
 			                      </button>
 	                      	</div>
@@ -93,8 +93,66 @@
 		</div>
 
 	</section>
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 	<script>
-		$('#')
+		let tempData;
+		let tempVO;
+		let tempAuthor;
+		$('#emailSendBtn').on('click', function(){
+		let userEmail = $('#findEmail').val()
+	
+		let memberAuthor = $('[name="loginHow"]:checked').val()== 'buyer' ? 1 : 2;
+		console.log(memberAuthor)
+		   $.ajax({
+			      type : "POST",
+			      url : "login/mailConfirm",
+			      data : {
+			         "email" : userEmail,
+			         "memberAuthor" : memberAuthor
+			      },
+			      success : function(data){
+			         alert("해당 이메일로 인증번호 발송이 완료되었습니다. \n 확인부탁드립니다.")
+			         for(let d in data){
+						console.log(d)		
+						tempData = d;
+				        tempVO = data[d];
+			         }
+			         
+			      }
+			   })
+			})
+			
+		$('#emailChkBtn').on('click', function(){
+			let emailChk = $('#findEamilChk').val();
+			if(tempData == emailChk){
+				console.log("일치");
+				let author = {"memberAuthor" : tempAuthor};
+				let params = [tempVO, author];
+				sendPost('findPassword', params);
+			}else{
+				alert('인증번호가 잘못되었습니다. \n 다시 확인 부탁드립니다.')
+			}
+		})
+		
+		  function sendPost(url, paramss) {
+	    var form = document.createElement('form');
+	    form.setAttribute('method', 'post');
+	    form.setAttribute('action', url);
+	    document.charset = "UTF-8";
+		for(var params of paramss){
+			
+		    for (var key in params) {
+		      var hiddenField = document.createElement('input');
+		      hiddenField.setAttribute('type', 'hidden');
+		      hiddenField.setAttribute('name', key);
+		      hiddenField.setAttribute('value', params[key]);
+		      form.appendChild(hiddenField);
+		    }
+
+		}
+	    document.body.appendChild(form);
+	    form.submit();
+		}
 	</script>
 </div>
 </html>

@@ -8,4 +8,8 @@ public interface MemberService {
 	public int MemberCheck(String memberId);
 	//멤버 로그인 체크
 	public MemberVO memberLogin(MemberVO memberVO);
+	//멤버 이메일 존재 체크
+	public MemberVO memberEmailCheck(MemberVO memberVO);
+	//멤버 이메일, 아이디 일치 체크
+	public int memberCrossCheck(MemberVO memberVO);
 }

@@ -237,8 +237,7 @@ checkBeforeInsert[idTrue] = false;
 checkBeforeInsert[pwTrue] = false;
 checkBeforeInsert[nameTrue] = false;
 checkBeforeInsert[emailTrue] = false;
-checkBeforeInsert[telTrue] = true;
-checkBeforeInsert[bsnsTrue] = false;
+checkBeforeInsert[telTrue] = true
 checkBeforeInsert[addrTrue] = false;
 checkBeforeInsert[detailsAddrTrue] = false;
 
@@ -419,7 +418,7 @@ $('#emailChkBtn').on('click', function(){
 	let mailConfirmLabel = $('#mailConfirmLabel');
 	   $.ajax({
 		      type : "POST",
-		      url : "login/mailConfirm",
+		      url : "login/mailConfirmJoin",
 		      data : {
 		         "email" : userEmail
 		      },
