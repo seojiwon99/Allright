@@ -1,12 +1,12 @@
 package com.ar.lighthouse.product.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
 
@@ -24,10 +24,17 @@ public class ProductController {
 	}
 	
 	@GetMapping("productList")
-	public String productList(Model model) {
-		model.addAttribute("productList", productService.productList());
+	public String productList(Model model, ProductVO productVO) {
+		model.addAttribute("productList", productService.productList(productVO));
 		return "seller/productList";
 	}
+	
+//	조건순 order by
+	@GetMapping("selectProduct")
+	public List<ProductVO> selectProduct(ProductVO productVO) {
+		return productService.selectProduct(productVO);
+	}
+	
 	
 	@GetMapping("productForm")
 	public String productForm() {
@@ -39,11 +46,10 @@ public class ProductController {
 		return "seller/modifyForm";
 	}
 	
-	
+//	단건삭제
 	@GetMapping("productDelete")
-	public int productDelete(@RequestParam("productCode") String productCode) {
-	    // productCode 값을 받아와서 삭제 작업 수행
-	    return productService.deleteProduct(productCode);
+	public int productDelete(ProductVO productVO) {
+	    return productService.productDelete(productVO);
 	}
 	
 	
