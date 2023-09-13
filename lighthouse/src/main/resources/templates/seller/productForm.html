@@ -104,61 +104,122 @@
 					<div class="form-group row">
 						<label class="col-sm-2">상품 코드</label>
 						<div class="col-sm-3">
-							<input type="text" name="productId" class="form-control">
+							<input type="text" name="productCode" class="form-control">
 						</div>
 					</div>
 
 					<div class="form-group row">
 						<label class="col-sm-2">상품명</label>
 						<div class="col-sm-3">
-							<input type="text" name="name" class="form-control">
+							<input type="text" name="productName" class="form-control">
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label class="col-sm-2">가격</label>
+						<label class="col-sm-2">판매가</label>
 						<div class="col-sm-3">
-							<input type="text" name="unitPrice" class="form-control">
+							<input type="text" name="productCost" class="form-control">
 						</div>
-					</div>
-
-					<div class="form-group row">
-						<label class="col-sm-2">상세 정보</label>
+						<label class="col-sm-2">할인가</label>
 						<div class="col-sm-3">
-							<textarea name="description" cols="50" rows="2"></textarea>
+							<input type="text" name="salePrice" class="form-control">
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label class="col-sm-2">제조사</label>
+						<label class="col-sm-2">재고수량</label>
 						<div class="col-sm-3">
-							<input type="text" name="manufacturer" class="form-control">
+							<textarea name="optionCount" cols="50" rows="2"></textarea>
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label class="col-sm-2">분류</label>
+						<label class="col-sm-2">옵션 개수</label>
 						<div class="col-sm-3">
-							<input type="text" name="category" class="form-control">
+							<select id="optCnt">
+								<option>1</option>
+								<option>2</option>
+								<option>3</option>
+							</select>
 						</div>
 					</div>
 
 					<div class="form-group row">
-						<label class="col-sm-2">재고 수</label>
+						<label class="col-sm-2">이미지</label>
+						<div class="col-sm-3">
+							<input type="file" name="imgName" accept="image/*" required>
+        					
+        					
+       	 						<!-- 업로드 버튼 -->
+        					<input type="submit" value="이미지 업로드">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-2">상세설명</label>
+						<div class="col-sm-3">
+							<input type="text" name="productContent" class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">브랜드</label>
 						<div class="col-sm-3">
 							<input type="text" name="unitsInStock" class="form-control">
 						</div>
 					</div>
-
 					<div class="form-group row">
-						<label class="col-sm-2">상태</label>
-						<div class="col-sm-5">
-							<input type="radio" name="condition" value="New "> 신규 제품
-							<input type="radio" name="condition" value="Old "> 중고 제품
-							<input type="radio" name="condition" value="Refurbished ">
-							재생 제품
+						<label class="col-sm-2">상품인증</label>
+						<div class="col-sm-3">
+							<input type="text" name="unitsInStock" class="form-control">
 						</div>
 					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">원산지</label>
+						<div class="col-sm-3">
+							<input type="text" name="productOrigin" class="form-control">
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label class="col-sm-2">제조국</label>
+						<div class="col-sm-3">
+							<input type="text" name="productMakeorigin" class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">최소구매수량</label>
+						<div class="col-sm-3">
+							<input type="text" name="minOrder" class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">최대구매수량</label>
+						<div class="col-sm-3">
+							<input type="text" name="maxOrder" class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">기본배송비</label>
+						<div class="col-sm-3">
+							<input type="text" name="deliveryCost" class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">교환배송비</label>
+						<div class="col-sm-3">
+							<input type="text" name="exchangeCost" class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">반품배송비</label>
+						<div class="col-sm-3">
+							<input type="text" name="returnCost" class="form-control">
+						</div>
+					</div>
+					
+					
+
+					
 
 					<div class="form-group row">
 						<div class="col-sm-offset-2 col-sm-10">
