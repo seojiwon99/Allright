@@ -41,7 +41,7 @@
 										<li class="list-styled-item"><a class="list-styled-link"
 											href="/productList">상품 조회/수정</a></li>
 										<li class="list-styled-item"><a class="list-styled-link"
-											href="/productForm">상품등록</a></li>
+											href="/insertProduct">상품등록</a></li>
 
 									</ul>
 								</div>
@@ -87,7 +87,7 @@
 			</nav>
 
 		</div>
-	
+
 
 		<div class="col-12 col-lg">
 			<div class="jumbotron">
@@ -96,11 +96,18 @@
 				</div>
 			</div>
 
+
+		
 			<div class="container">
-				<form id="insertProduct" class="form-horizontal" method="post">
-					<ul>
-						<li></li>
-					</ul>
+				<form name = "insertForm" class="form-horizontal" action="insertProduct" method="post">
+					<div id="categoryId">
+						<h3>카테고리</h3>
+						<ul>
+							<li>패션</li>
+							<li>식품</li>
+							<li>생활/가전</li>
+						</ul>
+					</div>
 					<div class="form-group row">
 						<label class="col-sm-2">상품 코드</label>
 						<div class="col-sm-3">
@@ -147,11 +154,11 @@
 					<div class="form-group row">
 						<label class="col-sm-2">이미지</label>
 						<div class="col-sm-3">
-							<input type="file" name="imgName" accept="image/*" required>
-        					
-        					
-       	 						<!-- 업로드 버튼 -->
-        					<input type="submit" value="이미지 업로드">
+							<input type="file" name="imgName" accept="image/*" >
+
+
+							<!-- 업로드 버튼 -->
+							<input type="submit" value="이미지 업로드">
 						</div>
 					</div>
 
@@ -164,7 +171,7 @@
 					<div class="form-group row">
 						<label class="col-sm-2">브랜드</label>
 						<div class="col-sm-3">
-							<input type="text" name="unitsInStock" class="form-control">
+							<input type="text" name="productBrand" class="form-control">
 						</div>
 					</div>
 					<div class="form-group row">
@@ -179,7 +186,7 @@
 							<input type="text" name="productOrigin" class="form-control">
 						</div>
 					</div>
-					
+
 					<div class="form-group row">
 						<label class="col-sm-2">제조국</label>
 						<div class="col-sm-3">
@@ -196,6 +203,18 @@
 						<label class="col-sm-2">최대구매수량</label>
 						<div class="col-sm-3">
 							<input type="text" name="maxOrder" class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">출고지</label>
+						<div class="col-sm-3">
+							<input type="text" name="productLocation" class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">택배사</label>
+						<div class="col-sm-3">
+							<input type="text" name="deliveryService" class="form-control">
 						</div>
 					</div>
 					<div class="form-group row">
@@ -216,14 +235,14 @@
 							<input type="text" name="returnCost" class="form-control">
 						</div>
 					</div>
-					
-					
 
-					
+
+
+
 
 					<div class="form-group row">
 						<div class="col-sm-offset-2 col-sm-10">
-							<input type="submit" class="btn btn-primary" value="등록">
+							<button type="submit" class="btn btn-primary">등록</button>
 						</div>
 					</div>
 
@@ -233,3 +252,28 @@
 		</div>
 
 	</div>
+	<script>
+	document.querySelector('form[name="insertForm"]')
+			.addEventListener(
+				'submit',
+				function(e){
+					e.preventDefault();
+					
+					let productCode = document.getElementsByName('productCode')[0];
+					
+					if(productCode.value ==''){
+						alert('상품코드를 입력하세요');
+						productCode.focus();
+						return;
+					}
+					alert('상품등록이 완료되었습니다.')
+					insertForm.submit();
+				}
+			)
+	
+	</script>
+
+	
+	
+	</div>
+	</html>

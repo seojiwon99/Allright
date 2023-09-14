@@ -9,6 +9,8 @@ public interface ProductService {
 	public List<ProductVO> selectProduct(ProductVO productVO);
 	
 	public int productDelete(ProductVO productVO);
+	
+	public int insertProduct(ProductVO productVO);
 
 
 

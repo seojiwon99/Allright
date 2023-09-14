@@ -5,91 +5,118 @@
 <mapper
 	namespace="com.ar.lighthouse.product.mapper.ProductMapper">
 
-<!-- 조회 -->
+	<!-- 조회 -->
 	<resultMap type="ProductVO" id="productList">
 		<result column="product_code" property="productCode" />
 		<result column="product_name" property="productName" />
 		<result column="delivery_cost" property="deliveryCost" />
 		<result column="product_regdate" property="productRegdate" />
 		<result column="product_cost" property="productCost" />
-		<result column="sale_cost" property="saleCost" />
+		<result column="product_status" property="productStatus" />
+		<result column="sale_price" property="salePrice" />
 		<collection property="option" resultMap="optionList" />
 	</resultMap>
 	<resultMap type="OptionVO" id="optionList">
 		<result column="option_count" property="optionCount" />
 		<result column="option_price" property="optionPrice" />
-		<result column="option_exstatus" property="optionExStatus" />
-		
+
+
 	</resultMap>
 	<select id="productList" resultMap="productList">
 		select * from ar_products p,
+
 		(select product_code
 		,sum(option_count) AS option_count
-		, option_exstatus
 		from ar_option
-		group by product_code, product_code,option_exstatus) d 
+		group by product_code, product_code) d
 		where d.product_code = p.product_code
+
 	</select>
 
 
-<!-- 옵션선택 -->
+	<!-- 옵션선택 -->
 	<resultMap type="ProductVO" id="selectProduct">
 		<result column="product_code" property="productCode" />
 		<result column="product_name" property="productName" />
 		<result column="delivery_cost" property="deliveryCost" />
 		<result column="product_regdate" property="productRegdate" />
+		<result column="product_status" property="productStatus" />
 		<result column="product_cost" property="productCost" />
-		<result column="sale_cost" property="saleCost" />
+		<result column="sale_price" property="salePrice" />
 		<collection property="option" resultMap="optionSelectList" />
 	</resultMap>
 	<resultMap type="OptionVO" id="optionSelectList">
 		<result column="option_count" property="optionCount" />
 		<result column="option_price" property="optionPrice" />
-		<result column="option_exstatus" property="optionExStatus" />
-		
+
 	</resultMap>
 	<select id="selectProduct" resultMap="selectProduct">
 		select * from ar_products p,
-	
+
 		(select product_code
 		,sum(option_count) AS option_count
-		, option_exstatus
 		from ar_option
-		group by product_code, product_code,option_exstatus) d 
-		<!-- 	<if test = "order != null and order =='상명품순'">
-		ORDER BY product_name
-		</if> -->
+		group by
+		product_code, product_code) d
 		where d.product_code = p.product_code
+		<choose>
+			<when test="optionVal == '상품명순'">
+				ORDER BY product_name
+			</when>
+			<when test="optionVal == '상품등록일순'">
+				ORDER BY product_regdate
+			</when>
+			<when test="optionVal == '전시중'">
+				AND d.option_exsatus = 'y'
+			</when>
+		</choose>
 	</select>
 
+	<!-- 상품등록 OptionVO,ProductVO -->
+	<insert id="insertProduct" parameterType="ProductVO">
+		INSERT INTO ar_products (product_code
+    			, product_name
+                , product_content
+                , product_location
+    			, product_cost
+    			, sale_price
+    			, product_brand
+    			, product_origin
+    			, product_makeorigin
+    			, delivery_cost
+    			, return_cost
+    			, exchange_cost
+                , delivery_service
+                , product_status)
+		VALUES (#{productCode}
+					, #{productName}
+					, #{productContent}
+					, #{productLocation}
+					, #{productCost}
+					, #{salePrice}
+					, #{productBrand}
+					, #{productOrigin}
+					, #{productMakeorigin}
+					, #{deliveryCost}
+					, #{returnCost}
+					, #{exchangeCost}
+					, #{deliveryService}
+					, 'Y'
+					)
+	</insert>
 
-
-	<!-- 삭제 -->
-	<delete id="productDelete">
-		BEGIN
-
-		DELETE FROM
-		ar_products
-		WHERE product_code IN (
-		SELECT product_code
-		FROM
-		ar_option
-		WHERE product_code = #{productCode}
-		)
-
-		DELETE FROM ar_option
-		WHERE product_code = #{productCode}
-
-
-		EXCEPTION
-		WHEN OTHERS THEN
-
-		ROLLBACK
-		END
-		/
-	</delete>
 
 	
+
+	<!-- 삭제 -->
+	<update id="productDelete" parameterType="ProductVO">
+	UPDATE ar_products
+	SET product_status = 'N'
+	</update>
+	
+	
+
+
 
 
 </mapper>
