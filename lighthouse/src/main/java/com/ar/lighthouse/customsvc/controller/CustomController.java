@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,7 @@ import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.common.PageDTO;
 import com.ar.lighthouse.customsvc.service.CustomService;
 import com.ar.lighthouse.customsvc.service.InquiryVO;
+import com.ar.lighthouse.customsvc.service.NoticeVO;
 
 @Controller
 public class CustomController {
@@ -38,16 +40,29 @@ public class CustomController {
 		return "page/custom/notice";
 	}
 	
+	// 공지사항 상세화면
+	@GetMapping("custom/noticeInfo")
+	public String noticeDetail(@RequestParam(defaultValue = "0") int noticeCode,Model model, @ModelAttribute("cri") Criteria cri) {
+		NoticeVO noticeVO = new NoticeVO();
+		noticeVO.setNoticeCode(noticeCode);
+		
+		model.addAttribute("noticeInfo",customService.getNotice(noticeVO));
+		return "page/custom/noticeInfo"; 
+	}
 	
 	// 1:1문의 화면
 	@GetMapping("custom/inquiry")
-	public String inquiry() {
+	public String inquiryForm() {
 		return "page/custom/inquiry";
 	}
 	
+	// 등록 로직
 	@PostMapping("custom/inquiryInsert")
-	public ResponseEntity<String> inqInsert(@RequestBody InquiryVO inqVO){
-		int insertCnt = customService.inqInsert(inqVO);
+	public ResponseEntity<String> addInquiry(@RequestBody InquiryVO inqVO){
+		int insertCnt = customService.addInquiry(inqVO);
 		return insertCnt == 1 ? new ResponseEntity<String>("success", HttpStatus.OK) : new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	
+	
 }
