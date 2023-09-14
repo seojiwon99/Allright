@@ -4,7 +4,8 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.ar.lighthouse.customsvc.mapper.CustomMapper">
   	
-  	<select id="selectAllFaq" resultType="FaqVO">
+  	<!-- faq목록 가져오기 -->
+  	<select id="selectFaqList" resultType="FaqVO">
   		SELECT faq_code
   		     , question_title
   		     , question_answer
@@ -18,7 +19,8 @@
   		  ORDER BY faq_code
   	</select>
   	
-  	<select id="selectAllNotice" resultType="NoticeVO" parameterType="Criteria">
+  	<!-- notice 목록 (페이징) -->
+  	<select id="selectNoticeList" resultType="NoticeVO" parameterType="Criteria">
   		SELECT * 
 		  FROM (select rownum rn, nt.* from ( 
             SELECT /*+INDEX_DESC(notice_code pk_notice) */
@@ -48,7 +50,7 @@
   	</select>
   	
   	<!-- 1:1 문의 등록 -->
-  	<insert id="insertInq" parameterType="InquiryVO">
+  	<insert id="insertInquiry" parameterType="InquiryVO">
   		<selectKey order="BEFORE" keyProperty="inqCode" resultType="int">
   			SELECT NVL(MAX(custom_inquiry_code),0) + 1
 			  FROM ar_custom_inquiry
@@ -83,5 +85,18 @@
   		)
   	</insert>
   	
+  	<!-- notice 상세가져오기 -->
+  	<select id="selectNotice" resultType="NoticeVO">
+  		SELECT notice_code
+  		     , notice_title
+  		     , notice_content
+  		     , up_enddate
+  		     , notice_type
+  		     , notice_regdate
+  		     , notice_updatedate
+  		     , notice_writer
+  		  FROM ar_notice
+  		 WHERE notice_code = #{noticeCode}
+  	</select>
   </mapper>
   

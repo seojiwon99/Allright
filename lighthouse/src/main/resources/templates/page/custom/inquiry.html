@@ -1,64 +1,65 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/default_layout}">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default_layout}">
 
 <!-- Content -->
 <div layout:fragment="content">
-    <!-- BREADCRUMB -->
-    <nav class="py-5">
-      <div class="container">
-        <div class="row">
-          <div class="col-12">
-
-            <!-- Breadcrumb -->
-            <ol class="breadcrumb mb-0 fs-xs text-gray-400">
-              <li class="breadcrumb-item">
-                <a class="text-gray-400" href="index.html">Home</a>
-              </li>
-              <li class="breadcrumb-item active">
-                문의하기
-              </li>
-            </ol>
-
-          </div>
-        </div>
-      </div>
-    </nav>
-    
-    <!-- CONTENT -->
-    <section class="pt-7 pb-15">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-12 col-lg-10 col-xl-8">
-          	<h2>문의하기</h2>
-          	<div class="mb-3">
-			  <label for="exampleFormControlInput1" class="form-label">Title</label>
-			  <input type="text" class="form-control" id="title" placeholder="제목">
-			</div>
-			<div class="mb-3">
-			  <label for="exampleFormControlTextarea1" class="form-label">content</label>
-			  <textarea class="form-control" id="content" rows="3"></textarea>
-			</div>
+	<!-- BREADCRUMB -->
+	<nav class="py-5">
+		<div class="container">
 			<div class="row">
-          <div class="col-12 text-center">
+				<div class="col-12">
 
-            <!-- Button -->
-            <button class="btn btn-dark" id="addBtn">
-              문의하기
-            </button>
-            <button class="btn btn-gray-500" id="cancleBtn">
-              취소
-            </button>
+					<!-- Breadcrumb -->
+					<ol class="breadcrumb mb-0 fs-xs text-gray-400">
+						<li class="breadcrumb-item"><a class="text-gray-400"
+							href="index.html">Home</a></li>
+						<li class="breadcrumb-item active">문의하기</li>
+					</ol>
 
-          </div>
-        </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <script>
+				</div>
+			</div>
+		</div>
+	</nav>
+
+	<!-- CONTENT -->
+	<section class="pt-7 pb-15">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-12 col-lg-10 col-xl-8">
+				<form id="inqForm">
+					<h2>문의하기</h2>
+					<div class="mb-3">
+						<label for="title" class="form-label">Title</label> <input
+							type="text" class="form-control" id="title" placeholder="제목">
+					</div>
+					<div class="mb-3">
+						<label for="title" class="form-label">Title</label> <input
+							type="text" class="form-control" id="title" placeholder="제목">
+					</div>
+					<div class="mb-3">
+						<label for="content" class="form-label">content</label>
+						<textarea class="form-control" id="content" rows="3">문의 내용을 입력해주세요</textarea>
+					</div>
+					<div class="row">
+						<div class="col-12 text-center">
+
+							<!-- Button -->
+							<button class="btn btn-dark" id="addBtn">문의하기</button>
+							<button class="btn btn-gray-500" id="cancleBtn">취소</button>
+
+						</div>
+					</div>
+				</form>
+					
+				</div>
+			</div>
+		</div>
+	</section>
+	<script>
+    
 	$('#addBtn').on('click',function(e){
 		let title = $('#title').val();
 		let content = $('#content').val();
@@ -72,9 +73,9 @@
 			return;
 		}
 		$.ajax({
-			url:'custom/inquiryInsert'
+			url:'custom/inquiryInsert',
 			type:'post',
-			data :{
+			data : {
 				title:title,
 				content:content
 			},
@@ -94,6 +95,87 @@
 		
 		alert("여기");	
 	})
+	
+
+	// 먼저 읽히는것 
+	$(document).ready(function() {
+		// let text = "1:1문의 등록 화면입니다. 엔티키를 누르면 다음으로 이동합니다.";
+		// VoiceTest(text);
+	
+	});
+	
+	let index = 0;	
+	$(document).on('keydown',function(e){
+		
+
+		if(e.keyCode== 13){
+			e.preventDefault();
+			var tabList = new Array();
+
+			let inputBox = $('#inqForm input');
+			$(inputBox).each(function(idx, item){
+				console.log($(item).attr('type'));
+				if($(item).prop('tagName').toLowerCase() == 'input'){
+					if($(item).attr('type').toLowerCase() == 'text'){
+						if($(item).attr("disabled", false) || $(item).attr("readonly",false)){
+							tabList.push(item);
+						}
+					}
+				}
+			})
+			
+			let textArea = $('#inqForm textarea');
+			tabList.push($(textArea));
+			console.log(index);
+			
+			if(index == tabList.length){
+				alert("등록하시겠습니까?");
+				return;
+			}
+			tabList[index].focus();
+			index++;
+		
+			console.log(tabList);
+		}else if(e.keyCode== 16){
+			index--;
+			e.preventDefault();
+			var tabList = new Array();
+
+			let inputBox = $('#inqForm input');
+			$(inputBox).each(function(idx, item){
+				console.log($(item).attr('type'));
+				if($(item).prop('tagName').toLowerCase() == 'input'){
+					if($(item).attr('type').toLowerCase() == 'text'){
+						if($(item).attr("disabled", false) || $(item).attr("readonly",false)){
+							tabList.push(item);
+						}
+					}
+				}
+			})
+			
+			let textArea = $('#inqForm textarea');
+			tabList.push($(textArea));
+			console.log(index);
+			
+			if(index == tabList.length){
+				alert("등록하시겠습니까?");
+				return;
+			}
+			tabList[index].focus();
+		}
+	}) 
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
     </script>
 </div>
