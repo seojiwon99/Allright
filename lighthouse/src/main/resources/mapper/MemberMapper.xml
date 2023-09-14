@@ -4,13 +4,13 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.ar.lighthouse.member.mapper.MemberMapper">
   
-  	<select id="MemberCheck" resultType="int" parameterType="String">
+  	<select id="selectMemberCheck" resultType="int" parameterType="String">
   		select count(*)
 		from ar_member
 		where member_id = #{memberId}
   	</select>
   	
-  	<insert id="MemberJoin" parameterType="MemberVO">
+  	<insert id="insertMember" parameterType="MemberVO">
   		insert into ar_member (
   				member_id
   				, member_pw
@@ -50,19 +50,26 @@
 		AND member_id = #{memberId}
   	</select>
   	
-  	<select id="memberEmailCheck" resultType="MemberVO">
+  	<select id="selectMemberEmailCheck" resultType="MemberVO">
   		select *
   		from ar_member
   		where member_email = #{memberEmail}
   		AND member_author = #{memberAuthor}
   	</select>
   	
-  	<select id="memberCrossCheck" resultType="int">
+  	<select id="selectMemberCrossCheck" resultType="int">
   	select count(*)
 	from ar_member
 	where member_id = #{memberId}
 	AND member_email = #{memberEmail}
 	AND member_author = #{memberAuthor}
   	</select>
+  	
+  	<update id="updateMemberPassword" parameterType="MemberVO">
+  		update ar_member
+  		set	member_pw = #{memberPw}
+  		where member_id = #{memberId}
+  	
+  	</update>
   
   </mapper>

@@ -19,6 +19,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ar.lighthouse.member.service.MemberService;
 import com.ar.lighthouse.member.service.MemberVO;
 
+
+/*
+ * 개발자 : 염유준 
+ * 개발일자 : 2023/09/14
+ * 			회원관리
+ * 
+ */
+
 @Controller
 @SessionAttributes("loginMember")
 public class loginController {
@@ -37,11 +45,11 @@ public class loginController {
 	}
 	//회원가입 화면으로
 	@GetMapping("page/member/joinSellerForm")
-	public void joinSForm() {
+	public void joinSellerForm() {
 		
 	}
 	@GetMapping("page/member/joinBuyerForm")
-	public void joinBForm() {
+	public void joinBuyerForm() {
 		
 	}
 	//id 중복체크
@@ -49,7 +57,7 @@ public class loginController {
 	@ResponseBody
 	public int idCheck(String memberId) {
 		System.out.println(memberId);
-		return memberService.MemberCheck(memberId);
+		return memberService.getMemberCheck(memberId);
 	}
 	@GetMapping("page/member/findMember")
 	public void findMember() {
@@ -92,11 +100,35 @@ public class loginController {
 			return "fail";
 		}
 	}
+	//비밀번호 수정 폼
+	@PostMapping("page/member/editPasswordForm")
+	public String editPasswordForm(@RequestParam(name="memberId") String memberId, Model model) {
+		model.addAttribute("memberId",memberId);
+		return "page/member/editPasswordForm";
+	}
 	
 	@PostMapping("page/member/editPassword")
-	public String findPassword(@RequestParam(name="memberId") String memberId, Model model) {
-		model.addAttribute("memberId",memberId);
-		return "page/member/editPassword";
+	@ResponseBody
+	public boolean editPassword(@RequestBody MemberVO memberVO) {
+		System.out.println("edit" + memberVO);
+		memberVO.setMemberPw(passwordEncoder.encode(memberVO.getMemberPw()));
+		return memberService.editMemberPassword(memberVO);
+		
+		
+	}
+	@PostMapping("page/member/AjaxJoin")
+	public String memberJoin(@RequestBody MemberVO memberVO) {
+		
+		memberVO.setMemberPw(passwordEncoder.encode(memberVO.getMemberPw()));
+		System.out.println(memberVO.getMemberPw());
+		
+		String result = "";
+		if(memberService.addMember(memberVO)>0) {
+			result = "page/member/loginForm";
+		}else {
+			result = "page/member/joinForm";
+		}
+		return result;
 	}
 
 }

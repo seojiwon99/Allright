@@ -220,13 +220,38 @@
 	
 	window.addEventListener("keyup", function(e){ 
 			if(e.key=='Tab'){
+				console.log($(':focus'));
 				console.log('use tab');
 				let tag = $(':focus')[0];
 				t_gout(tag.ariaLabel)
-				
-				
 			}
 	})
+	// identify an element to observe
+const elementToObserve = document.querySelector("#id");
+function inputAddEvent(){
+	console.log("callback that runs when observer is triggered");
+	$('#id').on('change',function(){
+		console.log(this);
+	})
+}	
+
+// create a new instance of `MutationObserver` named `observer`,
+// passing it a callback function
+const observer = new MutationObserver(inputAddEvent);
+const config = {
+		  childList: true, // 텍스트 노드를 포함한 하위 요소의 변경(추가/삭제)을 관찰
+		  attributes: true, // 속성 변경을 관찰
+		  characterData: true, // characterData 노드 값 변경 관찰
+		  subtree: true, // 자손 노드의 변경 관찰
+		  attributeOldValue: true, // 변경 전 속성 값을 저장
+		  characterDataOldValue: true, // 변경 전 데이터 값을 저장
+		  // attributeFilter: ["class"], // 관찰할 속성명 리스트
+		};
+// call `observe()` on that MutationObserver instance,
+// passing it the element to observe, and the options object
+observer.observe(elementToObserve, config);
+	
+
 	$('#addrBtn').on('click', addrPopup)
 	function addrPopup(){
 		let text = "주소 입력창이 나왔습니다. 주소를 입력해주세요."

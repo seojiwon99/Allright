@@ -12,6 +12,13 @@ import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 
+/*
+ * 개발자 : 염유준 
+ * 개발일자 : 2023/09/14
+ * 			회원 문자 전송 관리
+ * 
+ */
+
 @Controller
 public class SMSController {
 	final DefaultMessageService messageService;

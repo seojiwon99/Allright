@@ -12,6 +12,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ar.lighthouse.member.mail.RegisterMail;
 import com.ar.lighthouse.member.service.MemberService;
 import com.ar.lighthouse.member.service.MemberVO;
+/*
+ * 개발자 : 염유준 
+ * 개발일자 : 2023/09/14
+ * 			회원 메일 전송 관리
+ * 
+ */
 
 
 @Controller
@@ -34,7 +40,7 @@ public class MailController {
         if(memberAuthor > 0) {
         	memberVO.setMemberEmail(email);
         	memberVO.setMemberAuthor(memberAuthor);
-        	memberVO = memberService.memberEmailCheck(memberVO);
+        	memberVO = memberService.getMemberEmailCheck(memberVO);
         	map.put(code, memberVO);
         	System.out.println(memberVO);
         	return map;
@@ -67,7 +73,7 @@ public class MailController {
     	memberVO.setMemberEmail(email);
     	memberVO.setMemberAuthor(memberAuthor);
     	memberVO.setMemberId(memberId);
-    	if(memberService.memberCrossCheck(memberVO)<1) {
+    	if(memberService.getMemberCrossCheck(memberVO)<1) {
     		map.put("result", "fail");
     		return map;
     	}else {

@@ -15,14 +15,14 @@ public class MemberServiceImpl implements MemberService{
 	
 	
 	@Override
-	public int MemberCheck(String memberId) {
-		return memberMapper.MemberCheck(memberId);
+	public int addMember(MemberVO memberVO) {
+		return memberMapper.insertMember(memberVO);
 	}
 
-
+	
 	@Override
-	public int MemberJoin(MemberVO memberVO) {
-		return memberMapper.MemberJoin(memberVO);
+	public int getMemberCheck(String memberId) {
+		return memberMapper.selectMemberCheck(memberId);
 	}
 
 
@@ -37,9 +37,9 @@ public class MemberServiceImpl implements MemberService{
 
 
 	@Override
-	public MemberVO memberEmailCheck(MemberVO memberVO) {
+	public MemberVO getMemberEmailCheck(MemberVO memberVO) {
 		MemberVO tmpVO = new MemberVO();
-		tmpVO = memberMapper.memberEmailCheck(memberVO);
+		tmpVO = memberMapper.selectMemberEmailCheck(memberVO);
 		if(tmpVO == null) {
 			return new MemberVO();
 		}else {
@@ -49,8 +49,18 @@ public class MemberServiceImpl implements MemberService{
 
 
 	@Override
-	public int memberCrossCheck(MemberVO memberVO) {
-		return memberMapper.memberCrossCheck(memberVO);
+	public int getMemberCrossCheck(MemberVO memberVO) {
+		return memberMapper.selectMemberCrossCheck(memberVO);
+	}
+
+
+	@Override
+	public boolean editMemberPassword(MemberVO memberVO) {
+		if(memberMapper.updateMemberPassword(memberVO)>0) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	
