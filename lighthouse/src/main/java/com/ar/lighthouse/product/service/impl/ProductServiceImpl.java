@@ -17,7 +17,6 @@ public class ProductServiceImpl implements ProductService{
 	
 
 
-
 	@Override
 	public List<ProductVO> productList(ProductVO productVO) {
 		return  productMapper.productList(productVO);
@@ -36,6 +35,12 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public List<ProductVO> selectProduct(ProductVO productVO) {
 		return productMapper.selectProduct(productVO);
+	}
+
+
+	@Override
+	public int insertProduct(ProductVO productVO) {
+		return productMapper.insertProduct(productVO);
 	}
 
 	
