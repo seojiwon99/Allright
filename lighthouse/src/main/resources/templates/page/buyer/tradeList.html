@@ -101,7 +101,7 @@
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="${lists.paymentPrice}"></span>
+                         <span th:text="|${lists.paymentPrice}원|"></span>
                         </p>
 
                       </div>
@@ -162,11 +162,11 @@
                       <div class="col-6 col-lg-3">
 
                         <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">주문 날짜:</h6>
+                        <h6 class="heading-xxxs text-muted">이미지:</h6>
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="${lists.orderDate}"></span>
+                          <img th:src="@{/img/products/product-1.jpg}" style="max-width: 100%; height: auto" th:alt="${imgContent}"></img>
                         </p>
 
                       </div>

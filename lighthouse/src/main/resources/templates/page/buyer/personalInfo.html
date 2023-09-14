@@ -73,11 +73,11 @@
 
 								<!-- Email -->
 								<div class="form-group">
-									<label class="form-label" for="accountFirstName"> 
+									<label class="form-label" for="buyerName"> 
 										이름
 									</label> 
 									<input class="form-control form-control-sm"
-										id="accountFirstName" type="text" placeholder="*"
+										id="buyerName" type="text" placeholder="*"
 										th:value="${personalInfo.memberName}" readonly>
 								</div>
 
@@ -87,9 +87,9 @@
 
 								<!-- Email -->
 								<div class="form-group">
-									<label class="form-label" for="accountEmail"> Email
-										주소  </label> <input class="form-control form-control-sm"
-										id="accountEmail" type="email" placeholder="Email Address *"
+									<label class="form-label" for="buyerEmail"> Email 주소  </label> 
+									<input class="form-control form-control-sm"
+										id="buyerEmail" type="email" placeholder="Email 주소"
 										th:value="${personalInfo.memberEmail}" required>
 								</div>
 
@@ -98,10 +98,12 @@
 
 								<!-- Password -->
 								<div class="form-group">
-									<label class="form-label" for="accountPassword">
-										주소  </label> <input
-										class="form-control form-control-sm" id="accountPassword"
-										type="text" placeholder="*"  th:value="${personalInfo.memberAddr}" required>
+									<label class="form-label" for="buyerPassword"> 
+										새 비밀번호
+									</label> 
+									<input class="form-control form-control-sm"
+										id="buyerPassword" type="password" th:value="${personalInfo.memberPw}" placeholder="새 비밀번호 입력">
+
 								</div>
 
 							</div>
@@ -109,9 +111,43 @@
 
 								<!-- Password -->
 								<div class="form-group">
-									<label class="form-label" for="AccountNewPassword"> 상세주소 </label> <input class="form-control form-control-sm"
-										id="AccountNewPassword" type="text"
+									<label class="form-label" for="buyerPasswordCheck"> 
+										새 비밀번호 확인
+									</label> 
+									<input class="form-control form-control-sm"
+										id="buyerPasswordCheck" type="password" th:value="${personalInfo.memberPw}" placeholder="새 비밀번호 확인">
+								</div>
+
+							</div>
+							<div class="col-12 col-md-6">
+
+								<!-- Addr -->
+								<div class="form-group">
+									<label class="form-label" for="buyerAddr">
+										주소  </label> <input
+										class="form-control form-control-sm" id="buyerAddr"
+										type="text" placeholder="*"  th:value="${personalInfo.memberAddr}" required>
+								</div>
+
+							</div>
+							<div class="col-12 col-md-6">
+
+								<!-- Addr -->
+								<div class="form-group">
+									<label class="form-label" for="buyerDetailsAddr"> 상세주소 </label> <input class="form-control form-control-sm"
+										id="buyerDetailsAddr" type="text"
 										placeholder="*" th:value="${personalInfo.memberDetailsAddr}" required>
+								</div>
+
+							</div>
+							
+							<div class="col-12 col-md-6">
+
+								<!-- tel -->
+								<div class="form-group">
+									<label class="form-label" for="buyerTel"> 전화번호 </label> <input class="form-control form-control-sm"
+										id="buyerTel" type="text"
+										placeholder="*" th:value="${personalInfo.memberTel}" required>
 								</div>
 
 							</div>							
@@ -128,37 +164,10 @@
 										<div class="col-auto">
 
 											<!-- Date -->
-											<label class="visually-hidden" for="accountDate">
-												Date </label> <select class="form-select form-select-sm"
-												id="accountDate">
-												<option>10</option>
-												<option>11</option>
-												<option selected>12</option>
-											</select>
-
-										</div>
-										<div class="col">
-
-											<!-- Date -->
-											<label class="visually-hidden" for="accountMonth">
-												Month </label> <select class="form-select form-select-sm"
-												id="accountMonth">
-												<option>January</option>
-												<option selected>February</option>
-												<option>March</option>
-											</select>
-
-										</div>
-										<div class="col-auto">
-
-											<!-- Date -->
-											<label class="visually-hidden" for="accountYear">
-												Year </label> <select class="form-select form-select-sm"
-												id="accountYear">
-												<option>1990</option>
-												<option selected>1991</option>
-												<option>1992</option>
-											</select>
+											<label class="visually-hidden" for="buyerBirth">
+												Date </label> 
+												<input class="form-control form-control-sm" id="buyerBirth" type="text" placeholder="*" 
+												 th:value="${personalInfo.memberBirth}" required>
 
 										</div>
 									</div>
@@ -170,7 +179,7 @@
 							<div class="col-12">
 
 								<!-- Button -->
-								<button class="btn btn-dark" type="submit">Save Changes</button>
+								<button class="btn btn-dark" type="button" id="updateBtn">Save Changes</button>
 
 							</div>
 					
@@ -180,6 +189,49 @@
 			</div>
 		</div>
 	</section>
-
+	
+	<script>
+		$('#buyerPasswordCheck').on('focusout', function(e){
+			let password = $('#buyerPassword').val();
+			let passwordCheck = $('#buyerPasswordCheck').val();
+			
+			if(passwordCheck != password){
+				alert("비밀번호가 일치하지 않습니다.");
+				return;
+			}
+		});
+		
+		$('#updateBtn').on('click', function(e){
+			let name = $('#buyerName').val();
+			let password = $('#buyerPassword').val();
+			let passwordCheck = $('#buyerPasswordCheck').val();
+			let addr = $('#buyerAddr').val();
+			let detailAddr = $('#buyerDetailsAddr').val();
+			let tel = $('#buyerTel').val();
+			let birth = $('#buyerBirth').val();
+			
+			$.ajax({
+				url: '#{memberId}',
+				type: 'post',
+				data : {
+					name : name,
+					password : password,
+					passwordCheck : passwordCheck,
+					addr : addr,
+					detailAddr : detailAddr,
+					tel : tel,
+					birth : birth
+				},
+				success : function(result){
+					if(result == 'success'){
+						alert("수정 완료");
+					}
+				},
+				error: function(err){
+					console.log(err);
+				}
+			})
+		});
+	</script>
 </div>
 </html>

@@ -30,4 +30,9 @@ public class DetailVO {
 	//이미지 테이블 조인
 	private int imgCode;
 	private String imgContent;
+	private String imgName;
+	private String uploadName;
+	private int imgOrder;
+	
+	
 }

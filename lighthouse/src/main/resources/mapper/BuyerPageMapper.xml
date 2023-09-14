@@ -5,7 +5,8 @@
 
   <mapper namespace="com.ar.lighthouse.buyp.mapper.BuyerPageMapper">
   	
-  	<select id="selectDetailList" resultType="com.ar.lighthouse.buyp.service.DetailVO" parameterType="String">
+  	<!-- 주문 목록 -->
+  	<select id="selectDetailList" resultType="DetailVO" parameterType="String">
 		SELECT a.order_cnt
 		     , a.order_price
 		     , a.payment_price
@@ -29,13 +30,23 @@
 		WHERE b.member_id = #{memberId}
   	</select>
   
-  	<select id="selectBuyInfo" resultType="com.ar.lighthouse.buyp.service.BuyInfoVO" parameterType="String">
-  		SELECT member_id, member_pw, member_name, member_birth, member_addr, member_details_addr, member_email, member_tel
+  	<!-- 개인정보 -->
+  	<select id="selectBuyInfo" resultType="BuyInfoVO" parameterType="String">
+  		SELECT member_name
+  			   , member_email
+  			   , member_pw
+  			   , member_addr
+  			   , member_details_addr
+  			   , member_tel
+  			   , member_birth
 		FROM ar_member
 		WHERE member_id = #{memberId}
+		
   	</select>
   	
-	<select id="selectTradeList" resultType="com.ar.lighthouse.buyp.service.TradeVO" parameterType="String">
+  	
+  	<!-- 취소/반품/교환 여부 -->
+	<select id="selectTradeList" resultType="TradeVO" parameterType="String">
 		SELECT b.cancel_code
 		       , b.cancel_status
 		       , b.cancel_regdate
@@ -52,6 +63,9 @@
 		       , f.product_name
 		       , f.product_cost
 		       , e.option_code
+			   , h.img_name
+			   , h.img_content
+			   , h.upload_name
 		FROM ar_order_detail a
 		LEFT OUTER JOIN ar_cancel b ON a.order_detail_code = b.order_detail_code 
 		LEFT OUTER JOIN ar_return c ON a.order_detail_code = c.order_detail_code
@@ -59,9 +73,20 @@
 		LEFT OUTER JOIN ar_option e ON a.option_code = e.option_code
 		LEFT OUTER JOIN ar_products f ON  e.product_code = f.product_code
 		LEFT OUTER JOIN ar_orders g ON g.order_code = a.order_code
+		LEFT OUTER JOIN ar_product_img h ON f.product_code = h.product_code
 		WHERE g.member_id = #{memberId}
 	</select>
 	
+	<!-- 개인정보 수정 -->
+	<update id="updateInfo" parameterType="BuyInfoVO">
+		UPDATE ar_member 
+		SET member_pw = #{memberPw}
+		    , member_addr = #{memberAddr}
+		    , member_details_addr = #{memberDetailsAddr}
+		    , member_email = #{memberEmail}
+		    , member_tel = #{memberTel}
+		WHERE member_id = #{memberId}
+	</update>
 	
 	
   </mapper>

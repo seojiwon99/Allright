@@ -17,4 +17,6 @@ public interface BuyerPageMapper {
 	public BuyInfoVO selectBuyInfo(String memberId);
 
 	public List<TradeVO> selectTradeList(String memberId);
+	
+	public int updateInfo(BuyInfoVO buyInfoVO, String memberId);
 }

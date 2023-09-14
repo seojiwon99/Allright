@@ -36,4 +36,10 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	}
 
 
+	@Override
+	public int editInfo(BuyInfoVO buyInfoVO, String memberId) {
+		return buyerPageMapper.updateInfo(buyInfoVO, memberId);
+	}
+
+
 }

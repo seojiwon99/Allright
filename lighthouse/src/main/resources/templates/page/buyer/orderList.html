@@ -24,22 +24,22 @@
             <!-- Nav -->
             <nav class="mb-10 mb-md-0">
               <div class="list-group list-group-sm list-group-strong list-group-flush-x">
-                <a class="list-group-item list-group-item-action dropend-toggle active" href="orderList.html">
+                <a class="list-group-item list-group-item-action dropend-toggle active" th:href="orderList.html">
                   주문 목록
                 </a>
-                <a class="list-group-item list-group-item-action dropend-toggle " href="tradeList.html">
+                <a class="list-group-item list-group-item-action dropend-toggle " th:href="|@{tradeList}/${memberId}|">
                   취소/반품/교환내역
                 </a>
-                <a class="list-group-item list-group-item-action dropend-toggle " href="myCoupon.html">
+                <a class="list-group-item list-group-item-action dropend-toggle " th:href="myCoupon.html">
                   나의 쿠폰함
                 </a>
-                <a class="list-group-item list-group-item-action dropend-toggle " href="myInquiry.html">
+                <a class="list-group-item list-group-item-action dropend-toggle " th:href="myInquiry.html">
                   문의내역
                 </a>
-                <a class="list-group-item list-group-item-action dropend-toggle " href="wishList.html">
+                <a class="list-group-item list-group-item-action dropend-toggle " th:href="wishList.html">
                   찜 목록
                 </a>
-                <a class="list-group-item list-group-item-action dropend-toggle" href="personalInfo.html">
+                <a class="list-group-item list-group-item-action dropend-toggle" th:href="personalInfo.html">
                   개인정보 확인/수정
                 </a>
               </div>
@@ -123,7 +123,7 @@
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${lists.paymentPrice}|"></span>
+                          <span th:text="|${lists.paymentPrice}원|"></span>
                         </p>
 
                       </div>
@@ -145,7 +145,7 @@
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text=""></span>
+                          <img th:src="@{/img/products/product-1.jpg}" style="max-width: 100%; height: auto" th:alt="${imgContent}"></img>
                         </p>
 
                       </div>
