@@ -1,5 +1,8 @@
 package com.ar.lighthouse.customsvc.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,12 +13,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.common.PageDTO;
 import com.ar.lighthouse.customsvc.service.CustomService;
 import com.ar.lighthouse.customsvc.service.InquiryVO;
 import com.ar.lighthouse.customsvc.service.NoticeVO;
+import com.ar.lighthouse.member.service.MemberVO;
 
 @Controller
 public class CustomController {
@@ -57,8 +62,15 @@ public class CustomController {
 	}
 	
 	// 등록 로직
+	
 	@PostMapping("custom/inquiryInsert")
-	public ResponseEntity<String> addInquiry(@RequestBody InquiryVO inqVO){
+	@ResponseBody
+	public ResponseEntity<String> addInquiry(@RequestBody InquiryVO inqVO, HttpServletRequest req){
+		
+		HttpSession session = req.getSession();
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		inqVO.setMemberId(memberVO.getMemberId());
+		
 		int insertCnt = customService.addInquiry(inqVO);
 		return insertCnt == 1 ? new ResponseEntity<String>("success", HttpStatus.OK) : new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}

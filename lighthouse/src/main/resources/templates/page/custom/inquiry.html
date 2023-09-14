@@ -29,19 +29,14 @@
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-12 col-lg-10 col-xl-8">
-				<form id="inqForm">
 					<h2>문의하기</h2>
 					<div class="mb-3">
 						<label for="title" class="form-label">Title</label> <input
 							type="text" class="form-control" id="title" placeholder="제목">
 					</div>
 					<div class="mb-3">
-						<label for="title" class="form-label">Title</label> <input
-							type="text" class="form-control" id="title" placeholder="제목">
-					</div>
-					<div class="mb-3">
 						<label for="content" class="form-label">content</label>
-						<textarea class="form-control" id="content" rows="3">문의 내용을 입력해주세요</textarea>
+						<textarea class="form-control" id="content" rows="3" placeholder="문의 내용을 입력해주세요"></textarea>
 					</div>
 					<div class="row">
 						<div class="col-12 text-center">
@@ -52,7 +47,6 @@
 
 						</div>
 					</div>
-				</form>
 					
 				</div>
 			</div>
@@ -63,7 +57,6 @@
 	$('#addBtn').on('click',function(e){
 		let title = $('#title').val();
 		let content = $('#content').val();
-		
 		if(title == ''){
 			alert("제목을 입력해주세요");
 			return;
@@ -73,15 +66,17 @@
 			return;
 		}
 		$.ajax({
-			url:'custom/inquiryInsert',
+			url:'/custom/inquiryInsert',
 			type:'post',
-			data : {
-				title:title,
-				content:content
-			},
+			data : JSON.stringify({
+				customInquiryTitle:title,
+				customInquiryContent:content
+			}),
+			contentType:'application/json',
 			success : function(result){
 				if(result == 'success'){
 					alert("문의 성공");
+					location.href="/"
 				}else{
 					alert("문의 실패");	
 				}
@@ -93,7 +88,6 @@
 			
 		})
 		
-		alert("여기");	
 	})
 	
 
