@@ -13,6 +13,7 @@ public interface ProductService {
 	public int insertProduct(ProductVO productVO);
 
 
-
+	//상품 단건 상세페이지
+	public ProductVO goodsDetail(ProductVO productVO);
 
 }

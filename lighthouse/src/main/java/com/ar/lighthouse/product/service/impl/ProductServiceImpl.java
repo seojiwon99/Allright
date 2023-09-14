@@ -42,8 +42,15 @@ public class ProductServiceImpl implements ProductService{
 	public int insertProduct(ProductVO productVO) {
 		return productMapper.insertProduct(productVO);
 	}
+
 	
-	
+	//제품 상세 단건조회
+	@Override
+	public ProductVO goodsDetail(ProductVO productVO) {
+		return productMapper.selectInfo(productVO);
+	}
+
+
 	
 	
 }
