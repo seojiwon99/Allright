@@ -1,9 +1,9 @@
 package com.ar.lighthouse.member.controller;
 
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.lucene.queries.function.valuesource.MultiFunction.Values;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ar.lighthouse.member.service.MemberService;
 import com.ar.lighthouse.member.service.MemberVO;
@@ -85,7 +84,7 @@ public class loginController {
 	//로그인
 	@PostMapping("page/member/login")
 	@ResponseBody
-	public String login(@RequestBody MemberVO memberVO, HttpSession session) {
+	public String login(@RequestBody MemberVO memberVO, HttpServletRequest request) {
 		//
 		
 		System.out.println(memberVO);
@@ -94,6 +93,7 @@ public class loginController {
 			return "fail";
 		}
 		if(passwordEncoder.matches(memberVO.getMemberPw(), loginVO.getMemberPw())) {
+			HttpSession session = request.getSession();
 			session.setAttribute("loginMember", loginVO);
 			return "success";
 		}else{
