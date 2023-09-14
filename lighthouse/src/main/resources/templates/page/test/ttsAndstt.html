@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+
+<!-- Content -->
+<div layout:fragment="content">
+    <section class="py-12">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 col-md-8 container">
+
+            <!-- Card -->
+		            <div class="card card-lg">
+		            	<div class="card-body">
+		
+		                <!-- Heading -->
+		                <h6 class="mb-7">New Customer</h6>
+		
+		                <!-- Form -->
+		                <form>
+		                  <div class="row">
+		                  
+		                    <div class="col-12 col-md-8">
+		                      <!-- 아이디 -->
+		                      <div class="form-group">
+		                        <label class="visually-hidden" for="id">
+		                          아이디
+		                        </label>
+		                        <input class="form-control form-control-sm" aria-label="아이디 입력란  6자리 이상 20자리 이하 영문 숫자" name="memberId" id="id" type="text" placeholder="아이디 *" maxlength=20 required>
+		                      </div>
+		                    </div>
+		                    <div class="col-12 col-md-4">
+		                      <!-- 중복확인 -->
+		                      <div class="form-group">
+		                        <!-- Button -->
+			                    <button class="form-control btn btn-sm btn-secondary" aria-label="아이디 중복확인 버튼" type="button" id="idChkBtn">
+			                        중복 확인
+			                    </button>
+		                      </div>
+		                    </div>
+
+		                    
+		                    <div class="col-12 col-md-6">
+		                      <!-- Password -->
+		                      <div class="form-group">
+		                        <label class="visually-hidden" for="pw">
+		                          Password
+		                        </label>
+		                        <input class="form-control form-control-sm" aria-label="비밀번호 입력란 소문자,대문자,숫자,특수문자 3개 이상 포함 8자리" name="memberPw" id="pw" type="password" placeholder="Password *" required>
+		                      </div>
+		                    </div>
+		                    
+		                    <div class="col-12 col-md-6">
+		                      <!-- Password -->
+		                      <div class="form-group">
+		                        <label class="visually-hidden" for="pwChk">
+		                          Password 확인
+		                        </label>
+		                        <input class="form-control form-control-sm" aria-label="비밀번호 재확인 입력란 , 비밀번호와 동일" id="pwChk" type="password" placeholder="Password 확인 *" required>
+		                      </div>
+		                    </div>
+		                    
+		                    
+		                    
+		                    <div class="col-6">
+		                      <!-- 이름 -->
+		                      <div class="form-group">
+		                        <label class="visually-hidden" for="name">
+		                          이름
+		                        </label>
+		                        <input class="form-control form-control-sm" aria-label="이름" name="memberName" id="name"  type="text" placeholder="이름 *" required>
+		                      </div>
+		                    </div>
+		                    
+		                    <div class="col-6">
+		                      <!-- 생년월일 -->
+		                      <div class="form-group">
+		                        <label class="visually-hidden" for="birth">
+		                          생년월일
+		                        </label>
+		                        <input class="form-control form-control-sm" aria-label="생년월일 6자리" name="memberBirth" id="birth" type="text" maxlength=6 placeholder="생년월일 *" required>
+		                      </div>
+		                    </div>
+		                    
+		                    
+		                    <div class="col-12 col-md-8">
+		                      <!-- Email -->
+		                      <div class="form-group">
+		                        <label class="visually-hidden" for="email">
+		                          Email 주소
+		                        </label>
+		                        <input class="form-control form-control-sm" aria-label="email 주소 "name="memberEmail" id="email" type="text" placeholder="Email 주소 *" required>
+		                      </div>
+		                    </div>
+		                    
+		                      <!-- 이메일인증 -->
+		                   <div class="col-12 col-md-4">
+		                      <div class="form-group">
+		                        <!-- Button -->
+			                    <button class="form-control btn btn-sm btn-secondary" aria-label="이메일 주소 확인 버튼" id="emailChkBtn" type="button">
+			                        이메일 인증
+			                    </button>
+		                      </div>
+		                    </div>
+		                    
+		                      <!-- Email 인증번호 기입란 -->
+		                    <div class="col-12 col-md-6">
+		                      <div class="form-group">
+		                        <label class="visually-hidden" for="email">
+		                          Email 인증번호 기입란
+		                        </label>
+		                        <input class="form-control form-control-sm" aria-label="이메일 인증번호를 입력" id="emailChk" type="text" placeholder="Email 인증번호 *" required>
+		                      </div>
+		                    </div>
+		                    
+		                   <div class="col-12 col-md-6">
+		                      <div class="form-group">
+		                        <label class="form-control" for=emailChk id="mailConfirmLabel">인증번호를 입력해주세요</label>
+		                      </div>
+		                    </div>
+		                    
+		                      <!-- 비밀번호 -->
+		                    <div class="col-12 col-md-8">
+		                      <div class="form-group">
+		                        <label class="visually-hidden" for="ph">
+		                          휴대폰번호 
+		                        </label>
+		                        <input class="form-control form-control-sm" aria-label="휴대폰 번호"name="memberTel"id="ph" type="text" placeholder="휴대폰번호 *" maxlength=13 required>
+		                      </div>
+		                    </div>
+		                    <div class="col-12 col-md-4">
+		                      <!-- 중복확인 -->
+		                      <div class="form-group">
+		                        <!-- Button -->
+			                    <button class="form-control btn btn-sm btn-secondary" aria-label="휴대폰 번호 인증 버튼" id="phChkChk" type="button">
+			                        휴대폰 인증
+			                    </button>
+		                      </div>
+		                    </div>
+		                    
+		                      <!-- 주소 -->
+		                    <div class="col-12 col-md-8">
+		                      <div class="form-group">
+		                        <label class="visually-hidden" for="addr">
+		                          주소 
+		                        </label>
+		                        <input class="form-control form-control-sm" aria-label="주소는 버튼을 이용" name="memeberAddr" id="addr" type="text" placeholder="주소 *" readonly required>
+		                      </div>
+		                    </div>
+		                    
+		                    <div class="col-12 col-md-4">
+		                      <!-- 주소입력 -->
+		                      <div class="form-group">
+		                        <!-- Button -->
+			                    <button class="form-control btn btn-sm btn-secondary" aria-label="주소 입력 버튼" id="addrBtn" type="button">
+			                        주소 입력
+			                    </button>
+		                      </div>
+		                    </div>
+		                    
+		                    
+		                    
+		                      <!-- 상세주소 -->
+		                    <div class="col-12 col-md-6">
+		                      <div class="form-group">
+		                        <label class="visually-hidden" for="addrDt">
+		                          상세 주소
+		                        </label>
+		                        <input class="form-control form-control-sm" aria-label="상세주소 입력란"name="memberDetailsAddr" id="addrDt" type="text" placeholder="상세주소 *" required>
+		                      </div>
+		                    </div>
+		                    
+		
+		                      <!-- Link -->
+		                      <div class="form-group fs-sm text-muted">
+		                        By registering your details, you agree with our Terms & Conditions,
+		                        and Privacy and Cookie Policy.
+		                      </div>
+		
+		                      <!-- Newsletter -->
+		                    <div class="col-12 col-md">
+		                      <div class="form-group">
+		                        <div class="form-check">
+		                          <input class="form-check-input" id="registerNewsletter" type="checkbox">
+		                          <label class="form-check-label" for="registerNewsletter">
+		                            Sign me up for the Newsletter!
+		                          </label>
+		                        </div>
+		                      </div>
+		                    </div>
+		                    
+		                    <div class="col-12">
+		                      <!-- Button -->
+		                      <button class="btn btn-sm btn-dark" id="joinBtn"type="button">
+		                        Register
+		                      </button>
+		                    </div>
+		                    
+		                  </div> <!-- class  form > row -->
+		                </form>
+		
+		              </div> <!-- class card-body -->
+		            </div> <!-- class card-lg -->
+				</div> <!-- class col-12 col-md-6 -->
+			</div><!-- class row -->
+		</div> <!-- class container -->
+		</section>
+		<!-- SCRIPT  -------------------------------->
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+
+//function에서 받을 audio 객체
+let audioFileNow = new Audio();
+let tag = $(':focus')[0];
+
+//keyup 이벤트로 사용자 입력 제어
+window.addEventListener("keyup", function(e){ 
+	console.log(e.key);
+	if(e.key=='Tab'){
+		console.log($(':focus')[0]);
+		console.log('use tab');
+		let tag = $(':focus')[0];
+		//읽어주는 것 ariaLabel => tag.ariaLabel
+		
+		if(audioFileNow.paused == false){
+			console.log('돌고있음~~')
+			audioFileNow.pause();
+			if(makeAudioFnc(tag.ariaLabel)>0){
+				
+			audioFileNow.play();
+			
+			}
+		}else if(audioFileNow.paused == true){
+			console.log('안돌고있음')
+			if(makeAudioFnc(tag.ariaLabel)>0){
+				
+				audioFileNow.play();
+				
+			}
+		}
+	}
+	
+	if(e.key=='q'){
+		e.preventDefault();
+		console.log('use q')
+		let tag = $(':focus')[0];
+		console.log(recognition)
+		recognition.addEventListener("start", sttToInput(tag))
+		recognition.start();
+	}
+	if(e.key=='`'){
+		console.log('use backtick')
+		e.preventDefault();
+		recognition.stop();
+	}
+	
+})
+
+//Ajax로 Google api로 데이터 전송, TTSData로 data 전달
+function makeAudioFnc(TTSData){
+	var data = {
+		    "voice":{
+			    "languageCode":"ko-KR"
+		    },
+		    "input":{
+		        "text": TTSData
+		    },
+		    "audioConfig":{
+		        "audioEncoding":"mp3"
+		    }
+		}
+	$.ajax({
+		type:'POST',
+		url: 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyDsY4Q0OA7_daWYUbBHYecqQtWeAHK3C6k',
+		data: JSON.stringify(data),
+		dataType: 'JSON',
+ 		contentType: 'application/json; charset=UTF-8',
+        success: function(res) {
+        	//console.log(res);
+        	$('#textVal').val(res.audioContent)
+        	var audioFile = new Audio();
+        	let audioBlob = base64ToBlob(res.audioContent, "mp3");
+        	audioFile.src = window.URL.createObjectURL(audioBlob);
+        	audioFile.playbackRate = 1; //재생속도
+        	audioFileNow = audioFile; //밖에 선언한 audio 객체에 저장
+        	audioFileNow.play();
+        	return 1;
+        },
+        error : function(request, status, error ) {
+        	alert("오류","오류가 발생하였습니다. 관리자에게 문의해주세요.");
+    	}
+	});
+};
+
+function base64ToBlob(base64, fileType) {
+	  let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
+	  let audioSrc = typeHeader + base64;
+	  let arr = audioSrc.split(",");
+	  let array = arr[0].match(/:(.*?);/);
+	  let mime = (array && array.length > 1 ? array[1] : type) || type;
+	  // url헤더 제거하고 btye로 변환
+	  let bytes = window.atob(arr[1]);
+	  // 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
+	  let ab = new ArrayBuffer(bytes.length);
+	  // 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
+	  let ia = new Uint8Array(ab);
+	  for (let i = 0; i < bytes.length; i++) {
+	    ia[i] = bytes.charCodeAt(i);
+	  }
+	  return new Blob([ab], {
+	    type: mime
+	  });
+}
+
+
+
+// -------------------------------------------
+// SST - SpeechRecognition 생성
+window.SpeechRecognition =
+	  window.SpeechRecognition || window.webkitSpeechRecognition;
+
+// 인스턴스 생성
+const recognition = new SpeechRecognition();
+
+// true면 음절을 연속적으로 인식하나 false면 한 음절만 기록함
+recognition.interimResults = true;
+// 값이 없으면 HTML의 <html lang="en">을 참고합니다. ko-KR, en-US
+recognition.lang = "ko-KR";
+// true means continuous, and false means not continuous (single result each time.)
+// true면 음성 인식이 안 끝나고 계속 됩니다.
+recognition.continuous = true;
+// 숫자가 작을수록 발음대로 적고, 크면 문장의 적합도에 따라 알맞은 단어로 대체합니다.
+// maxAlternatives가 크면 이상한 단어도 문장에 적합하게 알아서 수정합니다.
+recognition.maxAlternatives = 10000;
+
+function sttToInput(HTMLTag){
+	console.log("sttToInput Start");
+
+	let speechToText = "";
+	recognition.addEventListener("result", (e) => {
+	  let interimTranscript = "";
+	  for (let i = e.resultIndex, len = e.results.length; i < len; i++) {
+	    let transcript = e.results[i][0].transcript;
+	    console.log(transcript);
+	    if (e.results[i].isFinal) { // 마지막이면 Text에 변환스크립트 concat
+	      speechToText += transcript;
+	    } else { //도중의 경우 interim, concat
+	      interimTranscript += transcript;
+	    }
+	  }
+	  let TotalSTT = speechToText + interimTranscript;
+	  HTMLTag.value =  TotalSTT;
+	});
+		console.log("sttToInput End");
+}
+// 음성인식이 끝나면 자동으로 재시작합니다.
+// recognition.addEventListener("end", recognition.start);
+
+// 음성 인식 시작
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//주소 입력창에 이벤트 등록
+$('#addrBtn').on('click', addrPopup)
+function addrPopup(){
+	let text = "주소 입력창이 나왔습니다. 주소를 입력해주세요."
+	//t_gout(text);
+
+    new daum.Postcode({
+    	onsearch: function(data){
+    		
+    		let searchText = "입력되었습니다. 다음에서 선택해주세요."
+		    //t_gout(searchText);
+    		
+    		
+
+    	},
+        oncomplete: function(data) {
+	    	
+            $('#addr').val(data.address);
+            $("#addrDt").focus();
+        }
+    
+    /*
+        onclose: function(state) {
+        //state는 우편번호 찾기 화면이 어떻게 닫혔는지에 대한 상태 변수 이며, 상세 설명은 아래 목록에서 확인하실 수 있습니다.
+        if(state === 'FORCE_CLOSE'){
+            //사용자가 브라우저 닫기 버튼을 통해 팝업창을 닫았을 경우, 실행될 코드를 작성하는 부분입니다.
+
+        } else if(state === 'COMPLETE_CLOSE'){
+            //사용자가 검색결과를 선택하여 팝업창이 닫혔을 경우, 실행될 코드를 작성하는 부분입니다.
+            //oncomplete 콜백 함수가 실행 완료된 후에 실행됩니다.
+        }
+    }
+    */
+    }).open();
+}
+
+</script>
+</div>
+</html>

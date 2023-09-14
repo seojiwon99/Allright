@@ -18,4 +18,8 @@ public class ttsTestContoller {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		System.out.println(memberVO);
 	}
+	@GetMapping("page/test/ttsAndstt")
+	public void ttsstt() {
+		
+	}
 }
