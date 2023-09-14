@@ -150,7 +150,7 @@
             </div>
 
             <!-- Button -->
-            <a class="btn w-100 btn-dark mb-2" href="checkout.html">결제하기 or 로그인</a>
+            <a class="btn w-100 btn-dark mb-2" th:href="@{http://localhost:8090/orders/pay}">결제하기 or 로그인</a>
 
             <!-- Link -->
             <a class="btn btn-link btn-sm px-0 text-body" href="shop.html">
@@ -284,11 +284,7 @@
         
       }
     }
-    function shopping(e) {
-    $.ajax('http://localhost:8090/orders/pay',{
-
-    })
-  }
+    
 }
     </script>
 </div>
