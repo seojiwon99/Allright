@@ -52,5 +52,6 @@ public class CartController {
 		model.addAttribute("list",list);
 		
 		return "/page/cart/cartView :: #test";
+		
 	}
 }
