@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ar.lighthouse.main.mapper.mainPageMapper;
 import com.ar.lighthouse.main.service.EventImgVO;
 import com.ar.lighthouse.main.service.MainPageService;
+import com.ar.lighthouse.product.service.CategoryVO;
 import com.ar.lighthouse.product.service.ProductVO;
 
 @Service
@@ -29,6 +30,11 @@ public class MainServiceImpl implements MainPageService{
 	@Override
 	public List<EventImgVO> randomGetProduct() {
 		return mapper.randomSelProduct();
+	}
+
+	@Override
+	public List<CategoryVO> getCategoryList() {
+		return mapper.categoryList();
 	}
 	
 	

@@ -37,8 +37,15 @@ public class ProductServiceImpl implements ProductService{
 	public List<ProductVO> selectProduct(ProductVO productVO) {
 		return productMapper.selectProduct(productVO);
 	}
+
 	
-	
+	//제품 상세 단건조회
+	@Override
+	public ProductVO goodsDetail(ProductVO productVO) {
+		return productMapper.selectInfo(productVO);
+	}
+
+
 	
 	
 }

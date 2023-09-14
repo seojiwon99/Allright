@@ -19,5 +19,7 @@ public interface ProductMapper {
 	
 	public int productDelete(ProductVO productVO);
 
+	//상품 단건조회페이지
+	public ProductVO selectInfo(ProductVO productVO);
 	
 }
