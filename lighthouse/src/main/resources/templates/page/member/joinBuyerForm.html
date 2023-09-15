@@ -252,6 +252,7 @@ $('#joinBtn').on('click', function joinAjax(){
 		checkBeforeInsert[addrTrue] = true;
 	}else{
 		checkBeforeInsert[addrTrue] = false;
+		
 	}
 	if($('#addrDt').val() != ""){
 		checkBeforeInsert[detailsAddrTrue] = true;
@@ -263,6 +264,7 @@ $('#joinBtn').on('click', function joinAjax(){
 		console.log(idx, obj);
 		if(obj == false){
 			alert('입력정보를 올바르게 해주세요.')	
+			return false;
 		}
 	})
 	let memberVO = {
@@ -283,9 +285,12 @@ $('#joinBtn').on('click', function joinAjax(){
 		data : JSON.stringify(memberVO),
 		contentType : 'application/json',
 		success : function(rs){
-			console.log(rs)	
-			if(rs == 1){
-				alert('성공')
+			if(rs == 'success'){
+				if(confirm("회원가입에 성공했습니다. \n로그인창으로 가시겠습니까?")){
+					location.href="loginForm";	
+				}else{
+					location.href="/";
+				}
 			}
 		},
 		error : function(err){

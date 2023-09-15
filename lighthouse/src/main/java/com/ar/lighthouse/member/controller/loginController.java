@@ -89,6 +89,7 @@ public class loginController {
 		
 		System.out.println(memberVO);
 		MemberVO loginVO = memberService.memberLogin(memberVO);
+		System.out.println("loginVO = " + loginVO);
 		if(loginVO.getMemberId() == null) {
 			return "fail";
 		}
@@ -112,11 +113,13 @@ public class loginController {
 	public boolean editPassword(@RequestBody MemberVO memberVO) {
 		System.out.println("edit" + memberVO);
 		memberVO.setMemberPw(passwordEncoder.encode(memberVO.getMemberPw()));
+		
 		return memberService.editMemberPassword(memberVO);
 		
 		
 	}
 	@PostMapping("page/member/AjaxJoin")
+	@ResponseBody
 	public String memberJoin(@RequestBody MemberVO memberVO) {
 		
 		memberVO.setMemberPw(passwordEncoder.encode(memberVO.getMemberPw()));
@@ -124,9 +127,9 @@ public class loginController {
 		
 		String result = "";
 		if(memberService.addMember(memberVO)>0) {
-			result = "page/member/loginForm";
+			result = "success";
 		}else {
-			result = "page/member/joinForm";
+			result = "fail";
 		}
 		return result;
 	}
