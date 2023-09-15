@@ -11,42 +11,49 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.product.service.CategoryVO;
+import com.ar.lighthouse.product.service.ImgsVO;
 import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
-import com.ar.lighthouse.*;
-import com.ar.lighthouse.main.service.MainPageService;
+import com.ar.lighthouse.review.service.ReviewService;
+import com.ar.lighthouse.review.service.ReviewVO;
+
 @Controller
 public class ProductController {
 
 	@Autowired
 	ProductService productService;
-	
+
+	@Autowired
+	ReviewService reviewService;
+
+
 	@Autowired
 	MainPageService mainPageService;
 
-	
 //	판매자 메인페이지
 	@GetMapping("sellerMain")
 	public String seller() {
 		return "page/seller/sellerMain";
 	}
-	
+
 	@GetMapping("productList")
 	public String productList(Model model, ProductVO productVO) {
 		model.addAttribute("productList", productService.getproductList(productVO));
 		return "page/seller/productList";
 	}
-	
+
 //	조건순 order by
+
 	@GetMapping("getOptionProduct")
 	public String productDetail(Model model,ProductVO productVO) {
 		System.out.println(productVO.getOptionVal());
 		model.addAttribute("productList",productService.getOptionProduct(productVO));
 		return "page/seller/productList :: #sortList";
 	}
-	
+
 //	등록폼
 	@GetMapping("insertProduct")
 	public String productForm(Model model, CategoryVO categoryVO){
@@ -81,13 +88,13 @@ public class ProductController {
 		return "redirect:productList";
 	}
 
-	
 //	수정폼
 	@GetMapping("modifyForm")
 	public String modifyForm() {
 		return "page/seller/modifyForm";
 	}
-	
+
+    
 //	선택전시상태변경
 	@PostMapping("updateExStatus")
 	@ResponseBody
@@ -102,20 +109,52 @@ public class ProductController {
 	   
 		
 		return delList;
-	    
+
 	}
+
+	// 리뷰등록
+	@PostMapping("reviewInsert")
+	public String addReivew(ReviewVO review, ImgsVO imgsVO, Model model) {
+
+		reviewService.addReview(review);
+		model.addAttribute("review", review);
+		reviewService.addReviewImg(imgsVO);
+		model.addAttribute("reviewImg", imgsVO);
+
+		return "/page/goods/goodDetail";
+
+	}
+
+	
+	// 리뷰 삭제
+	@PostMapping("removeDelete")
+	public String deleteReview(String memberId) {
+		
+		reviewService.removeReview(memberId);
+		
+		return "redirect:/page/goods/goodDetail";
+	}
+
 
 
 	
 	//상품 단건 조회
+
 	@GetMapping("goodDetail")
 	public String getGoodDetail(String productCode, Model model) {
 		ProductVO vo = new ProductVO();
 		vo.setProductCode(productCode);
-		
+
+		ReviewVO reviewVO = new ReviewVO();
+		reviewVO.setProductCode(productCode);
+
 		ProductVO productVO = productService.goodsDetail(vo);
 		model.addAttribute("goods", productVO);
-		
+
+		// 리뷰조회
+		model.addAttribute("review", reviewService.getReviewList(reviewVO));
+		System.out.println(model);
+
 		return "page/goods/goodDetail";
 	}
 
