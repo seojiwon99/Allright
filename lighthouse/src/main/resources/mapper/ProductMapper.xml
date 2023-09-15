@@ -6,13 +6,13 @@
 	namespace="com.ar.lighthouse.product.mapper.ProductMapper">
 
 	<!-- 조회 -->
-	<resultMap type="ProductVO" id="productList">
+	<resultMap type="ProductVO" id="selectProductList">
 		<result column="product_code" property="productCode" />
 		<result column="product_name" property="productName" />
 		<result column="delivery_cost" property="deliveryCost" />
 		<result column="product_regdate" property="productRegdate" />
 		<result column="product_cost" property="productCost" />
-		<result column="product_status" property="productStatus" />
+		<result column="product_exstatus" property="productExStatus" />
 		<result column="sale_price" property="salePrice" />
 		<collection property="option" resultMap="optionList" />
 	</resultMap>
@@ -22,7 +22,7 @@
 
 
 	</resultMap>
-	<select id="productList" resultMap="productList">
+	<select id="selectProductList" resultMap="selectProductList">
 		select * from ar_products p,
 
 		(select product_code
@@ -35,12 +35,12 @@
 
 
 	<!-- 옵션선택 -->
-	<resultMap type="ProductVO" id="selectProduct">
+	<resultMap type="ProductVO" id="selectOptionProduct">
 		<result column="product_code" property="productCode" />
 		<result column="product_name" property="productName" />
 		<result column="delivery_cost" property="deliveryCost" />
 		<result column="product_regdate" property="productRegdate" />
-		<result column="product_status" property="productStatus" />
+		<result column="product_exstatus" property="productExStatus" />
 		<result column="product_cost" property="productCost" />
 		<result column="sale_price" property="salePrice" />
 		<collection property="option" resultMap="optionSelectList" />
@@ -50,7 +50,7 @@
 		<result column="option_price" property="optionPrice" />
 
 	</resultMap>
-	<select id="selectProduct" resultMap="selectProduct">
+	<select id="selectOptionProduct" resultMap="selectOptionProduct">
 		select * from ar_products p,
 
 		(select product_code
@@ -73,8 +73,10 @@
 	</select>
 
 	<!-- 상품등록 OptionVO,ProductVO -->
-	<insert id="insertProduct" parameterType="ProductVO">
+	<insert id="insertProduct"  parameterType="com.ar.lighthouse.product.service.ProductVO">
 		INSERT INTO ar_products (product_code
+				, member_id
+				, category_code
     			, product_name
                 , product_content
                 , product_location
@@ -87,8 +89,10 @@
     			, return_cost
     			, exchange_cost
                 , delivery_service
-                , product_status)
+                , product_exstatus)
 		VALUES (#{productCode}
+					, #{memberId}
+					, #{categoryCode}
 					, #{productName}
 					, #{productContent}
 					, #{productLocation}
@@ -103,15 +107,45 @@
 					, #{deliveryService}
 					, 'Y'
 					)
+	<selectKey resultType="long" keyProperty="option_code" order="BEFORE">
+        SELECT MAX(option_code)+1 FROM ar_option       
+    </selectKey> 
+		INTO ar_option (option_code
+                    , product_code
+                    , option_order
+                    , option_name
+                    , option_value
+                    , option_price
+                    , option_sell_status
+                    , option_exstatus
+                    , option_count
+                    , min_order 
+                    , max_order
+                        )
+	VALUES
+	    	(#{optionCode}
+	    	, #{productCode}
+	    	, #{optionOrder}
+	    	, #{optionName}
+	    	, #{optionValue}
+	    	, #{optionPrice}
+	    	, #{optionSellStatus}
+	    	, #{optionExStatus}
+	    	, #{optionCount}
+	    	, #{minOrder}
+	    	, #{maxOrder}
+	    	)
 	</insert>
+	
 
 
 	
 
 	<!-- 삭제 -->
-	<update id="productDelete" parameterType="ProductVO">
-	UPDATE ar_products
-	SET product_status = 'N'
+	<update id="updateExStatus" parameterType="ProductVO">
+	UPDATE ar_products 
+	SET product_exstatus = 'N'
+	WHERE product_code = #{productCode}
 	</update>
 	
 	

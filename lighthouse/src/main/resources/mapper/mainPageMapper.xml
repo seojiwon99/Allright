@@ -53,5 +53,10 @@
 	CONNECT BY PRIOR category_code = parent_category_code
 	</select>
 
+	<select id="childCategory" resultType="CategoryVO">
+	SELECT *
+	FROM ar_category
+	where parent_category_code = #{categoryCode}
+	</select>
 
 </mapper>

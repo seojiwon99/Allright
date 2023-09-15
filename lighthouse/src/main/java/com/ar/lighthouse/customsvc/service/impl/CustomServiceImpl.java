@@ -20,12 +20,12 @@ public class CustomServiceImpl implements CustomService{
 	
 	@Override
 	public List<FaqVO> getFaqList(String faqType) {
-		return customMapper.selectAllFaq(faqType);
+		return customMapper.selectFaqList(faqType);
 	}
 
 	@Override
 	public List<NoticeVO> getNoticeList(Criteria cri) {
-		return customMapper.selectAllNotice(cri);
+		return customMapper.selectNoticeList(cri);
 	}
 
 	@Override
@@ -34,8 +34,13 @@ public class CustomServiceImpl implements CustomService{
 	}
 
 	@Override
-	public int inqInsert(InquiryVO inqVO) {
-		return customMapper.insertInq(inqVO);
+	public int addInquiry(InquiryVO inqVO) {
+		return customMapper.insertInquiry(inqVO);
+	}
+
+	@Override
+	public NoticeVO getNotice(NoticeVO noticeVO) {
+		return customMapper.selectNotice(noticeVO);
 	}
 
 	
