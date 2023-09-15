@@ -10,20 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.product.service.CategoryVO;
+import com.ar.lighthouse.product.service.ImgsVO;
 import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
-
-import com.ar.lighthouse.review.service.ReviewImgVO;
 import com.ar.lighthouse.review.service.ReviewService;
 import com.ar.lighthouse.review.service.ReviewVO;
-
-
-import com.ar.lighthouse.*;
-import com.ar.lighthouse.main.service.MainPageService;
 
 @Controller
 public class ProductController {
@@ -119,12 +114,12 @@ public class ProductController {
 
 	// 리뷰등록
 	@PostMapping("reviewInsert")
-	public String addReivew(ReviewVO review, ReviewImgVO reviewImg, Model model) {
+	public String addReivew(ReviewVO review, ImgsVO imgsVO, Model model) {
 
 		reviewService.addReview(review);
 		model.addAttribute("review", review);
-		reviewService.addReviewImg(reviewImg);
-		model.addAttribute("reviewImg", reviewImg);
+		reviewService.addReviewImg(imgsVO);
+		model.addAttribute("reviewImg", imgsVO);
 
 		return "/page/goods/goodDetail";
 

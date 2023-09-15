@@ -41,22 +41,26 @@
   	
   	<insert id="insertReviewImg">
   	<selectKey resultType="int" keyProperty="reviewImgCode" order="BEFORE">	
-  		SELECT NVL(0, MAX(review_img_code))+1 FROM ar_review_img  
+  		SELECT NVL(0, MAX(img_code))+1 FROM ar_imgs  
   	</selectKey>
-  		insert into ar_review_img
-    		(review_img_code
-    		,review_code
+  		insert into ar_imgs
+    		(img_code
+    		,parent_code
     		,img_order
     		,img_name
     		,upload_name
-    		,img_content)
+    		,img_content
+    		,img_regdate
+    		, img_fromtable)
     	values(
-    		#{reviewImgCode}
-    	   ,#{reviewCode}
+    		#{imgCode}
+    	   ,#{parentCode}
     	   ,#{imgOrder}
     	   ,#{imgName}
     	   ,#{uploadName}
     	   ,#{imgContent}
+    	   ,#{imgRegdate}
+    	   ,#{imgFromtable}
   	</insert>
   	
   	<delete id="deleteReview">
