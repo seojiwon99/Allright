@@ -15,8 +15,6 @@ public class ttsTestContoller {
 	@GetMapping("page/test/ttsTest")
 	public void ttsTest(HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-		System.out.println(memberVO);
 	}
 	@GetMapping("page/test/ttsAndstt")
 	public void ttsstt() {
