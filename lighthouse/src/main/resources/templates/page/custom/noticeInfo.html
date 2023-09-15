@@ -78,6 +78,8 @@
 	var AudioContext;
 	var audioContext;
 	
+	
+	
 	window.onload = function() {
 	    navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
 	        AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -116,7 +118,7 @@
 				"audioEncoding" : "mp3"
 			}
 		}
-		$.ajax({
+		xhr = $.ajax({
 			type : 'POST',
 			url : 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
 			data : JSON.stringify(data),
@@ -132,12 +134,16 @@
 				audioFile.playbackRate = 1; //재생속도
 		
 				audioFile.play();
+				
+		
 			
 			},
 			error : function(request, status, error) {
 				alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
 			}
 		});
+		
+		
 	};
 
 	function base64ToBlob(base64, fileType) {

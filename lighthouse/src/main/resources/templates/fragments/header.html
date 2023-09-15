@@ -163,8 +163,9 @@
 				<!-- Nav -->
 				<ul class="nav navbar-nav me-8">
 					<li class="nav-item"><a class="nav-link"
-						href="./shipping-and-returns.html">Shipping</a></li>
-					<li class="nav-item"><a class="nav-link" href="./faq.html">TT</a>
+						href="./shipping-and-returns.html" th:text="${session.loginMember} != null ? ${session.loginMember.memberId} :'TT' ">Shipping</a></li>
+					<li class="nav-item">
+						<a class="nav-link" href="./faq.html" >@@</a>
 					</li>
 					<li class="nav-item dropdown hovered">
 						<!-- Toggle --> <a class="nav-link" data-bs-toggle="dropdown"
@@ -177,8 +178,8 @@
 											href="/custom/faqList">FAQ</a></li>
 										<li class="list-styled-item"><a class="list-styled-link"
 											href="/custom/notice">공지사항</a></li>
-										<li class="list-styled-item"><a class="list-styled-link"
-											href="/custom/inquiry">1:1문의</a></li>
+										<li class="list-styled-item"><a class="list-styled-link" id="customInq"
+											href="#">1:1문의</a></li>
 									</ul>
 								</div>
 							</div>
@@ -494,14 +495,17 @@
 			</div>
 		</div>
 	</nav>
-	<script>
-		/* $('#customInq').on('click', function (e) {
-			let memberId = '';
-			if (memberId == '') {
+	<script th:inline="javascript">
+		$('#customInq').on('click', function (e) {
+			let member = [[${session.loginMember}]];
+			if (member == null) {
 				alert("로그인 하셔야 서비스를 이용하실 수 있습니다.");
+				location.href="page/member/loginForm";
 				return;
+			}else{
+				location.href="/custom/inquiry";
 			}
-		}) */
+		})
 	</script>
 </div>
 </html>
