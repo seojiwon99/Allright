@@ -320,6 +320,7 @@
 			data : {'categoryCode' : val}
 		})
 		.done(getCategoryList => {
+			console.log(getCategoryList);
 			if(val == null){
 				$('#ChildOfChildCate').css('display','none');
 			} 
@@ -338,12 +339,14 @@
 	
 	$(document).on("change", "#ChildOfChildCate", function(){
 		let val = $(this).val();
+		console.log(val);
 		$.ajax({
 			url : 'thirdOfCate',
 			type : 'get',
 			data : {'categoryCode' : val}
 		})
 		.done(getCategoryList => {
+			console.log(getCategoryList);
 			if(val == null){
 				$('#thirdOfChildCate').css('display','none');
 			} 

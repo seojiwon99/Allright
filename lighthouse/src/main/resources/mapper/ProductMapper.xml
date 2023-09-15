@@ -67,7 +67,7 @@
 				ORDER BY product_regdate
 			</when>
 			<when test="optionVal == '전시중'">
-				AND d.option_exsatus = 'y'
+				AND d.option_exsatus = 'Y'
 			</when>
 		</choose>
 	</select>
