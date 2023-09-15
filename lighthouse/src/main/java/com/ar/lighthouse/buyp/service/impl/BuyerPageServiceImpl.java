@@ -11,6 +11,7 @@ import com.ar.lighthouse.buyp.service.BuyInfoVO;
 import com.ar.lighthouse.buyp.service.BuyerPageService;
 import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.buyp.service.TradeVO;
 @Service
 public class BuyerPageServiceImpl implements BuyerPageService {
@@ -46,6 +47,12 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	@Override
 	public List<CouponVO> getCouponList(String memberId) {
 		return buyerPageMapper.selectCouponList(memberId);
+	}
+
+
+	@Override
+	public List<MyInquiryVO> getMyQuiryList(String memberId) {
+		return buyerPageMapper.selectMyInquiryList(memberId);
 	}
 
 

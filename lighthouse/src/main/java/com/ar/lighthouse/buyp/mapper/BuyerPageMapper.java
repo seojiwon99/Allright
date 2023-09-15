@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.ar.lighthouse.buyp.service.BuyInfoVO;
 import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.buyp.service.TradeVO;
 
 @Mapper
@@ -22,4 +23,6 @@ public interface BuyerPageMapper {
 	public List<CouponVO> selectCouponList(String memberId);
 	
 	public int updateInfo(BuyInfoVO buyInfoVO, String memberId);
+	
+	public List<MyInquiryVO> selectMyInquiryList(String memberId);
 }

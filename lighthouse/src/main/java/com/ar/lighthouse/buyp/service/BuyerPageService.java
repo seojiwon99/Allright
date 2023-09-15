@@ -19,5 +19,8 @@ public interface BuyerPageService {
 	
 	//개인 정보 수정
 	public int editInfo(BuyInfoVO buyInfoVO, String memberId);
+	
+	//문의 내역
+	public List<MyInquiryVO> getMyQuiryList(String memberId);
 
 }

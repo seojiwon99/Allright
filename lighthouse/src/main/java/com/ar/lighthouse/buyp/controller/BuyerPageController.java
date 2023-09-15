@@ -21,6 +21,7 @@ import com.ar.lighthouse.buyp.service.BuyInfoVO;
 import com.ar.lighthouse.buyp.service.BuyerPageService;
 import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.buyp.service.TradeVO;
 
 import lombok.AllArgsConstructor;
@@ -32,10 +33,10 @@ public class BuyerPageController {
 	@Autowired
 	BuyerPageService buyerPageService;
 	
-	@GetMapping("page/buyer/myCoupon")
-	public void Body() {
-		
-	}
+//	@GetMapping("page/buyer/myCoupon")
+//	public void Body() {
+//		
+//	}
 	
 	//주문목록	
 	@GetMapping("page/buyer/orderList/{memberId}")
@@ -59,8 +60,8 @@ public class BuyerPageController {
 	@GetMapping("page/buyer/tradeList/{memberId}")
 	public String TradeList(@PathVariable String memberId ,Model model) {
 		List<TradeVO> tradeList = buyerPageService.getTradeList(memberId);
-
 		model.addAttribute("tradeList", tradeList);
+		
 		return "/page/buyer/tradeList";
 	}
 	
@@ -82,6 +83,14 @@ public class BuyerPageController {
 		return updateInfo == 1 ? new ResponseEntity<String>("success", HttpStatus.OK) : new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
+	//문의내역
+	@GetMapping("page/buyer/myInquiry/{memberId}")
+	public String myInquiry(@PathVariable String memberId, Model model) {
+		List<MyInquiryVO> myInquiry = buyerPageService.getMyQuiryList(memberId);
+		model.addAttribute("myInquiry", myInquiry);
+		
+		return "/page/buyer/myInquiry";
+	}
 	
 	
 }

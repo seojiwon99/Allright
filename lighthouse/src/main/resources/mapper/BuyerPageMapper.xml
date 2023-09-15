@@ -108,6 +108,16 @@
 			WHERE member_id = #{memberId}
 	</select>
 	
-	
+	<!-- 문의 내역 -->
+	<select id="selectMyInquiryList" resultType="MyInquiryVO" parameterType="String">
+		SELECT custom_inquiry_code
+		     , custom_inquiry_title
+		     , custom_inquiry_content
+		     , custom_inquiry_regdate
+		     , custom_inquiry_answer
+		     , custom_inquiry_answer_status
+		FROM ar_custom_inquiry
+		WHERE member_id = #{memberId}
+	</select>
 	
   </mapper>
