@@ -163,10 +163,8 @@
 				<!-- Nav -->
 				<ul class="nav navbar-nav me-8">
 					<li class="nav-item"><a class="nav-link"
-						href="./shipping-and-returns.html" th:text="${session.loginMember} != null ? ${session.loginMember.memberId} :'TT' ">Shipping</a></li>
-					<li class="nav-item">
-						<a class="nav-link" href="./faq.html" >@@</a>
-					</li>
+						th:href="${session.loginMember} == null ? @{/page/member/loginForm} : '#'" th:text="${session.loginMember} != null ? ${session.loginMember.memberId} : '로그인' ">Shipping</a></li>
+				
 					<li class="nav-item dropdown hovered">
 						<!-- Toggle --> <a class="nav-link" data-bs-toggle="dropdown"
 						href="#" aria-expanded="false">고객센터</a> <!-- Menu -->
