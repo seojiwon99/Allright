@@ -1503,51 +1503,58 @@
             <form>
 
               <!-- Heading -->
-              <h6 class="mb-7">상세 정보</h6>
+              <h6 class="mb-7">주문자 정보</h6>
 
               <!-- Billing details -->
               <div class="row mb-9">
-                <div class="col-12 col-md-6">
-
-                  <!-- First Name -->
-                  <div class="form-group">
-                    <label class="form-label" for="checkoutBillingFirstName">이름 *</label>
-                    <input class="form-control form-control-sm" id="checkoutBillingFirstName" type="text" placeholder="First Name" required>
-                  </div>
-
-                </div>
-                <div class="col-12 col-md-6">
-
-                  <!-- Last Name -->
-                  <div class="form-group">
-                    <label class="form-label" for="checkoutBillingLastName">성 *</label>
-                    <input class="form-control form-control-sm" id="checkoutBillingLastName" type="text" placeholder="Last Name" required>
-                  </div>
-
-                </div>
                 <div class="col-12">
 
+                  <!--주문자 정보-->
+                  <!-- 이름 -->
+                
+                  <div class="form-group">
+                    <label class="form-label" for="checkoutBillingFirstName">이름 *</label>
+                    <div class="input-group mb-8">
+                      <input type="text" class="form-control" placeholder="이름 작성" aria-label="Recipient's username" aria-describedby="button-addon2">
+                      <button class="btn btn-outline-secondary" type="button" id="button-addon2">배송지 정보로 등록</button>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="col-12">
                   <!-- Email -->
                   <div class="form-group">
                     <label class="form-label" for="checkoutBillingEmail">Email *</label>
-                    <input class="form-control form-control-sm" id="checkoutBillingEmail" type="email" placeholder="Email" required>
+                    <input class="form-control form-control-sm" id="checkoutBillingEmail" type="email" placeholder="abc@abc.com" required>
                   </div>
-
                 </div>
-                <div class="col-12">
 
+                <div class="col-12">
+                  <!-- Mobile Phone -->
+                  <div class="form-group">
+                    <label class="form-label" for="checkoutBillingPhone">연락처 *</label>
+                    <input class="form-control form-control-sm" id="checkoutBillingPhone" type="tel" placeholder="010-0000-0000" required>
+                  </div>
+                </div>
+
+                <hr>
+
+                 <!-- Heading -->
+              <h6 class="mb-7">배송 정보</h6>
+
+                <div class="col-12">
                   <!-- Address Line 1 -->
                   <div class="form-group">
-                    <label class="form-label" for="checkoutBillingAddress">주소 1 *</label>
+                    <label class="form-label" for="checkoutBillingAddress">받는 사람 *</label>
                     <input class="form-control form-control-sm" id="checkoutBillingAddress" type="text" placeholder="Address Line 1" required>
                   </div>
-
                 </div>
-                <div class="col-12">
 
+                <div class="col-12">
                   <!-- Address Line 2 -->
                   <div class="form-group">
-                    <label class="form-label" for="checkoutBillingAddressTwo">주소 2</label>
+                    <label class="form-label" for="checkoutBillingAddressTwo">배송지 주소</label>
                     <input class="form-control form-control-sm" id="checkoutBillingAddressTwo" type="text" placeholder="Address Line 2 (optional)">
                   </div>
 
@@ -1556,8 +1563,8 @@
 
                   <!-- Town / City -->
                   <div class="form-group">
-                    <label class="form-label" for="checkoutBillingTown"> *</label>
-                    <input class="form-control form-control-sm" id="checkoutBillingTown" type="text" placeholder="Town / City" required>
+                    <label class="form-label" for="checkoutBillingTown">도시 *</label>
+                    <input class="form-control form-control-sm" id="checkoutBillingTown" type="text" placeholder="시.도" required>
                   </div>
 
                 </div>
@@ -1565,94 +1572,38 @@
 
                   <!-- ZIP / Postcode -->
                   <div class="form-group">
-                    <label class="form-label" for="checkoutBillingZIP">ZIP / Postcode *</label>
-                    <input class="form-control form-control-sm" id="checkoutBillingZIP" type="text" placeholder="ZIP / Postcode" required>
+                    <label class="form-label" for="checkoutBillingZIP">우편주소 *</label>
+                    <input class="form-control form-control-sm" id="checkoutBillingZIP" type="text" placeholder="(우)" required>
                   </div>
 
                 </div>
                 <div class="col-12">
-
                   <!-- Mobile Phone -->
                   <div class="form-group mb-0">
-                    <label class="form-label" for="checkoutBillingPhone">Mobile Phone *</label>
-                    <input class="form-control form-control-sm" id="checkoutBillingPhone" type="tel" placeholder="Mobile Phone" required>
+                    <label class="form-label" for="checkoutBillingPhone">연락처 *</label>
+                    <input class="form-control form-control-sm" id="checkoutBillingPhone" type="tel" placeholder="010-0000-0000" required>
                   </div>
+                  
+                </div>
+
+                <div class="col-12">
+                <br>
+                <h6>배송 요청사항</h6>
+                <!-- Notes -->  
+                <select class="form-select form-select-lg mb-3" aria-label="Large select example">
+                  <option selected>배송 요청 선택</option>
+                  <option value="1">부재시 경비실에 맡겨주세요.</option>
+                  <option value="2">배송 전에 미리 연락 바랍니다.</option>
+                  <option value="3">부재시 전화 또는 문자 남겨주세요.</option>
+                </select>
+                <textarea class="form-control form-control-sm mb-9 mb-md-0 fs-xs" rows="5" placeholder="배송 기타 요청사항 작성해주세요."></textarea>
 
                 </div>
-              </div>
 
-              <!-- Heading -->
-              <h6 class="mb-7">Shipping Details</h6>
-
-              <!-- Shipping details -->
-              <div class="table-responsive mb-6">
-                <table class="table table-bordered table-sm table-hover mb-0">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <div class="form-check custom-radio">
-                          <input class="form-check-input" id="checkoutShippingStandard" name="shipping" type="radio">
-                          <label class="form-check-label text-body text-nowrap" for="checkoutShippingStandard">
-                            Standard Shipping
-                          </label>
-                        </div>
-                      </td>
-                      <td>Delivery in 5 - 7 working days</td>
-                      <td>$8.00</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-check custom-radio">
-                          <input class="form-check-input" id="checkoutShippingExpress" name="shipping" type="radio">
-                          <label class="form-check-label text-body text-nowrap" for="checkoutShippingExpress">
-                            Express Shipping
-                          </label>
-                        </div>
-                      </td>
-                      <td>Delivery in 3 - 5 working days</td>
-                      <td>$12.00</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-check custom-radio">
-                          <input class="form-check-input" id="checkoutShippingShort" name="shipping" type="radio">
-                          <label class="form-check-label text-body text-nowrap" for="checkoutShippingShort">
-                            1 - 2 Shipping
-                          </label>
-                        </div>
-                      </td>
-                      <td>Delivery in 1 - 2 working days</td>
-                      <td>$18.00</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-check custom-radio">
-                          <input class="form-check-input" id="checkoutShippingFree" name="shipping" type="radio">
-                          <label class="form-check-label text-body text-nowrap" for="checkoutShippingFree">
-                            Free Shipping
-                          </label>
-                        </div>
-                      </td>
-                      <td>Living won't the He one every subdue
-                        meat replenish face was you morning
-                        firmament darkness.</td>
-                      <td>$0.00</td>
-                    </tr>
-                  </tbody>
-                </table>
               </div>
 
               <!-- Address -->
               <div class="mb-9">
-
-                <!-- Checkbox -->
-                <div class="form-check">
-                  <input class="form-check-input" id="checkoutShippingAddress" type="checkbox">
-                  <label class="form-check-label fs-sm" data-bs-toggle="collapse" data-bs-target="#checkoutShippingAddressCollapse" for="checkoutShippingAddress">
-                    Ship to a different address?
-                  </label>
-                </div>
-
                 <!-- Collapse -->
                 <div class="collapse" id="checkoutShippingAddressCollapse">
                   <div class="row mt-6">
@@ -1713,8 +1664,26 @@
                 </div>
 
               </div>
+              <hr>
+              <h6>쿠폰 할인</h6>
+              <div class="col-12">
 
+                <!--주문자 정보-->
+                <!-- 이름 -->
+              
+                <div class="form-group">
+                  <label class="form-label" for="checkoutBillingFirstName">쿠폰 확인 *</label>
+                  <div class="input-group mb-8">
+                    <input type="text" class="form-control" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">쿠폰선택</button>
+                  </div>
+                  <p>쿠폰 할인 금액 : <input type="text" style="border-width: 0 0 1px;" readonly>원 
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">사용하기</button>
+                  </p> 
+                </div>
+              </div>
 
+              <hr>
               <!-- Heading -->
               <h6 class="mb-7">결제수단</h6>
 
@@ -1803,8 +1772,7 @@
                 </div>
               </div>
 
-              <!-- Notes -->
-              <textarea class="form-control form-control-sm mb-9 mb-md-0 fs-xs" rows="5" placeholder="배송 요청사항"></textarea>
+              
 
             </form>
 
@@ -1879,16 +1847,19 @@
               <div class="card-body">
                 <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
                   <li class="list-group-item d-flex">
-                    <span>Subtotal</span> <span class="ms-auto fs-sm">$89.00</span>
+                    <span>상품금액</span> <span class="ms-auto fs-sm">0원</span>
                   </li>
                   <li class="list-group-item d-flex">
-                    <span>Tax</span> <span class="ms-auto fs-sm">$00.00</span>
+                    <span>상품할인금액</span> <span class="ms-auto fs-sm">0원</span>
                   </li>
                   <li class="list-group-item d-flex">
-                    <span>Shipping</span> <span class="ms-auto fs-sm">$8.00</span>
+                    <span>쿠폰할인</span> <span class="ms-auto fs-sm">0원</span>
+                  </li>
+                  <li class="list-group-item d-flex">
+                    <span>배송비</span> <span class="ms-auto fs-sm">0원</span>
                   </li>
                   <li class="list-group-item d-flex fs-lg fw-bold">
-                    <span>Total</span> <span class="ms-auto">$97.00</span>
+                    <span>결제금액</span> <span class="ms-auto">0원</span>
                   </li>
                 </ul>
               </div>
@@ -1896,9 +1867,8 @@
 
             <!-- Disclaimer -->
             <p class="mb-7 fs-xs text-gray-500">
-              Your personal data will be used to process your order, support
-              your experience throughout this website, and for other purposes
-              described in our privacy policy.
+              귀하의 개인 데이터는 귀하의 주문을 처리하고, 이 웹사이트 전반에 걸쳐 귀하의 경험을 지원하고, 
+              당사의 개인 정보 보호 정책에 설명된 기타 목적을 위해 사용됩니다.
             </p>
 
             <!-- Button -->
