@@ -12,9 +12,13 @@ public interface CustomService {
 	// 공지사항 목록 가져오기
 	public List<NoticeVO> getNoticeList(Criteria cri);
 	
+	// 공지사항 정보
+	public NoticeVO getNotice(NoticeVO noticeVO);
+	
 	// 전체 갯수 가져오기
 	public int getTotalCount(Criteria cri);
 	
 	// 1:1문의 등록
-	public int inqInsert(InquiryVO inqVO);
+	public int addInquiry(InquiryVO inqVO);
+	
 }
