@@ -3,7 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/default_layout}">
-
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <div layout:fragment="content">
 
 	<div class="row gx-0">
@@ -99,14 +99,46 @@
 
 		
 			<div class="container">
-				<form name = "insertForm" class="form-horizontal" action="insertProduct" method="post">
+				<form id = "insertForm" class="form-horizontal" action="insertProduct" method="post">
 					<div id="categoryId">
-						<h3>카테고리</h3>
-						<ul>
-							<li>패션</li>
-							<li>식품</li>
-							<li>생활/가전</li>
-						</ul>
+						<div class="form-group row">
+							<div>
+							<label class="col-sm-2">카테고리</label>
+						
+						<select  id="selectCategory">
+							<option value="">카테고리선택</option>
+						    <option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}" th:text="${category.categoryName}"></option>
+						</select>
+						
+						<select  th:field="*{getCategoryList}" id="ChildCate" style="display:none;">
+							<option value="">카테고리선택</option>
+							<option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}" th:text="${category.categoryName}" ></option>
+						</select>
+						
+						<select  th:field="*{getCategoryList}" id="ChildOfChildCate" style="display:none;">
+							<option value="">카테고리선택</option>
+							<option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}" th:text="${category.categoryName}" ></option>
+						</select>
+						
+						<select  th:field="*{getCategoryList}" id="thirdOfChildCate" style="display:none;">
+							<option value="">카테고리선택</option>
+							<option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}" th:text="${category.categoryName}" ></option>
+						</select><br>
+						<strong id="firstCategoryCode"></strong><strong id="secondCategoryCode"></strong><strong id="thirdCategoryCode"></strong><strong id="quadCategoryCode"></strong>
+						</div>
+</div>
+						<!-- <ul th:each ="category : ${getCategoryList}">
+							<li th:text="${category.categoryName}" ></li>
+						</ul> -->
+						<!-- <ul th:each ="category : ${getCategoryList}">
+							
+						</ul> -->
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">회원 ID</label>
+						<div class="col-sm-3">
+							<input type="text" name="memberId" class="form-control">
+						</div>
 					</div>
 					<div class="form-group row">
 						<label class="col-sm-2">상품 코드</label>
@@ -253,7 +285,90 @@
 
 	</div>
 	<script>
-	document.querySelector('form[name="insertForm"]')
+		
+
+		
+
+		$('#selectCategory').on('change', function(){
+		let val = $(this).val();
+		$.ajax({
+			url : 'childCate',
+			type : 'get',
+			data : {'categoryCode' : val}
+		})
+		.done(getCategoryList => {
+			$('#ChildCate').replaceWith(getCategoryList);
+			$('#ChildCate').css('display','');
+			
+			// $('#ChildCate').on('change', createChild());
+			let selectedOptionText = $(this).find('option:selected').text();
+
+			$("#firstCategoryCode").text('선택된 카테고리 : ' + selectedOptionText + ' >');
+		})	
+		.fail(reject => {
+			console.log(reject);
+		})
+	})
+	
+	
+	
+	$(document).on("change", "#ChildCate", function(){
+		let val = $(this).val();
+		$.ajax({
+			url : 'childOfCate',
+			type : 'get',
+			data : {'categoryCode' : val}
+		})
+		.done(getCategoryList => {
+			if(val == null){
+				$('#ChildOfChildCate').css('display','none');
+			} 
+			$('#ChildOfChildCate').replaceWith(getCategoryList);
+			$('#ChildOfChildCate').css('display','');
+			
+			let selectedOptionText = $(this).find('option:selected').text();
+
+			$("#secondCategoryCode").text(selectedOptionText + ' >');
+			
+		})	
+		.fail(reject => {
+			console.log(reject);
+		})
+	})
+	
+	$(document).on("change", "#ChildOfChildCate", function(){
+		let val = $(this).val();
+		$.ajax({
+			url : 'thirdOfCate',
+			type : 'get',
+			data : {'categoryCode' : val}
+		})
+		.done(getCategoryList => {
+			if(val == null){
+				$('#thirdOfChildCate').css('display','none');
+			} 
+			$('#thirdOfChildCate').replaceWith(getCategoryList);
+			$('#thirdOfChildCate').css('display','');
+			
+			let selectedOptionText = $(this).find('option:selected').text();
+	
+			$("#thirdCategoryCode").text(selectedOptionText + ' >');
+			
+			$('#thirdOfChildCate').change(function(){
+				let selectedOptionText = $(this).find('option:selected').text();
+				$("#quadCategoryCode").text(selectedOptionText);
+					});
+			
+			
+			
+		})	
+		.fail(reject => {
+			console.log(reject);
+		})
+	})
+
+	
+ document.querySelector('form[name="insertForm"]')
 			.addEventListener(
 				'submit',
 				function(e){
@@ -269,8 +384,10 @@
 					alert('상품등록이 완료되었습니다.')
 					insertForm.submit();
 				}
-			)
+			) 
 	
+		        
+
 	</script>
 
 	

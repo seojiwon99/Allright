@@ -13,6 +13,8 @@ public interface mainPageMapper {
 
 	public List<CategoryVO> categoryList();
 	
+	public List<CategoryVO> childCategory(CategoryVO cate);
+	
 	public List<ProductVO> selProductList();
 	
 	public List<EventImgVO> showEventBanner();
