@@ -172,7 +172,7 @@
              , exchange_cost
                 , delivery_service
                 , product_status
-		from ar_products p join ar_product_img i
+		from ar_products p join ar_imgs i
                            on p.product_code = i.product_code
 		where p.product_code = #{productCode}
 	</select>

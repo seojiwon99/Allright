@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ar.lighthouse.product.service.ImgsVO;
 import com.ar.lighthouse.review.mapper.ReviewMapper;
 import com.ar.lighthouse.review.service.ReviewImgVO;
 import com.ar.lighthouse.review.service.ReviewService;
@@ -27,8 +28,8 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public void addReviewImg(ReviewImgVO reviewImgVO) {
-		mapper.insertReviewImg(reviewImgVO);
+	public void addReviewImg(ImgsVO imgsVO) {
+		mapper.insertReviewImg(imgsVO);
 	}
 
 	@Override

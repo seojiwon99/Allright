@@ -26,7 +26,7 @@ public class ProductVO {
 	 	private String productBrand;
 	 	private String productStatus;
 	 	private String productExStatus;
-	 	private List<ProductImgVO> productImg;
+	 	private List<ImgsVO> productImg;
 
 	 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	 	private Date productRegdate;
