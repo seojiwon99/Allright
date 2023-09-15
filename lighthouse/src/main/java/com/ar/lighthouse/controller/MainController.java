@@ -7,6 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.ar.lighthouse.main.service.MainPageService;
 
+
+/*
+  개발자 : 김무준
+  개발일자 : 2023/09/13
+  		메인페이지관리
+ */
+
 @Controller
 public class MainController {
 
@@ -18,18 +25,28 @@ public class MainController {
 		return "page/test";
 	}
 
+
+	
 	@GetMapping("/")
 	public String Body(Model model) {
 	
+		model.addAttribute("categories",service.getCategoryList());
+		
 		model.addAttribute("productList",service.selProductList());
+		System.out.println(model);
 		
 		model.addAttribute("productbanner",service.showEventBanner());
-		System.out.println(model);
 	
 		model.addAttribute("productRand", service.randomGetProduct());
-		System.out.println(model);
 	
 		return "page/body";
+		
+	}
+	
+	@GetMapping("goodsList")
+	public String goodsList() {
+		
+		return "page/goods/goodsList";
 		
 	}
 

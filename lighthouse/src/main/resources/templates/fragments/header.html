@@ -134,89 +134,82 @@
 	</div>
 
 	<!-- NAVBAR -->
-    <div class="navbar navbar-topbar navbar-expand-xl navbar-light bg-light">
-      <div class="container">
-    
-        <!-- Promo -->
-        <div class="me-xl-8">
-          <i class="fe fe-truck me-2"></i> <span class="heading-xxxs">Free shipping worldwide</span>
-        </div>
-    
-        <!-- Toggler -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topbarCollapse" aria-controls="topbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-    
-        <!-- Collapse -->
-        <div class="collapse navbar-collapse" id="topbarCollapse">
-    
-          <!-- Nav -->
-          <ul class="nav nav-divided navbar-nav me-auto">
-         
-          </ul>
-    
-          <!-- Nav -->
-          <ul class="nav navbar-nav me-8">
-            <li class="nav-item">
-              <a class="nav-link" href="./shipping-and-returns.html">Shipping</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="./faq.html">TT</a>
-            </li>
-            <li class="nav-item dropdown hovered">
-    
-              <!-- Toggle -->
-              <a class="nav-link" data-bs-toggle="dropdown" href="#" aria-expanded="false">고객센터</a>
-    
-              <!-- Menu -->
-              <div class="dropdown-menu">
-                <div class="card card-lg">
-                  <div class="card-body">
-                    <ul class="list-styled fs-sm">
-                      <li class="list-styled-item">
-                        <a class="list-styled-link" href="/custom/faqList">FAQ</a>
-                      </li>
-                      <li class="list-styled-item">
-                        <a class="list-styled-link" href="/custom/notice">공지사항</a>
-                      </li>
-                      <li class="list-styled-item">
-                        <a class="list-styled-link" href="/custom/inquiry">1:1문의</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-    
-            </li>
-          </ul>
-    
-          <!-- Nav -->
-          <ul class="nav navbar-nav flex-row">
-            <li class="nav-item">
-              <a class="nav-link text-gray-350" href="#!">
-                <i class="fab fa-facebook-f"></i>
-              </a>
-            </li>
-            <li class="nav-item ms-xl-n4">
-              <a class="nav-link text-gray-350" href="#!">
-                <i class="fab fa-twitter"></i>
-              </a>
-            </li>
-            <li class="nav-item ms-xl-n4">
-              <a class="nav-link text-gray-350" href="#!">
-                <i class="fab fa-instagram"></i>
-              </a>
-            </li>
-            <li class="nav-item ms-xl-n4">
-              <a class="nav-link text-gray-350" href="#!">
-                <i class="fab fa-medium"></i>
-              </a>
-            </li>
-          </ul>
-    
-        </div>
-      </div>
-    </div>
+	<div
+		class="navbar navbar-topbar navbar-expand-xl navbar-light bg-light">
+		<div class="container">
+
+			<!-- Promo -->
+			<div class="me-xl-8">
+				<i class="fe fe-truck me-2"></i> <span class="heading-xxxs">Free
+					shipping worldwide</span>
+			</div>
+
+			<!-- Toggler -->
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#topbarCollapse"
+				aria-controls="topbarCollapse" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<!-- Collapse -->
+			<div class="collapse navbar-collapse" id="topbarCollapse">
+
+				<!-- Nav -->
+				<ul class="nav nav-divided navbar-nav me-auto">
+
+				</ul>
+
+				<!-- Nav -->
+				<ul class="nav navbar-nav me-8">
+					<li class="nav-item"><a class="nav-link"
+						href="./shipping-and-returns.html" th:text="${session.loginMember} != null ? ${session.loginMember.memberId} :'TT' ">Shipping</a></li>
+					<li class="nav-item">
+						<a class="nav-link" href="./faq.html" >@@</a>
+					</li>
+					<li class="nav-item dropdown hovered">
+						<!-- Toggle --> <a class="nav-link" data-bs-toggle="dropdown"
+						href="#" aria-expanded="false">고객센터</a> <!-- Menu -->
+						<div class="dropdown-menu">
+							<div class="card card-lg">
+								<div class="card-body">
+									<ul class="list-styled fs-sm">
+										<li class="list-styled-item"><a class="list-styled-link"
+											href="/custom/faqList">FAQ</a></li>
+										<li class="list-styled-item"><a class="list-styled-link"
+											href="/custom/notice">공지사항</a></li>
+										<li class="list-styled-item"><a class="list-styled-link" id="customInq"
+											href="#">1:1문의</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+					</li>
+				</ul>
+
+				<!-- Nav -->
+				<ul class="nav navbar-nav flex-row">
+					<li class="nav-item"><a class="nav-link text-gray-350"
+						href="#!"> <i class="fab fa-facebook-f"></i>
+					</a></li>
+					<li class="nav-item ms-xl-n4"><a
+						class="nav-link text-gray-350" href="#!"> <i
+							class="fab fa-twitter"></i>
+					</a></li>
+					<li class="nav-item ms-xl-n4"><a
+						class="nav-link text-gray-350" href="#!"> <i
+							class="fab fa-instagram"></i>
+					</a></li>
+					<li class="nav-item ms-xl-n4"><a
+						class="nav-link text-gray-350" href="#!"> <i
+							class="fab fa-medium"></i>
+					</a></li>
+				</ul>
+
+			</div>
+		</div>
+	</div>
 	<!-- NAVBAR -->
 	<nav class="navbar navbar-expand-xl navbar-light">
 		<div class="container">
@@ -239,104 +232,228 @@
 
 						<!-- Tabs -->
 						<div class="mb-2 mb-lg-0 border-bottom-lg">
-							<div class="container">
-								<div class="row">
-									<div class="col-12">
+							<div class="container" style="display: flex">
+								<div class="row" th:each="category:${categories}">
+									
+										<ul  >
+											<li class="nav-item dropdown">
+												<!-- Toggle --> 
+												<a class="nav-link" data-bs-toggle="dropdown" th:text="${category.categoryCode}">Fassion</a> 
+												
+												<!-- Menu -->
+												<div class="dropdown-menu" style="min-width: 650px">
+													<div class="card card-lg">
+														<div class="card-body">
+															<div class="row">
+																<div class="col">
+																	<!-- Heading -->
+																	<div class="mb-5 fw-bold">남성 상의</div>
 
-										<!-- Nav -->
-										<nav
-											class="nav nav-tabs nav-overflow fs-xs border-bottom border-bottom-lg-0">	
-												<a class="nav-link text-uppercase active" data-bs-toggle="tab" href="#navTab"> Fassion </a> 
-												<a class="nav-link text-uppercase" data-bs-toggle="tab" href="#navTab"> Food </a> 
-												<a class="nav-link text-uppercase" data-bs-toggle="tab" href="#navTab"> Life </a>
-										</nav>
-										<div
-											class="nav nav-tabs nav-overflow fs-xs border-bottom border-bottom-lg-0">	
-												<a class="nav-link text-uppercase active" data-bs-toggle="tab" href="#navTab"> 남성 </a> 
-												<a class="nav-link text-uppercase" data-bs-toggle="tab" href="#navTab"> 여성 </a> 
-												<a class="nav-link text-uppercase" data-bs-toggle="tab" href="#navTab"> 공용 </a>
-										</div>
-									</div>
+																	<!-- Links -->
+																	<ul class="list-styled mb-7 fs-sm">
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" href="./shop.html">Default</a>
+																		</li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" href="./shop-topbar.html">Topbar</a>
+																		</li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" href="./shop-collapse.html">Collapse</a>
+																		</li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" href="./shop-simple.html">Simple</a>
+																		</li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" href="./shop-masonry.html">Masonry</a>
+																		</li>
+																	</ul>
+
+																	<!-- Heading -->
+																	<div class="mb-5 fw-bold">남성하의</div>
+
+																	<!-- Links -->
+																	<ul class="list-styled fs-sm">
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" href="./product.html">Default</a>
+																		</li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link"
+																			href="./product-images-left.html">Images Left</a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link"
+																			href="./product-image-grid.html">Image Grid</a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link"
+																			href="./product-image-slider.html">Image Slider</a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link"
+																			href="./product-images-stacked.html">Images
+																				Stacked</a></li>
+																	</ul>
+																	
+																	
+																	
+																</div>
+																
+																
+																<div class="col">
+																	<!-- Heading -->
+																	<div class="mb-5 fw-bold">남성 신발</div>
+
+																	<!-- Links -->
+																	<ul class="list-styled mb-7 fs-sm">
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" href="./shop.html">Default</a>
+																		</li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" href="./shop-topbar.html">Topbar</a>
+																		</li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" href="./shop-collapse.html">Collapse</a>
+																		</li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" href="./shop-simple.html">Simple</a>
+																		</li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" href="./shop-masonry.html">Masonry</a>
+																		</li>
+																	</ul>
+
+																	<!-- Heading -->
+																	<div class="mb-5 fw-bold">여성 상의</div>
+
+																	<!-- Links -->
+																	<ul class="list-styled fs-sm">
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" href="./product.html">Default</a>
+																		</li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link"
+																			href="./product-images-left.html">Images Left</a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link"
+																			href="./product-image-grid.html">Image Grid</a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link"
+																			href="./product-image-slider.html">Image Slider</a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link"
+																			href="./product-images-stacked.html">Images
+																				Stacked</a></li>
+																	</ul>
+																	
+																	
+																	
+																</div>
+																
+																<div class="col">
+																	<!-- Heading -->
+																	<div class="mb-5 fw-bold">여성 하의</div>
+
+																	<!-- Links -->
+																	<ul class="list-styled mb-7 fs-sm">
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" href="./shopping-cart.html">Shopping
+																				Cart</a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" href="./checkout.html">Checkout</a>
+																		</li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link"
+																			href="./order-completed.html">Order Completed</a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link"
+																			href="./shipping-and-returns.html">Shipping &
+																				Returns</a></li>
+																	</ul>
+
+																	<!-- Heading -->
+																	<div class="mb-5 fw-bold">여성 신발</div>
+
+																	<!-- Links -->
+																	<ul class="list-styled fs-sm">
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" href="./account-order.html">Order</a>
+																		</li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" href="./account-orders.html">Orders</a>
+																		</li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link"
+																			href="./account-wishlist.html">Wishlist</a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link"
+																			href="./account-personal-info.html">Personal Info</a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link"
+																			href="./account-address.html">Addresses</a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link"
+																			href="./account-address-edit.html">Addresses: New</a></li>
+																	</ul>
+																</div>
+																<div class="col">
+																	<!-- Links -->
+																	<ul class="list-styled mb-7 fs-sm">
+																		<li class="list-styled-item"><a
+																			class="list-styled-link"
+																			href="./account-payment.html">Payment</a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link"
+																			href="./account-payment-edit.html">Payment: New</a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link"
+																			href="./account-payment-choose.html">Payment:
+																				Choose</a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" href="./auth.html">Auth</a>
+																		</li>
+																	</ul>
+
+																	<!-- Heading -->
+																	<div class="mb-5 fw-bold">공용</div>
+
+																	<!-- Links -->
+																	<ul class="list-styled fs-sm">
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" data-bs-toggle="modal"
+																			href="#modalNewsletterHorizontal"> Newsletter:
+																				Horizontal </a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" data-bs-toggle="modal"
+																			href="#modalNewsletterVertical"> Newsletter:
+																				Vertical </a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" data-bs-toggle="modal"
+																			href="#modalProduct"> Product </a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" data-bs-toggle="offcanvas"
+																			href="#modalSearch"> Search </a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" data-bs-toggle="offcanvas"
+																			href="#modalShoppingCart"> Shopping Cart </a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" data-bs-toggle="modal"
+																			href="#modalSizeChart"> Size Chart </a></li>
+																		<li class="list-styled-item"><a
+																			class="list-styled-link" data-bs-toggle="modal"
+																			href="#modalWaitList"> Wait List </a></li>
+																	</ul>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</li>
+
+										</ul>
+
+									
 								</div>
 							</div>
 						</div>
 
-						<!-- Tab content -->
-						<div class="card card-lg">
-							<div class="card-body">
-								<div class="tab-content">
-									<div class="tab-pane fade show active" id="navTab">
-										<div class="container">
-											<div class="row">
-												<div class="col-6 col-md">
 
-													<!-- Heading -->
-													<li class="mb-5 fw-bold">남성</li>
-
-													<!-- Links -->
-													<ul class="list-styled mb-6 mb-md-0 fs-sm">
-														<li class="list-styled-item"><a
-															class="list-styled-link" href="./shop?category">운동화</a></li>
-														<li class="list-styled-item"><a
-															class="list-styled-link" href="./shop.html">구두</a></li>
-														<li class="list-styled-item"><a
-															class="list-styled-link" href="./shop.html">슬리퍼</a></li>
-
-													</ul>
-
-												</div>
-												<div class="col-6 col-md">
-
-													<!-- Heading -->
-													<div class="mb-5 fw-bold">여성</div>
-
-													<!-- Links -->
-													<ul class="list-styled mb-6 mb-md-0 fs-sm">
-														<li class="list-styled-item"><a
-															class="list-styled-link" href="./shop.html">All Shoes
-																& Boots</a></li>
-														<li class="list-styled-item"><a
-															class="list-styled-link" href="./shop.html">Branded
-																Shoes</a></li>
-														<li class="list-styled-item"><a
-															class="list-styled-link" href="./shop.html">Boots</a></li>
-
-													</ul>
-
-												</div>
-												<div class="col-6 col-md">
-
-													<!-- Heading -->
-													<div class="mb-5 fw-bold">공용</div>
-
-													<!-- Links -->
-													<ul class="list-styled mb-0 fs-sm">
-														<li class="list-styled-item"><a
-															class="list-styled-link" href="./shop.html">All Bags
-																& Accessories</a></li>
-														<li class="list-styled-item"><a
-															class="list-styled-link" href="./shop.html">Accessories</a>
-														</li>
-														<li class="list-styled-item"><a
-															class="list-styled-link" href="./shop.html">Bags &
-																Purses</a></li>
-
-													</ul>
-
-												</div>
-										
-												<div class="col-4 d-none d-lg-block">
-
-													<!-- Card -->
-													<div class="card"></div>
-
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
 
 					</div>
 
@@ -354,8 +471,8 @@
 				</ul>
 				<!-- 판매순위, 신상 -->
 				<!-- Brand -->
-				<a class="navbar-brand mx-auto d-none d-xl-block"
-					href="./overview.html"> All Right </a>
+				<a class="navbar-brand mx-auto d-none d-xl-block" href="/"> All
+					Right </a>
 
 				<!-- Nav 찜 장바구니 마이페이지 검색-->
 				<ul class="navbar-nav flex-row">
@@ -378,5 +495,17 @@
 			</div>
 		</div>
 	</nav>
+	<script th:inline="javascript">
+		$('#customInq').on('click', function (e) {
+			let member = [[${session.loginMember}]];
+			if (member == null) {
+				alert("로그인 하셔야 서비스를 이용하실 수 있습니다.");
+				location.href="page/member/loginForm";
+				return;
+			}else{
+				location.href="/custom/inquiry";
+			}
+		})
+	</script>
 </div>
 </html>

@@ -1,9 +1,22 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/default_layout}">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default_layout}">
 
 <!-- Content -->
 <div layout:fragment="content">
+<textarea id="testInput" style="display:none;">
+	공지사항 [[${pageMaker.cri.pageNum}]]페이지 입니다. 엔터키를 누르면 게시글 정보들을 읽어줍니다.
+	상세보기 shift + d입니다.
+	이전페이지로 가기 shift + q
+	다음페이지로 가기 Shift + w
+	
+</textarea>
+<input type="hidden" value="0" id="index">
+<input type="hidden" value="" id="current">
+<input type="hidden" th:value="${pageMaker.cri.pageNum}" id="pageNum">
+<input type="hidden" th:value="${pageMaker.endPage}" id="endPage">
 	<!-- BREADCRUMB -->
 	<nav class="py-5">
 		<div class="container">
@@ -12,12 +25,9 @@
 
 					<!-- Breadcrumb -->
 					<ol class="breadcrumb mb-0 fs-xs text-gray-400">
-						<li class="breadcrumb-item">
-							<a class="text-gray-400" href="index.html">Home</a>
-						</li>
-						<li class="breadcrumb-item active">
-							공지사항
-						</li>
+						<li class="breadcrumb-item"><a class="text-gray-400"
+							href="index.html">Home</a></li>
+						<li class="breadcrumb-item active">공지사항</li>
 					</ol>
 
 				</div>
@@ -27,61 +37,281 @@
 
 	<!-- CONTENT -->
 	<section class="pt-7 pb-12">
-		<div class="container">
+		<div>
 			<div class="row justify-content-center">
 				<div class="col-12 col-lg-10 col-xl-8">
 					<table class="table">
 						<thead>
 							<tr>
-								<th></th>
+								<th>번호</th>
 								<th>제목</th>
 								<th>작성자</th>
 								<th>작성날짜</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="notice,status : ${noticeList}">
-								<td th:text="${notice.noticeType} == 'Y' ? '공지' : ''"></td>
-								<td th:text="${notice.noticeTitle}"></td>
-								<td th:text="${notice.noticeWriter}"></td>
-								<td th:text="${#dates.format(notice.noticeRegdate,'yyyy-MM-dd')}"></td>
-		    		</tr>
-		    	</tbody>
-		    </table>
-		  
-			<!-- Pagination -->
-            <nav class="d-flex justify-content-center justify-content-md-end mt-10">
-				<ul class="pagination pagination-sm text-gray-400">
-				  <li class="page-item" th:if="${pageMaker.prev}">
-					<a class="page-link page-link-arrow" th:href="@{/custom/notice/(pageNum = ${pageMaker.startPage - 1})}">
-					  <i class="fa fa-caret-left"></i>
-					</a>
-				  </li>
-				  <th:block th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
-					  <li 
-					   	th:if="${pageMaker.endPage} ne 0"
-						th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
-						th:each="pageButtom : ${#numbers.sequence(start,end)}"
-						
-					  	th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'"
-					  >
-						<a class="page-link" href="#" th:href="@{/custom/notice/(pageNum= ${pageButtom} )}" th:text="${pageButtom}"></a>
-					  </li>
-				  </th:block>
-		
-				  <li class="page-item" th:if ="${pageMaker.next}">
-					<a class="page-link page-link-arrow" th:href="@{/custom/notice/(pageNum = ${pageMaker.endPage + 1})}">
-					  <i class="fa fa-caret-right"></i>
-					</a>
-				  </li>
-				</ul>
-			  </nav>
-          </div>
-        </div>
-      </div>
-    </section>
-    <script>
+							<tr th:each="notice,status : ${noticeList}" th:onclick="|location.href='@{/custom/noticeInfo/(noticeCode=${notice.noticeCode},pageNum=${pageMaker.cri.pageNum})}'|">
+								<input type="hidden" th:value="${notice.noticeCode}" th:id="|code${status.index}|">
+								<td th:id="|type${status.index}|">[[${notice.noticeType} == 'Y' ? '공지' : ${pageMaker.total} - (((${pageMaker.cri.pageNum}-1)* ${pageMaker.cri.amount}) + ${status.index})]]</td>
+								<td th:id="|title${status.index}|">[[${notice.noticeTitle}]]</td>
+								<td th:id="|writer${status.index}|">[[${notice.noticeWriter}]]</td>
+								<td th:id="|date${status.index}|">[[${#dates.format(notice.noticeRegdate,'yyyy-MM-dd')}]]</td>
+							</tr>
+						</tbody>
+					</table>
 
-    </script>
+					<!-- Pagination -->
+					<nav
+						class="d-flex justify-content-center justify-content-md-end mt-10">
+						<ul class="pagination pagination-sm text-gray-400">
+							<li class="page-item" th:if="${pageMaker.prev}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/custom/notice/(pageNum = ${pageMaker.startPage - 1})}">
+									<i class="fa fa-caret-left"></i>
+							</a></li>
+							<th:block
+								th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+								<li th:if="${pageMaker.endPage} ne 0"
+									th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+									th:each="pageButtom : ${#numbers.sequence(start,end)}"
+									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
+									<a class="page-link" href="#"
+									th:href="@{/custom/notice/(pageNum= ${pageButtom} )}"
+									th:text="${pageButtom}"></a>
+								</li>
+							</th:block>
+
+							<li class="page-item" th:if="${pageMaker.next}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/custom/notice/(pageNum = ${pageMaker.endPage + 1})}">
+									<i class="fa fa-caret-right"></i>
+							</a></li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+		<script>
+		var AudioContext;
+		var audioContext;
+		let xhr = new XMLHttpRequest();
+		
+		window.onload = function() {
+		    navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
+		        AudioContext = window.AudioContext || window.webkitAudioContext;
+		        audioContext = new AudioContext();
+		    }).catch(e => {
+		        console.error(`Audio permissions denied: ${e}`);
+		    });
+		}
+
+		// 먼저 읽히는것 
+		$(document).ready(function() {
+			VoiceMenu();
+		
+		});
+
+		var httpRequest = new XMLHttpRequest();
+		$(document).on('keydown',function(e){
+			let index = $('#index').val();
+			if(e.keyCode == 13){
+				VoiceRead(index);
+				httpRequest.abort();
+				return;
+			}
+			if(e.keyCode == 9){
+				if(index != 0){
+					index = index -1
+				}
+				VoiceReturnRead(index);
+				return;
+			}
+			if(e.shiftKey && e.keyCode==68){
+				let tt = $('#current').val();
+				if(tt === ''){
+					return;
+				}else{
+					location.href="/custom/noticeInfo/?noticeCode="+$('#current').val() + "&pageNum=" +$('#pageNum').val();
+					
+				}
+			}
+			if(e.shiftKey && e.keyCode==81){
+				if($('#pageNum').val() != $('#endPage').val()){
+					let page = Number($('#pageNum').val()) + 1;
+					location.href="/custom/notice/?pageNum=" + page;
+				}else{
+					alert("마지막 페이지입니다.");
+				}
+				return;
+			}
+			if(e.shiftKey && e.keyCode==87){
+				if($('#pageNum').val() != 1){
+					let page = Number($('#pageNum').val()) - 1;
+					location.href="/custom/notice/?pageNum=" + page;
+				}else{
+					alert("첫 번째 페이지입니다.");
+				}
+				return;
+			}
+			
+			
+		})
+		
+		
+		function VoiceReturnRead(idx) {
+			alert("Rer");
+			var data = {
+				"voice" : {
+					"languageCode" : "ko-KR",
+					"name" : "ko-KR-Neural2-B"
+				},
+				"input" : {
+					"text" : $('#type'+idx).text() + $('#title'+idx).text() + $('#writer'+idx).text()  + $('#date'+idx).text(),
+				
+				},
+				"audioConfig" : {
+					"audioEncoding" : "mp3"
+				}
+			}
+			
+			$.ajax({
+				type : 'POST',
+				url : 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
+				data : JSON.stringify(data),
+				dataType : 'JSON',
+				contentType : "application/json; charset=UTF-8",
+				success : function(res,xhr) {
+					$('#menuText').val(res.audioContent)
+					var audioFile = new Audio();
+					let audioBlob = base64ToBlob(res.audioContent,
+							"mp3");
+					audioFile.src = window.URL
+							.createObjectURL(audioBlob);
+					audioFile.playbackRate = 1; //재생속도
+			
+					audioFile.play();
+					console.log(idx);
+					if(idx != 0){
+						let num = Number($('#index').val()) - 1;
+						$('#index').val(num);
+						
+					}
+				
+				},
+				error : function(request, status, error) {
+					alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
+				}
+			});
+		};
+		
+		function VoiceRead(idx) {
+			var data = {
+				"voice" : {
+					"languageCode" : "ko-KR",
+					"name" : "ko-KR-Neural2-B"
+				},
+				"input" : {
+					"text" : $('#type'+idx).text() + $('#title'+idx).text() + $('#writer'+idx).text()  + $('#date'+idx).text(),
+				
+				},
+				"audioConfig" : {
+					"audioEncoding" : "mp3"
+				}
+			}
+			$.ajax({
+				type : 'POST',
+				url : 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
+				data : JSON.stringify(data),
+				dataType : 'JSON',
+				contentType : "application/json; charset=UTF-8",
+				success : function(res,xhr) {
+					$('#menuText').val(res.audioContent)
+					var audioFile = new Audio();
+					let audioBlob = base64ToBlob(res.audioContent,
+							"mp3");
+					audioFile.src = window.URL
+							.createObjectURL(audioBlob);
+					audioFile.playbackRate = 1; //재생속도
+			
+					audioFile.play();
+					$('#current').val($('#code'+idx).val());
+					
+					let leg = $('#length').val();
+					if(leg != idx){
+						let num = Number($('#index').val()) + 1;
+						$('#index').val(num);
+						
+					}
+				
+				},
+				error : function(request, status, error) {
+					alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
+				}
+			});
+		};
+		
+		
+		
+		
+		
+		
+		function VoiceMenu() {
+			var data = {
+				"voice" : {
+					"languageCode" : "ko-KR",
+					"name" : "ko-KR-Neural2-B"
+				},
+				"input" : {
+					"text" : $('#testInput').val()
+				},
+				"audioConfig" : {
+					"audioEncoding" : "mp3"
+				}
+			}
+			xhr = $.ajax({
+				type : 'POST',
+				url : 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
+				data : JSON.stringify(data),
+				dataType : 'JSON',
+				contentType : "application/json; charset=UTF-8",
+				success : function(res,xhr) {
+					$('#menuText').val(res.audioContent)
+					var audioFile = new Audio();
+					let audioBlob = base64ToBlob(res.audioContent,
+							"mp3");
+					audioFile.src = window.URL
+							.createObjectURL(audioBlob);
+					audioFile.playbackRate = 1; //재생속도
+			
+					audioFile.play();
+				
+				},
+				error : function(request, status, error) {
+					alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
+				}
+			});
+		};
+
+		function base64ToBlob(base64, fileType) {
+			let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
+			let audioSrc = typeHeader + base64;
+			let arr = audioSrc.split(",");
+			let array = arr[0].match(/:(.*?);/);
+			let mime = (array && array.length > 1 ? array[1] : type) || type;
+			// url헤더 제거하고 btye로 변환
+			let bytes = window.atob(arr[1]);
+			// 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
+			let ab = new ArrayBuffer(bytes.length);
+			// 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
+			let ia = new Uint8Array(ab);
+			for (let i = 0; i < bytes.length; i++) {
+				ia[i] = bytes.charCodeAt(i);
+			}
+			return new Blob([ ab ], {
+				type : mime
+			});
+		}
+	</script>
 </div>
 </html>
