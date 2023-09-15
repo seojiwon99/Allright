@@ -23,31 +23,30 @@ public class ProductController {
 
 	@Autowired
 	ProductService productService;
-	
+
 	@Autowired
 	ReviewService reviewService;
-	
-	
+
 //	판매자 메인페이지
 	@GetMapping("sellerMain")
 	public String seller() {
 		return "page/seller/sellerMain";
 	}
-	
+
 	@GetMapping("productList")
 	public String productList(Model model, ProductVO productVO) {
 		model.addAttribute("productList", productService.productList(productVO));
 		return "page/seller/productList";
 	}
-	
+
 //	조건순 order by
 	@GetMapping("selectProduct")
-	public String selectProduct( Model model,ProductVO productVO) {
+	public String selectProduct(Model model, ProductVO productVO) {
 		System.out.println(productVO.getOptionVal());
-		model.addAttribute("productList",productService.selectProduct(productVO));
+		model.addAttribute("productList", productService.selectProduct(productVO));
 		return "page/seller/productList :: #sortList";
 	}
-	
+
 //	등록폼
 	@GetMapping("insertProduct")
 	public String productForm() {
@@ -61,61 +60,69 @@ public class ProductController {
 		return "redirect:productList";
 	}
 
-	
 //	수정폼
 	@GetMapping("modifyForm")
 	public String modifyForm() {
 		return "page/seller/modifyForm";
 	}
-	
+
 //	다건삭제
 	@PostMapping("productDelete")
 	@ResponseBody
 	public List<String> productDelete(@RequestBody List<ProductVO> productList) {
-	    List<String> delList = new ArrayList();
-	    
-	    for(ProductVO productVO : productList) {
-	    	int result = productService.productDelete(productVO);
-	    	if(result > 0) {
-	    		delList.add(productVO.getProductCode());
-	    	}
-	    }
-		
+		List<String> delList = new ArrayList();
+
+		for (ProductVO productVO : productList) {
+			int result = productService.productDelete(productVO);
+			if (result > 0) {
+				delList.add(productVO.getProductCode());
+			}
+		}
+
 		return delList;
-	    
+
+	}
+
+	// 리뷰등록
+	@PostMapping("reviewInsert")
+	public String addReivew(ReviewVO review, ReviewImgVO reviewImg, Model model) {
+
+		reviewService.addReview(review);
+		model.addAttribute("review", review);
+		reviewService.addReviewImg(reviewImg);
+		model.addAttribute("reviewImg", reviewImg);
+
+		return "/page/goods/goodDetail";
+
 	}
 	
-	//리뷰등록
-	@PostMapping("reviewInsert")
-	public String addReivew(ReviewVO review, ReviewImgVO reviewImg, RedirectAttributes rttr) {
+	// 리뷰 삭제
+	@PostMapping("removeDelete")
+	public String deleteReview(String memberId) {
 		
-		reviewService.addReview(review);
-		reviewService.addReviewImg(reviewImg);
-		rttr.addFlashAttribute("result", "리뷰 등록");
+		reviewService.removeReview(memberId);
 		
 		return "redirect:/page/goods/goodDetail";
-		
 	}
 	
-	//상품 단건 조회
+
+	// 상품 단건 조회
 	@GetMapping("goodDetail")
 	public String getGoodDetail(String productCode, Model model) {
 		ProductVO vo = new ProductVO();
 		vo.setProductCode(productCode);
-		
+
 		ReviewVO reviewVO = new ReviewVO();
 		reviewVO.setProductCode(productCode);
-		
+
 		ProductVO productVO = productService.goodsDetail(vo);
 		model.addAttribute("goods", productVO);
-		
-		
-		//리뷰조회
+
+		// 리뷰조회
 		model.addAttribute("review", reviewService.getReviewList(reviewVO));
 		System.out.println(model);
-		
+
 		return "page/goods/goodDetail";
 	}
-	
-	
+
 }

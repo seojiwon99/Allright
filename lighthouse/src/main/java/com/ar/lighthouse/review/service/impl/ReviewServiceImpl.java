@@ -11,7 +11,7 @@ import com.ar.lighthouse.review.service.ReviewService;
 import com.ar.lighthouse.review.service.ReviewVO;
 
 @Service
-public class ReviewServiceImpl implements ReviewService{
+public class ReviewServiceImpl implements ReviewService {
 
 	@Autowired
 	ReviewMapper mapper;
@@ -31,7 +31,9 @@ public class ReviewServiceImpl implements ReviewService{
 		mapper.insertReviewImg(reviewImgVO);
 	}
 
-	
-	
-	
+	@Override
+	public boolean removeReview(String memberId) {
+		return mapper.deleteReview(memberId) == 1;
+	}
+
 }

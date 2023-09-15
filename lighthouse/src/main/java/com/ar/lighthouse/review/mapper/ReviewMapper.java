@@ -18,4 +18,8 @@ public interface ReviewMapper {
 	
 	//리뷰 이미지등록
 	public void insertReviewImg(ReviewImgVO reviewImgVO);
+	
+	//리뷰 삭제
+	public int deleteReview(String memberId); 
+	
 }
