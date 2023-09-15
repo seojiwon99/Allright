@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.ar.lighthouse.buyp.service.BuyInfoVO;
 import com.ar.lighthouse.buyp.service.BuyerPageService;
+import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.buyp.service.TradeVO;
 
@@ -31,10 +32,10 @@ public class BuyerPageController {
 	@Autowired
 	BuyerPageService buyerPageService;
 	
-//	@GetMapping("page/buyer/mypage")
-//	public void Body() {
-//		
-//	}
+	@GetMapping("page/buyer/myCoupon")
+	public void Body() {
+		
+	}
 	
 	//주문목록	
 	@GetMapping("page/buyer/orderList/{memberId}")
@@ -62,6 +63,16 @@ public class BuyerPageController {
 		model.addAttribute("tradeList", tradeList);
 		return "/page/buyer/tradeList";
 	}
+	
+	//쿠폰내역
+	@GetMapping("page/buyer/myCoupon/{memberId}")
+	public String MyCoupon(@PathVariable String memberId, Model model) {
+		List<CouponVO> myCoupon = buyerPageService.getCouponList(memberId);
+		model.addAttribute("myCoupon", myCoupon);
+		
+		return "/page/buyer/myCoupon";
+	}
+	
 	
 	//개인정보수정
 	@PostMapping("page/buyer/personalInfo/{memberId}")

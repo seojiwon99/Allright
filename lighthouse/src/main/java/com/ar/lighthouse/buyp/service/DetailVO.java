@@ -1,6 +1,7 @@
 package com.ar.lighthouse.buyp.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -27,12 +28,13 @@ public class DetailVO {
 	private String productName;
 	private String productCode;
 	
-	//이미지 테이블 조인
-	private int imgCode;
-	private String imgContent;
-	private String imgName;
-	private String uploadName;
-	private int imgOrder;
+//	//이미지 테이블 조인
+//	private int imgCode;
+//	private String imgContent;
+//	private String imgName;
+//	private String uploadName;
+//	private int imgOrder;
 	
+	private List<ImgVO> imgList;
 	
 }

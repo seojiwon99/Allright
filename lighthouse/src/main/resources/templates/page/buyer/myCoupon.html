@@ -31,7 +31,7 @@
 				<div class="col-12 text-center">
 
 					<!-- Heading -->
-					<h3 class="mb-10">My Account</h3>
+					<h3 class="mb-10">My Coupon</h3>
 
 				</div>
 			</div>
@@ -61,6 +61,122 @@
                 </a>
               </div>
             </nav>
+			</div>
+			<div class="col-12 col-md-9 col-lg-8 offset-lg-1">
+			
+            <!-- Order -->
+            <div class="card card-lg mb-5 border">
+              <div class="card-body pb-0">
+				<!-- 반복문 시작 -->
+                <!-- Info -->
+                
+                <div class="card card-sm">
+                
+                <div th:each="coups : ${myCoupon}">
+                  <div class="card-body bg-light">
+                    <div class="row">
+                      <div class="col-6 col-lg-3">
+    					
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">쿠폰 번호:</h6>
 
+                        <!-- Text -->
+                        <p class="mb-lg-0 fs-sm fw-bold">
+                          <span th:text= "|${coups.couponCode}|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">쿠폰 명:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-lg-0 fs-sm fw-bold">
+                          <time datetime="2019-10-01">
+                           <span th:text= "|${coups.couponName}|"></span>
+                          </time>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">쿠폰 설명:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${coups.couponContent}|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">사용조건:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${coups.couponCondition}|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">사용기한:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${coups.couponDeadline}|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">주문 금액:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text=""></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">배달 완료 날짜:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                         <span th:text=""></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">이미지:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                          
+                        </p>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+				</div>
+              
+
+            </div>
+
+          </div>
+        </div>
+			</div>
+			</div>
+			</section>
 </div>
 </html>

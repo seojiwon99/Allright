@@ -14,6 +14,9 @@ public interface BuyerPageService {
 	//취소,반품,교환내역 가져오기
 	public List<TradeVO> getTradeList(String memberId);
 	
+	//쿠폰 내역
+	public List<CouponVO> getCouponList(String memberId);
+	
 	//개인 정보 수정
 	public int editInfo(BuyInfoVO buyInfoVO, String memberId);
 

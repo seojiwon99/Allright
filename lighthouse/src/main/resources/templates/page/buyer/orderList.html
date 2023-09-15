@@ -145,7 +145,7 @@
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                          <img th:src="@{/img/products/product-1.jpg}" style="max-width: 100%; height: auto" th:alt="${imgContent}"></img>
+                          <img th:each="imgs : ${lists.imgList}" th:src="" style="max-width: 100%; height: auto" th:alt="${imgs.imgContent}"></img>
                         </p>
 
                       </div>
