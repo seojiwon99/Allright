@@ -99,18 +99,6 @@ public class ProductController {
 		return "page/seller/modifyForm";
 	}
 
-//	다건삭제
-	@PostMapping("productDelete")
-	@ResponseBody
-	public List<String> productDelete(@RequestBody List<ProductVO> productList) {
-		List<String> delList = new ArrayList();
-
-		for (ProductVO productVO : productList) {
-			int result = productService.productDelete(productVO);
-			if (result > 0) {
-				delList.add(productVO.getProductCode());
-			}
-		}
     
 //	선택전시상태변경
 	@PostMapping("updateExStatus")
