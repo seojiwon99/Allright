@@ -1,100 +1,231 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/default_layout}">
+   xmlns:th="http://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{layouts/default_layout}">
 
 <!-- Content -->
 <div layout:fragment="content">
-    <!-- BREADCRUMB -->
-    <nav class="py-5">
+   <!-- BREADCRUMB -->
+   <nav class="py-5">
       <div class="container">
-        <div class="row">
-          <div class="col-12">
+         <div class="row">
+            <div class="col-12">
 
-            <!-- Breadcrumb -->
-            <ol class="breadcrumb mb-0 fs-xs text-gray-400">
-              <li class="breadcrumb-item">
-                <a class="text-gray-400" href="index.html">Home</a>
-              </li>
-              <li class="breadcrumb-item active">
-                문의하기
-              </li>
-            </ol>
+               <!-- Breadcrumb -->
+               <ol class="breadcrumb mb-0 fs-xs text-gray-400">
+                  <li class="breadcrumb-item"><a class="text-gray-400"
+                     href="index.html">Home</a></li>
+                  <li class="breadcrumb-item active">문의하기</li>
+               </ol>
 
-          </div>
-        </div>
+            </div>
+         </div>
       </div>
-    </nav>
-    
-    <!-- CONTENT -->
-    <section class="pt-7 pb-15">
+   </nav>
+
+   <!-- CONTENT -->
+   <section class="pt-7 pb-15">
       <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-12 col-lg-10 col-xl-8">
-          	<h2>문의하기</h2>
-          	<div class="mb-3">
-			  <label for="exampleFormControlInput1" class="form-label">Title</label>
-			  <input type="text" class="form-control" id="title" placeholder="제목">
-			</div>
-			<div class="mb-3">
-			  <label for="exampleFormControlTextarea1" class="form-label">content</label>
-			  <textarea class="form-control" id="content" rows="3"></textarea>
-			</div>
-			<div class="row">
-          <div class="col-12 text-center">
+         <div class="row justify-content-center">
+            <div class="col-12 col-lg-10 col-xl-8" id="inqForm">
+               <h2>문의하기</h2>
+               <div class="mb-3">
+                  <label for="title" class="form-label">Title</label> <input
+                     type="text" class="form-control" id="title" placeholder="제목을 입력해주세요">
+               </div>
+               <div class="mb-3">
+                  <label for="content" class="form-label">content</label>
+                  <textarea class="form-control" id="content" rows="3" placeholder="문의 내용을 입력해주세요"></textarea>
+               </div>
+               <div class="row">
+                  <div class="col-12 text-center">
 
-            <!-- Button -->
-            <button class="btn btn-dark" id="addBtn">
-              문의하기
-            </button>
-            <button class="btn btn-gray-500" id="cancleBtn">
-              취소
-            </button>
+                     <!-- Button -->
+                     <button class="btn btn-dark" id="addBtn">문의하기</button>
+                     <button class="btn btn-gray-500" id="cancleBtn">취소</button>
 
-          </div>
-        </div>
-          </div>
-        </div>
+                  </div>
+               </div>
+               
+            </div>
+         </div>
       </div>
-    </section>
-    <script>
-	$('#addBtn').on('click',function(e){
-		let title = $('#title').val();
-		let content = $('#content').val();
-		
-		if(title == ''){
-			alert("제목을 입력해주세요");
-			return;
-		}
-		if(content == ''){
-			alert("내용을 입력해주세요");
-			return;
-		}
-		$.ajax({
-			url:'custom/inquiryInsert'
-			type:'post',
-			data :{
-				title:title,
-				content:content
-			},
-			success : function(result){
-				if(result == 'success'){
-					alert("문의 성공");
-				}else{
-					alert("문의 실패");	
-				}
-			},
-			error: function(err){
-				console.log(err);
-			}
-		
-			
-		})
-		
-		alert("여기");	
-	})
-	
+   </section>
+   <script>
+    const speech = new webkitSpeechRecognition;
+
+   $('#addBtn').on('click',function(e){
+      let title = $('#title').val();
+      let content = $('#content').val();
+      let data  = {
+         customInquiryTitle:title,
+         customInquiryContent:content
+      }
+      
+      if(title == ''){
+         alert("제목을 입력해주세요");
+         return;
+      }
+      if(content == ''){
+         alert("내용을 입력해주세요");
+         return;
+      }
+      ajaxFnc(data);
+      
+   })
+   
+   function ajaxFnc(obj){
+      console.log(obj);
+      $.ajax({
+         url:'/custom/inquiryInsert',
+         type:'post',
+         data : JSON.stringify(obj),
+         contentType:'application/json',
+         success : function(result){
+            if(result == 'success'){
+               alert("문의 성공");
+               location.href="/"
+            }else{
+               alert("문의 실패");   
+            }
+         },
+         error: function(err){
+            console.log(err);
+         }
+      })
+      
+   }
+
+   // 먼저 읽히는것 
+   $(document).ready(function() {
+       let text = "1:1문의 등록 화면입니다. 엔티키를 누르면 다음으로 이동합니다.";
+       VoiceTest(text);
+   
+   });
+   
+   let index = 0;   
+   $(document).on('keyup',function(e){
+      
+
+      if(e.keyCode== 13){
+         e.preventDefault();
+         var tabList = new Array();
+
+         let inputBox = $('#inqForm input');
+         
+         $(inputBox).each(function(idx, item){
+            console.log($(item).attr('type'));
+            if($(item).prop('tagName').toLowerCase() == 'input'){
+               if($(item).attr('type').toLowerCase() == 'text'){
+                  if($(item).attr("disabled", false) || $(item).attr("readonly",false)){
+                     tabList.push(item);
+                  }
+               }
+            }
+         })
+         
+         let textArea = $('#inqForm textarea');
+         tabList.push($(textArea));
+         console.log(index);
+         console.log(tabList.length);
+         if(index == tabList.length){
+            // alert("asd");
+            console.log(e.keyCode);
+            let text ='';
+            $(tabList).each(function(idx,item){
+               text += $(item).prev().text();
+               if($(item).val() != ''){
+                  text += $(item).val();               
+               }else{
+                  text += "비어있습니다";
+               }
+            })
+            console.log($('#title').val());
+            if($('#title').val() == '' || $('#content').val() == ''){
+               text += "빈값을 넣어주세요";
+               VoiceTest(text);
+               index = 0;
+               return;
+            }
+            text +=" 를 정말 등록 하시겠습니까? 등록하시면 엔터 아니면 esc를 누르면 처음부터 읽어줍니다";
+            VoiceTest(text);
+            
+            $(document).on('keyup',function(e){
+               if(e.keyCode == 79){
+                  let data  = {
+                     customInquiryTitle:$('#title').val(),
+                     customInquiryContent:$('#content').val()
+                  }
+                  ajaxFnc(data);
+
+               }
+            })
+      
+
+                  
+         }
+         let text = $(tabList[index]).attr('placeholder');
+         if(index != 2){
+            VoiceTest(text);            
+            index++;
+         }
+         
+         speech.start();
+      
+         
+         speech.addEventListener("result", (event)=>{
+              const { transcript } = event["results"][0][0];
+              resultListView(transcript,tabList[index-1]);
+          });
+
+
+         
+         // speech.stop();
+      
+      }else if(e.keyCode== 16){
+         index--;
+         e.preventDefault();
+         var tabList = new Array();
+
+         let inputBox = $('#inqForm input');
+         $(inputBox).each(function(idx, item){
+            if($(item).prop('tagName').toLowerCase() == 'input'){
+               if($(item).attr('type').toLowerCase() == 'text'){
+                  if($(item).attr("disabled", false) || $(item).attr("readonly",false)){
+                     tabList.push(item);
+                  }
+               }
+            }
+         })
+         
+         let textArea = $('#inqForm textarea');
+      
+         console.log(index);
+         
+         if(index == tabList.length){
+            alert("등록하시겠습니까?");
+            return;
+         }
+         tabList[index].focus();
+      }else if(e.keyCode == 65){
+         let count = $('#keycount').val();
+         if(count == 0){
+            speech.start();            
+            $('#keycount').val(1);
+         }else{
+            speech.stop();
+            $('#keycount').val(1);
+         }
+      }
+   }) 
+   
+      function resultListView(transcript,tag){
+      	$(tag).val(transcript);
+        // console.log(transcript);
+     }
+   
+   
     </script>
 </div>
 </html>

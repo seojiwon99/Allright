@@ -18,7 +18,7 @@
 		<collection property="productImg" resultMap="productImg" />
 	</resultMap>
 
-	<resultMap type="ProductImgVO" id="productImg">
+	<resultMap type="imgsVO" id="productImg">
 		<result property="uploadName" column="upload_name" />
 		<result property="imgContent" column="img_content" />
 	</resultMap>
@@ -26,7 +26,7 @@
 	<select id="selProductList" resultMap="productMap">
 		select p.product_code, product_name, upload_name, img_content, product_cost
 		from ar_products
-		p join ar_product_img i
+		p join ar_imgs i
 		on p.product_code = i.product_code
 		order by product_regdate DESC
 
@@ -36,7 +36,7 @@
 	<select id="randomSelProduct" resultType="ProductVO">
 	select p.product_code, product_name, upload_name, img_content, product_cost
 		from ar_products
-		p join ar_product_img i
+		p join ar_imgs i
 		on p.product_code = i.product_code
 		<![CDATA[
 		where rownum < 8
@@ -53,5 +53,10 @@
 	CONNECT BY PRIOR category_code = parent_category_code
 	</select>
 
+	<select id="childCategory" resultType="CategoryVO">
+	SELECT *
+	FROM ar_category
+	where parent_category_code = #{categoryCode}
+	</select>
 
 </mapper>

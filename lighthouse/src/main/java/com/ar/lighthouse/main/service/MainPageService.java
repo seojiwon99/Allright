@@ -8,6 +8,8 @@ import com.ar.lighthouse.product.service.ProductVO;
 public interface MainPageService {
 	public List<CategoryVO> getCategoryList();
 	
+	public List<CategoryVO> getchildCategory(CategoryVO cate);
+	
 	public List<ProductVO> selProductList();
 	
 	public List<EventImgVO> showEventBanner();

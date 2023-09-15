@@ -5,14 +5,18 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class ProductImgVO {
+public class ImgsVO {
 
+	
 	int imgCode;
-	String productCode;
+	String parentCode;
 	int imgOrder;
 	String imgName;
 	String uploadName;
 	String imgContent;
 	Date imgRegdate;
+	String imgFromtable;
+	String productCode;
+	String reviewCode;
 
 }

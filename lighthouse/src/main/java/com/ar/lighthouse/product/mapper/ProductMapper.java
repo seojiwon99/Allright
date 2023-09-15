@@ -10,22 +10,24 @@ import com.ar.lighthouse.product.service.ProductVO;
 @Mapper
 public interface ProductMapper {
 	
-	public List<ProductVO> productList(ProductVO productVO);
+	public List<ProductVO> selectProductList(ProductVO productVO);
 	
 //	order by
-	public List<ProductVO> selectProduct(ProductVO productVO);
+	public List<ProductVO> selectOptionProduct(ProductVO productVO);
 	
 	
 //	등록
 	public int insertProduct(ProductVO productVO);
-//	public int insertOption(OptionVO optionVO);
+	public int insertProduct(OptionVO optionVO);
 	
 //	수정
 	public int modifyProduct(ProductVO productVO);
 	
-//	삭제
-	public int productDelete(ProductVO productVO);
+//	전시상태 수정
+	public int updateExStatus(ProductVO productVO);
 
+	
+	
 	//상품 단건조회페이지
 	public ProductVO selectInfo(ProductVO productVO);
 	

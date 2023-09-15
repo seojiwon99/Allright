@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.ar.lighthouse.review.mapper.ReviewMapper">
+  	
+  	<select id="selectReviewList" resultType="ReviewVO">
+  	select 
+  	member_id
+  	,product_code
+  	,review_content
+  	,review_star
+  	,review_regdate
+  	from ar_review 
+  	where product_code = #{productCode}
+  	order by review_regdate DESC
+  	</select>
+  	
+  	<insert id="insertReview" parameterType="ReviewVO">
+  	<selectKey resultType="int" keyProperty="reviewCode" order="BEFORE">
+  		SELECT NVL(0,MAX(review_code))+1 FROM ar_review  
+  	</selectKey>
+  	insert into ar_review 
+  		(
+  		review_code
+  		,product_code
+  		,member_id
+  		,review_content
+  		,review_star
+  		)
+	values 
+		(
+		#{reviewCode}
+		,#{productCode}
+		,#{memberId}
+		,#{reviewContent}
+		,#{reviewStar}
+		)
+  	</insert>
+  	
+  	<insert id="insertReviewImg">
+  	<selectKey resultType="int" keyProperty="reviewImgCode" order="BEFORE">	
+  		SELECT NVL(0, MAX(img_code))+1 FROM ar_imgs  
+  	</selectKey>
+  		insert into ar_imgs
+    		(img_code
+    		,parent_code
+    		,img_order
+    		,img_name
+    		,upload_name
+    		,img_content
+    		,img_regdate
+    		, img_fromtable)
+    	values(
+    		#{imgCode}
+    	   ,#{parentCode}
+    	   ,#{imgOrder}
+    	   ,#{imgName}
+    	   ,#{uploadName}
+    	   ,#{imgContent}
+    	   ,#{imgRegdate}
+    	   ,#{imgFromtable}
+  	</insert>
+  	
+  	<delete id="deleteReview">
+  		DELETE FROM ar_review WHERE member_id = #{memberId}
+  	</delete>
+  	
+  </mapper>
