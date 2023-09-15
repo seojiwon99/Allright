@@ -49,8 +49,7 @@
 	SELECT *
 	FROM ar_category
 	where category_level = 1
-	START WITH parent_category_code IS NULL
-	CONNECT BY PRIOR category_code = parent_category_code
+	order by category_name desc
 	</select>
 
 	<select id="childCategory" resultType="CategoryVO">

@@ -50,10 +50,10 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="notice,status : ${noticeList}" th:onclick="|location.href='@{/custom/noticeInfo/(noticeCode=${notice.noticeCode},pageNum=${pageMaker.cri.pageNum})}'|">
-								<input type="hidden" th:value="${notice.noticeCode}" th:id="|code${status.index}|">
+							<tr th:each="notice,status : ${noticeList}">
+								<td style="display:none;"><input type="hidden" th:value="${notice.noticeCode}" th:id="|code${status.index}|"></td>
 								<td th:id="|type${status.index}|">[[${notice.noticeType} == 'Y' ? '공지' : ${pageMaker.total} - (((${pageMaker.cri.pageNum}-1)* ${pageMaker.cri.amount}) + ${status.index})]]</td>
-								<td th:id="|title${status.index}|">[[${notice.noticeTitle}]]</td>
+								<td th:id="|title${status.index}|" th:onclick="|location.href='@{/custom/noticeInfo/(noticeCode=${notice.noticeCode},pageNum=${pageMaker.cri.pageNum})}'|">[[${notice.noticeTitle}]]</td>
 								<td th:id="|writer${status.index}|">[[${notice.noticeWriter}]]</td>
 								<td th:id="|date${status.index}|">[[${#dates.format(notice.noticeRegdate,'yyyy-MM-dd')}]]</td>
 							</tr>

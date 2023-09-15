@@ -37,9 +37,11 @@
                 )nt
                 <![CDATA[
                 where rownum <= #{pageNum} * #{amount}
+                 ]]>
+                order by notice_type desc, notice_regdate desc
                 )
 		 WHERE rn > ( #{pageNum} - 1) * #{amount}
-		 ]]>
+		
   	</select>
   	
   	<!-- 공지사항 갯수 -->
