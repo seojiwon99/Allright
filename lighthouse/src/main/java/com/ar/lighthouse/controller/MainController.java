@@ -7,6 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.ar.lighthouse.main.service.MainPageService;
 
+
+/*
+  개발자 : 김무준
+  개발일자 : 2023/09/13
+  		메인페이지관리
+ */
+
 @Controller
 public class MainController {
 
