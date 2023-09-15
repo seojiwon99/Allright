@@ -95,6 +95,7 @@
 		<script>
 		var AudioContext;
 		var audioContext;
+		let xhr = new XMLHttpRequest();
 		
 		window.onload = function() {
 		    navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
@@ -111,11 +112,12 @@
 		
 		});
 
-		
+		var httpRequest = new XMLHttpRequest();
 		$(document).on('keydown',function(e){
 			let index = $('#index').val();
 			if(e.keyCode == 13){
 				VoiceRead(index);
+				httpRequest.abort();
 				return;
 			}
 			if(e.keyCode == 9){
@@ -179,7 +181,7 @@
 				data : JSON.stringify(data),
 				dataType : 'JSON',
 				contentType : "application/json; charset=UTF-8",
-				success : function(res) {
+				success : function(res,xhr) {
 					$('#menuText').val(res.audioContent)
 					var audioFile = new Audio();
 					let audioBlob = base64ToBlob(res.audioContent,
@@ -223,7 +225,7 @@
 				data : JSON.stringify(data),
 				dataType : 'JSON',
 				contentType : "application/json; charset=UTF-8",
-				success : function(res) {
+				success : function(res,xhr) {
 					$('#menuText').val(res.audioContent)
 					var audioFile = new Audio();
 					let audioBlob = base64ToBlob(res.audioContent,
@@ -267,13 +269,13 @@
 					"audioEncoding" : "mp3"
 				}
 			}
-			$.ajax({
+			xhr = $.ajax({
 				type : 'POST',
 				url : 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
 				data : JSON.stringify(data),
 				dataType : 'JSON',
 				contentType : "application/json; charset=UTF-8",
-				success : function(res) {
+				success : function(res,xhr) {
 					$('#menuText').val(res.audioContent)
 					var audioFile = new Audio();
 					let audioBlob = base64ToBlob(res.audioContent,
