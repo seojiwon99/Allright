@@ -96,22 +96,32 @@
 										</div>
 										<div class="rating-item">
 											<i class="fas fa-star"></i>
+
 										</div>
 									</div>
 
-									<a class="fs-sm text-reset ms-2" href="#reviews">
-										review(리뷰수) </a>
+									
 								</div>
 							</div>
 
 							<!-- Heading -->
 							<h3 class="mb-2" th:text="${goods.productName}"></h3>
 
-							<!-- Price -->
+							<!-- Price 
 							<div class="mb-7">
 								<span class="fs-lg fw-bold text-gray-350">price</span> <span
 									class="ms-1 fs-5 fw-bolder text-black"
 									th:text="${goods.productCost}+원"></span>
+							</div>
+							-->
+							<!-- Price -->
+							<div class="mb-7">
+								<span
+									class="fs-lg fw-bold text-gray-350 text-decoration-line-through"
+									th:text="${goods.productCost}+원"></span>
+								<!-- 할인가격 -->
+								<span class="ms-1 fs-5 fw-bolder text-primary"
+									th:text="${goods.salePrice}+원"></span>
 							</div>
 
 							<!-- Form -->
@@ -191,10 +201,9 @@
 
 									<!-- Text -->
 									<p>
-										<span class="text-gray-500">아이디가 없나요?</span> 
-										<a class="text-reset text-decoration-underline"
-										id="loginTag"
-											>지금 바로 회원가입!</a>
+										<span class="text-gray-500">아이디가 없나요?</span> <a
+											class="text-reset text-decoration-underline" id="loginTag">지금
+											바로 회원가입!</a>
 									</p>
 
 
@@ -215,11 +224,11 @@
 					<!-- Nav -->
 
 					<div
-						class="nav nav-tabs nav-overflow justify-content-start justify-content-md-center border-bottom">
-						<a class="nav-link active" data-bs-toggle="tab"
-							href="#descriptionTab"> 상세정보 </a> <a class="nav-link"
-							data-bs-toggle="tab" href="#sizeTab"> 리뷰 </a> <a class="nav-link"
-							data-bs-toggle="tab" href="#shippingTab"> Q&A </a>
+						class="nav nav-tabs nav-overflow justify-content-start justify-content-md-center border-bottom"
+						style="font-size: 24px">
+						<a class="nav-link" href="#descriptionTab"> 상세정보 </a> <a
+							class="nav-link" href="#sizeTab"> 리뷰 </a> <a class="nav-link"
+							href="#qnaTap"> Q&A </a>
 					</div>
 
 					<!-- Content -->
@@ -227,7 +236,7 @@
 						<div class="tab-pane fade show active" id="descriptionTab">
 
 							<div style="padding-top: 48px;">
-								<h4 class="mb-5 text-center">표기 정보</h4>
+								<h5 class="mb-5 text-center">표기 정보</h5>
 								<table class="table">
 									<thead>
 										<tr>
@@ -246,7 +255,8 @@
 										</tr>
 										<tr>
 											<td scope="row" style="font-weight: 600">등록날짜</td>
-											<td scope="row" th:text="${#dates.format(goods.productRegdate,'yyyy년 MM월 dd일')}"></td>
+											<td scope="row"
+												th:text="${#dates.format(goods.productRegdate,'yyyy년 MM월 dd일')}"></td>
 										</tr>
 										<tr>
 
@@ -266,19 +276,20 @@
 							</div>
 
 							<!-- 상세이미지 -->
-							<div style="background-color: grey; padding: 48px 0px"  >
-								<img alt="" src="" style="width: 928px; height: 1120px" class="rounded mx-auto d-block">
+							<div style="background-color: grey; padding: 48px 0px">
+								<img alt="" src="" style="width: 928px; height: 1120px"
+									class="rounded mx-auto d-block">
 							</div>
 
 						</div>
 
-						<div class="tab-pane fade" id="sizeTab">
+						<div>
 							<section class="pt-9 pb-11" id="reviews">
 								<div class="container">
 									<div class="row">
-										<div class="col-12">
+										<div class="col-12" id="sizeTab">
 											<!-- Heading -->
-											<h4 class="mb-10 text-center">리뷰</h4>
+											<h5 class="mb-10 text-center">리뷰</h5>
 
 
 											<!-- Header -->
@@ -321,7 +332,7 @@
 													</div>
 
 													<!-- Count -->
-													<strong class="fs-sm ms-2">Reviews (3)</strong>
+													<strong class="fs-sm ms-2" >Reviews (3)</strong>
 												</div>
 												<div class="col-12 col-md-auto">
 													<!-- Button -->
@@ -336,11 +347,11 @@
 												<hr class="my-8" />
 
 												<!-- Form -->
-												<form>
+												<form th:action="@{reviewInsert}" method="post">
 													<div class="row">
 														<div class="col-12 mb-6 text-center">
 															<!-- Text -->
-															<p class="mb-1 fs-xs">Score:</p>
+															<p class="mb-1 fs-xs">별점:</p>
 
 															<!-- Rating form -->
 															<div class="rating-form">
@@ -368,46 +379,48 @@
 																</div>
 															</div>
 														</div>
-														<div class="col-12 col-md-6">
-															<!-- Name -->
-															<div class="form-group">
-																<label class="visually-hidden" for="reviewName">Your
-																	Name:</label> <input class="form-control form-control-sm"
-																	id="reviewName" type="text" placeholder="Your Name *"
-																	required />
+
+														<div class="col-12 mb-6 text-center">
+															<!-- Text -->
+															<p class="mb-1 fs-xs">이미지:
+																</p>
+															<input type="file" >
+															
+															<!-- Rating form -->
+															<div class="rating-form">
+																<!-- Input -->
+																<input class="rating-input" type="range" min="1" max="5"
+																	value="5" />
+
+																<!-- 이미지 등록 -->
+																<div class="rating h5 text-dark" data-value="5"></div>
 															</div>
 														</div>
-														<div class="col-12 col-md-6">
-															<!-- Email -->
-															<div class="form-group">
-																<label class="visually-hidden" for="reviewEmail">Your
-																	Email:</label> <input class="form-control form-control-sm"
-																	id="reviewEmail" type="email"
-																	placeholder="Your Email *" required />
-															</div>
-														</div>
+
 														<div class="col-12">
-															<!-- Name -->
+															<!-- 유저네임 -->
 															<div class="form-group">
-																<label class="visually-hidden" for="reviewTitle">Review
-																	Title:</label> <input class="form-control form-control-sm"
-																	id="reviewTitle" type="text"
-																	placeholder="Review Title *" required />
+																<label class="visually-hidden" for="memberId" ></label>
+																<input class="form-control form-control-sm" 
+																	id="memberId" type="text" required value="iii"/>
 															</div>
+															
 														</div>
+
+
 														<div class="col-12">
-															<!-- Name -->
+															<!-- 내용 -->
 															<div class="form-group">
-																<label class="visually-hidden" for="reviewText">Review:</label>
+																<label class="visually-hidden" for="reviewContent">Review:</label>
 																<textarea class="form-control form-control-sm"
-																	id="reviewText" rows="5" placeholder="Review *"
+																	id="reviewContent" rows="5" placeholder="내용을 입력해주세요" 
 																	required></textarea>
 															</div>
 														</div>
 														<div class="col-12 text-center">
 															<!-- Button -->
-															<button class="btn btn-outline-dark" type="submit">
-																Post Review</button>
+															<button class="btn btn-outline-dark" type="submit" >
+																리뷰 등록</button>
 														</div>
 													</div>
 												</form>
@@ -416,15 +429,17 @@
 											<!-- Reviews -->
 											<div class="mt-8">
 												<!-- Review -->
-												<div class="review">
+												<div class="review" th:each="review:${review}">
 													<div class="review-body">
 														<div class="row">
 															<div class="col-12 col-md-auto">
 																<!-- Avatar -->
-																<div class="avatar avatar-xxl mb-6 mb-md-0">
-																	<span class="avatar-title rounded-circle"> <i
-																		class="fa fa-user"></i>
+																<div class="mb-6 mb-md-0"
+																	style="width: 180px; height: 180px">
+																	<span class="avatar-title circle"> 이미지 없음<i
+																		class="fas fa-image"></i>
 																	</span>
+																	<!-- <img alt="" src=""> -->
 																</div>
 															</div>
 															<div class="col-12 col-md">
@@ -432,48 +447,52 @@
 																<div class="row mb-6">
 																	<div class="col-12">
 																		<!-- Rating -->
-																		<div class="rating fs-sm text-dark" data-value="5">
-																			<div class="rating-item">
-																				<i class="fas fa-star"></i>
+																		<div class="rating fs-sm text-dark" data-value="5"
+																			style="padding: 0"
+																			th:with="start=1, end=(${review.reviewStar})">
+																			<div class="rating-item"
+																				th:each="p : ${#numbers.sequence(start, end)}">
+
+																				<div class="rating-item">
+																					<span class="fas fa-star"></span>
+																				</div>
 																			</div>
-																			<div class="rating-item">
-																				<i class="fas fa-star"></i>
+
+																			<div class="rating fs-sm text-dark" data-value="5"
+																				th:with="start=(${review.reviewStar}), end=4">
+																				<div class="rating-item"
+																					th:if="${review.reviewStar <5}"
+																					th:each="p : ${#numbers.sequence(start, end)}">
+
+																					<div class="rating-item">
+																						<i class="fas fa-star" style="opacity: 0.2"></i>
+																					</div>
+																				</div>
 																			</div>
-																			<div class="rating-item">
-																				<i class="fas fa-star"></i>
-																			</div>
-																			<div class="rating-item">
-																				<i class="fas fa-star"></i>
-																			</div>
-																			<div class="rating-item">
-																				<i class="fas fa-star"></i>
-																			</div>
+
 																		</div>
+
+
+
+
+
 																	</div>
 																	<div class="col-12">
 																		<!-- Time -->
-																		<span class="fs-xs text-muted"> Logan Edwards,
-																			<time datetime="2019-07-25">25 Jul 2019</time>
-																		</span>
+																		<span class="fs-xs text" th:text="${review.memberId}"></span>
+																		<span class="fs-xs text-muted"
+																			th:text="${#dates.format(review.reviewRegdate,'yyyy-MM-dd HH:mm')}"></span>
+
 																	</div>
 																</div>
 
-																<!-- Title -->
-																<p class="mb-2 fs-lg fw-bold">So cute!</p>
-
 																<!-- Text -->
-																<p class="text-gray-500">Justo ut diam erat
-																	hendrerit. Morbi porttitor, per eu. Sodales curabitur
-																	diam sociis. Taciti lobortis nascetur. Ante laoreet
-																	odio hendrerit. Dictumst curabitur nascetur lectus
-																	potenti dis sollicitudin habitant quis vestibulum.</p>
+																<p class="text-gray-500"
+																	th:text="${review.reviewContent}"></p>
 
 																<!-- Footer -->
 																<div class="row align-items-center">
-																	<div class="col-auto d-none d-lg-block">
-																		<!-- Text -->
-																		<p class="mb-0 fs-sm">Was this review helpful?</p>
-																	</div>
+
 																	<div class="col-auto me-auto">
 																		<!-- Rate -->
 																		<div class="rate">
@@ -486,14 +505,11 @@
 																			</a>
 																		</div>
 																	</div>
-																	<div class="col-auto d-none d-lg-block">
-																		<!-- Text -->
-																		<p class="mb-0 fs-sm">Comments (0)</p>
-																	</div>
+
 																	<div class="col-auto">
 																		<!-- Button -->
-																		<a class="btn btn-xs btn-outline-border" href="#!">
-																			Comment </a>
+																		<button class="btn btn-xs btn-outline-border">신고하기</button>
+																		<button class="btn btn-xs btn-outline-border">삭제하기</button>
 																	</div>
 																</div>
 															</div>
@@ -502,174 +518,7 @@
 												</div>
 
 												<!-- Review -->
-												<div class="review">
-													<!-- Body -->
-													<div class="review-body">
-														<div class="row">
-															<div class="col-12 col-md-auto">
-																<!-- Avatar -->
-																<div class="avatar avatar-xxl mb-6 mb-md-0">
-																	<span class="avatar-title rounded-circle"> <i
-																		class="fa fa-user"></i>
-																	</span>
-																</div>
-															</div>
-															<div class="col-12 col-md">
-																<!-- Header -->
-																<div class="row mb-6">
-																	<div class="col-12">
-																		<!-- Rating -->
-																		<div class="rating fs-sm text-dark" data-value="3">
-																			<div class="rating-item">
-																				<i class="fas fa-star"></i>
-																			</div>
-																			<div class="rating-item">
-																				<i class="fas fa-star"></i>
-																			</div>
-																			<div class="rating-item">
-																				<i class="fas fa-star"></i>
-																			</div>
-																			<div class="rating-item">
-																				<i class="fas fa-star"></i>
-																			</div>
-																			<div class="rating-item">
-																				<i class="fas fa-star"></i>
-																			</div>
-																		</div>
-																	</div>
-																	<div class="col-12">
-																		<!-- Time -->
-																		<span class="fs-xs text-muted"> Sophie Casey, <time
-																				datetime="2019-07-07">07 Jul 2019</time>
-																		</span>
-																	</div>
-																</div>
 
-																<!-- Title -->
-																<p class="mb-2 fs-lg fw-bold">Cute, but too small</p>
-
-																<!-- Text -->
-																<p class="text-gray-500">Shall good midst can't.
-																	Have fill own his multiply the divided. Thing great. Of
-																	heaven whose signs.</p>
-
-																<!-- Footer -->
-																<div class="row align-items-center">
-																	<div class="col-auto d-none d-lg-block">
-																		<!-- Text -->
-																		<p class="mb-0 fs-sm">Was this review helpful?</p>
-																	</div>
-																	<div class="col-auto me-auto">
-																		<!-- Rate -->
-																		<div class="rate">
-																			<a class="rate-item" data-toggle="vote"
-																				data-count="2" href="#" role="button"> <i
-																				class="fe fe-thumbs-up"></i>
-																			</a> <a class="rate-item" data-toggle="vote"
-																				data-count="1" href="#" role="button"> <i
-																				class="fe fe-thumbs-down"></i>
-																			</a>
-																		</div>
-																	</div>
-																	<div class="col-auto d-none d-lg-block">
-																		<!-- Text -->
-																		<p class="mb-0 fs-sm">Comments (1)</p>
-																	</div>
-																	<div class="col-auto">
-																		<!-- Button -->
-																		<a class="btn btn-xs btn-outline-border" href="#!">
-																			Comment </a>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-
-													<!-- Child review -->
-													<div class="review review-child">
-														<div class="review-body">
-															<!-- Content -->
-															<div class="row">
-																<div class="col-12 col-md-auto">
-																	<!-- Avatar -->
-																	<div class="avatar avatar-xxl mb-6 mb-md-0">
-																		<span class="avatar-title rounded-circle"> <i
-																			class="fa fa-user"></i>
-																		</span>
-																	</div>
-																</div>
-																<div class="col-12 col-md">
-																	<!-- Header -->
-																	<div class="row mb-6">
-																		<div class="col-12">
-																			<!-- Rating -->
-																			<div class="rating fs-sm text-dark" data-value="4">
-																				<div class="rating-item">
-																					<i class="fas fa-star"></i>
-																				</div>
-																				<div class="rating-item">
-																					<i class="fas fa-star"></i>
-																				</div>
-																				<div class="rating-item">
-																					<i class="fas fa-star"></i>
-																				</div>
-																				<div class="rating-item">
-																					<i class="fas fa-star"></i>
-																				</div>
-																				<div class="rating-item">
-																					<i class="fas fa-star"></i>
-																				</div>
-																			</div>
-																		</div>
-																		<div class="col-12">
-																			<!-- Time -->
-																			<span class="fs-xs text-muted"> William
-																				Stokes, <time datetime="2019-07-14">14 Jul
-																					2019</time>
-																			</span>
-																		</div>
-																	</div>
-
-																	<!-- Title -->
-																	<p class="mb-2 fs-lg fw-bold">Very good</p>
-
-																	<!-- Text -->
-																	<p class="text-gray-500">Made face lights yielding
-																		forth created for image behold blessed seas.</p>
-
-																	<!-- Footer -->
-																	<div class="row align-items-center">
-																		<div class="col-auto d-none d-lg-block">
-																			<!-- Text -->
-																			<p class="mb-0 fs-sm">Was this review helpful?</p>
-																		</div>
-																		<div class="col-auto me-auto">
-																			<!-- Rate -->
-																			<div class="rate">
-																				<a class="rate-item" data-toggle="vote"
-																					data-count="7" href="#" role="button"> <i
-																					class="fe fe-thumbs-up"></i>
-																				</a> <a class="rate-item" data-toggle="vote"
-																					data-count="0" href="#" role="button"> <i
-																					class="fe fe-thumbs-down"></i>
-																				</a>
-																			</div>
-																		</div>
-																		<div class="col-auto d-none d-lg-block">
-																			<!-- Text -->
-																			<p class="mb-0 fs-sm">Comments (0)</p>
-																		</div>
-																		<div class="col-auto">
-																			<!-- Button -->
-																			<a class="btn btn-xs btn-outline-border" href="#!">
-																				Comment </a>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
 											</div>
 
 											<!-- Pagination -->
@@ -697,23 +546,23 @@
 							</section>
 						</div>
 
-						<div class="tab-pane fade" id="shippingTab">
+						<div id="qnaTap">
 							<div class="col-12">
 								<div style="padding-top: 48px">
-									<h4 class="mb-5 text-center">Q&A</h4>
+									<h5 class="mb-5 text-center">Q&A</h5>
 									<table class="table">
 										<thead>
 											<tr>
-												<th scope="col">#</th>
-												<th scope="col">First</th>
-												<th scope="col">Last</th>
-												<th scope="col">Handle</th>
+												<th scope="col">글 번호</th>
+												<th scope="col">내용</th>
+												<th scope="col-12">작성자</th>
+												<th scope="col-md-6">등록날짜</th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
 												<th scope="row">1</th>
-												<td>Mark</td>
+												<td>비밀글입닏</td>
 												<td>Otto</td>
 												<td>@mdo</td>
 											</tr>
@@ -741,15 +590,16 @@
 
 	<!-- REVIEWS -->
 
-<script>
-	$("#loginTag").on("click",function(){
-		let result = confirm("회원가입 창으로 이동하시겠습니까?");
-		
-		if(result){
-			location.replace("/login");
-		}else{}
-	})
-</script>
+	<script>
+		$("#loginTag").on("click", function() {
+			let result = confirm("회원가입 창으로 이동하시겠습니까?");
+
+			if (result) {
+				location.replace("/login");
+			} else {
+			}
+		})
+	</script>
 
 </div>
 

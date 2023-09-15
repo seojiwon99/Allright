@@ -10,15 +10,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
+import com.ar.lighthouse.review.service.ReviewImgVO;
+import com.ar.lighthouse.review.service.ReviewService;
+import com.ar.lighthouse.review.service.ReviewVO;
 
 @Controller
 public class ProductController {
 
 	@Autowired
 	ProductService productService;
+	
+	@Autowired
+	ReviewService reviewService;
 	
 	
 //	판매자 메인페이지
@@ -78,7 +85,17 @@ public class ProductController {
 	    
 	}
 	
-	
+	//리뷰등록
+	@PostMapping("reviewInsert")
+	public String addReivew(ReviewVO review, ReviewImgVO reviewImg, RedirectAttributes rttr) {
+		
+		reviewService.addReview(review);
+		reviewService.addReviewImg(reviewImg);
+		rttr.addFlashAttribute("result", "리뷰 등록");
+		
+		return "redirect:/page/goods/goodDetail";
+		
+	}
 	
 	//상품 단건 조회
 	@GetMapping("goodDetail")
@@ -86,8 +103,16 @@ public class ProductController {
 		ProductVO vo = new ProductVO();
 		vo.setProductCode(productCode);
 		
+		ReviewVO reviewVO = new ReviewVO();
+		reviewVO.setProductCode(productCode);
+		
 		ProductVO productVO = productService.goodsDetail(vo);
 		model.addAttribute("goods", productVO);
+		
+		
+		//리뷰조회
+		model.addAttribute("review", reviewService.getReviewList(reviewVO));
+		System.out.println(model);
 		
 		return "page/goods/goodDetail";
 	}
