@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.ar.lighthouse.productinquiry.mapper.ProductInquiryMapper">
+  
+  <select id="selectInquiryList" resultType="ProductInquiryVO">
+  select que_code
+  		 , product_code
+  		 , que_content
+  		 , member_id
+  		 , que_secret
+  		 , que_regdate
+  		 , que_updatedate
+  		 ,que_ans
+  		 ,seller_id 
+	from ar_inquiry
+	where product_code = #{productCode}
+  </select>
+  
+  </mapper>

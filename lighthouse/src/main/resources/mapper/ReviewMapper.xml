@@ -17,6 +17,7 @@
   	order by review_regdate DESC
   	</select>
   	
+  	
   	<insert id="insertReview" parameterType="ReviewVO">
   	<selectKey resultType="int" keyProperty="reviewCode" order="BEFORE">
   		SELECT NVL(0,MAX(review_code))+1 FROM ar_review  

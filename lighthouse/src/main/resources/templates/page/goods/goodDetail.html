@@ -416,24 +416,33 @@
                             <a
                               class="btn btn-sm btn-dark"
                               data-bs-toggle="collapse"
+                              th:if="${session.loginMember != null}"
                               href="#reviewForm"
                             >
                               리뷰 작성
+                            </a>
+                            <a
+                              class="btn btn-sm btn-dark"
+                              th:if="${session.loginMember == null}"
+                              href="page/member/loginForm"
+                            >
+                              로그인
                             </a>
                           </div>
                         </div>
 
                         <!-- New Review -->
-                        <div class="collapse" id="reviewForm">
-                          <!-- Divider -->
-                          <hr class="my-8" />
+                        <form
+                          method="post"
+                          id="reviewForm2"
+                          enctype="multipart/form-data"
+                        >
+                          <div class="collapse" id="reviewForm">
+                            <!-- Divider -->
+                            <hr class="my-8" />
 
-                          <!-- Form -->
-                          <form
-                            th:action="@{reviewInsert}"
-                            method="post"
-                            th:object="${review}"
-                          >
+                            <!-- Form -->
+
                             <div class="row">
                               <div class="col-12 mb-6 text-center">
                                 <!-- Text -->
@@ -450,9 +459,11 @@
                                     value="5"
                                   />
 
+							
+							
                                   <!-- Rating -->
                                   <div
-                                    class="rating h5 text-dark"
+                                    class="star rating h5 text-dark"
                                     data-value="5"
                                   >
                                     <div class="rating-item">
@@ -477,7 +488,17 @@
                               <div class="col-12 mb-6 text-center">
                                 <!-- Text -->
                                 <p class="mb-1 fs-xs">이미지:</p>
-                                <input type="file" />
+                                <input
+                                  type="file"
+                                  class="reviewimg"
+                                  name="files"
+                                  id="reviewimg"
+                                  accept="image/*"
+                                />
+                                <img alt="" src="" />
+                                
+                                <div><input type="hidden" th:value="${goods.productCode}" name="productCode" id="productCode"/></div>
+
 
                                 <!-- Rating form -->
                                 <div class="rating-form">
@@ -498,7 +519,10 @@
                                 </div>
                               </div>
 
-                              <div class="col-12">
+                              <div
+                                class="col-12"
+                                th:if="${session.loginMember != null}"
+                              >
                                 <!-- 유저네임 -->
                                 <div class="form-group">
                                   <label
@@ -507,8 +531,11 @@
                                   ></label>
                                   <input
                                     class="form-control form-control-sm"
+                                    id="memberId"
+                                    name="memberId"
                                     type="text"
-                                    required
+                                    th:value="${session.loginMember.memberId}"
+                                    readonly
                                   />
                                 </div>
                               </div>
@@ -525,6 +552,8 @@
                                     class="form-control form-control-sm"
                                     rows="5"
                                     placeholder="내용을 입력해주세요"
+                                    id="reviewContent"
+                                    name="reviewContent"
                                     required
                                   ></textarea>
                                 </div>
@@ -533,14 +562,15 @@
                                 <!-- Button -->
                                 <button
                                   class="btn btn-outline-dark"
-                                  type="submit"
+                                  type="button"
+                                  id="insertBtn"
                                 >
                                   리뷰 등록
                                 </button>
                               </div>
                             </div>
-                          </form>
-                        </div>
+                          </div>
+                        </form>
 
                         <!-- Reviews -->
                         <div class="mt-8">
@@ -645,19 +675,30 @@
                                       </div>
                                     </div>
 
-                                    <div class="col-auto">
+                                    <div
+                                      class="col-auto"
+                                      th:if="${session.loginMember != null}"
+                                    >
                                       <!-- Button -->
+
                                       <button
+                                        th:if="${session.loginMember.memberId == review.memberId}"
                                         class="btn btn-xs btn-outline-border"
                                       >
-                                        신고하기
+                                        수정
                                       </button>
                                       <button
-                                        type="button"
+                                        th:if="${session.loginMember.memberId == review.memberId}"
                                         class="btn btn-xs btn-outline-border"
-                                        id="delBtn"
                                       >
                                         삭제하기
+                                      </button>
+
+                                      <button
+                                        class="btn btn-xs btn-outline-border"
+                                        th:if=" ${session.loginMember.memberId != review.memberId}"
+                                      >
+                                        신고하기
                                       </button>
                                     </div>
                                   </div>
@@ -740,10 +781,11 @@
         </div>
       </div>
     </section>
-
+    <input type="hidden" id="hidden" th:value="${session.loginMember}" />
     <!-- REVIEWS -->
 
     <script>
+      console.log($("#hidden").val());
       $("#loginTag").on("click", function () {
         let result = confirm("회원가입 창으로 이동하시겠습니까?");
 
@@ -755,6 +797,53 @@
 
       $("#delBtn").on("click", function () {
         location.href = "removeDelete";
+      });
+
+      let regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
+      let maxSize = 5242880; //5mb
+
+      function checkExtension(fileName, fileSize) {
+        if (fileSize >= maxSize) {
+          alert("파일 사이즈 초과");
+          return false;
+        }
+        if (regex.test(filename)) {
+          alert("해당 종류 파일은 업로드가 불가합니다");
+          return false;
+        }
+        return true;
+      }
+
+      $("#insertBtn").on("click", function () {
+        let form = $("#reviewForm2")[0];
+        console.log(form);
+        const formData = new FormData(form);
+        let star = $(".star").data("value");
+        // formData.append("memberId", memberId);
+        // formData.append("reviewContent", reviewContent);
+        formData.append("reviewStar", star);
+        // formData.append("files", file);
+
+        for (let key of formData.keys()) {
+          console.log(key, ":", formData.get(key));
+        }
+
+        $.ajax({
+          url: "insertReview",
+          type: "post",
+          data: formData,
+          enctype: "multipart/form-data",
+          contentType: false,
+          processData: false,
+          success: function (result) {
+            alert("업로드 성공");
+            console.log(result);
+            
+          },
+          error: function (err) {
+            console.log(err);
+          },
+        });
       });
     </script>
   </div>
