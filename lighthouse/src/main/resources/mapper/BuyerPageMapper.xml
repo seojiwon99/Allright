@@ -120,4 +120,22 @@
 		WHERE member_id = #{memberId}
 	</select>
 	
+	<!-- 찜 내역 -->
+	<select id="selectWishList" resultType="WishVO" parameterType="String">
+		SELECT b.favorite_code
+		     , b.member_id
+		     , a.product_name
+		     , a.product_cost
+		     , a.product_code
+		     , a.sale_price
+		     , c.upload_name
+		     , c.img_content
+		FROM ar_products a
+		RIGHT OUTER JOIN ar_favorite b ON a.product_code = b.product_code
+		RIGHT OUTER JOIN ar_imgs c ON a.product_code = c.product_code
+		WHERE a.member_id = #{memberId}
+		ORDER BY b.favorite_code
+	</select>
+	
+	
   </mapper>

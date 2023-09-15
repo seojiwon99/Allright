@@ -13,6 +13,7 @@ import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.buyp.service.TradeVO;
+import com.ar.lighthouse.buyp.service.WishVO;
 @Service
 public class BuyerPageServiceImpl implements BuyerPageService {
 	
@@ -55,5 +56,11 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 		return buyerPageMapper.selectMyInquiryList(memberId);
 	}
 
+
+	@Override
+	public List<WishVO> getWishList(String memberId) {
+		return buyerPageMapper.selectWishList(memberId);
+	}
+	
 
 }

@@ -22,5 +22,7 @@ public interface BuyerPageService {
 	
 	//문의 내역
 	public List<MyInquiryVO> getMyQuiryList(String memberId);
-
+	
+	//찜 내역
+	public List<WishVO> getWishList(String memberId);
 }

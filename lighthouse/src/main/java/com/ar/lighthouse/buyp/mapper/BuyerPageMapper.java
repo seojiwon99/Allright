@@ -10,6 +10,7 @@ import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.buyp.service.TradeVO;
+import com.ar.lighthouse.buyp.service.WishVO;
 
 @Mapper
 public interface BuyerPageMapper {
@@ -25,4 +26,6 @@ public interface BuyerPageMapper {
 	public int updateInfo(BuyInfoVO buyInfoVO, String memberId);
 	
 	public List<MyInquiryVO> selectMyInquiryList(String memberId);
+	
+	public List<WishVO> selectWishList(String memberId);
 }
