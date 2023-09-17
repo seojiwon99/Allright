@@ -43,7 +43,7 @@
 
                     <!-- Image -->
                     <a href="product.html">
-                     <img th:src="@{/img/products/}+${lists.imgName}" alt="..." class="img-fluid">
+                     <img th:src="@{/img/products/}+${lists.uploadName}" alt="..." class="img-fluid">
                     </a>
 
                   </div>
@@ -150,13 +150,7 @@
             </div>
             <!-- th:href="@{http://localhost:8090/orders/pay}"-->
             <!-- Button -->
-            <th:block th:if="${session.loginMember != null}">
               <button id="payMove" class="btn w-100 btn-dark mb-2" type="button">결제하기</button>
-            </th:block>
-            <th:block th:if="${session.loginMember == null}">
-              <a class="btn w-100 btn-dark mb-2" th:href="@{http://localhost:8090/page/member/loginForm}">로그인</a>
-            </th:block>
-
             <!-- Link -->
             <a class="btn btn-link btn-sm px-0 text-body" href="shop.html">
               <i class="fe fe-arrow-left me-2"></i> 쇼핑하러 가기
@@ -291,17 +285,21 @@
     }
     
 }
+
+
 $('#payMove').on('click',function(e){
+
   let pPrice = $('#productPrice').text();
   let pPrice2 = $('#salePrice').text();
   let pPrice3 =$('#deliveryPrice').text();
   let pPrice4=$('#totalPrice').text();
 
-  let pay = $('#totalPrice').text();
-  if(pay == '원') {
-    alert('결제할 상품이 없습니다.');
-    location.href = location.href;
-    return;
+   let pay = $('#totalPrice').text();
+   if(pay == '원') {
+     alert('결제할 상품이 없습니다.');
+     location.href = location.href;
+     return;
+   
   } else {
     localStorage.setItem("pPrice" ,pPrice)
     localStorage.setItem("pPrice2" ,pPrice2)
@@ -310,6 +308,32 @@ $('#payMove').on('click',function(e){
     location.href = "http://localhost:8090/orders/pay";
   }
 })
+
+// $('#payMove').on('click', function(e){
+
+//   let cartCodeList = [];
+//   let checkboxes = $('input[type="checkbox"]:checked');
+//         checkboxes.each((idx, tag) => {
+//           console.log($(tag).next().next().next());
+//           let cartId = $(tag).next().next().next().val();
+//           let obj = {'cartCode' : cartId};
+//           cartCodeList.push(obj);
+//           console.log(cartCodeList);
+//         })
+
+//   $.ajax('http://localhost:8090/orders/pay',{
+//     type : 'get',
+//     data : cartCodeList
+//   })
+//   .done(data => {
+//     console.log(data);
+   
+//   })
+//   .fail(reject => console.log(reject))
+// });
+
+	
+
     </script>
 </div>
 </html>

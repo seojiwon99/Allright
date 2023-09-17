@@ -19,10 +19,10 @@
             <!-- Breadcrumb -->
             <ol class="breadcrumb mb-0 fs-xs text-gray-400">
               <li class="breadcrumb-item">
-                <a class="text-gray-400" href="index.html">Home</a>
+                <a class="text-gray-400" href="/">Home</a>
               </li>
               <li class="breadcrumb-item">
-                <a class="text-gray-400" href="shopping-cart.html">장바구니</a>
+                <a class="text-gray-400" th:href="@{/cart/cartView}">장바구니</a>
               </li>
               <li class="breadcrumb-item active">
                 주문/결제
@@ -62,37 +62,41 @@
                   <!-- 이름 -->
                 
                   <div class="form-group">
+                    <div th:each="gets,index : ${get}" th:if="${index.index} < 1">
                     <label class="form-label" for="checkoutBillingFirstName">이름 *</label>
-                    <div class="input-group mb-8">
-                      <input type="text" class="form-control" placeholder="이름 작성" aria-label="Recipient's username" aria-describedby="button-addon2">
-                      <button class="btn btn-outline-secondary" type="button" id="button-addon2">배송지 정보로 등록</button>
+                    <div class="input-group mb-8">                      
+                      <input type="text" class="form-control" id="mName" placeholder="이름 작성" aria-label="Recipient's username" aria-describedby="button-addon2" th:value="${gets.memberName}" readonly>                     
+                      <button class="btn btn-outline-secondary" type="button" id="deliveryInfo">배송지 정보로 등록</button>
+                    </div>
                     </div>
                   </div>
                 </div>
 
                 <!-- 배송지 주소 -->
-                <div class="col-12">
-                  <div class="form-group">
-                    <input class="form-control form-control-sm" id="checkoutBillingPhone" type="tel" placeholder="배송지 상세주소" required>
-                  </div>
-                </div><br>
+                <div th:each="gets,index : ${get}" th:if="${index.index} < 1">
+                  <div class="col-12">
+                  
+                    <div class="form-group">
+                      <input class="form-control form-control-sm" id="mAddr" type="tel" placeholder="배송지 상세주소" required th:value="|${gets.memberAddr} , ${gets.memberDetailsAddr}|" readonly>
+                    </div>
+                  </div><br>
 
-                <div class="col-12">
+                  <div class="col-12">
                   <!-- Email -->
-                  <div class="form-group">
-                    <label class="form-label" for="checkoutBillingEmail">Email *</label>
-                    <input class="form-control form-control-sm" id="checkoutBillingEmail" type="email" placeholder="abc@abc.com" required>
+                    <div class="form-group">
+                      <label class="form-label" for="checkoutBillingEmail">Email *</label>
+                      <input class="form-control form-control-sm" id="mEmail" type="email" placeholder="abc@abc.com" required th:value="${gets.memberEmail}" readonly>
                   </div>
-                </div>
-
-                <div class="col-12">
+                  </div>
+             
+                  <div class="col-12">
                   <!-- Mobile Phone -->
-                  <div class="form-group">
-                    <label class="form-label" for="checkoutBillingPhone">연락처 *</label>
-                    <input class="form-control form-control-sm" id="checkoutBillingPhone" type="tel" placeholder="010-0000-0000" required>
-                  </div>
+                    <div class="form-group">
+                     <label class="form-label" for="checkoutBillingPhone">연락처 *</label>
+                     <input class="form-control form-control-sm" id="mTel" type="tel" placeholder="010-0000-0000" required th:value="${gets.memberTel}" readonly>
+                    </div>
+                 </div>
                 </div>
-
                 <hr>
 
                  <!-- Heading -->
@@ -102,7 +106,7 @@
                   <!-- Address Line 1 -->
                   <div class="form-group">
                     <label class="form-label" for="checkoutBillingAddress">받는 사람 *</label>
-                    <input class="form-control form-control-sm" id="checkoutBillingAddress" type="text" placeholder="이름 작성" required>
+                    <input class="form-control form-control-sm" id="deliveryName" type="text" placeholder="이름 작성" required>
                   </div>
                 </div>
 
@@ -127,23 +131,24 @@
                   <!-- Mobile Phone -->
                   <div class="form-group mb-0">
                     <label class="form-label" for="checkoutBillingPhone">연락처 *</label>
-                    <input class="form-control form-control-sm" id="checkoutBillingPhone" type="tel" placeholder="010-0000-0000" required>
+                    <input class="form-control form-control-sm"  type="tel" placeholder="010-0000-0000" required id="deliveryTel">
                   </div>
                   
                 </div>
 
+                <!--요청 사항-->
                 <div class="col-12">
                 <br>
                 <h6>배송 요청사항</h6>
                 <!-- Notes -->  
-                <select class="form-select form-select-lg mb-3" aria-label="Large select example">
+                <select class="form-select form-select-lg mb-3" aria-label="Large select example" id="selbox">
                   <option selected>배송 요청 선택</option>
                   <option value="1">부재시 경비실에 맡겨주세요.</option>
                   <option value="2">배송 전에 미리 연락 바랍니다.</option>
                   <option value="3">부재시 전화 또는 문자 남겨주세요.</option>
-                  <option value="4"></option>
+                  <option value="4">직접 입력</option>
                 </select>
-                <!-- <textarea class="form-control form-control-sm mb-9 mb-md-0 fs-xs" rows="5" placeholder="배송 기타 요청사항 작성해주세요."></textarea> -->
+                <input type="text" id="selectDirect" class="form-control form-control-sm" placeholder="배송 기타 요청사항 작성해주세요.">
 
                 </div>
 
@@ -160,7 +165,7 @@
                   <label class="form-label" for="checkoutBillingFirstName">쿠폰 확인 *</label>
                   <div class="input-group mb-8">
                     <input type="text" class="form-control" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2">
-                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">쿠폰선택</button>
+                    <a class="btn btn-outline-secondary"  data-bs-toggle="offcanvas" href="#modalShoppingCart" >쿠폰선택</a>
                   </div>
                   <p>쿠폰 할인 금액 : <input type="text" style="border-width: 0 0 1px;" readonly>원 
                     <button class="btn btn-outline-secondary" type="button" id="button-addon2">사용하기</button>
@@ -271,60 +276,36 @@
             <hr class="my-7">
 
             <!-- List group -->
+
             <ul class="list-group list-group-lg list-group-flush-y list-group-flush-x mb-7">
-              <li class="list-group-item">
-                <div class="row align-items-center">
-                  <div class="col-4">
+              <div th:each="gets : ${get}">
+                <li class="list-group-item">
+                  <div class="row align-items-center">
+                    <div class="col-4">
+                      
+                      <!-- Image -->
+                      <a href="product.html">
+                        <img th:src="@{/img/products/}+${gets.uploadName}" alt="..." class="img-fluid">
+                      </a>
 
-                    <!-- Image -->
-                    <a href="product.html">
-                      <img src="assets/img/products/product-6.jpg" alt="..." class="img-fluid">
-                    </a>
-
-                  </div>
-                  <div class="col">
-
-                    <!-- Title -->
-                    <p class="mb-4 fs-sm fw-bold">
-                      <a class="text-body" href="product.html">Cotton floral print Dress</a> <br>
-                      <span class="text-muted">$40.00</span>
-                    </p>
-
-                    <!-- Text -->
-                    <div class="fs-sm text-muted">
-                      Size: M <br>
-                      Color: Red
                     </div>
+                    <div class="col">
 
-                  </div>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <div class="row align-items-center">
-                  <div class="col-4">
+                      <!-- Title -->
+                      <p class="mb-4 fs-sm fw-bold">
+                        <a class="text-body" href="product.html" th:text="${gets.productName}"></a>  <br>
+                        <span class="text-muted" style="text-decoration: line-through;" th:text="|상품금액 : ${gets.productCost}|"></span>원 <br>
+                        <span class="text-muted" th:text="|할인된 금액 : ${gets.productCost - gets.salePrice}|"></span>원
+                      </p>
 
-                    <!-- Image -->
-                    <a href="product.html">
-                      <img src="assets/img/products/product-10.jpg" alt="..." class="img-fluid">
-                    </a>
-
-                  </div>
-                  <div class="col">
-
-                    <!-- Title -->
-                    <p class="mb-4 fs-sm fw-bold">
-                      <a class="text-body" href="product.html">Suede cross body Bag</a> <br>
-                      <span class="text-muted">$49.00</span>
-                    </p>
-
-                    <!-- Text -->
-                    <div class="fs-sm text-muted">
-                      Color: Brown
+                      <!-- Text -->
+                      <div class="fs-sm text-muted" th:text="|${gets.optionName} : ${gets.optionValue}|"></div>
+                      <div class="fs-sm text-muted" th:text="|수량 :${gets.cartCount}|"></div>
                     </div>
-
                   </div>
-                </div>
-              </li>
+               </li>
+               <hr>
+              </div>
             </ul>
 
             <!-- Card -->
@@ -366,10 +347,101 @@
       </div>
     </section>
 
-   
+    <!-- 쿠폰 할인 모달창 -->
+    <div class="offcanvas offcanvas-end" id="modalShoppingCart" tabindex="-1" role="dialog" aria-hidden="true">
+    
+      <!-- Full cart (add `.d-none` to disable it) -->
+    
+      <!-- Close -->
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
+        <i class="fe fe-x" aria-hidden="true"></i>
+      </button>
+    
+      <!-- Header-->
+      <div class="offcanvas-header lh-fixed fs-lg">
+        <strong class="mx-auto">나의 쿠폰함</strong>
+      </div>
+    
+      <!-- List group -->
+      <ul class="list-group list-group-lg list-group-flush">
+        <div th:each="gets :${get}">
+          <li class="list-group-item">
+            <div class="row align-items-center">
+              <div class="col-8">
+      
+                <!-- Title -->
+                <p class="fs-sm fw-bold mb-6">
+                  <a class="text-body" href="./product.html" th:text="${gets.couponName}"></a> <br>
+                  <span class="text-muted">$40.00</span>
+                </p>
+      
+                <!--Footer -->
+                <div class="d-flex align-items-center">
+      
+                  <!-- Select -->
+                  <select class="form-select form-select-xxs w-auto">
+                    <option value="1">1</option>
+                    <option value="1">2</option>
+                    <option value="1">3</option>
+                  </select>
+      
+                  <!-- Remove -->
+                  <a class="fs-xs text-gray-400 ms-auto" href="#!">
+                    <i class="fe fe-x"></i> Remove
+                  </a>
+      
+                </div>
+      
+              </div>
+            </div>
+          </li>
+          <hr>
+        </div>
+      </ul>
+    
+      <!-- Footer -->
+      <div class="offcanvas-footer justify-between lh-fixed fs-sm bg-light mt-auto">
+        <strong>할인금액</strong> <strong class="ms-auto">$89.00</strong>
+      </div>
+    
+      <!-- Buttons -->
+      <div class="offcanvas-body">
+        <a class="btn w-100 btn-dark" href="./checkout.html">Continue to Checkout</a>
+        <a class="btn w-100 btn-outline-dark mt-2" href="./shopping-cart.html">View Cart</a>
+      </div>
+    
+      <!-- Empty cart (remove `.d-none` to enable it) -->
+      <div class="d-none">
+    
+        <!-- Close -->
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
+          <i class="fe fe-x" aria-hidden="true"></i>
+        </button>
+    
+        <!-- Header-->
+        <div class="offcanvas-header lh-fixed fs-lg">
+          <strong class="mx-auto">Your Cart (0)</strong>
+        </div>
+    
+        <!-- Body -->
+        <div class="offcanvas-body flex-grow-0 my-auto">
+    
+          <!-- Heading -->
+          <h6 class="mb-7 text-center">Your cart is empty 😞</h6>
+    
+          <!-- Button -->
+          <a class="btn w-100 btn-outline-dark" href="#!">
+            Continue Shopping
+          </a>
+    
+        </div>
+    
+      </div>
+    
+    </div>
 
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script>
+    <script th:inline="javascript">
     //주소 api로 입력
     $('#addressSearch').on('click', addrPopup)
     function addrPopup(){
@@ -393,7 +465,8 @@
         */
         }).open();
     }
-    //p1 : 상품 금액  p2: 상품 할인 금액 p3: 배송비 p4 : 총금액 
+
+    //p1 : 상품 금액  p2: 상품 할인 금액 p3: 배송비 p4 : 총금액  장바구니 페이지에서 가져옴
     let p1Result = Number(localStorage.pPrice.slice(0,-1));
     let p2Result = Number(localStorage.pPrice2.slice(0,-1));
     let p3Result = Number(localStorage.pPrice3.slice(0,-1));
@@ -402,6 +475,28 @@
     $('#salePrice').text(p2Result);
     $('#deliveryPrice').text(p3Result);
     $('#totalPrice').text(p4Result);
+    
+    //배송 요청 사항 직접 입력시 생성
+    $('#selectDirect').hide();
+    $('#selbox').change(function(){
+      if($('#selbox').val() == 4) {
+        $('#selectDirect').show();
+      } else {
+        $('#selectDirect').hide();
+      }
+    });
+
+    // 배송 요청 사항 본인 내용 넘길 때 버튼
+    $('#deliveryInfo').on('click', function(e){
+    	let getMemberAddr = [[${get[0].memberAddr}]];
+      let getMemberDetailsAddr = [[${get[0].memberDetailsAddr}]];
+        $('#deliveryName').val($('#mName').val());
+        $('#addr').val(getMemberAddr);
+        $('#addrDt').val(getMemberDetailsAddr);
+        $('#deliveryTel').val($('#mTel').val());
+    });
+    
+   
     </script>
     
 </div>
