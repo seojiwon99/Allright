@@ -157,6 +157,7 @@
 <!-- 김무준의 상세페이지~~ -->
 	<select id="selectInfo" resultType="ProductVO">
 		select member_id
+			 , p.product_code
              , category_code
              , product_name
              , product_content

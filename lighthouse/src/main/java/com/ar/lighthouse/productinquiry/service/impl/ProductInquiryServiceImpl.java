@@ -20,4 +20,10 @@ public class ProductInquiryServiceImpl implements ProductInquiryService{
 		return mapper.selectInquiryList(productInquiryVO);
 	}
 
+	//등록
+	@Override
+	public void addInquiry(ProductInquiryVO inquiryVO) {
+		mapper.insertInquiry(inquiryVO);
+	}
+
 }

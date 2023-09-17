@@ -40,6 +40,9 @@ public class ProductController {
 
 	@Autowired
 	ReviewService reviewService;
+	
+	@Autowired
+	ProductInquiryService inquiryService;
 
 	@Autowired
 	ProductInquiryService custominquiryService;
@@ -132,10 +135,7 @@ public class ProductController {
 	@ResponseBody
 	public String addReivew(MultipartFile[] files, ReviewVO review, ImgsVO imgsVO, Model model) {
 		System.out.println(files);
-		System.out.println(review.getMemberId());
-		System.out.println(review.getProductCode());
-		System.out.println(review.getReviewContent());
-
+		
 		String uploadFolder = "C:\\upload";
 
 		// make folder
@@ -165,14 +165,18 @@ public class ProductController {
 			}
 		}
 
-		
-		
 		reviewService.addReview(review);
-//		ImgsVO InImgs = new ImgsVO();
+		
+		reviewService.addReviewImg(imgsVO);
+		
+		System.out.println(model);
 		
 		
 		
-//		reviewService.addReviewImg(InImgs);
+		model.addAttribute("img", imgsVO);
+		
+		
+		reviewService.addReviewImg(imgsVO);;
 		
 //		System.out.println("??");
 
@@ -190,6 +194,17 @@ public class ProductController {
 		return "redirect:/page/goods/goodDetail";
 	}
 
+	
+	@PostMapping("insertInquiry")
+	@ResponseBody
+	public String addInquiry( Model model, @RequestBody ProductInquiryVO inquiryVO) {
+		System.out.println(inquiryVO);
+		
+		
+		return null;
+		
+	}
+	
 	// 상품 단건 조회
 
 	@GetMapping("goodDetail")
@@ -201,8 +216,11 @@ public class ProductController {
 
 		ReviewVO reviewVO = new ReviewVO();
 		reviewVO.setProductCode(productCode);
+		System.out.println(reviewVO);
 
 		ProductVO productVO = productService.goodsDetail(vo);
+		
+		
 		model.addAttribute("goods", productVO);
 
 		ProductInquiryVO productInquiryVO = new ProductInquiryVO();
@@ -212,6 +230,8 @@ public class ProductController {
 		model.addAttribute("review", reviewService.getReviewList(reviewVO));
 
 		// qna 조회
+		
+		
 		model.addAttribute("inquiry", custominquiryService.getInquiryList(productInquiryVO));
 		System.out.println(model);
 

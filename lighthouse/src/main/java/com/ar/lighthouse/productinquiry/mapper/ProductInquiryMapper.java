@@ -11,4 +11,6 @@ public interface ProductInquiryMapper {
 	
 	//문의사항 리스트
 	public List<ProductInquiryVO> selectInquiryList(ProductInquiryVO productInquiryVO);
+	
+	public void insertInquiry(ProductInquiryVO inquiryVO);
 }
