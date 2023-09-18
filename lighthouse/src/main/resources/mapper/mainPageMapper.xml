@@ -29,8 +29,6 @@
 		p join ar_imgs i
 		on p.product_code = i.product_code
 		order by product_regdate DESC
-
-
 	</select>
 
 	<select id="randomSelProduct" resultType="ProductVO">
@@ -57,5 +55,13 @@
 	FROM ar_category
 	where parent_category_code = #{categoryCode}
 	</select>
-
+	
+	<select id="childCateList" resultType="CategoryVO">
+		SELECT *
+		  FROM ar_category
+		 START WITH parent_category_code = #{categoryCode}
+	   CONNECT BY parent_category_code = PRIOR category_code
+	       AND category_level = 3
+		ORDER SIBLINGS BY category_name
+	</select>
 </mapper>

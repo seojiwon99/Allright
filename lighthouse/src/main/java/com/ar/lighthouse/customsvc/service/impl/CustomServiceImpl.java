@@ -43,6 +43,11 @@ public class CustomServiceImpl implements CustomService{
 		return customMapper.selectNotice(noticeVO);
 	}
 
+	@Override
+	public List<FaqVO> getTypeList() {
+		return customMapper.selectFaqTypeList();
+	}
+
 	
 
 }

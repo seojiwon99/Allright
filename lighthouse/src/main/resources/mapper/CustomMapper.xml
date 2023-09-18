@@ -10,6 +10,7 @@
   		     , question_title
   		     , question_answer
   		     , faq_type
+  		     , find_inqtype(faq_type) type_name
   		  FROM ar_faq
   		  <where>
   		  	<if test="faqType != null and !faqType.equals('')">
@@ -17,6 +18,14 @@
   		  	</if>
   		  </where>
   		  ORDER BY faq_code
+  	</select>
+  	
+  	<!-- Faq 타입 리스트 가져오기 -->
+  	<select id="selectFaqTypeList" resultType="FaqVO">
+  		SELECT code_id faq_type
+  		     , code_name type_name
+  		  FROM ar_code  
+  		 WHERE master_code = 'faq'  
   	</select>
   	
   	<!-- notice 목록 (페이징) -->

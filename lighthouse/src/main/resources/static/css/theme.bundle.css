@@ -19619,7 +19619,7 @@ a.card-img-overlay:hover {
 .navbar-boxed .dropdown-collapse {
     border: 0;
     display: block !important;
-    width: 100%
+    width: 40%
 }
 
 @media (max-width:-1px) {
