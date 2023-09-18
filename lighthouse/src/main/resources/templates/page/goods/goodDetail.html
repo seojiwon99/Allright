@@ -640,7 +640,10 @@
 											<tr th:class="|inquiryGet${inquiry.queCode}|"
 												th:if="${session.loginMember != null} and ${session.loginMember.memberId == inquiry.memberId}"
 												style="display: none; background-color: #E2E2E2">
-
+												<td class="inquiryGetAns" style="font-size: 18px">
+												<p style="font-size: 14px">Q&A 답변</p>
+													</td>
+												
 												<td class="inquiryGetAns" id="answerForm"><div style="font-size: 30px; color: #0000ff; font-weight: 600">Q</div>
 													<textarea class="form-control form-control-sm" rows="5"
 														readonly>[[${inquiry.queContent}]]</textarea> </td>
@@ -648,8 +651,7 @@
 												<textarea class="form-control form-control-sm" rows="5"
 														readonly>[[${inquiry.queAns}]]</textarea>
 													</td>
-												<td class="inquiryGetAns" style="font-size: 18px">
-													</td>
+												
 												<td class="inquiryGetAns">
 												<div style="padding-top: 20px">판매자 : [[${inquiry.sellerId}]]</div>
 													<div style="padding:30px 10px 10px 10px">
