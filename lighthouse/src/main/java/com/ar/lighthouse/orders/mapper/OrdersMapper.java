@@ -9,6 +9,6 @@ import com.ar.lighthouse.orders.service.OrdersVO;
 @Mapper
 public interface OrdersMapper {
 
-	public List<OrdersVO> selectOrders(String memberId); 
+	public OrdersVO selectOrders(String memberId, int cartCode); 
 	
 }

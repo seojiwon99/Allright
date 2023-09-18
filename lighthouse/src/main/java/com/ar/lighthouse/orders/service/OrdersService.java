@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface OrdersService {
 
-	public List<OrdersVO> getOrders(String memberId);
+	public OrdersVO getOrders(String memberId, int cartCode);
 	
 }

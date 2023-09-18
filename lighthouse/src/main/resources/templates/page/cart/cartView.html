@@ -208,7 +208,7 @@
          document.getElementById('deliveryPrice').innerText = '원';
          document.getElementById('totalPrice').innerText ='원';
 
-        checkboxs.on('change', checkedCart)
+        checkboxs.on('change', checkedCart);
         
         function checkedCart(e){
          let chk = $(this).is(':checked');
@@ -220,21 +220,21 @@
          
          if(chk) {
             deliveryResult+=Number(deliveryPrices);
-            saleResult+=Number(salcePrices);
-            result+=Number(prices);
+            saleResult+=Number(salcePrices * cartCnts);
+            result+=Number(prices * cartCnts);
            
 
          } else {
           deliveryResult-=Number(deliveryPrices);
-          saleResult-=Number(salcePrices);
-          result-=Number(prices);
+          saleResult-=Number(salcePrices * cartCnts);
+          result-=Number(prices * cartCnts);
           
           
          }
-         document.getElementById('productPrice').innerText = (cartCnts * result) + '원';
-         document.getElementById('salePrice').innerText = cartCnts * saleResult + '원';
+         document.getElementById('productPrice').innerText = result + '원';
+         document.getElementById('salePrice').innerText = saleResult + '원';
          document.getElementById('deliveryPrice').innerText = deliveryResult + '원';
-         document.getElementById('totalPrice').innerText = cartCnts * (result - saleResult) + deliveryResult + '원';
+         document.getElementById('totalPrice').innerText = result - saleResult + deliveryResult + '원';
         }
         
     
@@ -286,52 +286,49 @@
     
 }
 
+$('#payMove').on('click', function(){
+  let obj;
+  let cartId;
+  let cartCodeList = [];
+  let checkboxes = $('input[name="price"]:checked');
+        checkboxes.each((idx, tag) => {
+          console.log($(tag).next().next().next());
+          cartId = $(tag).next().next().next().val();
+          obj = {'cartCode' : cartId};
+          cartCodeList.push(cartId);
+          console.log(cartCodeList);
+        })
 
-$('#payMove').on('click',function(e){
+        if(cartId == null) {
+          alert('결제할 상품이 없습니다.');
+          location.href = location.href;
+          return;
+        } else {
+          let params = cartCodeList;
+          console.log(params);
+          sendPost('/orders/pay',params);
+        }       
+});
 
-  let pPrice = $('#productPrice').text();
-  let pPrice2 = $('#salePrice').text();
-  let pPrice3 =$('#deliveryPrice').text();
-  let pPrice4=$('#totalPrice').text();
+function sendPost(url, parames) {
+		console.log(parames);
+          let form = document.createElement('form');
+          form.setAttribute('method', 'post');
+          form.setAttribute('action', url);
+          document.charset = "UTF-8";
 
-   let pay = $('#totalPrice').text();
-   if(pay == '원') {
-     alert('결제할 상품이 없습니다.');
-     location.href = location.href;
-     return;
-   
-  } else {
-    localStorage.setItem("pPrice" ,pPrice)
-    localStorage.setItem("pPrice2" ,pPrice2)
-    localStorage.setItem("pPrice3" ,pPrice3)
-    localStorage.setItem("pPrice4" ,pPrice4)
-    location.href = "http://localhost:8090/orders/pay";
-  }
-})
-
-// $('#payMove').on('click', function(e){
-
-//   let cartCodeList = [];
-//   let checkboxes = $('input[type="checkbox"]:checked');
-//         checkboxes.each((idx, tag) => {
-//           console.log($(tag).next().next().next());
-//           let cartId = $(tag).next().next().next().val();
-//           let obj = {'cartCode' : cartId};
-//           cartCodeList.push(obj);
-//           console.log(cartCodeList);
-//         })
-
-//   $.ajax('http://localhost:8090/orders/pay',{
-//     type : 'get',
-//     data : cartCodeList
-//   })
-//   .done(data => {
-//     console.log(data);
-   
-//   })
-//   .fail(reject => console.log(reject))
-// });
-
+           for(let key in parames) {
+             let hiddenField = document.createElement('input');
+             hiddenField.setAttribute('type','hidden');
+             hiddenField.setAttribute('name', "cartCode");
+             hiddenField.setAttribute('value',parames[key]);
+             form.appendChild(hiddenField);
+           }
+          document.body.appendChild(form);
+          // form.appendChild(hiddenField);
+          console.log(form);
+          form.submit();
+        }
 	
 
     </script>

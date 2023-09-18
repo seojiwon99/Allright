@@ -16,9 +16,9 @@ public class OrdersServiceImpl implements OrdersService{
 	OrdersMapper ordersMapper;
 	
 	@Override
-	public List<OrdersVO> getOrders(String memberId) {
+	public OrdersVO getOrders(String memberId, int cartCode) {
 		
-		return ordersMapper.selectOrders(memberId);
+		return ordersMapper.selectOrders(memberId, cartCode);
 	}
 
 }

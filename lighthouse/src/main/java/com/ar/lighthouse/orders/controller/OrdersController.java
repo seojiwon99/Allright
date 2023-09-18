@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ar.lighthouse.cart.service.CartVO;
 import com.ar.lighthouse.member.service.MemberVO;
@@ -24,21 +24,30 @@ public class OrdersController {
 	@Autowired
 	OrdersService ordersService;
 	
-	
 	@GetMapping("orders/pay")
-	public String orderList(HttpServletRequest request, Model model) {
+	public String orderPage() {
+		
+		return "/page/orders/ordersPay";
+	}
+	
+	
+	@PostMapping("orders/pay")
+	public String orderList(HttpServletRequest request, Model model, @RequestParam (name = "cartCode") int[] cartCode) {
+		
+		System.out.println(cartCode);
 		HttpSession session = request.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-		List<OrdersVO> get =ordersService.getOrders(memberId);
-		//List<CartVO> lists = cartCode;
-//		List<OrdersVO> get = new ArrayList<OrdersVO>();
-//		for(CartVO cartVO : lists)  {
-//			get.add((ordersService.getOrders(memberId, cartVO.getCartCode())));  
-//			
-//		}
-		
+		//List<OrdersVO> get =ordersService.getOrders(memberId);
+		int[] lists = cartCode;
+		System.out.println(cartCode);
+		List<OrdersVO> get = new ArrayList<OrdersVO>();
+		for(int cartNum : lists)  {
+			System.out.println(cartNum);
+			get.add((ordersService.getOrders(memberId, cartNum)));  
+		}
 		model.addAttribute("get", get);
+		
 		return "/page/orders/ordersPay";
 	}
 	

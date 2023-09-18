@@ -44,6 +44,7 @@ public class OrdersVO {
 	
 	//CartVO
 	private int cartCount;
+	private int[] cartCode;
 	
 	//OptionVO
 	private String optionName;
@@ -54,6 +55,7 @@ public class OrdersVO {
 	private String productName;
 	private int productCost;
 	private int salePrice;
+	private int deliveryCost;
 	
 	//ImegsVO
 	private String uploadName;

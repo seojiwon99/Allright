@@ -81,6 +81,8 @@
                   
                     <div class="form-group">
                       <input class="form-control form-control-sm" id="mAddr" type="tel" placeholder="배송지 상세주소" required th:value="|${gets.memberAddr} , ${gets.memberDetailsAddr}|" readonly>
+                      <input type="hidden" id="mAddr1" th:value="${gets.memberAddr}"> 
+                      <input type="hidden" id="mAddr2" th:value="${gets.memberDetailsAddr}">
                     </div>
                   </div><br>
 
@@ -297,8 +299,8 @@
                       <!-- Title -->
                       <p class="mb-4 fs-sm fw-bold">
                         <a class="text-body" href="product.html" th:text="${gets.productName}"></a>  <br>
-                        <span class="text-muted" style="text-decoration: line-through;" th:text="|상품금액 : ${gets.productCost}|"></span>원 <br>
-                        <span class="text-muted" th:text="|할인된 금액 : ${gets.productCost - gets.salePrice}|"></span>원
+                        <span class="text-muted" style="text-decoration: line-through;" th:text="|상품금액 : ${gets.productCost + gets.optionPrice}|"></span>원 <br>
+                        <span class="text-muted" th:text="|할인된 금액 : ${gets.productCost - gets.salePrice + gets.optionPrice}|"></span>원
                       </p>
 
                       <!-- Text -->
@@ -453,7 +455,7 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script th:inline="javascript">
     //주소 api로 입력
-    $('#addressSearch').on('click', addrPopup)
+    $('#addressSearch').on('click', addrPopup);
     function addrPopup(){
         new daum.Postcode({
             oncomplete: function(data) {
@@ -475,17 +477,37 @@
         */
         }).open();
     }
+    //상품 금액 연산 정리
+    let result = 0; // 총금액
+    let deliveryPay = 0;
+    let saleToal = 0;
+    let productTotal = 0;
+    let getPrice = [[${get}]];
+    console.log(getPrice)
+      // total 가격 나중에 쿠폰 가격  빼야함.
+      for(let key in  getPrice) {
+      result = result + ((getPrice[key].productCost + getPrice[key].optionPrice - getPrice[key].salePrice ) * getPrice[key].cartCount); 
+      }
+      // 배송비
+      for(let key in getPrice) {
+        deliveryPay = deliveryPay + (getPrice[key].deliveryCost);
+      }
+      //할인 상품 가격
+      for(let key in getPrice) {
+        saleToal = saleToal + (getPrice[key].salePrice * getPrice[key].cartCount);
+      }
+      result = result + deliveryPay;
+	   // 상품 가격
+      for(let key in getPrice) {
+        productTotal = productTotal + ((getPrice[key].productCost +  getPrice[key].optionPrice)* getPrice[key].cartCount);
+      }
 
-    //p1 : 상품 금액  p2: 상품 할인 금액 p3: 배송비 p4 : 총금액  장바구니 페이지에서 가져옴
-    let p1Result = Number(localStorage.pPrice.slice(0,-1));
-    let p2Result = Number(localStorage.pPrice2.slice(0,-1));
-    let p3Result = Number(localStorage.pPrice3.slice(0,-1));
-    let p4Result = Number(localStorage.pPrice4.slice(0,-1));
-    $('#productPrice').text(p1Result);
-    $('#salePrice').text(p2Result);
-    $('#deliveryPrice').text(p3Result);
-    $('#totalPrice').text(p4Result);
-    
+      $('#productPrice').text(productTotal);
+      $('#salePrice').text(saleToal);
+      $('#deliveryPrice').text(deliveryPay);
+      $('#totalPrice').text(result); // 총금액 
+      //
+
     //배송 요청 사항 직접 입력시 생성
     $('#selectDirect').hide();
     $('#selbox').change(function(){
@@ -498,12 +520,10 @@
 
     // 배송 요청 사항 본인 내용 넘길 때 버튼
     $('#deliveryInfo').on('click', function(e){
-    	let getMemberAddr = [[${get[0].memberAddr}]];
-      let getMemberDetailsAddr = [[${get[0].memberDetailsAddr}]];
-        $('#deliveryName').val($('#mName').val());
-        $('#addr').val(getMemberAddr);
-        $('#addrDt').val(getMemberDetailsAddr);
-        $('#deliveryTel').val($('#mTel').val());
+      $('#deliveryName').val($('#mName').val());
+      $('#addr').val($('#mAddr1').val());
+      $('#addrDt').val($('#mAddr2').val());
+      $('#deliveryTel').val($('#mTel').val());
     });
     
    //토스 위젯
