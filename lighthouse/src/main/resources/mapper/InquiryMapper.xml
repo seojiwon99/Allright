@@ -21,7 +21,7 @@
   
   <insert id="insertInquiry">
   <selectKey  resultType="int" keyProperty="queCode" order="BEFORE"> 
-  	SELECT NVL(0, MAX(que_code))+1 FROM ar_inquiry
+  	SELECT NVL(MAX(que_code),0)+1 FROM ar_inquiry
   </selectKey>
   	insert into ar_inquiry 
   	(que_code  
@@ -43,5 +43,9 @@ values (
 		,#{sellerId}
 		)
   </insert>
+  
+  <delete id="deleteInquiry">
+  	delete from ar_inquiry where que_code = #{queCode}
+  </delete>
   
   </mapper>

@@ -26,4 +26,11 @@ public class ProductInquiryServiceImpl implements ProductInquiryService{
 		mapper.insertInquiry(inquiryVO);
 	}
 
+	//삭제
+	@Override
+	public boolean removeInquiry(int queCode) {
+		
+		return mapper.deleteInquiry(queCode)==1;
+	}
+
 }

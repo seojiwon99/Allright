@@ -12,5 +12,9 @@ public interface ProductInquiryMapper {
 	//문의사항 리스트
 	public List<ProductInquiryVO> selectInquiryList(ProductInquiryVO productInquiryVO);
 	
+	//문의사항 등록
 	public void insertInquiry(ProductInquiryVO inquiryVO);
+	
+	//문의 사항 삭제
+	public int deleteInquiry(int queCode);
 }

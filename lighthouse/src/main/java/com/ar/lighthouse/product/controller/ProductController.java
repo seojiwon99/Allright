@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.product.service.CategoryVO;
@@ -41,8 +42,6 @@ public class ProductController {
 	@Autowired
 	ReviewService reviewService;
 	
-	@Autowired
-	ProductInquiryService inquiryService;
 
 	@Autowired
 	ProductInquiryService custominquiryService;
@@ -195,11 +194,24 @@ public class ProductController {
 	}
 
 	
+	//qna 등록
 	@PostMapping("insertInquiry")
 	@ResponseBody
-	public String addInquiry( Model model, @RequestBody ProductInquiryVO inquiryVO) {
-		System.out.println(inquiryVO);
+	public ProductInquiryVO addInquiry( Model model, @RequestBody ProductInquiryVO inquiryVO) {
 		
+		custominquiryService.addInquiry(inquiryVO);
+	
+		return inquiryVO;
+		
+	}
+	
+	//qna 삭제
+	@PostMapping("removeInquiry")
+	public String removeInquiry(Integer queCode , RedirectAttributes rttr) {
+		System.out.println(queCode);
+		if(custominquiryService.removeInquiry(queCode)) {
+			rttr.addFlashAttribute("result","success");
+		}
 		
 		return null;
 		
@@ -228,10 +240,10 @@ public class ProductController {
 
 		// 리뷰조회
 		model.addAttribute("review", reviewService.getReviewList(reviewVO));
-
+		
+		
+		
 		// qna 조회
-		
-		
 		model.addAttribute("inquiry", custominquiryService.getInquiryList(productInquiryVO));
 		System.out.println(model);
 
