@@ -226,7 +226,7 @@
 	     , code_id
 	     , code_name
 	FROM ar_code 
-	WHERE master_code = #{masterCode}
+	WHERE master_code = 'cancel_reason'
 	</select>
 	
   </mapper>

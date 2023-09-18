@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
    xmlns:th="http://www.thymeleaf.org"
    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
@@ -27,18 +28,14 @@
    <section class="pt-7 pb-15">
       <div class="container">
       	<div class="row justify-content-center">
-      		<div class="col-12 col-lg-10 col-xl-8" id="exchangeForm">
+      		<div class="col-12 col-lg-10 col-xl-8" id="exchForm">
       			<h2>교환 신청 페이지</h2>
       			<div class="mb-3">
       			<!-- Select -->
-      			
                    <select class="form-select form-select-xxs w-auto" id="select">
-                   
                       <option value="선택">교환 사유를 선택해주세요</option>
                       <option th:each="codes: ${codeList}" th:value="${codes.codeId}" th:text=${codes.codeName}></option>
-                   
                    </select>
-      			
       			</div>
       			<div class="mb-3">
       				<textarea class="form-control" id="content" rows="5" placeholder="취소 사유를 입력해주세요"></textarea>
@@ -66,7 +63,7 @@
       </div>
    </section>
    <script>
-   $('#select option:selected').val()
+   <!--$('#select option:selected').val()-->
    </script>
  </div>
  </html>
