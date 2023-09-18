@@ -12,7 +12,7 @@ table {
 <!-- Content -->
 <div layout:fragment="content">
 	<div class="row gx-0">
-        <div class="col-12 col-lg-2">
+        <div class="col-12 col-lg-3">
 
           <!-- NAVBAR -->
           <nav class="navbar navbar-expand-lg navbar-vertical navbar-light sticky-start px-lg-7 ">
@@ -147,14 +147,14 @@ table {
 
         </div>
         				<!-- NAVBAR  SEARCHBAR-->
-       		<div class="col-12 col-lg-9">
+       		<div class="col-12 col-lg-9">s
         		<!-- main 영역 -->
         			<div class="container">
         			<div class="row justify-content-center">
 					<div class="row justify-content-center">
         			
 					<div class="row" style="    display: flex;
-											    justify-content: space-between;
+											    justify-content: end;
 											    margin-bottom: 30px;
 											    margin-top:30px;">
 						<!-- Form -->
@@ -179,17 +179,21 @@ table {
 		
 	
 						</form>
-					  <div class="row" style="    display: flex;
+					  <div class="container" style="display: flex;
 											    justify-content: space-between;
 											    margin-top: 30px;">
-							    <div>
-							    <button class="btn-sm btn-dark" type="button" id="faqBtn">등록</button>
-							    <button class="btn-sm btn-dark" type="button" id="faqBtn">등록</button>
-							    <button class="btn-sm btn-dark" type="button" id="faqBtn">등록</button>
-							    <button class="btn-sm btn-dark" type="button" id="faqBtn">등록</button>
-							    <button class="btn-sm btn-dark" type="button" id="faqBtn">등록</button>
+											    
+							    <div class="btn-group-sm" role="group" aria-label="Basic outlined example">
+							    <button class="btn btn-outline-primary" type="button" id="faqBtn">전체</button>
+							    <button class="btn btn-outline-primary" type="button" id="faqBtn">취소/반품/교환</button>
+							    <button class="btn btn-outline-primary" type="button" id="faqBtn">주문/결제</button>
+							    <button class="btn btn-outline-primary" type="button" id="faqBtn">회원 서비스</button>
+							    <button class="btn btn-outline-primary" type="button" id="faqBtn">배송</button>
+							    <button class="btn btn-outline-primary" type="button" id="faqBtn">상품</button>
+							    <button class="btn btn-outline-primary" type="button" id="faqBtn">기타</button>
 							    </div>
-							    <div>
+							    
+							    <div  class="btn-group-sm" role="group" aria-label="Basic outlined example">
 								<button class="btn-sm btn-dark" type="button" id="faqBtn">등록</button>
 							    </div>
 						</div>

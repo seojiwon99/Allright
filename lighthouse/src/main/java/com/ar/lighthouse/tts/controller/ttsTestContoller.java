@@ -20,4 +20,8 @@ public class ttsTestContoller {
 	public void ttsstt() {
 		
 	}
+	@GetMapping("testCategory")
+	public String testtest() { 
+		return "page/test/testbody";
+	}
 }

@@ -338,9 +338,10 @@ recognition.maxAlternatives = 10000;
 
 function sttToInput(HTMLTag){
 	console.log("sttToInput Start");
-
 	let speechToText = "";
+	let tagNow = HTMLTag.value;
 	recognition.addEventListener("result", (e) => {
+		console.log(HTMLTag);
 	  let interimTranscript = "";
 	  for (let i = e.resultIndex, len = e.results.length; i < len; i++) {
 	    let transcript = e.results[i][0].transcript;
@@ -352,7 +353,7 @@ function sttToInput(HTMLTag){
 	    }
 	  }
 	  let TotalSTT = speechToText + interimTranscript;
-	  HTMLTag.value =  TotalSTT;
+	  tagNow =  TotalSTT;
 	});
 		console.log("sttToInput End");
 }
