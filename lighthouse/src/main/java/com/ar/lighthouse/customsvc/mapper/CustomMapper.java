@@ -16,9 +16,6 @@ public interface CustomMapper {
 	// faq 목록 가져오기
 	public List<FaqVO> selectFaqList(@Param("faqType") String faqType);
 	
-	// faq 타입 목록 가졍괴
-	public List<FaqVO> selectFaqTypeList();
-	
 	// 공지사항 목록 가져오기
 	public List<NoticeVO> selectNoticeList(Criteria cri);
 	
@@ -28,9 +25,9 @@ public interface CustomMapper {
 	// 공지 사항 전체 갯수
 	public int getTotalCount(Criteria cri);
 	
+	
 	// 1:1문의 등록
 	public int insertInquiry(InquiryVO inqVO);
-	
 	
 	
 }
