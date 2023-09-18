@@ -48,10 +48,12 @@
 						style="display: flex; list-style: none; padding-left: 0;">
 						<li class="nav-item"><a class="nav-link"
 							th:href="@{/custom/faqList}">전체</a></li>
-						<th:block th:each="type, status : ${faqType}">
 						<li class="nav-item"><a class="nav-link"
-							th:href="@{/custom/faqList/(faqType=${type.faqType})}">[[${type.typeName}]]</a></li>
-						</th:block>	
+							th:href="@{/custom/faqList/(faqType=user)}">회원</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/custom/faqList/(faqType=order)}">주문/결제</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/custom/faqList/(faqType=cancle)}">취소/반품/교화</a></li>
 					</ul>
 					<!-- Heading -->
 					<!-- <h5 class="mb-7">회원:</h5> -->

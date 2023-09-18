@@ -9,9 +9,6 @@ public interface CustomService {
 	// Faq 목록 가져오기
 	public List<FaqVO> getFaqList(String faqType);
 	
-	// Faq 타입들 가져오기
-	public List<FaqVO> getTypeList();
-	
 	// 공지사항 목록 가져오기
 	public List<NoticeVO> getNoticeList(Criteria cri);
 	

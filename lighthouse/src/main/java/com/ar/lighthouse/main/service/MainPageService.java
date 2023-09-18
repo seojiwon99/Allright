@@ -15,6 +15,4 @@ public interface MainPageService {
 	public List<EventImgVO> showEventBanner();
 	
 	public List<EventImgVO> randomGetProduct();
-	
-	public List<CategoryVO> getChildCateList(CategoryVO cate);
 }
