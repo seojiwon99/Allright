@@ -207,13 +207,15 @@ public class ProductController {
 	
 	//qna 삭제
 	@PostMapping("removeInquiry")
-	public String removeInquiry(Integer queCode , RedirectAttributes rttr) {
+	@ResponseBody
+	public int removeInquiry(@RequestBody Integer queCode , RedirectAttributes rttr) {
 		System.out.println(queCode);
 		if(custominquiryService.removeInquiry(queCode)) {
 			rttr.addFlashAttribute("result","success");
 		}
+		return queCode;
 		
-		return null;
+		
 		
 	}
 	

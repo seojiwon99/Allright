@@ -633,29 +633,35 @@
 
 
 												<td>[[${#dates.format(inquiry. queRegdate,'yyyy년 MM월
-													dd일')}]]</td>
+													dd일 HH:mm')}]]</td>
 											</tr>
-
+											
+											<!-- 답변 보기 -->
 											<tr th:class="|inquiryGet${inquiry.queCode}|"
 												th:if="${session.loginMember != null} and ${session.loginMember.memberId == inquiry.memberId}"
-												style="display: none; background-color: lightgrey">
+												style="display: none; background-color: #E2E2E2">
 
-												<td class="inquiryGetAns"><div style="font-size: 20px">Q</div>
-													[[${inquiry.queContent}]]</td>
-												<td class="inquiryGetAns"><div style="font-size: 20px">A</div>
-													[[${inquiry.queAns}]]</td>
+												<td class="inquiryGetAns" id="answerForm"><div style="font-size: 30px; color: #0000ff; font-weight: 600">Q</div>
+													<textarea class="form-control form-control-sm" rows="5"
+														readonly>[[${inquiry.queContent}]]</textarea> </td>
+												<td class="inquiryGetAns"><div style="font-size: 30px; color: #ff0500; font-weight: 600" >A</div>
+												<textarea class="form-control form-control-sm" rows="5"
+														readonly>[[${inquiry.queAns}]]</textarea>
+													</td>
 												<td class="inquiryGetAns" style="font-size: 18px">
-													[[${inquiry.sellerId}]]</td>
+													</td>
 												<td class="inquiryGetAns">
-													<div>
-														<a style="color: grey" href="">수정</a>
-													</div>
-													<div>
-														<a style="color: grey"
-															th:onclick="|remove([[${inquiry.queCode}]])|">삭제</a>
+												<div style="padding-top: 20px">판매자 : [[${inquiry.sellerId}]]</div>
+													<div style="padding:30px 10px 10px 10px">
+														<a style="color: grey; font-weight: 600"  id="modify">수정</a>
+													</div >
+													<div style="padding: 10px">
+														<a style="color: grey; font-weight: 600"
+															th:onclick="remove([[${inquiry.queCode}]])">삭제</a>
 													</div>
 												</td>
 											</tr>
+											<!-- 답변 보기 -->
 
 										</tbody>
 
@@ -672,6 +678,11 @@
 	<!-- REVIEWS -->
 
 	<script th:inline="javascript">
+	$("#modify").on("click",function(){
+		console.log("여기옴");
+		$("#answerForm textarea").attr("readonly",false);
+	})
+	
       console.log($("#hidden").val());
       $("#loginTag").on("click", function () {
         let result = confirm("회원가입 창으로 이동하시겠습니까?");
@@ -767,22 +778,33 @@
           },
         });
       }
+    	
 		//qna 삭제
 		function remove(idx){
-			console.log(idx[0]);
 			
+		    console.log(idx);
+			if(!confirm('삭제 하시겠습니까?')){
+				console.log("삭제 x");
+			}else{
+				console.log("삭제");
+				realRemove();
+			};
+			
+		    function realRemove(){
 			$.ajax({
 				url:"removeInquiry",
 				type:"post",
-				data:{queCode:idx[0]},
+				headers: { "Content-Type" : "application/json" },
+				data: JSON.stringify(idx),
 				success:function(result){
 					console.log(result);
+					location.reload();
 				},
 				error:function(reject){
 					console.log(reject);
 				}
 			})
-			
+		    }
 		}
     	
     	
