@@ -4,11 +4,6 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.ar.lighthouse.cart.service.CartVO;
-import com.ar.lighthouse.member.service.MemberVO;
-import com.ar.lighthouse.product.service.ImgsVO;
-import com.ar.lighthouse.product.service.OptionVO;
-import com.ar.lighthouse.product.service.ProductVO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -60,8 +55,27 @@ public class OrdersVO {
 	//ImegsVO
 	private String uploadName;
 	
-	//CouponVO
+	//CouponsVO
+	private int couponCode;
 	private String couponName;
+	private String couponContent;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date couponDeadline;
+	private String couponBase;
+	private int couponMinPrice;
+	private int couponMaxPrice;
+	private int couponDiscountPrice;
+	private int couponDiscountRate;
+	
+	//CouponBox
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date issueDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date usingDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date endDate;
+	private String couponUse;
+	
 	
 	
 	

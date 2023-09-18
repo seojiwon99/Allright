@@ -3,10 +3,6 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default_layout}">
-<style>
-    #payment-button{ width:100%; padding:15px; background-color:#3065AC; color:white; border-radius:3px; font-size:16px; border:none; margin-top:10px}
-	.title {margin: 0 0 4px; font-size: 24px; font-weight: 600;color: #4e5968;}
-  </style>
 <!-- Content -->
 <div layout:fragment="content">
     
@@ -160,115 +156,22 @@
               </div>
 
               <hr>
+              <!--쿠폰-->
               <h6>쿠폰 할인</h6>
               <div class="col-12">
-
-                <!--주문자 정보-->
-                <!-- 이름 -->
-              
                 <div class="form-group">
                   <label class="form-label" for="checkoutBillingFirstName">쿠폰 확인 *</label>
                   <div class="input-group mb-8">
                     <input type="text" class="form-control" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2">
-                    <a class="btn btn-outline-secondary"  data-bs-toggle="offcanvas" href="#modalShoppingCart" >쿠폰선택</a>
+                    <a class="btn btn-outline-secondary" id="couponBtn" data-bs-toggle="offcanvas" href="#modalShoppingCart" >쿠폰선택</a>
                   </div>
                   <p>쿠폰 할인 금액 : <input type="text" style="border-width: 0 0 1px;" readonly>원 
                     <button class="btn btn-outline-secondary" type="button" id="button-addon2">사용하기</button>
                   </p> 
                 </div>
               </div>
-
               <hr>
-              <!-- Heading -->
-              <h6 class="mb-7">결제수단</h6>
-
-              <!-- List group -->
-              <div class="list-group list-group-sm mb-7">
-                <div class="list-group-item">
-
-                  <!-- Radio -->
-                  <div class="form-check custom-radio">
-
-                    <!-- Input -->
-                    <input class="form-check-input" id="checkoutPaymentCard" name="payment" type="radio" data-collapse="show" data-target="#checkoutPaymentCardCollapse">
-
-                    <!-- Label -->
-                    <label class="form-check-label fs-sm text-body text-nowrap" for="checkoutPaymentCard">
-                     토스페이 <img class="ms-2" src="assets/img/brands/color/cards.svg" alt="...">
-                    </label>
-
-                  </div>
-
-                </div>
-                <div class="list-group-item collapse py-0" id="checkoutPaymentCardCollapse">
-
-                  <!-- Form -->
-                  <div class="row gx-5 py-5">
-                    <div class="col-12">
-                      <div class="form-group mb-4">
-                        <label class="visually-hidden" for="checkoutPaymentCardNumber">Card Number</label>
-                        <input class="form-control form-control-sm" id="checkoutPaymentCardNumber" type="text" placeholder="Card Number *" required>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      <div class="form-group mb-4">
-                        <label class="visually-hidden" for="checkoutPaymentCardName">Name on Card</label>
-                        <input class="form-control form-control-sm" id="checkoutPaymentCardName" type="text" placeholder="Name on Card *" required>
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-4">
-                      <div class="form-group mb-md-0">
-                        <label class="visually-hidden" for="checkoutPaymentMonth">Month</label>
-                        <select class="form-select form-select-sm" id="checkoutPaymentMonth">
-                          <option>January</option>
-                          <option>February</option>
-                          <option>March</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-4">
-                      <div class="form-group mb-md-0">
-                        <label class="visually-hidden" for="checkoutPaymentCardYear">Year</label>
-                        <select class="form-select form-select-sm" id="checkoutPaymentCardYear">
-                          <option>2017</option>
-                          <option>2018</option>
-                          <option>2019</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-12 col-md-4">
-                      <div class="input-group input-group-merge">
-                        <input class="form-control form-control-sm" id="checkoutPaymentCardCVV" type="text" placeholder="CVV *" required>
-                        <div class="input-group-append">
-                          <span class="input-group-text" data-bs-toggle="popover" data-bs-placement="top" data-bs-trigger="hover" data-bs-content="The CVV Number on your credit card or debit card is a 3 digit number on VISA, MasterCard and Discover branded credit and debit cards.">
-                            <span><i class="fe fe-help-circle"></i></span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-                <div class="list-group-item">
-
-                  <!-- Radio -->
-                  <div class="form-check custom-radio">
-
-                    <!-- Input -->
-                    <input class="form-check-input" id="checkoutPaymentPaypal" name="payment" type="radio" data-collapse="hide" data-target="#checkoutPaymentCardCollapse">
-
-                    <!-- Label -->
-                    <label class="form-check-label fs-sm text-body text-nowrap" for="checkoutPaymentPaypal">
-                      카카오페이<img src="assets/img/brands/color/paypal.svg" alt="...">
-                    </label>
-
-                  </div>
-
-                </div>
-              </div>
-
-              
-
+            
             </form>
 
           </div>
@@ -342,11 +245,7 @@
               당사의 개인 정보 보호 정책에 설명된 기타 목적을 위해 사용됩니다.
             </p>
 
-            <!-- Button -->
-            <button class="btn w-100 btn-dark">
-              결제하기
-            </button>
-
+            
           </div>
         </div>
       </div>
@@ -366,18 +265,18 @@
       <div class="offcanvas-header lh-fixed fs-lg">
         <strong class="mx-auto">나의 쿠폰함</strong>
       </div>
-    
+      
       <!-- List group -->
       <ul class="list-group list-group-lg list-group-flush">
-        <div th:each="gets :${get}">
+        <div th:each="cpList : ${couponList}">
           <li class="list-group-item">
             <div class="row align-items-center">
               <div class="col-8">
       
                 <!-- Title -->
                 <p class="fs-sm fw-bold mb-6">
-                  <a class="text-body" href="./product.html" th:text="${gets.couponName}"></a> <br>
-                  <span class="text-muted">$40.00</span>
+                  <a class="text-body" href="./product.html" th:text="${cpList.couponName}"></a> <br>
+                  <span class="text-muted"></span>
                 </p>
       
                 <!--Footer -->
@@ -450,10 +349,29 @@
 	<div class="title"></div>
 	  <div id="payment-method"></div>
 	  <div id="agreement"></div> 
-  <button id="payment-button">결제하기</button> <!-- id 템블릿으로 변경 -->
+  <!-- Button -->
+  <div>
+  <button class="btn btn-dark" id="payment-button" style="padding: 10px; width: 200px; margin: auto; display: block;">결제하기</button>   
+  </div>
+  <div>
+    <br>
+  </div>
   
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script th:inline="javascript">
+
+    // 쿠폰 값 넘겨 받기
+    $('#couponBtn').on('click', function(e){
+    $.ajax('/page/orders/ordersPay',{
+      type : 'get'
+    })
+    .done(data => {
+      console.log(data);
+    })
+    .fail(reject => console.log(reject));
+
+  })
+
     //주소 api로 입력
     $('#addressSearch').on('click', addrPopup);
     function addrPopup(){

@@ -21,4 +21,10 @@ public class OrdersServiceImpl implements OrdersService{
 		return ordersMapper.selectOrders(memberId, cartCode);
 	}
 
+	@Override
+	public List<OrdersVO> getCoupon(String memberId) {
+		
+		return ordersMapper.selectCoupon(memberId);
+	}
+
 }

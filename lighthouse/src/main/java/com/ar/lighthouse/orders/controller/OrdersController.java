@@ -24,10 +24,15 @@ public class OrdersController {
 	@Autowired
 	OrdersService ordersService;
 	
-	@GetMapping("orders/pay")
-	public String orderPage() {
+	@GetMapping("/page/orders/ordersPay")
+	public Model orderPage(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		MemberVO memberVO = (MemberVO)session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
+		List<OrdersVO> couponList = ordersService.getCoupon(memberId);
+		model.addAttribute("couponList",couponList);
 		
-		return "/page/orders/ordersPay";
+		return model.addAttribute("couponList",couponList);
 	}
 	
 	

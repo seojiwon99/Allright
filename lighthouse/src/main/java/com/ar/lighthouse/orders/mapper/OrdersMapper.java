@@ -10,5 +10,6 @@ import com.ar.lighthouse.orders.service.OrdersVO;
 public interface OrdersMapper {
 
 	public OrdersVO selectOrders(String memberId, int cartCode); 
+	public List<OrdersVO> selectCoupon(String memberId);
 	
 }
