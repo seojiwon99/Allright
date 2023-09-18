@@ -174,80 +174,113 @@ table {
 						    </div>
 						
 						  </div>
-						<div class="col" style="    display: flex;
-											    justify-content: end;
-											    margin-top: 30px;">
-						<button class="btn-sm btn-dark" type="button" id="noticeBtn">등록</button>
-						</div>
+
 						</form>
 	
 					</div>
 					</div>
-					<div>
-					<table class="table table-sm table-bordered table-striped table-hover">
-					<thead class="table-dark">
-					<tr>
-					<th scope="col" style="width:100px">번호</th>
-					<th scope="col">제목</th>
-					<th scope="col" style="width:150px; text-align: center;">날짜</th>
-					</tr>
-					</thead>
-					<tbody>
-					<tr th:each="notice : ${noticeList}">
 					
-						<td scope="row" th:switch="${notice.noticeType}">
-						  <span  th:case="'Y'">[공지]</span>
-						  <span th:case="N" th:text="${notice.noticeCode}"></span>
-						</td>
-						
-						<td th:text="${notice.noticeTitle}"></td>
-						
-						<td style="text-align:right;" class="" th:text="${#dates.format(notice.noticeRegdate,'yyyy-MM-dd')}"></td>
-						
-					</tr>
-					</tbody>
-					</table>
-										<!-- Pagination -->
-					<nav
-						class="d-flex justify-content-center justify-content-md-end mt-10">
-						<ul class="pagination pagination-sm text-gray-400">
-							<li class="page-item" th:if="${pageMaker.prev}"><a
-								class="page-link page-link-arrow"
-								th:href="@{/admin/notice/(pageNum = ${pageMaker.startPage - 1})}">
-									<i class="fa fa-caret-left"></i>
-							</a></li>
-							<th:block
-								th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
-								<li th:if="${pageMaker.endPage} ne 0"
-									th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
-									th:each="pageButtom : ${#numbers.sequence(start,end)}"
-									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
-									<a class="page-link" href="#"
-									th:href="@{/admin/notice/(pageNum= ${pageButtom} )}"
-									th:text="${pageButtom}" style="font-size : x-large;"></a>
-								</li>
-							</th:block>
+ <div class="row justify-content-end">
 
-							<li class="page-item" th:if="${pageMaker.next}"><a
-								class="page-link page-link-arrow"
-								th:href="@{/custom/notice/(pageNum = ${pageMaker.endPage + 1})}">
-									<i class="fa fa-caret-right"></i>
-							</a></li>
-						</ul>
-					</nav>
+            <!-- Form -->
+            <form id="noticeForm">
 					
-					</div>
+
+					
+              <!-- Email -->
+              <div class="form-group" style="display:flex; justify-content: end;">
+                <label class="visually-hidden" for="contactName">
+                  상단 고정 날짜
+                </label>
+              <p class="fs-6 fw-semibold" style="text-align:center;vertical-align:middle">상단 고정 날짜: </p>
+              
+             <select class="form-select form-select-sm w-25" aria-label="Default select example" id="selectDate" >
+				<option value="date">날짜로 입력</option>
+				<option value="noLimit">무기한</option>
+				<option value="no">고정 없음</option>
+			</select>	
+			
+                <input class="form-control form-control-sm w-25" name="upEnddate" id="upEnddate" type="date" required>
+                
+              </div>
+
+              <!-- Email -->
+              <div class="form-group">
+                <label class="visually-hidden" for="contactTitle">
+                  Title *
+                </label>
+                <input class="form-control form-control-sm" name="noticeTitle"  id="noticeTitle" type="text" placeholder="제목 *" required>
+              </div>
+
+              <!-- Email -->
+              <div class="form-group mb-7">
+                <label class="visually-hidden" for="contactMessage">
+                  Message *
+                </label>
+                <textarea class="form-control form-control-sm" name="noticeContent"   id="noticeContent" rows="10" placeholder="내용 *" required></textarea>
+              </div>
+			<div style="display: flex;
+    justify-content: flex-end;">
+              <!-- Button -->
+              <button class="btn btn-dark " id="noticeBtn">
+                등록
+              </button>
+			</div>
+            </form>
+
+          </div>
 					</div>
 					
 					
 				
 			</div>
       </div>
+      <script>
+      //   <input class="form-control form-control-sm w-25" id="contactName" type="date" required>
+      $('#selectDate').on('change', function(){
+          if($('#selectDate option:selected').val() == 'date'){
+        	  let inputTag = $('<input  class="form-control form-control-sm w-25" name="upEnddate" id="upEnddate" type="date" required/>');
+        	  $('#upEnddate').remove();
+        	  $('#selectDate').after(inputTag);
+          }else{
+        	  $('#upEnddate').remove();
+          }
+      })
       
-<script>
-	$('#noticeBtn').on('click', function(){
-		location.href = "/admin/noticeForm";
-	})
-</script>      
+      $('#noticeBtn').on('click', function(e){
+    	  e.preventDefault();
+    	  let obj = {};
+    	  
+    	  $('#noticeForm').attr('method', 'POST');
+    	  $('#noticeForm').attr('action', 'addNotice');
+    	  let selected = $('#selectDate option:selected').val();
+    	  if(selected == 'date'){
+    		  if($('#noticeDate').val() == ''){
+    			  
+    			  alert('날짜를 등록해주세요.')
+    			  return false;
+    		  }
+    		  let hiddenType = $('<input type="hidden" name="noticeType" id="noticeType" value="Y"/>')
+    		  $('#noticeForm').append(hiddenType)
+    	  }else if(selected == 'noLimit'){
+    		  let hiddenType = $('<input type="hidden" name="noticeType" id="noticeType" value="Y"/>')
+    		  $('#noticeForm').append(hiddenType)
+    	  }else if(selected == 'no'){
+    		  let hiddenType = $('<input type="hidden" name="noticeType" id="noticeType" value="N"/>')
+    		  $('#noticeForm').append(hiddenType)
+    	  }
+    	  obj['noticeTitle'] = $('#noticeTitle').val();
+    	  obj['noticeContent'] = $('#noticeContent').val();
+    	  if($('#noticeTitle').val() == '' || $('#noticeContent').val() == ''){
+    		  alert('내용을 정확히 입력해주세요.');
+    		  return;
+    	  }
+    	  console.log(obj);
+    	  console.log($('#noticeForm'))
+    	  $('#noticeForm').submit();
+    	  
+      })
+
+      </script>
 </div>
 </html>

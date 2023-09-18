@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.ar.lighthouse.admin.mapper.AdminMapper">
+  
+
+  	<insert id="insertNotice" parameterType="NoticeAdminVO">
+	  	 <selectKey resultType="int" keyProperty="noticeCode" order="BEFORE">
+	  		SELECT NVL(MAX(notice_code),1)+1 FROM ar_notice
+	  	</selectKey>
+	  	
+	  	INSERT INTO ar_notice (
+	  						notice_code
+	  						, notice_title
+	  						, notice_content
+	  						<if test="upEnddate != null">
+	  						, up_enddate
+	  						</if>
+	  						, notice_writer
+	  						, notice_type
+	  						) 
+	  					values(
+	  						#{noticeCode}
+	  						, #{noticeTitle}
+	  						, #{noticeContent}
+	  						<if test="upEnddate != null">
+	  						, #{upEnddate}
+	  						</if>
+	  						, 'Admin'
+	  						, #{noticeType}
+	  						)
+	  					
+	  						
+  	
+  	
+  	</insert>	
+
+  
+  </mapper>
+  

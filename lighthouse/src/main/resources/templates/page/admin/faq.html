@@ -151,15 +151,22 @@ table {
         		<!-- main 영역 -->
         			<div class="container">
         			<div class="row justify-content-center">
-					<div class="col" style="    display: flex;
-											    justify-content: end;
-											    margin-bottom: 100px;">
+					<div class="row justify-content-center">
+        			
+					<div class="row" style="    display: flex;
+											    justify-content: space-between;
+											    margin-bottom: 30px;
+											    margin-top:30px;">
 						<!-- Form -->
-						<form class="navbar-form w-100" style="max-width: 550px;">
+						<div>
+						<h2>FAQ</h2>
+						</div>
+						<form class="navbar-form col-12" style="max-width: 550px; display: flex;
+											    justify-content: space-between">
 						<div class="input-group">
 						
 						  <!-- Input -->
-						<input class="form-control form-control-underline form-control-sm border-dark" type="search" placeholder="Search for items and brands">
+						<input class="form-control form-control-underline form-control-sm border-dark" type="search" placeholder="검색">
 						
 						<!-- Button -->
 						    <div class="input-group-append">
@@ -168,8 +175,25 @@ table {
 						      </button>
 						    </div>
 						
-						  </div>
+						  </div>					
+		
+	
 						</form>
+					  <div class="row" style="    display: flex;
+											    justify-content: space-between;
+											    margin-top: 30px;">
+							    <div>
+							    <button class="btn-sm btn-dark" type="button" id="faqBtn">등록</button>
+							    <button class="btn-sm btn-dark" type="button" id="faqBtn">등록</button>
+							    <button class="btn-sm btn-dark" type="button" id="faqBtn">등록</button>
+							    <button class="btn-sm btn-dark" type="button" id="faqBtn">등록</button>
+							    <button class="btn-sm btn-dark" type="button" id="faqBtn">등록</button>
+							    </div>
+							    <div>
+								<button class="btn-sm btn-dark" type="button" id="faqBtn">등록</button>
+							    </div>
+						</div>
+					</div>
 					</div>
 					</div>
 					<div>
@@ -238,6 +262,9 @@ table {
       </div>
       
 <script>
+ $('#faqBtn').on('click', function(){
+	 location.href="";
+ })
 </script>      
 </div>
 </html>
