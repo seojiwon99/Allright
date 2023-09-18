@@ -2,9 +2,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/default_layout}">
+	layout:decorate="~{layouts/sellerHtml}">
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-<div layout:fragment="content">
+<!-- Content -->
+
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/sellerHtml}">
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<!-- Content -->
+
+
+
+<div layout:fragment="sellerContent">
+
 
 	<div class="row gx-0">
 		<div class="col-12 col-lg-auto">
@@ -57,29 +72,29 @@
 											<!-- Links -->
 											<ul class="list-styled fs-base">
 												<li class="list-styled-item"><a
-													class="list-styled-link" href="./shop.html">주문확인/발송관리</a></li>
+													class="list-styled-link" href="/orderManagement">주문확인/발송관리</a></li>
 												<li class="list-styled-item"><a
-													class="list-styled-link" href="./shop.html">취소관리</a></li>
+													class="list-styled-link" href="/cancelProduct">취소관리</a></li>
 												<li class="list-styled-item"><a
-													class="list-styled-link" href="./shop.html">교환반품관리</a></li>
+													class="list-styled-link" href="/exchangeList">교환반품관리</a></li>
 
 											</ul>
 
 										</div>
 
-										<li class="nav-item">
-											<!-- Toggle --> <a class="nav-link dropdown-toggle"
-											data-bs-toggle="collapse" href="#sidenavShop"> 정산/통계관리 </a>
-										<li class="nav-item">
-											<!-- Toggle --> <a class="nav-link dropdown-toggle"
-											data-bs-toggle="collapse" href="#sidenavPages"> 문의관리 </a>
-										<li class="nav-item">
-											<!-- Toggle --> <a class="nav-link dropdown-toggle"
-											data-bs-toggle="collapse" href="#sidenavBlog"> 판매자정보 </a>
+										<li class="nav-item"><a class="nav-link"
+											href="/settlementManagement">정산/통계관리</a></li>
+										<li class="nav-item"><a class="nav-link"
+											href="/productInquiry">문의관리</a></li>
+										<li class="nav-item"><a class="nav-link"
+											href="/sellerMypage">판매자정보</a></li>
 										<li class="nav-item"><a class="nav-link"
 											href="./docs/getting-started.html">고객센터</a></li>
 						</ul>
 
+						
+						
+						
 
 					</div>
 
@@ -87,7 +102,7 @@
 			</nav>
 
 		</div>
-
+		
 
 		<div class="col-12 col-lg">
 			<div class="jumbotron">
@@ -197,7 +212,7 @@
 					<div class="form-group row">
 						<label class="col-sm-2">상세설명</label>
 						<div class="col-sm-3">
-							<input type="text" name="productContent" class="form-control">
+							<a href="/productContent" target="_blank"><strong name="productContent" class="form-control" style="background-color : #00C73C;">작성하러가기</strong></a>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -283,7 +298,6 @@
 			</div>
 		</div>
 
-	</div>
 	<script>
 		
 
