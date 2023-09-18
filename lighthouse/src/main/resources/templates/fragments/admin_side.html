@@ -1,17 +1,7 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/admin_layout}">
-<style>
-table {
-	border : 1px;
-}
-</style>
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org">
+<!--headerFragment 선언-->
 
-<!-- Content -->
-<div layout:fragment="content">
-	<div class="row gx-0">
+<div th:fragment="sideFragment" class="col-3">
         <div class="col-12 col-lg-3">
 
           <!-- NAVBAR -->
@@ -147,39 +137,6 @@ table {
 
         </div>
         				<!-- NAVBAR  SEARCHBAR-->
-       		<div class="col-12 col-lg-9">
-        		<!-- main 영역 -->
-        			<div class="container">
-        			<div class="row justify-content-center">
-					<div class="col" style="    display: flex;
-											    justify-content: end;
-											    margin-bottom: 100px;">
-						<!-- Form -->
-						<form class="navbar-form w-100" style="max-width: 550px;">
-						<div class="input-group">
-						
-						  <!-- Input -->
-						<input class="form-control form-control-underline form-control-sm border-dark" type="search" placeholder="Search for items and brands">
-						
-						<!-- Button -->
-						    <div class="input-group-append">
-						      <button class="btn btn-underline btn-sm border-dark" type="button">
-						        <i class="fe fe-search"></i>
-						      </button>
-						    </div>
-						
-						  </div>
-						</form>
-					</div>
-					</div>
-					</div>
-					
-					
-				
-			</div>
-      </div>
+  
 </div>
-
-
-
 </html>

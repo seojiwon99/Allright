@@ -27,6 +27,13 @@ public class AdminController {
 		
 		return "page/admin/adminMain";
 	}
+	@GetMapping("admin/main2")
+	public String adminMain2(Criteria cri, Model model) {
+		int totalCnt = customService.getTotalCount(cri);
+		model.addAttribute("noticeList", customService.getNoticeList(cri));
+		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
+		return "page/admin/adminMain2";
+	}
 	
 	@GetMapping("admin/notice")
 	public String noticeList(Criteria cri, Model model) {
@@ -53,4 +60,37 @@ public class AdminController {
 		adminService.addNotice(noticeAdminVO);
 		return "redirect:/admin/notice";
 	}
+	@GetMapping("admin/declareList")
+	public String declareList() {
+		return "page/admin/declareList";
+	}
+	@GetMapping("admin/clearDeclareList")
+	public String cleardeclareList() {
+		return "page/admin/clearDeclareList";
+	}
+	@GetMapping("admin/inquiryList")
+	public String inquiryList() {
+		return "page/admin/inquiryList";
+	}
+	@GetMapping("admin/clearInquiryList")
+	public String ClearInquiryList() {
+		return "page/admin/clearInquiryList";
+	}
+	@GetMapping("admin/buyerList")
+	public String buyerList() {
+		return "page/admin/buyerList";
+	}
+	@GetMapping("admin/sellerList")
+	public String sellerList() {
+		return "page/admin/sellerList";
+	}
+	@GetMapping("admin/allProductList")
+	public String allProductList() {
+		return "page/admin/allProductList";
+	}
+	@GetMapping("admin/bannerUpdateForm")
+	public String bannerUpdateForm() {
+		return "page/admin/bannerUpdateForm";
+	}
+	
 }

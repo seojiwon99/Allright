@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_layout2}">
+<!-- Content -->
+<div layout:fragment="content" class="col">
+	<!-- main 영역 -->
+	<div class="container">
+		<div class="col" style="    display: flex;
+											    justify-content: space-between;
+											    margin-bottom: 15px;
+											    margin-top:30px;">
+						<!-- Form -->
+			<div>
+			<h2 class="fst-normal">신고내역</h2>
+			</div>
+			<form class="navbar-form w-100" style="max-width: 550px; ">
+				<div class="input-group">
+				<!-- Input -->
+				<input class="form-control form-control-underline form-control-sm border-dark" type="search" placeholder="검색">
+				<!-- Button -->
+				    <div class="input-group-append">
+				      <button class="btn btn-underline btn-sm border-dark" type="button">
+				        <i class="fe fe-search"></i>
+				      </button>
+				    </div>
+				</div>
+
+			</form>
+			
+		</div>
+		<div class="col" style="display: flex;
+											    justify-content: space-between;">
+				<div class="col" style="    display: flex;
+							    justify-content: space-between;
+							    margin-top: 30px;">
+				<div>
+				<button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">전체</button>
+				<button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">욕설/비방</button>
+				<button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">부적절한 내용/상품</button>
+				<button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">광고</button>
+				<button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">음란</button>
+				<button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">도배</button>
+				<button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">기타</button>
+				</div>
+				<div>				
+				<button class="btn btn-xs btn-outline-secondary btn-underline mb-1" type="button" id="noticeBtn">등록</button>
+				<button class="btn btn-xs btn-outline-secondary btn-underline mb-1" type="button" id="noticeBtn">오래된 순</button>
+				</div>
+				</div>
+		</div>
+	
+	
+	<!-- TABLE -->
+    		<table class="table table-bordered table-sm mb-0">
+			  <thead>
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col">First</th>
+			      <th scope="col">Last</th>
+			      <th scope="col">Handle</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr>
+			      <th scope="row">1</th>
+			      <td>Mark</td>
+			      <td>Otto</td>
+			      <td>@mdo</td>
+			    </tr>
+			    <tr>
+			      <th scope="row">2</th>
+			      <td>Jacob</td>
+			      <td>Thornton</td>
+			      <td>@fat</td>
+			    </tr>
+			    <tr>
+			      <th scope="row">3</th>
+			      <td>Larry</td>
+			      <td>the Bird</td>
+			      <td>@twitter</td>
+			    </tr>
+			  </tbody>
+			</table>
+
+	</div>
+</div>
+</html>
