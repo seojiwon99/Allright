@@ -14,12 +14,12 @@
           <div class="col-12 text-center">
 
             <!-- Heading -->
-            <h3 class="mb-10">주문 목록</h3>
+            <h3 class="mb-10">반품 상세 페이지</h3>
 
           </div>
         </div>
         <div class="row">
-          <div class="col-12 col-md-3">
+<div class="col-12 col-md-3">
 
             <!-- Nav -->
             <nav class="mb-10 mb-md-0">
@@ -90,41 +90,17 @@
                 
                 <div class="card card-sm">
                 
-                <div th:each="lists : ${orderList}">
+                <div th:each="lists : ${returnList}">
                   <div class="card-body bg-light">
                     <div class="row">
                       <div class="col-6 col-lg-3">
     					
                         <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">주문 번호:</h6>
+                        <h6 class="heading-xxxs text-muted">반품 번호:</h6>
 
                         <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
-                          <span th:text= "|${lists.orderCode}|"></span>
-                        </p>
-
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">주문 날짜:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-lg-0 fs-sm fw-bold">
-                          <time datetime="2019-10-01">
-                           <span th:text= "|${lists.orderDate}|"></span>
-                          </time>
-                        </p>
-
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">배송 상태:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${lists.orderStatus}|"></span>
+                          <span th:text= "|${lists.returnCode}|"></span>
                         </p>
 
                       </div>
@@ -139,8 +115,8 @@
                         </p>
 
                       </div>
+                      
                       <div class="col-6 col-lg-3">
-
                         <!-- Heading -->
                         <h6 class="heading-xxxs text-muted">수량:</h6>
 
@@ -148,12 +124,11 @@
                         <p class="mb-0 fs-sm fw-bold">
                           <span th:text="|${lists.orderCnt}|"></span>
                         </p>
-
                       </div>
                       <div class="col-6 col-lg-3">
 
                         <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">주문 금액:</h6>
+                        <h6 class="heading-xxxs text-muted">결제 금액:</h6>
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
@@ -164,68 +139,106 @@
                       <div class="col-6 col-lg-3">
 
                         <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">배달 완료 날짜:</h6>
+                        <h6 class="heading-xxxs text-muted">반품 접수 날짜:</h6>
 
                         <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${lists.deliveryDate}|"></span>
+                        <p class="mb-lg-0 fs-sm fw-bold">
+                          <time datetime="2019-10-01">
+                           <span th:text= "|${lists.returnRegdate}|"></span>
+                          </time>
                         </p>
 
                       </div>
                       <div class="col-6 col-lg-3">
 
                         <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">상품 이미지:</h6>
+                        <h6 class="heading-xxxs text-muted">반품 상태:</h6>
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                          <img th:src="@{/img/products/product-1.jpg}" style="max-width: 100%; height: auto" th:alt="${lists.imgContent}">
+                          <span th:text="|${lists.returnStatus}|"></span>
                         </p>
+
+                      </div>
+                      
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">반품 승인 날짜:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                         <span th:text="|${lists.returnProcessdate}|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">반품 취소 날짜:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                         <span th:text="|${lists.returnRetractdate}|"></span>
+                        </p>
+
                       </div>
                       
                     </div>
                   </div>
                 <div class="card-footer">
                 <div class="row align-items-center">
+                  <div class="col-12 col-lg-6">
+                    <div class="row gx-5 mb-4 mb-lg-0">
+                      <div class="col-3">
 
-
-                      <div class="col-6">
-
-                        <!-- Button -->
-                        <a class="btn btn-sm w-100 btn-outline-dark" href="account-order.html">
-                          주문 상세
-                        </a>
-
-                      </div>
-                      
-                      <div class="col-6">
-
-                        <!-- Button -->
-                        <a class="btn btn-sm w-100 btn-outline-dark" href="#!">
-                          교환
-                        </a>
+                        <!-- Image -->
+                        <div class="ratio ratio-1x1 bg-cover">
+                        <img th:src="@{/img/products/product-1.jpg}" style="max-width: 100%; height: auto">
+                        </div>
 
                       </div>
-                      <div class="col-6">
+                      <div class="col-3">
 
-                        <!-- Button -->
-                        <a class="btn btn-sm w-100 btn-outline-dark" href="account-order.html">
-                          반품
-                        </a>
-
-                      </div>
-                      
-                      <div class="col-6">
-
-                        <!-- Button -->
-                        <a class="btn btn-sm w-100 btn-outline-dark" href="#!">
-                          주문 취소
-                        </a>
+                        <!-- Image -->
+                        <div class="ratio ratio-1x1 bg-cover" style="background-image:">
+                        <img th:src="@{/img/products/product-11.jpg}" style="max-width: 100%; height: auto">
+                        </div>
 
                       </div>
+                      <div class="col-3">
 
+                        <!-- Image -->
+                        <div class="ratio ratio-1x1 bg-cover">
+                        <img th:src="@{/img/products/product-12.jpg}" style="max-width: 100%; height: auto" >
+                        </div>
 
+                      </div>
+                      <div class="col-3">
 
+                        <!-- Image -->
+                        <div class="ratio ratio-1x1 bg-cover" style="background-image:">
+                        <img th:src="@{/img/products/product-13.jpg}" style="max-width: 100%; height: auto" >
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-lg-6">
+                    <div class="row gx-5">
+                      <div class="col-6">
+
+                        
+
+                      </div>
+                      <div class="col-6">
+
+                        
+
+                      </div>
+                    </div>
+
+                  </div>
                 </div>
               </div>
                 </div>

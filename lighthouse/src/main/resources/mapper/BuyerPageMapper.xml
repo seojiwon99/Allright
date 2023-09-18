@@ -108,6 +108,7 @@
 			WHERE member_id = #{memberId}
 	</select>
 	
+	
 	<!-- 문의 내역 -->
 	<select id="selectMyInquiryList" resultType="MyInquiryVO" parameterType="String">
 		SELECT custom_inquiry_code
@@ -119,6 +120,7 @@
 		FROM ar_custom_inquiry
 		WHERE member_id = #{memberId}
 	</select>
+	
 	
 	<!-- 찜 내역 -->
 	<select id="selectWishList" resultType="WishVO" parameterType="String">
@@ -137,5 +139,94 @@
 		ORDER BY b.favorite_code
 	</select>
 	
+	<!-- 취소 상세 -->
+	<select id="selectCancelList" resultType="CancelVO" parameterType="String">
+		SELECT a.cancel_code
+		     , a.cancel_reason
+		     , a.cancel_regdate
+		     , a.cancel_retract_date
+		     , a.cancel_status
+		     , a.cancel_date
+		     , b.c_detail_reason
+		     , b.cancel_rejection_reason
+		     , c.order_cnt
+		     , c.payment_price
+		     , d.option_code
+		     , e.product_name
+		FROM ar_cancel a
+		LEFT join ar_cancel_reject b ON a.CANCEL_REJECTION_REASON = b.CANCEL_REJECTION_REASON
+		LEFT join ar_order_detail c ON c.order_detail_code = a.order_detail_code
+		LEFT join ar_option d ON d.option_code = c.option_code
+		LEFT join ar_products e ON e.product_code = d.product_code
+		WHERE e.member_id= #{memberId}
+	</select>
+	
+	<!-- 반품 상세 -->
+	<select id="selectReturnList" resultType="ReturnVO" parameterType="String">
+		select a.return_code
+		     , a.return_reason
+		     , a.return_regdate
+		     , a.return_retractdate
+		     , a.return_status
+		     , b.order_detail_code
+		     , b.order_cnt
+		     , b.payment_price
+		     , c.option_code
+		     , d.product_name 
+		from ar_return a
+		left JOIN ar_order_detail b ON a.order_detail_code = b.order_detail_code
+		LEFT JOIN ar_option c ON b.option_code = c.option_code
+		LEFT JOIN ar_products d ON d.product_code = c.product_code
+		where member_id =#{memberId}
+	</select>
+	
+	<!-- 교환 상세 -->
+	<select id="selectExchangeList" resultType="ExchangeVO" parameterType="String">
+		select a.exchange_code
+		     , a.exchange_reason
+		     , a.exchange_regdate
+		     , a.exchange_retractdate
+		     , a.exchange_status
+		     , a.exchange_processingdate
+		     , a.exchange_addr
+		     , a.delivery_number
+		     , b.order_detail_code
+		     , b.order_cnt
+		     , b.payment_price
+		     , c.option_code
+		     , d.product_name
+		from ar_exchange a
+		LEFT JOIN ar_order_detail b ON a.order_detail_code = b.order_detail_code
+		LEFT JOIN ar_option c ON c.option_code = b.option_code
+		LEFT JOIN ar_products d ON d.product_code = c.product_code
+		WHERE member_id = #{memberId}
+	</select>
+	
+	
+	<!-- 교환 신청 -->
+	<insert id="insertExchange" parameterType="ExchangeVO">
+		INSERT INTO ar_exchange 
+				(EXCHANGE_CODE
+				, ORDER_DETAIL_CODE
+				, EXCHANGE_REASON
+				, EXCHANGE_REGDATE
+				, EXCHANGE_STATUS
+				, EXCHANGE_ADDR)
+		values (#{exchangeCode}
+				, #{orderDetailCode}
+				, #{exchangeReason}
+				, #{exchangeRegdate}
+				, #{exchangeStatus}
+				, #{exchageAddr})
+	</insert>
+	
+	<!-- 코드 -->
+	<select id="selectCodeList" resultType="codeVO" parameterType="String">
+	SELECT master_code
+	     , code_id
+	     , code_name
+	FROM ar_code 
+	WHERE master_code = #{masterCode}
+	</select>
 	
   </mapper>
