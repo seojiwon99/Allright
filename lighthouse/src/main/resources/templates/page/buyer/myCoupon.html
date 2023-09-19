@@ -31,36 +31,185 @@
 				<div class="col-12 text-center">
 
 					<!-- Heading -->
-					<h3 class="mb-10">My Account</h3>
+					<h3 class="mb-10">My Coupon</h3>
 
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-12 col-md-3">
+		<div class="col-12 col-md-3">
 
-					<!-- Nav -->
+            <!-- Nav -->
             <nav class="mb-10 mb-md-0">
               <div class="list-group list-group-sm list-group-strong list-group-flush-x">
-                <a class="list-group-item list-group-item-action dropend-toggle active" href="orderList.html">
+                <a class="list-group-item list-group-item-action dropend-toggle active" th:href="@{/page/buyer/orderList}">
                   주문 목록
                 </a>
-                <a class="list-group-item list-group-item-action dropend-toggle " href="tradeList.html">
-                  취소/반품/교환내역
-                </a>
-                <a class="list-group-item list-group-item-action dropend-toggle " href="myCoupon.html">
+				<ul class="list-styled mb-0">
+				<li class="nav-item">
+
+                  <!-- Toggle -->
+                  <a class="list-group-item list-group-item-action dropend-toggle active" data-bs-toggle="collapse" href="#Collapse" aria-expanded="true">
+                   취소/반품/교환내역
+                  </a>
+                  <!-- Collapse -->
+                  <div class="collapse" id="Collapse" data-simplebar-collapse="#seasonGroup">
+                    <div class="form-group form-group-overflow mb-6" id="seasonGroup">
+                      <div class="form-check mb-3">
+                        <a class="form-check-label" for="seasonOne" href="cancelList">
+                          취소
+                        </a>
+                      </div>
+                      <div class="form-check mb-3">
+                        <a class="form-check-label" for="seasonTwo" href="returnList">
+                          반품
+                        </a>
+                      </div>
+                      <div class="form-check">
+                        <a class="form-check-label" for="seasonThree" href="exchangeList">
+                          교환
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                 </li>
+                <li class="nav-item">
+                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/myCoupon}">
                   나의 쿠폰함
                 </a>
-                <a class="list-group-item list-group-item-action dropend-toggle " href="myInquiry.html">
+                </li>
+                <li class="nav-item">
+                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/myInquiry}">
                   문의내역
                 </a>
-                <a class="list-group-item list-group-item-action dropend-toggle " href="wishList.html">
+                </li>
+                 <li class="nav-item">
+                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/wishList}">
                   찜 목록
                 </a>
-                <a class="list-group-item list-group-item-action dropend-toggle" href="personalInfo.html">
+                </li>
+                 <li class="nav-item">
+                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/personalInfo}">
                   개인정보 확인/수정
                 </a>
+                </li>
+                </ul>
               </div>
             </nav>
 
+          </div>			
+          <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
+			
+            <!-- Order -->
+            <div class="card card-lg mb-5 border">
+              <div class="card-body pb-0">
+				<!-- 반복문 시작 -->
+                <!-- Info -->
+
+                <div class="card card-sm">
+                
+                <div th:each="coupons : ${myCoupon}">
+                  <div class="card-body bg-light">
+                    <div class="row">
+                      <div class="col-6 col-lg-3">
+    					
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">쿠폰 번호:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-lg-0 fs-sm fw-bold">
+                          <span th:text= "|${coupons.couponCode}|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">쿠폰 명:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-lg-0 fs-sm fw-bold">
+                           <span th:text= "|${coupons.couponName}|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">쿠폰 설명:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${coupons.couponContent}|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">사용조건:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${coupons.couponCondition}|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">발급일자:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${coupons.issueDate}|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">사용기한:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${coupons.couponDeadline}|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">사용 시작 일자:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                         <span th:text="|${coupons.usingDate}|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">사용 종료 일자:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${coupons.endDate}|"></span>
+                        </p>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+				</div>
+              
+
+            </div>
+
+          </div>
+        </div>
+			</div>
+			</div>
+			</section>
 </div>
 </html>

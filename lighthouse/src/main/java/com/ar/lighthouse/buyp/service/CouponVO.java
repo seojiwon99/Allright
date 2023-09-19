@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 public class CouponVO {
 
+
    //쿠폰보관함
    private int mycouponCode;
    private int couponCode;

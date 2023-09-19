@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-   xmlns:th="http://www.thymeleaf.org"
-   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-   layout:decorate="~{layouts/default_layout}">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default_layout}">
 
 <!-- Content -->
 <div layout:fragment="content">
-   <!-- CONTENT -->
-   <section class="pt-7 pb-12">
-      <div class="container">
-         <div class="row">
-            <div class="col-12 text-center">
+	<!-- CONTENT -->
+	<section class="pt-7 pb-12">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 text-center">
+					<!-- Heading -->
+					<h3 class="mb-10">My Account</h3>
 
-               <!-- Heading -->
-               <h3 class="mb-10">My Account</h3>
-
+				</div>
+			</div>
+			<div class="row">
+			<div class="col-12 col-md-3">
             </div>
-         </div>
-         <div class="row">
-         <div class="col-12 col-md-3">
 
             <!-- Nav -->
             <nav class="mb-10 mb-md-0">
@@ -26,8 +26,8 @@
                 <a class="list-group-item list-group-item-action dropend-toggle active" th:href="@{/page/buyer/orderList}">
                   주문 목록
                 </a>
-            <ul class="list-styled mb-0">
-            <li class="nav-item">
+				<ul class="list-styled mb-0">
+				<li class="nav-item">
 
                   <!-- Toggle -->
                   <a class="list-group-item list-group-item-action dropend-toggle active" data-bs-toggle="collapse" href="#Collapse" aria-expanded="true">
@@ -79,78 +79,70 @@
             </nav>
 
           </div>
-            <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
-            <div>
-               <!-- Products -->
+				<div class="col-12 col-md-9 col-lg-8 offset-lg-1">
+				<div>
+					<!-- Products -->
+							<div class="row">
+								
+								<!-- Item -->
+								<!-- 반복문 -->
+								<div class="col-6 col-md-4" th:each="wishes : ${wishList}">
+									
+									<div class="card mb-7">
+									
+										<!-- Image -->
+										<div class="card-img">
+											<!-- Action -->
+											<button
+												class="btn btn-xs btn-circle btn-white-primary card-action card-action-end">
+												<i class="fe fe-x"></i>
+											</button>
+											<!-- Button -->
+											<button class="btn btn-xs w-100 btn-dark card-btn"
+												data-bs-toggle="modal" data-bs-target="#modalProduct">
+												<i class="fe fe-eye me-2 mb-1"></i> Quick View
+											</button>
+											<!-- Image -->
+											<img class="card-img-top"
+												src="/img/products/product-6.jpg"
+												th:alt="${wishes.imgContent}">
+										</div>
+										<!-- Body -->
+										<div class="card-body fw-bold text-center">
+											<a class="text-body" href="product.html"><span
+												th:text="${wishes.productName}"></span></a> <br> <span
+												class="text-muted"><span th:text="|${wishes.productCost}원|"></span></span>
+										</div>
+									</div>
+								</div>
 
-                     <div class="row">
-                        
-                        <!-- Item -->
-                        <!-- 반복문 -->
+							</div>
+						</div>
+					</div>
 
-                        <div class="col-6 col-md-4" th:each="wishes : ${wishList}">
-                           
-                           <div class="card mb-7">
-                           
-                              <!-- Image -->
-                              <div class="card-img">
+					<!-- Pagination -->
+					<nav class="d-flex justify-content-center justify-content-md-end">
+						<ul class="pagination pagination-sm text-gray-400">
+							<li class="page-item"><a class="page-link page-link-arrow"
+								href="#"> <i class="fa fa-caret-left"></i>
+							</a></li>
+							<li class="page-item active"><a class="page-link" href="#">1</a>
+							</li>
+							<li class="page-item"><a class="page-link" href="#">2</a></li>
+							<li class="page-item"><a class="page-link" href="#">3</a></li>
+							<li class="page-item"><a class="page-link" href="#">4</a></li>
+							<li class="page-item"><a class="page-link" href="#">5</a></li>
+							<li class="page-item"><a class="page-link" href="#">6</a></li>
+							<li class="page-item"><a class="page-link page-link-arrow"
+								href="#"> <i class="fa fa-caret-right"></i>
+							</a></li>
+						</ul>
+					</nav>
 
-                                 <!-- Action -->
-                                 <button
-                                    class="btn btn-xs btn-circle btn-white-primary card-action card-action-end">
-                                    <i class="fe fe-x"></i>
-                                 </button>
+				</div>
+			</div>
 
-                                 <!-- Button -->
-                                 <button class="btn btn-xs w-100 btn-dark card-btn"
-                                    data-bs-toggle="modal" data-bs-target="#modalProduct">
-                                    <i class="fe fe-eye me-2 mb-1"></i> Quick View
-                                 </button>
-
-                                 <!-- Image -->
-                                 <img class="card-img-top"
-                                    src="/img/products/product-6.jpg"
-                                    th:alt="${wishes.imgContent}">
-
-                              </div>
-
-                              <!-- Body -->
-                              <div class="card-body fw-bold text-center">
-                                 <a class="text-body" href="product.html"><span
-                                    th:text="${wishes.productName}"></span></a> <br> <span
-                                    class="text-muted"><span th:text="|${wishes.productCost}원|"></span></span>
-                              </div>
-
-                           </div>
-                        </div>
-
-                     </div>
-                  </div>
-               </div>
-
-               <!-- Pagination -->
-               <nav class="d-flex justify-content-center justify-content-md-end">
-                  <ul class="pagination pagination-sm text-gray-400">
-                     <li class="page-item"><a class="page-link page-link-arrow"
-                        href="#"> <i class="fa fa-caret-left"></i>
-                     </a></li>
-                     <li class="page-item active"><a class="page-link" href="#">1</a>
-                     </li>
-                     <li class="page-item"><a class="page-link" href="#">2</a></li>
-                     <li class="page-item"><a class="page-link" href="#">3</a></li>
-                     <li class="page-item"><a class="page-link" href="#">4</a></li>
-                     <li class="page-item"><a class="page-link" href="#">5</a></li>
-                     <li class="page-item"><a class="page-link" href="#">6</a></li>
-                     <li class="page-item"><a class="page-link page-link-arrow"
-                        href="#"> <i class="fa fa-caret-right"></i>
-                     </a></li>
-                  </ul>
-               </nav>
-
-            </div>
-         </div>
-
-   </section>
+	</section>
 
 </div>
 </html>

@@ -6,37 +6,20 @@
 
 <!-- Content -->
 <div layout:fragment="content">
-<!-- BREADCRUMB -->
-	<nav class="py-5">
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
 
-					<!-- Breadcrumb -->
-					<ol class="breadcrumb mb-0 fs-xs text-gray-400">
-						<li class="breadcrumb-item"><a class="text-gray-400"
-							href="index.html">Home</a></li>
-						<li class="breadcrumb-item active">My Page</li>
-					</ol>
+<!-- CONTENT -->
+    <section class="pt-7 pb-12">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 text-center">
 
-				</div>
-			</div>
-		</div>
-	</nav>
+            <!-- Heading -->
+            <h3 class="mb-10">교환 상세 페이지</h3>
 
-	<!-- CONTENT -->
-	<section class="pt-7 pb-12">
-		<div class="container">
-			<div class="row">
-				<div class="col-12 text-center">
-
-					<!-- Heading -->
-					<h3 class="mb-10">취소/반품/교환</h3>
-
-				</div>
-			</div>
-			<div class="row">
-			<div class="col-12 col-md-3">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-3">
 
             <!-- Nav -->
             <nav class="mb-10 mb-md-0">
@@ -97,35 +80,71 @@
             </nav>
 
           </div>
-			<div class="col-12 col-md-9 col-lg-8 offset-lg-1">
-				            <!-- Order -->
+          <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
+			
+            <!-- Order -->
             <div class="card card-lg mb-5 border">
-              <div class="card-body pb-0"  >
+              <div class="card-body pb-0">
+				<!-- 반복문 시작 -->
                 <!-- Info -->
-				<div class="card card-sm">
-                <div th:each="lists : ${tradeList}">
+                
+                <div class="card card-sm">
+                
+                <div th:each="lists : ${exchangeList}">
                   <div class="card-body bg-light">
                     <div class="row">
                       <div class="col-6 col-lg-3">
-
+    					
                         <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">상품 명:</h6>
+                        <h6 class="heading-xxxs text-muted">교환 번호:</h6>
 
                         <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
-                          <span th:text="${lists.productName}"></span>
+                          <span th:text= "|${lists.exchangeCode}|"></span>
                         </p>
 
                       </div>
                       <div class="col-6 col-lg-3">
 
                         <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">수량 :</h6>
+                        <h6 class="heading-xxxs text-muted">상품명:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${lists.productName}|"></span>
+                        </p>
+
+                      </div>
+                      
+                      <div class="col-6 col-lg-3">
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">수량:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${lists.orderCnt}|"></span>
+                        </p>
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">결제 금액:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${lists.paymentPrice}원|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">교환 접수 날짜:</h6>
 
                         <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
                           <time datetime="2019-10-01">
-                            <span th:text="${lists.orderCnt}"></span>
+                           <span th:text= "|${lists.exchangeRegdate}|"></span>
                           </time>
                         </p>
 
@@ -133,141 +152,116 @@
                       <div class="col-6 col-lg-3">
 
                         <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">주문금액</h6>
+                        <h6 class="heading-xxxs text-muted">교환 상태:</h6>
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${lists.paymentPrice}원|"></span>
+                          <span th:text="|${lists.exchangeStatus}|"></span>
+                        </p>
+
+                      </div>
+                      
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">교환 승인 날짜:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                         <span th:text="|${lists.exchangeProcessingdate}|"></span>
                         </p>
 
                       </div>
                       <div class="col-6 col-lg-3">
 
                         <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">주문 날짜:</h6>
+                        <h6 class="heading-xxxs text-muted">교환 받을 주소:</h6>
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="${lists.orderDate}"></span>
+                         <span th:text="|${lists.exchageAddr}|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">교환 취소 날짜:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                         <span th:text="|${lists.exchangeRetractdate}|"></span>
                         </p>
 
                       </div>
                     </div>
                   </div>
-                </div>
+                <div class="card-footer">
+                <div class="row align-items-center">
+                  <div class="col-12 col-lg-6">
+                    <div class="row gx-5 mb-4 mb-lg-0">
+                      <div class="col-3">
 
-              </div>
-                <!-- Info -->
-                <div class="card card-sm">
-                <div th:each="lists : ${tradeList}">
-                  <div class="card-body bg-light">
-                    <div class="row">
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">취소 여부:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-lg-0 fs-sm fw-bold">
-                          	<span th:text="${lists.cancelStatus}"></span>
-                        </p>
+                        <!-- Image -->
+                        <div class="ratio ratio-1x1 bg-cover">
+                        <img th:src="@{/img/products/product-1.jpg}" style="max-width: 100%; height: auto">
+                        </div>
 
                       </div>
-                      <div class="col-6 col-lg-3">
+                      <div class="col-3">
 
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">반품 여부:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-lg-0 fs-sm fw-bold">
-                            <span th:text="${lists.returnStatus}"></span>
-                        </p>
+                        <!-- Image -->
+                        <div class="ratio ratio-1x1 bg-cover" style="background-image:">
+                        <img th:src="@{/img/products/product-11.jpg}" style="max-width: 100%; height: auto">
+                        </div>
 
                       </div>
-                      <div class="col-6 col-lg-3">
+                      <div class="col-3">
 
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">교환 여부:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                           <span th:text="${lists.exchangeStatus}"></span>
-                        </p>
+                        <!-- Image -->
+                        <div class="ratio ratio-1x1 bg-cover">
+                        <img th:src="@{/img/products/product-12.jpg}" style="max-width: 100%; height: auto" >
+                        </div>
 
                       </div>
-                      <div class="col-6 col-lg-3">
+                      <div class="col-3">
 
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">이미지:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                          <img th:src="@{/img/products/product-1.jpg}" style="max-width: 100%; height: auto" th:alt="${imgContent}"></img>
-                        </p>
+                        <!-- Image -->
+                        <div class="ratio ratio-1x1 bg-cover" style="background-image:">
+                        <img th:src="@{/img/products/product-13.jpg}" style="max-width: 100%; height: auto" >
+                        </div>
 
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-                              <!-- Info -->
-                <div class="card card-sm">
-                <div th:each="lists : ${tradeList}">
-                  <div class="card-body bg-light">
-                    <div class="row">
-                      <div class="col-6 col-lg-3">
+                  <div class="col-12 col-lg-6">
+                    <div class="row gx-5">
+                      <div class="col-6">
 
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">취소 접수일:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-lg-0 fs-sm fw-bold">
-                          	<span th:text="${lists.cancelRegdate}"></span>
-                        </p>
+                        
 
                       </div>
-                      <div class="col-6 col-lg-3">
+                      <div class="col-6">
 
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">반품 접수일:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-lg-0 fs-sm fw-bold">
-                            <span th:text="${lists.returnRegdate}"></span>
-                        </p>
-
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">교환 접수일:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                           <span th:text="${lists.exchangeRegdate}"></span>
-                        </p>
-
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">주문 날짜:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="${lists.orderDate}"></span>
-                        </p>
+                        
 
                       </div>
                     </div>
+
                   </div>
                 </div>
-
               </div>
-       
+                </div>
+				</div>
+              
+
             </div>
-            </div>
-            </div>
-		</div>
-	</section>
+
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+</div>
 </html>

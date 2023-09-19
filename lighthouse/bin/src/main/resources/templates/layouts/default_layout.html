@@ -6,23 +6,36 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
  <!-- Favicon -->
-    <link rel="shortcut icon" href="./assets/favicon/favicon.ico" type="image/x-icon" />
-    
+   <link rel="shortcut icon" href="./assets/favicon/favicon.ico" type="image/x-icon" />
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <!-- Libs CSS -->
    <link rel="stylesheet"  th:href="@{/css/libs.bundle.css}" />
-    <link rel="stylesheet" th:href="@{/css/theme.bundle.css}" />
+   <link rel="stylesheet" th:href="@{/css/theme.bundle.css}" />
+   <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     
     <!-- Theme CSS -->
 </head>
 <body>
+
+
+
     <!-- header fragment 사용 -->
-<th:block th:replace="fragments/header :: headerFragment">
-	 
-</th:block>
-    <th:block layout:fragment="content"></th:block>
+<th:block th:replace="fragments/header :: headerFragment"></th:block>
+
+
+
+
+<th:block layout:fragment="content"></th:block>
     <!-- <th:block layout:fragment="test"></th:block> -->
     <!-- footer fragment 사용 -->
+    
+    
+    
 <th:block th:replace="fragments/footer :: footerFragment"></th:block>
+
+
+
+
 </body>
 <!-- JAVASCRIPT -->
     <!-- Map (replace the API key to enable) -->
@@ -31,6 +44,8 @@
     <!-- Vendor JS -->
     <script th:src="@{/js/vendor.bundle.js}"></script>
     
+    <!-- voice JS -->
+    <script th:src="@{/js/voice.js}"></script>
     <!-- Theme JS -->
     <script th:src="@{/js/theme.bundle.js}"></script>
 </html>
