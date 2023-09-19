@@ -24,6 +24,13 @@ public interface AdminService {
 	//처리된 문의 목록
 	public List<InquiryVO> getClearInquiryList(int amount, int pageNum, String customInquiryTitle);
 	
+	//구매자 리스트
+	public List<MemberDetailVO> getBuyerList(int amount, int pageNum, String memberId, String memberName, String memberTel, String businessNumber, int memberAuthor);
+	//판매자 리스트
+	public List<MemberDetailVO> getSellerList(int amount, int pageNum, String memberId, String memberName, String memberTel, String businessNumber, int memberAuthor);	
+	//유저 수
+	public int getTotalUserCount(MemberDetailVO memberDetailVO);
+	
 	
 	
 }

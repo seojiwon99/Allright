@@ -52,14 +52,13 @@
 			    </tr>
 			  </thead>
 			  <tbody>
-			    <tr th:each="declare : ${declareList}">
+			    <tr th:each="inq : ${inqList}">
 					
-						<td scope="row" th:text="${declare.declareCode}"></td>
-						<td th:text="${declare.declareReason}"></td>
-						<td th:text="${declare.declareContent}"></td>
-						<td th:text="${declare.memberId}"></td>
-						<td th:text="${declare.declareMember}"></td>
-						<td style="text-align:right;" class="" th:text="${#dates.format(declare.declareRegdate,'yyyy-MM-dd')}"></td>
+						<td scope="row" th:text="${inq.customInquiryCode}"></td>
+						<td th:text="${inq.customInquiryTitle}"></td>
+						<td th:text="${inq.customInquiryContent}"></td>
+						<td th:text="${inq.memberId}"></td>
+						<td style="text-align:right;" class="" th:text="${#dates.format(inq.customInquiryRegdate,'yyyy-MM-dd')}"></td>
 				</tr>
 			  </tbody>
 			</table>
@@ -94,7 +93,7 @@
 	</div><!-- container -->
 	<script>
 	$('#declareSearchBtn').on('click', function(){
-		let url = "?declareContent=" + $('#declareSearchBar').val()
+		let url = "?customInquiryTitle=" + $('#declareSearchBar').val()
 		location.href =  url;
 	})
 	</script>

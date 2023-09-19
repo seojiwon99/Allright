@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ar.lighthouse.admin.mapper.AdminMapper;
 import com.ar.lighthouse.admin.service.AdminService;
 import com.ar.lighthouse.admin.service.DeclareVO;
+import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.admin.service.NoticeAdminVO;
 import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.customsvc.mapper.CustomMapper;
@@ -61,6 +62,23 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public List<InquiryVO> getClearInquiryList(int amount, int pageNum, String customInquiryTitle) {
 		return adminMapper.selectClearInquiryList(amount, pageNum, customInquiryTitle);
+	}
+
+	@Override
+	public List<MemberDetailVO> getBuyerList(int amount, int pageNum, String memberId, String memberName,
+			String memberTel, String businessNumber, int memberAuthor) {
+		return adminMapper.selectMemberList(amount, pageNum, memberId, memberName, memberTel, businessNumber, memberAuthor);
+	}
+
+	@Override
+	public List<MemberDetailVO> getSellerList(int amount, int pageNum, String memberId, String memberName,
+			String memberTel, String businessNumber, int memberAuthor) {
+		return null;
+	}
+
+	@Override
+	public int getTotalUserCount(MemberDetailVO memberDetailVO) {
+		return adminMapper.selectTotalUserCount(memberDetailVO);
 	}
 
 }

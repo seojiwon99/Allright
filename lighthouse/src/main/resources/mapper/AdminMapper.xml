@@ -106,29 +106,113 @@
   	
   	<!--  Inquiry -->
   	<select id="selectInquiryList">
+ 		SELECT rt.*
+		FROM       (
+		                SELECT   rownum r, aci.*
+		                FROM   (SELECT *
+		                        FROM AR_CUSTOM_INQUIRY
+		                        where CUSTOM_INQUIRY_ANSWER_STATUS = 'N'
+		                        <if test="customInquiryTitle != null and !(customInquiryTitle.equals('')) ">
+								AND custom_inquiry_title LIKE '%' || #{customInquiryTitle} || '%'
+								</if>
+		                        order by CUSTOM_INQUIRY_REGDATE DESC, CUSTOM_INQUIRY_CODE desc) aci
+		     			    <![CDATA[                   
+		                where rownum <= #{pageNum} * #{amount} ) rt
+		                ]]>
+		WHERE rt.r  > ( #{pageNum} - 1 ) * #{amount}
   	
   	</select>
   	
   	
   	<select id="selectTotalClearInquiryCount">
-  	select count(*)
-	from ar_custom_inquiry
-	where CUSTOM_INQUIRY_CODE > 0 
-	<if test="customInquiryAnswerStatus == 'Y'">
-	AND declare_status = 'Y'
-	</if>
-	<if test="customInquiryAnswerStatus == 'N'">
-	AND declare_status = 'N'
-	</if>
-	<if test="customInquiryTitle != null and !(customInquiryTitle.equals('')) ">
-	AND custom_inquiry_title LIKE '%' || #{customInquiryTitle} || '%'
-	</if>
+		  	select count(*)
+			from ar_custom_inquiry
+			where 1=1
+			<if test="customInquiryAnswerStatus == 'Y'">
+			AND customInquiryAnswerStatus = 'Y'
+			</if>
+			<if test="customInquiryAnswerStatus == 'N'">
+			AND customInquiryAnswerStatus = 'N'
+			</if>
+			<if test="customInquiryTitle != null and !(customInquiryTitle.equals('')) ">
+			AND custom_inquiry_title LIKE '%' || #{customInquiryTitle} || '%'
+			</if>
   	</select>
   	
   	<select id="selectClearInquiryList">
-  	
+  	 		SELECT rt.*
+			FROM       (
+			                SELECT   rownum r, aci.*
+			                FROM   (SELECT *
+			                        FROM AR_CUSTOM_INQUIRY
+			                        where CUSTOM_INQUIRY_ANSWER_STATUS = 'Y'
+                        			<if test="customInquiryTitle != null and !(customInquiryTitle.equals('')) ">
+									AND custom_inquiry_title LIKE '%' || #{customInquiryTitle} || '%'
+									</if>
+			                        order by CUSTOM_INQUIRY_REGDATE DESC, CUSTOM_INQUIRY_CODE desc) aci
+			     			    <![CDATA[                   
+			                where rownum <= #{pageNum} * #{amount} ) rt
+			                ]]>
+			WHERE rt.r  > ( #{pageNum} - 1 ) * #{amount}
   	</select>
   	
+  	<select id="selectMemberList" resultType="MemberDetailVO">
+  		SELECT rt.*, d_count(rt.member_id) as declare_count, NVL(recent_susp_name(rt.member_id),'사용 가능') as susp_status
+		FROM       (
+		                SELECT   rownum r, am.*
+		                FROM   (SELECT *
+		                        FROM AR_MEMBER 
+		                        where 1=1
+		                        <if test="memberAuthor == 1 or memberAuthor == 3">
+		                        AND MEMBER_AUTHOR IN (1,3)
+		                        </if>
+		                        <if test="memberAuthor == 2">
+		                        AND MEMBER_AUTHOR = 2
+		                        </if>
+		                        <if test="memberId != null and !(memberId.equals(''))">
+		                        AND MEMBER_ID LIKE '%' || #{memberId} || '%'
+		                        </if>
+		                        <if test="memberName != null and !(memberName.equals(''))">
+		                        AND MEMBER_NAME LIKE '%' || #{memberName} || '%'
+		                        </if>
+		                        <if test="memberTel != null and !(memberTel.equals(''))">
+		                        AND MEMBER_TEL LIKE '%' || #{memberTel} || '%'
+		                        </if>
+		                        <if test="businessNumber != null and !(businessNumber.equals(''))">
+		                        AND BUSINESS_NUMBER LIKE '%' || #{businessNumber} || '%'
+		                        </if>
+		                        order by MEMBER_REGDATE DESC) am
+		                        <![CDATA[   
+		                where rownum <= #{pageNum} * #{amount} )rt
+		                   ]]>
+		WHERE rt.r  > (#{pageNum} - 1 ) * #{amount}
+  	</select>
+  	
+  	<select id="selectTotalUserCount" resultType="int">
+	  	select count(*)
+		from ar_member
+		where 1 =  1
+		<if test="memberAuthor == 1 or memberAuthor == 3">
+		AND member_author IN (1,3)
+		</if>
+		<if test="memberAuthor == 2">
+	  	AND member_author = 2
+	  	</if>
+    	<if test="memberId != null and !(memberId.equals(''))">
+        AND MEMBER_ID LIKE '%' || #{memberId} || '%'
+        </if>
+        <if test="memberName != null and !(memberName.equals(''))">
+        AND MEMBER_NAME LIKE '%' || #{memberName} || '%'
+        </if>
+        <if test="memberTel != null and !(memberTel.equals(''))">
+        AND MEMBER_TEL LIKE '%' || #{memberTel} || '%'
+        </if>
+        <if test="businessNumber != null and !(businessNumber.equals(''))">
+        AND BUSINESS_NUMBER LIKE '%' || #{businessNumber} || '%'
+        </if>
+  	
+  	
+  	</select>
   	
 
   

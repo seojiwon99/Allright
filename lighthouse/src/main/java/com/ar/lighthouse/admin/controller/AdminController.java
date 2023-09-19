@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ar.lighthouse.admin.service.AdminService;
 import com.ar.lighthouse.admin.service.DeclareVO;
+import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.admin.service.NoticeAdminVO;
 import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.common.PageDTO;
@@ -100,11 +101,30 @@ public class AdminController {
 	
 	
 	@GetMapping("admin/buyerList")
-	public String buyerList() {
+	public String buyerList(Criteria cri, Model model, MemberDetailVO memberDetailVO) {
+		memberDetailVO.setMemberAuthor(1);
+		int totalCnt = adminService.getTotalUserCount(memberDetailVO);
+		model.addAttribute("memList", adminService.getBuyerList(cri.getAmount()
+				, cri.getPageNum(), memberDetailVO.getMemberId()
+				, memberDetailVO.getMemberName(), memberDetailVO.getMemberTel()
+				, memberDetailVO.getBusinessNumber(), memberDetailVO.getMemberAuthor())) ;
+		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
+		
+		
 		return "page/admin/buyerList";
 	}
+	
 	@GetMapping("admin/sellerList")
-	public String sellerList() {
+	public String sellerList(Criteria cri, Model model, MemberDetailVO memberDetailVO) {
+		memberDetailVO.setMemberAuthor(2);
+		int totalCnt = adminService.getTotalUserCount(memberDetailVO);
+		model.addAttribute("memList", adminService.getBuyerList(cri.getAmount()
+				, cri.getPageNum(), memberDetailVO.getMemberId()
+				, memberDetailVO.getMemberName(), memberDetailVO.getMemberTel()
+				, memberDetailVO.getBusinessNumber(), memberDetailVO.getMemberAuthor())) ;
+		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
+		
+		
 		return "page/admin/sellerList";
 	}
 	@GetMapping("admin/allProductList")
