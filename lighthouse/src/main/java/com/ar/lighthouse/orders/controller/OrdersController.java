@@ -26,15 +26,14 @@ public class OrdersController {
 	OrdersService ordersService;
 	
 	@GetMapping("/page/orders/ordersPay")
-	@ResponseBody
-	public List<OrdersVO> orderPage(HttpServletRequest request) {
+	public String orderPage(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
 		MemberVO memberVO = (MemberVO)session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 		List<OrdersVO> couponList = ordersService.getCoupon(memberId);
+		model.addAttribute("couponList",couponList);
 		
-		
-		return couponList;
+		return "/page/orders/ordersPay :: #couponPage";
 	}
 	
 	
