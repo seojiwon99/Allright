@@ -367,6 +367,7 @@
     })
     .done(data => {
       console.log(data);
+      
     })
     .fail(reject => console.log(reject));
 
@@ -402,6 +403,7 @@
     let productTotal = 0;
     let getPrice = [[${get}]];
     console.log(getPrice)
+    
       // total 가격 나중에 쿠폰 가격  빼야함.
       for(let key in  getPrice) {
       result = result + ((getPrice[key].productCost + getPrice[key].optionPrice - getPrice[key].salePrice ) * getPrice[key].cartCount); 

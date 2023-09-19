@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ar.lighthouse.cart.service.CartVO;
 import com.ar.lighthouse.member.service.MemberVO;
@@ -25,14 +26,15 @@ public class OrdersController {
 	OrdersService ordersService;
 	
 	@GetMapping("/page/orders/ordersPay")
-	public Model orderPage(HttpServletRequest request, Model model) {
+	@ResponseBody
+	public List<OrdersVO> orderPage(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		MemberVO memberVO = (MemberVO)session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 		List<OrdersVO> couponList = ordersService.getCoupon(memberId);
-		model.addAttribute("couponList",couponList);
 		
-		return model.addAttribute("couponList",couponList);
+		
+		return couponList;
 	}
 	
 	
