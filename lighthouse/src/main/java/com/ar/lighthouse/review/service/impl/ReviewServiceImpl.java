@@ -37,4 +37,5 @@ public class ReviewServiceImpl implements ReviewService {
 		return mapper.deleteReview(memberId) == 1;
 	}
 
+
 }

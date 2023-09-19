@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.ar.lighthouse.productinquiry.mapper.ProductInquiryMapper">
+  
+  <select id="selectInquiryList" resultType="ProductInquiryVO">
+  select que_code
+  		 , product_code
+  		 , que_content
+  		 , member_id
+  		 , que_secret
+  		 , que_regdate
+  		 , que_updatedate
+  		 ,que_ans
+  		 ,seller_id 
+	from ar_inquiry
+	where product_code = #{productCode}
+  </select>
+  
+  <insert id="insertInquiry">
+  <selectKey  resultType="int" keyProperty="queCode" order="BEFORE"> 
+  	SELECT NVL(MAX(que_code),0)+1 FROM ar_inquiry
+  </selectKey>
+  	insert into ar_inquiry 
+  	(que_code  
+  		,product_code 
+  		,que_content
+  		,member_id
+  		,que_secret
+  		,que_regdate
+  		,que_ans
+  		,seller_id)
+values (
+		#{queCode}
+		,#{productCode}
+		,#{queContent}
+		,#{memberId}
+		,#{queSecret}
+		,sysdate
+		,#{queAns}
+		,#{sellerId}
+		)
+  </insert>
+  
+  <delete id="deleteInquiry">
+  	delete from ar_inquiry where que_code = #{queCode}
+  </delete>
+  
+  </mapper>
