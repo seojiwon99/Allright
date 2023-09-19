@@ -170,36 +170,56 @@ public class BuyerPageController {
 
 		return "/page/buyer/exchangeList";
 	}
-	
-	
-	//교환 신청 페이지
+
+	// 교환 신청 페이지
 	@GetMapping("page/buyer/exchange")
 	public String exchangeForm(Model model, HttpSession session) {
-		
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-		
-		List<CodeVO> codeList = buyerPageService.getCodeList(memberId);
+
+		List<CodeVO> codeList = buyerPageService.getExchangeCode(memberId);
 		model.addAttribute("codeList", codeList);
-		
+
 		return "page/buyer/exchange";
 	}
-	
 
-	//교환 
+	// 교환
 	@PostMapping("buyer/exchangeInsert")
-	public ResponseEntity<String> addExchange(@RequestBody ExchangeVO excVO, HttpSession session){
-		
+	public ResponseEntity<String> addExchange(@RequestBody ExchangeVO excVO, HttpSession session) {
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		excVO.setMemberId(memberVO.getMemberId());
-		
+
 		int insertExchange = buyerPageService.addExchange(excVO);
-		return insertExchange == 1 ? new ResponseEntity<String>("success", HttpStatus.OK) : new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		return insertExchange == 1 ? new ResponseEntity<String>("success", HttpStatus.OK)
+				: new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
-	
-	
-	
-	
-	
+
+	// 취소 신청 페이지
+	@GetMapping("page/buyer/cancel")
+	public String cancelForm(Model model, HttpSession session) {
+
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
+
+		List<CodeVO> codeList = buyerPageService.getCancelCode(memberId);
+		model.addAttribute("codeList", codeList);
+
+		return "page/buyer/cancel";
+	}
+
+	// 반품 신청 페이지
+	@GetMapping("page/buyer/return")
+	public String returnForm(Model model, HttpSession session) {
+
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
+
+		List<CodeVO> codeList = buyerPageService.getReturnCode(memberId);
+		model.addAttribute("codeList", codeList);
+
+		return "page/buyer/return";
+	}
+
 }

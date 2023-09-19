@@ -96,8 +96,20 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 
 
 	@Override
-	public List<CodeVO> getCodeList(String memberId) {
-		return buyerPageMapper.selectCodeList(memberId);
+	public List<CodeVO> getExchangeCode(String memberId) {
+		return buyerPageMapper.selectExchangeCode(memberId);
+	}
+
+
+	@Override
+	public List<CodeVO> getReturnCode(String memberId) {
+		return buyerPageMapper.selectReturnCode(memberId);
+	}
+
+
+	@Override
+	public List<CodeVO> getCancelCode(String memberId) {
+		return buyerPageMapper.selectCancelCode(memberId);
 	}
 	
 	

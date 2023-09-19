@@ -202,6 +202,14 @@
 		WHERE member_id = #{memberId}
 	</select>
 	
+	<!--교환 코드 -->
+	<select id="selectExchangeCode" resultType="codeVO" parameterType="String">
+		SELECT master_code
+		     , code_id
+		     , code_name
+		FROM ar_code 
+		WHERE master_code = 'exchange_reason'
+	</select>
 	
 	<!-- 교환 신청 -->
 	<insert id="insertExchange" parameterType="ExchangeVO">
@@ -220,13 +228,30 @@
 				, #{exchageAddr})
 	</insert>
 	
-	<!-- 코드 -->
-	<select id="selectCodeList" resultType="codeVO" parameterType="String">
-	SELECT master_code
-	     , code_id
-	     , code_name
-	FROM ar_code 
-	WHERE master_code = 'cancel_reason'
+
+	<!--취소 코드  -->
+	<select id="selectCancelCode" resultType="codeVO" parameterType="String">
+		SELECT master_code
+		     , code_id
+		     , code_name
+		FROM ar_code 
+		WHERE master_code = 'cancel_reason'
 	</select>
+	
+	<!--취소 신청  -->
+	
+	
+	<!--반품 코드  -->
+	<select id="selectReturnCode" resultType="codeVO" parameterType="String">
+		SELECT master_code
+		     , code_id
+		     , code_name
+		FROM ar_code 
+		WHERE master_code = 'refund_reason'
+	</select>
+	
+	<!--반품 신청  -->
+	
+	<!--  -->
 	
   </mapper>

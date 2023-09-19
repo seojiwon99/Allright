@@ -16,7 +16,7 @@
                <ol class="breadcrumb mb-0 fs-xs text-gray-400">
                   <li class="breadcrumb-item"><a class="text-gray-400"
                      href="index.html">Home</a></li>
-                  <li class="breadcrumb-item active">교환하기</li>
+                  <li class="breadcrumb-item active">주문취소하기</li>
                </ol>
 
             </div>
@@ -28,8 +28,8 @@
    <section class="pt-7 pb-15">
       <div class="container">
       	<div class="row justify-content-center">
-      		<div class="col-12 col-lg-10 col-xl-8" id="exchForm">
-      			<h2>교환 신청 페이지</h2>
+      		<div class="col-12 col-lg-10 col-xl-8" id="cancelForm">
+      			<h2>취소 신청 페이지</h2>
       			<div class="mb-3">
       				<label>상품 명</label>
       				<input type="text" class="form-label" >
@@ -37,12 +37,12 @@
       			<div class="mb-3">
       			<!-- Select -->
                    <select class="form-select form-select-xxs w-auto" id="select">
-                      <option value="선택">교환 사유를 선택해주세요</option>
+                      <option value="선택">취소 사유를 선택해주세요</option>
                       <option th:each="codes: ${codeList}" th:value="${codes.codeId}" th:text=${codes.codeName}></option>
                    </select>
       			</div>
       			<div class="mb-3">
-      				<textarea class="form-control" id="content" rows="5" placeholder="교환 사유를 입력해주세요"></textarea>
+      				<textarea class="form-control" id="content" rows="5" placeholder="취소 사유를 입력해주세요"></textarea>
       			</div>
       			<div class="mb-3">
       			
