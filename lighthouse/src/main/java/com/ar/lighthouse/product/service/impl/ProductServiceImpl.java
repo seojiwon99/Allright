@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.mapper.ProductMapper;
+import com.ar.lighthouse.product.service.CancelVO;
 import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
@@ -52,6 +55,30 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public ProductVO goodsDetail(ProductVO productVO) {
 		return productMapper.selectInfo(productVO);
+	}
+
+
+	@Override
+	public List<ProductVO> getProductsByMemberId(String memberId) {
+		return productMapper.getProductsByMemberId(memberId);
+	}
+
+
+	@Override
+	public List<MemberVO> getSellerInfo(MemberVO memberVO) {
+		return productMapper.selectSellerInfo(memberVO);
+	}
+
+//	취소건 목록
+	@Override
+	public List<CancelVO> getCancelList(CancelVO cancelVO) {
+		return productMapper.selectCancelList(cancelVO);
+	}
+
+
+	@Override
+	public List<DetailVO> getProductOrder(ProductVO productVO) {
+		return productMapper.selectOrderDetail(productVO);
 	}
 
 

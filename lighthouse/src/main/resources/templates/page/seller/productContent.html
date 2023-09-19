@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/sellerHtml}">
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<!-- Content -->
+
+
+
+<div layout:fragment="sellerContent">
+
+
+	<div class="row gx-0">
+	
+
+<div class="fixedbox" style="position: fixed;">
+			<input type="file" multiple="multiple" name="imgName" accept="image/*" onchange="setThumbnail(event);">
+	</div>
+		<div class="col-12 col-lg">
+			<div class="jumbotron">
+				<div class="container">
+					<h1 class="display-3">상품 등록</h1>
+					<form action="/item"method="post" enctype="multipart/form-data">
+
+	
+	
+	<div id="image_container" contenteditable="true" style="outline:none; margin:0 auto; border:1px solid black; margin-top : 30px">
+		
+			<h5>상세페이지</h5>
+			
+	</div>
+	
+	<div class="insertCo"  style="margin:0 auto; margin-top : 10px;  margin-botton : 10px">
+		<input type="submit"/>
+			
+	</div>
+</form>
+
+
+    <script>
+    
+    
+    
+    function setThumbnail(event) {
+        var reader = new FileReader();
+
+        reader.onload = function(event) {
+          var img = document.createElement("img");
+          img.setAttribute("src", event.target.result);
+          document.querySelector("div#image_container").appendChild(img);
+          var input = document.createElement('input');
+		  document.querySelector("div#image_container").appendChild(input);
+          
+        };
+
+        reader.readAsDataURL(event.target.files[0]);
+      }
+  
+ 
+    </script>
+				</div>
+				
+			</div>
+
+
+		
+			
+		</div>
+
+	</div>
+
+
+	
+	
+	</div>
+	</html>
+
+    
+    
+
+</div>

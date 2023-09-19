@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.orders.service.OrdersVO;
 
 import lombok.Data;
 
@@ -26,6 +28,7 @@ public class ProductVO {
 	 	private String productBrand;
 	 	private String productStatus;
 	 	private String productExStatus;
+	 	
 	 	private List<ImgsVO> productImg;
 
 	 	@DateTimeFormat(pattern="yyyy-MM-dd")
@@ -40,7 +43,8 @@ public class ProductVO {
 	 	
 	 	
 	 	List<OptionVO> option;
-	 	
+	 	List<DetailVO> orderDetail;
+	 	List<OrdersVO> orders;
 
 	 	
 	 	
