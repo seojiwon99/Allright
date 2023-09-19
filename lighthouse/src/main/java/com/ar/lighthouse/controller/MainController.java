@@ -59,7 +59,7 @@ public class MainController {
 	@PostMapping("childCateList")
 	@ResponseBody
 	public List<CategoryVO> cateChildList(@RequestBody CategoryVO cate){
-		System.out.println(cate);
+		
 		return service.getChildCateList(cate);
 	}
 
