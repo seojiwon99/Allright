@@ -17,10 +17,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ar.lighthouse.buyp.service.BuyCancelVO;
 import com.ar.lighthouse.buyp.service.BuyInfoVO;
 import com.ar.lighthouse.buyp.service.BuyerPageService;
-import com.ar.lighthouse.buyp.service.CancelVO;
 import com.ar.lighthouse.buyp.service.CodeVO;
 import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
@@ -139,7 +140,7 @@ public class BuyerPageController {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 
-		List<CancelVO> cancelList = buyerPageService.getCancelList(memberId);
+		List<BuyCancelVO> cancelList = buyerPageService.getCancelList(memberId);
 		model.addAttribute("cancelList", cancelList);
 
 		return "/page/buyer/cancelList";
@@ -173,11 +174,15 @@ public class BuyerPageController {
 
 	// 교환 신청 페이지
 	@GetMapping("page/buyer/exchange")
-	public String exchangeForm(Model model, HttpSession session) {
-
+	public String exchangeForm( Model model, HttpSession session) {
+		
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-
+		
+//		CodeVO codeVO = new CodeVO();
+//		codeVO.setOrderCode(orderCode);
+//		model.addAttribute("exchange", buyerPageService.getExchangePage(orderCode));
+	
 		List<CodeVO> codeList = buyerPageService.getExchangeCode(memberId);
 		model.addAttribute("codeList", codeList);
 

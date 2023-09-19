@@ -19,8 +19,9 @@ public class ExchangeVO {
 	private String exchangeStatus;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date exchangeProcessingdate;
-	private String exchageAddr;
+	private String exchangeAddr;
 	private int deliveryNumber;
+	private int orderCode;
 	
 	private int orderCnt;
 	private int paymentPrice;

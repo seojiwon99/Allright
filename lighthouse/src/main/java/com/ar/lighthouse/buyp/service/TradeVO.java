@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.ar.lighthouse.product.service.ImgsVO;
+
 import lombok.Data;
 
 @Data
@@ -57,7 +59,7 @@ public class TradeVO {
 	
 
 	
-	private List<ImgVO> imgList;
+	private List<ImgsVO> imgList;
 
 	
 

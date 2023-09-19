@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ar.lighthouse.buyp.service.BuyInfoVO;
-import com.ar.lighthouse.buyp.service.CancelVO;
+import com.ar.lighthouse.buyp.service.BuyCancelVO;
 import com.ar.lighthouse.buyp.service.CodeVO;
 import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
@@ -33,7 +33,7 @@ public interface BuyerPageMapper {
 	
 	public List<WishVO> selectWishList(String memberId);
 	
-	public List<CancelVO> selectCancelList(String memberId);
+	public List<BuyCancelVO> selectCancelList(String memberId);
 	
 	public List<ReturnVO> selectReturnList(String memberId);
 	
@@ -42,6 +42,8 @@ public interface BuyerPageMapper {
 	public int insertExchange(ExchangeVO excVO);
 	
 	public List<CodeVO> selectExchangeCode(String memberId);
+	
+	public int ExchangeCodePage(int orderCode);
 	
 	public List<CodeVO> selectCancelCode(String memberId);
 	
