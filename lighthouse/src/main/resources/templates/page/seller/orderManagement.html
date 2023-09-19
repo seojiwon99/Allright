@@ -8,9 +8,12 @@
 
 
 
-
 <div layout:fragment="sellerContent">
-
+	<link rel="stylesheet"
+		href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="/resources/demos/style.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
 	<div class="row gx-0">
 		<div class="col-12 col-lg-auto">
@@ -83,9 +86,9 @@
 											href="./docs/getting-started.html">고객센터</a></li>
 						</ul>
 
-						
-						
-						
+
+
+
 
 					</div>
 
@@ -94,187 +97,117 @@
 
 		</div>
 		<div class="col-12 col-lg">
+			
+				<input type="text" id="from" name="from" autocomplete="off">
+				<label for="to">~</label> <input type="text" id="to" name="to"
+					autocomplete="off">
+				<td colspan="1"><div class="_1Vof48UxmD _oVRNwPvxck">
+						<div class="_KqV0-1BSnB">
+							<label class="_MN8nIh0X4y">구매자연락처</label>
+							<select class="_4LshyCrDpi" title="리스트 보기">
+							<option selected="" value="">전체</option>
+								<option value="RECIPIENT_NAME">수취인명</option>
+								<option value="MEMBER_NAME">구매자명</option>
+								<option value="MEMBER_TEL">구매자연락처</option>
+								<option value="MEMBER_ID">구매자ID</option>
+								<option value="ORDER_CODE">주문번호</option>
+								<option value="PRODUCT_ORDER_NO">상품주문번호</option>
+								<option value="PRODUCT_CODE">상품코드</option>
+								<option value="DELIVERY_NUMBER">송장번호</option>
+							</select>
+						
+						<div>
+							<input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
+						</div>
+					</div></td>
+					
+					<button type="button" id="searchBtn">검색</button>
+			
 
-			<h3>상품조회/수정</h3>
-
-
-			<div>
-				<button type="button" id="chkDelBtn">전시중지</button>
-				<button type="button" id="chkY">전시중</button>
-			</div>
-			<div>
-				<select id="optionList">
-					<option></option>
-					<option value="상품등록일순">상품등록일순</option>
-					<option value="상품명순">상품명순</option>
-					<option value="누적판매건수">누적판매건수</option>
-					<option value="전시중">전시중</option>
-					<option value="전시중지">전시중지</option>
-				</select>
-			</div>
-
-
-			<!-- CARDS -->
 			<section class="pb-12">
 
 				<table border="1" class="table" id="getProductList">
 					<thead>
 						<tr>
 							<th><input type="checkbox" id="allCheck"></th>
-							<th>수정</th>
-							<th>상품코드</th>
+							<th>주문상세코드</th>
 							<th>상품명</th>
-							<th>재고수량</th>
-							<th>판매가</th>
-							<th>할인가</th>
-							<th>배송비</th>
-							<th>상품등록일</th>
-							<th>전시상태</th>
+							<th>옵션값</th>
+							<th>구매개수</th>
+							<th>요청사항</th>
+							<th>택배사</th>
+							<th>송장번호</th>
+							<th>발송일</th>
 						</tr>
 					</thead>
 					<tbody id="sortList">
-						<tr th:each="product : ${productList}">
+						<tr th:each="order : ${orderList}">
 							<td><input type="checkbox"></td>
-							<td><a href="/modifyForm"><button id="modifyForm"
-										type="button">수정</button></a></td>
-							<td th:text="${product.productCode}"></td>
-							<td th:text="${product.productName}"></td>
-							<td th:text="${product.option[0].optionCount}"></td>
-							<td th:text="${product.productCost}"></td>
-							<td th:text="${product.salePrice}"></td>
-							<td th:text="${product.deliveryCost}"></td>
-							<td
-								th:text="${#dates.format(product.productRegdate,'yyyy-MM-dd')}">상품등록일</td>
-							<td th:text="${product.productExStatus}">전시상
-							
-							태</td>
+							<td th:text="${order.orderDetailCode}" />
+							<td th:text="${order.productName}" />
+							<td th:text="${order.option.optionValue}" />
+							<td th:text="${order.orderCnt}" />
+							<td th:text="${order.requestedTerm}" />
+							<td th:text="${order.deliveryCompany}" th:style="${order.deliveryCompany == null ? 'display:none;' : ''}"/>
+							<td th:text="${order.deliveryNumber}" />
+							<td th:text="${#dates.format(order.deliveryStart,'yyyy-MM-dd')}" />
 						</tr>
 						<!-- 반복문 종료 -->
 					</tbody>
 				</table>
 			</section>
-
-
-
 		</div>
 	</div>
 
 	<script>
-	
-	
-	
+			 $( function() {
+				 
+				    var dateFormat = "yyyy/MM/dd",
+				      from = $( "#from" )
+				        .datepicker({
+				          defaultDate: "+1w",
+				          changeMonth: true,
+				          numberOfMonths: 1
+				        })
+				        .on( "change", function() {
+				          to.datepicker( "option", "minDate", getDate( this ) );
+				        }),
+				      to = $( "#to" ).datepicker({
+				        defaultDate: "+1w",
+				        changeMonth: true,
+				        numberOfMonths: 1
+				      })
+				      .on( "change", function() {
+				        from.datepicker( "option", "maxDate", getDate( this ) );
+				      });
+				 
+				    function getDate( element ) {
+				      var date;
+				      try {
+				        date = $.datepicker.parseDate( dateFormat, element.value );
+				      } catch( error ) {
+				        date = null;
+				      }
+				 
+				      return date;
+				    }
+				  } );
+			
+			
+			document.getElementById('allCheck')
+			.addEventListener('click', allCheckEvent);
 
-
-	
-	
-	$('#optionList').on('change',function(){
-		
-		let val = $(this).val();
-
-		$.ajax({
-			url : 'getOptionProduct',
-			type :'get',
-			data : {
-				"optionVal" : val
+			function allCheckEvent(e) {
+			    let allCheckTag = document.getElementById('allCheck');
+			    let checkTags = document.querySelectorAll('[type="checkbox"]');
+			    checkTags.forEach(el => {
+			        el.checked = allCheckTag.checked;
+			    })
 			}
-			})
-		.done(productList => {
-			console.log(productList);			
-	        //let newTbody = $('<tr><td><input type="checkbox"></td></tr>');
-	        // newTbody.append(data);
-
-	      $("#sortList").replaceWith(productList);
-		})
-		.fail(reject =>{
 			
-		})
-	})
-
-	
-	
-	
-	document.getElementById('allCheck')
-	.addEventListener('click', allCheckEvent);
-
-	function allCheckEvent(e) {
-	    let allCheckTag = document.getElementById('allCheck');
-	    let checkTags = document.querySelectorAll('[type="checkbox"]');
-	    checkTags.forEach(el => {
-	        el.checked = allCheckTag.checked;
-	    })
-	}
-	
-
-	$('#chkDelBtn').on('click',function(){
-		let proList = [];
-		let checkTags = $('input[type="checkbox"]:checked').not('#allcheck');
-		
-		console.log(checkTags);
-		
-		checkTags.each((idx, tag) => {
-			let productCode = $(tag).parent().next().next().text();
-			let obj = {'productCode' : productCode};
-			proList.push(obj);
-		})
-	
-		
-		
-		$.ajax('http://localhost:8090/updateExStatus',{
-			/* let val = $(this).val();
-			console.log(val); */
-		
-			type: 'post',
-			contentType : 'application/json',
-			data : JSON.stringify(proList)
-		})
-		.done(data => {
 			
-			refreshList();
 			
-		})
-		.fail(reject => console.log(reject));
-	
-	});
-	
-	/*  $('#chkY').on('click',function(){
-		let proList = [];
-		let checkTags = $('input[type="checkbox"]:checked').not('#allcheck');
-		
-		console.log(checkTags);
-		
-		checkTags.each((idx, tag) => {
-			let productCode = $(tag).parent().next().next().text();
-			let obj = {'productCode' : productCode};
-			proList.push(obj);
-		})
-	
-		
-		
-		$.ajax('http://localhost:8090/updateExStatus',{
-			/* let val = $(this).val();
-			console.log(val); 
-		
-			type: 'post',
-			contentType : 'application/json',
-			data : JSON.stringify(proList)
-		})
-		.done(data => {
-			
-			refreshList();
-			
-		})
-		.fail(reject => console.log(reject));
-	
-	});  */
-
-	
-	function refreshList(){
-		location.reload();
-	}
-	
-</script>
+			</script>
 
 </div>
-
-
 </html>

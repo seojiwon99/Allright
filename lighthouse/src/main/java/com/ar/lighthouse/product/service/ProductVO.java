@@ -3,6 +3,7 @@ package com.ar.lighthouse.product.service;
 
 import java.util.Date;
 import java.util.List;
+import com.ar.lighthouse.buyp.service.DetailVO;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -26,6 +27,7 @@ public class ProductVO {
 	 	private String productBrand;
 	 	private String productStatus;
 	 	private String productExStatus;
+	 	
 	 	private List<ImgsVO> productImg;
 
 	 	@DateTimeFormat(pattern="yyyy-MM-dd")
@@ -40,7 +42,8 @@ public class ProductVO {
 	 	
 	 	
 	 	List<OptionVO> option;
-	 	
+	 	List<DetailVO> orderDetail;
+	 	List<OrdersVO> orders;
 
 	 	
 	 	

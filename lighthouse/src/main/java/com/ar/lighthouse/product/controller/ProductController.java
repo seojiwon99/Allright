@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,6 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ar.lighthouse.main.service.MainPageService;
+import com.ar.lighthouse.member.service.MemberService;
+import com.ar.lighthouse.member.service.MemberVO;
+import com.ar.lighthouse.product.service.CancelVO;
 import com.ar.lighthouse.product.service.CategoryVO;
 import com.ar.lighthouse.product.service.ImgsVO;
 import com.ar.lighthouse.product.service.OptionVO;
@@ -44,29 +48,88 @@ public class ProductController {
 	
 
 	@Autowired
+
 	ProductInquiryService custominquiryService;
+
+	MemberService memberService;
+
 
 	@Autowired
 	MainPageService mainPageService;
 
+	
+	
 //	판매자 메인페이지
 	@GetMapping("sellerMain")
 	public String seller() {
 		return "page/seller/sellerMain";
 	}
-
-	@GetMapping("productList")
-	public String productList(Model model, ProductVO productVO) {
-		model.addAttribute("productList", productService.getproductList(productVO));
-		return "page/seller/productList";
+	
+//	판매자 상품문의페이지
+	@GetMapping("productInquiry")
+	public String productInquiry() {
+		return "page/seller/productInquiry";
+	}
+	
+//	판매자 mypage
+	@GetMapping("sellerMypage/{memberId}")
+	public String findMember(Model model, MemberVO memberVO) {
+		
+		model.addAttribute("sellerInfo", productService.getSellerInfo(memberVO));
+		return "page/seller/sellerMypage";
+	}
+	
+//  주문/발송 페이지
+	@GetMapping("orderManagement")
+	public String productOrder(Model model, ProductVO productVO) {
+		model.addAttribute("orderList", productService.getProductOrder(productVO));
+		return "page/seller/orderManagement";
+	}
+	
+//	교환 페이지
+	@GetMapping("exchangeList")
+	public String productExchange() {
+		return "page/seller/exchangeList";
+	}
+	
+//	정산관리 페이지
+	@GetMapping("settlementManagement")
+	public String settlementManagement() {
+		return "page/seller/settlementManagement";
+	}
+	
+//	판매자 상품목록
+	@GetMapping("productList/{memberId}")
+	public String productList(@PathVariable String memberId, Model model) {
+	    // memberId를 기반으로 해당 사용자가 등록한 상품 목록 조회
+	    List<ProductVO> productList = productService.getProductsByMemberId(memberId);
+	    
+	    // 모델에 상품 목록 추가
+	    model.addAttribute("productList", productList);
+	    
+	    return "page/seller/productList";
+	}
+	
+//	상품 취소관리 페이지
+	@GetMapping("cancelProduct") //Model model, CancelVO cancelVO
+	public String cancelProdructs() {
+		
+//		model.addAttribute("cancelInfo", productService.getCancelList(cancelVO));
+		
+		return "page/seller/cancelProduct";
+	}
+	
+	
+//	상품상세설명등록 페이지
+	@GetMapping("productContent")
+	public String productContent() {
+		return "page/seller/productContent";
 	}
 
 //	조건순 order by
-
 	@GetMapping("getOptionProduct")
-	public String productDetail(Model model, ProductVO productVO) {
-		System.out.println(productVO.getOptionVal());
-		model.addAttribute("productList", productService.getOptionProduct(productVO));
+	public String productDetail(Model model,ProductVO productVO) {
+		model.addAttribute("productList",productService.getOptionProduct(productVO));
 		return "page/seller/productList :: #sortList";
 	}
 
@@ -97,7 +160,7 @@ public class ProductController {
 		model.addAttribute("getCategoryList", mainPageService.getchildCategory(categoryVO));
 		return "page/seller/productForm :: #thirdOfChildCate";
 	}
-
+  
 // 등록
 	@PostMapping("insertProduct")
 	public String addProduct(ProductVO productVO, OptionVO optionVO) {
@@ -127,6 +190,8 @@ public class ProductController {
 		return delList;
 
 	}
+	
+	
 
 	// 리뷰등록
 
