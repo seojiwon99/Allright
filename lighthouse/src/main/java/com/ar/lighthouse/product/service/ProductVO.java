@@ -42,8 +42,6 @@ public class ProductVO {
 	 	
 	 	
 	 	List<OptionVO> option;
-	 	List<DetailVO> orderDetail;
-	 	List<OrdersVO> orders;
 
 	 	
 	 	
