@@ -1,6 +1,10 @@
 package com.ar.lighthouse.product.service;
 
 
+import java.util.List;
+
+import com.ar.lighthouse.buyp.service.DetailVO;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,4 +28,6 @@ public class OptionVO {
 	   private int maxOrder;
 	   private int salePrice;
 	   
+	   
+	
 }
