@@ -1,6 +1,7 @@
 package com.ar.lighthouse.member.controller;
 
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.lucene.queries.function.valuesource.MultiFunction.Values;
@@ -85,7 +86,7 @@ public class loginController {
 	//로그인
 	@PostMapping("page/member/login")
 	@ResponseBody
-	public String login(@RequestBody MemberVO memberVO, HttpSession session) {
+	public String login(@RequestBody MemberVO memberVO, HttpServletRequest request) {
 		//
 		
 		System.out.println(memberVO);
@@ -94,6 +95,7 @@ public class loginController {
 			return "fail";
 		}
 		if(passwordEncoder.matches(memberVO.getMemberPw(), loginVO.getMemberPw())) {
+			HttpSession session = request.getSession();
 			session.setAttribute("loginMember", loginVO);
 			return "success";
 		}else{
