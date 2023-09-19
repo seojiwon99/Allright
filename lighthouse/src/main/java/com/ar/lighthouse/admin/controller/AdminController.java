@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ar.lighthouse.admin.service.AdminService;
+import com.ar.lighthouse.admin.service.DeclareVO;
 import com.ar.lighthouse.admin.service.NoticeAdminVO;
 import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.common.PageDTO;
 import com.ar.lighthouse.customsvc.service.CustomService;
+import com.ar.lighthouse.customsvc.service.InquiryVO;
 
 @Controller
 public class AdminController {
@@ -61,21 +63,42 @@ public class AdminController {
 		return "redirect:/admin/notice";
 	}
 	@GetMapping("admin/declareList")
-	public String declareList() {
+	public String declareList(Criteria cri,Model model, DeclareVO declareVO) {
+		System.out.println(declareVO);
+		int totalCnt = adminService.getTotalDeclareCount(declareVO);
+		model.addAttribute("declareList", adminService.getDeclareList(cri.getAmount(), cri.getPageNum(), declareVO.getDeclareContent(), declareVO.getDeclareReason()));
+		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		return "page/admin/declareList";
 	}
+	
 	@GetMapping("admin/clearDeclareList")
-	public String cleardeclareList() {
+	public String cleardeclareList(Criteria cri,Model model, DeclareVO declareVO) {
+		System.out.println(declareVO);
+		int totalCnt = adminService.getTotalClearDeclareCount(declareVO);
+		model.addAttribute("declareList", adminService.getClearDeclareList(cri.getAmount(), cri.getPageNum(), declareVO.getDeclareContent(), declareVO.getDeclareReason()));
+		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		return "page/admin/clearDeclareList";
 	}
+	
+	
+	
 	@GetMapping("admin/inquiryList")
-	public String inquiryList() {
+	public String inquiryList(Criteria cri,Model model, InquiryVO inquiryVO) {
+		int totalCnt = adminService.getTotalInquiryCount(inquiryVO);
+		model.addAttribute("inqList", adminService.getInquiryList(cri.getAmount(), cri.getPageNum(), inquiryVO.getCustomInquiryTitle()));
+		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		return "page/admin/inquiryList";
 	}
 	@GetMapping("admin/clearInquiryList")
-	public String ClearInquiryList() {
+	public String ClearInquiryList(Criteria cri, Model model, InquiryVO inquiryVO) {
+		int totalCnt = adminService.getTotalInquiryCount(inquiryVO);
+		model.addAttribute("inqList", adminService.getClearInquiryList(cri.getAmount(), cri.getPageNum(), inquiryVO.getCustomInquiryTitle()));
+		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		return "page/admin/clearInquiryList";
 	}
+	
+	
+	
 	@GetMapping("admin/buyerList")
 	public String buyerList() {
 		return "page/admin/buyerList";

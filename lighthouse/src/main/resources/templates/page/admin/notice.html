@@ -208,8 +208,7 @@ table {
 					</tbody>
 					</table>
 										<!-- Pagination -->
-					<nav
-						class="d-flex justify-content-center justify-content-md-end mt-10">
+					<nav class="d-flex justify-content-center justify-content-md-end mt-10">
 						<ul class="pagination pagination-sm text-gray-400">
 							<li class="page-item" th:if="${pageMaker.prev}"><a
 								class="page-link page-link-arrow"
@@ -230,7 +229,7 @@ table {
 
 							<li class="page-item" th:if="${pageMaker.next}"><a
 								class="page-link page-link-arrow"
-								th:href="@{/custom/notice/(pageNum = ${pageMaker.endPage + 1})}">
+								th:href="@{/admin/notice/(pageNum = ${pageMaker.endPage + 1})}">
 									<i class="fa fa-caret-right"></i>
 							</a></li>
 						</ul>

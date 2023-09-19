@@ -30,11 +30,106 @@
 	  						, 'Admin'
 	  						, #{noticeType}
 	  						)
-	  					
-	  						
+  	</insert>
+  	
+  	<select id="selectDeclareList" resultType="DeclareVO">
+		SELECT rt.declare_code, declare_code_name(rt.declare_reason) as declare_reason, rt.declare_content, rt.member_id, rt.declare_member, rt.declare_regdate
+		FROM       (
+		                SELECT   rownum r,  de.declare_code, de.declare_reason, de.declare_content, de.member_id, de.declare_member, de.declare_regdate
+		                FROM   (SELECT
+		                        *
+		                        FROM ar_declare
+		                        where declare_status = 'N'
+								<if test="declareContent != null and !(declareContent.equals(''))">
+								AND declare_content LIKE '%' || #{declareContent} || '%'
+								</if>
+								<if test="declareReason != null and !(declareReason.equals(''))">	
+								AND declare_reason = #{declareReason}
+								</if>
+		                        order by declare_code desc) de
+		                 <![CDATA[
+		                where rownum <= #{pageNum} * #{amount} )rt
+		                 ]]>
+		WHERE rt.r  > ( #{pageNum} - 1) * #{amount}
+  	</select>	
+  	<select id="selectTotalDeclareCount" resultType="int">
+  	select count(*)
+	from ar_declare
+	where declare_code > 0 AND declare_status = 'N'
+	<if test="declareContent != null and !(declareContent.equals('')) ">
+	AND declare_content LIKE '%' || #{declareContent} || '%'
+	</if>
+	<if test="declareReason != null and !(declareReason.equals(''))">	
+	AND declare_reason = #{declareReason}
+	</if>
+  	</select>
+  	
+  	<!-- ClearDeclare -->
+  	
+  	<select id="selectClearDeclareList" resultType="DeclareVO">
+		SELECT rt.declare_code, find_suspend_status_name(rt.suspend_status) as suspend_status
+		, declare_code_name(rt.declare_reason) as declare_reason
+		, rt.declare_content
+		, rt.member_id
+		, rt.declare_member
+		, rt.declare_regdate
+		FROM       (
+		                SELECT   rownum r, de.suspend_status, de.declare_code, de.declare_reason, de.declare_content, de.member_id, de.declare_member, de.declare_regdate
+		                FROM   (SELECT
+		                        *
+		                        FROM ar_declare
+		                        where declare_status = 'Y'
+								<if test="declareContent != null and !(declareContent.equals(''))">
+								AND declare_content LIKE '%' || #{declareContent} || '%'
+								</if>
+								<if test="declareReason != null and !(declareReason.equals(''))">	
+								AND declare_reason = #{declareReason}
+								</if>
+		                        order by declare_code desc) de
+		                 <![CDATA[
+		                where rownum <= #{pageNum} * #{amount} )rt
+		                 ]]>
+		WHERE rt.r  > ( #{pageNum} - 1) * #{amount}
+  	</select>	
+  	<select id="selectTotalClearDeclareCount" resultType="int">
+  	select count(*)
+	from ar_declare
+	where declare_code > 0 AND declare_status = 'Y'
+	<if test="declareContent != null and !(declareContent.equals('')) ">
+	AND declare_content LIKE '%' || #{declareContent} || '%'
+	</if>
+	<if test="declareReason != null and !(declareReason.equals(''))">	
+	AND declare_reason = #{declareReason}
+	</if>
+  	</select>
   	
   	
-  	</insert>	
+  	<!--  Inquiry -->
+  	<select id="selectInquiryList">
+  	
+  	</select>
+  	
+  	
+  	<select id="selectTotalClearInquiryCount">
+  	select count(*)
+	from ar_custom_inquiry
+	where CUSTOM_INQUIRY_CODE > 0 
+	<if test="customInquiryAnswerStatus == 'Y'">
+	AND declare_status = 'Y'
+	</if>
+	<if test="customInquiryAnswerStatus == 'N'">
+	AND declare_status = 'N'
+	</if>
+	<if test="customInquiryTitle != null and !(customInquiryTitle.equals('')) ">
+	AND custom_inquiry_title LIKE '%' || #{customInquiryTitle} || '%'
+	</if>
+  	</select>
+  	
+  	<select id="selectClearInquiryList">
+  	
+  	</select>
+  	
+  	
 
   
   </mapper>
