@@ -17,7 +17,7 @@ public class CartServiceImpl implements CartService {
 	
 	@Override
 	public List<CartVO> cartGetList(String memberId) {
-		return cartMapper.cartList(memberId);
+		return cartMapper.selectCartList(memberId);
 	}
 
 	@Override
