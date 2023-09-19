@@ -18,6 +18,9 @@ import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.orders.service.OrdersService;
 import com.ar.lighthouse.orders.service.OrdersVO;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 @Controller
 public class OrdersController {
 
@@ -30,6 +33,7 @@ public class OrdersController {
 		MemberVO memberVO = (MemberVO)session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 		List<OrdersVO> couponList = ordersService.getCoupon(memberId);
+		
 		model.addAttribute("couponList",couponList);
 		
 		return "/page/orders/ordersPay :: #couponPage";

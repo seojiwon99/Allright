@@ -160,11 +160,11 @@
                 <div class="form-group">
                   <label class="form-label" for="checkoutBillingFirstName">쿠폰 확인 *</label>
                   <div class="input-group mb-8">
-                    <input type="text" class="form-control" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <input type="text" class="form-control" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2" id="couponSelect">
                     <a class="btn btn-outline-secondary list-styled-link" id="couponBtn" data-bs-toggle="modal" href="#modalNewsletterHorizontal" >쿠폰선택</a>
                   </div>
-                  <p>쿠폰 할인 금액 : <input type="text" style="border-width: 0 0 1px;" readonly>원 
-                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">사용하기</button>
+                  <p>쿠폰 할인 금액 : <input type="text" style="border-width: 0 0 1px;" readonly id="couponSalePrice">원 
+                    <button class="btn btn-outline-secondary" type="button" id="couponResult">사용하기</button>
                   </p> 
                 </div>
               </div>
@@ -242,8 +242,6 @@
               귀하의 개인 데이터는 귀하의 주문을 처리하고, 이 웹사이트 전반에 걸쳐 귀하의 경험을 지원하고, 
               당사의 개인 정보 보호 정책에 설명된 기타 목적을 위해 사용됩니다.
             </p>
-
-            
           </div>
         </div>
       </div>
@@ -334,32 +332,7 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script th:inline="javascript">
 
-    // 쿠폰 값 넘겨 받기
     
-    $.ajax('/page/orders/ordersPay',{
-      type : 'get'
-    })
-    .done(data => {
-      $('#couponPage').replaceWith(data);
-      
-    })
-    .fail(reject => console.log(reject));
-    
-    //테이블 이벤트 클릭 발생 시
-    
-    $('#modalNewsletterHorizontal').on('shown.bs.modal', function(){
-      $('.select-button').on("click",function(e){
-        let thisRow = $(this).closest('tr');
-        console.log(thisRow);
-        let couName = thisRow.find('td:eq(1)').text();
-        console.log(couName);
-        let couDiscount = thisRow.find('td:eq(3)').text();
-        console.log(Number(couDiscount.slice(0,-1)));
-        $('#modalNewsletterHorizontal').removeClass('show');
-        $('#modalNewsletterHorizontal').unbind('shown.bs.modal');
-    })
-
-    })
  
 
     //주소 api로 입력
@@ -371,18 +344,6 @@
                 $("#addrDt").focus();
             }
         
-        /*
-            onclose: function(state) {
-            //state는 우편번호 찾기 화면이 어떻게 닫혔는지에 대한 상태 변수 이며, 상세 설명은 아래 목록에서 확인하실 수 있습니다.
-            if(state === 'FORCE_CLOSE'){
-                //사용자가 브라우저 닫기 버튼을 통해 팝업창을 닫았을 경우, 실행될 코드를 작성하는 부분입니다.
-
-            } else if(state === 'COMPLETE_CLOSE'){
-                //사용자가 검색결과를 선택하여 팝업창이 닫혔을 경우, 실행될 코드를 작성하는 부분입니다.
-                //oncomplete 콜백 함수가 실행 완료된 후에 실행됩니다.
-            }
-        }
-        */
         }).open();
     }
     //상품 금액 연산 정리
@@ -414,12 +375,59 @@
       let realPrice = productTotal - saleToal;
       console.log(realPrice);
 
-
       $('#productPrice').text(productTotal); // 상품금액
       $('#salePrice').text(saleToal); // 상품할인 금액
       $('#deliveryPrice').text(deliveryPay); // 배송비
       $('#totalPrice').text(result); // 총금액 
-      //
+      
+
+    // 쿠폰 값 넘겨 받기
+        
+    $.ajax('/page/orders/ordersPay',{
+          type : 'get'
+        })
+        .done(data => {
+          $('#couponPage').replaceWith(data);
+          
+        })
+        .fail(reject => console.log(reject));
+        
+        //모달 창 쿠폰 값 주문 페이지 넘기기
+        
+        $('#modalNewsletterHorizontal').on('shown.bs.modal', function(){
+          $('.select-button').off("click");
+
+          $('.select-button').on('click',function(e){
+            let thisRow = $(this).closest('tr');
+            let couName = thisRow.find('td:eq(1)').text(); 
+            let couDiscount = Number(thisRow.find('td:eq(3)').text().slice(0,-1));
+
+            if(couDiscount < 100) {
+             couDiscount  = realPrice * couDiscount / 100;
+            } else {
+              couDiscount;
+            }
+           
+            $('#couponSalePrice').val(couDiscount);
+            $('#couponSelect').val(couName);
+
+            $('#couponResult').on('click', function(e){
+              $('#couponSale').text(couDiscount);
+              $('#totalPrice').text(result-couDiscount) ;
+            })
+
+            $('#modalNewsletterHorizontal').modal('hide'); //모달 닫기
+            
+          });
+          //모달 닫힐 때의 이벤트 핸들러 등록
+          $('#modalNewsletterHorizontal').on('hidden.bs.model', function(){
+            //모달이 닫힐 때 모달의 클래스 제거
+            $(this).removeClass('show');
+          })
+
+        })
+
+
 
     //배송 요청 사항 직접 입력시 생성
     $('#selectDirect').hide();
@@ -440,14 +448,13 @@
     });
     
    //토스 위젯
-   	const clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq' // 상점을 특정하는 키
+   	const clientKey = 'test_ck_GjLJoQ1aVZJKQEvkvAWVw6KYe2RN' // 상점을 특정하는 키
   const customerKey = 'YbX2HuSlsC9uVJW6NMRMj' // 결제 고객을 특정하는 키
   const amount = 15_000 // 결제 금액
   const couponAmount = 5_000 // 할인 쿠폰 금액
 
   /*결제위젯 영역 렌더링*/
   const paymentWidget = PaymentWidget(clientKey, customerKey) // 회원 결제
-  // const paymentWidget = PaymentWidget(clientKey, PaymentWidget.ANONYMOUS) // 비회원 결제
   paymentMethods = paymentWidget.renderPaymentMethods('#payment-method', amount)
   
   /*약관 영역 렌더링*/

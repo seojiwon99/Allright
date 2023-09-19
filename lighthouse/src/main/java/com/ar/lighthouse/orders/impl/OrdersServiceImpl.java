@@ -1,5 +1,9 @@
 package com.ar.lighthouse.orders.impl;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +16,9 @@ import com.ar.lighthouse.orders.service.OrdersVO;
 
 @Service
 public class OrdersServiceImpl implements OrdersService{
-
+	
+	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy/MM/dd");
+	
 	@Autowired
 	OrdersMapper ordersMapper;
 	
@@ -24,7 +30,22 @@ public class OrdersServiceImpl implements OrdersService{
 
 	@Override
 	public List<OrdersVO> getCoupon(String memberId) {
+		List<OrdersVO> endDate = ordersMapper.selectCoupon(memberId);
 		
+		LocalDate accuseDate = LocalDate.now();
+		String sysDate = accuseDate.format(DateTimeFormatter.ofPattern("yy/MM/dd"));
+		for(int i =0; i<endDate.size(); i++) {
+			 Date endDateDate = endDate.get(i).getEndDate();
+			 String endDateStr = simpleDateFormat.format(endDateDate);
+			 
+			 if(endDateStr.compareTo(sysDate) >=0 ) {
+				 // 날짜 비교 기준 날짜 보다 endDateStr이 현재보다 같거나 이전날짜 		 
+			 } else {
+				 // endDateStr이 현재보다 지난 날짜
+				 endDate.get(i).setCouponUse("N");
+				 ordersMapper.selectCoupon(memberId);
+			 }
+		}
 		return ordersMapper.selectCoupon(memberId);
 	}
 
