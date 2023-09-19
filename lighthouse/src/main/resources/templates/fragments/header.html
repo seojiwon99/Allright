@@ -479,10 +479,10 @@
 							class="fe fe-search"></i>
 					</a></li>
 					<li class="nav-item ms-lg-n4"><a class="nav-link"
-						href="./account-orders.html"> <i class="fe fe-user"></i>
+						href="page/buyer/orderList"> <i class="fe fe-user"></i>
 					</a></li>
 					<li class="nav-item ms-lg-n4"><a class="nav-link"
-						href="./account-wishlist.html"> <i class="fe fe-heart"></i>
+						href="wishList"> <i class="fe fe-heart"></i>
 					</a></li>
 					<li class="nav-item ms-lg-n4">
 						<a class="nav-link" id="cartId" 
@@ -505,6 +505,7 @@
 			}
 		})
 
+
 		$('#cartId').on('click', function (e) {
 			let member = [[${session.loginMember}]];
 			if (member == null) {
@@ -515,6 +516,64 @@
 				location.href="/cart/cartView";
 			}
 		})
+
+		$('.category').on('click',function(e){
+			let parentCode = $(this).data('value');
+			console.log(parentCode);
+			
+			$.ajax({
+				url:'childCateList',
+				type:'post',
+				data : JSON.stringify({
+					categoryCode : parentCode
+				}),	
+		        contentType:'application/json',
+				success:function(result){
+					console.log(result);
+					$('.cate').empty();
+					let box ='';
+					if(parentCode == 'Fassion'){
+						box = 'cate0';
+					}else if(parentCode == 'FOOD'){
+						box = 'cate1';
+					}else{
+						box = 'cate2';
+					}
+					
+					
+					$(result).each(function(idx,item){
+						if(item.categoryLevel == 2){
+							let result01 = item.categoryCode;
+							let map = $($("#template").html()).clone();
+							map.find('.cate-name').text(item.categoryName);
+							$(result).each(function(idx, list){
+								if(result01 == list.parentCategoryCode){
+									console.log(result);
+									// <li class="list-styled-item">
+									// <a class="list-styled-link" href="./shop.html">All Bottoms</a>
+									// </li>
+									let liTag = $('<li />').attr("class","list-styled-item");;
+									let aTag = $('<a/>').attr("class","list-styled-link").text(list.categoryName);
+									liTag.append(aTag);
+									map.find('.child-cate').append(liTag);
+								}
+							})
+							
+							$('#'+box).append(map);
+						
+						}
+					})
+				
+
+
+
+				},
+				error: function(err){
+					console.log(err);
+				}
+			})
+		})
+
 	</script>
 </div>
 </html>

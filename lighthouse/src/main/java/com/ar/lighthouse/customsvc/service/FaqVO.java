@@ -9,7 +9,9 @@ public class FaqVO {
 	private int faqCode;
 	private String questionTitle;
 	private String questionAnswer;
-	private String faqType;
+	private int faqType;
+	private String typeName;
+	
 	
 	
 }

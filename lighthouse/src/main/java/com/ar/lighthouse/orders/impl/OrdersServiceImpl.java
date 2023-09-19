@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ar.lighthouse.buyp.service.CodeVO;
 import com.ar.lighthouse.orders.mapper.OrdersMapper;
 import com.ar.lighthouse.orders.service.OrdersService;
 import com.ar.lighthouse.orders.service.OrdersVO;
@@ -25,6 +26,12 @@ public class OrdersServiceImpl implements OrdersService{
 	public List<OrdersVO> getCoupon(String memberId) {
 		
 		return ordersMapper.selectCoupon(memberId);
+	}
+
+	@Override
+	public List<CodeVO> getCode() {
+		
+		return ordersMapper.selectCode();
 	}
 
 }

@@ -9,6 +9,7 @@ public interface ReviewService {
 	// 조회
 	public List<ReviewVO> getReviewList(ReviewVO reviewVO);
 	
+	
 	//등록
 	public void addReview(ReviewVO reviewVO);
 	
