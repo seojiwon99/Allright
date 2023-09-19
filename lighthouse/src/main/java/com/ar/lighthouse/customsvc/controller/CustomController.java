@@ -31,6 +31,7 @@ public class CustomController {
 	// faq 화면
 	@GetMapping("/custom/faqList")
 	public String faqList(@RequestParam(required = false, defaultValue = "", value="faqType") String faqType, Model model) {
+		model.addAttribute("faqType", customService.getTypeList());
 		model.addAttribute("faqList", customService.getFaqList(faqType));
 		
 		return "page/custom/faqList";
