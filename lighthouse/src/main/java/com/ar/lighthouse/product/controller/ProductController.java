@@ -1,7 +1,12 @@
 package com.ar.lighthouse.product.controller;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,14 +27,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
+import com.ar.lighthouse.common.ImgsVO;
+
 import com.ar.lighthouse.buyp.service.DetailVO;
+
 import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.member.service.MemberService;
 import com.ar.lighthouse.member.service.MemberVO;
-import com.ar.lighthouse.product.service.CancelVO;
 import com.ar.lighthouse.product.service.CategoryVO;
+
 import com.ar.lighthouse.product.service.ExchangeVO;
 import com.ar.lighthouse.product.service.ImgsVO;
+
 import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
@@ -41,11 +52,12 @@ import com.ar.lighthouse.productinquiry.service.ProductInquiryVO;
 import com.ar.lighthouse.review.service.ReviewService;
 import com.ar.lighthouse.review.service.ReviewVO;
 
-import retrofit2.http.GET;
-
 @Controller
 public class ProductController {
 
+	@Value("${file.upload.path}")
+	private String uploadPath;
+	
 	@Autowired
 	ProductService productService;
 
@@ -215,63 +227,139 @@ public class ProductController {
 	}
 	
 	
+	// 파일 업로드 처리
+		private String getFolder() {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = new Date();
 
+			String str = sdf.format(date);
+
+			return str.replace("-", File.separator);
+		}
+	
 	// 리뷰등록
 
 	@PostMapping("insertReview")
 	@ResponseBody
-	public String addReivew(MultipartFile[] files, ReviewVO review, ImgsVO imgsVO, Model model) {
-		System.out.println(files);
+	public String addReivew(MultipartFile[] files, ReviewVO review, ImgsVO imgsVO,Model model) {
 		
-		String uploadFolder = "C:\\upload";
-
-		// make folder
-		File uploadpath = new File(uploadFolder, getFolder());
-		System.out.println(uploadpath);
-
-		if (uploadpath.exists() == false) {
-			uploadpath.mkdirs();
-		}
-
-		for (MultipartFile multipartFile : files) {
-
-			String uploadFileName = multipartFile.getOriginalFilename();
-			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\") + 1);
-
-			UUID uuid = UUID.randomUUID();
-
-			uploadFileName = uuid.toString() + "_" + uploadFileName;
-
-			File saveFile = new File(uploadpath, uploadFileName);
-
-			try {
-				multipartFile.transferTo(saveFile);
-				System.out.println(saveFile);
-			} catch (Exception e) {
-				System.out.println(e);
-			}
-		}
-
+//		String projectPath = System.getProperty("user.dir") +"\\src\\main\\resources\\static\\img";
+//		System.out.println(projectPath);
+//		
+//		reviewService.addReview(review);
+//		
+//		System.out.println("uploadPath01" + uploadPath01);
+//		
+//		String uploadFolder = "C:\\upload";
+//		
+//		String uploadFolderPath = getFolder();
+//		
+//		File uploadPath = new File(uploadFolder, uploadFolderPath);
+//		
+//		if(uploadPath.exists() == false) {
+//			uploadPath.mkdirs();
+//		}
+//		
+//		for(MultipartFile multipartFile : files) {
+//			
+//			String uploadFileName = multipartFile.getOriginalFilename();
+//			
+//			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\")+1);
+//			System.out.println("uploadFileName" + uploadFileName);
+//			imgsVO.setImgName(uploadFileName);
+//			
+//			UUID uuid = UUID.randomUUID();
+//			
+//			uploadFileName = uuid.toString() + "_" + uploadFileName;
+//			
+//			try {
+//				File saveFile = new File(uploadPath, uploadFileName);
+//				multipartFile.transferTo(saveFile);
+//				System.out.println("uuid" + uuid.toString());
+//				
+//				imgsVO.setUploadName(uuid.toString());
+//				System.out.println("uploadFolderPath" + uploadFolderPath);
+//				imgsVO.setUploadPath(uploadFolderPath);
+//				
+//				imgsVO.setReviewCode(review.getReviewCode());
+//				reviewService.addReviewImg(imgsVO);
+//			}catch(Exception e) {
+//				e.printStackTrace();
+//			}
+//			
+//		}
+//
+//		return "page/goods/goodDetail";
 		reviewService.addReview(review);
 		
-		reviewService.addReviewImg(imgsVO);
-		
-		System.out.println(model);
-		
-		
-		
-		model.addAttribute("img", imgsVO);
-		
-		
-		reviewService.addReviewImg(imgsVO);;
-		
-//		System.out.println("??");
-
-
-		return "page/goods/goodDetail";
-
+	    for(MultipartFile uploadFile : files){
+	    	if(uploadFile.getContentType().startsWith("image") == false){
+	    		System.err.println("this file is not image type");
+	    		return null;
+	        }
+	  
+	        String originalName = uploadFile.getOriginalFilename();
+	        System.out.println("originalName : " + originalName);
+	        String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
+	        imgsVO.setImgName(fileName);
+	        
+	        System.out.println("fileName : " + fileName);
+	    
+	        //날짜 폴더 생성
+	        String folderPath = makeFolder();
+	        
+	        //UUID
+	        String uuid = UUID.randomUUID().toString();	// 유니크한 이름 때문에
+	        //저장할 파일 이름 중간에 "_"를 이용하여 구분
+	        
+	        System.out.println("uuid : " + uuid);
+	        
+	        String uploadFileName = folderPath +File.separator + uuid + "_" + fileName;
+	        System.out.println("uploadFileName : " + uploadFileName);
+	        imgsVO.setUploadName(uploadFileName);
+	        imgsVO.setUploadPath(folderPath);
+	        
+	        String saveName = uploadPath + File.separator + uploadFileName;
+	        System.out.println("saveName : " + saveName);
+	        
+	        Path savePath = Paths.get(saveName);
+	        System.out.println("savePath : " + savePath);
+	        //Paths.get() 메서드는 특정 경로의 파일 정보를 가져옵니다.(경로 정의하기)
+	        System.out.println("path : " + saveName);
+	        try{
+	        	uploadFile.transferTo(savePath); // 파일의 핵심
+	            //uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
+	        	imgsVO.setReviewCode(review.getReviewCode());
+				reviewService.addReviewImg(imgsVO);
+	        } catch (IOException e) {
+	             e.printStackTrace();	             
+	        }
+	        
+	     }
+	    
+	    return "";
 	}
-
+	
+	
+	private String makeFolder() {
+		String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));	// 경로에서 사용하는 /는 인지 못함
+		// LocalDate를 문자열로 포멧
+		String folderPath = str.replace("/", File.separator); // <- 그래서 separator 사용
+		File uploadPathFoler = new File(uploadPath, folderPath);
+		// File newFile= new File(dir,"파일명");
+		if (uploadPathFoler.exists() == false) {
+			uploadPathFoler.mkdirs();
+			// 만약 uploadPathFolder가 존재하지않는다면 makeDirectory하라는 의미입니다.
+			// mkdir(): 디렉토리에 상위 디렉토리가 존재하지 않을경우에는 생성이 불가능한 함수
+			// mkdirs(): 디렉토리의 상위 디렉토리가 존재하지 않을 경우에는 상위 디렉토리까지 모두 생성하는 함수
+		}
+		return folderPath;
+	}
+	
+	private String setImagePath(String uploadFileName) {
+		return uploadFileName.replace(File.separator, "/");
+	}
+	
 	// 리뷰 삭제
 	@PostMapping("removeDelete")
 	public String deleteReview(String memberId) {
@@ -318,7 +406,6 @@ public class ProductController {
 
 		ReviewVO reviewVO = new ReviewVO();
 		reviewVO.setProductCode(productCode);
-		System.out.println(reviewVO);
 
 		ProductVO productVO = productService.goodsDetail(vo);
 		
@@ -327,10 +414,10 @@ public class ProductController {
 
 		ProductInquiryVO productInquiryVO = new ProductInquiryVO();
 		productInquiryVO.setProductCode(productCode);
-
+		
+		System.out.println(reviewVO.getProductCode());
 		// 리뷰조회
 		model.addAttribute("review", reviewService.getReviewList(reviewVO));
-		
 		
 		
 		// qna 조회
@@ -340,14 +427,6 @@ public class ProductController {
 		return "page/goods/goodDetail";
 	}
 
-	// 파일 업로드 처리
-	private String getFolder() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = new Date();
-
-		String str = sdf.format(date);
-
-		return str.replace("-", File.separator);
-	}
+	
 
 }

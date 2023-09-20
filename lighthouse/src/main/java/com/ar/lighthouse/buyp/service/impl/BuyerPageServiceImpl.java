@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.ar.lighthouse.buyp.mapper.BuyerPageMapper;
 import com.ar.lighthouse.buyp.service.BuyInfoVO;
 import com.ar.lighthouse.buyp.service.BuyerPageService;
-import com.ar.lighthouse.buyp.service.CancelVO;
+import com.ar.lighthouse.buyp.service.BuyerCancelVO;
 import com.ar.lighthouse.buyp.service.CodeVO;
 import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
@@ -72,7 +72,7 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 
 
 	@Override
-	public List<CancelVO> getCancelList(String memberId) {
+	public List<BuyerCancelVO> getCancelList(String memberId) {
 		return buyerPageMapper.selectCancelList(memberId);
 	}
 

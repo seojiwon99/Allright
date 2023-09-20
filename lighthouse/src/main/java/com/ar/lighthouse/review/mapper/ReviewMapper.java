@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.ar.lighthouse.product.service.ImgsVO;
+import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.review.service.ReviewVO;
 
 @Mapper

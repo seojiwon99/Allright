@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.ar.lighthouse.product.service.ImgsVO;
+import com.ar.lighthouse.common.ImgsVO;
 
 import lombok.Data;
 @Data

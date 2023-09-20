@@ -5,16 +5,33 @@
   
   <mapper namespace="com.ar.lighthouse.review.mapper.ReviewMapper">
   	
-  	<select id="selectReviewList" resultType="ReviewVO">
-  	select 
-  	member_id
-  	,product_code
-  	,review_content
-  	,review_star
-  	,review_regdate
-  	from ar_review 
-  	where product_code = #{productCode}
-  	order by review_regdate DESC
+  	<resultMap type="ReviewVO" id="selectReviewInfo">
+  		<result column="review_code" property="reviewCode" />
+  		<result column="member_id" property="memberId" />
+  		<result column="product_code" property="productCode" />
+  		<result column="review_content" property="reviewContent" />
+  		<result column="review_star" property="reviewStar"/>
+  		<result column="review_regdate" property="reviewRegdate"/>
+  		<association property="reviewImg" resultMap="reviewImg"/>
+  	</resultMap>
+  	
+  	<resultMap type="ImgsVO" id="reviewImg">
+  		<result column="img_code" property="imgCode"/>
+  		<result column="parent_code" property="parentCode"/>
+  		<result column="img_order" property="imgOrder"/>
+  		<result column="img_name" property="imgName"/>
+  		<result column="upload_name" property="uploadName"/>
+  		<result column="img_content" property="imgContent"/>
+  		<result column="img_regdate" property="imgRegdate"/>
+  		<result column="upload_path" property="uploadPath"/>
+  	</resultMap>
+  	
+  	<select id="selectReviewList" resultMap="selectReviewInfo" resultType="reviewVO">
+		  SELECT *
+			FROM ar_review r left outer join ar_imgs i
+			ON r.review_code = i.review_code
+			WHERE r.product_code = #{productCode}
+			ORDER BY r.review_code
   	</select>
   	
   	
@@ -51,20 +68,20 @@
     		,img_name
     		,upload_name
     		,img_content
-    		,img_fromtable
     		,review_code
-    		, product_code)
+    		,upload_path
+    		)
     		
     	values(
     		#{imgCode}
     	   ,'2'
-    	   ,#{imgOrder}
+    	   ,'1'
     	   ,#{imgName}
     	   ,#{uploadName}
     	   ,#{imgContent}
-    	   ,#{imgFromtable}
     	   ,#{reviewCode}
-    	   ,#{productCode}
+    	   ,#{uploadPath}
+    	   )
   	</insert>
   	
   	<delete id="deleteReview">

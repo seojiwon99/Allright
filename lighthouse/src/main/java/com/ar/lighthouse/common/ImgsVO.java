@@ -1,4 +1,4 @@
-package com.ar.lighthouse.product.service;
+package com.ar.lighthouse.common;
 
 import java.util.Date;
 
@@ -14,9 +14,11 @@ public class ImgsVO {
 	String imgName;
 	String uploadName;
 	String imgContent;
+
 	Date imgRegdate;
-	String imgFromtable;
+	String uploadPath;
+	
 	String productCode;
-	String reviewCode;
+	int reviewCode;
 
 }
