@@ -165,7 +165,7 @@
 	</select>
 	
 	<!-- 반품 상세 -->
-	<select id="selectReturnList" resultType="ReturnVO" parameterType="String">
+	<select id="selectReturnList" resultType="BuyReturnVO" parameterType="String">
 		select a.return_code
 		     , a.return_reason
 		     , a.return_regdate
@@ -310,7 +310,7 @@
 	</select>
 	
 	<!--반품 신청  -->
-	<insert id="insertReturn" parameterType="ReturnVO">
+	<insert id="insertReturn" parameterType="BuyReturnVO">
 		<selectKey resultType="String" keyProperty="reCode" order="BEFORE">
 			select re_code from dual
 		</selectKey>
