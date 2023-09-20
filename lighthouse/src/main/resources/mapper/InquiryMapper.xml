@@ -44,6 +44,14 @@ values (
 		)
   </insert>
   
+   <update id="updateInquiry">
+  	update ar_inquiry 
+		set 
+			que_content = #{queContent}
+			,que_updatedate = sysdate 
+		where que_code = #{queCode}
+  </update>
+  
   <delete id="deleteInquiry">
   	delete from ar_inquiry where que_code = #{queCode}
   </delete>

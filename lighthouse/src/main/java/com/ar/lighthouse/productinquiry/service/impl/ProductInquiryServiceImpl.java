@@ -33,4 +33,11 @@ public class ProductInquiryServiceImpl implements ProductInquiryService{
 		return mapper.deleteInquiry(queCode)==1;
 	}
 
+	//수정
+	@Override
+	public boolean editInquiry(ProductInquiryVO productInquiryVO) {
+		// TODO Auto-generated method stub
+		return mapper.updateInquiry(productInquiryVO)==1;
+	}
+
 }

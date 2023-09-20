@@ -610,7 +610,7 @@
 									<table class="table">
 										<thead>
 											<tr>
-												<th scope="col">글 번호</th>
+												<th scope="col">답변여부</th>
 												<th scope="col">내용</th>
 												<th scope="col-12">작성자</th>
 												<th scope="col-md-6">등록날짜</th>
@@ -623,7 +623,8 @@
 											<input type="hidden" th:value="${inquiry.queSecret}" />
 											<tr th:onclick="|toggleOn([[${inquiry.queCode}]])|">
 
-												<td th:text="${inquiry.queCode}"></td>
+												<td th:if="${inquiry.queAns == null}">답변 대기</td>
+												<td th:if="${inquiry.queAns != null}" style="font-weight: 600">답변 완료</td>
 
 												<td class="inquiryGetAns" id="queCon"
 													th:if="${session.loginMember != null} and ${session.loginMember.memberId == inquiry.memberId}
@@ -634,36 +635,52 @@
 													th:if="${session.loginMember == null} or ${session.loginMember.memberId != inquiry.memberId}">
 													<i class="fas fa-lock"></i> 비밀글입니다
 												</td>
-												<td>[[${inquiry.memberId}]]</td>
+												<td th:text="${inquiry.memberId.length} > 3 ? ${#strings.substring(inquiry.memberId,0,5)}+'***' : ${inquiry.memberId}"></td>
 
 
 												<td>[[${#dates.format(inquiry. queRegdate,'yyyy년 MM월
 													dd일 HH:mm')}]]</td>
 											</tr>
-											
+
 											<!-- 답변 보기 -->
 											<tr th:class="|inquiryGet${inquiry.queCode}|"
+												th:data-code="${inquiry.queCode}"
+												id="ansQueCode"
+												
 												th:if="${session.loginMember != null} and ${session.loginMember.memberId == inquiry.memberId}"
-												style="display: none; background-color: #E2E2E2">
+												style="display: none;">
 												<td class="inquiryGetAns" style="font-size: 18px">
-												<p style="font-size: 14px">Q&A 답변</p>
-													</td>
-												
-												<td class="inquiryGetAns" id="answerForm"><div style="font-size: 30px; color: #0000ff; font-weight: 600">Q</div>
-													<textarea class="form-control form-control-sm" rows="5"
-														readonly>[[${inquiry.queContent}]]</textarea> </td>
-												<td class="inquiryGetAns"><div style="font-size: 30px; color: #ff0500; font-weight: 600" >A</div>
-												<textarea class="form-control form-control-sm" rows="5"
-														readonly>[[${inquiry.queAns}]]</textarea>
-													</td>
-												
+													<p style="font-size: 14px">Q&A 답변</p>
+												</td>
+
+												<td class="inquiryGetAns" id="answerForm"><p
+														style="font-size: 16px; border-bottom: 1px solid black; text-align: center">[[${inquiry.queContent}]]</p>
+													<textarea class="form-control form-control-sm" rows="5" style="display: none"
+														id="que" readonly>[[${inquiry.queContent}]]</textarea>
+													<div style="font-size: 15px; padding-bottom: 50px"> [[${inquiry.queAns}]]</div>
+													<div><span style="font-size: 14px;">판매자: [[${inquiry.sellerId}]]</span></div>
+													
+														</td>
 												<td class="inquiryGetAns">
-												<div style="padding-top: 20px">판매자 : [[${inquiry.sellerId}]]</div>
-													<div style="padding:30px 10px 10px 10px">
-														<a style="color: grey; font-weight: 600"  id="modify">수정</a>
-													</div >
-													<div style="padding: 10px">
-														<a style="color: grey; font-weight: 600"
+
+												<td class="inquiryGetAns">
+													
+													<div style="padding: 30px 10px 10px 10px"
+														class="inquiryBtn">
+														<a id="modify" th:if="${inquiry.queAns == null}"
+															style="color: black" class="testBtn">수정</a>
+													</div>
+
+													<div style="padding: 30px 10px 10px 10px; display: none"
+														id="modifyBtn">
+														<a style="color: grey;" 
+															class="edit">
+															
+															저장</a>
+													</div>
+
+													<div style="padding: 10px" class="inquiryBtn">
+														<a class="inquiryBtn"
 															th:onclick="remove([[${inquiry.queCode}]])">삭제</a>
 													</div>
 												</td>
@@ -674,9 +691,31 @@
 
 									</table>
 
+
+
 								</div>
+								
+								
 							</div>
 						</div>
+						<nav class="d-flex justify-content-center mt-9" style="padding-bottom: 40px">
+												<ul class="pagination pagination-sm text-gray-400">
+													<li class="page-item"><a
+														class="page-link page-link-arrow" href="#"> <i
+															class="fa fa-caret-left"></i>
+													</a></li>
+													<li class="page-item active"><a class="page-link"
+														href="#">1</a></li>
+													<li class="page-item"><a class="page-link" href="#">2</a>
+													</li>
+													<li class="page-item"><a class="page-link" href="#">3</a>
+													</li>
+													<li class="page-item"><a
+														class="page-link page-link-arrow" href="#"> <i
+															class="fa fa-caret-right"></i>
+													</a></li>
+												</ul>
+											</nav>
 					</div>
 				</div>
 			</div>
@@ -685,11 +724,19 @@
 	<!-- REVIEWS -->
 
 	<script th:inline="javascript">
-	$("#modify").on("click",function(){
-		console.log("여기옴");
-		$("#answerForm textarea").attr("readonly",false);
-	})
+		
+	function inquiryModify(){
+		console.log($("#que").val());
+		
+	}
 	
+		function modify(idx){	
+			console.log(idx);
+			
+			$("#answerForm textarea").attr("readonly",false);
+		}	
+		
+		
       console.log($("#hidden").val());
       $("#loginTag").on("click", function () {
         let result = confirm("회원가입 창으로 이동하시겠습니까?");
@@ -701,7 +748,7 @@
  
       //리뷰삭제
       $("#delBtn").on("click", function (e) {
-        let clicked = e.currentTarget;
+        
         console.log(clicked);
       });
 
@@ -725,7 +772,7 @@
            function toggleOn(idx){ 
       	//$(".inquiryGet").css("display","");      
     	//$(".inquiryGet").css("background","lightgrey");
-    	$('.inquiryGet'+idx).toggle();
+    	$('.inquiryGet'+ idx).toggle();
     	};
       
     	
@@ -779,6 +826,7 @@
                      `;
                      
             table.append(str);
+            location.reload();
           },
           error: function (e) {
             console.log(e);
@@ -814,6 +862,55 @@
 		    }
 		}
     	
+		//qna 수정
+		$('.testBtn').on('click',function(){
+			let btn = $(this).parent();
+			
+			
+			let queText = btn.parent().parent().children().next().children().next();
+			let queCode = btn.parent().parent().parent().children().next().next().data().code;
+			console.log(queCode);
+			
+			queText.css("display","block");
+			queText.attr("readonly",false);
+			btn.next().show();
+			btn.next().next().remove();
+			btn.remove();
+			//queCode = $("#ansQueCode").data("code");
+			
+			
+			
+				$(".edit").on("click",function(){
+					let ary = [];
+					let obj = {
+							queContent : queText.val()
+					}
+					let obj2 = {
+							queCode : queCode		
+					}
+					let tmpObj = {
+							queContent : queText.val(),
+							queCode : queCode	
+					}
+					ary.push(obj);
+					ary.push(obj2);
+					
+				
+					$.ajax({
+					url:"editInquiry",
+					type:"post",
+					headers: { "Content-Type": "application/json" },
+			        data: JSON.stringify(tmpObj),
+					success:function(result){
+						console.log(result);
+						location.reload();
+					},
+					error:function(reject){
+						console.log(reject);
+					}
+				})	
+			})
+		})
     	
     	//리뷰등록
       $("#insertBtn").on("click", function () {
@@ -848,4 +945,3 @@
     </script>
 </div>
 </html>
-
