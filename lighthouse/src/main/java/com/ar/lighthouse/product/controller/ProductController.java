@@ -37,7 +37,6 @@ import com.ar.lighthouse.review.service.ReviewVO;
 @Controller
 public class ProductController {
 
-
 	@Autowired
 	ProductService productService;
 
@@ -46,13 +45,14 @@ public class ProductController {
 
 	@Autowired
 	ProductInquiryService custominquiryService;
-  
-  @Autowired
+
+	@Autowired
 	MemberService memberService;
 
 	@Autowired
 	MainPageService mainPageService;
 
+	
 //	판매자 메인페이지
 	@GetMapping("sellerMain")
 	public String seller() {
@@ -134,18 +134,18 @@ public class ProductController {
 	}
 
 //  등록 ( 첫번째 카테고리
-   @GetMapping("childCate")
-   public String childCate(CategoryVO categoryVO, Model model) {
-      model.addAttribute("getCategoryList", mainPageService.getchildCategory(categoryVO));
-      return "page/seller/productForm :: #ChildCate";
-   }
+	@GetMapping("childCate")
+	public String childCate(CategoryVO categoryVO, Model model) {
+		model.addAttribute("getCategoryList", mainPageService.getchildCategory(categoryVO));
+		return "page/seller/productForm :: #ChildCate";
+	}
 
 //  등록 ( 두번째 카테고리
-   @GetMapping("childOfCate")
-   public String childOfCate(CategoryVO categoryVO, Model model) {
-      model.addAttribute("getCategoryList", mainPageService.getchildCategory(categoryVO));
-      return "page/seller/productForm :: #ChildOfChildCate";
-   }
+	@GetMapping("childOfCate")
+	public String childOfCate(CategoryVO categoryVO, Model model) {
+		model.addAttribute("getCategoryList", mainPageService.getchildCategory(categoryVO));
+		return "page/seller/productForm :: #ChildOfChildCate";
+	}
 
 //  등록 ( 세번째 카테고리
 	@GetMapping("thirdOfCate")
@@ -266,7 +266,8 @@ public class ProductController {
 
 		if (custominquiryService.editInquiry(inquiryVO)) {
 			System.out.println("성공");
-		};
+		}
+		;
 
 		return inquiryVO;
 
@@ -287,28 +288,25 @@ public class ProductController {
 	// 상품 단건 조회
 
 	@GetMapping("goodDetail")
-	public String getGoodDetail(String productCode, Model model, HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	public String getGoodDetail(String productCode, Model model, HttpSession session, ProductVO vo, OptionVO optionVO) {
 
-		ProductVO vo = new ProductVO();
-		vo.setProductCode(productCode);
-
-		ReviewVO reviewVO = new ReviewVO();
-		reviewVO.setProductCode(productCode);
-		System.out.println(reviewVO);
-
+		// 상품정보
 		ProductVO productVO = productService.goodsDetail(vo);
-
 		model.addAttribute("goods", productVO);
 
-		ProductInquiryVO productInquiryVO = new ProductInquiryVO();
-		productInquiryVO.setProductCode(productCode);
-
-		// 리뷰조회
+		// 리뷰정보
+		ReviewVO reviewVO = new ReviewVO();
+		reviewVO.setProductCode(productCode);
 		model.addAttribute("review", reviewService.getReviewList(reviewVO));
 
 		// qna 조회
+		ProductInquiryVO productInquiryVO = new ProductInquiryVO();
+		productInquiryVO.setProductCode(productCode);
 		model.addAttribute("inquiry", custominquiryService.getInquiryList(productInquiryVO));
+
+		// 옵션 조회
+		optionVO.setProductCode(productCode);
+		model.addAttribute("options", productService.getOptionList(optionVO));
 		System.out.println(model);
 
 		return "page/goods/goodDetail";
@@ -325,4 +323,3 @@ public class ProductController {
 	}
 
 }
-

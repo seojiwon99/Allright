@@ -58,5 +58,6 @@ public interface ProductMapper {
 //  반품건 확인
 	public List<ReturnVO> selectReturnList(ReturnVO returnVO);
 
-
+//  상품옵션 vo 리스트
+	public List<OptionVO> getOptionList(OptionVO optionVO);
 }

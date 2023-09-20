@@ -102,6 +102,12 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 
+	@Override
+	public List<OptionVO> getOptionList(OptionVO optionVO) {
+		return productMapper.getOptionList(optionVO);
+	}
+
+
 
 
 	

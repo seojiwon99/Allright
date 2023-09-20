@@ -21,22 +21,22 @@
 									id="productSlider">
 									<!-- Item -->
 									<a href="#"
-										data-bigpicture='{ "imgSrc": "static/img/products/product-7.jpg"}'>
-										<img src="static/img/products/product-7.jpg" alt="..."
+										data-bigpicture='{ "imgSrc": "../../img/products/product-7.jpg"}'>
+										<img src="../../img/products/product-7.jpg" alt="..."
 										class="card-img-top" />
 									</a>
 
 									<!-- Item -->
 									<a href="#"
-										data-bigpicture='{ "imgSrc": "assets/img/products/product-122.jpg"}'>
-										<img src="assets/img/products/product-122.jpg" alt="..."
+										data-bigpicture='{ "imgSrc": "../../img/products/product-122.jpg"}'>
+										<img src="../../img/products/product-122.jpg" alt="..."
 										class="card-img-top" />
 									</a>
 
 									<!-- Item -->
 									<a href="#"
-										data-bigpicture='{ "imgSrc": "assets/img/products/product-146.jpg"}'>
-										<img src="assets/img/products/product-146.jpg" alt="..."
+										data-bigpicture='{ "imgSrc": "../../img/products/product-146.jpg"}'>
+										<img src="../../img/products/product-146.jpg" alt="..."
 										class="card-img-top" />
 									</a>
 								</div>
@@ -49,21 +49,21 @@
 								<div class="col-12 px-2" style="max-width: 113px">
 									<!-- Image -->
 									<div class="ratio ratio-1x1 bg-cover"
-										style="background-image: url(assets/img/products/product-7.jpg);"></div>
+										style="background-image: url(../../img/products/product-7.jpg);"></div>
 								</div>
 
 								<!-- Item -->
 								<div class="col-12 px-2" style="max-width: 113px">
 									<!-- Image -->
 									<div class="ratio ratio-1x1 bg-cover"
-										style="background-image: url(assets/img/products/product-122.jpg);"></div>
+										style="background-image: url(../../img/products/product-122.jpg);"></div>
 								</div>
 
 								<!-- Item -->
 								<div class="col-12 px-2" style="max-width: 113px">
 									<!-- Image -->
 									<div class="ratio ratio-1x1 bg-cover"
-										style="background-image: url(assets/img/products/product-146.jpg);"></div>
+										style="background-image: url(../../img/products/product-146.jpg);"></div>
 								</div>
 							</div>
 						</div>
@@ -119,62 +119,63 @@
 							</div>
 
 							<!-- Form -->
-							<form>
+								
+							<form >
+
 								<div class="form-group">
 									<!-- Label -->
-									<p class="mb-5">
-										Color: <strong id="colorCaption">White</strong>
-									</p>
+									
+									<!-- option -->
+									<div class="mb-2" style="padding-bottom: 24px" >
+										<div class="col-12 col-lg-auto" >
 
-									<!-- Radio -->
-									<div class="mb-8 ms-n1">
-										<div class="form-check form-check-inline form-check-img">
-											<input type="radio" class="form-check-input" id="imgRadioOne"
-												name="imgRadio" data-toggle="form-caption"
-												data-target="#colorCaption" value="White"
-												style="background-image: url(assets/img/products/product-7.jpg);"
-												checked />
-										</div>
-										<div class="form-check form-check-inline form-check-img">
-											<input type="radio" class="form-check-input" id="imgRadioTwo"
-												name="imgRadio" data-toggle="form-caption"
-												data-target="#colorCaption" value="Black"
-												style="background-image: url(assets/img/products/product-49.jpg);" />
+											<!-- option1 -->
+											<div th:each="option,status : ${options}">
+											<div th:with="isDuplicated = ${status.index > 0 && options[status.index-1].optionName == options[status.index].optionName}"
+											> 
+												<div th:if="${isDuplicated} == false">
+													[[${option.optionName}]]
+													<select class="form-select mb-2">
+														<option value="1" th:each="option1,status:${options}" th:if="${option.optionName} == ${option1.optionName}"> [[${option1.optionValue}]]</option>
+													</select>
+												</div>
+											
+											</div>
+											
+											
+
 										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<!-- Label -->
-									<p class="mb-5">
-										Size: <strong><span id="sizeCaption">6</span></strong>
-									</p>
 
-									<!-- Radio -->
-									<div class="mb-2" style="padding-bottom: 48px">
-										<div class="form-check form-check-inline form-check-size mb-2">
-											<input type="radio" class="form-check-input" name="sizeRadio"
-												id="sizeRadioOne" value="6" data-toggle="form-caption"
-												data-target="#sizeCaption" /> <label
-												class="form-check-label" for="sizeRadioOne">6</label>
+									
+
+									<div class="row mb-7">
+										<div class="col-12 col-lg-auto">
+											
+											<div style="display: flex" class="num" >
+												<span style="padding-right: 8px">수량 : </span>
+												<input type="number" value="1" style=" opacity: 0.7; width: 100px" >
+											</div>
+											<span>원가 - 할인가격 = 총금액</span>
 										</div>
-										<div class="form-check form-check-inline form-check-size mb-2">
-											<input type="radio" class="form-check-input" name="sizeRadio"
-												id="sizeRadioTwo" value="6.5" data-toggle="form-caption"
-												data-target="#sizeCaption" disabled /> <label
-												class="form-check-label" for="sizeRadioTwo">6.5</label>
+
+									</div>
+									<div class="form-group">
+										<div style="padding-bottom: 8px; color: grey">
+											<span >배송정보 : </span> <span>[[${goods.deliveryService}]]</span>
+										</div>
+										<div style="padding-bottom: 8px; color: grey">
+											<span>배송비 : </span> <span>[[${goods.deliveryCost}]]원</span>
+										</div>
+										<div style="padding-bottom: 8px; color: grey">
+											<span >생산지 : </span> <span>[[${goods.productOrigin}]]</span>
 										</div>
 									</div>
 
 									<div class="row gx-5 mb-7">
 										<div class="col-12 col-lg-auto">
 											<!-- Quantity -->
-											<select class="form-select mb-2">
-												<option value="1" selected>1</option>
-												<option value="2">2</option>
-												<option value="3">3</option>
-												<option value="4">4</option>
-												<option value="5">5</option>
-											</select>
+
 										</div>
 										<div class="col-12 col-lg">
 											<!-- Submit -->
@@ -215,7 +216,7 @@
 
 					<div
 						class="nav nav-tabs nav-overflow justify-content-start justify-content-md-center border-bottom"
-						style="font-size: 24px">
+						style="font-size: 24px; position: sticky; top: 0px; background-color: white;">
 						<a class="nav-link" href="#descriptionTab"> 상세정보 </a> <a
 							class="nav-link" href="#sizeTab"> 리뷰 </a> <a class="nav-link"
 							href="#qnaTap"> Q&A </a>
@@ -427,14 +428,13 @@
 													</div>
 												</div>
 											</form>
-											
+
 											<!-- Reviews -->
 											<div class="mt-8">
 												<!-- Review -->
 												<div class="review" th:each="review:${review}">
-												<div th:if="${review.reviewImg} != null">
-													[[${review.reviewImg.imgCode}]]																									
-												</div>
+													<div th:if="${review.reviewImg} != null">
+														[[${review.reviewImg.imgCode}]]</div>
 													<div class="review-body">
 														<div class="row">
 															<div class="col-12 col-md-auto">
@@ -445,7 +445,8 @@
 																		class="fas fa-image"></i>
 																	</span>
 																	<div th:if="${review.reviewImg} != null">
-																		<img th:src="|static/img/${review.reviewImg.uploadPath}/${review.reviewImg.uploadName}|" >
+																		<img
+																			th:src="|static/img/${review.reviewImg.uploadPath}/${review.reviewImg.uploadName}|">
 																	</div>
 																</div>
 															</div>
@@ -624,7 +625,8 @@
 											<tr th:onclick="|toggleOn([[${inquiry.queCode}]])|">
 
 												<td th:if="${inquiry.queAns == null}">답변 대기</td>
-												<td th:if="${inquiry.queAns != null}" style="font-weight: 600">답변 완료</td>
+												<td th:if="${inquiry.queAns != null}"
+													style="font-weight: 600">답변 완료</td>
 
 												<td class="inquiryGetAns" id="queCon"
 													th:if="${session.loginMember != null} and ${session.loginMember.memberId == inquiry.memberId}
@@ -635,7 +637,8 @@
 													th:if="${session.loginMember == null} or ${session.loginMember.memberId != inquiry.memberId}">
 													<i class="fas fa-lock"></i> 비밀글입니다
 												</td>
-												<td th:text="${inquiry.memberId.length} > 3 ? ${#strings.substring(inquiry.memberId,0,5)}+'***' : ${inquiry.memberId}"></td>
+												<td
+													th:text="${inquiry.memberId.length} > 3 ? ${#strings.substring(inquiry.memberId,0,5)}+'***' : ${inquiry.memberId}"></td>
 
 
 												<td>[[${#dates.format(inquiry. queRegdate,'yyyy년 MM월
@@ -644,9 +647,7 @@
 
 											<!-- 답변 보기 -->
 											<tr th:class="|inquiryGet${inquiry.queCode}|"
-												th:data-code="${inquiry.queCode}"
-												id="ansQueCode"
-												
+												th:data-code="${inquiry.queCode}" id="ansQueCode"
 												th:if="${session.loginMember != null} and ${session.loginMember.memberId == inquiry.memberId}"
 												style="display: none;">
 												<td class="inquiryGetAns" style="font-size: 18px">
@@ -655,16 +656,17 @@
 
 												<td class="inquiryGetAns" id="answerForm"><p
 														style="font-size: 16px; border-bottom: 1px solid black; text-align: center">[[${inquiry.queContent}]]</p>
-													<textarea class="form-control form-control-sm" rows="5" style="display: none"
-														id="que" readonly>[[${inquiry.queContent}]]</textarea>
-													<div style="font-size: 15px; padding-bottom: 50px"> [[${inquiry.queAns}]]</div>
-													<div><span style="font-size: 14px;">판매자: [[${inquiry.sellerId}]]</span></div>
-													
-														</td>
+													<textarea class="form-control form-control-sm" rows="5"
+														style="display: none" id="que" readonly>[[${inquiry.queContent}]]</textarea>
+													<div style="font-size: 15px; padding-bottom: 50px">
+														[[${inquiry.queAns}]]</div>
+													<div>
+														<span style="font-size: 14px;">판매자:
+															[[${inquiry.sellerId}]]</span>
+													</div></td>
+												<td class="inquiryGetAns">
 												<td class="inquiryGetAns">
 
-												<td class="inquiryGetAns">
-													
 													<div style="padding: 30px 10px 10px 10px"
 														class="inquiryBtn">
 														<a id="modify" th:if="${inquiry.queAns == null}"
@@ -673,10 +675,7 @@
 
 													<div style="padding: 30px 10px 10px 10px; display: none"
 														id="modifyBtn">
-														<a style="color: grey;" 
-															class="edit">
-															
-															저장</a>
+														<a style="color: grey;" class="edit"> 저장</a>
 													</div>
 
 													<div style="padding: 10px" class="inquiryBtn">
@@ -694,28 +693,24 @@
 
 
 								</div>
-								
-								
+
+
 							</div>
 						</div>
-						<nav class="d-flex justify-content-center mt-9" style="padding-bottom: 40px">
-												<ul class="pagination pagination-sm text-gray-400">
-													<li class="page-item"><a
-														class="page-link page-link-arrow" href="#"> <i
-															class="fa fa-caret-left"></i>
-													</a></li>
-													<li class="page-item active"><a class="page-link"
-														href="#">1</a></li>
-													<li class="page-item"><a class="page-link" href="#">2</a>
-													</li>
-													<li class="page-item"><a class="page-link" href="#">3</a>
-													</li>
-													<li class="page-item"><a
-														class="page-link page-link-arrow" href="#"> <i
-															class="fa fa-caret-right"></i>
-													</a></li>
-												</ul>
-											</nav>
+						<nav class="d-flex justify-content-center mt-9"
+							style="padding-bottom: 40px">
+							<ul class="pagination pagination-sm text-gray-400">
+								<li class="page-item"><a class="page-link page-link-arrow"
+									href="#"> <i class="fa fa-caret-left"></i>
+								</a></li>
+								<li class="page-item active"><a class="page-link" href="#">1</a></li>
+								<li class="page-item"><a class="page-link" href="#">2</a></li>
+								<li class="page-item"><a class="page-link" href="#">3</a></li>
+								<li class="page-item"><a class="page-link page-link-arrow"
+									href="#"> <i class="fa fa-caret-right"></i>
+								</a></li>
+							</ul>
+						</nav>
 					</div>
 				</div>
 			</div>
@@ -942,6 +937,9 @@
           },
         });
       });
+		
+		
+
     </script>
 </div>
 </html>

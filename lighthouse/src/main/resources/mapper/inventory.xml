@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.ar.lighthouse.inventory.mapper.InventoryMapper">
+  
+  <select id="allProductList" resultType="ProductVO">
+  	select member_id
+			 , p.product_code
+             , category_code
+             , product_name
+             , product_content
+             , product_location
+             , product_cost
+             , product_regdate
+             , sale_price
+             , product_brand
+             , product_origin
+             , product_makeorigin
+             , delivery_cost
+             , return_cost
+             , exchange_cost
+                , delivery_service
+                , product_status
+		from ar_products p join ar_imgs i
+        on p.product_code = i.product_code
+  </select>
+  	
+  </mapper>
