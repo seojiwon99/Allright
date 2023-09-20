@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ar.lighthouse.product.service.ImgsVO;
+import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.review.mapper.ReviewMapper;
 import com.ar.lighthouse.review.service.ReviewImgVO;
 import com.ar.lighthouse.review.service.ReviewService;
