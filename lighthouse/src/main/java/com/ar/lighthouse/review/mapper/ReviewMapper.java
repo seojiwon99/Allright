@@ -13,6 +13,8 @@ public interface ReviewMapper {
 	//리뷰 전체조회
 	public List<ReviewVO> selectReviewList(ReviewVO reviewVO);
 	
+	//리뷰 수
+	
 	//리뷰등록
 	public void insertReview(ReviewVO reviewVO);
 	

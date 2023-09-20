@@ -6,6 +6,7 @@
 
 <!-- Content -->
 <div layout:fragment="content">
+
 <!-- CONTENT -->
     <section class="pt-7 pb-12">
       <div class="container">
@@ -13,7 +14,7 @@
           <div class="col-12 text-center">
 
             <!-- Heading -->
-            <h3 class="mb-10">My Account</h3>
+            <h3 class="mb-10">주문 목록</h3>
 
           </div>
         </div>
@@ -23,24 +24,58 @@
             <!-- Nav -->
             <nav class="mb-10 mb-md-0">
               <div class="list-group list-group-sm list-group-strong list-group-flush-x">
-                <a class="list-group-item list-group-item-action dropend-toggle active" href="orderList.html">
+                <a class="list-group-item list-group-item-action dropend-toggle active" th:href="@{/page/buyer/orderList}">
                   주문 목록
                 </a>
-                <a class="list-group-item list-group-item-action dropend-toggle " href="tradeList.html">
-                  취소/반품/교환내역
-                </a>
-                <a class="list-group-item list-group-item-action dropend-toggle " href="myCoupon.html">
+				<ul class="list-styled mb-0">
+				<li class="nav-item">
+
+                  <!-- Toggle -->
+                  <a class="list-group-item list-group-item-action dropend-toggle active" data-bs-toggle="collapse" href="#Collapse" aria-expanded="true">
+                   취소/반품/교환내역
+                  </a>
+                  <!-- Collapse -->
+                  <div class="collapse" id="Collapse" data-simplebar-collapse="#seasonGroup">
+                    <div class="form-group form-group-overflow mb-6" id="seasonGroup">
+                      <div class="form-check mb-3">
+                        <a class="form-check-label" for="seasonOne" href="cancelList">
+                          취소
+                        </a>
+                      </div>
+                      <div class="form-check mb-3">
+                        <a class="form-check-label" for="seasonTwo" href="returnList">
+                          반품
+                        </a>
+                      </div>
+                      <div class="form-check">
+                        <a class="form-check-label" for="seasonThree" href="exchangeList">
+                          교환
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                 </li>
+                <li class="nav-item">
+                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/myCoupon}">
                   나의 쿠폰함
                 </a>
-                <a class="list-group-item list-group-item-action dropend-toggle " href="myInquiry.html">
+                </li>
+                <li class="nav-item">
+                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/myInquiry}">
                   문의내역
                 </a>
-                <a class="list-group-item list-group-item-action dropend-toggle " href="wishList.html">
+                </li>
+                 <li class="nav-item">
+                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/wishList}">
                   찜 목록
                 </a>
-                <a class="list-group-item list-group-item-action dropend-toggle" href="personalInfo.html">
+                </li>
+                 <li class="nav-item">
+                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/personalInfo}">
                   개인정보 확인/수정
                 </a>
+                </li>
+                </ul>
               </div>
             </nav>
 
@@ -59,9 +94,9 @@
                   <div class="card-body bg-light">
                     <div class="row">
                       <div class="col-6 col-lg-3">
-
+    					
                         <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">Order No:</h6>
+                        <h6 class="heading-xxxs text-muted">주문 번호:</h6>
 
                         <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
@@ -72,7 +107,7 @@
                       <div class="col-6 col-lg-3">
 
                         <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">Shipped date:</h6>
+                        <h6 class="heading-xxxs text-muted">주문 날짜:</h6>
 
                         <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
@@ -85,118 +120,116 @@
                       <div class="col-6 col-lg-3">
 
                         <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">Status:</h6>
+                        <h6 class="heading-xxxs text-muted">배송 상태:</h6>
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text= "|${lists.orderStatus}|"></span>
+                          <span th:text="|${lists.orderStatus}|"></span>
                         </p>
 
                       </div>
                       <div class="col-6 col-lg-3">
 
                         <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">Order Amount:</h6>
+                        <h6 class="heading-xxxs text-muted">상품명:</h6>
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                          $259.00
+                          <span th:text="|${lists.productName}|"></span>
                         </p>
 
                       </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">수량:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${lists.orderCnt}|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">주문 금액:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${lists.paymentPrice}원|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">배달 완료 날짜:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                         <span th:text="|${lists.deliveryDate}|"></span>
+                        </p>
+
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <!-- Heading -->
+                        <h6 class="heading-xxxs text-muted">상품 이미지:</h6>
+
+                        <!-- Text -->
+                        <p class="mb-0 fs-sm fw-bold">
+                          <img th:src="@{/img/products/product-1.jpg}" style="max-width: 100%; height: auto" th:alt="${lists.imgContent}">
+                        </p>
+                      </div>
+                      
                     </div>
                   </div>
+                <div class="card-footer">
+                <div class="row align-items-center">
+
+
+                      <div class="col-6">
+
+                        <!-- Button -->
+                        <a class="btn btn-sm w-100 btn-outline-dark" href="account-order.html" >
+                          주문 상세
+                        </a>
+
+                      </div>
+                      
+                      <div class="col-6">
+
+                        <!-- Button -->
+                        <a class="btn btn-sm w-100 btn-outline-dark" href="exchange" id="excBtn">
+                          교환
+                        </a>
+
+                      </div>
+                      <div class="col-6">
+
+                        <!-- Button -->
+                        <a class="btn btn-sm w-100 btn-outline-dark" href="account-order.html" id="retBtn">
+                          반품
+                        </a>
+
+                      </div>
+                      
+                      <div class="col-6">
+
+                        <!-- Button -->
+                        <a class="btn btn-sm w-100 btn-outline-dark" href="#!" id="cancelBtn">
+                          주문 취소
+                        </a>
+
+                      </div>
+
+                </div>
+              </div>
                 </div>
 				</div>
               
-              <div class="card-footer">
 
-                <!-- Heading -->
-                <h6 class="mb-7">Order Items (3)</h6>
-
-                <!-- Divider -->
-                <hr class="my-5">
-
-                <!-- List group -->
-                <ul class="list-group list-group-lg list-group-flush-y list-group-flush-x">
-                  <li class="list-group-item">
-                    <div class="row align-items-center">
-                      <div class="col-4 col-md-3 col-xl-2">
-
-                        <!-- Image -->
-                        <a href="product.html"><img src="assets/img/products/product-6.jpg" alt="..." class="img-fluid"></a>
-
-                      </div>
-                      <div class="col">
-
-                        <!-- Title -->
-                        <p class="mb-4 fs-sm fw-bold">
-                          <a class="text-body" href="product.html">Cotton floral print Dress x 1</a> <br>
-                          <span class="text-muted">$40.00</span>
-                        </p>
-
-                        <!-- Text -->
-                        <div class="fs-sm text-muted">
-                          Size: M <br>
-                          Color: Red
-                        </div>
-
-                      </div>
-                    </div>
-                  </li>
-                  <li class="list-group-item">
-                    <div class="row align-items-center">
-                      <div class="col-4 col-md-3 col-xl-2">
-
-                        <!-- Image -->
-                        <a href="product.html"><img src="assets/img/products/product-10.jpg" alt="..." class="img-fluid"></a>
-
-                      </div>
-                      <div class="col">
-
-                        <!-- Title -->
-                        <p class="mb-4 fs-sm fw-bold">
-                          <a class="text-body" href="product.html">Suede cross body Bag x 1</a> <br>
-                          <span class="text-muted">$49.00</span>
-                        </p>
-
-                        <!-- Text -->
-                        <div class="fs-sm text-muted">
-                          Color: Brown
-                        </div>
-
-                      </div>
-                    </div>
-                  </li>
-
-                  <li class="list-group-item">
-                    <div class="row align-items-center">
-                      <div class="col-4 col-md-3 col-xl-2">
-
-                        <!-- Image -->
-                        <a href="product.html"><img src="assets/img/products/product-48.jpg" alt="..." class="img-fluid"></a>
-
-                      </div>
-                      <div class="col">
-
-                        <!-- Title -->
-                        <p class="mb-4 fs-sm fw-bold">
-                          <a class="text-body" href="product.html">Sweatshirt with Pocket</a> <br>
-                          <span class="text-muted">$39.00</span>
-                        </p>
-
-                        <!-- Text -->
-                        <div class="fs-sm text-muted">
-                          Size: L <br>
-                          Color: Pink
-                        </div>
-
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-
-              </div>
             </div>
 
           </div>
@@ -204,6 +237,9 @@
       </div>
       </div>
     </section>
-
+	<script>
+	
+	
+	</script>
 </div>
 </html>
