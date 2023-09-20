@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ar.lighthouse.buyp.service.BuyDetailVO;
+import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.mapper.ProductMapper;
 import com.ar.lighthouse.product.service.CancelVO;
@@ -77,7 +77,7 @@ public class ProductServiceImpl implements ProductService{
 
 
 	@Override
-	public List<BuyDetailVO> getProductOrder(ProductVO productVO) {
+	public List<DetailVO> getProductOrder(ProductVO productVO) {
 		return productMapper.selectOrderDetail(productVO);
 	}
 

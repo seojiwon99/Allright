@@ -6,7 +6,7 @@
   <mapper namespace="com.ar.lighthouse.buyp.mapper.BuyerPageMapper">
   	
   	<!-- 주문 목록 -->
-  	<select id="selectDetailList" resultType="BuyDetailVO" parameterType="String">
+  	<select id="selectDetailList" resultType="DetailVO" parameterType="String">
 		SELECT a.order_cnt
 		     , a.order_price
 		     , a.payment_price

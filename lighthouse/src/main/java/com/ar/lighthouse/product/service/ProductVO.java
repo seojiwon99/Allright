@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.ar.lighthouse.buyp.service.BuyDetailVO;
+import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.orders.service.OrdersVO;
 
 import lombok.Data;
@@ -43,7 +43,7 @@ public class ProductVO {
 	 	
 	 	
 	 	List<OptionVO> option;
-	 	List<BuyDetailVO> orderDetail;
+	 	List<DetailVO> orderDetail;
 	 	List<OrdersVO> orders;
 
 	 	
