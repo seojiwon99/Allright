@@ -15,7 +15,7 @@ import com.ar.lighthouse.buyp.service.BuyCancelVO;
 import com.ar.lighthouse.buyp.service.CodeVO;
 import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
-import com.ar.lighthouse.buyp.service.ExchangeVO;
+import com.ar.lighthouse.buyp.service.BuyExchangeVO;
 import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.buyp.service.BuyReturnVO;
 import com.ar.lighthouse.buyp.service.TradeVO;
@@ -84,13 +84,13 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 
 
 	@Override
-	public List<ExchangeVO> getExchangeList(String memberId) {
+	public List<BuyExchangeVO> getExchangeList(String memberId) {
 		return buyerPageMapper.selectExchangeList(memberId);
 	}
 
 
 	@Override
-	public int addExchange(ExchangeVO excVO) {
+	public int addExchange(BuyExchangeVO excVO) {
 		return buyerPageMapper.insertExchange(excVO);
 	}
 

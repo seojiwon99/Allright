@@ -32,10 +32,10 @@ public interface BuyerPageService {
 	public List<BuyReturnVO> getReturnList(String memberId);
 
 	// 교환 상세
-	public List<ExchangeVO> getExchangeList(String memberId);
+	public List<BuyExchangeVO> getExchangeList(String memberId);
 
 	// 교환 신청
-	public int addExchange(ExchangeVO excVO);
+	public int addExchange(BuyExchangeVO excVO);
 
 	// 교환 코드
 	public List<CodeVO> getExchangeCode(String memberId);
