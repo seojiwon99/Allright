@@ -1,14 +1,7 @@
 package com.ar.lighthouse.product.controller;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,27 +11,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.member.service.MemberService;
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.service.CancelVO;
 import com.ar.lighthouse.product.service.CategoryVO;
-import com.ar.lighthouse.product.service.ImgsVO;
+import com.ar.lighthouse.product.service.ExchangeVO;
 import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
-import com.ar.lighthouse.productinquiry.service.ProductInquiryService;
-import com.ar.lighthouse.productinquiry.service.ProductInquiryVO;
+import com.ar.lighthouse.product.service.ReturnVO;
 import com.ar.lighthouse.review.service.ReviewService;
 import com.ar.lighthouse.review.service.ReviewVO;
 
-import retrofit2.http.GET;
-
 @Controller
 public class ProductController {
+
 
 	@Autowired
 	ProductService productService;
@@ -47,9 +38,9 @@ public class ProductController {
 	ReviewService reviewService;
 
 	@Autowired
-
 	ProductInquiryService custominquiryService;
-
+  
+  @Autowired
 	MemberService memberService;
 
 	@Autowired
@@ -136,18 +127,18 @@ public class ProductController {
 	}
 
 //  등록 ( 첫번째 카테고리
-	@GetMapping("childCate")
-	public String childCate(CategoryVO categoryVO, Model model) {
-		model.addAttribute("getCategoryList", mainPageService.getchildCategory(categoryVO));
-		return "page/seller/productForm :: #ChildCate";
-	}
+   @GetMapping("childCate")
+   public String childCate(CategoryVO categoryVO, Model model) {
+      model.addAttribute("getCategoryList", mainPageService.getchildCategory(categoryVO));
+      return "page/seller/productForm :: #ChildCate";
+   }
 
 //  등록 ( 두번째 카테고리
-	@GetMapping("childOfCate")
-	public String childOfCate(CategoryVO categoryVO, Model model) {
-		model.addAttribute("getCategoryList", mainPageService.getchildCategory(categoryVO));
-		return "page/seller/productForm :: #ChildOfChildCate";
-	}
+   @GetMapping("childOfCate")
+   public String childOfCate(CategoryVO categoryVO, Model model) {
+      model.addAttribute("getCategoryList", mainPageService.getchildCategory(categoryVO));
+      return "page/seller/productForm :: #ChildOfChildCate";
+   }
 
 //  등록 ( 세번째 카테고리
 	@GetMapping("thirdOfCate")
@@ -327,3 +318,4 @@ public class ProductController {
 	}
 
 }
+

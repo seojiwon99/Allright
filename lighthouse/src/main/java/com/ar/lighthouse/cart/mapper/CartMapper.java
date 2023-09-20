@@ -8,7 +8,7 @@ import com.ar.lighthouse.cart.service.CartVO;
 @Mapper
 public interface CartMapper {
 	
-	List<CartVO> cartList(String memberId);
+	List<CartVO> selectCartList(String memberId);
 	
 	int deleteCart(String memberId, int cartCode);
 	

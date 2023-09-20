@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<!-- Content -->
+<div layout:fragment="content">
+    
+    
+    <!-- 결제 상품 정보 -->
+ 
+    <!-- BREADCRUMB -->
+    <nav class="py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+
+            <!-- Breadcrumb -->
+            <ol class="breadcrumb mb-0 fs-xs text-gray-400">
+              <li class="breadcrumb-item">
+                <a class="text-gray-400" href="/">Home</a>
+              </li>
+              <li class="breadcrumb-item">
+                <a class="text-gray-400" th:href="@{/cart/cartView}">장바구니</a>
+              </li>
+              <li class="breadcrumb-item active">
+                주문/결제
+              </li>
+            </ol>
+
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- CONTENT -->
+    <section class="pt-7 pb-12">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 text-center">
+
+            <!-- Heading -->
+            <h3 class="mb-4">주문/결제</h3>
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-7">
+
+            <!-- Form -->
+            <form>
+
+              <!-- Heading -->
+              <h6 class="mb-7">주문자 정보</h6>
+
+              <!-- Billing details -->
+              <div class="row mb-9">
+                <div class="col-12">
+
+                  <!--주문자 정보-->
+                  <!-- 이름 -->
+                
+                  <div class="form-group">
+                    <div th:each="gets,index : ${get}" th:if="${index.index} < 1">
+                    <label class="form-label" for="checkoutBillingFirstName">이름 *</label>
+                    <div class="input-group mb-8">                      
+                      <input type="text" class="form-control" id="mName" placeholder="이름 작성" aria-label="Recipient's username" aria-describedby="button-addon2" th:value="${gets.memberName}" readonly>                     
+                      <button class="btn btn-outline-secondary" type="button" id="deliveryInfo">배송지 정보로 등록</button>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 배송지 주소 -->
+                <div th:each="gets,index : ${get}" th:if="${index.index} < 1">
+                  <div class="col-12">
+                  
+                    <div class="form-group">
+                      <input class="form-control form-control-sm" id="mAddr" type="tel" placeholder="배송지 상세주소" required th:value="|${gets.memberAddr} , ${gets.memberDetailsAddr}|" readonly>
+                      <input type="hidden" id="mAddr1" th:value="${gets.memberAddr}"> 
+                      <input type="hidden" id="mAddr2" th:value="${gets.memberDetailsAddr}">
+                    </div>
+                  </div><br>
+
+                  <div class="col-12">
+                  <!-- Email -->
+                    <div class="form-group">
+                      <label class="form-label" for="checkoutBillingEmail">Email *</label>
+                      <input class="form-control form-control-sm" id="mEmail" type="email" placeholder="abc@abc.com" required th:value="${gets.memberEmail}" readonly>
+                  </div>
+                  </div>
+             
+                  <div class="col-12">
+                  <!-- Mobile Phone -->
+                    <div class="form-group">
+                     <label class="form-label" for="checkoutBillingPhone">연락처 *</label>
+                     <input class="form-control form-control-sm" id="mTel" type="tel" placeholder="010-0000-0000" required th:value="${gets.memberTel}" readonly>
+                    </div>
+                 </div>
+                </div>
+                <hr>
+
+                 <!-- Heading -->
+              <h6 class="mb-7">배송 정보</h6>
+
+                <div class="col-12">
+                  <!-- Address Line 1 -->
+                  <div class="form-group">
+                    <label class="form-label" for="checkoutBillingAddress">받는 사람 *</label>
+                    <input class="form-control form-control-sm" id="deliveryName" type="text" placeholder="이름 작성" required>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <!-- Address Line 2 -->
+                  <div class="form-group">
+                    <div class="input-group mb-8">
+                      <input type="text" class="form-control" placeholder="배송지  정보"  id="addr">
+                      <button class="btn btn-outline-secondary" type="button" id="addressSearch">주소검색</button>
+                    </div>
+                  </div>
+                </div>
+
+                 <!-- 배송지 주소 -->
+                <div class="col-12">
+                  <div class="form-group">
+                    <input class="form-control form-control-sm" type="tel" placeholder="배송지 상세주소" required id="addrDt">
+                  </div>
+                </div><br>
+            
+                <div class="col-12">
+                  <!-- Mobile Phone -->
+                  <div class="form-group mb-0">
+                    <label class="form-label" for="checkoutBillingPhone">연락처 *</label>
+                    <input class="form-control form-control-sm"  type="tel" placeholder="010-0000-0000" required id="deliveryTel">
+                  </div>
+                  
+                </div>
+
+                <!--요청 사항-->
+                <div class="col-12">
+                <br>
+                <h6>배송 요청사항</h6>
+                <!-- Notes -->  
+                <select class="form-select form-select-lg mb-3" aria-label="Large select example" id="selbox">
+                  <option selected>배송 요청 선택</option>
+                  <option th:each="codeValue : ${codeList}" th:value="${codeValue.codeId}" th:text="${codeValue.codeName}"></option>
+
+                </select>
+                <input type="text" id="selectDirect" class="form-control form-control-sm" placeholder="배송 기타 요청사항 작성해주세요.">
+
+                </div>
+
+              </div>
+
+              <hr>
+              <!--쿠폰-->
+              <h6>쿠폰 할인</h6>
+              <div class="col-12">
+                <div class="form-group">
+                  <label class="form-label" for="checkoutBillingFirstName">쿠폰 확인 *</label>
+                  <div class="input-group mb-8">
+                    <input type="text" class="form-control" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2" id="couponSelect">
+                    <a class="btn btn-outline-secondary list-styled-link" id="couponBtn" data-bs-toggle="modal" href="#modalNewsletterHorizontal" >쿠폰선택</a>
+                  </div>
+                  <p>쿠폰 할인 금액 : <input type="text" style="border-width: 0 0 1px;" readonly id="couponSalePrice">원 
+                    <button class="btn btn-outline-secondary" type="button" id="couponResult">사용하기</button>
+                  </p> 
+                </div>
+              </div>
+              <hr>
+            
+            </form>
+
+          </div>
+          <div class="col-12 col-md-5 col-lg-4 offset-lg-1">
+
+            <!-- Heading -->
+            <h6 class="mb-7">주문상품</h6>
+
+            <!-- Divider -->
+            <hr class="my-7">
+
+            <!-- List group -->
+
+            <ul class="list-group list-group-lg list-group-flush-y list-group-flush-x mb-7">
+              <div th:each="gets : ${get}">
+                <li class="list-group-item">
+                  <div class="row align-items-center">
+                    <div class="col-4">
+                      
+                      <!-- Image -->
+                      <a href="product.html">
+                        <img th:src="@{/img/products/}+${gets.uploadName}" alt="..." class="img-fluid">
+                      </a>
+
+                    </div>
+                    <div class="col">
+
+                      <!-- Title -->
+                      <p class="mb-4 fs-sm fw-bold">
+                        <a class="text-body" href="product.html" th:text="${gets.productName}"></a>  <br>
+                        <span class="text-muted" style="text-decoration: line-through;" th:text="|상품금액 : ${gets.productCost + gets.optionPrice}|"></span>원 <br>
+                        <span class="text-muted" th:text="|할인된 금액 : ${gets.productCost - gets.salePrice + gets.optionPrice}|"></span>원
+                      </p>
+
+                      <!-- Text -->
+                      <div class="fs-sm text-muted" th:text="|${gets.optionName} : ${gets.optionValue}|"></div>
+                      <div class="fs-sm text-muted" th:text="|수량 :${gets.cartCount}|"></div>
+                    </div>
+                  </div>
+               </li>
+               <hr>
+              </div>
+            </ul>
+
+            <!-- Card -->
+            <div class="card mb-9 bg-light">
+              <div class="card-body">
+                <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
+                  <li class="list-group-item d-flex">
+                    <span>상품금액</span> <span class="ms-auto fs-sm" id="productPrice"></span>원
+                  </li>
+                  <li class="list-group-item d-flex">
+                    <span>상품할인금액</span> <span class="ms-auto fs-sm" id="salePrice"></span>원
+                  </li>
+                  <li class="list-group-item d-flex">
+                    <span>쿠폰할인</span> <span class="ms-auto fs-sm" id="couponSale"></span>원
+                  </li>
+                  <li class="list-group-item d-flex">
+                    <span>배송비</span> <span class="ms-auto fs-sm" id="deliveryPrice"></span>원
+                  </li>
+                  <li class="list-group-item d-flex fs-lg fw-bold">
+                    <span>결제금액</span> <span class="ms-auto" id="totalPrice"></span>원
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Disclaimer -->
+            <p class="mb-7 fs-xs text-gray-500">
+              귀하의 개인 데이터는 귀하의 주문을 처리하고, 이 웹사이트 전반에 걸쳐 귀하의 경험을 지원하고, 
+              당사의 개인 정보 보호 정책에 설명된 기타 목적을 위해 사용됩니다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <!-- 토스 결제 위젯 -->
+	<div class="title"></div>
+	  <div id="payment-method"></div>
+	  <div id="agreement"></div> 
+  <!-- Button -->
+  <div>
+    <button class="btn btn-dark" id="payment-button" style="padding: 10px; width: 200px; margin: auto; display: block;">결제하기</button>   
+  </div>
+
+  <div>
+    <br>
+  </div>
+
+
+  <!-- MODALS -->
+  <!-- Newsletter: Horizontal -->
+  <div class="modal fade" id="modalNewsletterHorizontal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+
+        <!-- Close -->
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <i class="fe fe-x" aria-hidden="true"></i>
+        </button>
+  
+        <!-- Content -->
+       
+          <div class="col-12 col-lg-16 d-flex flex-column px-md-8">
+  
+            <!-- Body -->
+            <div class="modal-body my-auto py-10" id="couponPage">
+              
+              <style>
+                table{
+                  font-size: 11px;
+                }
+                tr:hover {
+                  background-color: #ddd;
+                }
+                td, th {
+                  text-align: center;
+                  font-size: 12px;
+                }
+              </style>
+              <!-- Heading -->
+              <h4>나의 쿠폰함</h4>
+
+                <table class="table table-bordered" style="border-collapse: collapse;">
+                  <thead>
+                    <tr>
+                      <th>쿠폰코드</th>
+                      <th>쿠폰명</th>
+                      <th>내용</th>
+                      <th>할인금액(원,율)</th>
+                      <th>발급일자</th>
+                      <th>사용종료일자</th>
+                      <th>선택</th>
+                    </tr>
+                    
+                  </thead>
+                  <tbody th:each="couponRest : ${couponList}">
+                    <th:block th:if="${couponRest.couponUse == 'Y'}">
+                    <tr class="clickable-row">
+                      <td th:text="${couponRest.couponCode}"></td>
+                      <td th:text="${couponRest.couponName}"></td>
+                      <td th:text="${couponRest.couponContent}"></td>
+                      <td th:text="${couponRest.couponDiscountPrice} == '0' ? |${couponRest.couponDiscountRate}%| : |${couponRest.couponDiscountPrice}원|"></td>
+                      <td th:text="${#dates.format(couponRest.issueDate, 'yy/MM/dd')}"></td> 
+                      <td th:text="${#dates.format(couponRest.endDate, 'yy/MM/dd')}"></td>
+                      <td><input type="button" class="select-button"></td>
+                    </tr>
+                    </th:block>
+                  </tbody>
+                </table>
+            
+              </div>
+          </div>
+      </div>
+
+
+  
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script th:inline="javascript">
+
+    
+ 
+
+    //주소 api로 입력
+    $('#addressSearch').on('click', addrPopup);
+    function addrPopup(){
+        new daum.Postcode({
+            oncomplete: function(data) {
+                $('#addr').val(data.address);
+                $("#addrDt").focus();
+            }
+        
+        }).open();
+    }
+    //상품 금액 연산 정리
+    let result = 0; // 총금액
+    let deliveryPay = 0;
+    let saleToal = 0;
+    let productTotal = 0;
+    let getPrice = [[${get}]];
+    console.log(getPrice)
+    
+      // total 가격 나중에 쿠폰 가격  빼야함.
+      for(let key in  getPrice) {
+      result = result + ((getPrice[key].productCost + getPrice[key].optionPrice - getPrice[key].salePrice ) * getPrice[key].cartCount); 
+      }
+      // 배송비
+      for(let key in getPrice) {
+        deliveryPay = deliveryPay + (getPrice[key].deliveryCost);
+      }
+      //할인 상품 가격
+      for(let key in getPrice) {
+        saleToal = saleToal + (getPrice[key].salePrice * getPrice[key].cartCount);
+      }
+      result = result + deliveryPay;
+	   // 상품 가격
+      for(let key in getPrice) {
+        productTotal = productTotal + ((getPrice[key].productCost +  getPrice[key].optionPrice)* getPrice[key].cartCount);
+      }
+      // 상품 가격 - 상품 할인가격
+      let realPrice = productTotal - saleToal;
+      console.log(realPrice);
+
+      $('#productPrice').text(productTotal); // 상품금액
+      $('#salePrice').text(saleToal); // 상품할인 금액
+      $('#deliveryPrice').text(deliveryPay); // 배송비
+      $('#totalPrice').text(result); // 총금액 
+      
+
+    // 쿠폰 값 넘겨 받기
+        
+    $.ajax('/page/orders/ordersPay',{
+          type : 'get'
+        })
+        .done(data => {
+          $('#couponPage').replaceWith(data);
+          
+        })
+        .fail(reject => console.log(reject));
+        
+        //모달 창 쿠폰 값 주문 페이지 넘기기
+        
+        $('#modalNewsletterHorizontal').on('shown.bs.modal', function(){
+          $('.select-button').off("click");
+
+          $('.select-button').on('click',function(e){
+            let thisRow = $(this).closest('tr');
+            let couName = thisRow.find('td:eq(1)').text(); 
+            let couDiscount = Number(thisRow.find('td:eq(3)').text().slice(0,-1));
+
+            if(couDiscount < 100) {
+             couDiscount  = realPrice * couDiscount / 100;
+            } else {
+              couDiscount;
+            }
+           
+            $('#couponSalePrice').val(couDiscount);
+            $('#couponSelect').val(couName);
+
+            $('#couponResult').on('click', function(e){
+              $('#couponSale').text(couDiscount);
+              $('#totalPrice').text(result-couDiscount) ;
+            })
+
+            $('#modalNewsletterHorizontal').modal('hide'); //모달 닫기
+            
+          });
+          //모달 닫힐 때의 이벤트 핸들러 등록
+          $('#modalNewsletterHorizontal').on('hidden.bs.model', function(){
+            //모달이 닫힐 때 모달의 클래스 제거
+            $(this).removeClass('show');
+          })
+
+        })
+
+
+
+    //배송 요청 사항 직접 입력시 생성
+    $('#selectDirect').hide();
+    $('#selbox').change(function(){
+      if($('#selbox').val() == 4) {
+        $('#selectDirect').show();
+      } else {
+        $('#selectDirect').hide();
+      }
+    });
+
+    // 배송 요청 사항 본인 내용 넘길 때 버튼
+    $('#deliveryInfo').on('click', function(e){
+      $('#deliveryName').val($('#mName').val());
+      $('#addr').val($('#mAddr1').val());
+      $('#addrDt').val($('#mAddr2').val());
+      $('#deliveryTel').val($('#mTel').val());
+    });
+    
+   //토스 위젯
+   	const clientKey = 'test_ck_GjLJoQ1aVZJKQEvkvAWVw6KYe2RN' // 상점을 특정하는 키
+  const customerKey = 'YbX2HuSlsC9uVJW6NMRMj' // 결제 고객을 특정하는 키
+  const amount = 15_000 // 결제 금액
+  const couponAmount = 5_000 // 할인 쿠폰 금액
+
+  /*결제위젯 영역 렌더링*/
+  const paymentWidget = PaymentWidget(clientKey, customerKey) // 회원 결제
+  paymentMethods = paymentWidget.renderPaymentMethods('#payment-method', amount)
+  
+  /*약관 영역 렌더링*/
+  const paymentAgreement = paymentWidget.renderAgreement('#agreement')
+  
+  /*결제창 열기*/
+  document.querySelector("#payment-button").addEventListener("click",()=>{
+    paymentWidget.requestPayment({
+      orderId: 'AD8aZDpbzXs4EQa-UkIX6',
+      orderName: '토스 티셔츠',
+      successUrl: 'http://localhost:8080/success',
+      failUrl: 'http://localhost:8080/fail',
+      customerEmail: 'customer123@gmail.com', 
+      customerName: '김토스'
+      }).catch(function (error) {
+          if (error.code === 'USER_CANCEL') {
+          // 결제 고객이 결제창을 닫았을 때 에러 처리
+          } if (error.code === 'INVALID_CARD_COMPANY') {
+            // 유효하지 않은 카드 코드에 대한 에러 처리
+          }
+      })  
+  })
+
+    </script>
+    
+</div>
+</html>
