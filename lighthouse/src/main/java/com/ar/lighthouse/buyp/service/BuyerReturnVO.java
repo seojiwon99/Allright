@@ -7,20 +7,19 @@ import org.springframework.format.annotation.DateTimeFormat;
 import lombok.Data;
 
 @Data
-public class ExchangeVO {
-	
-	private String exchangeCode;
+public class BuyerReturnVO {
+
+	private String returnCode;
 	private int orderDetailCode;
-	private String exchangeReason;
+	private String returnReason;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date exchangeRegdate;
+	private Date returnRegdate;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date exchangeRetractdate;
-	private String exchangeStatus;
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date exchangeProcessingdate;
-	private String exchageAddr;
-	private int deliveryNumber;
+	private Date returnRetractdate;
+	private String returnStatus;
+	@DateTimeFormat(pattern="yyyy-MM-dd")	
+	private Date returnProcessdate;
+	
 	
 	private int orderCnt;
 	private int paymentPrice;
@@ -28,6 +27,4 @@ public class ExchangeVO {
 	private int optionCode;
 	
 	private String productName;
-	
-	private String memberId;
 }
