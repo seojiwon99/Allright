@@ -12,9 +12,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ar.lighthouse.buyp.service.CodeVO;
 import com.ar.lighthouse.member.service.MemberVO;
+import com.ar.lighthouse.orders.service.CreditVO;
 import com.ar.lighthouse.orders.service.OrdersService;
 import com.ar.lighthouse.orders.service.OrdersVO;
 
@@ -57,10 +59,25 @@ public class OrdersController {
 			System.out.println(cartNum);
 			get.add((ordersService.getOrders(memberId, cartNum)));  
 		}
+		int productNum = 0;
+		String productName = "";
+		if(get.size() != 1) {
+		productNum = get.size()-1;
+			productName = get.get(0).getProductName()  + " 외 " + productNum + "건";
+		} else {
+			productName = get.get(0).getProductName();	
+		}
+		model.addAttribute("productName",productName);
 		model.addAttribute("get", get);
 		model.addAttribute("codeList",codeList);
 		
 		return "/page/orders/ordersPay";
+	}
+	@GetMapping("orders/credit") //파라미터 이름 VO 값을 받고 /
+	@ResponseBody
+	public void creditTest(CreditVO creditVO) {
+		
+		System.out.println(creditVO);
 	}
 	
 }

@@ -3,9 +3,10 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default_layout}">
+    
+
 <!-- Content -->
 <div layout:fragment="content">
-    
     
     <!-- 결제 상품 정보 -->
  
@@ -160,8 +161,8 @@
                 <div class="form-group">
                   <label class="form-label" for="checkoutBillingFirstName">쿠폰 확인 *</label>
                   <div class="input-group mb-8">
-                    <input type="text" class="form-control" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2" id="couponSelect">
-                    <a class="btn btn-outline-secondary list-styled-link" id="couponBtn" data-bs-toggle="modal" href="#modalNewsletterHorizontal" >쿠폰선택</a>
+                    <input style="margin-top: 15px;" type="text" class="form-control" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2" id="couponSelect">
+                   <button type="button" class="btn btn-link" id="couponRealBtn"><a class="btn btn-outline-secondary list-styled-link" id="couponBtn" data-bs-toggle="modal"  >쿠폰선택</a></button>
                   </div>
                   <p>쿠폰 할인 금액 : <input type="text" style="border-width: 0 0 1px;" readonly id="couponSalePrice">원 
                     <button class="btn btn-outline-secondary" type="button" id="couponResult">사용하기</button>
@@ -184,6 +185,7 @@
             <!-- List group -->
 
             <ul class="list-group list-group-lg list-group-flush-y list-group-flush-x mb-7">
+              
               <div th:each="gets : ${get}">
                 <li class="list-group-item">
                   <div class="row align-items-center">
@@ -198,12 +200,14 @@
                     <div class="col">
 
                       <!-- Title -->
+                      
                       <p class="mb-4 fs-sm fw-bold">
-                        <a class="text-body" href="product.html" th:text="${gets.productName}"></a>  <br>
-                        <span class="text-muted" style="text-decoration: line-through;" th:text="|상품금액 : ${gets.productCost + gets.optionPrice}|"></span>원 <br>
+                        
+                         <input type="radio" name="couponUsePrice" class="text-body" th:text="${gets.productName}" th:onclick="selectPro([[${(gets.productCost - gets.salePrice + gets.optionPrice)*gets.cartCount}]])"><br>
+                         상품금액 : <span class="text-muted" style="text-decoration: line-through;" th:text="|${gets.productCost + gets.optionPrice}|"></span>원 <br>
                         <span class="text-muted" th:text="|할인된 금액 : ${gets.productCost - gets.salePrice + gets.optionPrice}|"></span>원
+                       
                       </p>
-
                       <!-- Text -->
                       <div class="fs-sm text-muted" th:text="|${gets.optionName} : ${gets.optionValue}|"></div>
                       <div class="fs-sm text-muted" th:text="|수량 :${gets.cartCount}|"></div>
@@ -332,7 +336,7 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script th:inline="javascript">
 
-    
+let couponAmount = 0;
  
 
     //주소 api로 입력
@@ -380,8 +384,17 @@
       $('#deliveryPrice').text(deliveryPay); // 배송비
       $('#totalPrice').text(result); // 총금액 
       
+      
+      //선택 상품 가격
+      let couDiscount = 0;
+      function selectPro(selectPrice) {
+        $('#couponSelect').val('쿠폰 선택하세요.');
+        $('#couponSalePrice').val(couDiscount);
+        $('#couponSale').text(couDiscount);
+        realPrice = selectPrice;
+      }
 
-    // 쿠폰 값 넘겨 받기
+    // 쿠폰 값 넘겨 받기 - controller 보냄
         
     $.ajax('/page/orders/ordersPay',{
           type : 'get'
@@ -392,7 +405,20 @@
         })
         .fail(reject => console.log(reject));
         
+      
         //모달 창 쿠폰 값 주문 페이지 넘기기
+        $('#couponRealBtn').on('click', function(e){
+          
+          if ($('input[name=couponUsePrice]').is(':checked')) {
+            console.log('체크')
+             $('#couponBtn').attr('href' , '#modalNewsletterHorizontal');
+             $('#couponBtn').get(0).click();
+          } else {
+            
+            alert('상품 선택후 쿠폰 선택해주세요.')
+          }
+        })
+        //#modalNewsletterHorizontal
         
         $('#modalNewsletterHorizontal').on('shown.bs.modal', function(){
           $('.select-button').off("click");
@@ -401,19 +427,19 @@
             let thisRow = $(this).closest('tr');
             let couName = thisRow.find('td:eq(1)').text(); 
             let couDiscount = Number(thisRow.find('td:eq(3)').text().slice(0,-1));
-
+            
             if(couDiscount < 100) {
              couDiscount  = realPrice * couDiscount / 100;
             } else {
               couDiscount;
             }
-           
-            $('#couponSalePrice').val(couDiscount);
+            roundPrice = (Math.ceil(couDiscount / 100) * 100);
+            $('#couponSalePrice').val(roundPrice);
             $('#couponSelect').val(couName);
 
             $('#couponResult').on('click', function(e){
-              $('#couponSale').text(couDiscount);
-              $('#totalPrice').text(result-couDiscount) ;
+                couDiscount = $('#couponSale').text(roundPrice);
+              $('#totalPrice').text((result-roundPrice));
             })
 
             $('#modalNewsletterHorizontal').modal('hide'); //모달 닫기
@@ -425,9 +451,8 @@
             $(this).removeClass('show');
           })
 
-        })
-
-
+        }) 
+          
 
     //배송 요청 사항 직접 입력시 생성
     $('#selectDirect').hide();
@@ -449,26 +474,35 @@
     
    //토스 위젯
    	const clientKey = 'test_ck_GjLJoQ1aVZJKQEvkvAWVw6KYe2RN' // 상점을 특정하는 키
-  const customerKey = 'YbX2HuSlsC9uVJW6NMRMj' // 결제 고객을 특정하는 키
-  const amount = 15_000 // 결제 금액
-  const couponAmount = 5_000 // 할인 쿠폰 금액
+    const customerKey = 'YbX2HuSlsC9uVJW6NMRMj' // 결제 고객을 특정하는 키
+    
+    // 할인 쿠폰 금액
+
+   
+    let amount = Number($('#totalPrice').text()); // 결제 금액
+    
+    console.log(amount);
 
   /*결제위젯 영역 렌더링*/
   const paymentWidget = PaymentWidget(clientKey, customerKey) // 회원 결제
-  paymentMethods = paymentWidget.renderPaymentMethods('#payment-method', amount)
+  //paymentMethods = paymentWidget.renderPaymentMethods('#payment-method', amount)
   
   /*약관 영역 렌더링*/
   const paymentAgreement = paymentWidget.renderAgreement('#agreement')
   
   /*결제창 열기*/
   document.querySelector("#payment-button").addEventListener("click",()=>{
+    let amount = Number($('#totalPrice').text()); // 결제 금액
+    paymentWidget.renderPaymentMethods('#payment-method', amount)
+    let uuid = self.crypto.randomUUID().slice(0,-10);
+    console.log(uuid);
     paymentWidget.requestPayment({
-      orderId: 'AD8aZDpbzXs4EQa-UkIX6',
-      orderName: '토스 티셔츠',
-      successUrl: 'http://localhost:8080/success',
-      failUrl: 'http://localhost:8080/fail',
-      customerEmail: 'customer123@gmail.com', 
-      customerName: '김토스'
+      orderId: uuid,
+      orderName: [[${productName}]],
+      successUrl: 'http://localhost:8090/orders/credit',
+      failUrl: 'https://my-store.com/fail',
+      customerEmail: [[${get[0].memberEmail}]], 
+      customerName: [[${get[0].memberName}]]
       }).catch(function (error) {
           if (error.code === 'USER_CANCEL') {
           // 결제 고객이 결제창을 닫았을 때 에러 처리
@@ -477,7 +511,12 @@
           }
       })  
   })
-
+  console.log([[${productName}]]);
+  console.log([[${get[0].memberEmail}]]);
+  console.log([[${get[0].memberName}]]);
+  console.log(Number($('#totalPrice').text()));
+  console.log(Number($('#couponSale').text()));
+  
     </script>
     
 </div>

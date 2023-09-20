@@ -13,5 +13,6 @@ public interface OrdersMapper {
 	public OrdersVO selectOrders(String memberId, int cartCode); 
 	public List<OrdersVO> selectCoupon(String memberId);
 	public List<CodeVO> selectCode();
+	public int insertDeadCoupon(String memberId, int mycouponCode); 
 	
 }
