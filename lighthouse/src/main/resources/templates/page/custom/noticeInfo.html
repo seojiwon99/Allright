@@ -67,7 +67,7 @@
 				<div class="col-12 text-center">
 				<input type="hidden" th:value="${cri.pageNum}" id="pageNum">
               <!-- Tags -->
-              <a class="btn btn-xs btn-outline-border fw-normal text-gray-500 me-3 mb-3" th:href="@{/custom/notice/(pageNum = ${cri.pageNum})}">
+              <a class="btn btn-xs btn-outline-border fw-normal text-gray-500 me-3 mb-3" th:href="@{/custom/notice/(pageNum = ${cri.pageNum},keyword=${cri.keyword})}">
                 목록
               </a>
             </div>
