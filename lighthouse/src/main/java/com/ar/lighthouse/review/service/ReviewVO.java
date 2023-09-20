@@ -2,6 +2,8 @@ package com.ar.lighthouse.review.service;
 
 import java.util.Date;
 
+import com.ar.lighthouse.common.ImgsVO;
+
 import lombok.Data;
 
 @Data
@@ -13,4 +15,5 @@ public class ReviewVO {
 	String reviewContent;
 	int reviewStar;
 	Date reviewRegdate;
+	ImgsVO reviewImg;
 }

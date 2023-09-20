@@ -28,9 +28,9 @@ public interface CustomMapper {
 	// 공지 사항 전체 갯수
 	public int getTotalCount(Criteria cri);
 	
+	
 	// 1:1문의 등록
 	public int insertInquiry(InquiryVO inqVO);
-	
 	
 	
 }

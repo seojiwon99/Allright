@@ -13,4 +13,5 @@ public class FaqVO {
 	private String typeName;
 	
 	
+	
 }

@@ -47,7 +47,6 @@ public class CustomServiceImpl implements CustomService{
 	public List<FaqVO> getTypeList() {
 		return customMapper.selectFaqTypeList();
 	}
-
 	
 
 }

@@ -14,5 +14,5 @@ public class InquiryVO {
 	private String customInquiryAnswer;
 	private String customInquiryAnswerStatus;
 	
-	private int inqCode;
+	private int inqCode;	
 }
