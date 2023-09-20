@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.ar.lighthouse.buyp.service.BuyInfoVO;
 import com.ar.lighthouse.buyp.service.BuyerPageService;
-import com.ar.lighthouse.buyp.service.CancelVO1;
+
+import com.ar.lighthouse.buyp.service.BuyerCancelVO;
+
 import com.ar.lighthouse.buyp.service.CodeVO;
 import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
@@ -139,7 +141,9 @@ public class BuyerPageController {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 
-		List<CancelVO1> cancelList = buyerPageService.getCancelList(memberId);
+
+		List<BuyerCancelVO> cancelList = buyerPageService.getCancelList(memberId);
+
 		model.addAttribute("cancelList", cancelList);
 
 		return "/page/buyer/cancelList";
