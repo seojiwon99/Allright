@@ -10,6 +10,7 @@ import lombok.Data;
 public class BuyCancelVO {
 	
 	private String cancelCode;
+	private String caCode;
 	private int orderDetailCode;
 	private String cancelReason;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
@@ -22,12 +23,13 @@ public class BuyCancelVO {
 	private String cancelRejectionCode;
 	
 	private String cancelRejectionReason;
-	private String cDetailReason;
-	
+
+	private int orderCode;
 	private int orderCnt;
 	private int paymentPrice;
 	
 	private int optionCode;
 	
 	private String productName;
+	private String memberId;
 }

@@ -10,6 +10,7 @@ import lombok.Data;
 public class ExchangeVO {
 	
 	private String exchangeCode;
+	private String exCode;
 	private int orderDetailCode;
 	private String exchangeReason;
 	@DateTimeFormat(pattern="yyyy-MM-dd")

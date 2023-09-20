@@ -30,19 +30,18 @@
       	<div class="row justify-content-center">
       		<div class="col-12 col-lg-10 col-xl-8" id="exchForm">
       			<h2>교환 신청 페이지</h2>
-      			<div class="mb-3">
-      				<label>교환번호</label>
-      				<input type="text" class="form-label" id="exchangeCode" >
-      			</div>
+ 
+ 
+      			 <input type="hidden" th:value="${exchange}" id="hidden">
       			<div class="mb-3">
       				<label>주문번호</label>
-      				<input type="text" class="form-label" id="orderCode" readonly>
+      				<input type="text" class="form-label" id="orderCode" th:value="${exchange.orderCode}" readonly>
       				<label>주문상세번호</label>
-      				<input type="text" class="form-label" id="orderDetailCode" >
+      				<input type="text" class="form-label" id="orderDetailCode" th:value="${exchange.orderDetailCode}" readonly>
       			</div>
       			<div class="mb-3">
       				<label>상품명</label>
-      				<input type="text" class="form-label" id="productName" readonly>
+      				<input type="text" class="form-label" id="productName" th:value="${exchange.productName}" readonly>
       			</div>
       			<div class="mb-3">
       			<!-- Select -->
@@ -65,7 +64,7 @@
       			<div class="col-12 text-center">
       			
       			<button class="btn btn-dark" id="exchangeBtn">교환신청</button>
-      			<button class="btn btn-gray-500">취소</button>
+      			<a class="btn btn-gray-500" type="button" th:href="@{/page/buyer/orderList}">취소</a>
       			</div>
       		</div>
       	</div>
@@ -74,37 +73,81 @@
    
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
-  // URL 파라미터에서 orderCode와 productName 값을 읽어옴
-  var urlParams = new URLSearchParams(window.location.search);
-  var orderCode = urlParams.get("orderCode");
-  var productName = urlParams.get("productName");
+	  // URL 파라미터에서 orderCode와 productName 값을 읽어옴
+	  /*
+	  var urlParams = new URLSearchParams(window.location.search);
+	  var orderCode = urlParams.get("orderCode");
+	  var productName = urlParams.get("productName");
+	
+	  // 읽어온 값으로 필요한 동작을 수행 (예: 입력 필드에 값 설정)
+	  document.getElementById("orderCode").value = orderCode;
+	  document.getElementById("productName").value = productName;
+	  */
 
-  // 읽어온 값으로 필요한 동작을 수행 (예: 입력 필드에 값 설정)
-  document.getElementById("orderCode").value = orderCode;
-  document.getElementById("productName").value = productName;
 
   $(document).ready(function() {
+	  
+	  let checkBeforeInsert = {};
+	  let reasonTrue = "reasonTrue";
+	  let contentTrue = "contentTrue";
+	  let addrTrue = "addrTrue";
+	  checkBeforeInsert[reasonTrue] = false;
+	  checkBeforeInsert[contentTrue] = false;
+	  checkBeforeInsert[addrTrue] = false;
+
+	  console.log(checkBeforeInsert);
+
     // 교환 신청 버튼 클릭 시 AJAX 요청을 보냅니다.
     $('#exchangeBtn').on('click', function() {
       // 사용자가 입력한 교환 사유와 주소 정보 가져오기
-      var exchangeCode = $('#exchangeCode').val();
-      var orderDetailCode = $('#orderDetailCode').val();
-      var productName = $('#productName').val();
-      var exchangeReason = $('#exchangeReason').val();
-      var content = $('#content').val();
-      var addr = $('#addr').val();
-      
+
+	    if($('#select').val() != "${codes.codeId}"){
+	    	checkBeforeInsert[reasonTrue] = true;
+	  	}else{
+	  		checkBeforeInsert[reasonTrue] = false;
+	  	}
+	  	if($('#content').val() != ""){
+	  		checkBeforeInsert[contentTrue] = true;
+	  	}else{
+	  		checkBeforeInsert[contentTrue] = false;
+	  	}
+	  	if($('#addr').val() != ""){
+	  		checkBeforeInsert[addrTrue] = true;
+	  	}else{
+	  		checkBeforeInsert[addrTrue] = false;
+	  	}
+	  	
+	  	$.each(checkBeforeInsert, function(idx, obj){
+	  		console.log(idx, obj);
+	  		if(obj == false){
+	  			alert('모든 내용을 입력해주세요.')
+	  		}
+	  	})
+	  	
+  /*
+	  let exchangeCode = $('#exchangeCode').val();
+  	  let orderDetailCode = $('#orderDetailCode').val();
+      let productName = $('#productName').val();
+      let exchangeReason = $('#exchangeReason').val();
+      let content = $('#content').val();
+      let addr = $('#addr').val();
+  */    
+  
       // 교환 신청 데이터를 JSON 형식으로 만듭니다.
-      var exchangeData = {
-    	exchangeCode: exchangeCode,
-        orderDetailCode: orderDetailCode,
-        productName: productName,
-        exchangeReason: $('#select').val(),
-        exchangeContent: content,
-        exchangeAddr: addr
-        
-      };
-      
+      let exchangeData = {
+    	'exchangeCode': $('#exchangeCode').val(),
+        'orderDetailCode': $('#orderDetailCode').val(),
+        'productName': $('#productName').val(),
+        'exchangeReason': $('#select').val(),
+        'exchangeContent': $('#content').val(),
+        'exchangeAddr': $('#addr').val()
+      }
+/*      
+      for(let d in exchangeData){
+      console.log(exchangeData[d]);
+      }
+*/
+
       // AJAX 요청 보내기
       $.ajax({
         type: 'POST',
@@ -113,7 +156,7 @@
         data: JSON.stringify(exchangeData),
         success: function(response) {
           // AJAX 요청이 성공적으로 완료된 경우 처리
-          console.log('교환 신청이 성공적으로 처리되었습니다.');
+          alert('교환 신청이 성공적으로 처리되었습니다.');
           // 여기에서 필요한 추가 동작을 수행하세요.
         },
         error: function(error) {

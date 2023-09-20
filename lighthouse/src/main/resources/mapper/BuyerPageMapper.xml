@@ -11,6 +11,7 @@
 		     , a.order_price
 		     , a.payment_price
 		     , a.order_status
+		     , a.order_detail_code
 		     , a.order_date
 		     , a.delivery_number
 		     , a.delivery_date
@@ -140,7 +141,7 @@
 	</select>
 	
 	<!-- 취소 상세 -->
-	<select id="selectCancelList" resultType="CancelVO" parameterType="String">
+	<select id="selectCancelList" resultType="BuyCancelVO" parameterType="String">
 		SELECT a.cancel_code
 		     , a.cancel_reason
 		     , a.cancel_regdate
@@ -206,28 +207,25 @@
 		LEFT JOIN ar_option c ON c.option_code = b.option_code
 		LEFT JOIN ar_products d ON d.product_code = c.product_code
         LEFT JOIN ar_orders e ON e.order_code = b.order_code
-		WHERE e.member_id = #{memberID}
+		WHERE e.member_id = #{memberId}
 	</select>
 	
 	<!-- 교환 신청 넘어가는 값 -->
-	<select id="ExchangeCodePage" resultType="codeVO">
-		SELECT a.exchange_code
-		     , a.exchange_reason
-		     , b.order_detail_code
-		     , b.payment_price
+	<select id="exchangeCodePage" resultType="CodeVO">
+		SELECT b.order_code
+		     , a.order_detail_code
 		     , d.product_name
-             , e.order_code
-             , e.member_id
-		FROM ar_exchange a
-		LEFT JOIN ar_order_detail b ON a.order_detail_code = b.order_detail_code
-		LEFT JOIN ar_option c ON c.option_code = b.option_code
+		     , b.member_id
+		     , a.payment_price
+		FROM ar_order_detail a
+		LEFT JOIN ar_orders b ON a.order_code = b.order_code
+		LEFT JOIN ar_option c ON c.option_code = a.option_code
 		LEFT JOIN ar_products d ON d.product_code = c.product_code
-        LEFT JOIN ar_orders e ON e.order_code = b.order_code
-		WHERE e.member_id = #{memberId} AND e.order_code =#{orderCode}
+		WHERE b.member_id=#{memberId} AND a.order_detail_code=#{orderDetailCode}
 	</select>
 	
 	<!--교환 코드 -->
-	<select id="selectExchangeCode" resultType="codeVO" parameterType="String">
+	<select id="selectExchangeCode" resultType="CodeVO" parameterType="String">
 		SELECT master_code
 		     , code_id
 		     , code_name
@@ -237,20 +235,36 @@
 	
 	<!-- 교환 신청 -->
 	<insert id="insertExchange" parameterType="ExchangeVO">
+		<selectKey resultType="String" keyProperty="exCode" order="BEFORE">
+			select ex_code from dual
+		</selectKey>
 		INSERT INTO ar_exchange 
 				(EXCHANGE_CODE
 				, ORDER_DETAIL_CODE
 				, EXCHANGE_REASON
 				, EXCHANGE_ADDR)
-		values (#{exchangeCode}
+		VALUES (#{exCode}
 				, #{orderDetailCode}
 				, #{exchangeReason}
 				, #{exchangeAddr})
 	</insert>
 	
-
+	<!-- 취소 신청 넘어가는 값 -->
+	<select id="cancelCodePage" resultType="CodeVO">
+		SELECT b.order_code
+		     , a.order_detail_code
+		     , d.product_name
+		     , b.member_id
+		     , a.payment_price
+		FROM ar_order_detail a
+		LEFT JOIN ar_orders b ON a.order_code = b.order_code
+		LEFT JOIN ar_option c ON c.option_code = a.option_code
+		LEFT JOIN ar_products d ON d.product_code = c.product_code
+		WHERE b.member_id=#{memberId} AND a.order_detail_code=#{orderDetailCode}
+	</select>
+	
 	<!--취소 코드  -->
-	<select id="selectCancelCode" resultType="codeVO" parameterType="String">
+	<select id="selectCancelCode" resultType="CodeVO" parameterType="String">
 		SELECT master_code
 		     , code_id
 		     , code_name
@@ -259,19 +273,55 @@
 	</select>
 	
 	<!--취소 신청  -->
+	<insert id="insertCancel" parameterType="BuyCancelVO">
+		<selectKey resultType="String" keyProperty="caCode" order="BEFORE">
+			select ca_code from dual
+		</selectKey>
+		INSERT INTO ar_cancel 
+				(CANCEL_CODE
+				, ORDER_DETAIL_CODE
+				, CANCEL_REASON)
+		VALUES (#{caCode}
+				, #{orderDetailCode}
+				, #{cancelReason})
+	</insert>
 	
+	<!-- 반품 신청 넘어가는 값 -->
+	<select id="returnCodePage" resultType="CodeVO">
+		SELECT b.order_code
+		     , a.order_detail_code
+		     , d.product_name
+		     , b.member_id
+		     , a.payment_price
+		FROM ar_order_detail a
+		LEFT JOIN ar_orders b ON a.order_code = b.order_code
+		LEFT JOIN ar_option c ON c.option_code = a.option_code
+		LEFT JOIN ar_products d ON d.product_code = c.product_code
+		WHERE b.member_id=#{memberId} AND a.order_detail_code=#{orderDetailCode}
+	</select>
 	
 	<!--반품 코드  -->
-	<select id="selectReturnCode" resultType="codeVO" parameterType="String">
+	<select id="selectReturnCode" resultType="CodeVO" parameterType="String">
 		SELECT master_code
 		     , code_id
 		     , code_name
 		FROM ar_code 
-		WHERE master_code = 'refund_reason'
+		WHERE master_code = 'return_reason'
 	</select>
 	
 	<!--반품 신청  -->
-	
+	<insert id="insertReturn" parameterType="ReturnVO">
+		<selectKey resultType="String" keyProperty="reCode" order="BEFORE">
+			select re_code from dual
+		</selectKey>
+		INSERT INTO ar_return 
+				(RETURN_CODE
+				, ORDER_DETAIL_CODE
+				, RETURN_REASON)
+		VALUES (#{reCode}
+				, #{orderDetailCode}
+				, #{returnReason})
+	</insert>
 	<!--  -->
 	
   </mapper>

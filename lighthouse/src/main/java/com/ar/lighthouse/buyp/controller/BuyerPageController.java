@@ -174,14 +174,15 @@ public class BuyerPageController {
 
 	// 교환 신청 페이지
 	@GetMapping("page/buyer/exchange")
-	public String exchangeForm( Model model, HttpSession session) {
+	public String exchangeForm(Model model, HttpSession session, @RequestParam int orderDetailCode) {
 		
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 		
-//		CodeVO codeVO = new CodeVO();
-//		codeVO.setOrderCode(orderCode);
-//		model.addAttribute("exchange", buyerPageService.getExchangePage(orderCode));
+		CodeVO codeVO = new CodeVO();
+		codeVO.setOrderDetailCode(orderDetailCode);
+		codeVO.setMemberId(memberId);
+		model.addAttribute("exchange", buyerPageService.getExchangePage(codeVO));
 	
 		List<CodeVO> codeList = buyerPageService.getExchangeCode(memberId);
 		model.addAttribute("codeList", codeList);
@@ -200,13 +201,30 @@ public class BuyerPageController {
 		return insertExchange == 1 ? new ResponseEntity<String>("success", HttpStatus.OK)
 				: new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	// 취소
+	@PostMapping("buyer/cancelInsert")
+	public ResponseEntity<String> addCancel(@RequestBody BuyCancelVO canVO, HttpSession session) {
+
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		canVO.setMemberId(memberVO.getMemberId());
+
+		int insertCancel = buyerPageService.addCancel(canVO);
+		return insertCancel == 1 ? new ResponseEntity<String>("success", HttpStatus.OK)
+				: new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
 	// 취소 신청 페이지
 	@GetMapping("page/buyer/cancel")
-	public String cancelForm(Model model, HttpSession session) {
+	public String cancelForm(Model model, HttpSession session, @RequestParam int orderDetailCode) {
 
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
+		
+		CodeVO codeVO = new CodeVO();
+		codeVO.setOrderDetailCode(orderDetailCode);
+		codeVO.setMemberId(memberId);
+		model.addAttribute("cancel", buyerPageService.getCancelPage(codeVO));
 
 		List<CodeVO> codeList = buyerPageService.getCancelCode(memberId);
 		model.addAttribute("codeList", codeList);
@@ -216,10 +234,15 @@ public class BuyerPageController {
 
 	// 반품 신청 페이지
 	@GetMapping("page/buyer/return")
-	public String returnForm(Model model, HttpSession session) {
+	public String returnForm(Model model, HttpSession session, @RequestParam int orderDetailCode) {
 
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
+		
+		CodeVO codeVO = new CodeVO();
+		codeVO.setOrderDetailCode(orderDetailCode);
+		codeVO.setMemberId(memberId);
+		model.addAttribute("return", buyerPageService.getReturnPage(codeVO));
 
 		List<CodeVO> codeList = buyerPageService.getReturnCode(memberId);
 		model.addAttribute("codeList", codeList);

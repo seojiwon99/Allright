@@ -114,8 +114,26 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 
 
 	@Override
-	public int getExchangePage(int orderCode) {
-		return buyerPageMapper.ExchangeCodePage(orderCode);
+	public CodeVO getExchangePage(CodeVO codeVO) {
+		return buyerPageMapper.exchangeCodePage(codeVO);
+	}
+
+
+	@Override
+	public CodeVO getReturnPage(CodeVO codeVO) {
+		return buyerPageMapper.returnCodePage(codeVO);
+	}
+
+
+	@Override
+	public CodeVO getCancelPage(CodeVO codeVO) {
+		return buyerPageMapper.cancelCodePage(codeVO);
+	}
+
+
+	@Override
+	public int addCancel(BuyCancelVO canVO) {
+		return buyerPageMapper.insertCancel(canVO);
 	}
 	
 	

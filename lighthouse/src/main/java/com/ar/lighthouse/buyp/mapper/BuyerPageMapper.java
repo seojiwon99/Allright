@@ -43,9 +43,15 @@ public interface BuyerPageMapper {
 	
 	public List<CodeVO> selectExchangeCode(String memberId);
 	
-	public int ExchangeCodePage(int orderCode);
+	public CodeVO exchangeCodePage(CodeVO codeVO);
+	
+	public List<CodeVO> selectReturnCode(String memberId);
+	
+	public CodeVO returnCodePage(CodeVO codeVO);
 	
 	public List<CodeVO> selectCancelCode(String memberId);
 	
-	public List<CodeVO> selectReturnCode(String memberId);
+	public CodeVO cancelCodePage(CodeVO codeVO);
+	
+	public int insertCancel(BuyCancelVO canVO);
 }

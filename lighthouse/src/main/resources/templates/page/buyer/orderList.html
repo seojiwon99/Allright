@@ -90,7 +90,7 @@
                 
                 <div class="card card-sm orderList">
                 
-                <div th:each="lists : ${orderList}" th:data-ordercode="${lists.orderCode}" class="order">
+                <div th:each="lists : ${orderList}" th:data-orderdetailcode="${lists.orderDetailCode}" class="order">
                   <div class="card-body bg-light">
                     <div class="row">
                       <div class="col-6 col-lg-3">
@@ -211,7 +211,7 @@
                       <div class="col-6">
 
                         <!-- Button -->
-                        <a class="btn btn-sm w-100 btn-outline-dark retBtn" href="account-order.html" >
+                        <a class="btn btn-sm w-100 btn-outline-dark retBtn" th:href="@{/return}" >
                           반품
                         </a>
 
@@ -220,7 +220,7 @@
                       <div class="col-6">
 
                         <!-- Button -->
-                        <a class="btn btn-sm w-100 btn-outline-dark cancelBtn" href="#!" >
+                        <a class="btn btn-sm w-100 btn-outline-dark cancelBtn" th:href="@{/cancel}" >
                           주문 취소
                         </a>
 
@@ -244,7 +244,7 @@
   document.querySelector(".orderList").addEventListener("click", function(e) {
 	e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
     // 필요한 정보를 변수에 저장
-    var orderCode = $(e.target).closest(".order").data("ordercode"); // TODO: 주문 번호 가져오기
+    var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); // TODO: 주문 번호 가져오기
     var url="";
 	if(  e.target.matches(".excBtn") ){
 		var url = "exchange";
@@ -253,7 +253,7 @@
 	}else if(e.target.matches(".retBtn")){
 		var url = "return"
 	}
-	window.location.href = url+"?orderCode=" + orderCode;
+	window.location.href = url+"?orderDetailCode=" + orderDetailCode;
 
   });
   	
