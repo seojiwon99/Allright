@@ -427,11 +427,14 @@
 													</div>
 												</div>
 											</form>
-
+											
 											<!-- Reviews -->
 											<div class="mt-8">
 												<!-- Review -->
 												<div class="review" th:each="review:${review}">
+												<div th:if="${review.reviewImg} != null">
+													[[${review.reviewImg.imgCode}]]																									
+												</div>
 													<div class="review-body">
 														<div class="row">
 															<div class="col-12 col-md-auto">
@@ -441,7 +444,9 @@
 																	<span class="avatar-title circle"> 이미지 없음<i
 																		class="fas fa-image"></i>
 																	</span>
-																	<!-- <img alt="" src=""> -->
+																	<div th:if="${review.reviewImg} != null">
+																		<img th:src="|static/img/${review.reviewImg.uploadPath}/${review.reviewImg.uploadName}|" >
+																	</div>
 																</div>
 															</div>
 															<div class="col-12 col-md">
