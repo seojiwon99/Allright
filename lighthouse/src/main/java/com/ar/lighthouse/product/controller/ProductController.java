@@ -48,9 +48,11 @@ import com.ar.lighthouse.review.service.ReviewVO;
 @Controller
 public class ProductController {
 
+
 	@Value("${file.upload.path}")
 	private String uploadPath;
 	
+
 	@Autowired
 	ProductService productService;
 
@@ -62,6 +64,8 @@ public class ProductController {
 
 	ProductInquiryService custominquiryService;
 
+
+	@Autowired
 	MemberService memberService;
 
 
@@ -69,7 +73,7 @@ public class ProductController {
 	MainPageService mainPageService;
 
 	
-	
+
 //	판매자 메인페이지
 	@GetMapping("sellerMain")
 	public String seller() {
@@ -308,8 +312,24 @@ public class ProductController {
 		return inquiryVO;
 		
 	}
-	
-	//qna 삭제
+
+	// qna 수정
+	@PostMapping("editInquiry")
+	@ResponseBody
+	public ProductInquiryVO editInquiry(@RequestBody ProductInquiryVO inquiryVO) {
+
+		System.out.println(inquiryVO);
+
+		if (custominquiryService.editInquiry(inquiryVO)) {
+			System.out.println("성공");
+		}
+		;
+
+		return inquiryVO;
+
+	}
+
+	// qna 삭제
 	@PostMapping("removeInquiry")
 	@ResponseBody
 	public int removeInquiry(@RequestBody Integer queCode , RedirectAttributes rttr) {
@@ -325,30 +345,27 @@ public class ProductController {
 	// 상품 단건 조회
 
 	@GetMapping("goodDetail")
-	public String getGoodDetail(String productCode, Model model, HttpServletRequest request) {
-		HttpSession session = request.getSession();
 
-		ProductVO vo = new ProductVO();
-		vo.setProductCode(productCode);
+	public String getGoodDetail(String productCode, Model model, HttpSession session, ProductVO vo, OptionVO optionVO) {
 
-		ReviewVO reviewVO = new ReviewVO();
-		reviewVO.setProductCode(productCode);
-
+		// 상품정보
 		ProductVO productVO = productService.goodsDetail(vo);
-		
-		
 		model.addAttribute("goods", productVO);
 
-		ProductInquiryVO productInquiryVO = new ProductInquiryVO();
-		productInquiryVO.setProductCode(productCode);
-		
-		System.out.println(reviewVO.getProductCode());
-		// 리뷰조회
+		// 리뷰정보
+		ReviewVO reviewVO = new ReviewVO();
+		reviewVO.setProductCode(productCode);
 		model.addAttribute("review", reviewService.getReviewList(reviewVO));
 		
 		
 		// qna 조회
+		ProductInquiryVO productInquiryVO = new ProductInquiryVO();
+		productInquiryVO.setProductCode(productCode);
 		model.addAttribute("inquiry", custominquiryService.getInquiryList(productInquiryVO));
+
+		// 옵션 조회
+		optionVO.setProductCode(productCode);
+		model.addAttribute("options", productService.getOptionList(optionVO));
 		System.out.println(model);
 
 		return "page/goods/goodDetail";
