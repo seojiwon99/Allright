@@ -169,16 +169,16 @@
 		                        <if test="memberAuthor == 2">
 		                        AND MEMBER_AUTHOR = 2
 		                        </if>
-		                        <if test="memberId != null or !(memberId.equals(''))">
+		                        <if test="memberId != null and !(memberId.equals(''))">
 		                        AND MEMBER_ID LIKE '%' || #{memberId} || '%'
 		                        </if>
-		                        <if test="memberName != null or !(memberName.equals(''))">
+		                        <if test="memberName != null and !(memberName.equals(''))">
 		                        AND MEMBER_NAME LIKE '%' || #{memberName} || '%'
 		                        </if>
-		                        <if test="memberTel != null or !(memberTel.equals(''))">
+		                        <if test="memberTel != null and !(memberTel.equals(''))">
 		                        AND MEMBER_TEL LIKE '%' || #{memberTel} || '%'
 		                        </if>
-		                        <if test="businessNumber != null or !(businessNumber.equals(''))">
+		                        <if test="businessNumber != null and !(businessNumber.equals(''))">
 		                        AND BUSINESS_NUMBER LIKE '%' || #{businessNumber} || '%'
 		                        </if>
 		                        order by MEMBER_REGDATE DESC) am
@@ -198,23 +198,95 @@
 		<if test="memberAuthor == 2">
 	  	AND member_author = 2
 	  	</if>
-    	<if test="memberId != null or !(memberId.equals(''))">
+    	<if test="memberId != null and !(memberId.equals(''))">
         AND MEMBER_ID LIKE '%' || #{memberId} || '%'
         </if>
-        <if test="memberName != null or !(memberName.equals(''))">
+        <if test="memberName != null and !(memberName.equals(''))">
         AND MEMBER_NAME LIKE '%' || #{memberName} || '%'
         </if>
-        <if test="memberTel != null or !(memberTel.equals(''))">
+        <if test="memberTel != null and !(memberTel.equals(''))">
         AND MEMBER_TEL LIKE '%' || #{memberTel} || '%'
         </if>
-        <if test="businessNumber != null or !(businessNumber.equals(''))">
+        <if test="businessNumber != null and !(businessNumber.equals(''))">
         AND BUSINESS_NUMBER LIKE '%' || #{businessNumber} || '%'
         </if>
-  	
   	
   	</select>
   	
 
-  
+  	<select id="selectProductList">
+		  	SELECT  rt.*
+			FROM       (
+		                SELECT   rownum r, pr.*
+		                FROM   (select pp.product_code, pp.product_name, pp.member_id,  mm.member_tel, mm.business_number
+                                from ar_products pp JOIN ar_member mm  ON pp.member_id = mm.member_id
+								where 1=1
+								<if test="memberId != null and !(memberId.equals(''))">
+						        AND mm.MEMBER_ID LIKE '%' || #{memberId} || '%'
+						        </if>
+						        <if test="memberTel != null and !(memberTel.equals(''))">
+						        AND mm.MEMBER_TEL LIKE '%' || #{memberTel} || '%'
+						        </if>
+						        <if test="businessNumber != null and !(businessNumber.equals(''))">
+						        AND mm.BUSINESS_NUMBER LIKE '%' || #{businessNumber} || '%'
+						        </if>
+						        <if test="productCode != null and !(productCode.equals(''))">
+						        AND pp.PRODUCT_CODE LIKE '%' || #{productCode} || '%'
+		                        </if>
+		                        order by product_regdate desc) pr
+		                        <![CDATA[
+		                WHERE rownum <= #{pageNum} * #{amount}) rt
+		                ]]>
+			WHERE rt.r > ( #{pageNum} - 1 ) * #{amount} 
+  	</select>
+  	
+  	<select id="selectTotalProductCount">
+  			SELECT count(*)
+  			FROM ar_products pp JOIN ar_member mm ON pp.member_id = mm.member_id
+  			WHERE 1=1
+	    	<if test="memberId != null and !(memberId.equals(''))">
+	        AND mm.MEMBER_ID LIKE '%' || #{memberId} || '%'
+	        </if>
+	        <if test="memberTel != null and !(memberTel.equals(''))">
+	        AND mm.MEMBER_TEL LIKE '%' || #{memberTel} || '%'
+	        </if>
+	        <if test="businessNumber != null and !(businessNumber.equals(''))">
+	        AND mm.BUSINESS_NUMBER LIKE '%' || #{businessNumber} || '%'
+	        </if>
+	        <if test="productCode != null and !(productCode.equals(''))">
+	        AND pp.PRODUCT_CODE LIKE '%' || #{productCode} || '%'
+	        </if>
+  	</select>
+  	
+  	<select id="selectAdminNoticeList">
+  	 		SELECT rt.*
+			FROM       (
+			                SELECT   rownum r, an.*
+			                FROM   (SELECT *
+			                        FROM ar_notice
+			                        where 1=1
+			                        <if test="noticeAdminVO.noticeTitle != null and !(noticeAdminVO.noticeTitle.equals('')) ">
+									AND notice_title LIKE '%' || #{noticeAdminVO.noticeTitle} || '%'
+									</if>
+			                        order by notice_type desc, notice_code desc) an
+			     			    <![CDATA[                   
+			                where rownum <= #{cri.pageNum} * #{cri.amount} ) rt
+			                ]]>
+			WHERE rt.r  > ( #{cri.pageNum} - 1 ) * #{cri.amount}	
+  	</select>
+  	
+  	
+  	<select id="selectTotalNoticeCount" resultType ="int">
+  		select count(*)
+  		FROM ar_notice 
+  		WHERE 1=1
+  		<if test="noticeTitle != null and !(noticeTitle.equals('')) ">
+  		AND notice_title LIKE '%' || #{noticeTitle} || '%'
+  		</if>
+  	</select>
+  	
+  	
+  	
+  	
   </mapper>
   
