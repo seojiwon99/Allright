@@ -42,7 +42,11 @@
 				      , notice_regdate
                       , notice_updatedate
 			       FROM ar_notice
+			       <if test="keyword != null and !keyword.equals('')">
+	                 	where notice_title like '%'||#{keyword}||'%' 
+	                 </if>
                 order by notice_type desc, notice_regdate desc
+                
                 )nt
                 <![CDATA[
                 where rownum <= #{pageNum} * #{amount}
@@ -58,6 +62,9 @@
   		SELECT count(*)
   		  FROM ar_notice
   		 WHERE notice_code > 0 
+  		 <if test="keyword != null and !keyword.equals('')">
+            and notice_title like '%'||#{keyword}||'%' 
+          </if>
   	</select>
   	
   	<!-- 1:1 문의 등록 -->
