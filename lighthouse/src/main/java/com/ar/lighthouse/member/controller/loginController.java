@@ -4,7 +4,6 @@ package com.ar.lighthouse.member.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.lucene.queries.function.valuesource.MultiFunction.Values;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ar.lighthouse.member.service.MemberService;
 import com.ar.lighthouse.member.service.MemberVO;
@@ -91,6 +89,7 @@ public class loginController {
 		
 		System.out.println(memberVO);
 		MemberVO loginVO = memberService.memberLogin(memberVO);
+		System.out.println("loginVO = " + loginVO);
 		if(loginVO.getMemberId() == null) {
 			return "fail";
 		}
@@ -114,11 +113,13 @@ public class loginController {
 	public boolean editPassword(@RequestBody MemberVO memberVO) {
 		System.out.println("edit" + memberVO);
 		memberVO.setMemberPw(passwordEncoder.encode(memberVO.getMemberPw()));
+		
 		return memberService.editMemberPassword(memberVO);
 		
 		
 	}
 	@PostMapping("page/member/AjaxJoin")
+	@ResponseBody
 	public String memberJoin(@RequestBody MemberVO memberVO) {
 		
 		memberVO.setMemberPw(passwordEncoder.encode(memberVO.getMemberPw()));
@@ -126,9 +127,9 @@ public class loginController {
 		
 		String result = "";
 		if(memberService.addMember(memberVO)>0) {
-			result = "page/member/loginForm";
+			result = "success";
 		}else {
-			result = "page/member/joinForm";
+			result = "fail";
 		}
 		return result;
 	}

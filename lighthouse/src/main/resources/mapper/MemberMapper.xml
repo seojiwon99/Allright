@@ -39,14 +39,28 @@
   	<select id="MemberLogin" resultType="MemberVO">
   		select *
 		from ar_member
-		where member_author = #{memberAuthor}
+		<choose>
+		<when test="memberAuthor == 1">
+		where member_author IN (#{memberAuthor}, 3, 4)
+		</when>
+		<when test="memberAuthor == 2">
+		where member_author IN (#{memberAuthor}, 4)
+		</when>
+		</choose>
 		AND member_id = #{memberId}
   	</select>
   	
   	<select id="MemberLoginBefore" resultType="int">
   	  	select count(*)
 		from ar_member
-		where member_author = #{memberAuthor}
+		<choose>
+		<when test="memberAuthor == 1">
+		where member_author IN (#{memberAuthor}, 3, 4)
+		</when>
+		<when test="memberAuthor == 2">
+		where member_author IN (#{memberAuthor}, 4)
+		</when>
+		</choose>
 		AND member_id = #{memberId}
   	</select>
   	
