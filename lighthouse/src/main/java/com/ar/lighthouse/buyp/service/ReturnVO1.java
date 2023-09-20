@@ -7,7 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import lombok.Data;
 
 @Data
-public class ReturnVO {
+public class ReturnVO1 {
 
 	private String returnCode;
 	private int orderDetailCode;

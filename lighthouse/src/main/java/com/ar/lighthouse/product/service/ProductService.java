@@ -28,6 +28,11 @@ public interface ProductService {
 //	상품주문목록
 	List<DetailVO> getProductOrder(ProductVO productVO);
 	
+	
+//	orderManagement
+	List<DetailVO> getOrderOptionList(DetailVO detailVO);
+	
+	
 //	주문배송정보수정
 	public int updateDeliveryInfo(DetailVO detailVO);
 	

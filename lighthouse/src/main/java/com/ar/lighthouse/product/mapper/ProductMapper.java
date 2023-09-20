@@ -7,18 +7,17 @@ import org.apache.ibatis.annotations.Mapper;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.member.service.MemberVO;
-import com.ar.lighthouse.product.service.CancelVO;
-
-import com.ar.lighthouse.product.service.ExchangeVO;
-
 import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductVO;
+import com.ar.lighthouse.product.service.CancelVO;
+import com.ar.lighthouse.product.service.ExchangeVO;
 import com.ar.lighthouse.product.service.ReturnVO;
 
 @Mapper
 public interface ProductMapper {
 	
 	public List<ProductVO> selectProductList(ProductVO productVO);
+	
 	List<ProductVO> getProductsByMemberId(String memberId);
 //	order by
 	public List<ProductVO> selectOptionProduct(ProductVO productVO);
@@ -26,6 +25,8 @@ public interface ProductMapper {
 //	sellerInfo
 	List<MemberVO> selectSellerInfo(MemberVO memberVO); 
 	
+//	orderManagement
+	List<DetailVO> selectOrderOptionList(DetailVO detailVO);
 	
 //	등록
 	public int insertProduct(ProductVO productVO);

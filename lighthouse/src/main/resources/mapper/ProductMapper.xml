@@ -89,6 +89,7 @@
 <!-- 주문목록 -->
 <resultMap type="DetailVO" id="selectOrderDetail">
     <result column="member_id" property="memberId"/>
+    <result column="member_name" property="memberName"/>
     <result column="product_name" property="productName"/>
     <result column="order_detail_code" property="orderDetailCode"/>
     <result column="order_cnt" property="orderCnt"/>
@@ -116,7 +117,8 @@
         o.order_cnt,
         o.delivery_company,
         o.delivery_number,
-        o.delivery_start
+        o.delivery_start,
+        m.member_name
     FROM
         ar_order_detail o
     JOIN
@@ -125,7 +127,75 @@
         ar_option x ON o.option_code = x.option_code
     JOIN
         ar_products p ON x.product_code = p.product_code
+    JOIN ar_member m ON m.member_id = r.member_id
+    ORDER BY o.order_detail_code DESC
 </select>
+
+<!-- select주문 -->
+<resultMap type="DetailVO" id="selectOrderOptionList">
+    <result column="member_id" property="memberId"/>
+    <result column="member_name" property="memberName"/>
+    <result column="product_name" property="productName"/>
+    <result column="order_date" property="orderDate"/>
+    <result column="order_detail_code" property="orderDetailCode"/>
+    <result column="order_cnt" property="orderCnt"/>
+    <result column="requested_term" property="requestedTerm"/>
+    <result column="delivery_company" property="deliveryCompany"/>
+    <result column="delivery_number" property="deliveryNumber"/>
+    <result column="delivery_start" property="deliveryStart"/>
+    <association property="option"  resultMap="optionList3"/>
+</resultMap>
+
+<!-- OptionVO를 매핑하기 위한 resultMap -->
+<resultMap type="OptionVO" id="optionList3">
+    <result column="option_name" property="optionName"/>
+    <result column="option_value" property="optionValue"/>
+    <result column="product_code" property="productCode"/>
+   
+</resultMap>
+<select id="selectOrderOptionList" resultMap="selectOrderOptionList">
+
+     SELECT
+        o.order_detail_code,
+        p.product_name,
+        x.option_name,
+        x.option_value,
+        r.requested_term,
+        o.order_cnt,
+        o.delivery_company,
+        o.delivery_number,
+        o.delivery_start,
+        o.order_date,
+        m.member_name
+    FROM
+        ar_order_detail o
+    JOIN
+        ar_orders r ON o.order_code = r.order_code
+    JOIN
+        ar_option x ON o.option_code = x.option_code
+    JOIN
+        ar_products p ON x.product_code = p.product_code
+    JOIN 
+    	ar_member m ON m.member_id = r.member_id
+   WHERE
+    	o.order_date BETWEEN #{fromDate} AND #{toDate}
+   <choose>
+			<when test="key == 'member_name'">
+			AND	m.member_name = #{searchValue}
+			</when>
+			<when test="key == 'member_id'">
+			AND	m.member_id = #{searchValue}
+			</when> 
+			<when test="key == 'product_code'">
+			AND	p.product_code = #{searchValue}
+			</when> 
+			<when test="key == 'delivery_number'">
+			AND	o.delivery_number = #{searchValue}
+			</when> 
+	</choose>
+    ORDER BY o.order_detail_code DESC
+</select>
+
 
 <!-- 취소목록 -->
 
@@ -311,7 +381,9 @@ WHERE member_id = #{memberId}
 	
    <update id="updateDeliveryInfo" parameterType="DetailVO">
       UPDATE ar_order_detail
-      SET delivery_company = #{deliveryCompany}, delivery_number = #{deliveryNumber}, delivery_date = sysdate 
+      SET delivery_company = #{deliveryCompany}
+      	, delivery_number = #{deliveryNumber}
+      	, delivery_start = sysdate 
       WHERE order_detail_code = #{orderDetailCode}
    </update>
 	

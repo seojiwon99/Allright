@@ -101,6 +101,12 @@ public class ProductServiceImpl implements ProductService{
 		return productMapper.updateDeliveryInfo(detailVO);
 	}
 
+// orderManagement
+	@Override
+	public List<DetailVO> getOrderOptionList(DetailVO detailVO) {
+		return productMapper.selectOrderOptionList(detailVO);
+	}
+
 
 
 

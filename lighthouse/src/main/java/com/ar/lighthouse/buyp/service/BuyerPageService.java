@@ -30,13 +30,13 @@ public interface BuyerPageService {
 
 
 	// 반품 상세
-	public List<ReturnVO> getReturnList(String memberId);
+	public List<ReturnVO1> getReturnList(String memberId);
 
 	// 교환 상세
-	public List<ExchangeVO> getExchangeList(String memberId);
+	public List<ExchangeVO1> getExchangeList(String memberId);
 
 	// 교환 신청
-	public int addExchange(ExchangeVO excVO);
+	public int addExchange(ExchangeVO1 excVO);
 
 	// 교환 코드
 	public List<CodeVO> getExchangeCode(String memberId);

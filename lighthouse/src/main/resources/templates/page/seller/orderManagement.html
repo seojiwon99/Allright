@@ -96,24 +96,25 @@
 
 			<div class="_1Vof48UxmD _oVRNwPvxck">
 				<div class="_KqV0-1BSnB">
-					<label class="_MN8nIh0X4y">상세조건</label> <select class="_4LshyCrDpi"
-						title="리스트 보기">
+					<label class="_MN8nIh0X4y">상세조건</label> 
+					<select class="_4LshyCrDpi" title="리스트 보기">
 						<option selected="" value="">전체</option>
-						<option value="MEMBER_NAME">구매자명</option>
-						<option value="MEMBER_TEL">구매자연락처</option>
-						<option value="MEMBER_ID">구매자ID</option>
-						<option value="PRODUCT_CODE">상품코드</option>
-						<option value="DELIVERY_NUMBER">송장번호</option>
+						<option value="member_name">구매자명</option>
+						<option value="member_tel">구매자연락처</option>
+						<option value="member_id">구매자ID</option>
+						<option value="product_code">상품코드</option>
+						<option value="delivery_number">송장번호</option>
 					</select> <input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
 					<div>
-						<span>조회기간</span> <input type="text" id="from" name="from"
-							autocomplete="off"> <label for="to">~</label> <input
-							type="text" id="to" name="to" autocomplete="off">
+						<span>조회기간</span> 
+						<input type="DATE" id="from" name="from"
+							autocomplete="off"> <label for="to">~</label> 
+						<input type="DATE" id="to" name="to" autocomplete="off">
 					</div>
 				</div>
 			</div>
 
-			<button type="button" id="searchBtn">검색</button>
+			<button type="button" id="orderSearch">검색</button>
 
 
 			<section class="pb-12">
@@ -177,27 +178,30 @@
 							<th>상품명</th>
 							<th>옵션값</th>
 							<th>구매개수</th>
+							<th>구매자</th>
 							<th>요청사항</th>
 							<th>택배사</th>
 							<th>송장번호</th>
 							<th>발송일</th>
 						</tr>
 					</thead>
-					<tbody id="sortList">
-						<tr th:each="order : ${orderList}">
+					<tbody id="orderChkList">
+						<tr th:each="order : ${orderList}"
+							th:data-ordercode="${order.orderDetailCode}">
 							<td><input type="checkbox"></td>
 							<td th:text="${order.orderDetailCode}" />
 							<td th:text="${order.productName}" />
 							<td th:text="${order.option.optionValue}" />
 							<td th:text="${order.orderCnt}" />
+							<td th:text="${order.memberName}" />
 							<td th:text="${order.requestedTerm}" />
 							<td th:if="${order.deliveryCompany != null}"
 								th:text="${order.deliveryCompany}"></td>
 							<td th:unless="${order.deliveryCompany != null}"><input
 								type="text" id="deliveryCompany"></td>
-							<td th:if="${order.deliveryNumber != 0}"
+							<td th:if="${order.deliveryNumber != null}"
 								th:text="${order.deliveryNumber}" />
-							<td th:unless="${order.deliveryNumber != 0}"><input
+							<td th:unless="${order.deliveryNumber != null}"><input
 								type="text" id="deliveryNumber"></td>
 							<td th:text="${#dates.format(order.deliveryStart,'yyyy-MM-dd')}" />
 						</tr>
@@ -211,46 +215,10 @@
 	<script>
    $(document).ready(function () {
        
-  
-          $( function() {
-             
-                var dateFormat = "yyyy/MM/dd",
-                  from = $( "#from" )
-                    .datepicker({
-                      defaultDate: "+1w",
-                      changeMonth: true,
-                      numberOfMonths: 1
-                    })
-                    .on( "change", function() {
-                      to.datepicker( "option", "minDate", getDate( this ) );
-                    }),
-                  to = $( "#to" ).datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    numberOfMonths: 1
-                  })
-                  .on( "change", function() {
-                    from.datepicker( "option", "maxDate", getDate( this ) );
-                  });
-             
-                function getDate( element ) {
-                  var date;
-                  try {
-                    date = $.datepicker.parseDate( dateFormat, element.value );
-                  } catch( error ) {
-                    date = null;
-                  }
-             
-                  return date;
-                }
-              });
-         
          
          document.getElementById('allCheck')
          .addEventListener('click', allCheckEvent);
          
-         
-
          function allCheckEvent(e) {
              let allCheckTag = document.getElementById('allCheck');
              let checkTags = document.querySelectorAll('[type="checkbox"]');
@@ -259,7 +227,39 @@
              })
          }
 
+		 $('#orderSearch').on('click',function(){
+			let key = $('._4LshyCrDpi').val();
+			let value = $('._3y2h2mGnkI').val();
+			let fromDate = $('#from').val();
+			let toDate = $('#to').val()
 
+
+			$.ajax({
+				url : 'orderOptionManagement',
+				type : 'get',
+				data : {key,value,fromDate,toDate}
+			})
+			// {
+			// 		"searchValue" : value, 
+			// 		"memberName" : key,
+			// 		"memberTel" : key,
+			// 		"memberId" : key,
+			// 		"productCode" : key,
+			// 		"deliveryNumber" : key,
+			// 		"fromDate" : fromDate,
+			// 		"toDate" : toDate
+			// 	}
+			.done(data=>{
+				console.log(data);
+
+			})
+			.fail(reject=>{
+				console.log(reject);
+			})
+			
+		})
+        
+         
          $('#cancelModal').on('click',function(){
             let orderList =[];
             let checkTags = $('input[type="checkbox"]:checked').not('#allCheck');
@@ -296,13 +296,21 @@
           $('#insertDeliveryBtn').on('click', function(){
             let deliveryList =[];
             let checkTags = $('#getProductList input[type="checkbox"]:checked').not('#allcheck');
-            
+
+            // datasetter
             
             checkTags.each((idx, tag) => {
-               let detailOrderCode = $(tag).parent().next().text();
-               let deliveryCompany = $(tag).parent().find('td:last input#deliveryCompany').val().text();
-               console.log(deliveryCompany);
-               let obj = {'detailOrderCode' : detailOrderCode};
+				let tr = $(tag).closest('tr')
+               let detailOrderCode = tr.data('ordercode');
+               let deliveryCompany = tr.find('#deliveryCompany').val();
+               let deliveryNumber =  tr.find('#deliveryNumber').val();
+			   console.log(detailOrderCode);
+			
+               let obj = {
+				'orderDetailCode' : detailOrderCode,
+				'deliveryCompany' : deliveryCompany,
+				'deliveryNumber' : deliveryNumber
+			};
                deliveryList.push(obj);
          })
 
@@ -315,7 +323,7 @@
          })
          .done(data => {
             console.log(data);
-            //refreshList();
+            refreshList();
          })
          .fail(reject => console.log(reject));
       })
@@ -325,8 +333,10 @@
       } 
       
    })
-    
-         
+ 
+  
+        
+           
          
          </script>
 

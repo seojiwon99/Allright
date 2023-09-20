@@ -28,13 +28,24 @@ public class DetailVO {
    private Date orderDate;
    private int mycouponCode;
    private String optionCouponCheck;
-   private int deliveryNumber;
+   private String deliveryCompany;
+   private String deliveryNumber;
    @DateTimeFormat(pattern="yyyy-MM-dd")
    private Date deliveryDate;
+   @DateTimeFormat(pattern="yyyy-MM-dd")
+   private Date deliveryStart;
+
+   // 멤버 테이블
+   String memberId;
+   String memberName;
+   int memberTel;
    
    //상품 테이블 조인
    private String productName;
    private String productCode;
+   
+   // 주문 테이블 조인
+   private String requestedTerm;
    
    //이미지 테이블 조인
    private int imgCode;
@@ -44,4 +55,14 @@ public class DetailVO {
    private int imgOrder;
    
    
+//   ajax넘어오는값
+   String searchValue;
+   String key;
+   @DateTimeFormat(pattern="yyyy-MM-dd")
+   Date fromDate;
+   @DateTimeFormat(pattern="yyyy-MM-dd")
+   Date toDate;
+   
+   // 옵션 VO
+   OptionVO option;
 }
