@@ -28,6 +28,7 @@ public interface BuyerPageService {
 	// 취소 상세
 	public List<BuyerCancelVO> getCancelList(String memberId);
 
+
 	// 반품 상세
 	public List<ReturnVO> getReturnList(String memberId);
 
