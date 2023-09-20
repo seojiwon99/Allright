@@ -27,7 +27,7 @@ import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.buyp.service.ExchangeVO;
 import com.ar.lighthouse.buyp.service.MyInquiryVO;
-import com.ar.lighthouse.buyp.service.ReturnVO;
+import com.ar.lighthouse.buyp.service.BuyReturnVO;
 import com.ar.lighthouse.buyp.service.TradeVO;
 import com.ar.lighthouse.buyp.service.WishVO;
 import com.ar.lighthouse.member.service.MemberVO;
@@ -153,7 +153,7 @@ public class BuyerPageController {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 
-		List<ReturnVO> returnList = buyerPageService.getReturnList(memberId);
+		List<BuyReturnVO> returnList = buyerPageService.getReturnList(memberId);
 		model.addAttribute("returnList", returnList);
 
 		return "/page/buyer/returnList";

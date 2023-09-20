@@ -29,7 +29,7 @@ public interface BuyerPageService {
 	public List<BuyCancelVO> getCancelList(String memberId);
 
 	// 반품 상세
-	public List<ReturnVO> getReturnList(String memberId);
+	public List<BuyReturnVO> getReturnList(String memberId);
 
 	// 교환 상세
 	public List<ExchangeVO> getExchangeList(String memberId);
