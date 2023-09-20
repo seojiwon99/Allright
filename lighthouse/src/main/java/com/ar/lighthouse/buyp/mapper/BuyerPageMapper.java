@@ -9,7 +9,7 @@ import com.ar.lighthouse.buyp.service.BuyInfoVO;
 import com.ar.lighthouse.buyp.service.BuyCancelVO;
 import com.ar.lighthouse.buyp.service.CodeVO;
 import com.ar.lighthouse.buyp.service.CouponVO;
-import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.buyp.service.BuyDetailVO;
 import com.ar.lighthouse.buyp.service.BuyExchangeVO;
 import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.buyp.service.BuyReturnVO;
@@ -19,7 +19,7 @@ import com.ar.lighthouse.buyp.service.WishVO;
 @Mapper
 public interface BuyerPageMapper {
 	
-	public List<DetailVO> selectDetailList(String memberId);
+	public List<BuyDetailVO> selectDetailList(String memberId);
 	
 	public BuyInfoVO selectBuyInfo(String memberId);
 

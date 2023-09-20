@@ -5,7 +5,7 @@ import java.util.List;
 public interface BuyerPageService {
 
 	// 주문 목록 가져오기
-	public List<DetailVO> getDetailList(String memberId);
+	public List<BuyDetailVO> getDetailList(String memberId);
 
 	// 개인 정보 가져오기
 	public BuyInfoVO getInfo(String memberId);

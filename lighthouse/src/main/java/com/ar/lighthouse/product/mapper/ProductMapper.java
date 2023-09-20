@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.buyp.service.BuyDetailVO;
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.service.CancelVO;
 import com.ar.lighthouse.product.service.ImgsVO;
@@ -40,7 +40,7 @@ public interface ProductMapper {
 	public ProductVO selectInfo(ProductVO productVO);
 
 //	상품주문목록
-	List<DetailVO> selectOrderDetail(ProductVO productVO);
+	List<BuyDetailVO> selectOrderDetail(ProductVO productVO);
 	
 
 //	취소건 확인

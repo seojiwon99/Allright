@@ -2,7 +2,7 @@ package com.ar.lighthouse.product.service;
 
 import java.util.List;
 
-import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.buyp.service.BuyDetailVO;
 import com.ar.lighthouse.member.service.MemberVO;
 
 public interface ProductService {
@@ -26,7 +26,7 @@ public interface ProductService {
 	public ProductVO goodsDetail(ProductVO productVO);
 
 //	상품주문목록
-	List<DetailVO> getProductOrder(ProductVO productVO);
+	List<BuyDetailVO> getProductOrder(ProductVO productVO);
 	
 //	취소건 목록
 	List<CancelVO> getCancelList(CancelVO cancelVO);

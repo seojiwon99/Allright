@@ -9,7 +9,7 @@ import com.ar.lighthouse.product.service.ImgsVO;
 
 import lombok.Data;
 @Data
-public class DetailVO {
+public class BuyDetailVO {
 
    private int orderDetailCode;
    private int orderCode;

@@ -3,7 +3,7 @@ package com.ar.lighthouse.product.service;
 
 import java.util.List;
 
-import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.buyp.service.BuyDetailVO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

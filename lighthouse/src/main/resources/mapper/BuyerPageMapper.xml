@@ -6,7 +6,7 @@
   <mapper namespace="com.ar.lighthouse.buyp.mapper.BuyerPageMapper">
   	
   	<!-- 주문 목록 -->
-  	<select id="selectDetailList" resultType="DetailVO" parameterType="String">
+  	<select id="selectDetailList" resultType="BuyDetailVO" parameterType="String">
 		SELECT a.order_cnt
 		     , a.order_price
 		     , a.payment_price
@@ -186,7 +186,7 @@
 	</select>
 	
 	<!-- 교환 상세 -->
-	<select id="selectExchangeList" resultType="ExchangeVO" parameterType="String">
+	<select id="selectExchangeList" resultType="BuyExchangeVO" parameterType="String">
 	   select a.exchange_code
 		     , a.exchange_reason
 		     , a.exchange_regdate
@@ -234,7 +234,7 @@
 	</select>
 	
 	<!-- 교환 신청 -->
-	<insert id="insertExchange" parameterType="ExchangeVO">
+	<insert id="insertExchange" parameterType="BuyExchangeVO">
 		<selectKey resultType="String" keyProperty="exCode" order="BEFORE">
 			select ex_code from dual
 		</selectKey>
