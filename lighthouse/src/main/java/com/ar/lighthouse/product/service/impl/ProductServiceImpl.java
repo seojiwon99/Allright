@@ -9,9 +9,11 @@ import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.mapper.ProductMapper;
 import com.ar.lighthouse.product.service.CancelVO;
+import com.ar.lighthouse.product.service.ExchangeVO;
 import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
+import com.ar.lighthouse.product.service.ReturnVO;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -75,10 +77,28 @@ public class ProductServiceImpl implements ProductService{
 		return productMapper.selectCancelList(cancelVO);
 	}
 
-
+//  주문/발주 목록
 	@Override
 	public List<DetailVO> getProductOrder(ProductVO productVO) {
 		return productMapper.selectOrderDetail(productVO);
+	}
+
+// 교환건 목록
+	@Override
+	public List<ExchangeVO> getExchangeList(ExchangeVO exchangeVO) {
+		return productMapper.selectExchangeList(exchangeVO);
+	}
+
+
+	@Override
+	public List<ReturnVO> getReturnList(ReturnVO returnVO) {
+		return productMapper.selectReturnList(returnVO);
+	}
+
+
+	@Override
+	public int updateDeliveryInfo(DetailVO detailVO) {
+		return productMapper.updateDeliveryInfo(detailVO);
 	}
 
 
