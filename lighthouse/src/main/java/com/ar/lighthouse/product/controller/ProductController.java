@@ -45,7 +45,6 @@ public class ProductController {
 
 	@Autowired
 	ReviewService reviewService;
-	
 
 	@Autowired
 
@@ -53,73 +52,69 @@ public class ProductController {
 
 	MemberService memberService;
 
-
 	@Autowired
 	MainPageService mainPageService;
 
-	
-	
 //	판매자 메인페이지
 	@GetMapping("sellerMain")
 	public String seller() {
 		return "page/seller/sellerMain";
 	}
-	
+
 //	판매자 상품문의페이지
 	@GetMapping("productInquiry")
 	public String productInquiry() {
 		return "page/seller/productInquiry";
 	}
-	
+
 //	판매자 mypage
 	@GetMapping("sellerMypage/{memberId}")
 	public String findMember(Model model, MemberVO memberVO) {
-		
+
 		model.addAttribute("sellerInfo", productService.getSellerInfo(memberVO));
 		return "page/seller/sellerMypage";
 	}
-	
+
 //  주문/발송 페이지
 	@GetMapping("orderManagement")
 	public String productOrder(Model model, ProductVO productVO) {
 		model.addAttribute("orderList", productService.getProductOrder(productVO));
 		return "page/seller/orderManagement";
 	}
-	
+
 //	교환 페이지
 	@GetMapping("exchangeList")
 	public String productExchange() {
 		return "page/seller/exchangeList";
 	}
-	
+
 //	정산관리 페이지
 	@GetMapping("settlementManagement")
 	public String settlementManagement() {
 		return "page/seller/settlementManagement";
 	}
-	
+
 //	판매자 상품목록
 	@GetMapping("productList/{memberId}")
 	public String productList(@PathVariable String memberId, Model model) {
-	    // memberId를 기반으로 해당 사용자가 등록한 상품 목록 조회
-	    List<ProductVO> productList = productService.getProductsByMemberId(memberId);
-	    
-	    // 모델에 상품 목록 추가
-	    model.addAttribute("productList", productList);
-	    
-	    return "page/seller/productList";
+		// memberId를 기반으로 해당 사용자가 등록한 상품 목록 조회
+		List<ProductVO> productList = productService.getProductsByMemberId(memberId);
+
+		// 모델에 상품 목록 추가
+		model.addAttribute("productList", productList);
+
+		return "page/seller/productList";
 	}
-	
+
 //	상품 취소관리 페이지
-	@GetMapping("cancelProduct") //Model model, CancelVO cancelVO
+	@GetMapping("cancelProduct") // Model model, CancelVO cancelVO
 	public String cancelProdructs() {
-		
+
 //		model.addAttribute("cancelInfo", productService.getCancelList(cancelVO));
-		
+
 		return "page/seller/cancelProduct";
 	}
-	
-	
+
 //	상품상세설명등록 페이지
 	@GetMapping("productContent")
 	public String productContent() {
@@ -128,8 +123,8 @@ public class ProductController {
 
 //	조건순 order by
 	@GetMapping("getOptionProduct")
-	public String productDetail(Model model,ProductVO productVO) {
-		model.addAttribute("productList",productService.getOptionProduct(productVO));
+	public String productDetail(Model model, ProductVO productVO) {
+		model.addAttribute("productList", productService.getOptionProduct(productVO));
 		return "page/seller/productList :: #sortList";
 	}
 
@@ -160,7 +155,7 @@ public class ProductController {
 		model.addAttribute("getCategoryList", mainPageService.getchildCategory(categoryVO));
 		return "page/seller/productForm :: #thirdOfChildCate";
 	}
-  
+
 // 등록
 	@PostMapping("insertProduct")
 	public String addProduct(ProductVO productVO, OptionVO optionVO) {
@@ -190,8 +185,6 @@ public class ProductController {
 		return delList;
 
 	}
-	
-	
 
 	// 리뷰등록
 
@@ -199,7 +192,7 @@ public class ProductController {
 	@ResponseBody
 	public String addReivew(MultipartFile[] files, ReviewVO review, ImgsVO imgsVO, Model model) {
 		System.out.println(files);
-		
+
 		String uploadFolder = "C:\\upload";
 
 		// make folder
@@ -230,20 +223,17 @@ public class ProductController {
 		}
 
 		reviewService.addReview(review);
-		
-		reviewService.addReviewImg(imgsVO);
-		
-		System.out.println(model);
-		
-		
-		
-		model.addAttribute("img", imgsVO);
-		
-		
-		reviewService.addReviewImg(imgsVO);;
-		
-//		System.out.println("??");
 
+		reviewService.addReviewImg(imgsVO);
+
+		System.out.println(model);
+
+		model.addAttribute("img", imgsVO);
+
+		reviewService.addReviewImg(imgsVO);
+		;
+
+//		System.out.println("??");
 
 		return "page/goods/goodDetail";
 
@@ -258,32 +248,44 @@ public class ProductController {
 		return "redirect:/page/goods/goodDetail";
 	}
 
-	
-	//qna 등록
+	// qna 등록
 	@PostMapping("insertInquiry")
 	@ResponseBody
-	public ProductInquiryVO addInquiry( Model model, @RequestBody ProductInquiryVO inquiryVO) {
-		
+	public ProductInquiryVO addInquiry(Model model, @RequestBody ProductInquiryVO inquiryVO) {
+
 		custominquiryService.addInquiry(inquiryVO);
-	
+
 		return inquiryVO;
-		
+
 	}
-	
-	//qna 삭제
+
+	// qna 수정
+	@PostMapping("editInquiry")
+	@ResponseBody
+	public ProductInquiryVO editInquiry(@RequestBody ProductInquiryVO inquiryVO) {
+
+		System.out.println(inquiryVO);
+
+		if (custominquiryService.editInquiry(inquiryVO)) {
+			System.out.println("성공");
+		};
+
+		return inquiryVO;
+
+	}
+
+	// qna 삭제
 	@PostMapping("removeInquiry")
 	@ResponseBody
-	public int removeInquiry(@RequestBody Integer queCode , RedirectAttributes rttr) {
+	public int removeInquiry(@RequestBody Integer queCode, RedirectAttributes rttr) {
 		System.out.println(queCode);
-		if(custominquiryService.removeInquiry(queCode)) {
-			rttr.addFlashAttribute("result","success");
+		if (custominquiryService.removeInquiry(queCode)) {
+			rttr.addFlashAttribute("result", "success");
 		}
 		return queCode;
-		
-		
-		
+
 	}
-	
+
 	// 상품 단건 조회
 
 	@GetMapping("goodDetail")
@@ -298,8 +300,7 @@ public class ProductController {
 		System.out.println(reviewVO);
 
 		ProductVO productVO = productService.goodsDetail(vo);
-		
-		
+
 		model.addAttribute("goods", productVO);
 
 		ProductInquiryVO productInquiryVO = new ProductInquiryVO();
@@ -307,9 +308,7 @@ public class ProductController {
 
 		// 리뷰조회
 		model.addAttribute("review", reviewService.getReviewList(reviewVO));
-		
-		
-		
+
 		// qna 조회
 		model.addAttribute("inquiry", custominquiryService.getInquiryList(productInquiryVO));
 		System.out.println(model);
