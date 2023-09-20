@@ -13,7 +13,7 @@
 											    margin-top:30px;">
 						<!-- Form -->
 			<div>
-			<h2 class="fst-normal">구매자</h2>
+			<h2 class="fst-normal">판매자</h2>
 			</div>
 			<form class="navbar-form w-100" style="max-width: 550px; ">
 				<div class="input-group">
@@ -66,9 +66,17 @@
 						<td th:text="${mem.businessNumber}"></td>
 						<td th:text="${mem.memberEmail}"></td>
 						<td th:text="${mem.suspStatus}"></td>
-						<td>체크박스</td>
-						<td>드롭</td>
-						<td>저장</td>
+						<td>
+						<input type="checkbox" id="checkSusp">/
+						<input type="checkbox" id="checkSusp">/
+						<input type="checkbox" id="checkSusp">/
+						<input type="checkbox" id="checkSusp">
+						</td>
+						
+						<td>드롭다운
+						
+						</td>
+						<td><button class="btn btn-xxs btn-outline-info"  type="button"> 저장</button></td>
 				</tr>
 			  </tbody>
 			</table>
@@ -106,11 +114,16 @@
 		let url = "?customInquiryTitle=" + $('#memSearchBar').val()
 		location.href =  url;
 	})
-	
+	//style
 	$('.table-sm thead th').css("font-size", "0.4rem");
-	$('.table-sm thead th').css("padding", "0.3rem 1rem");
-	$('.table-sm tbody td').css("font-size", "0.1rem");
+	$('.table-sm thead th').css("padding", "1rem 1rem");
+	$('.table-sm tbody td').css("padding", "1rem 1rem");
+	$('.table-sm tbody td').css("font-size", "0.8rem");
 	
+	
+	
+	//checkbox 한개 선택
+
 	</script>
 </div>
 </html>

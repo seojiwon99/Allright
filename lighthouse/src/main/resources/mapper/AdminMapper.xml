@@ -169,16 +169,16 @@
 		                        <if test="memberAuthor == 2">
 		                        AND MEMBER_AUTHOR = 2
 		                        </if>
-		                        <if test="memberId != null and !(memberId.equals(''))">
+		                        <if test="memberId != null or !(memberId.equals(''))">
 		                        AND MEMBER_ID LIKE '%' || #{memberId} || '%'
 		                        </if>
-		                        <if test="memberName != null and !(memberName.equals(''))">
+		                        <if test="memberName != null or !(memberName.equals(''))">
 		                        AND MEMBER_NAME LIKE '%' || #{memberName} || '%'
 		                        </if>
-		                        <if test="memberTel != null and !(memberTel.equals(''))">
+		                        <if test="memberTel != null or !(memberTel.equals(''))">
 		                        AND MEMBER_TEL LIKE '%' || #{memberTel} || '%'
 		                        </if>
-		                        <if test="businessNumber != null and !(businessNumber.equals(''))">
+		                        <if test="businessNumber != null or !(businessNumber.equals(''))">
 		                        AND BUSINESS_NUMBER LIKE '%' || #{businessNumber} || '%'
 		                        </if>
 		                        order by MEMBER_REGDATE DESC) am
@@ -198,16 +198,16 @@
 		<if test="memberAuthor == 2">
 	  	AND member_author = 2
 	  	</if>
-    	<if test="memberId != null and !(memberId.equals(''))">
+    	<if test="memberId != null or !(memberId.equals(''))">
         AND MEMBER_ID LIKE '%' || #{memberId} || '%'
         </if>
-        <if test="memberName != null and !(memberName.equals(''))">
+        <if test="memberName != null or !(memberName.equals(''))">
         AND MEMBER_NAME LIKE '%' || #{memberName} || '%'
         </if>
-        <if test="memberTel != null and !(memberTel.equals(''))">
+        <if test="memberTel != null or !(memberTel.equals(''))">
         AND MEMBER_TEL LIKE '%' || #{memberTel} || '%'
         </if>
-        <if test="businessNumber != null and !(businessNumber.equals(''))">
+        <if test="businessNumber != null or !(businessNumber.equals(''))">
         AND BUSINESS_NUMBER LIKE '%' || #{businessNumber} || '%'
         </if>
   	
