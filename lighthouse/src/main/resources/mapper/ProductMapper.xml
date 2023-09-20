@@ -309,11 +309,11 @@ WHERE member_id = #{memberId}
 	</update>
 	
 	
-	<update id="insertDeliveryInfo" parameterType="DetailVO">
-		UPDATE ar_order_detail
-		SET delivery_company = #{deliveryCompany}, delivery_number = #{deliveryNumber}, delivery_date = sysdate 
-		WHERE order_detail_code = 101;
-	</update>
+   <update id="updateDeliveryInfo" parameterType="DetailVO">
+      UPDATE ar_order_detail
+      SET delivery_company = #{deliveryCompany}, delivery_number = #{deliveryNumber}, delivery_date = sysdate 
+      WHERE order_detail_code = #{orderDetailCode}
+   </update>
 	
 	
 	
