@@ -19,7 +19,7 @@
   		  </where>
   		  ORDER BY faq_code
   	</select>
-  	
+
   	<!-- Faq 타입 리스트 가져오기 -->
   	<select id="selectFaqTypeList" resultType="FaqVO">
   		SELECT code_id faq_type
@@ -27,7 +27,7 @@
   		  FROM ar_code  
   		 WHERE master_code = 'faq'  
   	</select>
-  	
+
   	<!-- notice 목록 (페이징) -->
   	<select id="selectNoticeList" resultType="NoticeVO" parameterType="Criteria">
   		SELECT * 
@@ -50,9 +50,9 @@
                 order by notice_type desc, notice_regdate desc
                 )
 		 WHERE rn > ( #{pageNum} - 1) * #{amount}
-		
+
   	</select>
-  	
+
   	<!-- 공지사항 갯수 -->
   	<select id="getTotalCount" resultType="int">
   		SELECT count(*)
@@ -110,4 +110,3 @@
   		 WHERE notice_code = #{noticeCode}
   	</select>
   </mapper>
-  

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/sellerHtml}">
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<!-- Content -->
+
+
+
+<div layout:fragment="sellerContent">
+
+
+	<div class="row gx-0">
+		<div class="col-12 col-lg-auto">
+
+			<!-- NAVBAR -->
+			<nav
+				class="navbar navbar-expand-lg navbar-vertical navbar-light sticky-start px-lg-7 ">
+				<div class="container-fluid">
+
+					<!-- Brand -->
+					<a class="navbar-brand" href="/sellerMain"> 판매자센터 </a>
+
+					<!-- Toggler -->
+					<button class="navbar-toggler" type="button"
+						data-bs-toggle="collapse"
+						data-bs-target="#navbarSidenavLeftCollapse"
+						aria-controls="navbarSidenavLeftCollapse" aria-expanded="false"
+						aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+
+					<!-- Collapse -->
+					<div class="collapse navbar-collapse"
+						id="navbarSidenavLeftCollapse">
+
+						<!-- Nav -->
+						<ul class="navbar-nav fs-lg mb-6 my-lg-12" id="sidenavParent">
+							<li class="nav-item">
+								<!-- Toggle --> <a class="nav-link dropdown-toggle"
+								data-bs-toggle="collapse" href="#sidenavHome"> 상품관리 </a> <!-- Collapse -->
+								<div class="collapse" id="sidenavHome"
+									data-bs-parent="#sidenavParent">
+									<ul class="list-styled fs-base fw-normal py-3 mb-0">
+										<li class="list-styled-item"><a class="list-styled-link"
+											href="/productList">상품 조회/수정</a></li>
+										<li class="list-styled-item"><a class="list-styled-link"
+											href="/insertProduct">상품등록</a></li>
+
+									</ul>
+								</div>
+
+							</li>
+							<li class="nav-item">
+								<!-- Toggle --> <a class="nav-link dropdown-toggle"
+								data-bs-toggle="collapse" href="#sidenavCatalog"> 판매관리 </a> <!-- Collapse -->
+								<div class="collapse" id="sidenavCatalog"
+									data-bs-parent="#sidenavParent">
+									<div class="row">
+										<div class="col-12 py-3">
+											<!-- Links -->
+											<ul class="list-styled fs-base">
+												<li class="list-styled-item"><a
+													class="list-styled-link" href="/orderManagement">주문확인/발송관리</a></li>
+												<li class="list-styled-item"><a
+													class="list-styled-link" href="/cancelProduct">취소관리</a></li>
+												<li class="list-styled-item"><a
+													class="list-styled-link" href="/exchangeList">교환반품관리</a></li>
+
+											</ul>
+
+										</div>
+
+										<li class="nav-item"><a class="nav-link"
+											href="/settlementManagement">정산/통계관리</a></li>
+										<li class="nav-item"><a class="nav-link"
+											href="/productInquiry">문의관리</a></li>
+										<li class="nav-item"><a class="nav-link"
+											href="/sellerMypage">판매자정보</a></li>
+										<li class="nav-item"><a class="nav-link"
+											href="./docs/getting-started.html">고객센터</a></li>
+						</ul>
+
+						
+						
+						
+
+					</div>
+
+				</div>
+			</nav>
+
+		</div>
+		<div class="col-12 col-lg">
+
+			<h3>판매자 마이페이지</h3>
+			<div class="panel-body">
+				<div class="panel-body-info">
+					고객센터 전화번호와는 별개로, 상품의 주문현황 및 스마트스토어센터 중요 안내를 받는 담당자 정보입니다.<br>가입
+					후, 주/부 매니저로 권한을 등록하시면 담당자를 변경하실 수 있습니다.<br>주/부 매니저는 ‘판매자정보
+					&gt; 매니저 관리‘ 메뉴에서 회원 초대를 통해 등록하실 수 있습니다. <a
+						href="#/member/auth/management"
+						ui-sref="main.member-auth-management"
+						class="btn-link text-primary">매니저 초대하러 가기<i
+						class="fn-shopping fn-shopping-forward2"></i></a>
+				</div>
+				<ul class="seller-list-border" th:each="sellerInfo : ${sellerInfo}">
+					<li><label class="control-label">이름</label>
+						<div class="input-content">
+							<div class="form-control-static" th:text=${sellerInfo.memberName}></div>
+						</div></li>
+					<li><label class="control-label">로그인ID</label>
+						<div class="input-content">
+							<div class="form-control-static" th:text=${sellerInfo.memberId}></div>
+						</div></li>
+					<li><label class="control-label">이메일 주소</label>
+						<div class="input-content">
+							<div class="form-control-static" th:text=${sellerInfo.memberEmail}></div>
+						</div></li>
+					<li><label class="control-label">휴대폰<br
+							class="visible-xs">번호
+					</label>
+						<div class="input-content">
+							<div class="form-control-static"  th:text=${sellerInfo.memberTel}></div>
+						</div></li>
+				</ul>
+			</div>
+			<div class="panel-heading">
+				<h3 class="panel-title">정산정보</h3>
+			</div>
+			<div class="panel-body">
+				<ul class="seller-list-border">
+					<!---->
+					
+					<div class="input-content">
+							<div class="form-group">
+								<div class="seller-input">
+										입금 계좌
+								</div>
+							</div>
+							<p class="sub-text text-primary">정산대금 수령방법 변경시 변경일로부터 1영업일
+								이후에 적용됩니다.</p>
+							<!---->
+							<p class="sub-text text-primary">개인판매자는
+								세금계산서발행동의 후 정산대금이 계좌로 정산됩니다.</p>
+							
+							<p class="sub-text text-primary">세금계산서
+								발행동의는 정산예정금액이 있을경우, 스마트스토어센터 &gt; 판매자 정보 메뉴에서 동의할 수 있습니다.</p>
+							<!---->
+						</div></li>
+					
+					<li class="visible-xs">입금계좌
+					</label>
+					<div class="input-content">
+							
+								<div class="form-group form-control-static">
+									 <span class="text-sub"></span>
+								</div>
+								
+							<!---->
+							<p class="sub-text text-primary">
+								판매자 정보 메뉴에서 정산계좌 변경이 불가능할 경우 정보변경신청 메뉴에서 변경 신청 해주세요. <a
+									ui-sref="main.judgment.modification.input-info"
+									href="#/judgment/modification" class="btn-link text-primary"
+									data-nclicks-code="settleInfo.changeSettleBA">정보변경신청<i
+									class="fn-shopping fn-shopping-forward2" aria-hidden="true"></i></a>
+							</p>
+						</div></li>
+					<!---->
+					<!---->
+				</ul>
+			</div>
+
+
+			<div class="panel-body">
+				<div class="panel-body-info">
+					<span class="pull-left">출고지 주소와 반품/교환지 주소는 주소록에서 수정/변경이
+						가능합니다.</span> <span><button type="button"
+							class="btn btn-default2 btn-sm"
+							ng-click="vm.openAddressBookModal()"
+							data-nclicks-code="dlvInfo.addressBook">주소록</button></span>
+				</div>
+				<ul class="seller-list-border">
+					<li><label class="control-label long-label" for="return-addr">출고지<br
+							class="visible-xs">
+					</label>
+						<div class="input-content" th:each="sellerInfo : ${sellerInfo}">
+							<div class="form-inline">
+								<div class="form-group">
+									<input type="text" class="form-control" value="상품출고지"
+										id="delivery-addr" readonly="readonly">
+								</div>
+							</div>
+							<div class="form-group" >
+								<input type="text" class="form-control"
+									th:value="${sellerInfo.memberAddr} + ',   ' + ${sellerInfo.memberDetailsAddr}"  title="출고지 주소"
+									readonly="readonly" >
+							</div>
+							<div class="form-inline">
+								<div class="form-group">
+									<input type="text" class="form-control" th:value="${sellerInfo.memberTel}"
+										title="출고지 전화번호1" readonly="readonly">
+								</div>
+							
+							</div>
+						</div></li>
+					<li><label class="control-label long-label" for="return-addr">반품/<br
+							class="visible-xs">교환지 주소
+					</label>
+						<div class="input-content" th:each="sellerInfo : ${sellerInfo}">
+							<div class="form-inline">
+								<div class="form-group">
+									<input type="text" class="form-control" value="반품교환지"
+										id="return-addr" readonly="readonly" >
+								</div>
+							</div>
+							<div class="form-group">
+								<input type="text" class="form-control"
+									th:value="${sellerInfo.memberAddr} + ',   ' + ${sellerInfo.memberDetailsAddr}" title="반품/교환지 주소"
+									readonly="readonly" >
+							</div>
+							<div class="form-inline">
+								<div class="form-group">
+									<input type="text" class="form-control"  th:value="${sellerInfo.memberTel}"
+										title="반품/교환지 전화번호1" readonly="readonly" >
+								</div>
+								
+							</div>
+						</div></li>
+					<!---->
+					<!---->
+					<!---->
+				</ul>
+			</div>
+
+
+
+		</div>
+	</div>
+</div>
+</html>

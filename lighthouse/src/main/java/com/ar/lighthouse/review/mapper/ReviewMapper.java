@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.ar.lighthouse.product.service.ImgsVO;
+import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.review.service.ReviewVO;
 
 @Mapper
@@ -12,6 +12,8 @@ public interface ReviewMapper {
 
 	//리뷰 전체조회
 	public List<ReviewVO> selectReviewList(ReviewVO reviewVO);
+	
+	//리뷰 수
 	
 	//리뷰등록
 	public void insertReview(ReviewVO reviewVO);
