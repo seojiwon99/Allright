@@ -3,11 +3,16 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/sellerHtml}">
-  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  
-  <div layout:fragment="sellerContent">
 
+<!-- Content -->
 
+<div layout:fragment="sellerContent">
+	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<link rel="stylesheet"
+		href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="/resources/demos/style.css">
+	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 	<div class="row gx-0">
 		<div class="col-12 col-lg-auto">
 
@@ -79,9 +84,9 @@
 											href="./docs/getting-started.html">고객센터</a></li>
 						</ul>
 
-						
-						
-						
+
+
+
 
 					</div>
 
@@ -89,6 +94,196 @@
 			</nav>
 
 		</div>
+
+		<div class="col-12 col-lg">
+			<div class="napy_sub_content">
+
+				<div class="npay_section _1FOxZIjaH6">
+					<div class="npay_board_area">
+						<table class="npay_board_table">
+							<colgroup>
+								<col class="label_width">
+								<col>
+							</colgroup>
+							<tbody>
+								<tr>
+									<th scope="row">조회기간</th>
+									<td colspan="1"><div class="_e1ESc1_0ic">
+											<div class="_2Mo9ts_S9f _3E4SWFsjel _29On-g1Mid">
+												<div class="_KqV0-1BSnB">
+													<label class="_MN8nIh0X4y">클레임요청일</label><select
+														class="_4LshyCrDpi" title="리스트 보기"><option
+															selected="" value="CLAIM_REQUEST">클레임요청일</option>
+														<option value="CANCEL_COMPLETED">취소완료일</option>
+														<option value="PAY_COMPLETED">결제일</option></select>
+												</div>
+											</div>
+											<div class="_2Mo9ts_S9f _29On-g1Mid">
+												<div class="_8GMnQSQIgl _3zx-c_IhVp">
+													<ul
+														class="_2c50HRGAPR _3ztc1iB8Tu _j-O4Qeo0yN _9yuYVWjAOe _2qPT9uwdkd">
+														<li class="_hl_0TieCQs"><button type="button"
+																class="_2y4tT1b1bo size_medium type_basic _2b43OrUK4R _2TfRbAqhV3 _3tBIfJyJos">
+																<span class="">오늘</span>
+															</button></li>
+														<li class="_hl_0TieCQs"><button type="button"
+																class="_2y4tT1b1bo size_medium type_basic _2b43OrUK4R _2TfRbAqhV3 _3tBIfJyJos">
+																<span class="">1주일</span>
+															</button></li>
+														<li class="_hl_0TieCQs"><button type="button"
+																class="_2y4tT1b1bo _2lWlVXWb7v size_medium type_basic _2b43OrUK4R _2TfRbAqhV3 _3tBIfJyJos">
+																<span class="">1개월</span>
+															</button></li>
+														<li class="_hl_0TieCQs"><button type="button"
+																class="_2y4tT1b1bo size_medium type_basic _2b43OrUK4R _2TfRbAqhV3 _3tBIfJyJos">
+																<span class="">3개월</span>
+															</button></li>
+													</ul>
+													<div class="_3PRfTg7hKN _3ztc1iB8Tu">
+														<input type="text" id="from" name="from"
+															autocomplete="off"> <label for="to">~</label> <input
+															type="text" id="to" name="to" autocomplete="off">
+
+
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="_36NfNFNlTR">
+											<p class="_1cU1u3fQQW _17EK97A0eY _1JHEn8wccf">최근 1년 이내에서
+												조회하실 수 있습니다.(3개월 단위 조회 가능)</p>
+										</div></td>
+									<th scope="row">상세조건</th>
+									<td colspan="1"><div class="_1Vof48UxmD _oVRNwPvxck">
+											<div class="_KqV0-1BSnB">
+												<label class="_MN8nIh0X4y">전체</label><select
+													class="_4LshyCrDpi" title="리스트 보기"><option
+														selected="" value="">전체</option>
+													<option value="COLLECTOR_NAME">수취인명</option>
+													<option value="PURCHASER_NAME">구매자명</option>
+													<option value="PURCHASER_ID">구매자ID</option>
+													<option value="ORDER_NO">주문번호</option>
+													<option value="PRODUCT_ORDER_NO">상품주문번호</option>
+													<option value="PRODUCT_NO">상품번호</option></select>
+											</div>
+											<div>
+												<input type="text" class="_3y2h2mGnkI" value=""
+													maxlength="50" disabled="">
+											</div>
+										</div></td>
+								</tr>
+								<tr>
+									<th scope="row">처리상태</th>
+									<td colspan="3"><div class="_KqV0-1BSnB">
+											<label class="_MN8nIh0X4y">전체</label><select
+												class="_4LshyCrDpi" title="리스트 보기"><option
+													selected="" value="">전체</option>
+												<option value="EXCHANGE_REQUEST">교환요청</option>
+												<option value="EXCHANGING">교환중</option>
+												<option value="EXCHANGE_DONE">교환완료</option>
+												<option value="EXCHANGE_REJECT">교환철회</option></select>
+										</div></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<section class="pb-12">
+
+						<table border="1" class="table" id="getProductList">
+							<thead>
+								<tr>
+									<th><input type="checkbox" id="allCheck"></th>
+									<th>주문번호</th>
+									<th>상품명</th>
+									<th>주문상태</th>
+									<th>교환/반품이유</th>
+									<th>요청상태</th>
+									<th>교환/반품요청일</th>
+									<th>구매자</th>
+								</tr>
+							</thead>
+							<tbody id="sortList">
+								<tr th:each="exchange : ${exchangeInfo}">
+									<td><input type="checkbox"></td>
+
+									<td th:text="${exchange.orderDetailCode}"></td>
+									<td th:text="${exchange.productName}"></td>
+									<td th:text="${exchange.orderStatus}"></td>
+									<td th:text="${exchange.exchangeReason}"></td>
+									<td>
+										<span th:if="${exchange.exchangeCode != null}">교환</span>
+									</td>
+									<td
+										th:text="${#dates.format(exchange.exchangeRegdate, 'yyyy-MM-dd')}"></td>
+									<td th:text="${exchange.memberName}"></td>
+
+								</tr>
+								<tr th:each="return : ${returnList}">
+									<td><input type="checkbox"></td>
+
+									<td th:text="${return.orderDetailCode}"></td>
+									<td th:text="${return.productName}"></td>
+									<td th:text="${return.orderStatus}"></td>
+									<td th:text="${return.returnReason}"></td>
+									<td>
+										<span th:if="${return.returnCode != null}">반품</span>
+									</td>
+									<td
+										th:text="${#dates.format(return.returnRegdate, 'yyyy-MM-dd')}"></td>
+									<td th:text="${return.memberName}"></td>
+
+								</tr>
+								<!-- 반복문 종료 -->
+							</tbody>
+						</table>
+					</section>
+				</div>
+			</div>
 		</div>
-		</div>
-		</html>
+
+	</div>
+
+	<script>
+		$(function() {
+			var dateFormat = "mm/dd/yy", from = $("#from").datepicker({
+				defaultDate : "+1w",
+				changeMonth : true,
+				numberOfMonths : 1
+			}).on("change", function() {
+				to.datepicker("option", "minDate", getDate(this));
+			}), to = $("#to").datepicker({
+				defaultDate : "+1w",
+				changeMonth : true,
+				numberOfMonths : 1
+			}).on("change", function() {
+				from.datepicker("option", "maxDate", getDate(this));
+			});
+
+			function getDate(element) {
+				var date;
+				try {
+					date = $.datepicker.parseDate(dateFormat, element.value);
+				} catch (error) {
+					date = null;
+				}
+
+				return date;
+			}
+		});
+		
+		document.getElementById('allCheck')
+		.addEventListener('click', allCheckEvent);
+
+		function allCheckEvent(e) {
+		    let allCheckTag = document.getElementById('allCheck');
+		    let checkTags = document.querySelectorAll('[type="checkbox"]');
+		    checkTags.forEach(el => {
+		        el.checked = allCheckTag.checked;
+		    })
+		}
+	</script>
+
+
+</div>
+
+</html>

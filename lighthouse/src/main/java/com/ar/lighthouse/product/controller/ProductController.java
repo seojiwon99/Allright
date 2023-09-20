@@ -21,17 +21,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.member.service.MemberService;
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.service.CancelVO;
 import com.ar.lighthouse.product.service.CategoryVO;
+import com.ar.lighthouse.product.service.ExchangeVO;
 import com.ar.lighthouse.product.service.ImgsVO;
 import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
+
+import com.ar.lighthouse.product.service.ReturnVO;
+
 import com.ar.lighthouse.productinquiry.service.ProductInquiryService;
 import com.ar.lighthouse.productinquiry.service.ProductInquiryVO;
+
 import com.ar.lighthouse.review.service.ReviewService;
 import com.ar.lighthouse.review.service.ReviewVO;
 
@@ -86,11 +92,19 @@ public class ProductController {
 		return "page/seller/orderManagement";
 	}
 	
-//	교환 페이지
-	@GetMapping("exchangeList")
-	public String productExchange() {
-		return "page/seller/exchangeList";
-	}
+// 주문배송정보입력
+	/*
+	 * @PostMapping("updateDelivery") public String updateDeliveryInfo(@RequestBody
+	 * List<DetailVO> detailVO) { List<String> updateList = new ArrayList();
+	 * for(DetailVO detailVo : deliveryInfo) { int result =
+	 * productService.updateExStatus(productVO); if(result > 0) {
+	 * delList.add(productVO.getProductCode()); } }
+	 * 
+	 * 
+	 * return delList;
+	 * 
+	 * }
+	 */
 	
 //	정산관리 페이지
 	@GetMapping("settlementManagement")
@@ -112,11 +126,20 @@ public class ProductController {
 	
 //	상품 취소관리 페이지
 	@GetMapping("cancelProduct") //Model model, CancelVO cancelVO
-	public String cancelProdructs() {
+	public String cancelProdructs(Model model, CancelVO cancelVO) {
 		
-//		model.addAttribute("cancelInfo", productService.getCancelList(cancelVO));
+		model.addAttribute("cancelInfo", productService.getCancelList(cancelVO));
 		
 		return "page/seller/cancelProduct";
+	}
+	
+//	교환 관리 페이지
+	@GetMapping("exchangeList")
+	public String exchangeProducts(Model model, ExchangeVO exchangeVO, ReturnVO returnVO) {
+		
+		model.addAttribute("exchangeInfo", productService.getExchangeList(exchangeVO));
+		model.addAttribute("returnList", productService.getReturnList(returnVO));
+		return "page/seller/exchangeList";
 	}
 	
 	
