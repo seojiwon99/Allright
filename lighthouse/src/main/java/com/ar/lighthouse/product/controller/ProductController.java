@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.member.service.MemberService;
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.service.CancelVO;
 import com.ar.lighthouse.product.service.CategoryVO;
 import com.ar.lighthouse.product.service.ExchangeVO;
-import com.ar.lighthouse.product.service.ImgsVO;
 import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;

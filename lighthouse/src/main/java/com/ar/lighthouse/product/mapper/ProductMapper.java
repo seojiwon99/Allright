@@ -5,10 +5,12 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.service.CancelVO;
+
 import com.ar.lighthouse.product.service.ExchangeVO;
-import com.ar.lighthouse.product.service.ImgsVO;
+
 import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductVO;
 import com.ar.lighthouse.product.service.ReturnVO;

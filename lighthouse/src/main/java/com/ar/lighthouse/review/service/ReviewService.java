@@ -2,12 +2,13 @@ package com.ar.lighthouse.review.service;
 
 import java.util.List;
 
-import com.ar.lighthouse.product.service.ImgsVO;
+import com.ar.lighthouse.common.ImgsVO;
 
 public interface ReviewService {
 
 	// 조회
 	public List<ReviewVO> getReviewList(ReviewVO reviewVO);
+	
 	
 	//등록
 	public void addReview(ReviewVO reviewVO);
