@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/sellerHtml}">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/sellerHtml}">
 
 <!-- Content -->
 
@@ -12,61 +14,71 @@
 		<div class="col-12 col-lg-auto">
 
 			<!-- NAVBAR -->
-			<nav class="navbar navbar-expand-lg navbar-vertical navbar-light sticky-start px-lg-7 ">
+			<nav
+				class="navbar navbar-expand-lg navbar-vertical navbar-light sticky-start px-lg-7 ">
 				<div class="container-fluid">
 
 					<!-- Brand -->
 					<a class="navbar-brand" href="/sellerMain"> 판매자센터 </a>
 
 					<!-- Toggler -->
-					<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-						data-bs-target="#navbarSidenavLeftCollapse" aria-controls="navbarSidenavLeftCollapse"
-						aria-expanded="false" aria-label="Toggle navigation">
+					<button class="navbar-toggler" type="button"
+						data-bs-toggle="collapse"
+						data-bs-target="#navbarSidenavLeftCollapse"
+						aria-controls="navbarSidenavLeftCollapse" aria-expanded="false"
+						aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
 
 					<!-- Collapse -->
-					<div class="collapse navbar-collapse" id="navbarSidenavLeftCollapse">
+					<div class="collapse navbar-collapse"
+						id="navbarSidenavLeftCollapse">
 
 						<!-- Nav -->
 						<ul class="navbar-nav fs-lg mb-6 my-lg-12" id="sidenavParent">
 							<li class="nav-item">
-								<!-- Toggle --> <a class="nav-link dropdown-toggle" data-bs-toggle="collapse"
-									href="#sidenavHome"> 상품관리 </a> <!-- Collapse -->
-								<div class="collapse" id="sidenavHome" data-bs-parent="#sidenavParent">
+								<!-- Toggle --> <a class="nav-link dropdown-toggle"
+								data-bs-toggle="collapse" href="#sidenavHome"> 상품관리 </a> <!-- Collapse -->
+								<div class="collapse" id="sidenavHome"
+									data-bs-parent="#sidenavParent">
 									<ul class="list-styled fs-base fw-normal py-3 mb-0">
-										<li class="list-styled-item"><a class="list-styled-link" href="/productList">상품
-												조회/수정</a></li>
 										<li class="list-styled-item"><a class="list-styled-link"
-												href="/insertProduct">상품등록</a></li>
+											href="/productList">상품 조회/수정</a></li>
+										<li class="list-styled-item"><a class="list-styled-link"
+											href="/insertProduct">상품등록</a></li>
 
 									</ul>
 								</div>
 
 							</li>
 							<li class="nav-item">
-								<!-- Toggle --> <a class="nav-link dropdown-toggle" data-bs-toggle="collapse"
-									href="#sidenavCatalog"> 판매관리 </a> <!-- Collapse -->
-								<div class="collapse" id="sidenavCatalog" data-bs-parent="#sidenavParent">
+								<!-- Toggle --> <a class="nav-link dropdown-toggle"
+								data-bs-toggle="collapse" href="#sidenavCatalog"> 판매관리 </a> <!-- Collapse -->
+								<div class="collapse" id="sidenavCatalog"
+									data-bs-parent="#sidenavParent">
 									<div class="row">
 										<div class="col-12 py-3">
 											<!-- Links -->
 											<ul class="list-styled fs-base">
-												<li class="list-styled-item"><a class="list-styled-link"
-														href="/orderManagement">주문확인/발송관리</a></li>
-												<li class="list-styled-item"><a class="list-styled-link"
-														href="/cancelProduct">취소관리</a></li>
-												<li class="list-styled-item"><a class="list-styled-link"
-														href="/exchangeList">교환반품관리</a></li>
+												<li class="list-styled-item"><a
+													class="list-styled-link" href="/orderManagement">주문확인/발송관리</a></li>
+												<li class="list-styled-item"><a
+													class="list-styled-link" href="/cancelProduct">취소관리</a></li>
+												<li class="list-styled-item"><a
+													class="list-styled-link" href="/exchangeList">교환반품관리</a></li>
 
 											</ul>
 										</div>
 									</div>
 								</div>
-							<li class="nav-item"><a class="nav-link" href="/settlementManagement">정산/통계관리</a></li>
-							<li class="nav-item"><a class="nav-link" href="/productInquiry">문의관리</a></li>
-							<li class="nav-item"><a class="nav-link" href="/sellerMypage">판매자정보</a></li>
-							<li class="nav-item"><a class="nav-link" href="./docs/getting-started.html">고객센터</a></li>
+							<li class="nav-item"><a class="nav-link"
+								href="/settlementManagement">정산/통계관리</a></li>
+							<li class="nav-item"><a class="nav-link"
+								href="/productInquiry">문의관리</a></li>
+							<li class="nav-item"><a class="nav-link"
+								href="/sellerMypage">판매자정보</a></li>
+							<li class="nav-item"><a class="nav-link"
+								href="./docs/getting-started.html">고객센터</a></li>
 						</ul>
 
 
@@ -84,7 +96,8 @@
 
 			<div class="_1Vof48UxmD _oVRNwPvxck">
 				<div class="_KqV0-1BSnB">
-					<label class="_MN8nIh0X4y">상세조건</label> <select class="_4LshyCrDpi" title="리스트 보기">
+					<label class="_MN8nIh0X4y">상세조건</label> <select class="_4LshyCrDpi"
+						title="리스트 보기">
 						<option selected="" value="">전체</option>
 						<option value="MEMBER_NAME">구매자명</option>
 						<option value="MEMBER_TEL">구매자연락처</option>
@@ -93,8 +106,9 @@
 						<option value="DELIVERY_NUMBER">송장번호</option>
 					</select> <input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
 					<div>
-						<span>조회기간</span> <input type="text" id="from" name="from" autocomplete="off"> <label
-							for="to">~</label> <input type="text" id="to" name="to" autocomplete="off">
+						<span>조회기간</span> <input type="text" id="from" name="from"
+							autocomplete="off"> <label for="to">~</label> <input
+							type="text" id="to" name="to" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -104,11 +118,11 @@
 
 			<section class="pb-12">
 				<div class="orderBtn" style="margin: 20px;">
-					<input type="button" id="checkOrderBtn" value="발주확인"> <input type="button" id="insertDeliveryBtn"
-						value="발송처리">
+					<input type="button" id="checkOrderBtn" value="발주확인"> <input
+						type="button" id="insertDeliveryBtn" value="발송처리">
 					<!-- 모달 버튼 -->
-					<button type="button" id="cancelModal" data-toggle="modal" data-target="#myModal"
-						style="background-color: red;">판매자
+					<button type="button" id="cancelModal" data-toggle="modal"
+						data-target="#myModal" style="background-color: red;">판매자
 						직접취소 처리</button>
 
 					<!-- 모달 창 -->
@@ -127,7 +141,6 @@
 									<table class="table" id="modalData">
 										<thead>
 											<tr>
-												<th><input type="checkbox" id="modalAllChk"></th>
 												<th>주문상세코드</th>
 												<th>상품명</th>
 												<th>구매개수</th>
@@ -137,10 +150,11 @@
 
 										</tbody>
 									</table>
-									<div id="detailReason" style="display: flex; align-items: flex-start;">
+									<div id="detailReason"
+										style="display: flex; align-items: flex-start;">
 										<label for="name">상세이유 </label>
 										<textarea
-											style="width: 80%; height: 6.25em; resize: none; margin-left:30px"></textarea>
+											style="width: 80%; height: 6.25em; resize: none; margin-left: 30px"></textarea>
 									</div>
 								</div>
 
@@ -148,7 +162,8 @@
 								<div class="modal-footer">
 									<button type="button" id="reasonSend" class="btn btn-secondary"
 										data-dismiss="modal">보내기</button>
-									<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+									<button type="button" class="btn btn-secondary"
+										data-dismiss="modal">닫기</button>
 								</div>
 							</div>
 						</div>
@@ -176,11 +191,14 @@
 							<td th:text="${order.option.optionValue}" />
 							<td th:text="${order.orderCnt}" />
 							<td th:text="${order.requestedTerm}" />
-							<td th:if="${order.deliveryCompany != null}" th:text="${order.deliveryCompany}"></td>
-							<td th:unless="${order.deliveryCompany != null}"><input type="text" name="deliveryName">
-							</td>
-							<td th:if="${order.deliveryNumber != 0}" th:text="${order.deliveryNumber}" />
-							<td th:unless="${order.deliveryNumber != 0}"><input type="text" name="deliveryNumber"></td>
+							<td th:if="${order.deliveryCompany != null}"
+								th:text="${order.deliveryCompany}"></td>
+							<td th:unless="${order.deliveryCompany != null}"><input
+								type="text" id="deliveryCompany"></td>
+							<td th:if="${order.deliveryNumber != 0}"
+								th:text="${order.deliveryNumber}" />
+							<td th:unless="${order.deliveryNumber != 0}"><input
+								type="text" id="deliveryNumber"></td>
 							<td th:text="${#dates.format(order.deliveryStart,'yyyy-MM-dd')}" />
 						</tr>
 						<!-- 반복문 종료 -->
@@ -191,117 +209,126 @@
 	</div>
 
 	<script>
-	$(document).ready(function () {
+   $(document).ready(function () {
        
   
-			 $( function() {
-				 
-				    var dateFormat = "yyyy/MM/dd",
-				      from = $( "#from" )
-				        .datepicker({
-				          defaultDate: "+1w",
-				          changeMonth: true,
-				          numberOfMonths: 1
-				        })
-				        .on( "change", function() {
-				          to.datepicker( "option", "minDate", getDate( this ) );
-				        }),
-				      to = $( "#to" ).datepicker({
-				        defaultDate: "+1w",
-				        changeMonth: true,
-				        numberOfMonths: 1
-				      })
-				      .on( "change", function() {
-				        from.datepicker( "option", "maxDate", getDate( this ) );
-				      });
-				 
-				    function getDate( element ) {
-				      var date;
-				      try {
-				        date = $.datepicker.parseDate( dateFormat, element.value );
-				      } catch( error ) {
-				        date = null;
-				      }
-				 
-				      return date;
-				    }
-				  });
-			
-			
-			document.getElementById('allCheck')
-			.addEventListener('click', allCheckEvent);
-			
-			
+          $( function() {
+             
+                var dateFormat = "yyyy/MM/dd",
+                  from = $( "#from" )
+                    .datepicker({
+                      defaultDate: "+1w",
+                      changeMonth: true,
+                      numberOfMonths: 1
+                    })
+                    .on( "change", function() {
+                      to.datepicker( "option", "minDate", getDate( this ) );
+                    }),
+                  to = $( "#to" ).datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    numberOfMonths: 1
+                  })
+                  .on( "change", function() {
+                    from.datepicker( "option", "maxDate", getDate( this ) );
+                  });
+             
+                function getDate( element ) {
+                  var date;
+                  try {
+                    date = $.datepicker.parseDate( dateFormat, element.value );
+                  } catch( error ) {
+                    date = null;
+                  }
+             
+                  return date;
+                }
+              });
+         
+         
+         document.getElementById('allCheck')
+         .addEventListener('click', allCheckEvent);
+         
+         
 
-			function allCheckEvent(e) {
-			    let allCheckTag = document.getElementById('allCheck');
-			    let checkTags = document.querySelectorAll('[type="checkbox"]');
-			    checkTags.forEach(el => {
-			        el.checked = allCheckTag.checked;
-			    })
-			}
-
-
-			$('#cancelModal').on('click',function(){
-				let orderList =[];
-				let checkTags = $('#getProductList input[type="checkbox"]:checked').not('#allCheck');
-				checkTags.each((idx, tag) =>{
-					console.log(tag);
-					let orderDetailCode = $(tag).closest('tr').find('td:eq(1)').text();
-					let productName = $(tag).closest('tr').find('td:eq(2)').text();
-					let orderCnt = $(tag).closest('tr').find('td:eq(4)').text();
-					let obj = {'orderDetailCode' : orderDetailCode
-								,'productName' : productName
-								,'orderCnt' : orderCnt
-								};
-					orderList.push(obj);
-				})
+         function allCheckEvent(e) {
+             let allCheckTag = document.getElementById('allCheck');
+             let checkTags = document.querySelectorAll('[type="checkbox"]');
+             checkTags.forEach(el => {
+                 el.checked = allCheckTag.checked;
+             })
+         }
 
 
-				let tbody = $('#modalData tbody');
-				tbody.empty(); 
-
-				orderList.forEach(item => {
-					let row = $('<tr>');
-					row.append($('<td><input type="checkbox"></td>'));
-					row.append($('<td>').text(item.orderDetailCode));
-					row.append($('<td>').text(item.productName)); // 상품명 추가
-					row.append($('<td>').text(item.orderCnt)); // 판매가 추가
-					tbody.append(row);
-				});	
-
-			
-			})
-
-			document.getElementById('modalAllChk')
-			.addEventListener('click', allCheckModal);
-			
-			
-
-			function allCheckModal(e) {
-			    let allCheckTag = document.getElementById('modalAllChk');
-			    let checkTags = document.querySelectorAll('#modalData [type="checkbox"]');;
-			    checkTags.forEach(el => {
-			        el.checked = allCheckTag.checked;
-			    })
-			}
+         $('#cancelModal').on('click',function(){
+            let orderList =[];
+            let checkTags = $('input[type="checkbox"]:checked').not('#allCheck');
+            checkTags.each((idx, tag) =>{
+               console.log(tag);
+               let orderDetailCode = $(tag).closest('tr').find('td:eq(1)').text();
+               let productName = $(tag).closest('tr').find('td:eq(2)').text();
+               let orderCnt = $(tag).closest('tr').find('td:eq(4)').text();
+               let obj = {'orderDetailCode' : orderDetailCode
+                        ,'productName' : productName
+                        ,'orderCnt' : orderCnt
+                        };
+               orderList.push(obj);
+            })
 
 
+            let tbody = $('#modalData tbody');
+            tbody.empty(); 
 
+            orderList.forEach(item => {
+               let row = $('<tr>');
+               row.append($('<td>').text(item.orderDetailCode));
+               row.append($('<td>').text(item.productName)); // 상품명 추가
+               row.append($('<td>').text(item.orderCnt)); // 판매가 추가
+               tbody.append(row);
+            });   
 
+         
+         })
 
+         
+      
 
+          $('#insertDeliveryBtn').on('click', function(){
+            let deliveryList =[];
+            let checkTags = $('#getProductList input[type="checkbox"]:checked').not('#allcheck');
+            
+            
+            checkTags.each((idx, tag) => {
+               let detailOrderCode = $(tag).parent().next().text();
+               let deliveryCompany = $(tag).parent().find('td:last input#deliveryCompany').val().text();
+               console.log(deliveryCompany);
+               let obj = {'detailOrderCode' : detailOrderCode};
+               deliveryList.push(obj);
+         })
 
+         $.ajax('updateDelivery',{
 
-
-		})
-
-
-
-	 
-			
-			
-			</script>
+            type:'post',
+            contentType : 'application/json',
+            data : JSON.stringify(deliveryList)
+            
+         })
+         .done(data => {
+            console.log(data);
+            //refreshList();
+         })
+         .fail(reject => console.log(reject));
+      })
+ 
+       function refreshList(){
+         location.reload();
+      } 
+      
+   })
+    
+         
+         
+         </script>
 
 </div>
 </html>

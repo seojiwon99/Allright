@@ -10,7 +10,6 @@ import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.service.CancelVO;
 
 import com.ar.lighthouse.product.service.ExchangeVO;
-import com.ar.lighthouse.product.service.ImgsVO;
 
 import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductVO;
