@@ -26,9 +26,9 @@ import com.ar.lighthouse.buyp.service.BuyerCancelVO;
 import com.ar.lighthouse.buyp.service.CodeVO;
 import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
-import com.ar.lighthouse.buyp.service.ExchangeVO;
+import com.ar.lighthouse.buyp.service.BuyExchangeVO;
 import com.ar.lighthouse.buyp.service.MyInquiryVO;
-import com.ar.lighthouse.buyp.service.ReturnVO;
+import com.ar.lighthouse.buyp.service.BuyReturnVO;
 import com.ar.lighthouse.buyp.service.TradeVO;
 import com.ar.lighthouse.buyp.service.WishVO;
 import com.ar.lighthouse.member.service.MemberVO;
@@ -156,7 +156,7 @@ public class BuyerPageController {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 
-		List<ReturnVO> returnList = buyerPageService.getReturnList(memberId);
+		List<BuyReturnVO> returnList = buyerPageService.getReturnList(memberId);
 		model.addAttribute("returnList", returnList);
 
 		return "/page/buyer/returnList";
@@ -169,7 +169,7 @@ public class BuyerPageController {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 
-		List<ExchangeVO> exchangeList = buyerPageService.getExchangeList(memberId);
+		List<BuyExchangeVO> exchangeList = buyerPageService.getExchangeList(memberId);
 		model.addAttribute("exchangeList", exchangeList);
 
 		return "/page/buyer/exchangeList";
@@ -190,7 +190,7 @@ public class BuyerPageController {
 
 	// 교환
 	@PostMapping("buyer/exchangeInsert")
-	public ResponseEntity<String> addExchange(@RequestBody ExchangeVO excVO, HttpSession session) {
+	public ResponseEntity<String> addExchange(@RequestBody BuyExchangeVO excVO, HttpSession session) {
 
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		excVO.setMemberId(memberVO.getMemberId());
