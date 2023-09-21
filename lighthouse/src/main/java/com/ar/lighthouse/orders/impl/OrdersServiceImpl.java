@@ -38,12 +38,13 @@ public class OrdersServiceImpl implements OrdersService{
 			 Date endDateDate = endDate.get(i).getEndDate();
 			 String endDateStr = simpleDateFormat.format(endDateDate);
 			 
-			 if(endDateStr.compareTo(sysDate) >=0 ) {
+			 if(endDateStr.compareTo(sysDate) >= 0 ) {
 				 // 날짜 비교 기준 날짜 보다 endDateStr이 현재보다 같거나 이전날짜 		 
 			 } else {
-				 // endDateStr이 현재보다 지난 날짜
-				 endDate.get(i).setCouponUse("N");
-				 ordersMapper.selectCoupon(memberId);
+				 // endDateStr이 현재보다 지난 날짜 -- 기간 지날 날짜는 안보이게함.
+				 int mycouponCode = endDate.get(i).getMycouponCode();
+				 ordersMapper.insertDeadCoupon(memberId, mycouponCode);
+				
 			 }
 		}
 		return ordersMapper.selectCoupon(memberId);
