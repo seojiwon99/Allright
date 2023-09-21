@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ar.lighthouse.buyp.service.CodeVO;
+import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.orders.service.CreditVO;
 import com.ar.lighthouse.orders.service.OrdersService;
