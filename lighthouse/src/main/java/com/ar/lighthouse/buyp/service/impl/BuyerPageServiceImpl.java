@@ -12,14 +12,14 @@ import com.ar.lighthouse.buyp.mapper.BuyerPageMapper;
 import com.ar.lighthouse.buyp.service.BuyInfoVO;
 import com.ar.lighthouse.buyp.service.BuyerPageService;
 
-import com.ar.lighthouse.buyp.service.BuyerCancelVO;
-
+import com.ar.lighthouse.buyp.service.BuyCancelVO;
 import com.ar.lighthouse.buyp.service.CodeVO;
 import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
-import com.ar.lighthouse.buyp.service.BuyerExchangeVO;
+import com.ar.lighthouse.buyp.service.BuyExchangeVO;
 import com.ar.lighthouse.buyp.service.MyInquiryVO;
-import com.ar.lighthouse.buyp.service.BuyerReturnVO;
+import com.ar.lighthouse.buyp.service.BuyReturnVO;
+
 import com.ar.lighthouse.buyp.service.TradeVO;
 import com.ar.lighthouse.buyp.service.WishVO;
 
@@ -75,25 +75,32 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 
 	@Override
 
-	public List<BuyerCancelVO> getCancelList(String memberId) {
+	public List<BuyCancelVO> getCancelList(String memberId) {
+
 		return buyerPageMapper.selectCancelList(memberId);
 	}
 
 
 	@Override
-	public List<BuyerReturnVO> getReturnList(String memberId) {
+
+	public List<BuyReturnVO> getReturnList(String memberId) {
+
 		return buyerPageMapper.selectReturnList(memberId);
 	}
 
 
 	@Override
-	public List<BuyerExchangeVO> getExchangeList(String memberId) {
+
+	public List<BuyExchangeVO> getExchangeList(String memberId) {
+
 		return buyerPageMapper.selectExchangeList(memberId);
 	}
 
 
 	@Override
-	public int addExchange(BuyerExchangeVO excVO) {
+
+	public int addExchange(BuyExchangeVO excVO) {
+
 		return buyerPageMapper.insertExchange(excVO);
 	}
 
@@ -113,6 +120,30 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	@Override
 	public List<CodeVO> getCancelCode(String memberId) {
 		return buyerPageMapper.selectCancelCode(memberId);
+	}
+
+
+	@Override
+	public CodeVO getExchangePage(CodeVO codeVO) {
+		return buyerPageMapper.exchangeCodePage(codeVO);
+	}
+
+
+	@Override
+	public CodeVO getReturnPage(CodeVO codeVO) {
+		return buyerPageMapper.returnCodePage(codeVO);
+	}
+
+
+	@Override
+	public CodeVO getCancelPage(CodeVO codeVO) {
+		return buyerPageMapper.cancelCodePage(codeVO);
+	}
+
+
+	@Override
+	public int addCancel(BuyCancelVO canVO) {
+		return buyerPageMapper.insertCancel(canVO);
 	}
 	
 	
