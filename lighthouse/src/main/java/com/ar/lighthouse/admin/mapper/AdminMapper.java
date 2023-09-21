@@ -10,6 +10,7 @@ import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.admin.service.NoticeAdminVO;
 import com.ar.lighthouse.admin.service.ProductDetailVO;
 import com.ar.lighthouse.common.Criteria;
+import com.ar.lighthouse.customsvc.service.FaqVO;
 import com.ar.lighthouse.customsvc.service.InquiryVO;
 
 
@@ -18,6 +19,8 @@ public interface AdminMapper {
 	
 	//공지 등록
 	public int insertNotice(NoticeAdminVO noticeAdminVO);
+	//faq 등록
+	public int insertFaq(FaqVO faqVO);
 	
 					/*Declare*/	
 	//신고 목록
@@ -30,6 +33,8 @@ public interface AdminMapper {
 			, @Param("declareContent") String declareContent, @Param("declareReason") String declareReason);
 	//처리된 신고 개수
 	public int selectTotalClearDeclareCount(DeclareVO declareVO);
+	
+	public DeclareVO selectDeclareDetail(DeclareVO declareVO);
 	
 					/*Inquiry*/
 	//문의 개수

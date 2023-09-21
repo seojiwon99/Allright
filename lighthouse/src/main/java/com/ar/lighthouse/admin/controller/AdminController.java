@@ -15,6 +15,7 @@ import com.ar.lighthouse.admin.service.ProductDetailVO;
 import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.common.PageDTO;
 import com.ar.lighthouse.customsvc.service.CustomService;
+import com.ar.lighthouse.customsvc.service.FaqVO;
 import com.ar.lighthouse.customsvc.service.InquiryVO;
 
 @Controller
@@ -51,12 +52,25 @@ public class AdminController {
 		return "page/admin/noticeForm";
 	}
 	
+	@GetMapping("admin/faqForm")
+	public String faqForm() {
+		return "page/admin/faqForm";
+	}
+	
 	@PostMapping("admin/addNotice")
 	public String addNotice(NoticeAdminVO noticeAdminVO) {
 		System.out.println(noticeAdminVO);
 		adminService.addNotice(noticeAdminVO);
 		return "redirect:/admin/notice";
 	}
+	@PostMapping("admin/addFaq")
+	public String addFaq(FaqVO faqVO) {
+		System.out.println(faqVO);
+		adminService.addFaq(faqVO);
+		return "redirect:/admin/faq";
+	}
+	
+	
 	@GetMapping("admin/declareList")
 	public String declareList(Criteria cri,Model model, DeclareVO declareVO) {
 		System.out.println(declareVO);
@@ -73,6 +87,12 @@ public class AdminController {
 		model.addAttribute("declareList", adminService.getClearDeclareList(cri.getAmount(), cri.getPageNum(), declareVO.getDeclareContent(), declareVO.getDeclareReason()));
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		return "page/admin/clearDeclareList";
+	}
+	
+	@GetMapping("admin/declareDetail")
+	public String declareDetail(Model model, DeclareVO declareVO) {
+		model.addAttribute("declareDetail", adminService.getDeclareDetail(declareVO));
+		return "page/admin/declareDetail";
 	}
 	
 	

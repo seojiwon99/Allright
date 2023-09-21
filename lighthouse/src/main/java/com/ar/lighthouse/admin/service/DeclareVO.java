@@ -19,5 +19,10 @@ public class DeclareVO {
  	@DateTimeFormat(pattern="yyyy-MM-dd")
 	Date declareRegdate;
  	String suspendStatus;
+ 	
+ 	//디테일에 쓰임.
+ 	int declareCount;
+ 	String reviewContent;
+ 	
 	
 }

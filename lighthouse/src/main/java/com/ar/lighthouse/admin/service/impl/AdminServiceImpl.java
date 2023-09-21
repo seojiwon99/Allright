@@ -13,6 +13,7 @@ import com.ar.lighthouse.admin.service.NoticeAdminVO;
 import com.ar.lighthouse.admin.service.ProductDetailVO;
 import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.customsvc.mapper.CustomMapper;
+import com.ar.lighthouse.customsvc.service.FaqVO;
 import com.ar.lighthouse.customsvc.service.InquiryVO;
 
 @Service
@@ -100,6 +101,16 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public int getTotalNoticeCount(NoticeAdminVO noticeAdminVO) {
 		return adminMapper.selectTotalNoticeCount(noticeAdminVO);
+	}
+
+	@Override
+	public int addFaq(FaqVO faqVO) {
+		return adminMapper.insertFaq(faqVO);
+	}
+
+	@Override
+	public DeclareVO getDeclareDetail(DeclareVO declareVO) {
+		return adminMapper.selectDeclareDetail(declareVO);
 	}
 
 }

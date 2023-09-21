@@ -268,29 +268,44 @@ checkBeforeInsert[detailsAddrTrue] = false;
 console.log(checkBeforeInsert);
 
 $('#joinBtn').on('click', function joinAjax(){
+	if(!checkBeforeInsert[idTrue]){
+		alert('아이디를 다시 확인해주세요.')	
+		return;
+	}
+	if(!checkBeforeInsert[pwTrue]){
+		alert('비밀번호를 다시 확인해주세요.')	
+		return;
+	}
+	if(!checkBeforeInsert[emailTrue]){
+		alert('이메일을 다시 확인해주세요.')	
+		return;
+	}
+	
 	if($('#name').val() != ""){
 		checkBeforeInsert[nameTrue] = true;
 	}else{
 		checkBeforeInsert[nameTrue] = false;
+		alert('이름을 올바르게 입력해주세요.')	
+		return false;
 	}
 	
 	if($('#addr').val() != ""){
 		checkBeforeInsert[addrTrue] = true;
 	}else{
 		checkBeforeInsert[addrTrue] = false;
+		alert('주소를 올바르게 입력해주세요.')	
+		return false;
+		
 	}
 	if($('#addrDt').val() != ""){
 		checkBeforeInsert[detailsAddrTrue] = true;
 	}else{
 		checkBeforeInsert[detailsAddrTrue] = false;
+		alert('상세주소를 올바르게 입력해주세요.')	
+		return false;
 	}
 	
-	$.each(checkBeforeInsert, function(idx, obj){
-		console.log(idx, obj);
-		if(obj == false){
-			alert('입력정보를 올바르게 해주세요.')	
-		}
-	})
+
 	let memberVO = {
 		'memberId' : $('#id').val(),
 		'memberPw' : $('#pw').val(),

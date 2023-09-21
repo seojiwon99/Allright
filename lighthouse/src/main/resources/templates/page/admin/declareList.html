@@ -64,7 +64,7 @@
 			    </tr>
 			  </thead>
 			  <tbody>
-			    <tr th:each="declare : ${declareList}">
+			    <tr th:each="declare : ${declareList}" th:onclick="|location.href='@{/admin/declareDetail(declareCode=${declare.declareCode})}'|">
 					
 						<td scope="row" th:text="${declare.declareCode}"></td>
 						<td th:text="${declare.declareReason}"></td>
@@ -104,6 +104,8 @@
 					</nav>
 					<!-- pagi end -->
 	</div><!-- container -->
+	
+	
 	<script>
 	$('#declareSearchBtn').on('click', function(){
 		let url = "?declareContent=" + $('#declareSearchBar').val()

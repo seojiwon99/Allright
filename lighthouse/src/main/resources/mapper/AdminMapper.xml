@@ -32,6 +32,25 @@
 	  						)
   	</insert>
   	
+  	<insert id="insertFaq" parameterType="FaqVO">
+	  	 <selectKey resultType="int" keyProperty="faqCode" order="BEFORE">
+	  		SELECT NVL(MAX(faq_code),1)+1 FROM ar_faq
+	  	</selectKey>
+	  	
+	  	INSERT INTO ar_faq (
+	  						faq_code
+	  						, question_title
+	  						, question_answer
+	  						, faq_type
+	  						) 
+	  					values(
+	  						#{faqCode}
+	  						, #{questionTitle}
+	  						, #{questionAnswer}
+	  						, #{faqType}
+	  						)
+  	</insert>
+  	
   	<select id="selectDeclareList" resultType="DeclareVO">
 		SELECT rt.declare_code, declare_code_name(rt.declare_reason) as declare_reason, rt.declare_content, rt.member_id, rt.declare_member, rt.declare_regdate
 		FROM       (
@@ -62,6 +81,20 @@
 	<if test="declareReason != null and !(declareReason.equals(''))">	
 	AND declare_reason = #{declareReason}
 	</if>
+  	</select>
+  	
+  	<select id="selectDeclareDetail" resultType="declareVO">
+  	select 	d.declare_code
+  			, declare_code_name(d.declare_reason) as declare_reason
+  			, d.declare_regdate
+  			, r.review_content
+  			, d.declare_content
+  			, d.member_id
+  			, d.declare_member
+  			, r.product_code
+  			, (select count(*) from ar_declare where member_id = d.member_id) as declare_count
+	from ar_declare d JOIN ar_review r ON d.review_code = r.review_code
+	where d.declare_code = #{declareCode}
   	</select>
   	
   	<!-- ClearDeclare -->

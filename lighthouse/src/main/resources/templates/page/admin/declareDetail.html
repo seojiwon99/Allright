@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_layout2}">
+<style>
+table {
+	border : 1px;
+}
+</style>
+
+<!-- Content -->
+<div layout:fragment="content" class="col">
+        		<!-- main 영역 -->
+        			<div class="container" style="margin-left: 0px">
+        			<div class="row justify-content-center">
+        			
+					<div class="col" style="    display: flex;
+											    justify-content: space-between;
+											    margin-bottom: 30px;
+											    margin-top:30px;">
+						<!-- Form -->
+						<div>
+						<h2>신고 상세</h2>
+						</div>
+					</div><!--  col -->
+            <form id="faqForm">
+
+              <!-- Email -->
+              <div class="form-group mb-7">
+              
+              <div style="display:flex; justify-content: space-between;">
+              		<div>
+		                <label class="visually">
+		                 No. [[${declareDetail.declareCode}]]
+		                </label>
+		                <label class="visually">
+		                | 사유: [[${declareDetail.declareReason}]]
+		                </label>
+              		</div>
+              		<div>
+		                <label th:text="${#dates.format(declareDetail.declareRegdate,'yyyy-MM-dd')}">
+		                </label>
+              		</div>
+              </div>
+                <textarea class="form-control form-control-sm" name="questionAnswer"   id="questionAnswer" rows="10" th:text="${declareDetail.reviewContent}" readonly ></textarea>
+    	          <div style="display: flex;  justify-content: center;">
+		               <nav class="nav nav-overflow">
+		             	<a class="nav-link active" href="#!" target="_blank">상품 상세 페이지로.</a>
+		              </nav>
+	              </div>
+              </div>
+            
+              
+              <div class="form-group mb-7">
+  
+               <div style="display:flex; justify-content: space-between;">
+              		<div>
+		                <label class="visually">
+		                 피신고자: [[${declareDetail.memberId}]]
+		                </label>
+		                <label class="visually">
+		                | 누적 신고 : [[${declareDetail.declareCount}]]
+		                </label>
+              		</div>
+              		<div>
+						<label class="visually" for="contactMessage">
+						신고자 : [[${declareDetail.declareMember}]]
+						</label>
+              		</div>
+              </div>
+                <textarea class="form-control form-control-sm" name="questionAnswer"   id="questionAnswer" rows="10" th:text="${declareDetail.declareContent}" readonly></textarea>
+              </div>
+              <div style="display: flex;  justify-content: center;">
+              <input name="suspStatus" type="radio" id="status" value="1"><label>: 30일&nbsp&nbsp&nbsp</label>
+              <input name="suspStatus" type="radio" id="status" value="2"><label>: 90일&nbsp&nbsp&nbsp</label>
+              <input name="suspStatus" type="radio" id="status" value="3"><label>: 영구&nbsp&nbsp&nbsp</label>
+              
+              </div>
+			<div style="display: flex;  justify-content: center;">
+              <!-- Button -->
+              <button class="btn btn-xs btn-outline-primary btn-underline mb-1" type="button" id="cancel" style="margin:10px">취소</button>
+              <button class="btn btn-xs btn-outline-primary btn-underline mb-1" type="button" id="suspBtn" style="margin:10px">저장하기</button>
+			</div>
+            </form>		
+					</div><!-- row justify -->
+					</div><!-- container -->
+					
+<script>
+	$('#noticeBtn').on('click', function(){
+		location.href = "/admin/noticeForm";
+	})
+	$('#calcel').on('click', function(){
+		location.href = "/admin/declareList";
+	})
+	$('#suspBtn').on('click', function(){
+		let radios = document.getElementsByName("suspStatus");
+		let chk = $('input[name="suspStatus"]:checked');
+		//판매자인지 구매자인지 memberId로 권한 가져올 것
+		console.log(chk);
+		//location.href = "/admin/suspendUser?"
+	})
+</script>      
+</div>
+</html>
