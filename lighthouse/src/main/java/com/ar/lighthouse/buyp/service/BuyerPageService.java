@@ -26,24 +26,45 @@ public interface BuyerPageService {
 	public List<WishVO> getWishList(String memberId);
 
 	// 취소 상세
-	public List<BuyerCancelVO> getCancelList(String memberId);
 
+	public List<BuyCancelVO> getCancelList(String memberId);
 
 	// 반품 상세
-	public List<ReturnVO1> getReturnList(String memberId);
+
+
+	public List<BuyReturnVO> getReturnList(String memberId);
+
 
 	// 교환 상세
-	public List<ExchangeVO1> getExchangeList(String memberId);
+
+
+	public List<BuyExchangeVO> getExchangeList(String memberId);
+
 
 	// 교환 신청
-	public int addExchange(ExchangeVO1 excVO);
+
+
+	public int addExchange(BuyExchangeVO excVO);
+
 
 	// 교환 코드
 	public List<CodeVO> getExchangeCode(String memberId);
+	
+	// 교환 페이지에 데이터 넘김
+	public CodeVO getExchangePage(CodeVO codeVO);
 
 	// 반품 코드
 	public List<CodeVO> getReturnCode(String memberId);
 
+	// 반품 페이지에 데이터 넘김
+	public CodeVO getReturnPage(CodeVO codeVO);
+	
 	// 취소 코드
 	public List<CodeVO> getCancelCode(String memberId);
+	
+	//취소 페이지에 데이터 넘김
+	public CodeVO getCancelPage(CodeVO codeVO);
+	
+	//취소 신청
+	public int addCancel(BuyCancelVO canVO);
 }

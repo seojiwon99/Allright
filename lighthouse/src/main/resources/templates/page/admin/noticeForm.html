@@ -2,185 +2,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/admin_layout}">
-<style>
-table {
-	border : 1px;
-}
-</style>
-
+      layout:decorate="~{layouts/admin_layout2}">
 <!-- Content -->
-<div layout:fragment="content">
-	<div class="row gx-0">
-        <div class="col-12 col-lg-2">
-
-          <!-- NAVBAR -->
-          <nav class="navbar navbar-expand-lg navbar-vertical navbar-light sticky-start px-lg-7 ">
-            <div class="container-fluid">
-          
-              <!-- Brand -->
-              <a class="navbar-brand" href="/sellerMain">
-                All Right
-              </a>
-          
-              <!-- Toggler -->
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSidenavLeftCollapse" aria-controls="navbarSidenavLeftCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-          
-              <!-- Collapse -->
-              <div class="collapse navbar-collapse" id="navbarSidenavLeftCollapse">
-          
-                <!-- Nav -->
-                <ul class="navbar-nav fs-lg mb-6 my-lg-6" id="sidenavParent">
-                
-             
-                  <!-- Toggle -->
-                  <li class="nav-item">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#sidenavHome">
-                      공지사항
-                    </a>
-          
-                    <!-- Collapse -->
-                    <div class="collapse" id="sidenavHome" data-bs-parent="#sidenavParent">
-                      <ul class="list-styled fs-base fw-normal py-3 mb-0">
-                        <li class="list-styled-item">
-                          <a class="list-styled-link" href="/admin/notice">공지사항</a>
-                        </li>
-                        <li class="list-styled-item">
-                          <a class="list-styled-link" href="/admin/faq">자주 묻는 질문</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li class="nav-item">
-                  
-                  <!-- Toggle -->
-                  <li class="nav-item">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#sidenavHome2">
-                      신고내역
-                    </a>
-          
-                    <!-- Collapse -->
-                    <div class="collapse" id="sidenavHome2" data-bs-parent="#sidenavParent">
-                      <ul class="list-styled fs-base fw-normal py-3 mb-0">
-                        <li class="list-styled-item">
-                          <a class="list-styled-link" href="/productList">신고내역</a>
-                        </li>
-                        <li class="list-styled-item">
-                          <a class="list-styled-link" href="/insertProduct">처리된 신고내역</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li class="nav-item">
-                  
-                  
-                  <!-- Toggle -->
-                  <li class="nav-item">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#sidenavHome3">
-                      문의내역
-                    </a>
-          
-                    <!-- Collapse -->
-                    <div class="collapse" id="sidenavHome3" data-bs-parent="#sidenavParent">
-                      <ul class="list-styled fs-base fw-normal py-3 mb-0">
-                        <li class="list-styled-item">
-                          <a class="list-styled-link" href="/productList">문의내역</a>
-                        </li>
-                        <li class="list-styled-item">
-                          <a class="list-styled-link" href="/insertProduct">처리돤 문의내역</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li class="nav-item">
-                  
-                  
-                  <!-- Toggle -->
-                  <li class="nav-item">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#sidenavHome4">
-                      회원목록
-                    </a>
-          
-                    <!-- Collapse -->
-                    <div class="collapse" id="sidenavHome4" data-bs-parent="#sidenavParent">
-                      <ul class="list-styled fs-base fw-normal py-3 mb-0">
-                        <li class="list-styled-item">
-                          <a class="list-styled-link" href="/productList">구매자</a>
-                        </li>
-                        <li class="list-styled-item">
-                          <a class="list-styled-link" href="/insertProduct">판매자</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li class="nav-item">
-                  
-                  
-                  <!-- Toggle -->
-                  <li class="nav-item">
-                    <a class="nav-link dropdown-toggle" href="/insertProduct">
-                      상품목록
-                    </a>
-                  <li class="nav-item">
-                  
-                  <!-- Toggle -->
-                  <li class="nav-item">
-                    <a class="nav-link dropdown-toggle" href="/insertProduct">
-                      배너수정
-                    </a>
-                  <li class="nav-item">
-                  
-                  
-                  
-               
-          
-          
-          
-                 <!-- nav end -->
-                </ul>
-              </div>
-          
-            </div>
-          </nav>
-
-        </div>
-        				<!-- NAVBAR  SEARCHBAR-->
-       		<div class="col-12 col-lg-9">
+<div layout:fragment="content" class="col">
         		<!-- main 영역 -->
-        			<div class="container">
-        			<div class="row justify-content-center">
-        			
+        			<div class="container" style="margin-left: 0px">
 					<div class="col" style="    display: flex;
 											    justify-content: space-between;
 											    margin-bottom: 30px;
 											    margin-top:30px;">
 						<!-- Form -->
 						<div>
-						<h2>공지사항</h2>
+						<h3 class="fst-normal">공지사항 등록</h2>
 						</div>
-						<form class="navbar-form w-100" style="max-width: 550px; ">
-						<div class="input-group">
-						
-						  <!-- Input -->
-						<input class="form-control form-control-underline form-control-sm border-dark" type="search" placeholder="검색">
-						
-						<!-- Button -->
-						    <div class="input-group-append">
-						      <button class="btn btn-underline btn-sm border-dark" type="button">
-						        <i class="fe fe-search"></i>
-						      </button>
-						    </div>
-						
-						  </div>
-
-						</form>
 	
 					</div>
-					</div>
 					
- <div class="row justify-content-end">
 
             <!-- Form -->
             <form id="noticeForm">
@@ -188,11 +25,11 @@ table {
 
 					
               <!-- Email -->
-              <div class="form-group" style="display:flex; justify-content: end;">
+              <div class="form-group" style="display:flex; justify-content: end; aling-item:center;">
                 <label class="visually-hidden" for="contactName">
                   상단 고정 날짜
                 </label>
-              <p class="fs-6 fw-semibold" style="text-align:center;vertical-align:middle">상단 고정 날짜: </p>
+              <p class="fst-normal align-bottom" style="margin-top: 15px">상단 고정  : &nbsp&nbsp&nbsp</p>
               
              <select class="form-select form-select-sm w-25" aria-label="Default select example" id="selectDate" >
 				<option value="date">날짜로 입력</option>
@@ -228,13 +65,10 @@ table {
 			</div>
             </form>
 
-          </div>
 					</div>
 					
 					
 				
-			</div>
-      </div>
       <script>
       //   <input class="form-control form-control-sm w-25" id="contactName" type="date" required>
       $('#selectDate').on('change', function(){
