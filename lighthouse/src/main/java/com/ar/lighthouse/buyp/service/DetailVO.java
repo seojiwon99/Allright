@@ -31,6 +31,7 @@ public class DetailVO {
    private int deliveryNumber;
    @DateTimeFormat(pattern="yyyy-MM-dd")
    private Date deliveryDate;
+   private String deliveryService;
    
    //상품 테이블 조인
    private String productName;

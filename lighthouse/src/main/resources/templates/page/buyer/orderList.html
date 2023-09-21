@@ -242,18 +242,26 @@
 	<script>
   	// 교환 버튼에 클릭 이벤트 리스너 추가
   document.querySelector(".orderList").addEventListener("click", function(e) {
+	  
 	e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
     // 필요한 정보를 변수에 저장
     var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); // TODO: 주문 번호 가져오기
     var url="";
 	if(  e.target.matches(".excBtn") ){
 		var url = "exchange";
+		window.location.href = url+"?orderDetailCode=" + orderDetailCode;
 	}else if( e.target.matches(".cancelBtn") ){
 		var url = "cancel"
+		window.location.href = url+"?orderDetailCode=" + orderDetailCode;		
 	}else if(e.target.matches(".retBtn")){
 		var url = "return"
+		window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+	}else if(e.target.matches(".asdasdBtn")){
+		window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+	}else{
+		return;
 	}
-	window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+	
 
   });
   	

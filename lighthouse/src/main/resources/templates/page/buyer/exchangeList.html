@@ -100,7 +100,7 @@
 
                         <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
-                          <span th:text= "|${lists.exchangeCode}|"></span>
+                          <span th:text= "|${lists.exchangeCode}|" id="exchangeCode"></span>
                         </p>
 
                       </div>
@@ -179,18 +179,18 @@
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${lists.exchageAddr}|"></span>
+                         <span th:text="|${lists.exchangeAddr}|"></span>
                         </p>
 
                       </div>
                       <div class="col-6 col-lg-3">
 
                         <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">교환 취소 날짜:</h6>
+                        <h6 class="heading-xxxs text-muted"></h6>
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${lists.exchangeRetractdate}|"></span>
+                         <span th:text="|${lists.exchangeRetractdate}|" id="exchangeRDate"></span>
                         </p>
 
                       </div>
@@ -234,19 +234,14 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-12 col-lg-6">
-                    <div class="row gx-5">
-                      <div class="col-6">
-
-                        
-
-                      </div>
-                      <div class="col-6">
-
-                        
-
-                      </div>
-                    </div>
+					<div class="col-12 col-lg-6">
+						<div class="row gx-5">
+							<div class="col-6">
+								<!-- Button -->
+								<button class="btn btn-sm w-100 btn-outline-dark" id="updateBtn">교환 철회</button>
+							</div>
+						 </div>
+					</div>
 
                   </div>
                 </div>
@@ -259,9 +254,31 @@
 
           </div>
         </div>
-      </div>
-      </div>
-    </section>
 
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$('#updateBtn').on('click', function(){
+	let exchangeData = {
+		'exchangeCode' : $('#exchangeCode').text(),
+		'exchangeRetractdate' : $('#exchangeRDate').text()
+	}
+	$.ajax({
+		url : '/buyer/exchangeUpdate',
+		type : 'POST',
+		contentType : 'application/json',
+		data : JSON.stringify(exchangeData),
+		success : function(response){
+			alert("수정 완료");
+		},
+		fail : function(errer){
+			console.error('수정 중 오류')
+			console.log(error);
+		}
+	})
+	
+})
+
+</script>
 </div>
 </html>

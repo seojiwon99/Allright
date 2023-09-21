@@ -25,4 +25,6 @@ public class CodeVO {
 	//반품
 	private String returnCode;
 	private String returnReason;
+	//배송
+	//private String 
 }

@@ -50,8 +50,8 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 
 
 	@Override
-	public int editInfo(BuyInfoVO buyInfoVO, String memberId) {
-		return buyerPageMapper.updateInfo(buyInfoVO, memberId);
+	public int editInfo(BuyInfoVO buyInfoVO) {
+		return buyerPageMapper.updateInfo(buyInfoVO);
 	}
 
 
@@ -144,6 +144,30 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	@Override
 	public int addCancel(BuyCancelVO canVO) {
 		return buyerPageMapper.insertCancel(canVO);
+	}
+
+
+	@Override
+	public int addReturn(BuyReturnVO retVO) {
+		return buyerPageMapper.insertReturn(retVO);
+	}
+
+
+	@Override
+	public int editCancel(BuyCancelVO canVO) {
+		return buyerPageMapper.updateCancel(canVO);
+	}
+
+
+	@Override
+	public int editReturn(BuyReturnVO retVO) {
+		return buyerPageMapper.updateReturn(retVO);
+	}
+
+
+	@Override
+	public int editExchange(BuyExchangeVO excVO) {
+		return buyerPageMapper.updateExchange(excVO);
 	}
 	
 	

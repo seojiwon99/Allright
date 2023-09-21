@@ -29,7 +29,7 @@ public interface BuyerPageMapper {
 	
 	public List<CouponVO> selectCouponList(String memberId);
 	
-	public int updateInfo(BuyInfoVO buyInfoVO, String memberId);
+	public int updateInfo(BuyInfoVO buyInfoVO);
 	
 	public List<MyInquiryVO> selectMyInquiryList(String memberId);
 	
@@ -43,7 +43,6 @@ public interface BuyerPageMapper {
 	
 	public int insertExchange(BuyExchangeVO excVO);
 
-	
 	public List<CodeVO> selectExchangeCode(String memberId);
 	
 	public CodeVO exchangeCodePage(CodeVO codeVO);
@@ -52,9 +51,17 @@ public interface BuyerPageMapper {
 	
 	public CodeVO returnCodePage(CodeVO codeVO);
 	
+	public int insertReturn(BuyReturnVO retVO);
+	
 	public List<CodeVO> selectCancelCode(String memberId);
 	
 	public CodeVO cancelCodePage(CodeVO codeVO);
 	
 	public int insertCancel(BuyCancelVO canVO);
+	
+	public int updateCancel(BuyCancelVO canVO);
+	
+	public int updateReturn(BuyReturnVO retVO);
+	
+	public int updateExchange(BuyExchangeVO excVO);
 }
