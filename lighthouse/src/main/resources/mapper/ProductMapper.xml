@@ -93,10 +93,11 @@
 		<result column="member_id" property="memberId" />
 		<result column="member_name" property="memberName" />
 		<result column="product_name" property="productName" />
+		<result column="order_date" property="orderDate" />
 		<result column="order_detail_code" property="orderDetailCode" />
 		<result column="order_cnt" property="orderCnt" />
 		<result column="requested_term" property="requestedTerm" />
-		<result column="delivery_company" property="deliveryCompany" />
+		<result column="delivery_service" property="deliveryService" />
 		<result column="delivery_number" property="deliveryNumber" />
 		<result column="delivery_start" property="deliveryStart" />
 		<association property="option" resultMap="optionList2" />
@@ -117,9 +118,9 @@
 		x.option_value,
 		r.requested_term,
 		o.order_cnt,
-		o.delivery_company,
+		o.delivery_service,
 		o.delivery_number,
-		o.delivery_start,
+		o.delivery_start, 
 		m.member_name
 		FROM
 		ar_order_detail o
@@ -130,7 +131,7 @@
 		JOIN
 		ar_products p ON x.product_code = p.product_code
 		JOIN ar_member m ON m.member_id = r.member_id
-		ORDER BY o.order_detail_code DESC
+		ORDER BY o.order_date DESC
 	</select>
 
 	<!-- select주문 -->
@@ -142,7 +143,7 @@
 		<result column="order_detail_code" property="orderDetailCode" />
 		<result column="order_cnt" property="orderCnt" />
 		<result column="requested_term" property="requestedTerm" />
-		<result column="delivery_company" property="deliveryCompany" />
+		<result column="delivery_service" property="deliveryService" />
 		<result column="delivery_number" property="deliveryNumber" />
 		<result column="delivery_start" property="deliveryStart" />
 		<association property="option" resultMap="optionList3" />
@@ -165,7 +166,7 @@
 		x.option_value,
 		r.requested_term,
 		o.order_cnt,
-		o.delivery_company,
+		o.delivery_service,
 		o.delivery_number,
 		o.delivery_start,
 		o.order_date,
@@ -198,11 +199,11 @@
 				o.delivery_number like '%'||#{searchValue}||'%'
 			</when>
 			<when test="fromDate != null">
-			AND o.order_date BETWEEN #{fromDate} AND #{toDate}
+				o.order_date BETWEEN #{fromDate} AND #{toDate}
 			</when>
 		</choose>
 		
-		ORDER BY o.order_detail_code DESC
+		ORDER BY o.order_date DESC
 	</select>
 
 
@@ -269,7 +270,6 @@
 		JOIN ar_products p ON p.product_code = z.product_code
 		JOIN ar_member m ON m.member_id = o.member_id
 		WHERE  
-		 c.cancel_regdate BETWEEN #{fromDate} AND #{toDate}
 		<choose>
 			<when test="searchKey == 'member_name'">
 				m.member_name like '%'||#{searchValue}||'%' 
@@ -283,7 +283,9 @@
 			<when test="searchKey == 'order_detail_code'">
 				d.order_detail_code like '%'||#{searchValue}||'%'
 			</when>
-			
+			<when test="fromDate != null">
+				c.cancel_regdate BETWEEN #{fromDate} AND #{toDate}
+			</when>
 		</choose>
 	</select>
 	
@@ -471,7 +473,7 @@ WHERE o.order_status = 4
 
 	<update id="updateDeliveryInfo" parameterType="DetailVO">
 		UPDATE ar_order_detail
-		SET delivery_company = #{deliveryCompany}
+		SET delivery_service = #{deliveryService}
 		, delivery_number = #{deliveryNumber}
 		, delivery_start = sysdate
 		WHERE order_detail_code = #{orderDetailCode}

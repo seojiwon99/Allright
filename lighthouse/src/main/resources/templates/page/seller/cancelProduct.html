@@ -68,18 +68,18 @@
 											</ul>
 
 										</div>
-										</div>
 									</div>
-										<li class="nav-item"><a class="nav-link"
-											href="/settlementManagement">정산/통계관리</a></li>
-										<li class="nav-item"><a class="nav-link"
-											href="/productInquiry">문의관리</a></li>
-										<li class="nav-item"><a class="nav-link"
-											href="/sellerMypage">판매자정보</a></li>
-										<li class="nav-item"><a class="nav-link"
-											href="./docs/getting-started.html">고객센터</a></li>
-											</ul>
-										
+								</div>
+							<li class="nav-item"><a class="nav-link"
+								href="/settlementManagement">정산/통계관리</a></li>
+							<li class="nav-item"><a class="nav-link"
+								href="/productInquiry">문의관리</a></li>
+							<li class="nav-item"><a class="nav-link"
+								href="/sellerMypage">판매자정보</a></li>
+							<li class="nav-item"><a class="nav-link"
+								href="./docs/getting-started.html">고객센터</a></li>
+						</ul>
+
 
 
 
@@ -105,8 +105,7 @@
 							<tbody>
 								<tr>
 									<th scope="row">조회기간</th>
-									<td colspan="1"
-									><div class="_e1ESc1_0ic">
+									<td colspan="1"><div class="_e1ESc1_0ic">
 											<div class="_2Mo9ts_S9f _29On-g1Mid">
 												<div class="_8GMnQSQIgl _3zx-c_IhVp">
 
@@ -123,6 +122,8 @@
 														<span class="">3개월</span>
 													</button>
 
+													<div id="dateDisplay"></div>
+													
 													<label class="_MN8nIh0X4y">상세조건</label> <select
 														class="_4LshyCrDpi" title="리스트 보기">
 														<option selected value="">전체</option>
@@ -131,25 +132,23 @@
 														<option value="member_id">구매자ID</option>
 														<option value="order_detail_code">상세주문번호</option>
 														<option value="delivery_number">송장번호</option>
-													</select> 
-													<input type="text" class="_3y2h2mGnkI" value=""
+													</select> <input type="text" class="_3y2h2mGnkI" value=""
 														maxlength="50">
 													<div>
-													<input type="DATE" id="from" name="from"
+														<input type="DATE" id="from" name="from"
 															autocomplete="off"> <label for="to">~</label> <input
 															type="DATE" id="to" name="to" autocomplete="off">
 													</div>
 												</div>
 											</div>
-										</div>
-										</td>
-									
+										</div></td>
+
 								</tr>
 								<tr>
 									<th scope="row">처리상태</th>
 									<td colspan="3"><div class="_KqV0-1BSnB">
-											<label id="cancelStatus">전체</label>
-											<select class="_4LshyCrDpi" title="리스트 보기">
+											<label id="cancelStatus">전체</label> <select
+												class="_4LshyCrDpi" title="리스트 보기">
 												<option selected value="">전체</option>
 												<option value="CANCEL_REQUEST">취소요청</option>
 												<option value="CANCEL_DONE">취소완료</option>
@@ -246,6 +245,56 @@ $(document).ready(function () {
 		})
 		
 		
+		 // 날짜 표시 함수
+	    function displayDate(range) {
+	      const currentDate = new Date();
+	      let startDate, endDate;
+
+	      switch (range) {
+	        case 'today':
+	          startDate = new Date(currentDate);
+	          endDate = new Date(currentDate);
+	          break;
+	        case 'week':
+	          startDate = new Date(currentDate);
+	          endDate = new Date(currentDate);
+	          endDate.setDate(endDate.getDate() + 7);
+	          break;
+	        case 'oneMonth':
+	          startDate = new Date(currentDate);
+	          endDate = new Date(currentDate);
+	          endDate.setMonth(endDate.getMonth() + 1);
+	          break;
+	        case 'threeMonth':
+	          startDate = new Date(currentDate);
+	          endDate = new Date(currentDate);
+	          endDate.setMonth(endDate.getMonth() + 3);
+	          break;
+	        default:
+	          startDate = null;
+	          endDate = null;
+	      }
+
+	      if (startDate && endDate) {
+	        document.getElementById('dateDisplay').innerHTML = `시작 날짜: ${startDate.toDateString()}<br>종료 날짜: ${endDate.toDateString()}`;
+	      } else {
+	        document.getElementById('dateDisplay').innerHTML = '날짜 범위를 선택하세요.';
+	      }
+	    }
+
+	    // 버튼 클릭 이벤트 처리
+	    document.getElementById('todayBtn').addEventListener('click', () => {
+	      displayDate('today');
+	    });
+	    document.getElementById('weekBtn').addEventListener('click', () => {
+	      displayDate('week');
+	    });
+	    document.getElementById('oneMonthBtn').addEventListener('click', () => {
+	      displayDate('oneMonth');
+	    });
+	    document.getElementById('threeMonthBtn').addEventListener('click', () => {
+	      displayDate('threeMonth');
+	    });
 		
 		
 })

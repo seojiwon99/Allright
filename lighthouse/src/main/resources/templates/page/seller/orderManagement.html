@@ -96,21 +96,34 @@
 
 			<div class="_1Vof48UxmD _oVRNwPvxck">
 				<div class="_KqV0-1BSnB">
-					<label class="_MN8nIh0X4y">상세조건</label> 
-					<select class="_4LshyCrDpi" title="리스트 보기">
+					<button type="button" id="todayBtn">
+						<span id="today">오늘</span>
+					</button>
+					<button type="button" id="weekBtn">
+						<span id="week">1주일</span>
+					</button>
+					<button type="button" id="oneMonthBtn">
+						<span id="onemonth">1개월</span>
+					</button>
+					<button type="button" id="threeMonthBtn">
+						<span id="thmonth">3개월</span>
+					</button>
+					
+					<div id="dateDisplay"></div>
+
+					<label class="_MN8nIh0X4y">상세조건</label> <select class="_4LshyCrDpi"
+						title="리스트 보기">
 						<option selected="" value="">전체</option>
 						<option value="member_name">구매자명</option>
 						<option value="member_tel">구매자연락처</option>
 						<option value="member_id">구매자ID</option>
 						<option value="product_code">상품코드</option>
 						<option value="delivery_number">송장번호</option>
-					</select> 
-					<input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
+					</select> <input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
 					<div>
-						<span>조회기간</span> 
-						<input type="DATE" id="from" name="from"
-							autocomplete="off"> <label for="to">~</label> 
-						<input type="DATE" id="to" name="to" autocomplete="off">
+						<span>조회기간</span> <input type="DATE" id="from" name="from"
+							autocomplete="off"> <label for="to">~</label> <input
+							type="DATE" id="to" name="to" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -196,10 +209,10 @@
 							<td th:text="${order.orderCnt}" />
 							<td th:text="${order.memberName}" />
 							<td th:text="${order.requestedTerm}" />
-							<td th:if="${order.deliveryCompany != null}"
-								th:text="${order.deliveryCompany}"></td>
-							<td th:unless="${order.deliveryCompany != null}"><input
-								type="text" id="deliveryCompany"></td>
+							<td th:if="${order.deliveryService != null}"
+								th:text="${order.deliveryService}"></td>
+							<td th:unless="${order.deliveryService != null}"><input
+								type="text" id="deliveryService"></td>
 							<td th:if="${order.deliveryNumber != null}"
 								th:text="${order.deliveryNumber}" />
 							<td th:unless="${order.deliveryNumber != null}"><input
@@ -328,13 +341,13 @@
             checkTags.each((idx, tag) => {
 				let tr = $(tag).closest('tr')
                let detailOrderCode = tr.data('ordercode');
-               let deliveryCompany = tr.find('#deliveryCompany').val();
+               let deliveryService = tr.find('#deliveryService').val();
                let deliveryNumber =  tr.find('#deliveryNumber').val();
 			   console.log(detailOrderCode);
 			
                let obj = {
 				'orderDetailCode' : detailOrderCode,
-				'deliveryCompany' : deliveryCompany,
+				'deliveryService' : deliveryService,
 				'deliveryNumber' : deliveryNumber
 			};
                deliveryList.push(obj);
@@ -358,12 +371,81 @@
          location.reload();
       } 
       
-   })
+	  const currentDate = new Date();
+	  const formattedDate = currentDate.toISOString().split('T')[0];
+	  $('#to').val(formattedDate);
  
   
-        
+     // 버튼 클릭 이벤트 처리
+	 $('#todayBtn').click(function() {
+		displayDate('today');
+	  });
+	  $('#weekBtn').click(function() {
+		displayDate('week');
+	  });
+	  $('#oneMonthBtn').click(function() {
+		displayDate('oneMonth');
+	  });
+	  $('#threeMonthBtn').click(function() {
+		displayDate('threeMonth');
+	  });
+  
+	  // 날짜 표시 함수
+function displayDate(range) {
+	const currentDate = new Date();
+	let startDate, endDate;
+  
+	switch (range) {
+	  case 'today':
+		startDate = new Date(currentDate);
+		endDate = new Date(currentDate);
+		break;
+	  case 'week':
+		startDate = new Date(currentDate);
+		endDate = new Date(currentDate);
+		endDate.setDate(endDate.getDate() - 7);
+		break;
+	  case 'oneMonth':
+		startDate = new Date(currentDate);
+		endDate = new Date(currentDate);
+		endDate.setMonth(endDate.getMonth() - 1);
+		break;
+	  case 'threeMonth':
+		startDate = new Date(currentDate);
+		endDate = new Date(currentDate);
+		endDate.setMonth(endDate.getMonth() - 3);
+		break;
+	  default:
+		startDate = null;
+		endDate = null;
+	}
+  
+	// endDate 값을 input 요소에 설정
+	if (endDate) {
+	  // endDate를 yyyy-mm-dd 형식의 문자열로 변환
+	  const formattedEndDate = endDate.toISOString().split('T')[0];
+	  
+	  // input 요소 선택 후 value 설정
+	  $('#from').val(formattedEndDate);
+	} else {
+	  // endDate가 null이면 input 요소 값을 비움
+	  $('#from').val('');
+	}
+  
+	// startDate 값을 input 요소에 설정
+	if (startDate) {
+	  // startDate를 yyyy-mm-dd 형식의 문자열로 변환
+	  const formattedStartDate = startDate.toISOString().split('T')[0];
+	  
+	  // input 요소 선택 후 value 설정
+	  $('#to').val(formattedStartDate);
+	} else {
+	  // startDate가 null이면 input 요소 값을 비움
+	  $('#to').val('');
+	}
+  }
            
-         
+})    
          </script>
 
 </div>

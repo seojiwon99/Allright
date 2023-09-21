@@ -28,7 +28,7 @@ public class DetailVO {
    private Date orderDate;
    private int mycouponCode;
    private String optionCouponCheck;
-   private String deliveryCompany;
+   private String deliveryService;
    private String deliveryNumber;
    @DateTimeFormat(pattern="yyyy-MM-dd")
    private Date deliveryDate;

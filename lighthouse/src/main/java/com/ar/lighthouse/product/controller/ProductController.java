@@ -142,13 +142,27 @@ public String cancelSeaList(Model model, CancelVO cancelVO) {
   
    
 
-//  정산관리 페이지
+//  정산/통계 페이지
   @GetMapping("settlementManagement")
-  public String getCalList(Model model, SellerCalVO sellerCalVO) {
-	  model.addAttribute("calList", productService.getCalList(sellerCalVO));
+  public String getCalList() {
+	 
 	  
 	  return "page/seller/settlementManagement";
   }
+//  정산페이지
+  @GetMapping("calculatePage")
+  public String getCalculatePage(Model model, SellerCalVO sellerCalVO) {
+	  model.addAttribute("calList", productService.getCalList(sellerCalVO));
+	  return "page/seller/calculate";
+  }
+  
+//  통계페이지
+  @GetMapping("statisticsPage")
+  public String getstatisticsPage() {
+	  return "page/seller/statistics";
+  }
+  
+  
 
 //  판매자 상품목록
   @GetMapping("productList/{memberId}")
