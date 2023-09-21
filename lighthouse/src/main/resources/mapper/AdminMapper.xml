@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.ar.lighthouse.admin.mapper.AdminMapper">
+  
+
+  	<insert id="insertNotice" parameterType="NoticeAdminVO">
+	  	 <selectKey resultType="int" keyProperty="noticeCode" order="BEFORE">
+	  		SELECT NVL(MAX(notice_code),1)+1 FROM ar_notice
+	  	</selectKey>
+	  	
+	  	INSERT INTO ar_notice (
+	  						notice_code
+	  						, notice_title
+	  						, notice_content
+	  						<if test="upEnddate != null">
+	  						, up_enddate
+	  						</if>
+	  						, notice_writer
+	  						, notice_type
+	  						) 
+	  					values(
+	  						#{noticeCode}
+	  						, #{noticeTitle}
+	  						, #{noticeContent}
+	  						<if test="upEnddate != null">
+	  						, #{upEnddate}
+	  						</if>
+	  						, 'Admin'
+	  						, #{noticeType}
+	  						)
+  	</insert>
+  	
+  	<select id="selectDeclareList" resultType="DeclareVO">
+		SELECT rt.declare_code, declare_code_name(rt.declare_reason) as declare_reason, rt.declare_content, rt.member_id, rt.declare_member, rt.declare_regdate
+		FROM       (
+		                SELECT   rownum r,  de.declare_code, de.declare_reason, de.declare_content, de.member_id, de.declare_member, de.declare_regdate
+		                FROM   (SELECT
+		                        *
+		                        FROM ar_declare
+		                        where declare_status = 'N'
+								<if test="declareContent != null and !(declareContent.equals(''))">
+								AND declare_content LIKE '%' || #{declareContent} || '%'
+								</if>
+								<if test="declareReason != null and !(declareReason.equals(''))">	
+								AND declare_reason = #{declareReason}
+								</if>
+		                        order by declare_code desc) de
+		                 <![CDATA[
+		                where rownum <= #{pageNum} * #{amount} )rt
+		                 ]]>
+		WHERE rt.r  > ( #{pageNum} - 1) * #{amount}
+  	</select>	
+  	<select id="selectTotalDeclareCount" resultType="int">
+  	select count(*)
+	from ar_declare
+	where declare_code > 0 AND declare_status = 'N'
+	<if test="declareContent != null and !(declareContent.equals('')) ">
+	AND declare_content LIKE '%' || #{declareContent} || '%'
+	</if>
+	<if test="declareReason != null and !(declareReason.equals(''))">	
+	AND declare_reason = #{declareReason}
+	</if>
+  	</select>
+  	
+  	<!-- ClearDeclare -->
+  	
+  	<select id="selectClearDeclareList" resultType="DeclareVO">
+		SELECT rt.declare_code, find_suspend_status_name(rt.suspend_status) as suspend_status
+		, declare_code_name(rt.declare_reason) as declare_reason
+		, rt.declare_content
+		, rt.member_id
+		, rt.declare_member
+		, rt.declare_regdate
+		FROM       (
+		                SELECT   rownum r, de.suspend_status, de.declare_code, de.declare_reason, de.declare_content, de.member_id, de.declare_member, de.declare_regdate
+		                FROM   (SELECT
+		                        *
+		                        FROM ar_declare
+		                        where declare_status = 'Y'
+								<if test="declareContent != null and !(declareContent.equals(''))">
+								AND declare_content LIKE '%' || #{declareContent} || '%'
+								</if>
+								<if test="declareReason != null and !(declareReason.equals(''))">	
+								AND declare_reason = #{declareReason}
+								</if>
+		                        order by declare_code desc) de
+		                 <![CDATA[
+		                where rownum <= #{pageNum} * #{amount} )rt
+		                 ]]>
+		WHERE rt.r  > ( #{pageNum} - 1) * #{amount}
+  	</select>	
+  	<select id="selectTotalClearDeclareCount" resultType="int">
+  	select count(*)
+	from ar_declare
+	where declare_code > 0 AND declare_status = 'Y'
+	<if test="declareContent != null and !(declareContent.equals('')) ">
+	AND declare_content LIKE '%' || #{declareContent} || '%'
+	</if>
+	<if test="declareReason != null and !(declareReason.equals(''))">	
+	AND declare_reason = #{declareReason}
+	</if>
+  	</select>
+  	
+  	
+  	<!--  Inquiry -->
+  	<select id="selectInquiryList">
+ 		SELECT rt.*
+		FROM       (
+		                SELECT   rownum r, aci.*
+		                FROM   (SELECT *
+		                        FROM AR_CUSTOM_INQUIRY
+		                        where CUSTOM_INQUIRY_ANSWER_STATUS = 'N'
+		                        <if test="customInquiryTitle != null and !(customInquiryTitle.equals('')) ">
+								AND custom_inquiry_title LIKE '%' || #{customInquiryTitle} || '%'
+								</if>
+		                        order by CUSTOM_INQUIRY_REGDATE DESC, CUSTOM_INQUIRY_CODE desc) aci
+		     			    <![CDATA[                   
+		                where rownum <= #{pageNum} * #{amount} ) rt
+		                ]]>
+		WHERE rt.r  > ( #{pageNum} - 1 ) * #{amount}
+  	
+  	</select>
+  	
+  	
+  	<select id="selectTotalClearInquiryCount">
+		  	select count(*)
+			from ar_custom_inquiry
+			where 1=1
+			<if test="customInquiryAnswerStatus == 'Y'">
+			AND customInquiryAnswerStatus = 'Y'
+			</if>
+			<if test="customInquiryAnswerStatus == 'N'">
+			AND customInquiryAnswerStatus = 'N'
+			</if>
+			<if test="customInquiryTitle != null and !(customInquiryTitle.equals('')) ">
+			AND custom_inquiry_title LIKE '%' || #{customInquiryTitle} || '%'
+			</if>
+  	</select>
+  	
+  	<select id="selectClearInquiryList">
+  	 		SELECT rt.*
+			FROM       (
+			                SELECT   rownum r, aci.*
+			                FROM   (SELECT *
+			                        FROM AR_CUSTOM_INQUIRY
+			                        where CUSTOM_INQUIRY_ANSWER_STATUS = 'Y'
+                        			<if test="customInquiryTitle != null and !(customInquiryTitle.equals('')) ">
+									AND custom_inquiry_title LIKE '%' || #{customInquiryTitle} || '%'
+									</if>
+			                        order by CUSTOM_INQUIRY_REGDATE DESC, CUSTOM_INQUIRY_CODE desc) aci
+			     			    <![CDATA[                   
+			                where rownum <= #{pageNum} * #{amount} ) rt
+			                ]]>
+			WHERE rt.r  > ( #{pageNum} - 1 ) * #{amount}
+  	</select>
+  	
+  	<select id="selectMemberList" resultType="MemberDetailVO">
+  		SELECT rt.*, d_count(rt.member_id) as declare_count, NVL(recent_susp_name(rt.member_id),'사용 가능') as susp_status
+		FROM       (
+		                SELECT   rownum r, am.*
+		                FROM   (SELECT *
+		                        FROM AR_MEMBER 
+		                        where 1=1
+		                        <if test="memberAuthor == 1 or memberAuthor == 3">
+		                        AND MEMBER_AUTHOR IN (1,3)
+		                        </if>
+		                        <if test="memberAuthor == 2">
+		                        AND MEMBER_AUTHOR = 2
+		                        </if>
+		                        <if test="memberId != null or !(memberId.equals(''))">
+		                        AND MEMBER_ID LIKE '%' || #{memberId} || '%'
+		                        </if>
+		                        <if test="memberName != null or !(memberName.equals(''))">
+		                        AND MEMBER_NAME LIKE '%' || #{memberName} || '%'
+		                        </if>
+		                        <if test="memberTel != null or !(memberTel.equals(''))">
+		                        AND MEMBER_TEL LIKE '%' || #{memberTel} || '%'
+		                        </if>
+		                        <if test="businessNumber != null or !(businessNumber.equals(''))">
+		                        AND BUSINESS_NUMBER LIKE '%' || #{businessNumber} || '%'
+		                        </if>
+		                        order by MEMBER_REGDATE DESC) am
+		                        <![CDATA[   
+		                where rownum <= #{pageNum} * #{amount} )rt
+		                   ]]>
+		WHERE rt.r  > (#{pageNum} - 1 ) * #{amount}
+  	</select>
+  	
+  	<select id="selectTotalUserCount" resultType="int">
+	  	select count(*)
+		from ar_member
+		where 1 =  1
+		<if test="memberAuthor == 1 or memberAuthor == 3">
+		AND member_author IN (1,3)
+		</if>
+		<if test="memberAuthor == 2">
+	  	AND member_author = 2
+	  	</if>
+    	<if test="memberId != null or !(memberId.equals(''))">
+        AND MEMBER_ID LIKE '%' || #{memberId} || '%'
+        </if>
+        <if test="memberName != null or !(memberName.equals(''))">
+        AND MEMBER_NAME LIKE '%' || #{memberName} || '%'
+        </if>
+        <if test="memberTel != null or !(memberTel.equals(''))">
+        AND MEMBER_TEL LIKE '%' || #{memberTel} || '%'
+        </if>
+        <if test="businessNumber != null or !(businessNumber.equals(''))">
+        AND BUSINESS_NUMBER LIKE '%' || #{businessNumber} || '%'
+        </if>
+  	
+  	
+  	</select>
+  	
+
+  
+  </mapper>
+  
