@@ -22,12 +22,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ar.lighthouse.buyp.service.BuyCancelVO;
 import com.ar.lighthouse.buyp.service.BuyInfoVO;
 import com.ar.lighthouse.buyp.service.BuyerPageService;
+
 import com.ar.lighthouse.buyp.service.CodeVO;
 import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.buyp.service.BuyExchangeVO;
 import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.buyp.service.BuyReturnVO;
+
 import com.ar.lighthouse.buyp.service.TradeVO;
 import com.ar.lighthouse.buyp.service.WishVO;
 import com.ar.lighthouse.member.service.MemberVO;
@@ -140,7 +142,9 @@ public class BuyerPageController {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 
+
 		List<BuyCancelVO> cancelList = buyerPageService.getCancelList(memberId);
+
 		model.addAttribute("cancelList", cancelList);
 
 		return "/page/buyer/cancelList";
@@ -153,7 +157,9 @@ public class BuyerPageController {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 
+
 		List<BuyReturnVO> returnList = buyerPageService.getReturnList(memberId);
+
 		model.addAttribute("returnList", returnList);
 
 		return "/page/buyer/returnList";
@@ -166,7 +172,9 @@ public class BuyerPageController {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 
+
 		List<BuyExchangeVO> exchangeList = buyerPageService.getExchangeList(memberId);
+
 		model.addAttribute("exchangeList", exchangeList);
 
 		return "/page/buyer/exchangeList";
@@ -192,6 +200,7 @@ public class BuyerPageController {
 
 	// 교환
 	@PostMapping("buyer/exchangeInsert")
+
 	public ResponseEntity<String> addExchange(@RequestBody BuyExchangeVO excVO, HttpSession session) {
 
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");

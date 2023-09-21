@@ -15,6 +15,9 @@ public interface ProductInquiryMapper {
 	//문의사항 등록
 	public void insertInquiry(ProductInquiryVO inquiryVO);
 	
+	//문의사항 수정
+	public int updateInquiry(ProductInquiryVO productInquiryVO);
+	
 	//문의 사항 삭제
 	public int deleteInquiry(int queCode);
 }

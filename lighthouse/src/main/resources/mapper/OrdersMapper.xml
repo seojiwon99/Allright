@@ -24,5 +24,10 @@
     LEFT OUTER JOIN ar_coupons c ON b.coupon_code = c.coupon_code
     where m.member_id = #{memberId}
  	</select>
+ 	
+ 	<select id="selectCode" resultType="CodeVO">
+ 	 SELECT * FROM AR_CODE
+     WHERE MASTER_CODE = 'delivery_request'
+ 	</select>
   
   </mapper>

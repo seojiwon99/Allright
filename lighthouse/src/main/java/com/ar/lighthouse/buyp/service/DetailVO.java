@@ -5,9 +5,14 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.ar.lighthouse.product.service.ImgsVO;
+
+import com.ar.lighthouse.product.service.OptionVO;
+
+import com.ar.lighthouse.common.ImgsVO;
+
 
 import lombok.Data;
+
 @Data
 public class DetailVO {
 
@@ -38,6 +43,5 @@ public class DetailVO {
    private String uploadName;
    private int imgOrder;
    
-   private List<ImgsVO> imgList;
    
 }

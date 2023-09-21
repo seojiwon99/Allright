@@ -26,6 +26,7 @@ public interface BuyerPageService {
 	public List<WishVO> getWishList(String memberId);
 
 	// 취소 상세
+
 	public List<BuyCancelVO> getCancelList(String memberId);
 
 	// 반품 상세
@@ -36,6 +37,7 @@ public interface BuyerPageService {
 
 	// 교환 신청
 	public int addExchange(BuyExchangeVO excVO);
+
 
 	// 교환 코드
 	public List<CodeVO> getExchangeCode(String memberId);

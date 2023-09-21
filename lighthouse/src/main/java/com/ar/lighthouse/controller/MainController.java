@@ -49,12 +49,7 @@ public class MainController {
 		
 	}
 	
-	@GetMapping("goodsList")
-	public String goodsList() {
-		
-		return "page/goods/goodsList";
-		
-	}
+
 	
 	@PostMapping("childCateList")
 	@ResponseBody

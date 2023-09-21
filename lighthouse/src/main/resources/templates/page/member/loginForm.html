@@ -25,10 +25,10 @@
 		
 		                      <!-- Email -->
 		                      <div class="form-group">
-		                        <label class="visually-hidden" for="loginEmail">
+		                        <label class="visually-hidden"  for="loginId">
 		                          아이디 *
 		                        </label>
-		                        <input class="form-control form-control-sm" id="loginId" type="text" placeholder="ID *" required>
+		                        <input class="form-control form-control-sm" aria-label="아이디 입력란" id="loginId" tabindex=1 type="text" placeholder="ID *" required>
 		                      </div>
 		
 		                    </div>
@@ -39,7 +39,7 @@
 		                        <label class="visually-hidden" for="loginPassword">
 		                          비밀번호 *
 		                        </label>
-		                        <input class="form-control form-control-sm" id="loginPassword" type="password" placeholder="Password *" required>
+		                        <input class="form-control form-control-sm" id="loginPassword" aria-label="비밀번호 입력란" tabindex=2 type="password" placeholder="Password *" required>
 		                      </div>
 		
 		                    </div>
@@ -47,7 +47,7 @@
 		                    <div class="col-md-4">
 		                      <div class="form-group">
 		                        <div class="form-check">
-		                          <input class="form-check-input" name="loginHow" id="Buyer"  value="buyer" type="radio" checked="checked">
+		                          <input class="form-check-input" name="loginHow" id="Buyer"  aria-label="구매자 회원 체크" tabindex=3 value="buyer" type="radio" checked="checked">
 		                          <label class="form-check-label" for="Buyer">
 		                          	구매자 회원
 		                          </label>
@@ -58,7 +58,7 @@
 		                    <div class="col-md-4 offset-md-4">
 		                      <div class="form-group">
 		                        <div class="form-check">
-		                          <input class="form-check-input" name="loginHow" id="Seller"  value="seller"type="radio" style="margin-left:10px;">
+		                          <input class="form-check-input" name="loginHow" id="Seller" aria-label="판매자 회원 체크" tabindex=4 value="seller"type="radio" style="margin-left:10px;">
 		                          <label class="form-check-label" for="Seller">
 		                          	판매자 회원
 		                          </label>
@@ -69,14 +69,14 @@
 		                      <!-- Button -->
 					
 	                    		<div class="col-md-4">
-			                      <button class="btn btn-sm btn-dark" id="loginBtn" type="button" style="width:100px">
+			                      <button class="btn btn-sm btn-dark" id="loginBtn" aria-label="로그인 버튼" tabindex=5 type="button" style="width:100px">
 			                        Sign In
 			                      </button>
 		                      	</div>	
 		                      
 		                      	<div class="col-md-4 offset-md-4">
 		                      		<a class="list-styled-link" data-bs-toggle="modal" href="#modalNewsletterVertical">
-			                      <button class="btn btn-sm btn-dark" id="joinBtn" type="button" style="width:100px; margin-left:36px;">
+			                      <button class="btn btn-sm btn-dark" id="joinBtn" aria-label="회원가입" tabindex=6 type="button" style="width:100px; margin-left:36px;">
 			                        Sign Up
 			                      </button>
                       				</a>
@@ -146,10 +146,47 @@
         
 
         </div>
-    
-      </div>
-    </div>
+        <script th:src="@{/js/ttsSpeech.js}"></script>
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
+    <script>
+    	  let tts = $('#tts').val();
+    	  textToSpeech(tts);
+    function textToSpeech(_text) {
+    	  const url = "https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyDsY4Q0OA7_daWYUbBHYecqQtWeAHK3C6k";
+    	  const data = {
+    	    input: {
+    	      text: _text,
+    	    },
+    	    voice: {
+    	      languageCode: 'ko-KR',
+    	      name: 'ko-KR-Neural2-c',
+    	      ssmlGender: 'MALE',
+    	    },
+    	    audioConfig: {
+    	      audioEncoding: "MP3",
+    	    },
+    	  };
+    	  const otherparam = {
+    	    headers: {
+    	      "content-type": "application/json; charset=UTF-8",
+    	    },
+    	    body: JSON.stringify(data),
+    	    method: "POST",
+    	  };
+    	  // 사운드 생성
+    	  fetch(url, otherparam)
+    	    .then((data) => {
+    	      return data.json();
+    	    })
+    	    .then((res) => {
+    	      console.log(res.audioContent); // base64
+    	    })
+    	    .catch((error) => {
+    	      console.log(error);
+    	    });
+    	}
+    </script>
 	<script>
 		//글자 호버 굵기 이벤트
 		$('.fs-sm').hover(function(){
@@ -222,9 +259,25 @@
 		  }
 		
 		});
-
+			
 		
+		window.addEventListener("keyup", function(e){ 
 
+
+			if(e.key=='Tab'){
+				let firstmsg = "로그인 화면입니다. 탭을 눌러 아이디 입력란으로 가실 수 있으며, 현재 페이지의 메뉴얼을 들으시려면 자판 Q를 눌러주세요";
+				t_gout(firstmsg);
+			
+				console.log($(':focus'));
+				console.log('use tab');
+				let tag = $(':focus')[0];
+	
+				t_gout(tag.ariaLabel)
+			
+			}
+	})
+
+	
 	</script>
 
 </div>

@@ -455,13 +455,16 @@
 
 					</div>
 
+
 					</li>
+
 
 					<!-- 판매순위, 신상 -->
 					<li class="nav-item dropdown">
 						<!-- Toggle --> <a class="nav-link" data-bs-toggle="dropdown"
 						href="#">New</a>
 					</li>
+
 					<li class="nav-item dropdown">
 						<!-- Toggle --> <a class="nav-link" data-bs-toggle="dropdown"
 						href="#">Rank</a>
@@ -479,6 +482,7 @@
 							class="fe fe-search"></i>
 					</a></li>
 					<li class="nav-item ms-lg-n4"><a class="nav-link"
+
 						href="page/buyer/orderList"> <i class="fe fe-user"></i>
 					</a></li>
 					<li class="nav-item ms-lg-n4"><a class="nav-link"
@@ -489,6 +493,7 @@
 						th:href="${session.loginMember} == null ? @{/page/member/loginForm} : @{/cart/cartView}"> 
                    <span> <i class="fe fe-shopping-cart"></i></span>
                </a></li>
+
 				</ul>
 			</div>
 		</div>
@@ -502,6 +507,7 @@
 				return;
 			}else{
 				location.href="/custom/inquiry";
+
 			}
 		})
 

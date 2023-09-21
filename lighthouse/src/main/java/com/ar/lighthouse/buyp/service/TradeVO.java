@@ -59,9 +59,11 @@ public class TradeVO {
 	
 
 	
+
 	private List<ImgsVO> imgList;
 
 	
 
 	
+
 }

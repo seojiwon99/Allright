@@ -28,6 +28,18 @@ public interface ProductService {
 //	상품주문목록
 	List<DetailVO> getProductOrder(ProductVO productVO);
 	
+//	주문배송정보수정
+	public int updateDeliveryInfo(DetailVO detailVO);
+	
 //	취소건 목록
 	List<CancelVO> getCancelList(CancelVO cancelVO);
+	
+//	교환건 목록
+	List<ExchangeVO> getExchangeList(ExchangeVO exchangeVO);
+	
+//	반품건 목록
+	List<ReturnVO> getReturnList(ReturnVO returnVO);
+	
+//  옵션 VO 리스트
+	public List<OptionVO> getOptionList(OptionVO optionVO);
 }
