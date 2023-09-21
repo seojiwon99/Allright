@@ -3,8 +3,10 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.ar.lighthouse.orders.mapper.OrdersMapper">
+  
+  	<!-- 주문결제 필요 데이터 파싱 -->
   	<select id="selectOrders" resultType="com.ar.lighthouse.orders.service.OrdersVO">
-  	SELECT c.member_id, m.member_name ,m.member_email, m.member_tel, r.delivery_cost,
+  	SELECT c.member_id, m.member_name ,m.member_email, m.member_tel, r.delivery_cost, r.delivery_service, r.product_code,
 			m.member_addr, m.member_details_addr,c.cart_count, p.option_name, p.option_value, p.option_price,
 			r.product_name, r.sale_price, r.product_cost, i.parent_code, i.upload_name
 	FROM ar_cart c
@@ -15,6 +17,8 @@
 	WHERE c.member_id = #{memberId} AND c.cart_code = #{cartCode}
   	</select>
  
+ 
+ 	<!-- 구매자 쿠폰 파싱 -->
  	<select id="selectCoupon" resultType="com.ar.lighthouse.orders.service.OrdersVO">
  	SELECT m.member_id, c.coupon_code, b.issue_date, b.coupon_use, c.coupon_content, c.coupon_condition, b.mycoupon_code,
     c.coupon_name, c.coupon_discount_price, c.coupon_discount_rate, c.coupon_max_price, c.coupon_min_price,
@@ -25,15 +29,35 @@
     where m.member_id = #{memberId}
  	</select>
  	
+ 	<!-- 배송요청 사항 코드 -->
  	<select id="selectCode" resultType="CodeVO">
  	 SELECT * FROM AR_CODE
      WHERE MASTER_CODE = 'delivery_request'
  	</select>
  	
- 	<update id="insertDeadCoupon">
+ 	<!-- 기간 지난 쿠폰 사용불가로 변경 -->
+ 	<update id="updatetNotCoupon">
  		UPDATE AR_COUPON_BOX 
  		SET coupon_use = 'N' 
  		WHERE MEMBER_ID = #{memberId} AND MYCOUPON_CODE = #{mycouponCode}
  	</update>
   
+  	<!-- 토스페이먼츠 결제DB insert -->
+  	<insert id="insertCredit">
+  	INSERT INTO AR_CREDIt (PAYMENTKEY, TYPE, ORDERID, ORDERNAME, METHOD, CURRENCY, MID, BALANCEAMOUNT, TOTALAMOUNT, APPROVEDAT)
+    VAlUES (#{paymentKey}, #{type}, #{orderId}, #{orderName}, #{method},#{currency},#{mId},#{balanceAmount},#{totalAmount},#{approvedAt})
+  	</insert>
+  	
+  	<!-- 주문정보 저장 (배송지 등)-->
+  	<insert id="insertOrderPayVO">
+  		<selectKey resultType="String" keyProperty="orderCode" order="BEFORE">
+			SELECT NVL(MAX(ORDER_CODE),1)+1 FROM AR_ORDERS
+		</selectKey>
+		 INSERT INTO AR_ORDERS (ORDER_CODE, MEMBER_ID, ORDER_DATE, ORDER_PRICE, CHARGE_DATE ,ORDER_ADDR, ORDER_DETAILS_ADDR, RECIPIENT_NAME, RECIPIENT_TEL, REQUESTED_TERM)
+         VALUES(#{OrderPayVO.orderCode},#{memberId},SYSDATE, SYSDATE, #{OrderPayVO.orderPrice}, 
+         #{OrderPayVO.orderAddr}, #{OrderPayVO.orderDetailsAddr}, #{OrderPayVO.recipientName} , #{OrderPayVO.recipientTel},#{OrderPayVO.requestedTerm})
+  	</insert>
+  	
+  	<!-- 주문 내역 페이지 저장 데이터 -->
+  	
   </mapper>

@@ -47,10 +47,12 @@ public class OrdersVO {
 	private int optionPrice;
 	
 	//ProductSVO
+	private String productCode; 
 	private String productName;
 	private int productCost;
 	private int salePrice;
 	private int deliveryCost;
+	private String deliveryCompany;
 	
 	//ImegsVO
 	private String uploadName;

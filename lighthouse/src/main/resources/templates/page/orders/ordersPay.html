@@ -4,7 +4,6 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default_layout}">
     
-
 <!-- Content -->
 <div layout:fragment="content">
     
@@ -144,9 +143,8 @@
                 <h6>배송 요청사항</h6>
                 <!-- Notes -->  
                 <select class="form-select form-select-lg mb-3" aria-label="Large select example" id="selbox">
-                  <option selected>배송 요청 선택</option>
+                  <option selected id="deliveryWant">배송 요청 선택</option>
                   <option th:each="codeValue : ${codeList}" th:value="${codeValue.codeId}" th:text="${codeValue.codeName}"></option>
-
                 </select>
                 <input type="text" id="selectDirect" class="form-control form-control-sm" placeholder="배송 기타 요청사항 작성해주세요.">
 
@@ -202,11 +200,11 @@
                       <!-- Title -->
                       
                       <p class="mb-4 fs-sm fw-bold">
-                        
+                         <input type="hidden" th:value="${gets.productCode}">
                          <input type="radio" name="couponUsePrice" class="text-body" th:text="${gets.productName}" th:onclick="selectPro([[${(gets.productCost - gets.salePrice + gets.optionPrice)*gets.cartCount}]])"><br>
                          상품금액 : <span class="text-muted" style="text-decoration: line-through;" th:text="|${gets.productCost + gets.optionPrice}|"></span>원 <br>
                         <span class="text-muted" th:text="|할인된 금액 : ${gets.productCost - gets.salePrice + gets.optionPrice}|"></span>원
-                       
+                        
                       </p>
                       <!-- Text -->
                       <div class="fs-sm text-muted" th:text="|${gets.optionName} : ${gets.optionValue}|"></div>
@@ -315,7 +313,7 @@
                   <tbody th:each="couponRest : ${couponList}">
                     <th:block th:if="${couponRest.couponUse == 'Y'}">
                     <tr class="clickable-row">
-                      <td th:text="${couponRest.couponCode}"></td>
+                      <td th:text="${couponRest.mycouponCode}"></td>
                       <td th:text="${couponRest.couponName}"></td>
                       <td th:text="${couponRest.couponContent}"></td>
                       <td th:text="${couponRest.couponDiscountPrice} == '0' ? |${couponRest.couponDiscountRate}%| : |${couponRest.couponDiscountPrice}원|"></td>
@@ -404,13 +402,15 @@ let couponAmount = 0;
           
         })
         .fail(reject => console.log(reject));
-        
+      
+        let productNum = "";
       
         //모달 창 쿠폰 값 주문 페이지 넘기기
         $('#couponRealBtn').on('click', function(e){
           
           if ($('input[name=couponUsePrice]').is(':checked')) {
-            console.log('체크')
+            console.log($('input[name=couponUsePrice]:checked'));
+            productNum  = $('input[name=couponUsePrice]:checked').prev().val();
              $('#couponBtn').attr('href' , '#modalNewsletterHorizontal');
              $('#couponBtn').get(0).click();
           } else {
@@ -419,12 +419,13 @@ let couponAmount = 0;
           }
         })
         //#modalNewsletterHorizontal
-        
+        let couponNum = 0;
         $('#modalNewsletterHorizontal').on('shown.bs.modal', function(){
           $('.select-button').off("click");
 
           $('.select-button').on('click',function(e){
             let thisRow = $(this).closest('tr');
+            couponNum = thisRow.find('td:eq(0)').text();
             let couName = thisRow.find('td:eq(1)').text(); 
             let couDiscount = Number(thisRow.find('td:eq(3)').text().slice(0,-1));
             
@@ -496,6 +497,36 @@ let couponAmount = 0;
     paymentWidget.renderPaymentMethods('#payment-method', amount)
     let uuid = self.crypto.randomUUID().slice(0,-10);
     console.log(uuid);
+
+    //save 주문 내역 insert 할 데이터
+    let deliveryReq = '';
+    if($('#selbox').val() == 4) {
+      deliveryReq = $('#selectDirect').text();
+    } else {
+      deliveryReq = $('#deliveryWant').text();
+    }
+    // productCode productSalePrice
+    let orderPayVO =
+    {
+        orderPrice : amount,
+        orderAddr : $('#addr').text(),
+        orderDetailAddr : $('#addrDt').text(),
+        recipientName : $('#deliveryName').text(),
+        recipientTel : $('#deliveryTel').text(),
+        requestedTerm : deliveryReq,
+        couponCode :couponNum,
+        productCode : productNum,
+        productSalePrice : realPrice,
+        couponPrice : roundPrice
+    }
+    //ajax - async:false - 비동식 save 데이터 받아서 보냄
+    $.ajax('/orders/save',{
+      async:false,
+      type : 'post',
+      data : JSON.stringify(orderPayVO),
+      contentType : 'application/json'
+    })
+
     paymentWidget.requestPayment({
       orderId: uuid,
       orderName: [[${productName}]],
@@ -511,12 +542,7 @@ let couponAmount = 0;
           }
       })  
   })
-  console.log([[${productName}]]);
-  console.log([[${get[0].memberEmail}]]);
-  console.log([[${get[0].memberName}]]);
-  console.log(Number($('#totalPrice').text()));
-  console.log(Number($('#couponSale').text()));
-  
+
     </script>
     
 </div>
