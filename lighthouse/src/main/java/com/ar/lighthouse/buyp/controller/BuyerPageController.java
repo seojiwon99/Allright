@@ -173,7 +173,9 @@ public class BuyerPageController {
 		String memberId = memberVO.getMemberId();
 
 
+
 		List<BuyExchangeVO> exchangeList = buyerPageService.getExchangeList(memberId);
+
 
 		model.addAttribute("exchangeList", exchangeList);
 
@@ -200,7 +202,6 @@ public class BuyerPageController {
 
 	// 교환
 	@PostMapping("buyer/exchangeInsert")
-
 	public ResponseEntity<String> addExchange(@RequestBody BuyExchangeVO excVO, HttpSession session) {
 
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");

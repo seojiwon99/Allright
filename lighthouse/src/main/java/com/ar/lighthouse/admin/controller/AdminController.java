@@ -11,6 +11,7 @@ import com.ar.lighthouse.admin.service.AdminService;
 import com.ar.lighthouse.admin.service.DeclareVO;
 import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.admin.service.NoticeAdminVO;
+import com.ar.lighthouse.admin.service.ProductDetailVO;
 import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.common.PageDTO;
 import com.ar.lighthouse.customsvc.service.CustomService;
@@ -30,18 +31,11 @@ public class AdminController {
 		
 		return "page/admin/adminMain";
 	}
-	@GetMapping("admin/main2")
-	public String adminMain2(Criteria cri, Model model) {
-		int totalCnt = customService.getTotalCount(cri);
-		model.addAttribute("noticeList", customService.getNoticeList(cri));
-		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
-		return "page/admin/adminMain2";
-	}
 	
 	@GetMapping("admin/notice")
-	public String noticeList(Criteria cri, Model model) {
-		int totalCnt = customService.getTotalCount(cri);
-		model.addAttribute("noticeList", customService.getNoticeList(cri));
+	public String noticeList(Criteria cri, Model model, NoticeAdminVO noticeAdminVO) {
+		int totalCnt = adminService.getTotalNoticeCount(noticeAdminVO);
+		model.addAttribute("noticeList", adminService.getAdminNoticeList(cri , noticeAdminVO));
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		return "page/admin/notice";
 	}
@@ -128,9 +122,20 @@ public class AdminController {
 		return "page/admin/sellerList";
 	}
 	@GetMapping("admin/allProductList")
-	public String allProductList() {
+	public String allProductList(Criteria cri, Model model, ProductDetailVO productDetailVO) {
+		int totalCnt = adminService.getTotalProductCount(productDetailVO);
+		model.addAttribute("proList", adminService.getProductList(cri.getAmount()
+				, cri.getPageNum(), productDetailVO.getMemberId()
+				, productDetailVO.getMemberTel()
+				, productDetailVO.getBusinessNumber(), productDetailVO.getProductCode())) ;
+		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
+		
+		
 		return "page/admin/allProductList";
 	}
+	
+	
+	
 	@GetMapping("admin/bannerUpdateForm")
 	public String bannerUpdateForm() {
 		return "page/admin/bannerUpdateForm";
