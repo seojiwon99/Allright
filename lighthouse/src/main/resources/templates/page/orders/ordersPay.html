@@ -61,7 +61,7 @@
                   <!-- 이름 -->
                 
                   <div class="form-group">
-                    <div th:each="gets,index : ${get}" th:if="${index.index} < 1">
+                    <div th:each="gets,index : ${orderGet}" th:if="${index.index} < 1">
                     <label class="form-label" for="checkoutBillingFirstName">이름 *</label>
                     <div class="input-group mb-8">                      
                       <input type="text" class="form-control" id="mName" placeholder="이름 작성" aria-label="Recipient's username" aria-describedby="button-addon2" th:value="${gets.memberName}" readonly>                     
@@ -72,7 +72,7 @@
                 </div>
 
                 <!-- 배송지 주소 -->
-                <div th:each="gets,index : ${get}" th:if="${index.index} < 1">
+                <div th:each="gets,index : ${orderGet}" th:if="${index.index} < 1">
                   <div class="col-12">
                   
                     <div class="form-group">
@@ -124,7 +124,7 @@
                  <!-- 배송지 주소 -->
                 <div class="col-12">
                   <div class="form-group">
-                    <input class="form-control form-control-sm" type="tel" placeholder="배송지 상세주소" required id="addrDt">
+                    <input class="form-control form-control-sm" type="text" placeholder="배송지 상세주소" required id="addrDt">
                   </div>
                 </div><br>
             
@@ -143,7 +143,7 @@
                 <h6>배송 요청사항</h6>
                 <!-- Notes -->  
                 <select class="form-select form-select-lg mb-3" aria-label="Large select example" id="selbox">
-                  <option selected id="deliveryWant">배송 요청 선택</option>
+                  <option selected">배송 요청 선택</option>
                   <option th:each="codeValue : ${codeList}" th:value="${codeValue.codeId}" th:text="${codeValue.codeName}"></option>
                 </select>
                 <input type="text" id="selectDirect" class="form-control form-control-sm" placeholder="배송 기타 요청사항 작성해주세요.">
@@ -184,7 +184,7 @@
 
             <ul class="list-group list-group-lg list-group-flush-y list-group-flush-x mb-7">
               
-              <div th:each="gets : ${get}">
+              <div th:each="gets : ${orderGet}">
                 <li class="list-group-item">
                   <div class="row align-items-center">
                     <div class="col-4">
@@ -353,7 +353,7 @@ let couponAmount = 0;
     let deliveryPay = 0;
     let saleToal = 0;
     let productTotal = 0;
-    let getPrice = [[${get}]];
+    let getPrice = [[${orderGet}]];
     console.log(getPrice)
     
       // total 가격 나중에 쿠폰 가격  빼야함.
@@ -501,18 +501,18 @@ let couponAmount = 0;
     //save 주문 내역 insert 할 데이터
     let deliveryReq = '';
     if($('#selbox').val() == 4) {
-      deliveryReq = $('#selectDirect').text();
+      deliveryReq = $('#selectDirect').val();
     } else {
-      deliveryReq = $('#deliveryWant').text();
+      deliveryReq = $('#selbox').val();
     }
     // productCode productSalePrice
     let orderPayVO =
     {
         orderPrice : amount,
-        orderAddr : $('#addr').text(),
-        orderDetailAddr : $('#addrDt').text(),
-        recipientName : $('#deliveryName').text(),
-        recipientTel : $('#deliveryTel').text(),
+        orderAddr : $('#addr').val(),
+        orderDetailsAddr : $('#addrDt').val(),
+        recipientName : $('#deliveryName').val(),
+        recipientTel : $('#deliveryTel').val(),
         requestedTerm : deliveryReq,
         couponCode :couponNum,
         productCode : productNum,
@@ -532,8 +532,8 @@ let couponAmount = 0;
       orderName: [[${productName}]],
       successUrl: 'http://localhost:8090/orders/credit',
       failUrl: 'https://my-store.com/fail',
-      customerEmail: [[${get[0].memberEmail}]], 
-      customerName: [[${get[0].memberName}]]
+      customerEmail: [[${orderGet[0].memberEmail}]], 
+      customerName: [[${orderGet[0].memberName}]]
       }).catch(function (error) {
           if (error.code === 'USER_CANCEL') {
           // 결제 고객이 결제창을 닫았을 때 에러 처리

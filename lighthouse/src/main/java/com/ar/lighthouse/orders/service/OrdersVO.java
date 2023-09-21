@@ -42,6 +42,7 @@ public class OrdersVO {
 	private int[] cartCode;
 	
 	//OptionVO
+	private int optionCode;
 	private String optionName;
 	private String optionValue;
 	private int optionPrice;

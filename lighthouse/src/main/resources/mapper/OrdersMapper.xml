@@ -8,7 +8,7 @@
   	<select id="selectOrders" resultType="com.ar.lighthouse.orders.service.OrdersVO">
   	SELECT c.member_id, m.member_name ,m.member_email, m.member_tel, r.delivery_cost, r.delivery_service, r.product_code,
 			m.member_addr, m.member_details_addr,c.cart_count, p.option_name, p.option_value, p.option_price,
-			r.product_name, r.sale_price, r.product_cost, i.parent_code, i.upload_name
+			r.product_name, r.sale_price, r.product_cost, i.parent_code, i.upload_name, p.option_code
 	FROM ar_cart c
 			LEFT JOIN ar_option p ON c.option_code = p.option_code
 			LEFT JOIN ar_member m ON c.member_id = m.member_id
@@ -50,12 +50,12 @@
   	
   	<!-- 주문정보 저장 (배송지 등)-->
   	<insert id="insertOrderPayVO">
-  		<selectKey resultType="String" keyProperty="orderCode" order="BEFORE">
-			SELECT NVL(MAX(ORDER_CODE),1)+1 FROM AR_ORDERS
+  		<selectKey resultType="int" keyProperty="orderCode" order="BEFORE">
+			SELECT NVL(MAX(ORDER_CODE),1) + 1 FROM AR_ORDERS
 		</selectKey>
-		 INSERT INTO AR_ORDERS (ORDER_CODE, MEMBER_ID, ORDER_DATE, ORDER_PRICE, CHARGE_DATE ,ORDER_ADDR, ORDER_DETAILS_ADDR, RECIPIENT_NAME, RECIPIENT_TEL, REQUESTED_TERM)
-         VALUES(#{OrderPayVO.orderCode},#{memberId},SYSDATE, SYSDATE, #{OrderPayVO.orderPrice}, 
-         #{OrderPayVO.orderAddr}, #{OrderPayVO.orderDetailsAddr}, #{OrderPayVO.recipientName} , #{OrderPayVO.recipientTel},#{OrderPayVO.requestedTerm})
+		 INSERT INTO AR_ORDERS (ORDER_CODE, MEMBER_ID,ORDER_PRICE  ,ORDER_ADDR, ORDER_DETAILS_ADDR, RECIPIENT_NAME, RECIPIENT_TEL, REQUESTED_TERM)
+         VALUES(#{orderCode} ,#{memberId}, #{OrderPayVO.orderPrice}, #{OrderPayVO.orderAddr}, #{OrderPayVO.orderDetailsAddr}, #{OrderPayVO.recipientName} 
+        ,#{OrderPayVO.recipientTel},#{OrderPayVO.requestedTerm})
   	</insert>
   	
   	<!-- 주문 내역 페이지 저장 데이터 -->

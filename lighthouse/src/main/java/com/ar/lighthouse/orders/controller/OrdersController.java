@@ -39,6 +39,7 @@ public class OrdersController {
 	@Autowired
 	OrdersService ordersService;
 	
+	//coupon 관련 정보 가져옴
 	@GetMapping("/page/orders/ordersPay")
 	public String orderPage(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
@@ -51,7 +52,7 @@ public class OrdersController {
 		return "/page/orders/ordersPay :: #couponPage";
 	}
 	
-	
+	// 장바구니에서 구매 상품 가져옴.
 	@PostMapping("orders/pay")
 	public String orderList(HttpServletRequest request, Model model, @RequestParam (name = "cartCode") int[] cartCode) {
 		
@@ -64,22 +65,24 @@ public class OrdersController {
 		
 		int[] lists = cartCode;
 		System.out.println(cartCode);
-		List<OrdersVO> get = new ArrayList<OrdersVO>();
+		List<OrdersVO> orderGet = new ArrayList<OrdersVO>();
 		for(int cartNum : lists)  {
 			System.out.println(cartNum);
-			get.add((ordersService.getOrders(memberId, cartNum)));  
+			orderGet.add((ordersService.getOrders(memberId, cartNum)));  
 		}
 		int productNum = 0;
 		String productName = "";
-		if(get.size() != 1) {
-		productNum = get.size()-1;
-			productName = get.get(0).getProductName()  + " 외 " + productNum + "건";
+		if(orderGet.size() != 1) {
+		productNum = orderGet.size()-1;
+			productName = orderGet.get(0).getProductName()  + " 외 " + productNum + "건";
 		} else {
-			productName = get.get(0).getProductName();	
+			productName = orderGet.get(0).getProductName();	
 		}
 		model.addAttribute("productName",productName);
-		model.addAttribute("get", get);
-		session.setAttribute("get", get);
+		model.addAttribute("orderGet", orderGet);
+		session.setAttribute("orderGet", orderGet);
+		
+		// 배송지 마스터 코드 전송
 		model.addAttribute("codeList",codeList);
 		 
 		return "/page/orders/ordersPay";
@@ -143,7 +146,7 @@ public class OrdersController {
 		
 		//주문, 주문결제 내역 페이지 데이터 저장
 		HttpSession session = req.getSession();
-		List<OrdersVO> orderList = (List<OrdersVO>) session.getAttribute("get");
+		List<OrdersVO> orderList = (List<OrdersVO>) session.getAttribute("orderGet");
 		OrderPayVO orderPayVO = (OrderPayVO) session.getAttribute("ordersPay");
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		List<OrdersVO> couponList = (List<OrdersVO>) session.getAttribute("couponList");
@@ -151,20 +154,18 @@ public class OrdersController {
 		String memberId = memberVO.getMemberId();
 		//orderPayVO 쿠폰 사용 시 N으로 변경
 		int mycouponCode = orderPayVO.getMycouponCode();
-		
-		if(mycouponCode != 0) {
-			int couponUse = ordersService.editNotCoupon(memberId, mycouponCode);
+		int couponUse = ordersService.editNotCoupon(memberId, mycouponCode);
+		String optionCouponCheck = "";
+		if(couponUse != 0) {
+			optionCouponCheck = "Y"; 
 		} 
 		
 		//주문 데이터 저장 method (배송 등) 총 주문 결제 정보
 		ordersService.addOrderPay(memberId, orderPayVO);
-		String optionCouponCheck = "";
 		
 		// 각 주문 내역에 대한 정보 저장
-		if(mycouponCode == 1) {
-			optionCouponCheck = "Y"; 
-		} else {
-			optionCouponCheck = "N";
+		for(int i = 0; 1<orderList.size(); i++) {
+			//insert 주문상세 물품 만큼 돌게 inert문 넣어야함.
 		}
 		
 		
