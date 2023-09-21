@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.ar.lighthouse.buyp.service.CodeVO;
+import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.orders.service.CreditVO;
 import com.ar.lighthouse.orders.service.OrdersVO;
 

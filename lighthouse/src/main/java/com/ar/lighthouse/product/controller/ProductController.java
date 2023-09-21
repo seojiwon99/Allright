@@ -1,7 +1,8 @@
 package com.ar.lighthouse.product.controller;
 
 import java.io.File;
-
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -48,6 +49,8 @@ import com.ar.lighthouse.productinquiry.service.ProductInquiryVO;
 import com.ar.lighthouse.review.service.ReviewService;
 import com.ar.lighthouse.review.service.ReviewVO;
 
+import net.coobird.thumbnailator.Thumbnailator;
+
 @Controller
 public class ProductController {
 
@@ -64,7 +67,6 @@ public class ProductController {
 	
 
 	@Autowired
-
 	ProductInquiryService custominquiryService;
 
 
@@ -154,6 +156,7 @@ public class ProductController {
 //	등록폼
 	@GetMapping("insertProduct")
 	public String productForm(Model model, CategoryVO categoryVO) {
+		model.addAttribute("delivery", productService.getDeliveryList());
 		model.addAttribute("getCategoryList", mainPageService.getCategoryList());
 		return "page/seller/productForm";
 	}
@@ -179,13 +182,80 @@ public class ProductController {
 		return "page/seller/productForm :: #thirdOfChildCate";
 	}
   
-// 등록
-	@PostMapping("insertProduct")
-	public String addProduct(ProductVO productVO, OptionVO optionVO) {
-		productService.addProduct(productVO);
-		productService.addOption(optionVO);
-		return "redirect:productList";
-	}
+	// 상품 등록
+		@PostMapping("insertProduct")
+		public String addProduct(List<MultipartFile> files ,ProductVO productVO,  HttpServletRequest req) {
+			// HttpSession session = req.getSession();
+			// MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+			
+			productVO.setMemberId("test");
+			// productVO.setCategoryCode("P00001");
+			productVO.setDeliveryService("영차");
+			// System.out.println(productVO);
+			productService.addProduct(productVO);
+			
+			int i = 0;
+			for(MultipartFile uploadFile : files){
+		    	if(uploadFile.getContentType().startsWith("image") == false){
+		    		System.err.println("this file is not image type");
+		    		return null;
+		    	}
+		    	
+		    	String originalName = uploadFile.getOriginalFilename();
+		        // System.out.println("originalName : " + originalName);
+		        String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
+		        productVO.getProductImg().get(i).setImgName(fileName);
+		        
+		        // System.out.println("fileName : " + fileName);
+		    
+		        //날짜 폴더 생성
+		        String folderPath = makeFolder();
+		        // System.out.println("folderPath"+ folderPath);
+		        String uuid = UUID.randomUUID().toString();	// 유니크한 이름 때문에
+		        //System.out.println("uuid"+uuid);
+		        productVO.getProductImg().get(i).setUploadName(uuid+"_"+fileName);
+		        
+		        String uploadFileName = folderPath +File.separator + uuid + "_" + fileName;
+		        // System.out.println("uploadFileName" + uploadFileName);
+		        productVO.getProductImg().get(i).setUploadPath(folderPath);
+		        
+		        String saveName = uploadPath + File.separator + uploadFileName;
+		        
+		        Path savePath = Paths.get(saveName);
+		        try{
+		        	uploadFile.transferTo(savePath); // 파일의 핵심
+		            //uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
+		        	productVO.getProductImg().get(i).setProductCode(productVO.getProductCode());
+		        	productVO.getProductImg().get(i).setImgOrder(i+1);
+		        	// System.out.println("@@@@@@@@@@@@@" + productVO);
+		        	if(files.get(0) == uploadFile) {
+		        		int idx = originalName.indexOf(".");
+		        		//System.out.println(fileName.substring(fileName.lastIndexOf(".")+1));
+		        		// System.out.println("!!!!!!!!"+originalName.substring(0,idx));
+		        		// System.out.println("여기@@@"+ uploadPath + "\\" + folderPath);
+		        		// System.out.println("파일보기" + "s_" +uuid+"_"+ originalName);
+		        		FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath + "\\" + folderPath, "s_" +uuid+"_"+ originalName));
+		        		// System.out.println("thumbnail" + thumbnail);
+		        		FileInputStream input = new FileInputStream(new File(uploadPath+ "\\" +folderPath, uuid+"_"+originalName));
+		        		Thumbnailator.createThumbnail(input , thumbnail, 100,100);
+		        		
+		        		thumbnail.close();
+		        		i++;
+		        	}
+		        	System.out.println(productVO.getProductImg().get(i));
+		        	productService.addProductImg(productVO.getProductImg().get(i));
+		        	
+		        } catch (IOException e) {
+		             e.printStackTrace();	             
+		        }
+		    	
+		  }
+			  
+			
+			
+			
+			return "redirect:productList";
+		}
 
 //	수정폼
 	@GetMapping("modifyForm")

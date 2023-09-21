@@ -1,4 +1,4 @@
-package com.ar.lighthouse.buyp.service;
+package com.ar.lighthouse.common;
 
 import lombok.Data;
 
