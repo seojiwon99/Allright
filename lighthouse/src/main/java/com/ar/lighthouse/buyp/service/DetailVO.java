@@ -57,7 +57,7 @@ public class DetailVO {
    
 //   ajax넘어오는값
    String searchValue;
-   String key;
+   String searchKey;
    @DateTimeFormat(pattern="yyyy-MM-dd")
    Date fromDate;
    @DateTimeFormat(pattern="yyyy-MM-dd")

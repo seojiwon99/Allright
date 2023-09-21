@@ -32,9 +32,13 @@ public interface ProductService {
 //	orderManagement
 	List<DetailVO> getOrderOptionList(DetailVO detailVO);
 	
-	
+//	cancelSearch
+	List<CancelVO> getCancelSeaList(CancelVO cancelVO);
 //	주문배송정보수정
 	public int updateDeliveryInfo(DetailVO detailVO);
+	
+//	주문상태수정
+	public int updateOrderStatus(DetailVO detailVO);
 	
 //	취소건 목록
 	List<CancelVO> getCancelList(CancelVO cancelVO);
@@ -44,6 +48,10 @@ public interface ProductService {
 	
 //	반품건 목록
 	List<ReturnVO> getReturnList(ReturnVO returnVO);
+	
+//	정산건 목록
+	List<SellerCalVO> getCalList(SellerCalVO sellerCalVO);
+	
 	
 //  옵션 VO 리스트
 	public List<OptionVO> getOptionList(OptionVO optionVO);

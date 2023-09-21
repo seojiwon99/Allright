@@ -3,15 +3,11 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/sellerHtml}">
-  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<script src="https://code.jquery.com/jquery-latest.min.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
 <!-- Content -->
 
 <div layout:fragment="sellerContent">
-	
+
 	<div class="row gx-0">
 		<div class="col-12 col-lg-auto">
 
@@ -72,7 +68,8 @@
 											</ul>
 
 										</div>
-
+										</div>
+									</div>
 										<li class="nav-item"><a class="nav-link"
 											href="/settlementManagement">정산/통계관리</a></li>
 										<li class="nav-item"><a class="nav-link"
@@ -81,11 +78,12 @@
 											href="/sellerMypage">판매자정보</a></li>
 										<li class="nav-item"><a class="nav-link"
 											href="./docs/getting-started.html">고객센터</a></li>
-						</ul>
+											</ul>
+										
 
-						
-						
-						
+
+
+
 
 					</div>
 
@@ -107,84 +105,61 @@
 							<tbody>
 								<tr>
 									<th scope="row">조회기간</th>
-									<td colspan="1"><div class="_e1ESc1_0ic">
-											<div class="_2Mo9ts_S9f _3E4SWFsjel _29On-g1Mid">
-												<div class="_KqV0-1BSnB">
-													<label class="_MN8nIh0X4y">클레임요청일</label><select
-														class="_4LshyCrDpi" title="리스트 보기"><option
-															selected="" value="CLAIM_REQUEST">클레임요청일</option>
-														<option value="CANCEL_COMPLETED">취소완료일</option>
-														<option value="PAY_COMPLETED">결제일</option></select>
-												</div>
-											</div>
+									<td colspan="1"
+									><div class="_e1ESc1_0ic">
 											<div class="_2Mo9ts_S9f _29On-g1Mid">
 												<div class="_8GMnQSQIgl _3zx-c_IhVp">
-													<ul
-														class="_2c50HRGAPR _3ztc1iB8Tu _j-O4Qeo0yN _9yuYVWjAOe _2qPT9uwdkd">
-														<li class="_hl_0TieCQs"><button type="button"
-																class="_2y4tT1b1bo size_medium type_basic _2b43OrUK4R _2TfRbAqhV3 _3tBIfJyJos">
-																<span class="">오늘</span>
-															</button></li>
-														<li class="_hl_0TieCQs"><button type="button"
-																class="_2y4tT1b1bo size_medium type_basic _2b43OrUK4R _2TfRbAqhV3 _3tBIfJyJos">
-																<span class="">1주일</span>
-															</button></li>
-														<li class="_hl_0TieCQs"><button type="button"
-																class="_2y4tT1b1bo _2lWlVXWb7v size_medium type_basic _2b43OrUK4R _2TfRbAqhV3 _3tBIfJyJos">
-																<span class="">1개월</span>
-															</button></li>
-														<li class="_hl_0TieCQs"><button type="button"
-																class="_2y4tT1b1bo size_medium type_basic _2b43OrUK4R _2TfRbAqhV3 _3tBIfJyJos">
-																<span class="">3개월</span>
-															</button></li>
-													</ul>
-													<div class="_3PRfTg7hKN _3ztc1iB8Tu">
-														<input type="text" id="from" name="from" autocomplete="off"> 
-														<label for="to">~</label>
-														<input type="text" id="to" name="to" autocomplete="off">
 
+													<button type="button">
+														<span class="">오늘</span>
+													</button>
+													<button type="button">
+														<span class="">1주일</span>
+													</button>
+													<button type="button">
+														<span class="">1개월</span>
+													</button>
+													<button type="button">
+														<span class="">3개월</span>
+													</button>
 
+													<label class="_MN8nIh0X4y">상세조건</label> <select
+														class="_4LshyCrDpi" title="리스트 보기">
+														<option selected value="">전체</option>
+														<option value="member_name">구매자명</option>
+														<option value="member_tel">구매자연락처</option>
+														<option value="member_id">구매자ID</option>
+														<option value="order_detail_code">상세주문번호</option>
+														<option value="delivery_number">송장번호</option>
+													</select> 
+													<input type="text" class="_3y2h2mGnkI" value=""
+														maxlength="50">
+													<div>
+													<input type="DATE" id="from" name="from"
+															autocomplete="off"> <label for="to">~</label> <input
+															type="DATE" id="to" name="to" autocomplete="off">
 													</div>
 												</div>
 											</div>
 										</div>
-										<div class="_36NfNFNlTR">
-											<p class="_1cU1u3fQQW _17EK97A0eY _1JHEn8wccf">최근 1년 이내에서
-												조회하실 수 있습니다.(3개월 단위 조회 가능)</p>
-										</div></td>
-									<th scope="row">상세조건</th>
-									<td colspan="1"><div class="_1Vof48UxmD _oVRNwPvxck">
-											<div class="_KqV0-1BSnB">
-												<label class="_MN8nIh0X4y">전체</label><select
-													class="_4LshyCrDpi" title="리스트 보기"><option
-														selected="" value="">전체</option>
-													<option value="COLLECTOR_NAME">수취인명</option>
-													<option value="PURCHASER_NAME">구매자명</option>
-													<option value="PURCHASER_ID">구매자ID</option>
-													<option value="ORDER_NO">주문번호</option>
-													<option value="PRODUCT_ORDER_NO">상품주문번호</option>
-													<option value="PRODUCT_NO">상품번호</option></select>
-											</div>
-											<div>
-												<input type="text" class="_3y2h2mGnkI" value=""
-													maxlength="50" disabled="">
-											</div>
-										</div></td>
+										</td>
+									
 								</tr>
 								<tr>
 									<th scope="row">처리상태</th>
 									<td colspan="3"><div class="_KqV0-1BSnB">
-											<label class="_MN8nIh0X4y">전체</label><select
-												class="_4LshyCrDpi" title="리스트 보기"><option
-													selected="" value="">전체</option>
+											<label id="cancelStatus">전체</label>
+											<select class="_4LshyCrDpi" title="리스트 보기">
+												<option selected value="">전체</option>
 												<option value="CANCEL_REQUEST">취소요청</option>
-												<option value="CANCELING">취소중</option>
 												<option value="CANCEL_DONE">취소완료</option>
-												<option value="CANCEL_REJECT">취소철회</option></select>
+												<option value="CANCEL_REJECT">취소철회</option>
+											</select>
 										</div></td>
 								</tr>
 							</tbody>
 						</table>
+						<button type="button" id="orderSearch">검색</button>
 					</div>
 					<section class="pb-12">
 
@@ -209,7 +184,8 @@
 									<td th:text="${cancel.orderStatus}"></td>
 									<td th:text="${cancel.cancelReason}"></td>
 									<td th:text="${#dates.format(cancel.chargeDate, 'yyyy-MM-dd')}"></td>
-									<td th:text="${#dates.format(cancel.cancelRegdate, 'yyyy-MM-dd')}"></td>
+									<td
+										th:text="${#dates.format(cancel.cancelRegdate, 'yyyy-MM-dd')}"></td>
 									<td th:text="${cancel.memberName}"></td>
 
 								</tr>
@@ -223,33 +199,8 @@
 
 	</div>
 
-<script>
-		$(function() {
-			var dateFormat = "mm/dd/yy", from = $("#from").datepicker({
-				defaultDate : "+1w",
-				changeMonth : true,
-				numberOfMonths : 1
-			}).on("change", function() {
-				to.datepicker("option", "minDate", getDate(this));
-			}), to = $("#to").datepicker({
-				defaultDate : "+1w",
-				changeMonth : true,
-				numberOfMonths : 1
-			}).on("change", function() {
-				from.datepicker("option", "maxDate", getDate(this));
-			});
-
-			function getDate(element) {
-				var date;
-				try {
-					date = $.datepicker.parseDate(dateFormat, element.value);
-				} catch (error) {
-					date = null;
-				}
-
-				return date;
-			}
-		});
+	<script>
+$(document).ready(function () {		
 		
 		document.getElementById('allCheck')
 		.addEventListener('click', allCheckEvent);
@@ -261,6 +212,43 @@
 		        el.checked = allCheckTag.checked;
 		    })
 		}
+		
+		$('#orderSearch').on('click',function(){
+			let key = $('._4LshyCrDpi').val();
+			let value = $('._3y2h2mGnkI').val();
+			let fromDate = $('#from').val();
+			let toDate = $('#to').val()
+			
+			console.log(key,value,fromDate,toDate);
+
+			$.ajax({
+				url : 'cancelOption',
+				type : 'get',
+				data : {
+					"searchValue" : value, 
+			 		"searchKey" : key,
+			 		fromDate,
+			 		toDate
+				}
+			})
+			 		
+			
+			.done(cancelInfo=>{
+				console.log(cancelInfo);
+				 $('#cancelList').replaceWith(cancelInfo); 
+				 
+
+			})
+			.fail(reject=>{
+				console.log(reject);
+			})
+			
+		})
+		
+		
+		
+		
+})
 	</script>
 
 

@@ -104,7 +104,8 @@
 						<option value="member_id">구매자ID</option>
 						<option value="product_code">상품코드</option>
 						<option value="delivery_number">송장번호</option>
-					</select> <input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
+					</select> 
+					<input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
 					<div>
 						<span>조회기간</span> 
 						<input type="DATE" id="from" name="from"
@@ -227,30 +228,31 @@
              })
          }
 
+         
 		 $('#orderSearch').on('click',function(){
 			let key = $('._4LshyCrDpi').val();
 			let value = $('._3y2h2mGnkI').val();
 			let fromDate = $('#from').val();
 			let toDate = $('#to').val()
-
+			
+			console.log(key,value,fromDate,toDate);
 
 			$.ajax({
 				url : 'orderOptionManagement',
 				type : 'get',
-				data : {key,value,fromDate,toDate}
+				data : {
+					"searchValue" : value, 
+			 		"searchKey" : key,
+			 		fromDate,
+			 		toDate
+				}
 			})
-			// {
-			// 		"searchValue" : value, 
-			// 		"memberName" : key,
-			// 		"memberTel" : key,
-			// 		"memberId" : key,
-			// 		"productCode" : key,
-			// 		"deliveryNumber" : key,
-			// 		"fromDate" : fromDate,
-			// 		"toDate" : toDate
-			// 	}
-			.done(data=>{
-				console.log(data);
+			 		
+			
+			.done(orderOptionList=>{
+				console.log(orderOptionList);
+				 $('#orderChkList').replaceWith(orderOptionList); 
+				 
 
 			})
 			.fail(reject=>{
@@ -261,10 +263,10 @@
         
          
          $('#cancelModal').on('click',function(){
+        	 
             let orderList =[];
             let checkTags = $('input[type="checkbox"]:checked').not('#allCheck');
             checkTags.each((idx, tag) =>{
-               console.log(tag);
                let orderDetailCode = $(tag).closest('tr').find('td:eq(1)').text();
                let productName = $(tag).closest('tr').find('td:eq(2)').text();
                let orderCnt = $(tag).closest('tr').find('td:eq(4)').text();
@@ -290,7 +292,31 @@
          
          })
 
-         
+         $('#checkOrderBtn').on('click', function(){
+			alert('hk');
+			orderChk =[];
+			let checkTags = $('input[type="checkbox"]:checked').not('#allCheck');
+
+			checkTags.each((idx, tag)=>{
+				let orderDetailCode = $(tag).parent().next().text();
+				console.log(orderDetailCode);
+				let obj = {
+					orderDetailCode
+				}
+				orderChk.push(obj);
+			})
+
+			$.ajax({
+				url : 'updateOrderStatus',
+				type : 'post',
+				contentType : 'application/json',
+				data : JSON.stringify(orderChk)
+			})
+			.done(data=>{
+				refreshList();
+			})
+
+		 })
       
 
           $('#insertDeliveryBtn').on('click', function(){

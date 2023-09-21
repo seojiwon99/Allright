@@ -14,6 +14,7 @@ import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
 import com.ar.lighthouse.product.service.ReturnVO;
+import com.ar.lighthouse.product.service.SellerCalVO;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -108,11 +109,30 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 
+	
+//	
 	@Override
 	public List<OptionVO> getOptionList(OptionVO optionVO) {
 		return productMapper.getOptionList(optionVO);
 	}
 
+//	주문상태변경
+	@Override
+	public int updateOrderStatus(DetailVO detailVO) {
+		return productMapper.updateOrderStatus(detailVO);
+	}
+
+//	취소 검색
+	@Override
+	public List<CancelVO> getCancelSeaList(CancelVO cancelVO) {
+		return productMapper.cancelOptionList(cancelVO);
+	}
+
+//  정산건 확인
+	@Override
+	public List<SellerCalVO> getCalList(SellerCalVO sellerCalVO) {
+		return productMapper.selectCalList(sellerCalVO);
+	}
 
 
 

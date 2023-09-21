@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -35,6 +33,7 @@ import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
 import com.ar.lighthouse.product.service.ReturnVO;
+import com.ar.lighthouse.product.service.SellerCalVO;
 import com.ar.lighthouse.productinquiry.service.ProductInquiryService;
 import com.ar.lighthouse.productinquiry.service.ProductInquiryVO;
 import com.ar.lighthouse.review.service.ReviewService;
@@ -53,8 +52,11 @@ public class ProductController {
 	@Autowired
 	ProductInquiryService custominquiryService;
   
-  @Autowired
+	@Autowired
 	MemberService memberService;
+
+//	@Autowired
+//	sellerRegisterMail sellerRegisterMail;
 
 	@Autowired
 	MainPageService mainPageService;
@@ -86,21 +88,24 @@ public class ProductController {
      return "page/seller/orderManagement";
   }
 
-//  orderOptionManagement
-  @ResponseBody
-  @GetMapping("orderOptionManagement")
-  public String productOrderOption(@RequestParam Map<String, String> map ) {
+//orderOptionManagement
+@GetMapping("orderOptionManagement")
+public String productOrderOption(Model model, DetailVO detailVO ) {
 	  
-	System.out.println(map); 
-	String key = map.get("key");
-			
-//	  model.addAttribute("orderOptionList", productService.getOrderOptionList(detailVO));
+	List<DetailVO> orderList = productService.getOrderOptionList(detailVO);
+	  model.addAttribute("orderList", orderList );
 	  
-	  return "";
-  }
+	  return "page/seller/orderManagement :: #orderChkList";
+}
   
   
-  
+//상품 취소검색 기능
+@GetMapping("cancelOption") // Model model, CancelVO cancelVO
+public String cancelSeaList(Model model, CancelVO cancelVO) {
+
+	model.addAttribute("cancelInfo", productService.getCancelSeaList(cancelVO));
+ return "page/seller/cancelProduct :: #cancelList";
+}
   
 //주문배송정보입력
   
@@ -118,12 +123,31 @@ public class ProductController {
     return detailList;
     
     }
+    
+//  주문상태변경
+  @PostMapping("updateOrderStatus")
+  @ResponseBody
+  public List<String> updateOrder(@RequestBody List<DetailVO> orderStatus) {
+     
+	  List<String> delList = new ArrayList<>();
+     for(DetailVO detailVo : orderStatus) { 
+         int result =
+            productService.updateOrderStatus(detailVo); 
+         
+         }
+     return delList;
+     }
+
+
+  
    
 
 //  정산관리 페이지
   @GetMapping("settlementManagement")
-  public String settlementManagement() {
-     return "page/seller/settlementManagement";
+  public String getCalList(Model model, SellerCalVO sellerCalVO) {
+	  model.addAttribute("calList", productService.getCalList(sellerCalVO));
+	  
+	  return "page/seller/settlementManagement";
   }
 
 //  판매자 상품목록
@@ -228,7 +252,74 @@ public class ProductController {
      return delList;
 
   }
+  
 
+//	메일발송
+//	("/page/seller/orderManagement")
+//	@PostMapping("/page/member/login/mailConfirm")
+//	@ResponseBody
+//	public Map<String, Object> mailConfirm(@RequestParam(name = "email") String email,
+//			@RequestParam(name = "memberAuthor") int memberAuthor) throws Exception {
+//		String code = sellerRegisterMail.sendSimpleMessage(email);
+//		System.out.println("사용자에게 발송한  인증코드 ==> " + code);
+//		MemberVO memberVO = new MemberVO();
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		if (memberAuthor > 0) {
+//			memberVO.setMemberEmail(email);
+//			memberVO.setMemberAuthor(memberAuthor);
+//			memberVO = memberService.getMemberEmailCheck(memberVO);
+//			map.put(code, memberVO);
+//			System.out.println(memberVO);
+//			return map;
+//		} else {
+//			map.put("key", code);
+//			return map;
+//		}
+//	}
+
+//	@PostMapping("/page/member/login/mailConfirmJoin")
+//	@ResponseBody
+//	public String mailConfirm(@RequestParam(name = "email") String email) throws Exception {
+//		String code = sellerRegisterMail.sendSimpleMessage(email);
+//		System.out.println("사용자에게 발송한 인증코드 ==> " + code);
+//
+//		return code;
+//	}
+//
+//	@PostMapping("/page/member/login/mailPwConfirm")
+//	@ResponseBody
+//	public Map<String, Object> mailPwConfirm(@RequestParam(name = "email") String email,
+//			@RequestParam(name = "memberAuthor") int memberAuthor, @RequestParam(name = "memberId") String memberId)
+//			throws Exception {
+//
+//		MemberVO memberVO = new MemberVO();
+//		Map<String, Object> map = new HashMap<String, Object>();
+//
+//		memberVO.setMemberEmail(email);
+//		memberVO.setMemberAuthor(memberAuthor);
+//		memberVO.setMemberId(memberId);
+//		if (memberService.getMemberCrossCheck(memberVO) < 1) {
+//			map.put("result", "fail");
+//			return map;
+//		} else {
+//			String code = sellerRegisterMail.sendSimpleMessage(email);
+//			System.out.println("사용자에게 발송한  인증코드 ==> " + code);
+//
+//			map.put(code, memberVO);
+//			System.out.println(memberVO);
+//			return map;
+//		}
+//	}
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
 	// 리뷰등록
 
