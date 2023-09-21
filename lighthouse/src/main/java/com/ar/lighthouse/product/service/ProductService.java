@@ -3,6 +3,8 @@ package com.ar.lighthouse.product.service;
 import java.util.List;
 
 import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.buyp.service.ExchangeVO;
+import com.ar.lighthouse.buyp.service.ReturnVO;
 import com.ar.lighthouse.member.service.MemberVO;
 
 public interface ProductService {
@@ -40,5 +42,6 @@ public interface ProductService {
 //	반품건 목록
 	List<ReturnVO> getReturnList(ReturnVO returnVO);
 	
-	
+//  옵션 VO 리스트
+	public List<OptionVO> getOptionList(OptionVO optionVO);
 }

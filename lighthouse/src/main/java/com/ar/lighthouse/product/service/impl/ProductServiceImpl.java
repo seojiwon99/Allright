@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.buyp.service.ExchangeVO;
+import com.ar.lighthouse.buyp.service.ReturnVO;
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.mapper.ProductMapper;
 import com.ar.lighthouse.product.service.CancelVO;
-import com.ar.lighthouse.product.service.ExchangeVO;
 import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
-import com.ar.lighthouse.product.service.ReturnVO;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -99,6 +99,12 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public int updateDeliveryInfo(DetailVO detailVO) {
 		return productMapper.updateDeliveryInfo(detailVO);
+	}
+
+
+	@Override
+	public List<OptionVO> getOptionList(OptionVO optionVO) {
+		return productMapper.getOptionList(optionVO);
 	}
 
 

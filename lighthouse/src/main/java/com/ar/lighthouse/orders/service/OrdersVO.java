@@ -68,6 +68,7 @@ public class OrdersVO {
 	private int couponDiscountRate;
 	
 	//CouponBox
+	private int mycouponCode;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date issueDate;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

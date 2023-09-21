@@ -34,12 +34,29 @@
 			</div>
 		</div>
 	</nav>
-
 	<!-- CONTENT -->
 	<section class="pt-7 pb-12">
 		<div>
 			<div class="row justify-content-center">
 				<div class="col-12 col-lg-10 col-xl-8">
+		<nav class="d-flex justify-content-center justify-content-md-end mt-10" style="margin-bottom:20px;">
+			<form class="navbar-form w-100" style="max-width: 400px;" method="get" action="/custom/notice">
+			       <div class="input-group">
+			 
+			         <!-- Input -->
+			         <input class="form-control form-control-underline form-control-sm border-dark" type="search" name="keyword" placeholder="Search for items and brands">
+			 		<!-- <input type="hidden" name="pageNum" th:value="${pageMaker.cri.pageNum}"> -->
+					<input type="hidden" name="amount" th:value="${pageMaker.cri.amount}">
+			         <!-- Button -->
+			         <div class="input-group-append">
+			           <button class="btn btn-underline btn-sm border-dark" type="button">
+			             <i class="fe fe-search"></i>
+			           </button>
+			         </div>
+			 
+			       </div>
+			     </form>
+			     </nav>
 					<table class="table">
 						<thead>
 							<tr>
@@ -50,7 +67,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="notice,status : ${noticeList}" th:onclick="|location.href='@{/custom/noticeInfo/(noticeCode=${notice.noticeCode},pageNum=${pageMaker.cri.pageNum})}'|">
+							<tr th:each="notice,status : ${noticeList}" th:onclick="|location.href='@{/custom/noticeInfo/(noticeCode=${notice.noticeCode},pageNum=${pageMaker.cri.pageNum},keyword=${pageMaker.cri.keyword})}'|">
 								<td style="display:none;"><input type="hidden" th:value="${notice.noticeCode}" th:id="|code${status.index}|"></td>
 								<td th:id="|type${status.index}|">[[${notice.noticeType} == 'Y' ? '공지' : ${pageMaker.total} - (((${pageMaker.cri.pageNum}-1)* ${pageMaker.cri.amount}) + ${status.index})]]</td>
 								<td th:id="|title${status.index}|" th:onclick="|location.href='@{/custom/noticeInfo/(noticeCode=${notice.noticeCode},pageNum=${pageMaker.cri.pageNum})}'|">[[${notice.noticeTitle}]]</td>
@@ -90,6 +107,11 @@
 					</nav>
 				</div>
 			</div>
+			<form action="/custom/notice" method="get">
+				<input type="hidden" name="pageNum" th:value="${pageMaker.cri.pageNum}">
+				<input type="hidden" name="amount" th:value="${pageMaker.cri.amount}">
+				<input type="hidden" name="keyword" th:value="${pageMaker.cri.keyword}">
+		</form>
 		</div>
 	</section>
 		<script>
@@ -109,7 +131,17 @@
 		// 먼저 읽히는것 
 		$(document).ready(function() {
 			VoiceMenu();
-		
+			
+			
+			var actionForm = $('form')[2];
+			$('.page-item a').on('click',function(e){
+				console.log(actionForm);
+				e.preventDefault();
+				// href의 속성이 페이지번호. form submit();
+				console.log($(this).text());
+				$(actionForm).find('input[name="pageNum"]').val($(this).text());
+				actionForm.submit();
+			})
 		});
 
 		var httpRequest = new XMLHttpRequest();
