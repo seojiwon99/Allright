@@ -45,5 +45,6 @@ public interface ProductService {
 //	반품건 목록
 	List<ReturnVO> getReturnList(ReturnVO returnVO);
 	
-	
+//  옵션 VO 리스트
+	public List<OptionVO> getOptionList(OptionVO optionVO);
 }
