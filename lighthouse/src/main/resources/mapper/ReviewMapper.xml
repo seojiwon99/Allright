@@ -27,7 +27,20 @@
   	</resultMap>
   	
   	<select id="selectReviewList" resultMap="selectReviewInfo" resultType="reviewVO">
-		  SELECT *
+		  SELECT r.review_code
+		       , r.member_id
+		       , r.product_code
+		       , r.review_content
+		       , r.review_star
+		       , r.review_regdate
+		       , i.img_code
+		       , i.parent_code
+		       , i.img_order
+		       , i.img_name
+		       , i.upload_name
+		       , i.img_content
+		       , i.img_regdate
+		       , REPLACE(i.upload_path,'\','/') as upload_path
 			FROM ar_review r left outer join ar_imgs i
 			ON r.review_code = i.review_code
 			WHERE r.product_code = #{productCode}

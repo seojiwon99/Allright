@@ -88,9 +88,9 @@
 				<!-- 반복문 시작 -->
                 <!-- Info -->
                 
-                <div class="card card-sm">
+                <div class="card card-sm orderList">
                 
-                <div th:each="lists : ${orderList}">
+                <div th:each="lists : ${orderList}" th:data-orderdetailcode="${lists.orderDetailCode}" class="order">
                   <div class="card-body bg-light">
                     <div class="row">
                       <div class="col-6 col-lg-3">
@@ -135,7 +135,7 @@
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${lists.productName}|"></span>
+                          <span th:text="|${lists.productName}|" id="productName"></span>
                         </p>
 
                       </div>
@@ -201,15 +201,17 @@
                       <div class="col-6">
 
                         <!-- Button -->
-                        <a class="btn btn-sm w-100 btn-outline-dark" href="exchange" id="excBtn">
+                        <input type="hidden" th:value="|${lists.productName}|">
+                        <a class="btn btn-sm w-100 btn-outline-dark excBtn" th:href="@{/exchange}" >
                           교환
                         </a>
-
+                        <input type="hidden" th:value="|${lists.orderCode}|">
+						
                       </div>
                       <div class="col-6">
 
                         <!-- Button -->
-                        <a class="btn btn-sm w-100 btn-outline-dark" href="account-order.html" id="retBtn">
+                        <a class="btn btn-sm w-100 btn-outline-dark retBtn" th:href="@{/return}" >
                           반품
                         </a>
 
@@ -218,7 +220,7 @@
                       <div class="col-6">
 
                         <!-- Button -->
-                        <a class="btn btn-sm w-100 btn-outline-dark" href="#!" id="cancelBtn">
+                        <a class="btn btn-sm w-100 btn-outline-dark cancelBtn" th:href="@{/cancel}" >
                           주문 취소
                         </a>
 
@@ -238,8 +240,24 @@
       </div>
     </section>
 	<script>
-	
-	
-	</script>
+  	// 교환 버튼에 클릭 이벤트 리스너 추가
+  document.querySelector(".orderList").addEventListener("click", function(e) {
+	e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
+    // 필요한 정보를 변수에 저장
+    var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); // TODO: 주문 번호 가져오기
+    var url="";
+	if(  e.target.matches(".excBtn") ){
+		var url = "exchange";
+	}else if( e.target.matches(".cancelBtn") ){
+		var url = "cancel"
+	}else if(e.target.matches(".retBtn")){
+		var url = "return"
+	}
+	window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+
+  });
+  	
+
+</script>
 </div>
 </html>

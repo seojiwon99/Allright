@@ -1,0 +1,142 @@
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org">
+<!--headerFragment 선언-->
+
+<div th:fragment="sideFragment" class="col-3">
+        <div class="col">
+
+          <!-- NAVBAR -->
+          <nav class="navbar navbar-expand-lg navbar-vertical navbar-light sticky-start px-lg-7 w-100 ">
+            <div class="container-fluid">
+          
+              <!-- Brand -->
+              <a class="navbar-brand" href="/sellerMain">
+                All Right
+              </a>
+          
+              <!-- Toggler -->
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSidenavLeftCollapse" aria-controls="navbarSidenavLeftCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+          
+              <!-- Collapse -->
+              <div class="collapse navbar-collapse" id="navbarSidenavLeftCollapse">
+          
+                <!-- Nav -->
+                <ul class="navbar-nav fs-lg mb-6 my-lg-6" id="sidenavParent">
+                
+             
+                  <!-- Toggle -->
+                  <li class="nav-item">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#sidenavHome">
+                      공지사항
+                    </a>
+          
+                    <!-- Collapse -->
+                    <div class="collapse" id="sidenavHome" data-bs-parent="#sidenavParent">
+                      <ul class="list-styled fs-base fw-normal py-3 mb-0">
+                        <li class="list-styled-item">
+                          <a class="list-styled-link" href="/admin/notice">공지사항</a>
+                        </li>
+                        <li class="list-styled-item">
+                          <a class="list-styled-link" href="/admin/faq">자주 묻는 질문</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="nav-item">
+                  
+                  <!-- Toggle -->
+                  <li class="nav-item">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#sidenavHome2">
+                      신고내역
+                    </a>
+          
+                    <!-- Collapse -->
+                    <div class="collapse" id="sidenavHome2" data-bs-parent="#sidenavParent">
+                      <ul class="list-styled fs-base fw-normal py-3 mb-0">
+                        <li class="list-styled-item">
+                          <a class="list-styled-link" href="/admin/declareList">신고내역</a>
+                        </li>
+                        <li class="list-styled-item">
+                          <a class="list-styled-link" href="/admin/clearDeclareList">처리된 신고내역</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="nav-item">
+                  
+                  
+                  <!-- Toggle -->
+                  <li class="nav-item">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#sidenavHome3">
+                      문의내역
+                    </a>
+          
+                    <!-- Collapse -->
+                    <div class="collapse" id="sidenavHome3" data-bs-parent="#sidenavParent">
+                      <ul class="list-styled fs-base fw-normal py-3 mb-0">
+                        <li class="list-styled-item">
+                          <a class="list-styled-link" href="/admin/inquiryList">문의내역</a>
+                        </li>
+                        <li class="list-styled-item">
+                          <a class="list-styled-link" href="/admin/clearInquiryList">처리돤 문의내역</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="nav-item">
+                  
+                  
+                  <!-- Toggle -->
+                  <li class="nav-item">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#sidenavHome4">
+                      회원목록
+                    </a>
+          
+                    <!-- Collapse -->
+                    <div class="collapse" id="sidenavHome4" data-bs-parent="#sidenavParent">
+                      <ul class="list-styled fs-base fw-normal py-3 mb-0">
+                        <li class="list-styled-item">
+                          <a class="list-styled-link" href="/admin/buyerList">구매자</a>
+                        </li>
+                        <li class="list-styled-item">
+                          <a class="list-styled-link" href="/admin/sellerList">판매자</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="nav-item">
+                  
+                  
+                  <!-- Toggle -->
+                  <li class="nav-item">
+                    <a class="nav-link dropdown-toggle" href="/admin/allProductList">
+                      상품목록
+                    </a>
+                  <li class="nav-item">
+                  
+                  <!-- Toggle -->
+                  <li class="nav-item">
+                    <a class="nav-link dropdown-toggle" href="/admin/bannerUpdateForm">
+                      배너수정
+                    </a>
+                  <li class="nav-item">
+                  
+                  
+                  
+               
+          
+          
+          
+                 <!-- nav end -->
+                </ul>
+              </div>
+          
+            </div>
+          </nav>
+
+        </div>
+        				<!-- NAVBAR  SEARCHBAR-->
+  
+</div>
+</html>

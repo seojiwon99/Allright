@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/test_layout}">
+
+<!-- Content -->
+<div layout:fragment="content">
+	<!-- 읽히는 메뉴 -->
+	<input type="hidden" value="0" id="index">
+		<textarea id="testInput" style="display:none;">
+	   	 	f a q화면 입니다. 
+	   	 	1.전체 2.회원 3.주문/결제 4.취소/반품/교환
+	   	 	alt + 번호를 누르거나
+	   	 	엔터키를 누르면 f a q를 하나씩 읽어드립니다.
+	  	</textarea>
+
+	<!-- BREADCRUMB -->
+	<nav class="py-5">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+
+					<!-- Breadcrumb -->
+					<ol class="breadcrumb mb-0 fs-xs text-gray-400">
+						<li class="breadcrumb-item"><a class="text-gray-400"
+							href="index.html">Home</a></li>
+						<li class="breadcrumb-item active">FAQ</li>
+					</ol>
+
+				</div>
+			</div>
+		</div>
+	</nav>
+
+	<!-- CONTENT -->
+	<section class="pt-7 pb-15">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-12 col-lg-10 col-xl-8">
+
+					<!-- Heading -->
+					<h3 class="mb-10 text-center">
+						<a href="/custom/faqList">Frequently Asked Questionss</a>
+					</h3>
+
+					<ul class="menu"
+						style="display: flex; list-style: none; padding-left: 0;">
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/custom/faqList}">전체</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/custom/faqList/(faqType=3)}">회원</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/custom/faqList/(faqType=2)}">주문/결제</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/custom/faqList/(faqType=1)}">취소/반품/교화</a></li>
+					</ul>
+					<!-- Heading -->
+					<!-- <h5 class="mb-7">회원:</h5> -->
+
+					<!-- List group -->
+					<ul class="list-group list-group-flush-x mb-9"
+						id="faqCollapseParentOne">
+						<th:block th:each="faq, status : ${faqList}">
+							<input type="hidden" th:value="${status.size}" id="length">
+							<li class="list-group-item">
+								<a th:id="|faqTitle${status.index}|"
+								class="dropdown-toggle d-block fs-lg fw-bold text-reset"
+								data-bs-toggle="collapse"
+								th:href="|#faqCollapse${status.index}|"
+								>[[${faq.questionTitle}]] </a> 
+								<!-- Collapse -->
+								<div class="collapse" th:id="|faqCollapse${status.index}|"
+									th:data-bs-parent="|faqCollapseParent${status.index}|">
+									<div class="mt-5">
+										<p class="mb-0 fs-lg text-gray-500" th:id="|faqContent${status.index}|">[[${faq.questionAnswer}]]</p>
+									</div>
+								</div>
+
+							</li>
+						</th:block>
+					</ul>
+
+					<!-- Heading -->
+					<!--             <h5 class="mb-7">취소/교환/반품: </h5>
+            List group
+            <ul class="list-group list-group-flush-x mb-9" id="faqCollapseParentTwo">
+            <th:block th:each="faq, status : ${faqList}">
+              <li class="list-group-item" th:if="${faq.faqType eq '취소/교환/반품'}">
+                Toggle
+                <a class="dropdown-toggle d-block fs-lg fw-bold text-reset" data-bs-toggle="collapse" th:href="|#faqCollapse${status.index}|" th:text="|${status.index + 1}. [${faq.faqType}] ${faq.questionTitle}|">
+                </a>
+
+                Collapse
+                <div class="collapse"  th:id="|faqCollapse${status.index}|" th:data-bs-parent="|faqCollapseParent${status.index}|">
+                  <div class="mt-5">
+                    <p class="mb-0 fs-lg text-gray-500" th:text="${faq.questionAnswer}">
+   
+                    </p>
+                  </div>
+                </div>
+
+              </li>
+             </th:block>
+            </ul>
+ -->
+					<!-- Heading -->
+					<!--             <h5 class="mb-7">주문/결제:</h5>
+
+            List group
+            <ul class="list-group list-group-flush-x" id="faqCollapseParentThree">
+            	<th:block th:each="faq, status : ${faqList}">
+              <li class="list-group-item" th:if="${faq.faqType eq '주문/결제'}">
+
+                Toggle
+                <a class="dropdown-toggle d-block fs-lg fw-bold text-reset" data-bs-toggle="collapse" th:href="|#faqCollapse${status.index}|" th:text="|${status.index + 1}. [${faq.faqType}] ${faq.questionTitle}|">
+                
+                </a>
+
+                Collapse
+                <div class="collapse" th:id="|faqCollapse${status.index}|" th:data-bs-parent="|faqCollapseParent${status.index}|">
+                  <div class="mt-5">
+                    <p class="mb-0 fs-lg text-gray-500" th:text="${faq.questionAnswer}">
+                
+                    </p>
+                  </div>
+                </div>
+
+              </li>
+ 
+            </th:block>
+            </ul> -->
+
+				</div>
+			</div>
+		</div>
+	</section>
+	<script>
+		/* $('#user').on('click',function(e){
+			let type = $(this).val();
+			alert(type);
+			$.ajax({
+				type:"get",
+				url: "/custom/faqList",
+				data :{
+					type: type
+				},
+				success : function(data){
+					
+				},
+				error :function(err){
+					console.log(err);
+				}
+				
+			})
+			
+		}) */
+
+		var AudioContext;
+		var audioContext;
+		
+		window.onload = function() {
+		    navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
+		        AudioContext = window.AudioContext || window.webkitAudioContext;
+		        audioContext = new AudioContext();
+		    }).catch(e => {
+		        console.error(`Audio permissions denied: ${e}`);
+		    });
+		}
+
+		// 먼저 읽히는것 
+		$(document).ready(function() {
+			VoiceMenu();
+		
+		});
+
+		
+		$(document).on('keydown',function(e){
+			let index = $('#index').val();
+			if(e.keyCode == 13){
+				VoiceRead(index);
+				return;
+			}
+			if(e.keyCode == 9){
+				if(index != 0){
+					index = index -1
+				}
+				VoiceReturnRead(index);
+				return;
+			}
+			if(e.altKey && e.keyCode == 48){
+				location.href="/custom/faqList/";
+				return;
+			}
+			if(e.altKey && e.keyCode == 49){
+				location.href="/custom/faqList/?faqType=user";
+				return;
+			}
+			if(e.altKey && e.keyCode == 50){
+				location.href="/custom/faqList/?faqType=order";
+				return;
+			}
+			if(e.altKey && e.keyCode == 51){
+				location.href="/custom/faqList/?faqType=cancle";
+				return;
+			}
+		})
+		
+		
+		function VoiceReturnRead(idx) {
+			alert("Rer");
+			var data = {
+				"voice" : {
+					"languageCode" : "ko-KR",
+					"name" : "ko-KR-Neural2-B"
+				},
+				"input" : {
+					"text" : $('#faqTitle'+(idx-1)).text() + $('#faqContent'+idx-1).text(),
+				
+				},
+				"audioConfig" : {
+					"audioEncoding" : "mp3"
+				}
+			}
+			
+			$.ajax({
+				type : 'POST',
+				url : 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
+				data : JSON.stringify(data),
+				dataType : 'JSON',
+				contentType : "application/json; charset=UTF-8",
+				success : function(res) {
+					$('#menuText').val(res.audioContent)
+					var audioFile = new Audio();
+					let audioBlob = base64ToBlob(res.audioContent,
+							"mp3");
+					audioFile.src = window.URL
+							.createObjectURL(audioBlob);
+					audioFile.playbackRate = 1; //재생속도
+			
+					audioFile.play();
+					console.log(idx);
+					if(idx != 0){
+						let num = Number($('#index').val()) - 1;
+						$('#index').val(num);
+						
+					}
+				
+				},
+				error : function(request, status, error) {
+					alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
+				}
+			});
+		};
+		
+		function VoiceRead(idx) {
+			var data = {
+				"voice" : {
+					"languageCode" : "ko-KR",
+					"name" : "ko-KR-Neural2-B"
+				},
+				"input" : {
+					"text" : $('#faqTitle'+idx).text() + $('#faqContent'+idx).text(),
+				
+				},
+				"audioConfig" : {
+					"audioEncoding" : "mp3"
+				}
+			}
+			$.ajax({
+				type : 'POST',
+				url : 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
+				data : JSON.stringify(data),
+				dataType : 'JSON',
+				contentType : "application/json; charset=UTF-8",
+				success : function(res) {
+					$('#menuText').val(res.audioContent)
+					var audioFile = new Audio();
+					let audioBlob = base64ToBlob(res.audioContent,
+							"mp3");
+					audioFile.src = window.URL
+							.createObjectURL(audioBlob);
+					audioFile.playbackRate = 1; //재생속도
+			
+					audioFile.play();
+					
+					let leg = $('#length').val();
+					if(leg != idx){
+						let num = Number($('#index').val()) + 1;
+						$('#index').val(num);
+						
+					}
+				
+				},
+				error : function(request, status, error) {
+					alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
+				}
+			});
+		};
+		
+		
+		
+		
+		
+		
+		function VoiceMenu() {
+			var data = {
+				"voice" : {
+					"languageCode" : "ko-KR",
+					"name" : "ko-KR-Neural2-B"
+				},
+				"input" : {
+					"text" : $('#testInput').val()
+				},
+				"audioConfig" : {
+					"audioEncoding" : "mp3"
+				}
+			}
+			console.log(data);
+			$.ajax({
+				type : 'POST',
+				url : 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
+				data : JSON.stringify(data),
+				dataType : 'JSON',
+				contentType : "application/json; charset=UTF-8",
+				success : function(res) {
+					$('#menuText').val(res.audioContent)
+					var audioFile = new Audio();
+					let audioBlob = base64ToBlob(res.audioContent,
+							"mp3");
+					audioFile.src = window.URL
+							.createObjectURL(audioBlob);
+					audioFile.playbackRate = 1; //재생속도
+			
+					audioFile.play();
+				
+				},
+				error : function(request, status, error) {
+					alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
+				}
+			});
+		};
+
+		function base64ToBlob(base64, fileType) {
+			let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
+			let audioSrc = typeHeader + base64;
+			let arr = audioSrc.split(",");
+			let array = arr[0].match(/:(.*?);/);
+			let mime = (array && array.length > 1 ? array[1] : type) || type;
+			// url헤더 제거하고 btye로 변환
+			let bytes = window.atob(arr[1]);
+			// 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
+			let ab = new ArrayBuffer(bytes.length);
+			// 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
+			let ia = new Uint8Array(ab);
+			for (let i = 0; i < bytes.length; i++) {
+				ia[i] = bytes.charCodeAt(i);
+			}
+			return new Blob([ ab ], {
+				type : mime
+			});
+		}
+	</script>
+</div>
+</html>

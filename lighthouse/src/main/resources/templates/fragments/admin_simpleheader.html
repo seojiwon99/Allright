@@ -1,0 +1,54 @@
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org">
+<!--headerFragment 선언-->
+
+<div th:fragment="headerFragment">
+	<!-- NAVBAR -->
+	<div
+		class="navbar navbar-topbar navbar-expand-xl navbar-light bg-light  ">
+		<!-- 		<!-- navbar navbar-expand-lg navbar-vertical navbar-light sticky-start px-lg-7  -->
+		<div class="container">
+
+			<!-- Toggler -->
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#topbarCollapse"
+				aria-controls="topbarCollapse" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<!-- Collapse -->
+			<div class="collapse navbar-collapse" id="topbarCollapse" style="justify-content:end;">
+
+
+				<!-- Nav -->
+				<ul class="nav navbar-nav me-8">
+					<li class="nav-item"><a class="nav-link" href="/">All Right</a></li>
+					<li class="nav-item"><a class="nav-link"
+						th:href="${session.loginMember} == null ? @{/page/member/loginForm} : '#'" th:text="${session.loginMember} != null ? ${session.loginMember.memberId} : '로그인' ">Shipping</a></li>
+				
+					<li class="nav-item dropdown hovered">
+						<!-- Toggle --> <a class="nav-link" data-bs-toggle="dropdown"
+						href="#" aria-expanded="false">고객센터</a> <!-- Menu -->
+						<div class="dropdown-menu">
+							<div class="card card-lg">
+								<div class="card-body">
+									<ul class="list-styled fs-sm">
+										<li class="list-styled-item"><a class="list-styled-link"
+											href="/custom/faqList">FAQ</a></li>
+										<li class="list-styled-item"><a class="list-styled-link"
+											href="/custom/notice">공지사항</a></li>
+										<li class="list-styled-item"><a class="list-styled-link" id="customInq"
+											href="#">1:1문의</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+					</li>
+				</ul>
+				<!--  NAVBAR -->
+			</div>
+		</div>
+	</div>
+</div>
+</html>

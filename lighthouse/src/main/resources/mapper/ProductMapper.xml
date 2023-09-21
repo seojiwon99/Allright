@@ -85,6 +85,11 @@
 		</choose>
 	</select>
 	
+	<!-- option 리스트 -->
+	<select id="getOptionList" resultType="OptionVO">
+		select * from ar_option where product_code = #{productCode} 
+	</select>
+	
 	
 <!-- 주문목록 -->
 <resultMap type="DetailVO" id="selectOrderDetail">
@@ -309,11 +314,11 @@ WHERE member_id = #{memberId}
 	</update>
 	
 	
-	<update id="insertDeliveryInfo" parameterType="DetailVO">
-		UPDATE ar_order_detail
-		SET delivery_company = #{deliveryCompany}, delivery_number = #{deliveryNumber}, delivery_date = sysdate 
-		WHERE order_detail_code = 101;
-	</update>
+   <update id="updateDeliveryInfo" parameterType="DetailVO">
+      UPDATE ar_order_detail
+      SET delivery_company = #{deliveryCompany}, delivery_number = #{deliveryNumber}, delivery_date = sysdate 
+      WHERE order_detail_code = #{orderDetailCode}
+   </update>
 	
 	
 	
@@ -326,23 +331,25 @@ WHERE member_id = #{memberId}
 	<select id="selectInfo" resultType="ProductVO">
 		select member_id
 			 , p.product_code
-             , category_code
-             , product_name
-             , product_content
-             , product_location
-             , product_cost
-             , product_regdate
-             , sale_price
-             , product_brand
-             , product_origin
-             , product_makeorigin
-             , delivery_cost
-             , return_cost
-             , exchange_cost
-                , delivery_service
-                , product_status
-		from ar_products p join ar_imgs i
-                           on p.product_code = i.product_code
-		where p.product_code = #{productCode}
+             , p.category_code
+             , p.product_name
+             , p.product_content
+             , p.product_location
+             , p.product_cost
+             , p.product_regdate
+             , p.sale_price
+             , p.product_brand
+             , p.product_origin
+             , p.product_makeorigin
+             , p.delivery_cost
+             , p.return_cost
+             , p.exchange_cost
+             , p.delivery_service
+             , p.product_status
+               , i.upload_name
+               , i.img_content
+		from ar_products p , ar_imgs i 
+        where p.product_code = i.product_code
+		and p.product_code = #{productCode}
 	</select>
 </mapper>

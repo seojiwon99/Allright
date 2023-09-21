@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_layout}">
+<style>
+table {
+	border : 1px;
+}
+</style>
+
+<!-- Content -->
+<div layout:fragment="content">
+	<div class="row gx-0">
+        <div class="col-12 col-lg-3">
+
+          <!-- NAVBAR -->
+          <nav class="navbar navbar-expand-lg navbar-vertical navbar-light sticky-start px-lg-7 ">
+            <div class="container-fluid">
+          
+              <!-- Brand -->
+              <a class="navbar-brand" href="/sellerMain">
+                All Right
+              </a>
+          
+              <!-- Toggler -->
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSidenavLeftCollapse" aria-controls="navbarSidenavLeftCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+          
+              <!-- Collapse -->
+              <div class="collapse navbar-collapse" id="navbarSidenavLeftCollapse">
+          
+                <!-- Nav -->
+                <ul class="navbar-nav fs-lg mb-6 my-lg-6" id="sidenavParent">
+                
+             
+                  <!-- Toggle -->
+                  <li class="nav-item">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#sidenavHome">
+                      공지사항
+                    </a>
+          
+                    <!-- Collapse -->
+                    <div class="collapse" id="sidenavHome" data-bs-parent="#sidenavParent">
+                      <ul class="list-styled fs-base fw-normal py-3 mb-0">
+                        <li class="list-styled-item">
+                          <a class="list-styled-link" href="/admin/notice">공지사항</a>
+                        </li>
+                        <li class="list-styled-item">
+                          <a class="list-styled-link" href="/admin/faq">자주 묻는 질문</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="nav-item">
+                  
+                  <!-- Toggle -->
+                  <li class="nav-item">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#sidenavHome2">
+                      신고내역
+                    </a>
+          
+                    <!-- Collapse -->
+                    <div class="collapse" id="sidenavHome2" data-bs-parent="#sidenavParent">
+                      <ul class="list-styled fs-base fw-normal py-3 mb-0">
+                        <li class="list-styled-item">
+                          <a class="list-styled-link" href="/productList">신고내역</a>
+                        </li>
+                        <li class="list-styled-item">
+                          <a class="list-styled-link" href="/insertProduct">처리된 신고내역</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="nav-item">
+                  
+                  
+                  <!-- Toggle -->
+                  <li class="nav-item">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#sidenavHome3">
+                      문의내역
+                    </a>
+          
+                    <!-- Collapse -->
+                    <div class="collapse" id="sidenavHome3" data-bs-parent="#sidenavParent">
+                      <ul class="list-styled fs-base fw-normal py-3 mb-0">
+                        <li class="list-styled-item">
+                          <a class="list-styled-link" href="/productList">문의내역</a>
+                        </li>
+                        <li class="list-styled-item">
+                          <a class="list-styled-link" href="/insertProduct">처리돤 문의내역</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="nav-item">
+                  
+                  
+                  <!-- Toggle -->
+                  <li class="nav-item">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#sidenavHome4">
+                      회원목록
+                    </a>
+          
+                    <!-- Collapse -->
+                    <div class="collapse" id="sidenavHome4" data-bs-parent="#sidenavParent">
+                      <ul class="list-styled fs-base fw-normal py-3 mb-0">
+                        <li class="list-styled-item">
+                          <a class="list-styled-link" href="/productList">구매자</a>
+                        </li>
+                        <li class="list-styled-item">
+                          <a class="list-styled-link" href="/insertProduct">판매자</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="nav-item">
+                  
+                  
+                  <!-- Toggle -->
+                  <li class="nav-item">
+                    <a class="nav-link dropdown-toggle" href="/insertProduct">
+                      상품목록
+                    </a>
+                  <li class="nav-item">
+                  
+                  <!-- Toggle -->
+                  <li class="nav-item">
+                    <a class="nav-link dropdown-toggle" href="/insertProduct">
+                      배너수정
+                    </a>
+                  <li class="nav-item">
+                  
+                  
+                  
+               
+          
+          
+          
+                 <!-- nav end -->
+                </ul>
+              </div>
+          
+            </div>
+          </nav>
+
+        </div>
+        				<!-- NAVBAR  SEARCHBAR-->
+       		<div class="col-12 col-lg-9">s
+        		<!-- main 영역 -->
+        			<div class="container">
+        			<div class="row justify-content-center">
+					<div class="row justify-content-center">
+        			
+					<div class="row" style="    display: flex;
+											    justify-content: end;
+											    margin-bottom: 30px;
+											    margin-top:30px;">
+						<!-- Form -->
+						<div>
+						<h2>FAQ</h2>
+						</div>
+						<form class="navbar-form col-12" style="max-width: 550px; display: flex;
+											    justify-content: space-between">
+						<div class="input-group">
+						
+						  <!-- Input -->
+						<input class="form-control form-control-underline form-control-sm border-dark" type="search" placeholder="검색">
+						
+						<!-- Button -->
+						    <div class="input-group-append">
+						      <button class="btn btn-underline btn-sm border-dark" type="button">
+						        <i class="fe fe-search"></i>
+						      </button>
+						    </div>
+						
+						  </div>					
+		
+	
+						</form>
+					  <div class="container" style="display: flex;
+											    justify-content: space-between;
+											    margin-top: 30px;">
+											    
+							    <div class="btn-group-sm" role="group" aria-label="Basic outlined example">
+							    <button class="btn btn-outline-primary" type="button" id="faqBtn">전체</button>
+							    <button class="btn btn-outline-primary" type="button" id="faqBtn">취소/반품/교환</button>
+							    <button class="btn btn-outline-primary" type="button" id="faqBtn">주문/결제</button>
+							    <button class="btn btn-outline-primary" type="button" id="faqBtn">회원 서비스</button>
+							    <button class="btn btn-outline-primary" type="button" id="faqBtn">배송</button>
+							    <button class="btn btn-outline-primary" type="button" id="faqBtn">상품</button>
+							    <button class="btn btn-outline-primary" type="button" id="faqBtn">기타</button>
+							    </div>
+							    
+							    <div  class="btn-group-sm" role="group" aria-label="Basic outlined example">
+								<button class="btn-sm btn-dark" type="button" id="faqBtn">등록</button>
+							    </div>
+						</div>
+					</div>
+					</div>
+					</div>
+					<div>
+					<table class="table table-sm table-bordered table-striped table-hover">
+					<thead class="table-dark">
+					<tr>
+					<th scope="col" style="width:200px">구분</th>
+					<th scope="col">제목</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr th:each="faq : ${faqList}">
+					
+						<td scope="row" th:switch="${faq.faqType}">
+						  <span  th:case="1">[취소/반품/교환]</span>
+						  <span th:case="2">[주문/결제]</span>
+						  <span th:case="3">[회원 서비스]</span>
+						  <span th:case="4">[배송]</span>
+						  <span th:case="5">[상품]</span>
+						  <span th:case="6">[기타]</span>
+						</td>
+						
+						<td th:text="${faq.questionTitle}"></td>
+						
+						
+					</tr>
+					</tbody>
+					</table>
+										<!-- Pagination -->
+										<!-- 
+					<nav
+						class="d-flex justify-content-center justify-content-md-end mt-10">
+						<ul class="pagination pagination-sm text-gray-400">
+							<li class="page-item" th:if="${pageMaker.prev}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/admin/notice/(pageNum = ${pageMaker.startPage - 1})}">
+									<i class="fa fa-caret-left"></i>
+							</a></li>
+							<th:block
+								th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+								<li th:if="${pageMaker.endPage} ne 0"
+									th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+									th:each="pageButtom : ${#numbers.sequence(start,end)}"
+									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
+									<a class="page-link" href="#"
+									th:href="@{/admin/faq/(pageNum= ${pageButtom} )}"
+									th:text="${pageButtom}" style="font-size : x-large;"></a>
+								</li>
+							</th:block>
+
+							<li class="page-item" th:if="${pageMaker.next}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/custom/faq/(pageNum = ${pageMaker.endPage + 1})}">
+									<i class="fa fa-caret-right"></i>
+							</a></li>
+						</ul>
+					</nav>
+					 -->
+					
+					</div>
+					</div>
+					
+					
+				
+			</div>
+      </div>
+      
+<script>
+ $('#faqBtn').on('click', function(){
+	 location.href="";
+ })
+</script>      
+</div>
+</html>

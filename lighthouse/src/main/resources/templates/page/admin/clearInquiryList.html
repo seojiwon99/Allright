@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_layout2}">
+<!-- Content -->
+<div layout:fragment="content" class="col">
+	<!-- main 영역 -->
+	<div class="container">
+		<div class="col" style="    display: flex;
+											    justify-content: space-between;
+											    margin-bottom: 15px;
+											    margin-top:30px;">
+						<!-- Form -->
+			<div>
+			<h2 class="fst-normal">처리된 문의 내역</h2>
+			</div>
+			<form class="navbar-form w-100" style="max-width: 550px; ">
+				<div class="input-group">
+				<!-- Input -->
+				<input class="form-control form-control-underline form-control-sm border-dark" type="search" placeholder="검색" id="declareSearchBar">
+				<!-- Button -->
+				    <div class="input-group-append">
+				      <button class="btn btn-underline btn-sm border-dark" type="button" id="declareSearchBtn">
+				        <i class="fe fe-search"></i>
+				      </button>
+				    </div>
+				</div>
+
+			</form>
+			
+		</div>
+		<div class="col" style="display: flex;
+											    justify-content: space-between;">
+				<div class="col" style="    display: flex;
+							    justify-content: space-between;
+							    margin-top: 30px;">
+
+				</div>
+		</div>
+	
+	
+	<!-- TABLE -->
+    		<table class="table table-bordered table-sm mb-0">
+			  <thead>
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col">문의 제목</th>
+			      <th scope="col">문의 내용</th>
+			      <th scope="col">문의자</th>
+			      <th scope="col">날짜</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr th:each="inq : ${inqList}">
+					
+						<td scope="row" th:text="${inq.customInquiryCode}"></td>
+						<td th:text="${inq.customInquiryTitle}"></td>
+						<td th:text="${inq.customInquiryContent}"></td>
+						<td th:text="${inq.memberId}"></td>
+						<td style="text-align:right;" class="" th:text="${#dates.format(inq.customInquiryRegdate,'yyyy-MM-dd')}"></td>
+				</tr>
+			  </tbody>
+			</table>
+					<!-- Pagination -->
+					<nav class="d-flex justify-content-center justify-content-md-center mt-10">
+						<ul class="pagination pagination-sm text-gray-400">
+							<li class="page-item" th:if="${pageMaker.prev}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/admin/declareList/(pageNum = ${pageMaker.startPage - 1}, ,declareContent=${param.declareContent}, declareReason=${param.declareReason})}">
+									<i class="fa fa-caret-left"></i>
+							</a></li>
+							<th:block
+								th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+								<li th:if="${pageMaker.endPage} ne 0"
+									th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+									th:each="pageButtom : ${#numbers.sequence(start,end)}"
+									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
+									<a class="page-link" href="#"
+									th:href="@{/admin/declareList/(pageNum= ${pageButtom},declareContent=${param.declareContent}, declareReason=${param.declareReason} )}"
+									th:text="${pageButtom}" style="font-size : x-large;"></a>
+								</li>
+							</th:block>
+
+							<li class="page-item" th:if="${pageMaker.next}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/admin/declareList/(pageNum = ${pageMaker.endPage + 1},declareContent=${param.declareContent}, declareReason=${param.declareReason})}">
+									<i class="fa fa-caret-right"></i>
+							</a></li>
+						</ul>
+					</nav>
+					<!-- pagi end -->
+	</div><!-- container -->
+	<script>
+	$('#declareSearchBtn').on('click', function(){
+		let url = "?customInquiryTitle=" + $('#declareSearchBar').val()
+		location.href =  url;
+	})
+	</script>
+</div>
+</html>
