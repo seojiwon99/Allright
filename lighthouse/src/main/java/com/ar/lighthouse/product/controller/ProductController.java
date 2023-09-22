@@ -281,12 +281,16 @@ public class ProductController {
 		return uploadFileName.replace(File.separator, "/");
 	}
 
-	@PostMapping
-	public ReviewVO editReview(ReviewVO reviewVO) {
-		return null;
-		
+	@PostMapping("editReview")
+	@ResponseBody
+	public ReviewVO editReview(MultipartFile[] files, @RequestBody ReviewVO reviewVO) {
+		System.out.println(reviewVO);
+
+		reviewService.editReview(reviewVO);
+		return reviewVO;
+
 	}
-	
+
 	// 리뷰 삭제
 	@PostMapping("removeReview")
 	@ResponseBody
@@ -296,8 +300,6 @@ public class ProductController {
 
 		return "deleteReview";
 	}
-
-
 
 	// qna 등록
 	@PostMapping("insertInquiry")
@@ -352,6 +354,7 @@ public class ProductController {
 		ReviewVO reviewVO = new ReviewVO();
 		reviewVO.setProductCode(productCode);
 		model.addAttribute("review", reviewService.getReviewList(reviewVO));
+		model.addAttribute("count", reviewService.countGetReview(reviewVO));
 
 		// qna 조회
 		ProductInquiryVO productInquiryVO = new ProductInquiryVO();
@@ -363,8 +366,6 @@ public class ProductController {
 		model.addAttribute("options", productService.getOptionList(optionVO));
 		System.out.println(model);
 
-
-		
 		return "page/goods/goodDetail";
 	}
 
