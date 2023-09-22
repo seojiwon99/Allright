@@ -45,4 +45,13 @@ public class DetailVO {
    private int imgOrder;
    
    
+   //취소,반품,교환 
+   private String cancelStatus;
+   private Date cancelRegdate;
+   private String returnStatus;
+   private Date returnRegdate;
+   private String exchangeStatus;
+   private Date exchangeRegdate;
+   
+   
 }
