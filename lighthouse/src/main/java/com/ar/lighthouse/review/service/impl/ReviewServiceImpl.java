@@ -33,9 +33,18 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public boolean removeReview(String memberId) {
-		return mapper.deleteReview(memberId) == 1;
+	public boolean removeReview(int reviewCode) {
+		return mapper.deleteReview(reviewCode) == 1;
 	}
 
+	@Override
+	public List<ReviewVO> countGetReview(ReviewVO reviewVO) {
+		return mapper.countReview(reviewVO);
+	}
+
+	@Override
+	public boolean editReview(ReviewVO reviewVO) {
+		return mapper.updateReview(reviewVO) == 1;
+	}
 
 }

@@ -119,85 +119,86 @@
 							</div>
 
 							<!-- Form -->
-								
-							<form >
+
+							<form>
 
 								<div class="form-group">
 									<!-- Label -->
-									
+
 									<!-- option -->
-									<div class="mb-2" style="padding-bottom: 24px" >
-										<div class="col-12 col-lg-auto" >
+									<div class="mb-2" style="padding-bottom: 24px">
+										<div class="col-12 col-lg-auto">
 
 											<!-- option1 -->
 											<div th:each="option,status : ${options}">
-											<div th:with="isDuplicated = ${status.index > 0 && options[status.index-1].optionName == options[status.index].optionName}"
-											> 
-												<div th:if="${isDuplicated} == false">
-													[[${option.optionName}]]
-													<select class="form-select mb-2">
-														<option value="1" th:each="option1,status:${options}" th:if="${option.optionName} == ${option1.optionName}"> [[${option1.optionValue}]]</option>
-													</select>
+												<div
+													th:with="isDuplicated = ${status.index > 0 && options[status.index-1].optionName == options[status.index].optionName}">
+													<div th:if="${isDuplicated} == false">
+														[[${option.optionName}]] <select class="form-select mb-2">
+															<option value="1" th:each="option1,status:${options}"
+																th:if="${option.optionName} == ${option1.optionName}">
+																[[${option1.optionValue}]]</option>
+														</select>
+													</div>
+
 												</div>
-											
+
+
+
 											</div>
-											
-											
-
 										</div>
-									</div>
 
-									
 
-									<div class="row mb-7">
-										<div class="col-12 col-lg-auto">
-											
-											<div style="display: flex" class="num" >
-												<span style="padding-right: 8px">수량 : </span>
-												<input type="number" value="1" style=" opacity: 0.7; width: 100px" >
+
+										<div class="row mb-7">
+											<div class="col-12 col-lg-auto">
+
+												<div style="display: flex" class="num">
+													<span style="padding-right: 8px;">수량 : </span> <input
+														type="number" value="1"
+														style="opacity: 0.7; width: 100px;">
+
+												</div>
+												<span>원가 - 할인가격 = 총금액</span>
 											</div>
-											<span>원가 - 할인가격 = 총금액</span>
+
+										</div>
+										<div class="form-group" style="font-size: 13px">
+											<div style="padding-bottom: 8px; color: grey">
+												<span>배송정보 : </span> <span>[[${goods.deliveryService}]]</span>
+											</div>
+											<div style="padding-bottom: 8px; color: grey">
+												<span>배송비 : </span> <span>[[${goods.deliveryCost}]]원</span>
+											</div>
+											<div style="padding-bottom: 8px; color: grey">
+												<span>생산지 : </span> <span>[[${goods.productOrigin}]]</span>
+											</div>
 										</div>
 
+										<div class="row gx-5 mb-7">
+
+											<div class="col-12 col-lg">
+												<!-- Submit -->
+												<button type="submit" class="btn w-100 btn-dark mb-2">
+													장바구니 <i class="fe fe-shopping-cart ms-2"></i>
+												</button>
+											</div>
+											<div class="col-12 col-lg-auto">
+												<!-- Wishlist -->
+												<button class="btn btn-outline-dark w-100 mb-2"
+													data-toggle="button">
+													찜 <i class="fe fe-heart ms-2"></i>
+												</button>
+											</div>
+										</div>
+
+										<!-- Text -->
+										<p th:if="${session.loginMember == null}">
+											<span class="text-gray-500">아이디가 없나요?</span> <a
+												class="text-reset text-decoration-underline" id="loginTag">지금
+												바로 회원가입!</a>
+										</p>
 									</div>
-									<div class="form-group">
-										<div style="padding-bottom: 8px; color: grey">
-											<span >배송정보 : </span> <span>[[${goods.deliveryService}]]</span>
-										</div>
-										<div style="padding-bottom: 8px; color: grey">
-											<span>배송비 : </span> <span>[[${goods.deliveryCost}]]원</span>
-										</div>
-										<div style="padding-bottom: 8px; color: grey">
-											<span >생산지 : </span> <span>[[${goods.productOrigin}]]</span>
-										</div>
-									</div>
-
-									<div class="row gx-5 mb-7">
-										<div class="col-12 col-lg-auto">
-											<!-- Quantity -->
-
-										</div>
-										<div class="col-12 col-lg">
-											<!-- Submit -->
-											<button type="submit" class="btn w-100 btn-dark mb-2">
-												장바구니 <i class="fe fe-shopping-cart ms-2"></i>
-											</button>
-										</div>
-										<div class="col-12 col-lg-auto">
-											<!-- Wishlist -->
-											<button class="btn btn-outline-dark w-100 mb-2"
-												data-toggle="button">
-												찜 <i class="fe fe-heart ms-2"></i>
-											</button>
-										</div>
-									</div>
-
-									<!-- Text -->
-									<p>
-										<span class="text-gray-500">아이디가 없나요?</span> <a
-											class="text-reset text-decoration-underline" id="loginTag">지금
-											바로 회원가입!</a>
-									</p>
 								</div>
 							</form>
 						</div>
@@ -216,7 +217,7 @@
 
 					<div
 						class="nav nav-tabs nav-overflow justify-content-start justify-content-md-center border-bottom"
-						style="font-size: 24px; position: sticky; top: 0px; background-color: white;">
+						style="font-size: 24px; position: sticky; top: 0px; background-color: white; z-index: 1">
 						<a class="nav-link" href="#descriptionTab"> 상세정보 </a> <a
 							class="nav-link" href="#sizeTab"> 리뷰 </a> <a class="nav-link"
 							href="#qnaTap"> Q&A </a>
@@ -239,6 +240,8 @@
 
 									<tbody>
 										<tr>
+											<th scope="row" style="font-weight: 600">사업자번호</th>
+											<th scope="row" th:text="${goods.productCost}+원"></th>
 											<th scope="row" style="font-weight: 600">원가</th>
 											<th scope="row" th:text="${goods.productCost}+원"></th>
 										</tr>
@@ -250,7 +253,7 @@
 										<tr>
 											<td scope="row" style="font-weight: 600">배송방법</td>
 											<td scope="row" th:text="${goods.deliveryService}"></td>
-											<td scope="row" style="font-weight: 600">배달비</td>
+											<td scope="row" style="font-weight: 600">배송비</td>
 											<td scope="row" th:text="${goods.deliveryCost}+원"></td>
 										</tr>
 
@@ -270,9 +273,9 @@
 						</div>
 
 						<div>
-							<section class="pt-9 pb-11" id="reviews">
+							<section class="pt-9 pb-11" >
 								<div class="container">
-									<div class="row">
+									<div class="row" >
 										<div class="col-12" id="sizeTab">
 											<!-- Heading -->
 											<h5 class="mb-10 text-center">리뷰</h5>
@@ -317,7 +320,7 @@
 													</div>
 
 													<!-- Count -->
-													<strong class="fs-sm ms-2">Reviews (3)</strong>
+													<strong class="fs-sm ms-2">Reviews</strong>
 												</div>
 												<div class="col-12 col-md-auto">
 													<!-- Button -->
@@ -326,6 +329,110 @@
 														리뷰 작성 </a> <a class="btn btn-sm btn-dark"
 														th:if="${session.loginMember == null}"
 														href="page/member/loginForm"> 로그인 </a>
+												</div>
+											</div>
+
+											<!-- 리뷰 수정 폼 -->
+											<div class="collapse" id="reviewModifyForm"
+												style="display: none">
+												<!-- Divider -->
+												<hr class="my-8" />
+
+
+												<div class="row">
+													<div class="col-12 mb-6 text-center">
+														<!-- Text -->
+														<p class="mb-1 fs-xs">별점:</p>
+
+														<!-- Rating form -->
+														<div class="rating-form">
+															<!-- Input -->
+															<input class="rating-input" type="range" min="1" max="5"
+																value="5" />
+
+															<!-- Rating -->
+															<div class="star rating h5 text-dark" data-value="5">
+																<div class="rating-item">
+																	<i class="fas fa-star"></i>
+																</div>
+																<div class="rating-item">
+																	<i class="fas fa-star"></i>
+																</div>
+																<div class="rating-item">
+																	<i class="fas fa-star"></i>
+																</div>
+																<div class="rating-item">
+																	<i class="fas fa-star"></i>
+																</div>
+																<div class="rating-item">
+																	<i class="fas fa-star"></i>
+																</div>
+															</div>
+														</div>
+													</div>
+
+													<input type="hidden" th:value="${goods.productCode}"
+														id="productCode" name="productCode" />
+
+													<div class="col-12 mb-6 text-center"
+														style="display: flex; justify-content: center; align-items: center">
+														<!-- Text -->
+														<div style="display: flex">
+															<div>
+																<p class="mb-1 fs-xs"
+																	style="padding-bottom: 10px; padding-right: 120px">이미지
+																	선택</p>
+																<input type="file" class="reviewimg" name="files"
+																	id="reviewimg" accept="image/*" />
+															</div>
+															<div>
+																<input type="hidden" name="imgName" id="imgName"
+																	placeholder="제목을 입력해 주세요" />
+															</div>
+															<div class="col-12">
+																<input type="text" name="imgContent" id="imgContent"
+																	class="form-control"
+																	placeholder="다른사람을 위한 대체 텍스트를 입력해주세요"
+																	style="width: 600px" />
+															</div>
+														</div>
+
+														<ul class="image-preview"></ul>
+
+														<!-- Rating form -->
+														<div class="rating-form">
+															<!-- Input -->
+															<input class="rating-input" type="range" min="1" max="5"
+																value="5" />
+
+
+														</div>
+													</div>
+
+													<div class="col-12" th:if="${session.loginMember != null}">
+														<!-- 유저네임 -->
+														<div class="form-group">
+															<label class="visually-hidden" for="memberId"></label> <input
+																class="form-control form-control-sm" id="memberId"
+																name="memberId" type="text"
+																th:value="${session.loginMember.memberId}" readonly />
+														</div>
+													</div>
+
+													<div class="col-12">
+														<!-- 내용 -->
+														<div class="form-group">
+															<label class="visually-hidden" for="reviewContent">Review:</label>
+															<textarea class="form-control form-control-sm" rows="5"
+																placeholder="내용을 입력해주세요" id="reviewContent"
+																name="reviewContent" required></textarea>
+														</div>
+													</div>
+													<div class="col-12 text-center">
+														<!-- Button -->
+														<button class="btn btn-outline-dark" type="button"
+															th:onclick="" id="insertBtn">리뷰 저장</button>
+													</div>
 												</div>
 											</div>
 
@@ -373,21 +480,29 @@
 														<input type="hidden" th:value="${goods.productCode}"
 															id="productCode" name="productCode" />
 
-														<div class="col-12 mb-6 text-center">
+														<div class="col-12 mb-6 text-center"
+															style="display: flex; justify-content: center; align-items: center">
 															<!-- Text -->
-															<p class="mb-1 fs-xs">이미지:</p>
-															<input type="file" class="reviewimg" name="files"
-																id="reviewimg" accept="image/*" />
-															<div>
-																<input type="text" name="imgName" id="imgName"
-																	placeholder="이미지 제목" />
-															</div>
-															<div>
-																<input type="text" name="imgContent" id="imgContent"
-																	placeholder="대체 텍스트를 입력해주세요" style="width: 600px" />
+															<div style="display: flex">
+																<div>
+																	<p class="mb-1 fs-xs"
+																		style="padding-bottom: 10px; padding-right: 120px">이미지
+																		선택</p>
+																	<input type="file" class="reviewimg" name="files"
+																		id="reviewimg" accept="image/*" />
+																</div>
+																<div>
+																	<input type="hidden" name="imgName" id="imgName"
+																		placeholder="제목을 입력해 주세요" />
+																</div>
+																<div class="col-12">
+																	<input type="text" name="imgContent" id="imgContent"
+																		class="form-control"
+																		placeholder="다른사람을 위한 대체 텍스트를 입력해주세요"
+																		style="width: 600px" />
+																</div>
 															</div>
 
-															<div class="upload"></div>
 															<ul class="image-preview"></ul>
 
 															<!-- Rating form -->
@@ -396,8 +511,7 @@
 																<input class="rating-input" type="range" min="1" max="5"
 																	value="5" />
 
-																<!-- 이미지 등록 -->
-																<div class="rating h5 text-dark" data-value="5"></div>
+
 															</div>
 														</div>
 
@@ -429,11 +543,16 @@
 												</div>
 											</form>
 
+
+
 											<!-- Reviews -->
-											<div class="mt-8">
+											<div class="mt-8" id="reviews">
 												<!-- Review -->
 												<div class="review" th:each="review:${review}">
-													<div th:if="${review.reviewImg} != null">
+													<!-- 이미지 코드, 리뷰코드 -->
+													<div style="display: none">[[${review.reviewCode}]]</div>
+													<div th:if="${review.reviewImg} != null"
+														style="display: none">
 														[[${review.reviewImg.imgCode}]]</div>
 													<div class="review-body">
 														<div class="row">
@@ -441,13 +560,14 @@
 																<!-- Avatar -->
 																<div class="mb-6 mb-md-0"
 																	style="width: 180px; height: 180px">
-																	<span class="avatar-title circle" th:if="${review.reviewImg} == null"> 이미지 없음<i
+																	<span class="avatar-title circle"
+																		th:if="${review.reviewImg} == null"> 이미지 없음<i
 																		class="fas fa-image"></i>
 																	</span>
 																	<div th:if="${review.reviewImg} != null">
-
-																		<img th:src="|display?fileName=${review.reviewImg.uploadPath}/${review.reviewImg.uploadName}|" >
-
+																		<img
+																			th:src="|display?fileName=${review.reviewImg.uploadPath}/${review.reviewImg.uploadName}|"
+																			width="180px" height="180px">
 																	</div>
 																</div>
 															</div>
@@ -480,7 +600,8 @@
 																	</div>
 																	<div class="col-12">
 																		<!-- Time -->
-																		<span class="fs-xs text" th:text="${review.memberId}"></span>
+																		<span class="fs-xs text"
+																			th:text="${review.memberId.length} > 3 ? ${#strings.substring(review.memberId,0,5)}+'***' : ${inquiry.memberId}"></span>
 																		<span class="fs-xs text-muted"
 																			th:text="${#dates.format(review.reviewRegdate,'yyyy-MM-dd HH:mm')}"></span>
 																	</div>
@@ -493,10 +614,10 @@
 																<!-- Footer -->
 																<div class="row align-items-center">
 																	<div class="col-auto me-auto">
-																		<!-- Rate -->
+																		<!-- 좋아요 -->
 																		<div class="rate">
 																			<a class="rate-item" data-toggle="vote"
-																				data-count="3" href="#" role="button"> <i
+																				data-count="0" href="#" role="button"> <i
 																				class="fe fe-thumbs-up"></i>
 																			</a> <a class="rate-item" data-toggle="vote"
 																				data-count="0" href="#" role="button"> <i
@@ -511,11 +632,13 @@
 
 																		<button
 																			th:if="${session.loginMember.memberId == review.memberId}"
+																			id="reviewModifyBtn"
 																			class="btn btn-xs btn-outline-border">수정</button>
 																		<button
 																			th:if="${session.loginMember.memberId == review.memberId}"
-																			class="btn btn-xs btn-outline-border" id="delBtn">
-																			삭제하기</button>
+																			class="btn btn-xs btn-outline-border"
+																			th:onclick="reviewDelete([[${review.reviewCode}]])"
+																			id="reviewDelBtn">삭제하기</button>
 
 																		<button class="btn btn-xs btn-outline-border"
 																			th:if=" ${session.loginMember.memberId != review.memberId}">
@@ -555,8 +678,8 @@
 							</section>
 						</div>
 
-						<div id="qnaTap">
-							<div class="col-12">
+						<div>
+							<div class="col-12" id="qnaTap">
 								<div style="padding-top: 48px">
 									<div style="padding-bottom: 30px">
 										<h5 class="mb-5 text-center">Q&A</h5>
@@ -581,7 +704,7 @@
 												<table class="table">
 													<thead>
 														<tr>
-															<th scope="col">#글 번호<input type="hidden" />
+															<th scope="col">리뷰작성<input type="hidden" />
 															</th>
 															<th scope="col">비밀글 : <input type="checkbox"
 																id="queSecret" name="queSecret" checked="checked" />
@@ -606,8 +729,6 @@
 											</div>
 										</div>
 									</div>
-
-
 
 									<table class="table">
 										<thead>
@@ -715,25 +836,14 @@
 					</div>
 				</div>
 			</div>
+		</div>
 	</section>
 	<input type="hidden" id="hidden" th:value="${session.loginMember}" />
 	<!-- REVIEWS -->
 
 	<script th:inline="javascript">
-		
-	function inquiryModify(){
-		console.log($("#que").val());
-		
-	}
 	
-		function modify(idx){	
-			console.log(idx);
-			
-			$("#answerForm textarea").attr("readonly",false);
-		}	
-		
-		
-      console.log($("#hidden").val());
+	  //회원가입 창으로
       $("#loginTag").on("click", function () {
         let result = confirm("회원가입 창으로 이동하시겠습니까?");
 
@@ -742,12 +852,6 @@
         } 
       });
  
-      //리뷰삭제
-      $("#delBtn").on("click", function (e) {
-        
-        console.log(clicked);
-      });
-
       //이미지 세부사항
       let regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
       let maxSize = 5242880; //5mb
@@ -764,17 +868,80 @@
         return true;
       }
 
-      //답변 조회
-           function toggleOn(idx){ 
+  	//리뷰등록
+      $("#insertBtn").on("click", function () {
+        let form = $("#reviewForm2")[0];
+        console.log(form);
+        const formData = new FormData(form);
+        let star = $(".star").data("value");
+        // formData.append("memberId", memberId);
+        // formData.append("reviewContent", reviewContent);
+        formData.append("reviewStar", star);
+
+        for (let key of formData.keys()) {
+          console.log(key, ":", formData.get(key));
+        }
+
+        $.ajax({
+          url: "insertReview",
+          type: "post",
+          data: formData,
+          enctype: "multipart/form-data",
+          contentType: false,
+          processData: false,
+          success: function (result) {
+            alert("업로드 성공");
+            console.log("rsult"+result);
+            if(result == "insert"){
+            $('#sizeTab').load(location.href+' #sizeTab');
+            
+            }
+          },
+          error: function (err) {
+            console.log(err);
+          },
+        });
+      });
+		
+      
+      //리뷰삭제
+      function reviewDelete(idx){
+    	  if(!confirm("정말로 삭제하시겠습니까?")){
+    		  console.log("no");
+    	  }else{
+    	  
+    	  console.log(idx);  
+    	  $.ajax({
+    		  url:"removeReview",
+    		  type:"post",
+    		  contentType:"application/json",
+    		  data:JSON.stringify(idx),
+    		  success:function(result){
+    			  console.log("result"+result);
+    			  if(result=="deleteReview"){
+    				  console.log(result);
+    				  alert("정상적으로 삭제되었습니다");
+    				  $('#reviews').load(location.href+' #reviews');
+    			  }else{
+    				  alert("error");
+    			  }
+    		  },
+    		  error:function(reject){
+    			  console.log(reject);
+    		  },
+    		  
+    	  })
+      } 
+     }
+      
+    //qna 조회
+      function toggleOn(idx){ 
       	//$(".inquiryGet").css("display","");      
     	//$(".inquiryGet").css("background","lightgrey");
     	$('.inquiryGet'+ idx).toggle();
-    	};
-      
-    	
-    	
-    	
-    	//답변등록
+      };
+
+    	//qna 등록
       function inquiryAdd() {
         if ($("#queSecret").is(":checked")) {
           $("#queSecret").val("Y");
@@ -830,9 +997,8 @@
         });
       }
     	
-		//qna 삭제
-		function remove(idx){
-			
+	  //qna 삭제
+	  function remove(idx){
 		    console.log(idx);
 			if(!confirm('삭제 하시겠습니까?')){
 				console.log("삭제 x");
@@ -849,9 +1015,11 @@
 				data: JSON.stringify(idx),
 				success:function(result){
 					console.log(result);
-					location.reload();
+					$('#inquiryTable').load(location.href+'#inquiryTable');
+					
 				},
 				error:function(reject){
+					
 					console.log(reject);
 				}
 			})
@@ -861,7 +1029,6 @@
 		//qna 수정
 		$('.testBtn').on('click',function(){
 			let btn = $(this).parent();
-			
 			
 			let queText = btn.parent().parent().children().next().children().next();
 			let queCode = btn.parent().parent().parent().children().next().next().data().code;
@@ -873,23 +1040,16 @@
 			btn.next().next().remove();
 			btn.remove();
 			//queCode = $("#ansQueCode").data("code");
-			
-			
-			
-				$(".edit").on("click",function(){
-					let ary = [];
-					let obj = {
-							queContent : queText.val()
-					}
-					let obj2 = {
-							queCode : queCode		
-					}
+		
+			$(".edit").on("click",function(){
+				
+				if(!confirm("이대로 저장하시겠습니까?")){
+					
+				}else{
 					let tmpObj = {
 							queContent : queText.val(),
 							queCode : queCode	
 					}
-					ary.push(obj);
-					ary.push(obj2);
 					
 				
 					$.ajax({
@@ -905,40 +1065,15 @@
 						console.log(reject);
 					}
 				})	
+				};
+				
+					
 			})
 		})
     	
-    	//리뷰등록
-      $("#insertBtn").on("click", function () {
-        let form = $("#reviewForm2")[0];
-        console.log(form);
-        const formData = new FormData(form);
-        let star = $(".star").data("value");
-        // formData.append("memberId", memberId);
-        // formData.append("reviewContent", reviewContent);
-        formData.append("reviewStar", star);
-
-        for (let key of formData.keys()) {
-          console.log(key, ":", formData.get(key));
-        }
-
-        $.ajax({
-          url: "insertReview",
-          type: "post",
-          data: formData,
-          enctype: "multipart/form-data",
-          contentType: false,
-          processData: false,
-          success: function (result) {
-            alert("업로드 성공");
-            console.log(result);
-          },
-          error: function (err) {
-            console.log(err);
-          },
-        });
-      });
-		
+    $("#reviewModifyBtn").on("click",function(e){
+    	$("#reviewModifyForm").css("display","block");
+    })
 		
 
     </script>

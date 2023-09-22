@@ -16,4 +16,5 @@ public class ReviewVO {
 	int reviewStar;
 	Date reviewRegdate;
 	ImgsVO reviewImg;
+	int reviewCount;
 }
