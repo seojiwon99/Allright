@@ -53,7 +53,7 @@ public class OrdersVO {
 	private int productCost;
 	private int salePrice;
 	private int deliveryCost;
-	private String deliveryCompany;
+	private String deliveryService;
 	
 	//ImegsVO
 	private String uploadName;
@@ -80,6 +80,14 @@ public class OrdersVO {
 	private Date endDate;
 	private String couponUse;
 	
+	//OrderDetailVO
+	
+	private int orderDetailCode;
+	private String optionCouponCheck;
+	private int orderCnt;
+	private int discountPrice;
+	private int paymentPrice;
+	private int OrderStatus;
 	
 	
 	

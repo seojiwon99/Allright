@@ -53,29 +53,48 @@ public class OrdersServiceImpl implements OrdersService{
 		return ordersMapper.selectCoupon(memberId);
 	}
 	
-	// 사용한 쿠폰 N 데이터 변경
 	@Override
+	// 사용한 쿠폰 N 데이터 변경
 	public int editNotCoupon(String memberId, int mycouponCode) {
 		return ordersMapper.updatetNotCoupon(memberId, mycouponCode);
 	}
 	
-	// 배송요청 사항 마스터 코드
 	@Override
+	// 배송요청 사항 마스터 코드
 	public List<CodeVO> getCode() {
 		
 		return ordersMapper.selectCode();
 	}
 
-	//토스 페이먼트 데이터 DB저장
 	@Override
+	//토스 페이먼트 데이터 DB저장
 	public int addCredit(CreditVO creditVO) {
 		return ordersMapper.insertCredit(creditVO);
 	}
 
 	@Override
+	// 주문 총 결제 주문정보 insert
 	public int addOrderPay(String memberId, OrderPayVO orderPayVO) {
-		
 		return ordersMapper.insertOrderPayVO(memberId, orderPayVO);
+	}
+
+	@Override
+	// 주문 결제한 각 주문상품 상세정보
+	public int addOrders(OrdersVO ordersVO) {
+	int orderSuccess = ordersMapper.insertOrders(ordersVO);
+		return ordersMapper.insertOrders(ordersVO);
+	}
+
+	@Override
+	// 주문 상품 코드 파싱
+	public int getOrderCode(String memberId) {
+		return ordersMapper.selectOrderCode(memberId);
+	}
+
+	@Override
+	// 주문 완료 후 장바구니 비우기
+	public int removeCart(String memberId, int optionCode) {
+		return ordersMapper.deleteCart(memberId, optionCode);
 	}
 
 }

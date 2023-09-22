@@ -32,4 +32,13 @@ public interface OrdersMapper {
 	//주문 테이블 DB 저장
 	public int insertOrderPayVO(@Param("memberId") String memberId,@Param("OrderPayVO") OrderPayVO orderPayVO);
 	
+	//주문 코드 파싱
+	public int selectOrderCode(String memberId);
+	
+	//각 상품 주문 상세 내역 insert
+	public int insertOrders(@Param("OrdersVO") OrdersVO ordersVO);
+	
+	//주문 결제 시 장바구니 비우기
+	public int deleteCart(String memberId, int optionCode);
+	
 }

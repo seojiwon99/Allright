@@ -58,6 +58,47 @@
         ,#{OrderPayVO.recipientTel},#{OrderPayVO.requestedTerm})
   	</insert>
   	
-  	<!-- 주문 내역 페이지 저장 데이터 -->
+  	<!-- 주문코드 파싱 -->
+  	<select id="selectOrderCode" resultType="int">
+  	SELECT ORDER_CODE
+	FROM
+	(SELECT *
+	FROM AR_ORDERS
+	WHERE MEMBER_ID = #{memberId}
+	ORDER BY ORDER_CODE DESC)
+	WHERE ROWNUM = 1
+  	</select>
   	
+  	<!-- 주문 내역 페이지 저장 데이터 -->
+  	<insert id="insertOrders">
+  		<selectKey resultType="int" keyProperty="orderDetailCode" order="BEFORE">
+			SELECT NVL(MAX(ORDER_DETAIL_CODE),1) + 1 FROM AR_ORDER_DETAIL
+		</selectKey>
+  INSERT INTO AR_ORDER_DETAIL
+  	      (ORDER_DETAIL_CODE,
+		   ORDER_CODE,
+		   OPTION_CODE,
+		   ORDER_CNT,
+		   ORDER_PRICE,
+		   DISCOUNT_PRICE,
+		   PAYMENT_PRICE,
+		   MYCOUPON_CODE,
+		   OPTION_COUPON_CHECK,
+		   DELIVERY_SERVICE) 
+   VALUES					  
+   		  (#{orderDetailCode},
+		   #{OrdersVO.orderCode},
+		   #{OrdersVO.optionCode},
+		   #{OrdersVO.cartCount},
+		   #{OrdersVO.orderPrice},
+		   #{OrdersVO.discountPrice},
+		   #{OrdersVO.paymentPrice},
+		   #{OrdersVO.mycouponCode},
+		   #{OrdersVO.optionCouponCheck},
+		   #{OrdersVO.deliveryService})
+	</insert>
+	
+	<delete id="deleteCart">
+		DELETE AR_CART WHERE MEMBER_ID = #{memberId} AND OPTION_CODE = #{optionCode}
+	</delete>
   </mapper>

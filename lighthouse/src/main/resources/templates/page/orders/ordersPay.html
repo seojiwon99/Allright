@@ -143,7 +143,7 @@
                 <h6>배송 요청사항</h6>
                 <!-- Notes -->  
                 <select class="form-select form-select-lg mb-3" aria-label="Large select example" id="selbox">
-                  <option selected">배송 요청 선택</option>
+                  <option selected>배송 요청 선택</option>
                   <option th:each="codeValue : ${codeList}" th:value="${codeValue.codeId}" th:text="${codeValue.codeName}"></option>
                 </select>
                 <input type="text" id="selectDirect" class="form-control form-control-sm" placeholder="배송 기타 요청사항 작성해주세요.">
@@ -420,6 +420,7 @@ let couponAmount = 0;
         })
         //#modalNewsletterHorizontal
         let couponNum = 0;
+        let roundPrice = 0;
         $('#modalNewsletterHorizontal').on('shown.bs.modal', function(){
           $('.select-button').off("click");
 
@@ -514,7 +515,7 @@ let couponAmount = 0;
         recipientName : $('#deliveryName').val(),
         recipientTel : $('#deliveryTel').val(),
         requestedTerm : deliveryReq,
-        couponCode :couponNum,
+        mycouponCode :couponNum,
         productCode : productNum,
         productSalePrice : realPrice,
         couponPrice : roundPrice
