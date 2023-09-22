@@ -188,23 +188,13 @@
 								<option value="2">2</option>
 								<option value="3">3</option>
 							</select>
+							<input type="button" value="옵션등록" id="addOption">
 						</div>
 					</div>
 					<div class="optionBox form-group row" style="display:none;">
 						<label class="col-sm-2">옵션</label>
 						<div class="optionB row g-3">
 
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label class="col-sm-2" for="imgName">메인 이미지</label>
-						<div class="col-sm-3">
-							<input type="file" id="imgName" name="files" accept="image/*" onchange="setThumbnail(event);">
-						</div>
-						<div id="image_container" contenteditable="true" style="outline:none; margin:0 auto; border:1px solid black; margin-top : 30px">
-		
-							
 						</div>
 					</div>
 					<div class="form-group row">
@@ -219,15 +209,21 @@
 										<th>옵션추가돈</th>
 									</tr>
 								</thead>
-								<tbody>
-									<tr>
-										<td>asd</td>
-										<td>asd</td>
-										<td>asd</td>
-										<td>asd</td>
-									</tr>
+								<tbody id="optiontab">
+									
 								</tbody>
 							</table>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-2" for="imgName">메인 이미지</label>
+						<div class="col-sm-3">
+							<input type="file" id="imgName" name="files" accept="image/*" onchange="setThumbnail(event);">
+						</div>
+						<div id="image_container" contenteditable="true" style="outline:none; margin:0 auto; border:1px solid black; margin-top : 30px">
+		
+							
 						</div>
 					</div>
 					<div class="form-group row">
@@ -310,18 +306,28 @@
 						</div>
 					</div>
 					<div class="form-group row">
+						[[${imgVO}]]
+					</div>
+					<div class="form-group row">
 						<div class="col-sm-offset-2 col-sm-10">
 							<button type="submit" class="submit btn btn-primary">등록</button>
 						</div>
 					</div>
 				</form>
-
+				<div>
+					<th:blcok th:each="img, status :${imgVO}">
+						[[${img.imgsVO.imgCotent}]]
+					</th:blcok>
+					
+					
+				</div>
 			</div>
 		</div>
 
 		<script>
+		
 			// 옵션 input 창	
-			$('.optionsel').on('change', function (e) {
+-			$('.optionsel').on('change', function (e) {
 				let val = $(this).val();
 				$('.optionB').children().remove();
 				// console.log(val);
@@ -331,16 +337,16 @@
 					$('.optionBox').hide();
 				}
 				for (let i = 0; i < val; i++) {
-					let div = $('<div/>').addClass("col-md-6");
+					let div = $('<div/>').addClass("optionDiv col-md-6");
 					let labelN = $("<label> /").text("옵션이름");
-					let optionN = $('<input name="option['+i+'].optionName" type="text" id="optionName'+i+'"/>');
+					let optionN = $('<input name="option['+i+'].optionName1" class="optionN" type="text" id="optionName'+i+'"/>');
 					div.append(labelN);
 					div.append(optionN);
 					$('.optionB').append(div);
 
-					div = $('<div/>').addClass("col-md-6");
+					
 					let labelV = $("<label/>").text("옵션");
-					let optionV = $('<input name="option['+i+'].optionValue" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal'+i+'" />');
+					let optionV = $('<input name="option['+i+'].optionValue1" class="optionV" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal'+i+'" />');
 					div.append(labelV);
 					div.append(optionV);
 					$('.optionB').append(div);
@@ -489,23 +495,76 @@
         var reader = new FileReader();
 
         reader.onload = function(event) {
+		  // document.querySelector("div#image_container").removeChild();
+		  var div = document.querySelector("div#image_container");
+			div.removeChild(div.firstChild);
+		  var divTag = document.createElement("div");
           var img = document.createElement("img");
           img.setAttribute("src", event.target.result);
           img.style.width = "300px";
           img.style.height = "300px";
-          document.querySelector("div#image_container").append(img);
+          divTag.append(img);
           var input = document.createElement('input');
           var textarea = document.createElement("textarea");
           textarea.setAttribute("name","productImg[0].imgContent");
-          console.log(textarea);
-		  document.querySelector("div#image_container").append(textarea);
+    
+			divTag.append(textarea);
 		  
+		  document.querySelector("div#image_container").append(divTag)
           
         };
 
         reader.readAsDataURL(event.target.files[0]);
       }
-  
+	  
+	  $('#addOption').on('click',function(e){
+		$('#optiontab').empty();
+		let optionD = $('.optionDiv');
+		let optionN = $('.optionN');
+		let optionV = $('.optionV');
+
+		let tbody = $('#optiontab');
+		let idx = 0;
+		for(let i = 0; i < optionD.length; i++){
+			let optionN = $(optionD[i]).children('.optionN').val();
+			let optionV = $(optionD[i]).children('.optionV').val();
+			let optionVal = optionV.split(',');
+
+			for(let j = 0; j < optionVal.length; j++){
+
+				let tr = $('<tr/>');
+				td = $('<td />');
+				let input = $('<input />').attr('value', optionN);
+				input.attr('name','option['+idx+'].optionName');
+				input.attr('readonly','true');
+				td.append(input);
+				tr.append(td);
+
+				td = $('<td/>');
+				input = $('<input />').attr('value', optionVal[j]);
+				input.attr('name','option['+idx+'].optionValue');
+				input.attr('readonly','true');
+				td.append(input);
+				tr.append(td);
+
+				td = $('<td/>');
+				let inputN = $('<input />').attr('type','number');
+				inputN.attr('name','option['+idx+'].optionCount');
+				td.append(inputN);
+				tr.append(td);
+
+				td = $('<td/>');
+				inputN = $('<input />').attr('type','number');
+				inputN.attr('name','option['+idx+'].optionPrice');
+				td.append(inputN);
+				tr.append(td);
+
+				idx++;
+				tbody.append(tr);
+			}
+		}
+		
+	  })
 		</script>
 
 

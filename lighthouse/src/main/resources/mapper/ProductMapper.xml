@@ -351,7 +351,10 @@ WHERE member_id = #{memberId}
                     , option_value
                     , option_price
                     , option_count
-                        )
+                    <if test="optionSellStatus != null and !optionSellStatus.equals('')">
+                    , option_sell_status
+                    </if>
+              )
 	VALUES
 	    	(#{optionCode}
 	    	, #{productCode}
@@ -360,6 +363,9 @@ WHERE member_id = #{memberId}
 	    	, #{optionValue}
 	    	, #{optionPrice}
 	    	, #{optionCount}
+   	 		<if test="optionSellStatus != null and !optionSellStatus.equals('')">
+           	 , #{optionSellStatus}
+            </if>
 	    	) 
 	</insert>
 
@@ -375,18 +381,18 @@ WHERE member_id = #{memberId}
     		,img_name
     		,upload_name
     		,img_content
-    		,review_code
+    		,product_code
     		,upload_path
     		)
     		
     	values(
     		#{imgCode}
-    	   ,'1'
+    	   , '0'
     	   ,#{imgOrder}
     	   ,#{imgName}
     	   ,#{uploadName}
     	   ,#{imgContent}
-    	   ,#{reviewCode}
+    	   ,#{productCode}
     	   ,#{uploadPath}
     	   )
 	  	
