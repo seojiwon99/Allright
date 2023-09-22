@@ -144,7 +144,7 @@
                         <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
                           <time datetime="2019-10-01">
-                           <span th:text= "|${lists.exchangeRegdate}|"></span>
+                           <span th:text= "|${#dates.format(lists.exchangeRegdate, 'yyyy-MM-dd')}|"></span>
                           </time>
                         </p>
 
@@ -168,7 +168,7 @@
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${lists.exchangeProcessingdate}|"></span>
+                         <span th:text="|${#dates.format(lists.exchangeProcessingdate, 'yyyy-MM-dd')}|"></span>
                         </p>
 
                       </div>
@@ -183,17 +183,7 @@
                         </p>
 
                       </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted"></h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${lists.exchangeRetractdate}|" id="exchangeRDate"></span>
-                        </p>
-
-                      </div>
+                    
                     </div>
                   </div>
                 <div class="card-footer">
@@ -260,8 +250,8 @@
 <script>
 $('#updateBtn').on('click', function(){
 	let exchangeData = {
-		'exchangeCode' : $('#exchangeCode').text(),
-		'exchangeRetractdate' : $('#exchangeRDate').text()
+		'exchangeRetractdate' : $('#exchangeRDate').text(),
+		'exchangeCode' : $('#exchangeCode').text()
 	}
 	$.ajax({
 		url : '/buyer/exchangeUpdate',

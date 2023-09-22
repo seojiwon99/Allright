@@ -219,7 +219,7 @@ public class BuyerPageController {
 	@PostMapping("buyer/exchangeInsert")
 
 	public ResponseEntity<String> addExchange(@RequestBody BuyExchangeVO excVO, HttpSession session) {
-
+		
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		excVO.setMemberId(memberVO.getMemberId());
 

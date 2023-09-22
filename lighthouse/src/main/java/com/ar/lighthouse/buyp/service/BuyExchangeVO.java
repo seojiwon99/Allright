@@ -13,13 +13,17 @@ public class BuyExchangeVO {
 	private String exCode;
 	private int orderDetailCode;
 	private String exchangeReason;
+	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date exchangeRegdate;
+	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date exchangeRetractdate;
 	private String exchangeStatus;
+	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date exchangeProcessingdate;
+	
 	private String exchangeAddr;
 	private int deliveryNumber;
 	private int orderCode;

@@ -78,7 +78,6 @@
                 </ul>
               </div>
             </nav>
-
           </div>
           <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
             <!-- Order -->
@@ -96,13 +95,17 @@
                         <p class="mb-lg-0 fs-sm fw-bold">
                           <span th:text= "|${lists.orderCode}|"></span>
                         </p>
+                        <h6 class="heading-xxxs text-muted">주문 상세 번호:</h6>
+                        <p class="mb-lg-0 fs-sm fw-bold">
+                          <span th:text= "|${lists.orderDetailCode}|"></span>
+                        </p>
                       </div>
                     <!-- 주문 날짜 -->
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">주문 날짜:</h6>
                         <p class="mb-lg-0 fs-sm fw-bold">
                           <time datetime="2019-10-01">
-                           <span th:text= "|${lists.orderDate}|"></span>
+                           <span th:text= "|${#dates.format(lists.orderDate, 'yyyy-MM-dd')}|"></span>
                           </time>
                         </p>
                       </div>
@@ -172,13 +175,14 @@
                     </div>
                   </div>
                 <div class="card-footer">
-                <div class="row align-items-center">
+                <div class="row align-items-center" th:if="(${lists.returnStatus} == null or ${lists.returnStatus} == '철회') and (${lists.cancelStatus} == null or ${lists.cancelStatus} == '철회') and (${lists.exchangeStatus} == null or ${lists.exchangeStatus} == '철회')">
                      <!-- <div class="col-6">
                         <a class="btn btn-sm w-100 btn-outline-dark" href="account-order.html" >
                           주문 상세
                         </a>
                       </div>
                     -->
+                  
                     <!-- 교환 Button -->
                       <div class="col-6">
                         <a class="btn btn-sm w-100 btn-outline-dark excBtn" th:href="@{/exchange}" >
@@ -197,15 +201,11 @@
                           주문 취소
                         </a>
                       </div>
-
                 </div>
               </div>
-                </div>
-				</div>
-              
-
-            </div>
-
+             </div>
+		   </div>
+          </div>
           </div>
         </div>
       </div>
@@ -217,7 +217,7 @@
 	  
 	e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
     // 필요한 정보를 변수에 저장
-    var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); // TODO: 주문 번호 가져오기
+    var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
     var url="";
 	if(  e.target.matches(".excBtn") ){
 		var url = "exchange";

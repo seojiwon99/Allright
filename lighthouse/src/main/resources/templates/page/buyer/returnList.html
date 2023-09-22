@@ -144,7 +144,7 @@
                         <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
                           <time datetime="2019-10-01">
-                           <span th:text= "|${lists.returnRegdate}|"></span>
+                           <span th:text= "|${#dates.format(lists.returnRegdate, 'yyyy-MM-dd')}|"></span>
                           </time>
                         </p>
 
@@ -168,7 +168,7 @@
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${lists.returnProcessdate}|"></span>
+                         <span th:text="|${#dates.format(lists.returnProcessdate, 'yyyy-MM-dd')}|"></span>
                         </p>
 
                       </div>
@@ -179,7 +179,7 @@
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${lists.returnRetractdate}|" id="returnRDate"></span>
+                         <span th:text="|${#dates.format(lists.returnRetractdate, 'yyyy-MM-dd')}|" id="returnRDate"></span>
                         </p>
 
                       </div>

@@ -134,7 +134,7 @@
 												<!-- Text -->
 												<p class="mb-lg-0 fs-sm fw-bold">
 													<time datetime="2019-10-01">
-														<span th:text="|${lists.cancelRegdate}|"></span>
+														<span th:text="|${#dates.format(lists.cancelRegdate, 'yyyy-MM-dd')}|"></span>
 													</time>
 												</p>
 
@@ -180,7 +180,7 @@
 
 												<!-- Text -->
 												<p class="mb-0 fs-sm fw-bold">
-													<span th:text="|${lists.cancelRetractDate}|"
+													<span th:text="|${#dates.format(lists.cancelRetractDate, 'yyyy-MM-dd')}|"
 														id="cancelRDate"></span>
 												</p>
 

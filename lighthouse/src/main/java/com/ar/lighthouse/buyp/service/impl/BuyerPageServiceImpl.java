@@ -74,25 +74,19 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 
 
 	@Override
-
 	public List<BuyCancelVO> getCancelList(String memberId) {
-
 		return buyerPageMapper.selectCancelList(memberId);
 	}
 
 
 	@Override
-
 	public List<BuyReturnVO> getReturnList(String memberId) {
-
 		return buyerPageMapper.selectReturnList(memberId);
 	}
 
 
 	@Override
-
 	public List<BuyExchangeVO> getExchangeList(String memberId) {
-
 		return buyerPageMapper.selectExchangeList(memberId);
 	}
 
@@ -100,7 +94,6 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	@Override
 
 	public int addExchange(BuyExchangeVO excVO) {
-
 		return buyerPageMapper.insertExchange(excVO);
 	}
 

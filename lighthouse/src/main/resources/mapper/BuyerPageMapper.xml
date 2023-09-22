@@ -23,11 +23,11 @@
 		     , e.img_name
 		     , e.upload_name
 		     , e.img_content
-             , f.cancel_status
+             , order_status_name(f.cancel_status) as cancel_status
              , f.cancel_regdate
-             , g.return_status
+             , order_status_name(g.return_status) as return_status
              , g.return_regdate
-             , h.exchange_status
+             , order_status_name(h.exchange_status) as exchange_status
              , h.exchange_regdate
 		FROM ar_order_detail a
 		LEFT OUTER JOIN ar_orders b ON a.order_code = b.order_code
@@ -38,6 +38,7 @@
         LEFT OUTER JOIN ar_return g ON a.order_detail_code = g.order_detail_code
         LEFT OUTER JOIN ar_exchange h ON a.order_detail_code = h.order_detail_code
 		WHERE b.member_id = #{memberId}	
+		AND 
   	</select>
   
   	<!-- 개인정보 -->
@@ -113,6 +114,7 @@
 			     , b.using_date
 			     , b.end_date
 			     , b.issue_date
+			     , b.coupon_use
 			FROM ar_coupons a
 			LEFT OUTER JOIN ar_coupon_box b ON a.coupon_code = b.coupon_code
 			WHERE member_id = #{memberId}
@@ -220,7 +222,7 @@
 		LEFT JOIN ar_products d ON d.product_code = c.product_code
         LEFT JOIN ar_orders e ON e.order_code = b.order_code
 		WHERE e.member_id = #{memberId}
-		AND a.exchange_retractdate IS NULL
+		
 	</select>
 	
 	<!-- 교환 신청 넘어가는 값 -->
@@ -310,7 +312,7 @@
 		LEFT JOIN ar_orders b ON a.order_code = b.order_code
 		LEFT JOIN ar_option c ON c.option_code = a.option_code
 		LEFT JOIN ar_products d ON d.product_code = c.product_code
-		WHERE b.member_id=#{memberId} AND a.order_detail_code=#{orderDetailCode}
+		WHERE b.member_id=#{memberId} AND a.order_detail_code = #{orderDetailCode}
 	</select>
 	
 	<!--반품 코드  -->
@@ -328,31 +330,30 @@
 			select re_code from dual
 		</selectKey>
 		INSERT INTO ar_return 
-				(RETURN_CODE
-				, ORDER_DETAIL_CODE
-				, RETURN_REASON)
-		VALUES (#{reCode}
-				, #{orderDetailCode}
-				, #{returnReason})
+				(RETURN_CODE, ORDER_DETAIL_CODE, RETURN_REASON, return_status)
+		VALUES (#{reCode}, #{orderDetailCode}, #{returnReason}, 'n')
 	</insert>
 	<!-- 취소 철회 -->
 	<update id="updateCancel" parameterType="BuyCancelVO">
 		UPDATE ar_cancel 
-		SET cancel_retract_date = SYSDATE
+		SET   cancel_retract_date = SYSDATE
+			, cancel_status = 'u'
 		WHERE cancel_code = #{cancelCode}
 	</update>
 	
 	<!-- 반품 철회 -->
 	<update id="updateReturn" parameterType="BuyReturnVO">
 		UPDATE ar_return 
-		SET return_retractdate = SYSDATE
+		SET   return_retractdate = SYSDATE
+		    , return_status = 'u'
 		WHERE return_code =  #{returnCode}
 	</update>
 	
 	<!-- 교환 철회 -->
 	<update id="updateExchange" parameterType="BuyExchangeVO">
 		UPDATE ar_exchange 
-		SET exchange_retractdate = SYSDATE
+		SET   exchange_retractdate = SYSDATE
+		    , exchange_status = 'u'
 		WHERE exchange_code =  #{exchangeCode}
 	</update>
 	

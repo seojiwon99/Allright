@@ -41,6 +41,9 @@
       				<input type="text" class="form-label" id="productName" th:value="${return.productName}" readonly>
       			</div>
       			<div class="mb-3">
+      			<div class="mb-3">
+      				<div th:value="${return.returnStatus}"/>
+      			</div>
       			<!-- Select -->
                    <select class="form-select form-select-xxs w-auto" id="select">
                       <option value="선택">반품 사유를 선택해주세요</option>
@@ -50,9 +53,7 @@
       			<div class="mb-3">
       				<textarea class="form-control" id="content" rows="5" placeholder="반품 사유를 입력해주세요"></textarea>
       			</div>
-      			<div class="mb-3">
       			
-      			</div>
       			<!-- 
       			<div class="mb-3">
       				<label>입금 계좌번호</label>
@@ -70,6 +71,7 @@
       			<button class="btn btn-dark" id="returnBtn">반품신청</button>
       			<a class="btn btn-gray-500" type="button" th:href="@{/page/buyer/orderList}">취소</a>
       			</div>
+      			
       		</div>
       	</div>
       </div>
@@ -106,8 +108,8 @@
 	    	'returnCode': $('#returnCode').val(),
 	        'orderDetailCode': $('#orderDetailCode').val(),
 	        'productName': $('#productName').val(),
-	        'returnReason': reReason
-
+	        'returnReason': reReason,
+			'returnStatus': $('#returnStatus').val()
 	      }
 
 	      // AJAX 요청 보내기
