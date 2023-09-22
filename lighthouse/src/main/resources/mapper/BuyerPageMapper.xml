@@ -10,7 +10,7 @@
 		SELECT a.order_cnt
 		     , a.order_price
 		     , a.payment_price
-		     , a.order_status
+		     , delivery_code_name(a.order_status) as order_status
 		     , a.order_detail_code
 		     , a.order_date
 		     , a.delivery_number

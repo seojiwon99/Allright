@@ -23,7 +23,7 @@ public class DetailVO {
    private int orderPrice;
    private int discountPrice;
    private int paymentPrice;
-   private int orderStatus;
+   private String orderStatus;
    @DateTimeFormat(pattern="yyyy-MM-dd")
    private Date orderDate;
    private int mycouponCode;
