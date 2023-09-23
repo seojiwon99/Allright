@@ -24,12 +24,14 @@ import com.ar.lighthouse.buyp.service.BuyExchangeVO;
 import com.ar.lighthouse.buyp.service.BuyInfoVO;
 import com.ar.lighthouse.buyp.service.BuyReturnVO;
 import com.ar.lighthouse.buyp.service.BuyerPageService;
-import com.ar.lighthouse.buyp.service.CodeVO;
+
+
 import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.buyp.service.TradeVO;
 import com.ar.lighthouse.buyp.service.WishVO;
+import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.member.service.MemberVO;
 
 import lombok.AllArgsConstructor;
@@ -156,6 +158,7 @@ public class BuyerPageController {
 
 		List<BuyExchangeVO> exchangeList = buyerPageService.getExchangeList(memberId);
 
+
 		model.addAttribute("exchangeList", exchangeList);
 
 		return "/page/buyer/exchangeList";
@@ -178,6 +181,11 @@ public class BuyerPageController {
 
 		return "page/buyer/exchange";
 	}
+
+
+
+	
+
 
 	// 취소 신청 페이지
 	@GetMapping("page/buyer/cancel")

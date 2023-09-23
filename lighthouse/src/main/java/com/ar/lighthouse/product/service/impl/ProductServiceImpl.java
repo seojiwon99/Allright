@@ -1,11 +1,16 @@
 package com.ar.lighthouse.product.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ar.lighthouse.buyp.service.DetailVO;
+
+import com.ar.lighthouse.common.CodeVO;
+import com.ar.lighthouse.common.ImgsVO;
+
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.mapper.ProductMapper;
 import com.ar.lighthouse.product.service.CancelVO;
@@ -43,15 +48,45 @@ public class ProductServiceImpl implements ProductService{
 //  상품테이블 등록
 	@Override
 	public int addProduct(ProductVO productVO) {
-		return productMapper.insertProduct(productVO);
+		int result = productMapper.insertProduct(productVO);
+		List<OptionVO> optionVO = new ArrayList();
+		if(result > 0) {
+			int length = 0;
+			String code = productVO.getProductCode();
+			for(int i = 0; i< productVO.getOption().size(); i++) {
+				if(productVO.getOption().get(i).getOptionCount() == 0) {
+					productVO.getOption().get(i).setOptionSellStatus("N");
+				}
+				// value 짜르기
+//				String value = productVO.getOption().get(i).getOptionValue();
+//				String[] optVal = value.split(",");
+//				for(int j =0; j<optVal.length; j++) {
+//					
+//					OptionVO test = new OptionVO();
+//					test.setProductCode(code);
+//					test.setOptionOrder(length + 1);
+//					test.setOptionName(productVO.getOption().get(i).getOptionName());
+//					test.setOptionValue(optVal[j]);
+//					test.setOptionCount(1);
+//					length++;
+//					productMapper.insertOption(test);
+//				}
+				// System.out.println(productVO.getOption().get(i));
+				productVO.getOption().get(i).setProductCode(code);
+				productMapper.insertOption(productVO.getOption().get(i));
+				
+				// System.out.println(productVO.getOption().get(i));
+			}
+			// productMapper.insertOption(productVO.getOption());
+		}
+		return 1;
 	}
-//	옵션테이블 등록
+
+	// 상품이미지 등록
 	@Override
-	public int addOption(OptionVO optionVO) {
-		return productMapper.insertProduct(optionVO);
+	public void addProductImg(ImgsVO imgVO) {
+		productMapper.insertProductImg(imgVO);
 	}
-
-
 	
 	//제품 상세 단건조회
 	@Override
@@ -108,6 +143,11 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 
+	// 택배사 코드 가져오기
+	@Override
+	public List<CodeVO> getDeliveryList() {
+		return productMapper.selectDeliveryList();
+	}
 
 
 	

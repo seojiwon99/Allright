@@ -13,7 +13,6 @@ import com.ar.lighthouse.buyp.service.BuyInfoVO;
 import com.ar.lighthouse.buyp.service.BuyerPageService;
 
 import com.ar.lighthouse.buyp.service.BuyCancelVO;
-import com.ar.lighthouse.buyp.service.CodeVO;
 import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.buyp.service.BuyExchangeVO;
@@ -22,6 +21,7 @@ import com.ar.lighthouse.buyp.service.BuyReturnVO;
 
 import com.ar.lighthouse.buyp.service.TradeVO;
 import com.ar.lighthouse.buyp.service.WishVO;
+import com.ar.lighthouse.common.CodeVO;
 
 import co.elastic.clients.elasticsearch.ml.Page;
 @Service
@@ -81,6 +81,7 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 
 	@Override
 	public List<BuyReturnVO> getReturnList(String memberId) {
+
 		return buyerPageMapper.selectReturnList(memberId);
 	}
 
@@ -92,7 +93,6 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 
 
 	@Override
-
 	public int addExchange(BuyExchangeVO excVO) {
 		return buyerPageMapper.insertExchange(excVO);
 	}

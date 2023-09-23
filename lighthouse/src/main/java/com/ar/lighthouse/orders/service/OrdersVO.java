@@ -42,15 +42,18 @@ public class OrdersVO {
 	private int[] cartCode;
 	
 	//OptionVO
+	private int optionCode;
 	private String optionName;
 	private String optionValue;
 	private int optionPrice;
 	
 	//ProductSVO
+	private String productCode; 
 	private String productName;
 	private int productCost;
 	private int salePrice;
 	private int deliveryCost;
+	private String deliveryService;
 	
 	//ImegsVO
 	private String uploadName;
@@ -68,6 +71,7 @@ public class OrdersVO {
 	private int couponDiscountRate;
 	
 	//CouponBox
+	private int mycouponCode;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date issueDate;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -76,6 +80,14 @@ public class OrdersVO {
 	private Date endDate;
 	private String couponUse;
 	
+	//OrderDetailVO
+	
+	private int orderDetailCode;
+	private String optionCouponCheck;
+	private int orderCnt;
+	private int discountPrice;
+	private int paymentPrice;
+	private int OrderStatus;
 	
 	
 	

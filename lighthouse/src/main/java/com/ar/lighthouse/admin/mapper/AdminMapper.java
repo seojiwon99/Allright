@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import com.ar.lighthouse.admin.service.DeclareVO;
 import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.admin.service.NoticeAdminVO;
+import com.ar.lighthouse.admin.service.ProductDetailVO;
 import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.customsvc.service.InquiryVO;
 
@@ -46,4 +47,18 @@ public interface AdminMapper {
 	
 	//유저 수
 	public int selectTotalUserCount(MemberDetailVO memberDetailVO);
+	
+	
+					/*Product*/
+	//상픔 목록
+	public List<ProductDetailVO> selectProductList(@Param("amount") int amount,  @Param("pageNum") int pageNum
+			, @Param("memberId") String memberId, @Param("memberTel") String memberTel
+			, @Param("businessNumber") String businessNumber, @Param("productCode") String productCode);
+	//상품 수
+	public int selectTotalProductCount(ProductDetailVO productDetailVO);
+	
+	//공지 목록
+	public List<NoticeAdminVO>selectAdminNoticeList(@Param("cri") Criteria cri, @Param("noticeAdminVO") NoticeAdminVO noticeAdminVO);
+	//공지 수
+	public int selectTotalNoticeCount(NoticeAdminVO noticeAdminVO);
 }

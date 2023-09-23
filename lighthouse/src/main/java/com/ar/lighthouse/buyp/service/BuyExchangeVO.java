@@ -10,7 +10,9 @@ import lombok.Data;
 public class BuyExchangeVO {
 	
 	private String exchangeCode;
+
 	private String exCode;
+
 	private int orderDetailCode;
 	private String exchangeReason;
 	
@@ -27,6 +29,7 @@ public class BuyExchangeVO {
 	private String exchangeAddr;
 	private int deliveryNumber;
 	private int orderCode;
+
 	
 	private int orderCnt;
 	private int paymentPrice;
