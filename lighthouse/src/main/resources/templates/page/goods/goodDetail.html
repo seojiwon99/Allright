@@ -122,6 +122,20 @@
 
 							<form>
 
+								<div class="form-group"
+									style="font-size: 15px; border-bottom: 1px solid rgba(0, 0, 0, 0.3)">
+									<div style="padding-bottom: 8px; color: grey">
+										<span>배송정보 : </span> <span>[[${goods.deliveryService}]]</span>
+									</div>
+									<div style="padding-bottom: 8px; color: grey">
+										<span>배송비 : </span> <span>[[${goods.deliveryCost}]]원</span>
+									</div>
+									<div style="padding-bottom: 8px; color: grey">
+										<span>생산지 : </span> <span>[[${goods.productOrigin}]]</span>
+									</div>
+								</div>
+
+
 								<div class="form-group">
 									<!-- Label -->
 
@@ -150,36 +164,35 @@
 
 
 
-										<div class="row mb-7">
+										<div>
 											<div class="col-12 col-lg-auto">
 
-												<div style="display: flex" class="num">
-													<span style="padding-right: 8px;">수량 : </span> <input
-														type="number" value="1"
-														style="opacity: 0.7; width: 100px;">
-
+												<div
+													style="display: flex; justify-content: space-between; padding: 20px 0px 40px 0px"
+													class="num">
+													<div>
+														<span style="padding-right: 8px;">수량 : </span> 
+														<input
+															type="number" value="1" min="1"
+															style="opacity: 0.7; width: 100px;"
+															class="cnt">
+													</div>
+													<div>
+														<span style="font-size: 22px; color: grey">합계 :</span> <span
+															style="font-size: 32px"> [[${goods.salePrice}+ 원]]</span>
+													</div>
 												</div>
-												<span>원가 - 할인가격 = 총금액</span>
+
 											</div>
 
-										</div>
-										<div class="form-group" style="font-size: 13px">
-											<div style="padding-bottom: 8px; color: grey">
-												<span>배송정보 : </span> <span>[[${goods.deliveryService}]]</span>
-											</div>
-											<div style="padding-bottom: 8px; color: grey">
-												<span>배송비 : </span> <span>[[${goods.deliveryCost}]]원</span>
-											</div>
-											<div style="padding-bottom: 8px; color: grey">
-												<span>생산지 : </span> <span>[[${goods.productOrigin}]]</span>
-											</div>
 										</div>
 
 										<div class="row gx-5 mb-7">
 
 											<div class="col-12 col-lg">
 												<!-- Submit -->
-												<button type="submit" class="btn w-100 btn-dark mb-2">
+												<button type="button" class="btn w-100 btn-dark mb-2"
+													onclick="cart([[${review}]])">
 													장바구니 <i class="fe fe-shopping-cart ms-2"></i>
 												</button>
 											</div>
@@ -219,8 +232,9 @@
 						class="nav nav-tabs nav-overflow justify-content-start justify-content-md-center border-bottom"
 						style="font-size: 24px; position: sticky; top: 0px; background-color: white; z-index: 1">
 						<a class="nav-link" href="#descriptionTab"> 상세정보 </a> <a
-							class="nav-link" href="#sizeTab"> 리뷰 <strong class="fs-sm" name="reviewCount" th:text="${count}"></strong></a> <a class="nav-link"
-							href="#qnaTap"> Q&A </a>
+							class="nav-link" href="#sizeTab"> 리뷰 <strong class="fs-sm"
+							name="reviewCount" th:text="${count}"></strong></a> <a
+							class="nav-link" href="#qnaTap"> Q&A </a>
 					</div>
 
 					<!-- Content -->
@@ -321,7 +335,8 @@
 
 													<!-- Count -->
 													<span class="fs-sm ms-2" style="font-weight: 600">Reviews</span>
-													<strong class="fs-sm ms-2" name="reviewCount" th:text="${count}"></strong>
+													<strong class="fs-sm ms-2" name="reviewCount"
+														th:text="${count}"></strong>
 												</div>
 												<div class="col-12 col-md-auto">
 													<!-- Button -->
@@ -577,8 +592,7 @@
 																	</div>
 																	<div style="padding-top: 20px">
 																		<!-- 수정후 이미지 -->
-																		<span style="color: grey">수정할 이미지를 정해주세요</span> 
-																		<input
+																		<span style="color: grey">수정할 이미지를 정해주세요</span> <input
 																			type="file" class="reviewimg" name="files"
 																			id="reviewimg" accept="image/*" />
 
@@ -616,9 +630,10 @@
 																</div>
 																<div class="mb-3">
 																	<div>
-																	<label for="memberId" class="col-form-label">등록인</label>
-																		<input type="text" name="memberId" class="form-control" readonly
-																		th:if="${session.loginMember != null}"
+																		<label for="memberId" class="col-form-label">등록인</label>
+																		<input type="text" name="memberId"
+																			class="form-control" readonly
+																			th:if="${session.loginMember != null}"
 																			th:value="${session.loginMember.memberId}">
 																	</div>
 																	<label for="message-text" class="col-form-label">리뷰
@@ -832,6 +847,19 @@
 	<!-- REVIEWS -->
 
 	<script th:inline="javascript">
+	$(document).ready(function () {
+        var count = $('.cnt'); // cnt 배열
+        count.change(function () { // input값이 변화가 있을 때 발생하는 이벤트
+            for (var i = 0; i < count.length; i++) {
+                // input 값 가져오기
+                console.log(count.eq(i).val()); 
+               
+            }
+        });
+ 
+    });
+
+	
 	
 	  //회원가입 창으로
       $("#loginTag").on("click", function () {
@@ -1078,6 +1106,8 @@
 	        })
 	        
 		}
+		
+	
 		
 	
     </script>

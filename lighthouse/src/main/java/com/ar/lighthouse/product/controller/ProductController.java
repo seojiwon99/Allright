@@ -32,6 +32,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ar.lighthouse.cart.service.CartService;
+import com.ar.lighthouse.cart.service.CartVO;
 import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.member.service.MemberService;
@@ -65,6 +67,9 @@ public class ProductController {
 
 	@Autowired
 	MainPageService mainPageService;
+	
+	@Autowired
+	CartService cartService;
 
 //	판매자 메인페이지
 	@GetMapping("sellerMain")
@@ -365,6 +370,9 @@ public class ProductController {
 		optionVO.setProductCode(productCode);
 		model.addAttribute("options", productService.getOptionList(optionVO));
 		System.out.println(model);
+		
+		// 장바구니
+		
 
 		return "page/goods/goodDetail";
 	}
