@@ -390,19 +390,6 @@ JOIN ar_member m ON r.member_id = m.member_id
 WHERE o.order_status = 4
 </select>
 
-
-<!-- 판매자 마이페이지 -->
-<select id="selectSellerInfo" resultType="MemberVO">
-select member_name
-       , member_id
-       ,member_email
-       ,member_tel
-       ,member_addr
-       ,member_details_addr
-FROM ar_member
-WHERE member_id = #{memberId}
-</select>
-
 	<!-- 상품등록 OptionVO,ProductVO -->
 	<insert id="insertProduct"  parameterType="com.ar.lighthouse.product.service.ProductVO">
 		<selectKey order="BEFORE" keyProperty="productCode" resultType="String">
