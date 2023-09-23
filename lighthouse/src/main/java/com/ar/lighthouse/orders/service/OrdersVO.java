@@ -1,11 +1,9 @@
 package com.ar.lighthouse.orders.service;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.ar.lighthouse.buyp.service.DetailVO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,8 +27,6 @@ public class OrdersVO {
 	private String recipientTel;
 	private String requestedTerm;
 	
-	List<DetailVO> orderDetail;
-
 	
 	
 	//MemberVO

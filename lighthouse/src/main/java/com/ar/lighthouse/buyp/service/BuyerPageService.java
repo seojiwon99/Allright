@@ -32,22 +32,13 @@ public interface BuyerPageService {
 	public List<BuyCancelVO> getCancelList(String memberId);
 
 	// 반품 상세
-
-
 	public List<BuyReturnVO> getReturnList(String memberId);
 
-
 	// 교환 상세
-
-
 	public List<BuyExchangeVO> getExchangeList(String memberId);
 
-
 	// 교환 신청
-
-
 	public int addExchange(BuyExchangeVO excVO);
-
 
 	// 교환 코드
 	public List<CodeVO> getExchangeCode(String memberId);
