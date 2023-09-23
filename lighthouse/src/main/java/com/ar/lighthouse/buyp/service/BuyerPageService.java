@@ -2,6 +2,8 @@ package com.ar.lighthouse.buyp.service;
 
 import java.util.List;
 
+import com.ar.lighthouse.common.CodeVO;
+
 public interface BuyerPageService {
 
 	// 주문 목록 가져오기

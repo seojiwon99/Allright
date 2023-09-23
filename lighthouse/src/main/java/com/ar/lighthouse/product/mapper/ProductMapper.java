@@ -5,6 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ar.lighthouse.buyp.service.DetailVO;
+
+import com.ar.lighthouse.common.CodeVO;
+
 import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.service.CancelVO;
@@ -12,6 +15,7 @@ import com.ar.lighthouse.product.service.ExchangeVO;
 import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductVO;
 import com.ar.lighthouse.product.service.ReturnVO;
+
 import com.ar.lighthouse.product.service.SellerCalVO;
 
 
@@ -34,8 +38,13 @@ public List<ProductVO> selectProductList(ProductVO productVO);
 	List<CancelVO> cancelOptionList(CancelVO cancelVO);
 //	등록
 	public int insertProduct(ProductVO productVO);
-	public int insertProduct(OptionVO optionVO);
 	
+	// 옵션 등록
+	public int insertOption(OptionVO optionVO);
+	
+	// 상품이미지 등록
+	public void insertProductImg(ImgsVO imgsVO);
+
 //	사진등록
 	public int insertImages(ImgsVO imgsVO);
 	
@@ -70,4 +79,7 @@ public List<ProductVO> selectProductList(ProductVO productVO);
 	
 //  상품옵션 vo 리스트
 	public List<OptionVO> getOptionList(OptionVO optionVO);
+	
+	// 택배사 목록 가졍괴
+	public List<CodeVO> selectDeliveryList();
 }

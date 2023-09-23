@@ -391,10 +391,60 @@ WHERE o.order_status = 4
 </select>
 
 
+<!-- 판매자 마이페이지 -->
+<select id="selectSellerInfo" resultType="MemberVO">
+select member_name
+       , member_id
+       ,member_email
+       ,member_tel
+       ,member_addr
+       ,member_details_addr
+FROM ar_member
+WHERE member_id = #{memberId}
+</select>
+
 	<!-- 상품등록 OptionVO,ProductVO -->
-	<insert id="insertProduct"
-		parameterType="com.ar.lighthouse.product.service.ProductVO">
-		INSERT ALL
+	<insert id="insertProduct"  parameterType="com.ar.lighthouse.product.service.ProductVO">
+		<selectKey order="BEFORE" keyProperty="productCode" resultType="String">
+  			SELECT 'P' || to_char(LPAD(NVL(max(to_number(substr(product_code,-5))),0)+1,5,'0'))
+			  FROM ar_products
+  		</selectKey>
+		INSERT INTO ar_products (
+				  product_code
+				, member_id
+				, category_code
+    			, product_name
+                , product_content
+                , product_location
+    			, product_cost
+    			, sale_price
+    			, product_brand
+    			, product_origin
+    			, product_makeorigin
+    			, delivery_cost
+    			, return_cost
+    			, exchange_cost
+                , delivery_service
+                , product_exstatus)
+		VALUES (      #{productCode}
+					, #{memberId}
+					, #{categoryCode}
+					, #{productName}
+					, #{productContent}
+					, #{productLocation}
+					, #{productCost}
+					, #{salePrice}
+					, #{productBrand}
+					, #{productOrigin}
+					, #{productMakeorigin}
+					, #{deliveryCost}
+					, #{returnCost}
+					, #{exchangeCost}
+					, #{deliveryService}
+					, 'Y'
+					)
+		
+		<!-- INSERT ALL 
 		INTO ar_products (product_code
 		, member_id
 		, category_code
@@ -433,32 +483,93 @@ WHERE o.order_status = 4
 			SELECT MAX(option_code)+1 FROM ar_option
 		</selectKey>
 		INTO ar_option (option_code
-		, product_code
-		, option_order
-		, option_name
-		, option_value
-		, option_price
-		, option_sell_status
-		, option_exstatus
-		, option_count
-		, min_order
-		, max_order
-		)
-		VALUES
-		(#{optionCode}
-		, #{productCode}
-		, #{optionOrder}
-		, #{optionName}
-		, #{optionValue}
-		, #{optionPrice}
-		, #{optionSellStatus}
-		, #{optionExStatus}
-		, 36
-		, #{minOrder}
-		, #{maxOrder}
-		)
+                    , product_code
+                    , option_order
+                    , option_name
+                    , option_value
+                    , option_price
+                    , option_sell_status
+                    , option_exstatus
+                    , option_count
+                    , min_order 
+                    , max_order
+                        )
+	VALUES
+	    	(#{optionCode}
+	    	, #{productCode}
+	    	, #{optionOrder}
+	    	, #{optionName}
+	    	, #{optionValue}
+	    	, #{optionPrice}
+	    	, #{optionSellStatus}
+	    	, #{optionExStatus}
+	    	, #{optionCount}
+	    	, #{minOrder}
+	    	, #{maxOrder}
+	    	) -->
+	</insert>
+	
+	<!-- 상품 옵션 등록 -->
+	<insert id="insertOption" parameterType="OptionVO">
+		<selectKey resultType="long" keyProperty="optionCode" order="BEFORE">
+        SELECT NVL(MAX(option_code),0)+1 
+          FROM ar_option       
+    	</selectKey> 
+		INSERT INTO ar_option (option_code
+                    , product_code
+                    , option_order
+                    , option_name
+                    , option_value
+                    , option_price
+                    , option_count
+                    <if test="optionSellStatus != null and !optionSellStatus.equals('')">
+                    , option_sell_status
+                    </if>
+              )
+	VALUES
+	    	(#{optionCode}
+	    	, #{productCode}
+	    	, #{optionOrder}
+	    	, #{optionName}
+	    	, #{optionValue}
+	    	, #{optionPrice}
+	    	, #{optionCount}
+   	 		<if test="optionSellStatus != null and !optionSellStatus.equals('')">
+           	 , #{optionSellStatus}
+            </if>
+	    	) 
 	</insert>
 
+	<!-- 상품 이미지 등록  -->
+	<insert id="insertProductImg" parameterType="ImgsVO">
+		<selectKey resultType="int" keyProperty="imgCode" order="BEFORE">	
+	  		SELECT NVL(0, MAX(img_code))+1 FROM ar_imgs  
+	  	</selectKey>
+	  	insert into ar_imgs
+    		(img_code
+    		,parent_code
+    		,img_order
+    		,img_name
+    		,upload_name
+    		,img_content
+    		,product_code
+    		,upload_path
+    		)
+    		
+    	values(
+    		#{imgCode}
+    	   , '0'
+    	   ,#{imgOrder}
+    	   ,#{imgName}
+    	   ,#{uploadName}
+    	   ,#{imgContent}
+    	   ,#{productCode}
+    	   ,#{uploadPath}
+    	   )
+	  	
+	</insert>
+
+	
 
 
 
@@ -519,4 +630,12 @@ WHERE o.order_status = 4
 		where p.product_code = i.product_code
 		and p.product_code = #{productCode}
 	</select>
+	
+	<!-- 택배사 가져오기 -->
+	<select id="selectDeliveryList" resultType="CodeVO">
+		SELECT *
+		  FROM ar_code 
+		 WHERE master_code = '택배사 코드'
+	</select>
+	
 </mapper>

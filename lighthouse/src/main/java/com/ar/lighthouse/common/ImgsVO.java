@@ -1,6 +1,7 @@
 package com.ar.lighthouse.common;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -21,4 +22,5 @@ public class ImgsVO {
 	String productCode;
 	int reviewCode;
 
+	List<ImgsVO> imgVO;
 }
