@@ -46,10 +46,17 @@ public class DetailVO {
    
    
    //취소,반품,교환 
+   
+  
+   List<BuyCancelVO> BuyCancel;
    private String cancelStatus;
    private Date cancelRegdate;
+   
+   List<BuyReturnVO> BuyReturn;
    private String returnStatus;
    private Date returnRegdate;
+   
+   List<BuyExchangeVO> BuyExchange;
    private String exchangeStatus;
    private Date exchangeRegdate;
    

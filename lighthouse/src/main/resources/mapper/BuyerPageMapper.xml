@@ -7,38 +7,79 @@
   	
   	<!-- 주문 목록 -->
   	<select id="selectDetailList" resultType="DetailVO" parameterType="String">
-		SELECT a.order_cnt
-		     , a.order_price
-		     , a.payment_price
-		     , delivery_code_name(a.order_status) as order_status
-		     , a.order_detail_code
-		     , a.order_date
-		     , a.delivery_number
-		     , a.delivery_date
-		     , a.option_code
-		     , a.order_code
-		     , d.product_name
-		     , e.img_code
-		     , e.img_order
-		     , e.img_name
-		     , e.upload_name
-		     , e.img_content
-             , order_status_name(f.cancel_status) as cancel_status
-             , f.cancel_regdate
-             , order_status_name(g.return_status) as return_status
-             , g.return_regdate
-             , order_status_name(h.exchange_status) as exchange_status
-             , h.exchange_regdate
-		FROM ar_order_detail a
-		LEFT OUTER JOIN ar_orders b ON a.order_code = b.order_code
-		LEFT OUTER JOIN ar_option c ON a.option_code = c.option_code
-		LEFT OUTER JOIN ar_products d ON c.product_code = d.product_code
-		LEFT OUTER JOIN ar_imgs e ON e.parent_code = d.product_code
-        LEFT OUTER JOIN ar_cancel f ON a.order_detail_code = f.order_detail_code 
-        LEFT OUTER JOIN ar_return g ON a.order_detail_code = g.order_detail_code
-        LEFT OUTER JOIN ar_exchange h ON a.order_detail_code = h.order_detail_code
-		WHERE b.member_id = #{memberId}	
-		AND 
+		WITH RankedOrderDetail AS (
+    SELECT 
+        a.order_cnt,
+        a.order_price,
+        a.payment_price,
+        delivery_code_name(a.order_status) AS order_status,
+        a.order_detail_code,
+        a.order_date,
+        a.delivery_number,
+        a.delivery_date,
+        a.option_code,
+        a.order_code,
+        d.product_name,
+        e.img_code,
+        e.img_order,
+        e.img_name,
+        e.upload_name,
+        e.img_content,
+        order_status_name(f.cancel_status) AS cancel_status,
+        f.cancel_regdate,
+        order_status_name(g.return_status) AS return_status,
+        g.return_regdate,
+        order_status_name(h.exchange_status) AS exchange_status,
+        h.exchange_regdate,
+        ROW_NUMBER() OVER (PARTITION BY a.order_detail_code ORDER BY a.order_date DESC) AS rn
+    FROM 
+        ar_order_detail a
+    LEFT OUTER JOIN 
+        ar_orders b ON a.order_code = b.order_code
+    LEFT OUTER JOIN 
+        ar_option c ON a.option_code = c.option_code
+    LEFT OUTER JOIN 
+        ar_products d ON c.product_code = d.product_code
+    LEFT OUTER JOIN 
+        ar_imgs e ON e.parent_code = d.product_code
+    LEFT OUTER JOIN 
+        ar_cancel f ON a.order_detail_code = f.order_detail_code 
+    LEFT OUTER JOIN 
+        ar_return g ON a.order_detail_code = g.order_detail_code
+    LEFT OUTER JOIN 
+        ar_exchange h ON a.order_detail_code = h.order_detail_code
+    WHERE 
+        b.member_id = #{memberId}
+        
+)
+SELECT 
+    order_cnt,
+    order_price,
+    payment_price,
+    order_status,
+    order_detail_code,
+    order_date,
+    delivery_number,
+    delivery_date,
+    option_code,
+    order_code,
+    product_name,
+    img_code,
+    img_order,
+    img_name,
+    upload_name,
+    img_content,
+    cancel_status,
+    cancel_regdate,
+    return_status,
+    return_regdate,
+    exchange_status,
+    exchange_regdate
+FROM 
+    RankedOrderDetail
+WHERE 
+    rn = 1
+
   	</select>
   
   	<!-- 개인정보 -->
@@ -185,6 +226,7 @@
 		     , a.return_retractdate
 		     , a.return_status
 		     , b.order_detail_code
+		     , b.order_code
 		     , b.order_cnt
 		     , b.payment_price
 		     , c.option_code
@@ -330,7 +372,7 @@
 			select re_code from dual
 		</selectKey>
 		INSERT INTO ar_return 
-				(RETURN_CODE, ORDER_DETAIL_CODE, RETURN_REASON, return_status)
+				(RETURN_CODE, ORDER_DETAIL_CODE, RETURN_REASON, RETURN_STATUS)
 		VALUES (#{reCode}, #{orderDetailCode}, #{returnReason}, 'n')
 	</insert>
 	<!-- 취소 철회 -->
