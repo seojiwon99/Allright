@@ -51,23 +51,27 @@ public class ProductServiceImpl implements ProductService{
 		if(result > 0) {
 			int length = 0;
 			String code = productVO.getProductCode();
-			// System.out.println(code);
 			for(int i = 0; i< productVO.getOption().size(); i++) {
-				String value = productVO.getOption().get(i).getOptionValue();
-				String[] optVal = value.split(",");
-				for(int j =0; j<optVal.length; j++) {
-					
-					OptionVO test = new OptionVO();
-					test.setProductCode(code);
-					test.setOptionOrder(length + 1);
-					test.setOptionName(productVO.getOption().get(i).getOptionName());
-					test.setOptionValue(optVal[j]);
-					test.setOptionCount(1);
-					length++;
-					productMapper.insertOption(test);
+				if(productVO.getOption().get(i).getOptionCount() == 0) {
+					productVO.getOption().get(i).setOptionSellStatus("N");
 				}
-				;
+				// value 짜르기
+//				String value = productVO.getOption().get(i).getOptionValue();
+//				String[] optVal = value.split(",");
+//				for(int j =0; j<optVal.length; j++) {
+//					
+//					OptionVO test = new OptionVO();
+//					test.setProductCode(code);
+//					test.setOptionOrder(length + 1);
+//					test.setOptionName(productVO.getOption().get(i).getOptionName());
+//					test.setOptionValue(optVal[j]);
+//					test.setOptionCount(1);
+//					length++;
+//					productMapper.insertOption(test);
+//				}
+				// System.out.println(productVO.getOption().get(i));
 				productVO.getOption().get(i).setProductCode(code);
+				productMapper.insertOption(productVO.getOption().get(i));
 				
 				// System.out.println(productVO.getOption().get(i));
 			}
