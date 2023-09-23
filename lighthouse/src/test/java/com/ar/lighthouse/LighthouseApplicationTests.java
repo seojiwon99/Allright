@@ -13,15 +13,15 @@ class LighthouseApplicationTests {
 	
 	@Test
 	void contextLoads() {
-		String[] datas = {
-			
-				
-		};
-		
-		for(String data : datas) {
-			String enyData = jasyptStringEncryptor.encrypt(data);
-			System.out.println(enyData);
-		}
+//		String[] datas = {
+//			
+//				
+//		};
+//		
+//		for(String data : datas) {
+//			String enyData = jasyptStringEncryptor.encrypt(data);
+//			System.out.println(enyData);
+//		}
 	}
 
 }
