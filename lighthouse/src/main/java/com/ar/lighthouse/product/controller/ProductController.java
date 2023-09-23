@@ -34,8 +34,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.ar.lighthouse.buyp.service.ExchangeVO;
-import com.ar.lighthouse.buyp.service.ReturnVO;
 
 
 import com.ar.lighthouse.common.ImgsVO;
