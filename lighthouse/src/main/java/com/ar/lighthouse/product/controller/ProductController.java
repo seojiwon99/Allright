@@ -30,10 +30,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.member.service.MemberService;
@@ -154,9 +157,10 @@ public class ProductController {
 
 //	등록폼
 	@GetMapping("insertProductForm")
-	public String productForm(Model model, CategoryVO categoryVO) {
+	public String productForm(Model model, CategoryVO categoryVO, CodeVO codeVO) {
+		// model.addAttribute("getCategoryList", mainPageService.getCategoryList());
 		model.addAttribute("delivery", productService.getDeliveryList());
-		model.addAttribute("getCategoryList", mainPageService.getCategoryList());
+		System.out.println(model);
 		return "page/seller/productForm";
 	}
 
@@ -188,8 +192,8 @@ public class ProductController {
 			MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 			
 			productVO.setMemberId(memberVO.getMemberId());
-			// productVO.setCategoryCode("P00001");
-			// productVO.setDeliveryService("영차");
+			productVO.setCategoryCode("P00001");
+			productVO.setDeliveryService("영차");
 
 			// System.out.println(productVO);
 			productService.addProduct(productVO);
@@ -508,6 +512,15 @@ public class ProductController {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	@PostMapping("insertImg")
+	public String productdetailImg(Model model, ProductVO productVO, RedirectAttributes rttr) {
+//		System.out.println(productVO);
+//		model.addAttribute("product", productVO);
+		rttr.addFlashAttribute("product", productVO);
+		
+		return "redirect:/insertProductForm";
 	}
 
 }

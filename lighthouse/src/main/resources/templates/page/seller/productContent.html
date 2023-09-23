@@ -23,16 +23,12 @@
     <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
    
    <div class="row gx-0" style="margin-bottom:20px;">
-      <form action="/insert" method="post">
-      <div id="editor">
-         
-      </div>
-   
-      <input type="text" class="" th:value="${url}">
- 
-      <input type="button" class="btn-secondary mt-3 mx-2" value="작성취소" />
-      <input type="button" class="addImgBtn btn-primary mt-3 mx-2" value="작성완료" />
-      </form>
+	<form action="/insertImg" method="post" id="textForm">
+		<div id="editor"></div>
+		<input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" />
+		<input type="submit" id="submit" class="" value="작성완료" />
+	</form>
+
 
 
    <!-- CKEditor -->
@@ -46,146 +42,92 @@
          //console.log(ckfinder);
       })
       .then(editor => {
-    	  console.log(editor)
+         window.editor = editor;
          console.log('Editor was initialized');
       })
       .catch(error => {
          console.error(error);
       });
       </script>
-      <!-- <h1>첨부파일 미리보기</h1>
-      <hr>
-      <form action="insertDetailImg" class="form-horizontal" method="post"  enctype="multipart/form-data">
-         <table border="1">
-           <tr>
-            <th align="center" bgcolor="orange" width="500px">첨부파일</th>
-           </tr>
-           <tr>
-            <td align="center">
-              <input type="file" name="uploadFile" id="uploadFile" multiple>
-              <div id="preview"></div>
-            </td>
-           </tr>
-         </table>
-   
-         <button type="submit" id="addImgBtn">선택하기</button>
-      
-      </form> -->
-      <!-- <div class="fixedbox">
-         <input type="file" multiple="multiple" name="imgName" accept="image/*" id="imageFile">
-      </div>
-      <div class="col-12 col-lg">
-         <div class="jumbotron">
-            <div class="container">
-               <h1 class="display-3">상품 등록</h1>
-               <form action="" method="post" enctype="multipart/form-data">
-                  <div id="image_container" contenteditable="true"
-                     style="outline:none; margin:0 auto; border:1px solid black; margin-top : 30px">
-
-                     <h5>상세페이지</h5>
-                     <img id="preview">
-
-                  </div>
-                  <div class="insertCo" style="margin:0 auto; margin-top : 10px;  margin-botton : 10px">
-                     <input type="submit" />
-                  </div>
-               </form>
-            </div>
-
-         </div>
-      </div> -->
-      
+    
       
    </div>
    <script text="text/javascript">
-      $(document).ready(function (e){
-       $("input[type='file']").change(function(e){
-
-      //div 내용 비워주기
-      $('#preview').empty();
-
-      var files = e.target.files;
-      var arr =Array.prototype.slice.call(files);
-      
-      //업로드 가능 파일인지 체크
-      for(var i=0;i<files.length;i++){
-        if(!checkExtension(files[i].name,files[i].size)){
-          return false;
-        }
-      }
-      
-      preview(arr);
-      
-      
-    });//file change
     
-    function checkExtension(fileName,fileSize){
-
-      var regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
-      var maxSize = 20971520;  //20MB
-      
-      if(fileSize >= maxSize){
-        alert('파일 사이즈 초과');
-        $("input[type='file']").val("");  //파일 초기화
-        return false;
-      }
-      
-      if(regex.test(fileName)){
-        alert('업로드 불가능한 파일이 있습니다.');
-        $("input[type='file']").val("");  //파일 초기화
-        return false;
-      }
-      return true;
-    }
-    
-    function preview(arr){
-        let idx = 0;
-      arr.forEach(function(f){
-        //파일명이 길면 파일명...으로 처리
-        var fileName = f.name;
-        if(fileName.length > 10){
-          fileName = fileName.substring(0,7)+"...";
-        }
-        
-        //div에 이미지 추가
-        var str = '<div style="display: block; padding: 10px;"><li>';
-        str += '<span>'+fileName+'</span><br>';
-        
-        //이미지 파일 미리보기
-        if(f.type.match('image.*')){
-          var reader = new FileReader(); //파일을 읽기 위한 FileReader객체 생성
-          reader.onload = function (e) { //파일 읽어들이기를 성공했을때 호출되는 이벤트 핸들러
-            str += '<button type="button" class="delBtn" value="'+f.name+'" style="background: red">x</button><br>';
-            str += '<img src="'+e.target.result+'" title="'+f.name+'" width=300 height=300 />';
-         str += '<textarea name="imgsVO['+idx+'].imgContent" placeholder="이미지 설명"></textarea>'
-            str += '</li></div>';
-            $(str).appendTo('#preview');
-         idx++;
-          } 
-          reader.readAsDataURL(f);
-        }else{
-          str += '<img src="/resources/img/fileImg.png" title="'+f.name+'" width=100 height=100 />';
-          $(str).appendTo('#preview');
-        }
-      });//arr.forEach
-    }
-  });
-
-  $(document).on('click','.delBtn',function(e){
-   $(this).parent().parent().remove();
-  })
 
   $('.addImgBtn').on('click',function(e){
       e.preventDefault();
+      let form = $(this).closest('form');
+ 	 $('.inform').remove();
       let formTag = $('.ck .image');
-      let src = [];
-      for(let i =0; i < formTag.length; i++){
-    	 /*  let {
-    	  }
-    		  src : $(formTag[i]).attr('src'); */
-    	  console.log(formTag[i]);
-    	  src.push($(formTag[i]).attr('src'));
+
+      let srcArr = [];
+      $(formTag).each(function(idx,item){
+         let src = $(item).children('img').attr('src');
+   
+         let text = src.split('_');
+         
+         let text01 = src.split('/');
+         console.log(text01);
+         let data = {
+         	imgName : text[1],
+         	uploadPath : text01[1] + '\\' + text01[2] + '\\' + text01[3],
+         	uploadFile : text01[4],
+         	imgContent : $(item).children('figcaption').text()
+         };
+         srcArr.push(data);
+      })
+      
+      let idx = 0;
+      for(let i =0; i < srcArr.length; i++){
+         let divTag = $('<div/>').addClass('inform');
+         let obj = srcArr[i];
+         for(let item in obj){
+            console.log("key" + item );
+            console.log("value" + obj[item]);
+            let str = `
+            	<input type="text" name="imgsVO[${idx}].${item}" value="${obj[item]}">
+            `;
+            
+            divTag.append(str);
+         }
+         idx++;
+         form.append(divTag);
       }
+      
+      form.attr('method', 'post');
+      form.attr('action', '/insertImg');
+      form.submit();
+      console.log(srcArr);
+  })
+  
+/*   $('#textForm').sumbit(function(e){
+	  e.preventDefaul();
+  }) */
+  
+  $('#submit').on('click',function(e){
+	  	$('textarea[name="productContent"]').remove();
+	  	/* e.preventDefault(); */
+		let form = $(this).closest('form');
+		console.log(form);
+		// form.attr('method', 'post');
+		// form.attr('action', '/insertImg');
+		
+		let data = editor.getData();
+		let textarea = $('<textarea />');
+		textarea.css("display", "none");
+		textarea.attr('name','productContent');
+		
+		$(textarea).text(data);
+		
+		$(textarea).append(data);
+		$(form).append(textarea);
+		
+		console.log($(textarea).val());
+
+		
+		
+		// form.submit();
   })
    </script>
 </div>
