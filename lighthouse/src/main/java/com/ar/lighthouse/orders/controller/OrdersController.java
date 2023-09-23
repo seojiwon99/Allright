@@ -39,18 +39,7 @@ public class OrdersController {
 	@Autowired
 	OrdersService ordersService;
 	
-	//coupon 관련 정보 가져옴
-	@GetMapping("/page/orders/ordersPay")
-	public String orderPage(HttpServletRequest request, Model model) {
-		HttpSession session = request.getSession();
-		MemberVO memberVO = (MemberVO)session.getAttribute("loginMember");
-		String memberId = memberVO.getMemberId();
-		List<OrdersVO> couponList = ordersService.getCoupon(memberId);
-		session.setAttribute("couponList", couponList);
-		model.addAttribute("couponList",couponList);
-		
-		return "/page/orders/ordersPay :: #couponPage";
-	}
+
 	
 	// 장바구니에서 구매 상품 가져옴.
 	@PostMapping("orders/pay")
@@ -80,6 +69,10 @@ public class OrdersController {
 		model.addAttribute("productName",productName);
 		model.addAttribute("orderGet", orderGet);
 		session.setAttribute("orderGet", orderGet);
+		
+		List<OrdersVO> couponList = ordersService.getCoupon(memberId);
+		session.setAttribute("couponList", couponList);
+		model.addAttribute("couponList",couponList);
 		
 		// 배송지 마스터 코드 전송
 		model.addAttribute("codeList",codeList);

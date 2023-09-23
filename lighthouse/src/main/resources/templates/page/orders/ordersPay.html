@@ -100,6 +100,52 @@
                 </div>
                 <hr>
 
+                <!-- Heading -->
+            <h6 class="mb-7">주문상품</h6>
+
+            <!-- Divider -->
+            <hr class="my-7">
+
+            <!-- List group -->
+
+            <ul class="list-group list-group-lg list-group-flush-y list-group-flush-x mb-7">
+              
+                <li class="list-group-item" th:each="gets : ${orderGet}">
+                  <div class="row align-items-center">
+                    <div class="col-4">
+                      
+                      <!-- Image -->
+                      <a href="product.html">
+                        <img th:src="@{/img/products/}+${gets.uploadName}" alt="..." class="img-fluid">
+                      </a>
+
+                    </div>
+                    <div class="col">
+
+                      <!-- Title -->
+                      
+                      <p class="mb-4 fs-sm fw-bold">  
+                         <input type="hidden" th:value="${gets.productCode}">
+                         <input type="hidden" name="couponUsePrice" class="text-body" th:text="${gets.productName}" ><br>
+                         상품금액 : <span class="text-muted" style="text-decoration: line-through;" th:text="|${gets.productCost + gets.optionPrice}|"></span>원 <br>
+                        <span class="text-muted" th:text="|할인된 금액 : ${gets.productCost - gets.salePrice + gets.optionPrice}|"></span>원
+                        <div class="input-group mb-8">
+                          <input style="margin-top: 15px;" type="text" class="form-control" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2" id="couponSelect" readonly>
+                         
+                         <a class="btn btn-outline-secondary list-styled-link couponBtn" data-bs-toggle="modal" href="#modalNewsletterHorizontal" style="margin: 20px;" >쿠폰선택</a>
+                         
+                        </div> 
+                        <p>쿠폰 할인 금액 : <input type="text" style="border-width: 0 0 1px;" readonly class="couponSalePrice">원 
+                          <button class="btn btn-outline-secondary couponResult" type="button">사용하기</button>
+                        </p>         
+                      </p>
+                      <!-- Text -->
+                      <div class="fs-sm text-muted" th:text="|${gets.optionName} : ${gets.optionValue}|"></div>
+                      <div class="fs-sm text-muted" th:text="|수량 :${gets.cartCount}|"></div>
+                    </div>
+                  </div>
+               </li>
+            </ul>
                  <!-- Heading -->
               <h6 class="mb-7">배송 정보</h6>
 
@@ -153,71 +199,17 @@
               </div>
 
               <hr>
-              <!--쿠폰-->
-              <h6>쿠폰 할인</h6>
-              <div class="col-12">
-                <div class="form-group">
-                  <label class="form-label" for="checkoutBillingFirstName">쿠폰 확인 *</label>
-                  <div class="input-group mb-8">
-                    <input style="margin-top: 15px;" type="text" class="form-control" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2" id="couponSelect">
-                   <button type="button" class="btn btn-link" id="couponRealBtn"><a class="btn btn-outline-secondary list-styled-link" id="couponBtn" data-bs-toggle="modal"  >쿠폰선택</a></button>
-                  </div>
-                  <p>쿠폰 할인 금액 : <input type="text" style="border-width: 0 0 1px;" readonly id="couponSalePrice">원 
-                    <button class="btn btn-outline-secondary" type="button" id="couponResult">사용하기</button>
-                  </p> 
-                </div>
-              </div>
-              <hr>
+              
             
             </form>
 
           </div>
           <div class="col-12 col-md-5 col-lg-4 offset-lg-1">
 
-            <!-- Heading -->
-            <h6 class="mb-7">주문상품</h6>
-
-            <!-- Divider -->
-            <hr class="my-7">
-
-            <!-- List group -->
-
-            <ul class="list-group list-group-lg list-group-flush-y list-group-flush-x mb-7">
-              
-              <div th:each="gets : ${orderGet}">
-                <li class="list-group-item">
-                  <div class="row align-items-center">
-                    <div class="col-4">
-                      
-                      <!-- Image -->
-                      <a href="product.html">
-                        <img th:src="@{/img/products/}+${gets.uploadName}" alt="..." class="img-fluid">
-                      </a>
-
-                    </div>
-                    <div class="col">
-
-                      <!-- Title -->
-                      
-                      <p class="mb-4 fs-sm fw-bold">
-                         <input type="hidden" th:value="${gets.productCode}">
-                         <input type="radio" name="couponUsePrice" class="text-body" th:text="${gets.productName}" th:onclick="selectPro([[${(gets.productCost - gets.salePrice + gets.optionPrice)*gets.cartCount}]])"><br>
-                         상품금액 : <span class="text-muted" style="text-decoration: line-through;" th:text="|${gets.productCost + gets.optionPrice}|"></span>원 <br>
-                        <span class="text-muted" th:text="|할인된 금액 : ${gets.productCost - gets.salePrice + gets.optionPrice}|"></span>원
-                        
-                      </p>
-                      <!-- Text -->
-                      <div class="fs-sm text-muted" th:text="|${gets.optionName} : ${gets.optionValue}|"></div>
-                      <div class="fs-sm text-muted" th:text="|수량 :${gets.cartCount}|"></div>
-                    </div>
-                  </div>
-               </li>
-               <hr>
-              </div>
-            </ul>
+            
 
             <!-- Card -->
-            <div class="card mb-9 bg-light">
+            <div class="card mb-9 bg-light " style="position: fixed; right: 50; top: 100;">
               <div class="card-body">
                 <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
                   <li class="list-group-item d-flex">
@@ -237,13 +229,18 @@
                   </li>
                 </ul>
               </div>
+              <hr>
+              <ul style="list-style-type: none;">
+                <li>
+                <p class="mb-7 fs-xs text-gray-500">
+                  귀하의 개인 데이터는 귀하의 주문을 처리하고, 이 웹사이트 전반에 걸쳐 귀하의 경험을 지원하고,
+                  당사의 개인 정보 보호 정책에 설명된 기타 목적을 위해 사용됩니다.
+                </p>
+              </li>
+              </ul>
             </div>
 
             <!-- Disclaimer -->
-            <p class="mb-7 fs-xs text-gray-500">
-              귀하의 개인 데이터는 귀하의 주문을 처리하고, 이 웹사이트 전반에 걸쳐 귀하의 경험을 지원하고, 
-              당사의 개인 정보 보호 정책에 설명된 기타 목적을 위해 사용됩니다.
-            </p>
           </div>
         </div>
       </div>
@@ -310,10 +307,10 @@
                     </tr>
                     
                   </thead>
-                  <tbody th:each="couponRest : ${couponList}">
-                    <th:block th:if="${couponRest.couponUse == 'Y'}">
-                    <tr class="clickable-row">
-                      <td th:text="${couponRest.mycouponCode}"></td>
+                  <tbody>
+                 
+                    <tr class="clickable-row" th:each="couponRest : ${couponList}">
+                      <td th:text="${couponRest.mycouponCode}" th:data-max="${couponRest.couponMaxPrice}"></td>
                       <td th:text="${couponRest.couponName}"></td>
                       <td th:text="${couponRest.couponContent}"></td>
                       <td th:text="${couponRest.couponDiscountPrice} == '0' ? |${couponRest.couponDiscountRate}%| : |${couponRest.couponDiscountPrice}원|"></td>
@@ -321,15 +318,15 @@
                       <td th:text="${#dates.format(couponRest.endDate, 'yy/MM/dd')}"></td>
                       <td><input type="button" class="select-button"></td>
                     </tr>
-                    </th:block>
+                  
                   </tbody>
                 </table>
             
               </div>
           </div>
       </div>
-
-
+</div>
+</div>
   
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script th:inline="javascript">
@@ -353,12 +350,17 @@ let couponAmount = 0;
     let deliveryPay = 0;
     let saleToal = 0;
     let productTotal = 0;
+    let toalPay=0;
+    let totalMoney =0;
+    let couponTarget;
     let getPrice = [[${orderGet}]];
+
     console.log(getPrice)
     
       // total 가격 나중에 쿠폰 가격  빼야함.
       for(let key in  getPrice) {
       result = result + ((getPrice[key].productCost + getPrice[key].optionPrice - getPrice[key].salePrice ) * getPrice[key].cartCount); 
+      totalMoney = totalMoney + ((getPrice[key].productCost + getPrice[key].optionPrice - getPrice[key].salePrice ) * getPrice[key].cartCount); 
       }
       // 배송비
       for(let key in getPrice) {
@@ -387,38 +389,20 @@ let couponAmount = 0;
       let couDiscount = 0;
       function selectPro(selectPrice) {
         $('#couponSelect').val('쿠폰 선택하세요.');
-        $('#couponSalePrice').val(couDiscount);
+        $('.couponSalePrice').val(couDiscount);
         $('#couponSale').text(couDiscount);
         realPrice = selectPrice;
       }
 
-    // 쿠폰 값 넘겨 받기 - controller 보냄
-        
-    $.ajax('/page/orders/ordersPay',{
-          type : 'get'
-        })
-        .done(data => {
-          $('#couponPage').replaceWith(data);
-          
-        })
-        .fail(reject => console.log(reject));
       
         let productNum = "";
-      
+      	let coupon;
         //모달 창 쿠폰 값 주문 페이지 넘기기
-        $('#couponRealBtn').on('click', function(e){
-          
-          if ($('input[name=couponUsePrice]').is(':checked')) {
-            console.log($('input[name=couponUsePrice]:checked'));
-            productNum  = $('input[name=couponUsePrice]:checked').prev().val();
-             $('#couponBtn').attr('href' , '#modalNewsletterHorizontal');
-             $('#couponBtn').get(0).click();
-          } else {
-            
-            alert('상품 선택후 쿠폰 선택해주세요.')
-          }
+        $('.couponBtn').on('click', function(e){        
+         coupon = e.target;       
         })
-        //#modalNewsletterHorizontal
+        
+    
         let couponNum = 0;
         let roundPrice = 0;
         $('#modalNewsletterHorizontal').on('shown.bs.modal', function(){
@@ -426,6 +410,8 @@ let couponAmount = 0;
 
           $('.select-button').on('click',function(e){
             let thisRow = $(this).closest('tr');
+            let maxPrice =  thisRow.find('td:eq(0)').data('max');
+            console.log(maxPrice);
             couponNum = thisRow.find('td:eq(0)').text();
             let couName = thisRow.find('td:eq(1)').text(); 
             let couDiscount = Number(thisRow.find('td:eq(3)').text().slice(0,-1));
@@ -436,25 +422,35 @@ let couponAmount = 0;
               couDiscount;
             }
             roundPrice = (Math.ceil(couDiscount / 100) * 100);
-            $('#couponSalePrice').val(roundPrice);
-            $('#couponSelect').val(couName);
-
-            $('#couponResult').on('click', function(e){
-                couDiscount = $('#couponSale').text(roundPrice);
-              $('#totalPrice').text((result-roundPrice));
-            })
+            console.log(roundPrice);
+            
+            $(coupon).closest(".list-group-item").find('.couponSalePrice').val(roundPrice);
+            $(coupon).closest(".list-group-item").find('#couponSelect').val(couName);          
 
             $('#modalNewsletterHorizontal').modal('hide'); //모달 닫기
             
           });
-          //모달 닫힐 때의 이벤트 핸들러 등록
-          $('#modalNewsletterHorizontal').on('hidden.bs.model', function(){
-            //모달이 닫힐 때 모달의 클래스 제거
-            $(this).removeClass('show');
-          })
+          
 
         }) 
-          
+        
+        let conponAll = 0;
+        //총 금액에서 쿠폰 값 빼기
+        $('.couponResult').on('click', function(e){
+                
+                let couponPay = Number($(this).closest(".list-group-item").find('.couponSalePrice').val());
+                conponAll = conponAll + couponPay;
+                console.log(conponAll);
+                couDiscount = $('#couponSale').text(roundPrice);
+
+                 
+                  Number($('#totalPrice').text((result-roundPrice)));
+                  toalPay  =  Number(result-roundPrice);
+                  result = toalPay;
+                  console.log(toalPay);
+                
+            })
+            
 
     //배송 요청 사항 직접 입력시 생성
     $('#selectDirect').hide();
@@ -523,8 +519,8 @@ let couponAmount = 0;
     //ajax - async:false - 비동식 save 데이터 받아서 보냄
     $.ajax('/orders/save',{
       async:false,
-      type : 'post',
-      data : JSON.stringify(orderPayVO),
+      type : 'post', 
+      data : JSON.stringify(orderPayVO),   //{변수명 : 변수값}   data : JSON.stringify({orderPayVO:orderPayVO, orderPayVO :provo}),  리스트 넣기.
       contentType : 'application/json'
     })
 

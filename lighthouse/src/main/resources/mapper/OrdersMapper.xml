@@ -20,13 +20,30 @@
  
  	<!-- 구매자 쿠폰 파싱 -->
  	<select id="selectCoupon" resultType="com.ar.lighthouse.orders.service.OrdersVO">
- 	SELECT m.member_id, c.coupon_code, b.issue_date, b.coupon_use, c.coupon_content, c.coupon_condition, b.mycoupon_code,
-    c.coupon_name, c.coupon_discount_price, c.coupon_discount_rate, c.coupon_max_price, c.coupon_min_price,
-    c.coupon_deadline, c.coupon_base, b.end_date, b.using_date
-    FROM ar_member m
-    LEFT OUTER JOIN ar_coupon_box b ON m.member_id = b.member_id
-    LEFT OUTER JOIN ar_coupons c ON b.coupon_code = c.coupon_code
-    where m.member_id = #{memberId}
+ 	SELECT m.member_id, 
+ 	
+ 	       c.coupon_content, 
+ 	       c.coupon_code, 
+ 	       c.coupon_condition, 
+		   c.coupon_name, 
+		   c.coupon_discount_price, 
+		   c.coupon_discount_rate, 
+		   c.coupon_max_price, 
+		   c.coupon_min_price,
+		   c.coupon_deadline, 
+		   c.coupon_base, 
+		   
+ 	       b.issue_date, 
+ 	       b.mycoupon_code,
+		   b.end_date, 
+		   b.using_date
+		   
+    FROM ar_member     m
+    JOIN ar_coupon_box b    ON m.member_id = b.member_id
+    JOIN ar_coupons    c    ON b.coupon_code = c.coupon_code
+    
+    where m.member_id = #{memberId} 
+      AND coupon_use = 'Y'
  	</select>
  	
  	<!-- 배송요청 사항 코드 -->

@@ -34,7 +34,7 @@ public class OrdersServiceImpl implements OrdersService{
 	//사용 기간 지난 쿠폰 삭제 후 Controller 전달
 	public List<OrdersVO> getCoupon(String memberId) {
 		List<OrdersVO> endDate = ordersMapper.selectCoupon(memberId);
-		
+		// 오라클 스케쥴러 활용 - 해볼것
 		LocalDate accuseDate = LocalDate.now();
 		String sysDate = accuseDate.format(DateTimeFormatter.ofPattern("yy/MM/dd"));
 		for(int i =0; i<endDate.size(); i++) {
