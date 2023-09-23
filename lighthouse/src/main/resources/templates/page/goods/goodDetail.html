@@ -178,8 +178,9 @@
 															class="cnt">
 													</div>
 													<div>
+														<input class="changePrice" type="hidden" th:value="${goods.salePrice}" />
 														<span style="font-size: 22px; color: grey">합계 :</span> <span
-															style="font-size: 32px"> [[${goods.salePrice}+ 원]]</span>
+															class="changePriceShow" style="font-size: 32px"></span>
 													</div>
 												</div>
 
@@ -481,7 +482,7 @@
 																	</span>
 																	<div th:if="${review.reviewImg} != null">
 																		<img
-																			th:src="|display?fileName=${review.reviewImg.uploadPath}/${review.reviewImg.uploadName}|"
+																			th:src="|upload/${review.reviewImg.uploadPath}/${review.reviewImg.uploadName}|"
 																			width="180px" height="180px">
 																	</div>
 																</div>
@@ -848,12 +849,30 @@
 
 	<script th:inline="javascript">
 	$(document).ready(function () {
+		
+		let price = $(".changePrice").val();
+		price = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';	
+		$(".changePriceShow").html(price);
+		
         var count = $('.cnt'); // cnt 배열
         count.change(function () { // input값이 변화가 있을 때 발생하는 이벤트
             for (var i = 0; i < count.length; i++) {
                 // input 값 가져오기
                 console.log(count.eq(i).val()); 
+                let cnt =count.eq(i).val();
                
+                price = $(".changePrice").val();
+                console.log(price);
+                
+                let sum = cnt * price;
+                
+              
+                            	
+                
+                sum = sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';	
+                
+                $(".changePriceShow").html(sum);
+                
             }
         });
  
