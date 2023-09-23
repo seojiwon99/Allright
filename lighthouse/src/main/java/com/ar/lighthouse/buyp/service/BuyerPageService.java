@@ -19,7 +19,7 @@ public interface BuyerPageService {
 	public List<CouponVO> getCouponList(String memberId);
 
 	// 개인 정보 수정
-	public int editInfo(BuyInfoVO buyInfoVO, String memberId);
+	public int editInfo(BuyInfoVO buyInfoVO);
 
 	// 문의 내역
 	public List<MyInquiryVO> getMyQuiryList(String memberId);
@@ -52,6 +52,9 @@ public interface BuyerPageService {
 	// 반품 페이지에 데이터 넘김
 	public CodeVO getReturnPage(CodeVO codeVO);
 	
+	//반품 신청
+	public int addReturn(BuyReturnVO retVO);
+	
 	// 취소 코드
 	public List<CodeVO> getCancelCode(String memberId);
 	
@@ -60,4 +63,16 @@ public interface BuyerPageService {
 	
 	//취소 신청
 	public int addCancel(BuyCancelVO canVO);
+	
+	//취소 철회
+	public int editCancel(BuyCancelVO canVO);
+	
+	//반품 철회
+	public int editReturn(BuyReturnVO retVO);
+	
+	//교환 철회
+	public int editExchange(BuyExchangeVO excVO);
+	
+	//페이징
+	
 }

@@ -23,7 +23,7 @@ public class DetailVO {
    private int orderPrice;
    private int discountPrice;
    private int paymentPrice;
-   private int orderStatus;
+   private String orderStatus;
    @DateTimeFormat(pattern="yyyy-MM-dd")
    private Date orderDate;
    private int mycouponCode;
@@ -31,6 +31,7 @@ public class DetailVO {
    private int deliveryNumber;
    @DateTimeFormat(pattern="yyyy-MM-dd")
    private Date deliveryDate;
+   private String deliveryService;
    
    //상품 테이블 조인
    private String productName;
@@ -42,6 +43,22 @@ public class DetailVO {
    private String imgName;
    private String uploadName;
    private int imgOrder;
+   
+   
+   //취소,반품,교환 
+   
+  
+   List<BuyCancelVO> BuyCancel;
+   private String cancelStatus;
+   private Date cancelRegdate;
+   
+   List<BuyReturnVO> BuyReturn;
+   private String returnStatus;
+   private Date returnRegdate;
+   
+   List<BuyExchangeVO> BuyExchange;
+   private String exchangeStatus;
+   private Date exchangeRegdate;
    
    
 }

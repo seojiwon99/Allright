@@ -107,7 +107,7 @@
 
                 <div class="card card-sm">
                 
-                <div th:each="coupons : ${myCoupon}">
+                <div th:each="coupons : ${myCoupon}" th:if= "${coupons.couponUse} == 'Y'">
                   <div class="card-body bg-light">
                     <div class="row">
                       <div class="col-6 col-lg-3">
@@ -144,57 +144,37 @@
 
                       </div>
                       <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
                         <h6 class="heading-xxxs text-muted">사용조건:</h6>
-
-                        <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
                           <span th:text="|${coupons.couponCondition}|"></span>
                         </p>
 
                       </div>
                       <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
                         <h6 class="heading-xxxs text-muted">발급일자:</h6>
-
-                        <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${coupons.issueDate}|"></span>
+                          <span th:text="|${#dates.format(coupons.issueDate, 'yyyy-MM-dd')}|"></span>
                         </p>
 
                       </div>
                       <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
                         <h6 class="heading-xxxs text-muted">사용기한:</h6>
-
-                        <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${coupons.couponDeadline}|"></span>
+                          <span th:text="|${#dates.format(coupons.couponDeadline, 'yyyy-MM-dd')}|"></span>
                         </p>
 
                       </div>
                       <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
                         <h6 class="heading-xxxs text-muted">사용 시작 일자:</h6>
-
-                        <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${coupons.usingDate}|"></span>
+                         <span th:text="|${#dates.format(coupons.usingDate, 'yyyy-MM-dd')}|"></span>
                         </p>
 
                       </div>
                       <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
                         <h6 class="heading-xxxs text-muted">사용 종료 일자:</h6>
-
-                        <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${coupons.endDate}|"></span>
+                          <span th:text="|${#dates.format(coupons.endDate, 'yyyy-MM-dd')}|"></span>
                         </p>
 
                       </div>

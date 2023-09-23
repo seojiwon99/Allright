@@ -38,17 +38,17 @@
                   <div class="collapse" id="Collapse" data-simplebar-collapse="#seasonGroup">
                     <div class="form-group form-group-overflow mb-6" id="seasonGroup">
                       <div class="form-check mb-3">
-                        <a class="form-check-label" for="seasonOne" href="cancelList">
+                        <a class="form-check-label" href="cancelList">
                           취소
                         </a>
                       </div>
                       <div class="form-check mb-3">
-                        <a class="form-check-label" for="seasonTwo" href="returnList">
+                        <a class="form-check-label" href="returnList">
                           반품
                         </a>
                       </div>
                       <div class="form-check">
-                        <a class="form-check-label" for="seasonThree" href="exchangeList">
+                        <a class="form-check-label" href="exchangeList">
                           교환
                         </a>
                       </div>
@@ -78,162 +78,134 @@
                 </ul>
               </div>
             </nav>
-
           </div>
           <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
-			
             <!-- Order -->
             <div class="card card-lg mb-5 border">
               <div class="card-body pb-0">
 				<!-- 반복문 시작 -->
                 <!-- Info -->
-                
                 <div class="card card-sm orderList">
-                
                 <div th:each="lists : ${orderList}" th:data-orderdetailcode="${lists.orderDetailCode}" class="order">
                   <div class="card-body bg-light">
                     <div class="row">
+                    <!-- 주문 번호 -->
                       <div class="col-6 col-lg-3">
-    					
-                        <!-- Heading -->
                         <h6 class="heading-xxxs text-muted">주문 번호:</h6>
-
-                        <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
                           <span th:text= "|${lists.orderCode}|"></span>
                         </p>
-
+                        <h6 class="heading-xxxs text-muted">주문 상세 번호:</h6>
+                        <p class="mb-lg-0 fs-sm fw-bold">
+                          <span th:text= "|${lists.orderDetailCode}|"></span>
+                        </p>
                       </div>
+                    <!-- 주문 날짜 -->
                       <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
                         <h6 class="heading-xxxs text-muted">주문 날짜:</h6>
-
-                        <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
                           <time datetime="2019-10-01">
-                           <span th:text= "|${lists.orderDate}|"></span>
+                           <span th:text= "|${#dates.format(lists.orderDate, 'yyyy-MM-dd')}|"></span>
                           </time>
                         </p>
-
                       </div>
+                      <!-- 상품 이미지 -->
                       <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">배송 상태:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${lists.orderStatus}|"></span>
-                        </p>
-
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">상품명:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${lists.productName}|" id="productName"></span>
-                        </p>
-
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">수량:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${lists.orderCnt}|"></span>
-                        </p>
-
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">주문 금액:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${lists.paymentPrice}원|"></span>
-                        </p>
-
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">배달 완료 날짜:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${lists.deliveryDate}|"></span>
-                        </p>
-
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
                         <h6 class="heading-xxxs text-muted">상품 이미지:</h6>
-
-                        <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
                           <img th:src="@{/img/products/product-1.jpg}" style="max-width: 100%; height: auto" th:alt="${lists.imgContent}">
                         </p>
                       </div>
-                      
+                    <!-- 상품명 -->
+                      <div class="col-6 col-lg-3">
+                        <h6 class="heading-xxxs text-muted">상품명:</h6>
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${lists.productName}|" id="productName"></span>
+                        </p>
+                      </div>
+                    <!-- 수량 -->
+                      <div class="col-6 col-lg-3">
+                        <h6 class="heading-xxxs text-muted">수량:</h6>
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${lists.orderCnt}|"></span>
+                        </p>
+                      </div>
+                    <!-- 주문 금액 -->
+                      <div class="col-6 col-lg-3">
+                        <h6 class="heading-xxxs text-muted">주문 금액:</h6>
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${lists.paymentPrice}원|"></span>
+                        </p>
+                      </div>
+                    <!-- 배송 상태 -->
+                      <div class="col-6 col-lg-3">
+                        <h6 class="heading-xxxs text-muted">배송 상태:</h6>
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${lists.orderStatus}|"></span>
+                        </p>
+                      </div>
+                    <!-- 배달 완료 날짜 -->
+                      <div class="col-6 col-lg-3">
+                        <h6 class="heading-xxxs text-muted">배달 완료 날짜:</h6>
+                        <p class="mb-0 fs-sm fw-bold">
+                         <span th:text="|${lists.deliveryDate}|"></span>
+                        </p>
+                      </div>
+                    <!-- 취소 여부 -->
+                      <div class="col-6 col-lg-3">
+                        <h6 class="heading-xxxs text-muted">취소 여부:</h6>
+                        <p class="mb-0 fs-sm fw-bold">
+                         <span th:text="|${lists.cancelStatus}|"></span>
+                        </p>
+                      </div>
+                    <!-- 반품 여부 -->
+                      <div class="col-6 col-lg-3">
+                        <h6 class="heading-xxxs text-muted">반품 여부:</h6>
+                        <p class="mb-0 fs-sm fw-bold">
+                         <span th:text="|${lists.returnStatus}|"></span>
+                        </p>
+                      </div>
+                    <!-- 교환 여부 -->
+                      <div class="col-6 col-lg-3">
+                        <h6 class="heading-xxxs text-muted">교환 여부:</h6>
+                        <p class="mb-0 fs-sm fw-bold">
+                         <span th:text="|${lists.exchangeStatus}|"></span>
+                        </p>
+                      </div>
                     </div>
                   </div>
                 <div class="card-footer">
-                <div class="row align-items-center">
-
-
-                      <div class="col-6">
-
-                        <!-- Button -->
+                <div class="row align-items-center" th:if="(${lists.returnStatus} == null or ${lists.returnStatus} == '철회') and (${lists.cancelStatus} == null or ${lists.cancelStatus} == '철회') and (${lists.exchangeStatus} == null or ${lists.exchangeStatus} == '철회')">
+                     <!-- <div class="col-6">
                         <a class="btn btn-sm w-100 btn-outline-dark" href="account-order.html" >
                           주문 상세
                         </a>
-
                       </div>
-                      
+                    -->
+                  
+                    <!-- 교환 Button -->
                       <div class="col-6">
-
-                        <!-- Button -->
-                        <input type="hidden" th:value="|${lists.productName}|">
                         <a class="btn btn-sm w-100 btn-outline-dark excBtn" th:href="@{/exchange}" >
                           교환
                         </a>
-                        <input type="hidden" th:value="|${lists.orderCode}|">
-						
                       </div>
+                    <!-- 반품 Button -->
                       <div class="col-6">
-
-                        <!-- Button -->
                         <a class="btn btn-sm w-100 btn-outline-dark retBtn" th:href="@{/return}" >
                           반품
                         </a>
-
                       </div>
-                      
+                    <!-- 주문 취소 Button -->
                       <div class="col-6">
-
-                        <!-- Button -->
                         <a class="btn btn-sm w-100 btn-outline-dark cancelBtn" th:href="@{/cancel}" >
                           주문 취소
                         </a>
-
                       </div>
-
                 </div>
               </div>
-                </div>
-				</div>
-              
-
-            </div>
-
+             </div>
+		   </div>
+          </div>
           </div>
         </div>
       </div>
@@ -242,18 +214,26 @@
 	<script>
   	// 교환 버튼에 클릭 이벤트 리스너 추가
   document.querySelector(".orderList").addEventListener("click", function(e) {
+	  
 	e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
     // 필요한 정보를 변수에 저장
-    var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); // TODO: 주문 번호 가져오기
+    var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
     var url="";
 	if(  e.target.matches(".excBtn") ){
 		var url = "exchange";
+		window.location.href = url+"?orderDetailCode=" + orderDetailCode;
 	}else if( e.target.matches(".cancelBtn") ){
 		var url = "cancel"
+		window.location.href = url+"?orderDetailCode=" + orderDetailCode;		
 	}else if(e.target.matches(".retBtn")){
 		var url = "return"
+		window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+	}else if(e.target.matches(".asdasdBtn")){
+		window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+	}else{
+		return;
 	}
-	window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+	
 
   });
   	
