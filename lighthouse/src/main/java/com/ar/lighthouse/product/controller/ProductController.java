@@ -36,7 +36,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
+import com.ar.lighthouse.cart.service.CartService;
+import com.ar.lighthouse.cart.service.CartVO;
+
 import com.ar.lighthouse.common.CodeVO;
+
 import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.member.service.MemberService;
@@ -56,92 +61,87 @@ import net.coobird.thumbnailator.Thumbnailator;
 @Controller
 public class ProductController {
 
-
 	@Value("${file.upload.path}")
 	private String uploadPath;
-	
 
 	@Autowired
 	ProductService productService;
 
 	@Autowired
 	ReviewService reviewService;
-	
 
 	@Autowired
 	ProductInquiryService custominquiryService;
 
-
 	@Autowired
 	MemberService memberService;
 
-
 	@Autowired
 	MainPageService mainPageService;
-
 	
+	@Autowired
+	CartService cartService;
 
 //	판매자 메인페이지
 	@GetMapping("sellerMain")
 	public String seller() {
 		return "page/seller/sellerMain";
 	}
-	
+
 //	판매자 상품문의페이지
 	@GetMapping("productInquiry")
 	public String productInquiry() {
 		return "page/seller/productInquiry";
 	}
-	
+
 //	판매자 mypage
 	@GetMapping("sellerMypage/{memberId}")
 	public String findMember(Model model, MemberVO memberVO) {
-		
+
 		model.addAttribute("sellerInfo", productService.getSellerInfo(memberVO));
 		return "page/seller/sellerMypage";
 	}
-	
+
 //  주문/발송 페이지
 	@GetMapping("orderManagement")
 	public String productOrder(Model model, ProductVO productVO) {
 		model.addAttribute("orderList", productService.getProductOrder(productVO));
 		return "page/seller/orderManagement";
 	}
-	
+
 //	교환 페이지
 	@GetMapping("exchangeList")
 	public String productExchange() {
 		return "page/seller/exchangeList";
 	}
-	
+
 //	정산관리 페이지
 	@GetMapping("settlementManagement")
 	public String settlementManagement() {
 		return "page/seller/settlementManagement";
 	}
-	
+
 //	판매자 상품목록
 	@GetMapping("productList/{memberId}")
 	public String productList(@PathVariable String memberId, Model model) {
-	    // memberId를 기반으로 해당 사용자가 등록한 상품 목록 조회
-	    List<ProductVO> productList = productService.getProductsByMemberId(memberId);
-	    
-	    // 모델에 상품 목록 추가
-	    model.addAttribute("productList", productList);
-	    
-	    return "page/seller/productList";
+		// memberId를 기반으로 해당 사용자가 등록한 상품 목록 조회
+		List<ProductVO> productList = productService.getProductsByMemberId(memberId);
+
+		// 모델에 상품 목록 추가
+		model.addAttribute("productList", productList);
+
+		return "page/seller/productList";
 	}
-	
+
 //	상품 취소관리 페이지
-	@GetMapping("cancelProduct") //Model model, CancelVO cancelVO
+	@GetMapping("cancelProduct") // Model model, CancelVO cancelVO
 	public String cancelProdructs() {
-		
+
 //		model.addAttribute("cancelInfo", productService.getCancelList(cancelVO));
-		
+
 		return "page/seller/cancelProduct";
 	}
-	
-	
+
 //	상품상세설명등록 페이지
 	@GetMapping("productContent")
 	public String productContent() {
@@ -150,8 +150,8 @@ public class ProductController {
 
 //	조건순 order by
 	@GetMapping("getOptionProduct")
-	public String productDetail(Model model,ProductVO productVO) {
-		model.addAttribute("productList",productService.getOptionProduct(productVO));
+	public String productDetail(Model model, ProductVO productVO) {
+		model.addAttribute("productList", productService.getOptionProduct(productVO));
 		return "page/seller/productList :: #sortList";
 	}
 
@@ -184,6 +184,7 @@ public class ProductController {
 		model.addAttribute("getCategoryList", mainPageService.getchildCategory(categoryVO));
 		return "page/seller/productForm :: #thirdOfChildCate";
 	}
+
   
 	// 상품 등록
 		@PostMapping("insertProduct")
@@ -262,6 +263,7 @@ public class ProductController {
 			return "redirect:insertProductForm/"+memberVO.getMemberId();
 		}
 
+
 		// 상품 상세보기 사진 정보 보내기
 		@PostMapping("insertDetailImg")
 		public String addDetailImg(Model model,MultipartFile[] uploadFile,ImgsListVO imgVO) {
@@ -329,8 +331,7 @@ public class ProductController {
 		return delList;
 
 	}
-	
-	
+
 	// 파일 업로드 처리
 	private String getFolder() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -340,65 +341,64 @@ public class ProductController {
 
 		return str.replace("-", File.separator);
 	}
-	
+
 	// 리뷰등록
 	@PostMapping("insertReview")
 	@ResponseBody
-	public String addReivew(MultipartFile[] files, ReviewVO review, ImgsVO imgsVO,Model model) {
-		
+	public String addReivew(MultipartFile[] files, ReviewVO review, ImgsVO imgsVO, Model model) {
+
 		reviewService.addReview(review);
-		
-	    for(MultipartFile uploadFile : files){
-	    	if(uploadFile.getContentType().startsWith("image") == false){
-	    		System.err.println("this file is not image type");
-	    		return null;
-	        }
-	  
-	        String originalName = uploadFile.getOriginalFilename();
-	        System.out.println("originalName : " + originalName);
-	        String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
-	        imgsVO.setImgName(fileName);
-	        
-	        System.out.println("fileName : " + fileName);
-	    
-	        //날짜 폴더 생성
-	        String folderPath = makeFolder();
-	        
-	        //UUID
-	        String uuid = UUID.randomUUID().toString();	// 유니크한 이름 때문에
-	        //저장할 파일 이름 중간에 "_"를 이용하여 구분
-	        imgsVO.setUploadName(uuid+"_"+fileName);
-	        
-	        // System.out.println("uuid : " + uuid);
-	        
-	        String uploadFileName = folderPath +File.separator + uuid + "_" + fileName;
-	       //  System.out.println("uploadFileName : " + uploadFileName);
-	        imgsVO.setUploadPath(folderPath);
-	        
-	        String saveName = uploadPath + File.separator + uploadFileName;
-	       // System.out.println("saveName : " + saveName);
-	        
-	        Path savePath = Paths.get(saveName);
-	        // System.out.println("savePath : " + savePath);
-	        //Paths.get() 메서드는 특정 경로의 파일 정보를 가져옵니다.(경로 정의하기)
-	       //  System.out.println("path : " + saveName);
-	        try{
-	        	uploadFile.transferTo(savePath); // 파일의 핵심
-	            //uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
-	        	imgsVO.setReviewCode(review.getReviewCode());
+
+		for (MultipartFile uploadFile : files) {
+			if (uploadFile.getContentType().startsWith("image") == false) {
+				System.err.println("this file is not image type");
+				return null;
+			}
+
+			String originalName = uploadFile.getOriginalFilename();
+			System.out.println("originalName : " + originalName);
+			String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
+			imgsVO.setImgName(fileName);
+
+			System.out.println("fileName : " + fileName);
+
+			// 날짜 폴더 생성
+			String folderPath = makeFolder();
+
+			// UUID
+			String uuid = UUID.randomUUID().toString(); // 유니크한 이름 때문에
+			// 저장할 파일 이름 중간에 "_"를 이용하여 구분
+			imgsVO.setUploadName(uuid + "_" + fileName);
+
+			// System.out.println("uuid : " + uuid);
+
+			String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
+			// System.out.println("uploadFileName : " + uploadFileName);
+			imgsVO.setUploadPath(folderPath);
+
+			String saveName = uploadPath + File.separator + uploadFileName;
+			// System.out.println("saveName : " + saveName);
+
+			Path savePath = Paths.get(saveName);
+			// System.out.println("savePath : " + savePath);
+			// Paths.get() 메서드는 특정 경로의 파일 정보를 가져옵니다.(경로 정의하기)
+			// System.out.println("path : " + saveName);
+			try {
+				uploadFile.transferTo(savePath); // 파일의 핵심
+				// uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
+				imgsVO.setReviewCode(review.getReviewCode());
 				reviewService.addReviewImg(imgsVO);
-	        } catch (IOException e) {
-	             e.printStackTrace();	             
-	        }
-	        
-	     }
-	    
-	    return "";
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		return "insert";
 	}
-	
-	
+
 	private String makeFolder() {
-		String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));	// 경로에서 사용하는 /는 인지 못함
+		String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")); // 경로에서 사용하는 /는 인지 못함
 		// LocalDate를 문자열로 포멧
 		String folderPath = str.replace("/", File.separator); // <- 그래서 separator 사용
 		File uploadPathFoler = new File(uploadPath, folderPath);
@@ -411,30 +411,40 @@ public class ProductController {
 		}
 		return folderPath;
 	}
-	
+
 	private String setImagePath(String uploadFileName) {
 		return uploadFileName.replace(File.separator, "/");
 	}
-	
-	// 리뷰 삭제
-	@PostMapping("removeDelete")
-	public String deleteReview(String memberId) {
 
-		reviewService.removeReview(memberId);
+	@PostMapping("editReview")
+	@ResponseBody
+	public ReviewVO editReview(MultipartFile[] files, @RequestBody ReviewVO reviewVO) {
+		System.out.println(reviewVO);
 
-		return "redirect:/page/goods/goodDetail";
+		reviewService.editReview(reviewVO);
+		return reviewVO;
+
 	}
 
-	
-	//qna 등록
+	// 리뷰 삭제
+	@PostMapping("removeReview")
+	@ResponseBody
+	public String deleteReview(@RequestBody Integer reviewCode) {
+
+		reviewService.removeReview(reviewCode);
+
+		return "deleteReview";
+	}
+
+	// qna 등록
 	@PostMapping("insertInquiry")
 	@ResponseBody
-	public ProductInquiryVO addInquiry( Model model, @RequestBody ProductInquiryVO inquiryVO) {
-		
+	public ProductInquiryVO addInquiry(Model model, @RequestBody ProductInquiryVO inquiryVO) {
+
 		custominquiryService.addInquiry(inquiryVO);
-	
+
 		return inquiryVO;
-		
+
 	}
 
 	// qna 수정
@@ -456,16 +466,15 @@ public class ProductController {
 	// qna 삭제
 	@PostMapping("removeInquiry")
 	@ResponseBody
-	public int removeInquiry(@RequestBody Integer queCode , RedirectAttributes rttr) {
+	public int removeInquiry(@RequestBody Integer queCode, RedirectAttributes rttr) {
 		System.out.println(queCode);
-		if(custominquiryService.removeInquiry(queCode)) {
-			rttr.addFlashAttribute("result","success");
+		if (custominquiryService.removeInquiry(queCode)) {
+			rttr.addFlashAttribute("result", "success");
 		}
 		return queCode;
-	
-		
+
 	}
-	
+
 	// 상품 단건 조회
 
 	@GetMapping("goodDetail")
@@ -480,8 +489,8 @@ public class ProductController {
 		ReviewVO reviewVO = new ReviewVO();
 		reviewVO.setProductCode(productCode);
 		model.addAttribute("review", reviewService.getReviewList(reviewVO));
-		
-		
+		model.addAttribute("count", reviewService.countGetReview(reviewVO));
+
 		// qna 조회
 		ProductInquiryVO productInquiryVO = new ProductInquiryVO();
 		productInquiryVO.setProductCode(productCode);
@@ -491,6 +500,9 @@ public class ProductController {
 		optionVO.setProductCode(productCode);
 		model.addAttribute("options", productService.getOptionList(optionVO));
 		System.out.println(model);
+		
+		// 장바구니
+		
 
 		return "page/goods/goodDetail";
 	}
@@ -500,15 +512,16 @@ public class ProductController {
 	@ResponseBody
 	public ResponseEntity<byte[]> getFile(String fileName){
 		File file = new File(uploadPath + fileName);
+
 		ResponseEntity<byte[]> result = null;
-		
+
 		try {
 			HttpHeaders header = new HttpHeaders();
-			
+
 			header.add("Content-Type", Files.probeContentType(file.toPath()));
 			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
-			
-		}catch(IOException e) {
+
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return result;
