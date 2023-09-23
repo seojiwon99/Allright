@@ -127,11 +127,12 @@
                       <p class="mb-4 fs-sm fw-bold">  
                          <input type="hidden" th:value="${gets.productCode}">
                          <input type="hidden" name="couponUsePrice" class="text-body" th:text="${gets.productName}" ><br>
-                         상품금액 : <span class="text-muted" style="text-decoration: line-through;" th:text="|${gets.productCost + gets.optionPrice}|"></span>원 <br>
+                         상품금액 : <span class="text-muted" style="text-decoration: line-through;" th:text="|${gets.productCost + gets.optionPrice}|" id="selectPrice"></span>원 <br>
                         <span class="text-muted" th:text="|할인된 금액 : ${gets.productCost - gets.salePrice + gets.optionPrice}|"></span>원
+                        <input type="hidden" class="selectValue" th:value="${(gets.productCost - gets.salePrice + gets.optionPrice) * gets.cartCount}">
                         <div class="input-group mb-8">
                           <input style="margin-top: 15px;" type="text" class="form-control" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2" id="couponSelect" readonly>
-                         
+                          <input type="hidden" class="myCouponCode">
                          <a class="btn btn-outline-secondary list-styled-link couponBtn" data-bs-toggle="modal" href="#modalNewsletterHorizontal" style="margin: 20px;" >쿠폰선택</a>
                          
                         </div> 
@@ -331,9 +332,7 @@
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script th:inline="javascript">
 
-let couponAmount = 0;
- 
-
+     
     //주소 api로 입력
     $('#addressSearch').on('click', addrPopup);
     function addrPopup(){
@@ -347,6 +346,7 @@ let couponAmount = 0;
     }
     //상품 금액 연산 정리
     let result = 0; // 총금액
+    let couponAmount = 0;
     let deliveryPay = 0;
     let saleToal = 0;
     let productTotal = 0;
@@ -383,73 +383,79 @@ let couponAmount = 0;
       $('#salePrice').text(saleToal); // 상품할인 금액
       $('#deliveryPrice').text(deliveryPay); // 배송비
       $('#totalPrice').text(result); // 총금액 
-      
-      
-      //선택 상품 가격
-      let couDiscount = 0;
-      function selectPro(selectPrice) {
-        $('#couponSelect').val('쿠폰 선택하세요.');
-        $('.couponSalePrice').val(couDiscount);
-        $('#couponSale').text(couDiscount);
-        realPrice = selectPrice;
-      }
 
-      
         let productNum = "";
       	let coupon;
         //모달 창 쿠폰 값 주문 페이지 넘기기
         $('.couponBtn').on('click', function(e){        
-         coupon = e.target;       
+         coupon = e.target;
+            
         })
         
-    
-        let couponNum = 0;
-        let roundPrice = 0;
-        $('#modalNewsletterHorizontal').on('shown.bs.modal', function(){
-          $('.select-button').off("click");
+    let roundPrice = 0;
+    let couponNum =0;
+    $('#modalNewsletterHorizontal').on('shown.bs.modal', function(){
+      $('.select-button').off("click");
+      $('.select-button').on('click',function(e){
+        let thisRow = $(this).closest('tr');
+        let maxPrice =  thisRow.find('td:eq(0)').data('max');
+        console.log(maxPrice);
+        let couponNum = thisRow.find('td:eq(0)').text();
+        let couName = thisRow.find('td:eq(1)').text(); 
+        let couDiscount = Number(thisRow.find('td:eq(3)').text().slice(0,-1));
+        
+        let couponDisRt = Number($(coupon).closest(".list-group-item").find('.selectValue').val()); // 상품 가격
 
-          $('.select-button').on('click',function(e){
-            let thisRow = $(this).closest('tr');
-            let maxPrice =  thisRow.find('td:eq(0)').data('max');
-            console.log(maxPrice);
-            couponNum = thisRow.find('td:eq(0)').text();
-            let couName = thisRow.find('td:eq(1)').text(); 
-            let couDiscount = Number(thisRow.find('td:eq(3)').text().slice(0,-1));
-            
-            if(couDiscount < 100) {
-             couDiscount  = realPrice * couDiscount / 100;
-            } else {
-              couDiscount;
-            }
-            roundPrice = (Math.ceil(couDiscount / 100) * 100);
-            console.log(roundPrice);
-            
-            $(coupon).closest(".list-group-item").find('.couponSalePrice').val(roundPrice);
-            $(coupon).closest(".list-group-item").find('#couponSelect').val(couName);          
-
-            $('#modalNewsletterHorizontal').modal('hide'); //모달 닫기
-            
-          });
+        if(couDiscount < 100) {
+          couDiscount  = couponDisRt * couDiscount / 100;
+        } else {
+          couDiscount;
+        }
+        roundPrice = (Math.ceil(couDiscount / 100) * 100);
+        console.log(roundPrice);
+        
+        let flag=false;
+        $('.myCouponCode[value]').each(function(idx,el){
+          if(el.value == couponNum){            	
+            flag = true;
+            return false;
+          }            	
+        })
+        
+        if(flag){
+            alert("사용된 쿠폰입니다.");
+            return;
+        }
           
 
-        }) 
+        $(coupon).closest(".list-group-item").find('.couponSalePrice').val(roundPrice);
+        $(coupon).closest(".list-group-item").find('#couponSelect').val(couName);          
+        $(coupon).closest(".list-group-item").find('.myCouponCode').val(couponNum);   
+        $('#modalNewsletterHorizontal').modal('hide'); //모달 닫기
         
-        let conponAll = 0;
-        //총 금액에서 쿠폰 값 빼기
-        $('.couponResult').on('click', function(e){
-                
-                let couponPay = Number($(this).closest(".list-group-item").find('.couponSalePrice').val());
-                conponAll = conponAll + couponPay;
-                console.log(conponAll);
-                couDiscount = $('#couponSale').text(roundPrice);
+      });
+      
 
-                 
-                  Number($('#totalPrice').text((result-roundPrice)));
-                  toalPay  =  Number(result-roundPrice);
-                  result = toalPay;
-                  console.log(toalPay);
-                
+    }) 
+    let couponUsePriceList = [];
+    let conponAll = 0;
+    //총 금액에서 쿠폰 값 빼기
+    $('.couponResult').on('click', function(e){
+            conponAll = 0;
+            $('.couponSalePrice').each(function(idx,el){
+              conponAll = conponAll + Number(el.value)
             })
+            
+            console.log(conponAll);
+
+            couDiscount = $('#couponSale').text(conponAll);
+
+              
+              Number($('#totalPrice').text((result-conponAll)));
+              toalPay  =  Number(result-conponAll);
+              console.log(toalPay);
+            
+        })
             
 
     //배송 요청 사항 직접 입력시 생성
@@ -516,6 +522,14 @@ let couponAmount = 0;
         productSalePrice : realPrice,
         couponPrice : roundPrice
     }
+
+    // let odersVO = [{
+    //     mycouponCode :couponNum,
+    //     productCode : productNum,
+    //     productSalePrice : realPrice,
+    //     couponPrice : roundPrice
+    // }]
+    
     //ajax - async:false - 비동식 save 데이터 받아서 보냄
     $.ajax('/orders/save',{
       async:false,

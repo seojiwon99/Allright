@@ -43,7 +43,7 @@
 
                     <!-- Image -->
                     <a href="product.html">
-                     <img th:src="@{/img/products/}+${lists.uploadName}" alt="..." class="img-fluid">
+                     <!-- <img th:src="|upload/@{/img/products/}+${lists.uploadName}|" alt="..." class="img-fluid"> -->
                     </a>
 
                   </div>
@@ -150,7 +150,6 @@
                 </ul>
               </div>
             </div>
-            <!-- th:href="@{http://localhost:8090/orders/pay}"-->
             <!-- Button -->
               <button id="payMove" class="btn w-100 btn-dark mb-2" type="button">결제하기</button>
             <!-- Link -->

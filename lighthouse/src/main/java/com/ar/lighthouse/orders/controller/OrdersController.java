@@ -89,6 +89,7 @@ public class OrdersController {
 	public void ordersSave(HttpServletRequest req, @RequestBody OrderPayVO ordersPay) {
 		HttpSession session = req.getSession();
 		session.setAttribute("ordersPay", ordersPay);
+		//delivo 값 새로 만들기 / opderPAy  할인 쿠폰 받은 VO 적용
 	}
 	
 	//토스페이 먼츠 결제 승인 및 DB 저장 후 주문 내역으로 리다이렉트
@@ -123,17 +124,16 @@ public class OrdersController {
 		int orderSuccess = 0;
 		// 각 주문 내역에 대한 정보 저장
 		for(OrdersVO order : orderList) {
-			if(order.getProductCode().equals(orderPayVO.getProductCode()) ) {
+			if(order.getProductCode().equals(orderPayVO.getProductCode()) ) { //쿠폰 할인 받은 상품
 				order.setOrderCode(orderCode);
 				order.setOptionCouponCheck(optionCouponCheck);
 				order.setMycouponCode(mycouponCode);
 				order.setOrderPrice(orderPayVO.getProductSalePrice());
 				order.setDiscountPrice(orderPayVO.getCouponPrice());
 				order.setPaymentPrice(orderPayVO.getProductSalePrice() - orderPayVO.getCouponPrice());
-				System.out.println("if= " + order);
 				orderSuccess  = ordersService.addOrders(order);
 			}else {
-				System.out.println(order);
+				System.out.println(order); // 쿠폰 할인 받지 않은 상품
 				order.setOrderCode(orderCode);
 				order.setOptionCouponCheck("N");
 				order.setOrderPrice(order.getCartCount() *(order.getProductCost() - order.getSalePrice()));
