@@ -93,75 +93,49 @@
 		</div>
 
 		<div class="col-12 col-lg">
-			<div class="napy_sub_content">
+			<div class="panel-body">
+				<!---->
+				
+							<div class="_1Vof48UxmD _oVRNwPvxck">
+							
+								<div class="_KqV0-1BSnB">
+									<button type="button" id="todayBtn" class="btn btn-primary2">
+										<span id="today">오늘</span>
+									</button>
+									<button type="button" id="weekBtn" class="btn btn-primary2">
+										<span id="week">1주일</span>
+									</button>
+									<button type="button" id="oneMonthBtn" class="btn btn-primary2">
+										<span id="onemonth">1개월</span>
+									</button>
+									<button type="button" id="threeMonthBtn"
+										class="btn btn-primary2 active">
+										<span id="thmonth">3개월</span>
+									</button>
 
-				<div class="npay_section _1FOxZIjaH6">
-					<div class="npay_board_area">
-						<table class="npay_board_table">
-							<colgroup>
-								<col class="label_width">
-								<col>
-							</colgroup>
-							<tbody>
-								<tr>
-									<th scope="row">조회기간</th>
-									<td colspan="1"><div class="_e1ESc1_0ic">
-											<div class="_2Mo9ts_S9f _29On-g1Mid">
-												<div class="_8GMnQSQIgl _3zx-c_IhVp">
+									<div id="dateDisplay"></div>
 
-													<button type="button">
-														<span class="">오늘</span>
-													</button>
-													<button type="button">
-														<span class="">1주일</span>
-													</button>
-													<button type="button">
-														<span class="">1개월</span>
-													</button>
-													<button type="button">
-														<span class="">3개월</span>
-													</button>
+									<label class="_MN8nIh0X4y">상세조건</label> <select
+										class="_4LshyCrDpi" title="리스트 보기">
+										<option selected value="">전체</option>
+										<option value="member_name">구매자명</option>
+										<option value="member_tel">구매자연락처</option>
+										<option value="member_id">구매자ID</option>
+										<option value="product_code">상품코드</option>
+										<option value="delivery_number">송장번호</option>
+									</select> <input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
+									<div>
+										<span>조회기간</span> <input type="DATE" id="from" name="from"
+											autocomplete="off"> <label for="to">~</label> <input
+											type="DATE" id="to" name="to" autocomplete="off">
+									</div>
+								</div>
+							</div>
 
-													<div id="dateDisplay"></div>
-													
-													<label class="_MN8nIh0X4y">상세조건</label> <select
-														class="_4LshyCrDpi" title="리스트 보기">
-														<option selected value="">전체</option>
-														<option value="member_name">구매자명</option>
-														<option value="member_tel">구매자연락처</option>
-														<option value="member_id">구매자ID</option>
-														<option value="order_detail_code">상세주문번호</option>
-														<option value="delivery_number">송장번호</option>
-													</select> <input type="text" class="_3y2h2mGnkI" value=""
-														maxlength="50">
-													<div>
-														<input type="DATE" id="from" name="from"
-															autocomplete="off"> <label for="to">~</label> <input
-															type="DATE" id="to" name="to" autocomplete="off">
-													</div>
-												</div>
-											</div>
-										</div></td>
-
-								</tr>
-								<tr>
-									<th scope="row">처리상태</th>
-									<td colspan="3"><div class="_KqV0-1BSnB">
-											<label id="cancelStatus">전체</label> <select
-												class="_4LshyCrDpi" title="리스트 보기">
-												<option selected value="">전체</option>
-												<option value="CANCEL_REQUEST">취소요청</option>
-												<option value="CANCEL_DONE">취소완료</option>
-												<option value="CANCEL_REJECT">취소철회</option>
-											</select>
-										</div></td>
-								</tr>
-							</tbody>
-						</table>
-						<button type="button" id="orderSearch">검색</button>
+							<button type="button" id="orderSearch">검색</button>
 					</div>
 					<section class="pb-12">
-
+						<div class="orderBtn" style="margin: 20px;">
 						<table border="1" class="table" id="getProductList">
 							<thead>
 								<tr>
@@ -191,12 +165,11 @@
 								<!-- 반복문 종료 -->
 							</tbody>
 						</table>
+						</div>
 					</section>
 				</div>
-			</div>
-		</div>
+</div>
 
-	</div>
 
 	<script>
 $(document).ready(function () {		
@@ -245,62 +218,86 @@ $(document).ready(function () {
 		})
 		
 		
-		 // 날짜 표시 함수
-	    function displayDate(range) {
-	      const currentDate = new Date();
-	      let startDate, endDate;
+	 const currentDate = new Date();
+	  const formattedDate = currentDate.toISOString().split('T')[0];
+	  $('#to').val(formattedDate);
+ 
+  
+     // 버튼 클릭 이벤트 처리
+	 $('#todayBtn').click(function() {
+		displayDate('today');
+	  });
+	  $('#weekBtn').click(function() {
+		displayDate('week');
+	  });
+	  $('#oneMonthBtn').click(function() {
+		displayDate('oneMonth');
+	  });
+	  $('#threeMonthBtn').click(function() {
+		displayDate('threeMonth');
+	  });
+  
+	  // 날짜 표시 함수
+function displayDate(range) {
+	const currentDate = new Date();
+	let startDate, endDate;
+  
+	switch (range) {
+	  case 'today':
+		startDate = new Date(currentDate);
+		endDate = new Date(currentDate);
+		break;
+	  case 'week':
+		startDate = new Date(currentDate);
+		endDate = new Date(currentDate);
+		startDate.setDate(endDate.getDate() - 7);
+		break;
+	  case 'oneMonth':
+		startDate = new Date(currentDate);
+		endDate = new Date(currentDate);
+		startDate.setMonth(endDate.getMonth() - 1);
+		break;
+	  case 'threeMonth':
+		startDate = new Date(currentDate);
+		endDate = new Date(currentDate);
+		startDate.setMonth(endDate.getMonth() - 3);
+		break;
+	  default:
+		startDate = null;
+		endDate = null;
+	}
+  
+	// endDate 값을 input 요소에 설정
+	if (startDate) {
+	endDate.setDate(endDate.getDate() + 1); // 일자를 +1 하기
+	const formattedEndDate = endDate.toISOString().split('T')[0];
+	console.log(formattedEndDate); 
 
-	      switch (range) {
-	        case 'today':
-	          startDate = new Date(currentDate);
-	          endDate = new Date(currentDate);
-	          break;
-	        case 'week':
-	          startDate = new Date(currentDate);
-	          endDate = new Date(currentDate);
-	          endDate.setDate(endDate.getDate() + 7);
-	          break;
-	        case 'oneMonth':
-	          startDate = new Date(currentDate);
-	          endDate = new Date(currentDate);
-	          endDate.setMonth(endDate.getMonth() + 1);
-	          break;
-	        case 'threeMonth':
-	          startDate = new Date(currentDate);
-	          endDate = new Date(currentDate);
-	          endDate.setMonth(endDate.getMonth() + 3);
-	          break;
-	        default:
-	          startDate = null;
-	          endDate = null;
-	      }
+	//   formattedYear = formattedEndDate.
 
-	      if (startDate && endDate) {
-	        document.getElementById('dateDisplay').innerHTML = `시작 날짜: ${startDate.toDateString()}<br>종료 날짜: ${endDate.toDateString()}`;
-	      } else {
-	        document.getElementById('dateDisplay').innerHTML = '날짜 범위를 선택하세요.';
-	      }
-	    }
-
-	    // 버튼 클릭 이벤트 처리
-	    document.getElementById('todayBtn').addEventListener('click', () => {
-	      displayDate('today');
-	    });
-	    document.getElementById('weekBtn').addEventListener('click', () => {
-	      displayDate('week');
-	    });
-	    document.getElementById('oneMonthBtn').addEventListener('click', () => {
-	      displayDate('oneMonth');
-	    });
-	    document.getElementById('threeMonthBtn').addEventListener('click', () => {
-	      displayDate('threeMonth');
-	    });
-		
+	  
+	  // input 요소 선택 후 value 설정
+	  $('#to').val(formattedEndDate);
+	} else {
+	  // endDate가 null이면 input 요소 값을 비움
+	  $('#to').val('');
+	}
+  
+	// startDate 값을 input 요소에 설정
+	if (endDate) {
+	  // startDate를 yyyy-mm-dd 형식의 문자열로 변환
+	  const formattedStartDate = startDate.toISOString().split('T')[0];
+	  
+	  // input 요소 선택 후 value 설정
+	  $('#from').val(formattedStartDate);
+	} else {
+	  // startDate가 null이면 input 요소 값을 비움
+	  $('#from').val('');
+	}
+  }
 		
 })
 	</script>
-
-
 </div>
 
 </html>

@@ -131,6 +131,7 @@
 		JOIN
 		ar_products p ON x.product_code = p.product_code
 		JOIN ar_member m ON m.member_id = r.member_id
+		WHERE p.member_id = 'hong1234'
 		ORDER BY o.order_date DESC
 	</select>
 
@@ -202,7 +203,7 @@
 				o.order_date BETWEEN #{fromDate} AND #{toDate}
 			</when>
 		</choose>
-		
+		AND p.member_id = 'hong1234'
 		ORDER BY o.order_date DESC
 	</select>
 
@@ -224,7 +225,7 @@
 		select c.cancel_code
 		, d.order_detail_code
 		, p.product_name
-		, d.order_status
+		, delivery_code_name(d.order_status) AS order_status
 		, c.cancel_reason
 		, o.charge_date
 		, c.cancel_regdate
@@ -258,7 +259,7 @@
 		select c.cancel_code
 		, d.order_detail_code
 		, p.product_name
-		, d.order_status
+		, delivery_code_name(d.order_status)  AS order_status
 		, c.cancel_reason
 		, o.charge_date
 		, c.cancel_regdate
@@ -306,7 +307,7 @@
 		select e.exchange_code
 		, d.order_detail_code
 		, p.product_name
-		, d.order_status
+		, delivery_code_name(d.order_status)  AS order_status
 		, e.exchange_reason
 		, o.charge_date
 		, e.exchange_regdate
@@ -336,7 +337,7 @@
 		select r.return_code
 		, d.order_detail_code
 		, p.product_name
-		, d.order_status
+		, delivery_code_name(d.order_status)  AS order_status
 		, r.return_reason
 		, o.charge_date
 		, r.return_regdate
@@ -476,6 +477,7 @@ WHERE o.order_status = 4
 		SET delivery_service = #{deliveryService}
 		, delivery_number = #{deliveryNumber}
 		, delivery_start = sysdate
+		, order_status = 3
 		WHERE order_detail_code = #{orderDetailCode}
 	</update>
 	
