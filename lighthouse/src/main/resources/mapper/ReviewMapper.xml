@@ -106,7 +106,7 @@
 	update ar_review set 
 	       review_content = #{reviewContent}
 	  	  ,review_star = #{reviewStar}
-	 where review_code=#{reviewCode}
+	 where review_code = #{reviewCode}
 	        
   	</update>
   	

@@ -585,17 +585,19 @@
 															<form id="editForm" method="post">
 																<div>
 																	<div>
-
+																		<input type="hidden" name="reviewCode" id="reviewNum"  />
 																		<!-- 수정전 이미지 -->
 																		<!-- th:src="|display?fileName=${review.reviewImg.uploadPath}/${review.reviewImg.uploadName}|" -->
 																		<img src="" id="reviewModifyImg" width="180px"
 																			height="180px">
+																			
 																	</div>
 																	<div style="padding-top: 20px">
 																		<!-- 수정후 이미지 -->
-																		<span style="color: grey">수정할 이미지를 정해주세요</span> <input
-																			type="file" class="reviewimg" name="files"
-																			id="reviewimg" accept="image/*" />
+																		<span style="color: grey">수정할 이미지를 정해주세요</span> 
+																		<input type="file" class="reviewimg" name="files"
+																		id="reviewimg" accept="image/*" />
+																			
 
 																	</div>
 																</div>
@@ -1085,23 +1087,29 @@
 			})
 		})
     	
+   //리뷰 수정
    function editReview(data){
+			
+			console.log(data);
+			let reviewCode = $("#reviewNum").val(data.reviewCode);
 			let reviewContent = $("#message-text").html(data.reviewContent);
 			let imgContent = $("#reviewImgContent").val(data.reviewImg.imgContent);
-			//$("#reviewModifyImg").attr("src", "upload" + data.uploadPath + uploadName);
+			let img = $("#reviewModifyImg").attr("src", "upload/" + data.reviewImg.uploadPath + "/"+ data.reviewImg.uploadName);
 			let reviewStars = $("#editStar").attr("data-value",data.reviewStar);
 			
 			let form = $("#editForm")[0];
 			
 			
+			
 	       $("#reviewEditBtn").on("click",function(){
+	    	   
 	        	
 	        	const reviewFormData = new FormData(form);
 	        	
 	        	let star = $("#editStar").data("value");
 	        	
 	        	reviewFormData.append("reviewStar",star);
-	            
+        	
 		        for (let key of reviewFormData.keys()) {
 		          console.log(key, ":", reviewFormData.get(key));
 		          
@@ -1126,7 +1134,7 @@
 	        
 		}
 		
-	
+		
 		
 	
     </script>

@@ -418,8 +418,8 @@ public class ProductController {
 
 	@PostMapping("editReview")
 	@ResponseBody
-	public ReviewVO editReview(MultipartFile[] files, @RequestBody ReviewVO reviewVO) {
-		System.out.println(reviewVO);
+	public ReviewVO editReview(MultipartFile[] files,ReviewVO reviewVO) {
+		System.out.println("review"+reviewVO);
 
 		reviewService.editReview(reviewVO);
 		return reviewVO;
