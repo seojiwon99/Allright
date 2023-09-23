@@ -5,15 +5,18 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.buyp.service.ExchangeVO;
+import com.ar.lighthouse.buyp.service.ReturnVO;
 import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.service.CancelVO;
 
+
 import com.ar.lighthouse.product.service.ExchangeVO;
+
 
 import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductVO;
-import com.ar.lighthouse.product.service.ReturnVO;
 
 @Mapper
 public interface ProductMapper {
@@ -58,5 +61,6 @@ public interface ProductMapper {
 //  반품건 확인
 	public List<ReturnVO> selectReturnList(ReturnVO returnVO);
 
-
+//  상품옵션 vo 리스트
+	public List<OptionVO> getOptionList(OptionVO optionVO);
 }

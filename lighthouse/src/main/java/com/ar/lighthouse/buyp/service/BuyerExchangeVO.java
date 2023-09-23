@@ -7,22 +7,20 @@ import org.springframework.format.annotation.DateTimeFormat;
 import lombok.Data;
 
 @Data
-public class CancelVO1 {
+public class BuyerExchangeVO {
 	
-	private String cancelCode;
+	private String exchangeCode;
 	private int orderDetailCode;
-	private String cancelReason;
+	private String exchangeReason;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date cancelRegdate;
+	private Date exchangeRegdate;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date cancelRetractDate;
-	private String cancelStatus;
+	private Date exchangeRetractdate;
+	private String exchangeStatus;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date cancelDate;
-	private String cancelRejectionCode;
-	
-	private String cancelRejectionReason;
-	private String cDetailReason;
+	private Date exchangeProcessingdate;
+	private String exchageAddr;
+	private int deliveryNumber;
 	
 	private int orderCnt;
 	private int paymentPrice;
@@ -30,4 +28,6 @@ public class CancelVO1 {
 	private int optionCode;
 	
 	private String productName;
+	
+	private String memberId;
 }

@@ -31,8 +31,14 @@
       		<div class="col-12 col-lg-10 col-xl-8" id="returnForm">
       			<h2>반품 신청 페이지</h2>
       			<div class="mb-3">
+      				<label>주문번호</label>
+      				<input type="text" class="form-label" th:value="${return.orderCode}" readonly>
+      				<label>주문상세번호</label>
+      				<input type="text" class="form-label" th:value="${return.orderDetailCode}" readonly>
+      			</div>
+      			<div class="mb-3">
       				<label>상품 명</label>
-      				<input type="text" class="form-label" >
+      				<input type="text" class="form-label" th:value="${return.productName}" readonly>
       			</div>
       			<div class="mb-3">
       			<!-- Select -->

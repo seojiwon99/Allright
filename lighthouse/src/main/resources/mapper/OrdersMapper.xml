@@ -16,7 +16,7 @@
   	</select>
  
  	<select id="selectCoupon" resultType="com.ar.lighthouse.orders.service.OrdersVO">
- 	SELECT m.member_id, c.coupon_code, b.issue_date, b.coupon_use, c.coupon_content, c.coupon_condition, 
+ 	SELECT m.member_id, c.coupon_code, b.issue_date, b.coupon_use, c.coupon_content, c.coupon_condition, b.mycoupon_code,
     c.coupon_name, c.coupon_discount_price, c.coupon_discount_rate, c.coupon_max_price, c.coupon_min_price,
     c.coupon_deadline, c.coupon_base, b.end_date, b.using_date
     FROM ar_member m
@@ -29,5 +29,11 @@
  	 SELECT * FROM AR_CODE
      WHERE MASTER_CODE = 'delivery_request'
  	</select>
+ 	
+ 	<update id="insertDeadCoupon">
+ 		UPDATE AR_COUPON_BOX 
+ 		SET coupon_use = 'N' 
+ 		WHERE MEMBER_ID = #{memberId} AND MYCOUPON_CODE = #{mycouponCode}
+ 	</update>
   
   </mapper>
