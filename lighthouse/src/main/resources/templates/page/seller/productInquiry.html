@@ -155,19 +155,36 @@
 													ng-class="::{'fix-width-col-4' : vm.dateMarkupOption.buttonFixWidth}"
 													ng-attr-data-nclicks-code="{{::vm.nclicksCodeRangeButton}}">
 													<!---->
-													<button type="button" id="todayBtn" class="btn btn-primary2">
-										<span id="today">오늘</span>
-									</button>
-									<button type="button" id="weekBtn" class="btn btn-primary2">
-										<span id="week">1주일</span>
-									</button>
-									<button type="button" id="oneMonthBtn" class="btn btn-primary2">
-										<span id="onemonth">1개월</span>
-									</button>
-									<button type="button" id="threeMonthBtn"
-										class="btn btn-primary2 active">
-										<span id="thmonth">3개월</span>
-									</button>
+													<button type="button" class="btn btn-primary2"
+														ng-repeat="option in vm.dateRangeOption.periods"
+														ng-click="vm.onClickRangeButton($index)"
+														ng-disabled="vm.dateDisabled"
+														ng-class="{ active: option.active }">오늘</button>
+													<!---->
+													<button type="button" class="btn btn-primary2"
+														ng-repeat="option in vm.dateRangeOption.periods"
+														ng-click="vm.onClickRangeButton($index)"
+														ng-disabled="vm.dateDisabled"
+														ng-class="{ active: option.active }">3일</button>
+													<!---->
+													<button type="button" class="btn btn-primary2"
+														ng-repeat="option in vm.dateRangeOption.periods"
+														ng-click="vm.onClickRangeButton($index)"
+														ng-disabled="vm.dateDisabled"
+														ng-class="{ active: option.active }">1주일</button>
+													<!---->
+													<button type="button" class="btn btn-primary2"
+														ng-repeat="option in vm.dateRangeOption.periods"
+														ng-click="vm.onClickRangeButton($index)"
+														ng-disabled="vm.dateDisabled"
+														ng-class="{ active: option.active }">1개월</button>
+													<!---->
+													<button type="button" class="btn btn-primary2 active"
+														ng-repeat="option in vm.dateRangeOption.periods"
+														ng-click="vm.onClickRangeButton($index)"
+														ng-disabled="vm.dateDisabled"
+														ng-class="{ active: option.active }">3개월</button>
+													<!---->
 												</div>
 											</div>
 										</div>
@@ -357,49 +374,25 @@
 				<div class="result-info"
 					ng-if="!vm.commentList || vm.commentList.length === 0">
 					<div ng-show="vm.isLoading" class="ng-hide" style="">
-					<table border="1" class="table" id="getProductList">
-					<thead>
-						<tr>
-							<th><input type="checkbox" id="allCheck"></th>
-							<th>주문상세코드</th>
-							<th>상품명</th>
-							<th>옵션값</th>
-							<th>구매개수</th>
-							<th>구매자</th>
-							<th>요청사항</th>
-							<th>택배사</th>
-							<th>송장번호</th>
-							<th>발송일</th>
-						</tr>
-					</thead>
-					<tbody id="orderChkList">
-						<tr th:each="order : ${orderList}"
-							th:data-ordercode="${order.orderDetailCode}">
-							<td><input type="checkbox"></td>
-							<td th:text="${order.orderDetailCode}" />
-							<td th:text="${order.productName}" />
-							<td th:text="${order.option.optionValue}" />
-							<td th:text="${order.orderCnt}" />
-							<td th:text="${order.memberName}" />
-							<td th:text="${order.requestedTerm}" />
-							<td th:if="${order.deliveryService != null}"
-								th:text="${order.deliveryService}"></td>
-							<td th:unless="${order.deliveryService != null}"><input
-								type="text" id="deliveryService"></td>
-							<td th:if="${order.deliveryNumber != null}"
-								th:text="${order.deliveryNumber}" />
-							<td th:unless="${order.deliveryNumber != null}"><input
-								type="text" id="deliveryNumber"></td>
-							<td th:text="${#dates.format(order.deliveryStart,'yyyy-MM-dd')}" />
-						</tr>
-						<!-- 반복문 종료 -->
-					</tbody>
-				</table>
+						<div>
+							<img src="../../images/loading_gray.gif" alt="로딩중">
+						</div>
+					</div>
+					<div ng-show="!vm.isLoading" class="" style="">
+						<i class="fn-shopping fn-65 fn-shopping-caution1 icon-color-big"
+							aria-hidden="true"></i>
+						<h3 class="title title-lg">검색 결과가 없습니다.</h3>
+						<p class="text-sub">
+							설정한 조건에 해당하는 결과가 없습니다.<br>상세 조건을 다시 설정해 주세요.
+						</p>
+					</div>
+				</div>
+				<!---->
+				<ncp-pagination ng-show="!vm.isLoading" page="vm.pageInfo.page"
+					size="vm.pageInfo.size" total="vm.pageInfo.totalCount"
+					range="vm.pageInfo.range" search="vm.queryPage" class="" style=""><!----><!----></ncp-pagination></ui-view>
 			</div>
 		</div>
-		
-		
 	</div>
-	
 </div>
 </html>
