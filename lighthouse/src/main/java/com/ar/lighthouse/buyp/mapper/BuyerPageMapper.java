@@ -7,16 +7,16 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.ar.lighthouse.buyp.service.BuyInfoVO;
 
-import com.ar.lighthouse.buyp.service.BuyerCancelVO;
-
-import com.ar.lighthouse.buyp.service.CodeVO;
+import com.ar.lighthouse.buyp.service.BuyCancelVO;
 import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
-import com.ar.lighthouse.buyp.service.BuyerExchangeVO;
+import com.ar.lighthouse.buyp.service.BuyExchangeVO;
 import com.ar.lighthouse.buyp.service.MyInquiryVO;
-import com.ar.lighthouse.buyp.service.BuyerReturnVO;
+import com.ar.lighthouse.buyp.service.BuyReturnVO;
+
 import com.ar.lighthouse.buyp.service.TradeVO;
 import com.ar.lighthouse.buyp.service.WishVO;
+import com.ar.lighthouse.common.CodeVO;
 
 @Mapper
 public interface BuyerPageMapper {
@@ -34,19 +34,26 @@ public interface BuyerPageMapper {
 	public List<MyInquiryVO> selectMyInquiryList(String memberId);
 	
 	public List<WishVO> selectWishList(String memberId);
-	
 
-	public List<BuyerCancelVO> selectCancelList(String memberId);
+	public List<BuyCancelVO> selectCancelList(String memberId);
 	
-	public List<BuyerReturnVO> selectReturnList(String memberId);
+	public List<BuyReturnVO> selectReturnList(String memberId);
 	
-	public List<BuyerExchangeVO> selectExchangeList(String memberId);
+	public List<BuyExchangeVO> selectExchangeList(String memberId);
 	
-	public int insertExchange(BuyerExchangeVO excVO);
+	public int insertExchange(BuyExchangeVO excVO);
 	
 	public List<CodeVO> selectExchangeCode(String memberId);
 	
-	public List<CodeVO> selectCancelCode(String memberId);
+	public CodeVO exchangeCodePage(CodeVO codeVO);
 	
 	public List<CodeVO> selectReturnCode(String memberId);
+	
+	public CodeVO returnCodePage(CodeVO codeVO);
+	
+	public List<CodeVO> selectCancelCode(String memberId);
+	
+	public CodeVO cancelCodePage(CodeVO codeVO);
+	
+	public int insertCancel(BuyCancelVO canVO);
 }

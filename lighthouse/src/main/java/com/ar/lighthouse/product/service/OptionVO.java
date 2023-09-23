@@ -24,8 +24,6 @@ public class OptionVO {
 	   private String optionSellStatus;
 	   private String optionExStatus;
 	   private int optionCount;
-	   private int minOrder;
-	   private int maxOrder;
 	   private int salePrice;
 	   
 	   
