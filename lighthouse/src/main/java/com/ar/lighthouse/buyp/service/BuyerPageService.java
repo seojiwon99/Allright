@@ -64,15 +64,16 @@ public interface BuyerPageService {
 	//취소 신청
 	public int addCancel(BuyCancelVO canVO);
 	
-	//취소 철회
-	public int editCancel(BuyCancelVO canVO);
+	//주문 취소
+	public int removeCancel(BuyCancelVO canVO);
 	
-	//반품 철회
-	public int editReturn(BuyReturnVO retVO);
+	//반품 취소
+	public int removeReturn(BuyReturnVO retVO);
 	
-	//교환 철회
-	public int editExchange(BuyExchangeVO excVO);
+	//교환 취소
+	public int removeExchange(BuyExchangeVO excVO);
 	
 	//페이징
+	
 	
 }

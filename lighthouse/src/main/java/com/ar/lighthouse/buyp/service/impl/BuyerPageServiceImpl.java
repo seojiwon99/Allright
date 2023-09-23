@@ -147,22 +147,23 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 
 
 	@Override
-	public int editCancel(BuyCancelVO canVO) {
-		return buyerPageMapper.updateCancel(canVO);
+	public int removeCancel(BuyCancelVO canVO) {
+		return buyerPageMapper.deleteCancel(canVO);
 	}
 
 
 	@Override
-	public int editReturn(BuyReturnVO retVO) {
-		return buyerPageMapper.updateReturn(retVO);
+	public int removeReturn(BuyReturnVO retVO) {
+		return buyerPageMapper.deleteReturn(retVO);
 	}
 
 
 	@Override
-	public int editExchange(BuyExchangeVO excVO) {
-		return buyerPageMapper.updateExchange(excVO);
+	public int removeExchange(BuyExchangeVO excVO) {
+		return buyerPageMapper.deleteExchange(excVO);
 	}
-	
+
+
 	
 	
 

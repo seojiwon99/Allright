@@ -105,16 +105,13 @@
 
                       </div>
                       <div class="col-6 col-lg-3">
-
                         <h6 class="heading-xxxs text-muted">주문번호:</h6>
-
                         <p class="mb-0 fs-sm fw-bold">
                           <span th:text="|${lists.orderCode}|"></span>
                         </p>
 						<h6 class="heading-xxxs text-muted">주문상세번호:</h6>
-
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${lists.orderDetailCode}|"></span>
+                          <span th:text="|${lists.orderDetailCode}|" id="orderDetailCode"></span>
                         </p>
                       </div>
                       <div class="col-6 col-lg-3">
@@ -242,7 +239,7 @@
 							<div class="col-6">
 
 								<!-- Button -->
-								<button class="btn btn-sm w-100 btn-outline-dark" id="updateBtn">반품 철회</button>
+								<button class="btn btn-sm w-100 btn-outline-dark" id="deleteBtn">반품 취소</button>
 
 							</div>
 						</div>
@@ -262,14 +259,13 @@
     </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-		$('#updateBtn').on('click', function(){
+		$('#deleteBtn').on('click', function(){
 			
 			let returnData = {
-					'returnCode' : $('#returnCode').text(),
-					'returnRetractdate' : $('#returnRDate').text()
+					'orderDetailCode' : $('#orderDetailCode').text(),
 			}
 			$.ajax({
-				url : '/buyer/returnUpdate',
+				url : '/buyer/deleteReturn',
 				type : 'POST',
 				contentType : 'application/json',
 				data : JSON.stringify(returnData),

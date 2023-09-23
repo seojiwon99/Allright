@@ -183,10 +183,6 @@ public class BuyerPageController {
 	}
 
 
-
-	
-
-
 	// 취소 신청 페이지
 	@GetMapping("page/buyer/cancel")
 	public String cancelForm(Model model, HttpSession session, @RequestParam int orderDetailCode) {
@@ -208,7 +204,7 @@ public class BuyerPageController {
 	// 반품 신청 페이지
 	@GetMapping("page/buyer/return")
 	public String returnForm(Model model, HttpSession session, @RequestParam int orderDetailCode) {
-
+		
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 
@@ -272,36 +268,36 @@ public class BuyerPageController {
 				: new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@PostMapping("buyer/cancelUpdate")
+	@PostMapping("buyer/deleteCancel")
 	public ResponseEntity<String> editCancel(@RequestBody BuyCancelVO canVO, HttpSession session) {
 		
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		canVO.setMemberId(memberVO.getMemberId());
 		
-		int updateCancel = buyerPageService.editCancel(canVO);
-		return updateCancel == 1 ? new ResponseEntity<String>("success", HttpStatus.OK)
+		int deleteCancel = buyerPageService.removeCancel(canVO);
+		return deleteCancel == 1 ? new ResponseEntity<String>("success", HttpStatus.OK)
 				: new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@PostMapping("buyer/returnUpdate")
+	@PostMapping("buyer/deleteReturn")
 	public ResponseEntity<String> editReturn(@RequestBody BuyReturnVO retVO, HttpSession session) {
 		
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		retVO.setMemberId(memberVO.getMemberId());
 		
-		int updateReturn = buyerPageService.editReturn(retVO);
-		return updateReturn == 1 ? new ResponseEntity<String>("success", HttpStatus.OK)
+		int deleteReturn = buyerPageService.removeReturn(retVO);
+		return deleteReturn == 1 ? new ResponseEntity<String>("success", HttpStatus.OK)
 				: new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@PostMapping("buyer/exchangeUpdate")
+	@PostMapping("buyer/deleteExchange")
 	public ResponseEntity<String> editExchange(@RequestBody BuyExchangeVO excVO, HttpSession session) {
 		
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		excVO.setMemberId(memberVO.getMemberId());
 		
-		int updateExchange = buyerPageService.editExchange(excVO);
-		return updateExchange == 1 ? new ResponseEntity<String>("success", HttpStatus.OK)
+		int deleteExchange = buyerPageService.removeExchange(excVO);
+		return deleteExchange == 1 ? new ResponseEntity<String>("success", HttpStatus.OK)
 				: new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

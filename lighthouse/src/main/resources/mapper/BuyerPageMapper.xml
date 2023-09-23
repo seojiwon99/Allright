@@ -198,15 +198,17 @@ WHERE
 		     , a.cancel_reason
 		     , a.cancel_regdate
 		     , a.cancel_retract_date
-		     , a.cancel_status
+		     , order_status_name(a.cancel_status) cancel_status
 		     , a.cancel_date
 		     , b.c_detail_reason
 		     , b.cancel_rejection_reason
 		     , c.order_cnt
 		     , c.payment_price
+		     , c.order_detail_code
 		     , d.option_code
 		     , e.product_name
              , f.member_id
+             , f.order_code
 		FROM ar_cancel a
 		LEFT join ar_cancel_reject b ON a.CANCEL_REJECTION_REASON = b.CANCEL_REJECTION_REASON
 		LEFT join ar_order_detail c ON c.order_detail_code = a.order_detail_code
@@ -214,7 +216,6 @@ WHERE
 		LEFT join ar_products e ON e.product_code = d.product_code
         LEFT JOIN ar_orders f ON c.order_code = f.order_code
         WHERE f.member_id = #{memberId}
-        AND a.cancel_retract_date IS NULL
         
 	</select>
 	
@@ -224,7 +225,7 @@ WHERE
 		     , a.return_reason
 		     , a.return_regdate
 		     , a.return_retractdate
-		     , a.return_status
+		     , order_status_name(a.return_status) return_status
 		     , b.order_detail_code
 		     , b.order_code
 		     , b.order_cnt
@@ -238,7 +239,6 @@ WHERE
 		LEFT JOIN ar_products d ON d.product_code = c.product_code
         LEFT JOIN ar_orders e ON e.order_code = b.order_code
 		WHERE e.member_id = #{memberId}
-		AND a.return_retractdate IS NULL
 	</select>
 	
 	<!-- 교환 상세 -->
@@ -247,7 +247,7 @@ WHERE
 		     , a.exchange_reason
 		     , a.exchange_regdate
 		     , a.exchange_retractdate
-		     , a.exchange_status
+		     , order_status_name(a.exchange_status) exchange_status
 		     , a.exchange_processingdate
 		     , a.exchange_addr
 		     , a.delivery_number
@@ -293,7 +293,7 @@ WHERE
 	<!-- 교환 신청 -->
 	<insert id="insertExchange" parameterType="BuyExchangeVO">
 		<selectKey resultType="String" keyProperty="exCode" order="BEFORE">
-			select ex_code from dual
+			SELECT NVL(MAX(exchange_code),0)+1 FROM ar_exchange
 		</selectKey>
 		INSERT INTO ar_exchange 
 				(EXCHANGE_CODE
@@ -332,7 +332,7 @@ WHERE
 	<!--취소 신청  -->
 	<insert id="insertCancel" parameterType="BuyCancelVO">
 		<selectKey resultType="String" keyProperty="caCode" order="BEFORE">
-			select ca_code from dual
+			SELECT NVL(MAX(cancel_code),0)+1 FROM ar_cancel
 		</selectKey>
 		INSERT INTO ar_cancel 
 				(CANCEL_CODE
@@ -369,34 +369,29 @@ WHERE
 	<!--반품 신청  -->
 	<insert id="insertReturn" parameterType="BuyReturnVO">
 		<selectKey resultType="String" keyProperty="reCode" order="BEFORE">
-			select re_code from dual
+			SELECT NVL(MAX(return_code),0)+1 FROM ar_return
 		</selectKey>
 		INSERT INTO ar_return 
 				(RETURN_CODE, ORDER_DETAIL_CODE, RETURN_REASON, RETURN_STATUS)
 		VALUES (#{reCode}, #{orderDetailCode}, #{returnReason}, 'n')
 	</insert>
-	<!-- 취소 철회 -->
-	<update id="updateCancel" parameterType="BuyCancelVO">
-		UPDATE ar_cancel 
-		SET   cancel_retract_date = SYSDATE
-			, cancel_status = 'u'
-		WHERE cancel_code = #{cancelCode}
-	</update>
 	
-	<!-- 반품 철회 -->
-	<update id="updateReturn" parameterType="BuyReturnVO">
-		UPDATE ar_return 
-		SET   return_retractdate = SYSDATE
-		    , return_status = 'u'
-		WHERE return_code =  #{returnCode}
-	</update>
+	<!-- 주문 취소 -->
+	<delete id="deleteCancel" parameterType="BuyCancelVO">
+		DELETE ar_cancel
+		WHERE order_detail_code = #{orderDetailCode}
+	</delete>
 	
-	<!-- 교환 철회 -->
-	<update id="updateExchange" parameterType="BuyExchangeVO">
-		UPDATE ar_exchange 
-		SET   exchange_retractdate = SYSDATE
-		    , exchange_status = 'u'
-		WHERE exchange_code =  #{exchangeCode}
-	</update>
+	<!-- 반품 취소 -->
+	<delete id="deleteReturn" parameterType="BuyReturnVO">
+		DELETE ar_return 
+		WHERE order_detail_code = #{orderDetailCode}
+	</delete>
+	
+	<!-- 교환 취소 -->
+	<delete id="deleteExchange" parameterType="BuyExchangeVO">
+		DELETE ar_exchange
+		WHERE order_detail_code = #{orderDetailCode}
+	</delete>
 	
   </mapper>

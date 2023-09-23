@@ -59,9 +59,10 @@ public interface BuyerPageMapper {
 	
 	public int insertCancel(BuyCancelVO canVO);
 	
-	public int updateCancel(BuyCancelVO canVO);
+	public int deleteCancel(BuyCancelVO canVO);
 	
-	public int updateReturn(BuyReturnVO retVO);
+	public int deleteReturn(BuyReturnVO retVO);
 	
-	public int updateExchange(BuyExchangeVO excVO);
+	public int deleteExchange(BuyExchangeVO excVO);
+	
 }

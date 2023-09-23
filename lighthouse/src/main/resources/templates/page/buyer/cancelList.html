@@ -84,33 +84,30 @@
 									<div class="card-body bg-light">
 										<div class="row">
 											<div class="col-6 col-lg-3">
-
-												<!-- Heading -->
 												<h6 class="heading-xxxs text-muted">취소 번호:</h6>
-
-												<!-- Text -->
 												<p class="mb-lg-0 fs-sm fw-bold">
 													<span th:text="|${lists.cancelCode}|" id="cancelCode"></span>
 												</p>
-
 											</div>
 											<div class="col-6 col-lg-3">
-
-												<!-- Heading -->
+												<h6 class="heading-xxxs text-muted">주문번호:</h6>
+												<p class="mb-0 fs-sm fw-bold">
+													<span th:text="|${lists.orderCode}|"></span>
+												</p>
+												<h6 class="heading-xxxs text-muted">주문상세번호:</h6>
+												<p class="mb-0 fs-sm fw-bold">
+													<span th:text="|${lists.orderDetailCode}|"
+														id="orderDetailCode"></span>
+												</p>
+											</div>
+											<div class="col-6 col-lg-3">
 												<h6 class="heading-xxxs text-muted">상품명:</h6>
-
-												<!-- Text -->
 												<p class="mb-0 fs-sm fw-bold">
 													<span th:text="|${lists.productName}|"></span>
 												</p>
-
 											</div>
-
 											<div class="col-6 col-lg-3">
-												<!-- Heading -->
 												<h6 class="heading-xxxs text-muted">수량:</h6>
-
-												<!-- Text -->
 												<p class="mb-0 fs-sm fw-bold">
 													<span th:text="|${lists.orderCnt}|"></span>
 												</p>
@@ -134,7 +131,8 @@
 												<!-- Text -->
 												<p class="mb-lg-0 fs-sm fw-bold">
 													<time datetime="2019-10-01">
-														<span th:text="|${#dates.format(lists.cancelRegdate, 'yyyy-MM-dd')}|"></span>
+														<span
+															th:text="|${#dates.format(lists.cancelRegdate, 'yyyy-MM-dd')}|"></span>
 													</time>
 												</p>
 
@@ -180,7 +178,8 @@
 
 												<!-- Text -->
 												<p class="mb-0 fs-sm fw-bold">
-													<span th:text="|${#dates.format(lists.cancelRetractDate, 'yyyy-MM-dd')}|"
+													<span
+														th:text="|${#dates.format(lists.cancelRetractDate, 'yyyy-MM-dd')}|"
 														id="cancelRDate"></span>
 												</p>
 
@@ -238,7 +237,7 @@
 
 														<!-- Button -->
 														<button class="btn btn-sm w-100 btn-outline-dark"
-															id="updateBtn">취소 철회</button>
+															id="deleteBtn"> 주문 취소</button>
 
 													</div>
 												</div>
@@ -259,15 +258,14 @@
 	</section>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-		$('#updateBtn').on('click', function() {
+		$('#deleteBtn').on('click', function() {
 
 			let cancelData = {
-				'cancelRetractDate' : $('#cancelRDate').text(),
-				'cancelCode' : $('#cancelCode').text()
+				'orderDetailCode' : $('#orderDetailCode').text(),
 			}
 
 			$.ajax({
-				url : '/buyer/cancelUpdate',
+				url : '/buyer/deleteCancel',
 				type : 'POST',
 				contentType : 'application/json',
 				data : JSON.stringify(cancelData),
