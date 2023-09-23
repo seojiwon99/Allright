@@ -29,8 +29,7 @@ public class ProductVO {
 	 	private String productBrand;
 	 	private String productStatus;
 	 	private String productExStatus;
-	 	private int minOrder;
-	 	private int maxOrder;
+	 	
 	 	private List<ImgsVO> productImg;
 
 	 	@DateTimeFormat(pattern="yyyy-MM-dd")

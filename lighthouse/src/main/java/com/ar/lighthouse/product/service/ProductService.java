@@ -24,9 +24,13 @@ public interface ProductService {
 	
 	// 상품등록	
 	public int addProduct(ProductVO productVO);
+	public int addOption(OptionVO optionVO);
 	
 	// 상품 이미지 등록
 	public void addProductImg(ImgsVO imgVO);
+	
+//	orderManagement
+	List<DetailVO> getOrderOptionList(DetailVO detailVO);
 	
 	//상품 단건 상세페이지
 	public ProductVO goodsDetail(ProductVO productVO);
@@ -43,8 +47,26 @@ public interface ProductService {
 //	교환건 목록
 	List<ExchangeVO> getExchangeList(ExchangeVO exchangeVO);
 	
+
+//	cancelSearch
+	List<CancelVO> getCancelSeaList(CancelVO cancelVO);
+	
+//	exchangeSearch
+	List<ExchangeVO> getExchangeSeaList(ExchangeVO exchangeVO);
+//	returnSearch
+	List<ReturnVO> getReturnSeaList(ReturnVO returnVO);
+//	주문상태수정
+	public int updateOrderStatus(DetailVO detailVO);
+	
+
 //	반품건 목록
 	List<ReturnVO> getReturnList(ReturnVO returnVO);
+	
+//	정산건 목록
+	List<SellerCalVO> getCalList(SellerCalVO sellerCalVO);
+	
+	
+	
 	
 	//  옵션 VO 리스트
 	public List<OptionVO> getOptionList(OptionVO optionVO);
