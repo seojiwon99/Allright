@@ -19,8 +19,11 @@ import com.ar.lighthouse.product.service.ReturnVO;
 @Mapper
 public interface ProductMapper {
 	
-	public List<ProductVO> selectProductList(ProductVO productVO);
-	List<ProductVO> getProductsByMemberId(String memberId);
+
+public List<ProductVO> selectProductList(ProductVO productVO);
+	
+List<ProductVO> getProductsByMemberId(String memberId);
+
 //	order by
 	public List<ProductVO> selectOptionProduct(ProductVO productVO);
 	
@@ -30,13 +33,8 @@ public interface ProductMapper {
 	
 //	등록
 	public int insertProduct(ProductVO productVO);
+	public int insertProduct(OptionVO optionVO);
 	
-	// 옵션 등록
-	public int insertOption(OptionVO optionVO);
-	
-	// 상품이미지 등록
-	public void insertProductImg(ImgsVO imgsVO);
-
 //	사진등록
 	public int insertImages(ImgsVO imgsVO);
 	
@@ -63,6 +61,10 @@ public interface ProductMapper {
 
 //  반품건 확인
 	public List<ReturnVO> selectReturnList(ReturnVO returnVO);
+
+//	정산데이터
+	public List<SellerCalVO> selectCalList(SellerCalVO sellerCalVO);
+	
 
 //  상품옵션 vo 리스트
 	public List<OptionVO> getOptionList(OptionVO optionVO);
