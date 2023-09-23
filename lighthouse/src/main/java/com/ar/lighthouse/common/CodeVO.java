@@ -1,4 +1,4 @@
-package com.ar.lighthouse.buyp.service;
+package com.ar.lighthouse.common;
 
 import lombok.Data;
 
@@ -19,9 +19,11 @@ public class CodeVO {
 	//교환
 	private String exchangeCode;
 	private String exchangeReason;
+	
 	//취소
 	private String cancelCode;
 	private String cancelReason;
+	
 	//반품
 	private String returnCode;
 	private String returnReason;

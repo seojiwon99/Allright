@@ -9,7 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ar.lighthouse.buyp.service.CodeVO;
+import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.orders.mapper.OrdersMapper;
 import com.ar.lighthouse.orders.service.CreditVO;
 import com.ar.lighthouse.orders.service.OrderPayVO;

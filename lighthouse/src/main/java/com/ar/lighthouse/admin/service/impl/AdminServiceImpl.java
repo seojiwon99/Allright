@@ -10,6 +10,7 @@ import com.ar.lighthouse.admin.service.AdminService;
 import com.ar.lighthouse.admin.service.DeclareVO;
 import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.admin.service.NoticeAdminVO;
+import com.ar.lighthouse.admin.service.ProductDetailVO;
 import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.customsvc.mapper.CustomMapper;
 import com.ar.lighthouse.customsvc.service.InquiryVO;
@@ -79,6 +80,26 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public int getTotalUserCount(MemberDetailVO memberDetailVO) {
 		return adminMapper.selectTotalUserCount(memberDetailVO);
+	}
+
+	@Override
+	public List<ProductDetailVO> getProductList(int amount, int pageNum, String memberId, String memberTel, String businessNumber, String productCode) {
+		return adminMapper.selectProductList(amount, pageNum, memberId, memberTel, businessNumber, productCode);
+	}
+
+	@Override
+	public int getTotalProductCount(ProductDetailVO productDetailVO) {
+		return adminMapper.selectTotalProductCount(productDetailVO);
+	}
+
+	@Override
+	public List<NoticeAdminVO> getAdminNoticeList(Criteria cri, NoticeAdminVO noticeAdminVO) {
+		return adminMapper.selectAdminNoticeList(cri, noticeAdminVO);
+	}
+
+	@Override
+	public int getTotalNoticeCount(NoticeAdminVO noticeAdminVO) {
+		return adminMapper.selectTotalNoticeCount(noticeAdminVO);
 	}
 
 }

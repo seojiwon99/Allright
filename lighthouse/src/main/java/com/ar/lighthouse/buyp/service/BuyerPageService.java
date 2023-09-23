@@ -2,6 +2,8 @@ package com.ar.lighthouse.buyp.service;
 
 import java.util.List;
 
+import com.ar.lighthouse.common.CodeVO;
+
 public interface BuyerPageService {
 
 	// 주문 목록 가져오기
@@ -37,7 +39,6 @@ public interface BuyerPageService {
 
 	// 교환 신청
 	public int addExchange(BuyExchangeVO excVO);
-
 
 	// 교환 코드
 	public List<CodeVO> getExchangeCode(String memberId);

@@ -25,8 +25,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ar.lighthouse.buyp.service.CodeVO;
+
 import com.ar.lighthouse.buyp.service.CouponVO;
+
+import com.ar.lighthouse.common.CodeVO;
+
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.orders.service.CreditVO;
 import com.ar.lighthouse.orders.service.OrderPayVO;
