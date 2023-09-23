@@ -55,21 +55,42 @@ public class AdminController {
 		return "page/admin/noticeForm";
 	}
 	
+	@GetMapping("admin/noticeDetail")
+	public String noticeDetail(Model model,NoticeAdminVO noticeAdminVO) {
+		model.addAttribute("noticeAdminVO", adminService.getNoticeDetail(noticeAdminVO));
+		
+		return "page/admin/noticeDetail";
+	}
+	
 	@GetMapping("admin/faqForm")
 	public String faqForm() {
 		return "page/admin/faqForm";
 	}
+	@GetMapping("admin/faqDetail")
+	public String faqDetail(Model model, FaqVO faqVO) {
+		model.addAttribute("faqVO", adminService.getFaqDetail(faqVO)); 
+		
+		return "page/admin/faqDetail";
+	}
 	
 	@PostMapping("admin/addNotice")
 	public String addNotice(NoticeAdminVO noticeAdminVO) {
-		System.out.println(noticeAdminVO);
 		adminService.addNotice(noticeAdminVO);
 		return "redirect:/admin/notice";
 	}
 	@PostMapping("admin/addFaq")
 	public String addFaq(FaqVO faqVO) {
-		System.out.println(faqVO);
 		adminService.addFaq(faqVO);
+		return "redirect:/admin/faq";
+	}
+	@PostMapping("admin/editNotice")
+	public String editNotice(NoticeAdminVO noticeAdminVO) {
+		adminService.editNotice(noticeAdminVO);
+		return "redirect:/admin/notice";
+	}
+	@PostMapping("admin/editFaq")
+	public String editFaq(FaqVO faqVO) {
+		adminService.editFaq(faqVO);
 		return "redirect:/admin/faq";
 	}
 	

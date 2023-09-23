@@ -24,6 +24,14 @@ public interface AdminMapper {
 	public int insertNotice(NoticeAdminVO noticeAdminVO);
 	//faq 등록
 	public int insertFaq(FaqVO faqVO);
+	//공지 상세
+	public NoticeAdminVO selectNoticeDetail(NoticeAdminVO noticeAdminVO);
+	//FAQ 상세
+	public FaqVO selectFaqDetail(FaqVO faqVO);
+	//공지 수정
+	public int updateNotice(NoticeAdminVO noticeAdminVO);
+	//FAQ 수정
+	public int updateFaq(FaqVO faqVO);
 	
 					/*Declare*/	
 	//신고 목록

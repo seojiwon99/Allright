@@ -6,6 +6,7 @@ import java.util.Map;
 import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.customsvc.service.FaqVO;
 import com.ar.lighthouse.customsvc.service.InquiryVO;
+import com.ar.lighthouse.customsvc.service.NoticeVO;
 
 public interface AdminService {
 	
@@ -16,6 +17,14 @@ public interface AdminService {
 	public int addNotice(NoticeAdminVO noticeAdminVO);
 	//FAQ 등록
 	public int addFaq(FaqVO faqVO);
+	//공지 상세
+	public NoticeAdminVO getNoticeDetail(NoticeAdminVO noticeAdminVO);
+	//FAQ 상세
+	public FaqVO getFaqDetail(FaqVO faqVO);
+	//공지 수정
+	public int editNotice(NoticeAdminVO noticeAdminVO);
+	//FAQ 수정
+	public int editFaq(FaqVO faqVO);
 	
 	
 	//신고 목록

@@ -51,6 +51,35 @@
 	  						)
   	</insert>
   	
+  	<select id="selectNoticeDetail">
+  		select *
+  		from ar_notice
+  		where notice_code = #{noticeCode}
+  	</select>
+  	<select id="selectFaqDetail">
+		select *
+		from ar_faq
+		where faq_code = #{faqCode}  	
+  	</select>
+  	
+  	<update id="updateNotice">
+	  	UPDATE ar_notice 
+		SET		notice_title = #{noticeTitle}
+				, notice_content = #{noticeContent}
+				, up_enddate = #{upEnddate}
+				, notice_type = #{noticeType}
+		WHERE notice_code = #{noticeCode}
+  	</update>
+  	<update id="updateFaq">
+  	  	update ar_faq
+  		set question_title = #{questionTitle}
+	  		, question_answer = #{questionAnswer}
+  			, faq_type = #{faqType}
+  		where faq_code = #{faqCode}
+  	</update>
+  	
+  	
+  	
   	<select id="selectDeclareList" resultType="DeclareVO">
 		SELECT rt.declare_code, declare_code_name(rt.declare_reason) as declare_reason, rt.declare_content, rt.member_id, rt.declare_member, rt.declare_regdate
 		FROM       (

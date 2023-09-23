@@ -42,7 +42,8 @@
                 <label class="visually-hidden" for="contactTitle">
                   Title *
                 </label>
-                <input class="form-control form-control-sm" name="questionTitle"  id="questionTitle" type="text" placeholder="제목 *" required>
+                <input type="hidden" name="faqCode" id="faqCode" th:value="${faqVO.faqCode}">
+                <input class="form-control form-control-sm" name="questionTitle"  th:value="${faqVO.questionTitle}" id="questionTitle" type="text" placeholder="제목 *" required>
               </div>
 
               <!-- Email -->
@@ -50,12 +51,12 @@
                 <label class="visually-hidden" for="contactMessage">
                   Message *
                 </label>
-                <textarea class="form-control form-control-sm" name="questionAnswer"   id="questionAnswer" rows="10" placeholder="내용 *" required></textarea>
+                <textarea class="form-control form-control-sm" name="questionAnswer"   th:text="${faqVO.questionAnswer}"  id="questionAnswer" rows="10" placeholder="내용 *" required></textarea>
               </div>
 			<div style="display: flex;  justify-content: flex-end;">
               <!-- Button -->
               <button class="btn btn-sm btn-info " id="faqBtn">
-                등록
+                수정
               </button>
 			</div>
             </form>
@@ -64,16 +65,16 @@
 					
 					
 				
-      <script>
+      <script th:inline="javascript">
       //   <input class="form-control form-control-sm w-25" id="contactName" type="date" required>
-
-      
+	 $('#selectCode').val([[${faqVO.faqType}]])
+      	
       $('#faqBtn').on('click', function(e){
     	  e.preventDefault();
     	  let obj = {};
     	  
     	  $('#faqForm').attr('method', 'POST');
-    	  $('#faqForm').attr('action', 'addFaq');
+    	  $('#faqForm').attr('action', 'editFaq');
     	  let selected = $('#selectCode option:selected').val();
     	  let tagStr = '<input type="hidden" name="faqType" id="faqType" value="'+ selected +'"/>'
     	  let hiddenType = $(tagStr)

@@ -13,7 +13,7 @@
 											    margin-top:30px;">
 						<!-- Form -->
 						<div>
-						<h3 class="fst-normal">공지사항 등록</h2>
+						<h3 class="fst-normal">공지사항</h3>
 						</div>
 	
 					</div>
@@ -36,8 +36,8 @@
 				<option value="noLimit">무기한</option>
 				<option value="no">고정 없음</option>
 			</select>	
-			
-                <input class="form-control form-control-sm w-25" name="upEnddate" id="upEnddate" type="date" required>
+				<input type="hidden" th:value="${noticeAdminVO.noticeCode}" id="noticeCode" name="noticeCode">
+                <input class="form-control form-control-sm w-25" name="upEnddate" id="upEnddate" type="date"  th:value="${#dates.format(noticeAdminVO.upEnddate,'yyyy-MM-dd')}" required>
                 
               </div>
 
@@ -46,7 +46,7 @@
                 <label class="visually-hidden" for="contactTitle">
                   Title *
                 </label>
-                <input class="form-control form-control-sm" name="noticeTitle"  id="noticeTitle" type="text" placeholder="제목 *" required>
+                <input class="form-control form-control-sm" name="noticeTitle"  th:value="${noticeAdminVO.noticeTitle}" id="noticeTitle" type="text" placeholder="제목 *" required>
               </div>
 
               <!-- Email -->
@@ -54,13 +54,13 @@
                 <label class="visually-hidden" for="contactMessage">
                   Message *
                 </label>
-                <textarea class="form-control form-control-sm" name="noticeContent"   id="noticeContent" rows="10" placeholder="내용 *" required></textarea>
+                <textarea class="form-control form-control-sm" name="noticeContent"   th:text="${noticeAdminVO.noticeContent}"  id="noticeContent" rows="10" placeholder="내용 *" required></textarea>
               </div>
 			<div style="display: flex;
     justify-content: flex-end;">
               <!-- Button -->
-              <button class="btn btn-sm btn-info" id="noticeBtn">
-                등록
+              <button class="btn btn-sm btn-info " id="noticeBtn">
+                수정
               </button>
 			</div>
             </form>
@@ -86,7 +86,7 @@
     	  let obj = {};
     	  
     	  $('#noticeForm').attr('method', 'POST');
-    	  $('#noticeForm').attr('action', 'addNotice');
+    	  $('#noticeForm').attr('action', 'editNotice');
     	  let selected = $('#selectDate option:selected').val();
     	  if(selected == 'date'){
     		  if($('#noticeDate').val() == ''){

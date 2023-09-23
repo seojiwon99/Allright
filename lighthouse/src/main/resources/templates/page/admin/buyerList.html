@@ -18,6 +18,11 @@
 			<form class="navbar-form w-100" style="max-width: 550px; ">
 				<div class="input-group">
 				<!-- Input -->
+				<select id="searchSelect" class="select" style="margin-right: 1px">
+					<option value="memberId">ID</option>
+					<option value="memberName">이름</option>
+					<option value="memberTel">전화번호</option>
+				</select>
 				<input class="form-control form-control-underline form-control-sm border-dark" type="search" placeholder="검색" id="memSearchBar">
 				<!-- Button -->
 				    <div class="input-group-append">
@@ -87,7 +92,8 @@
 						<ul class="pagination pagination-sm text-gray-400">
 							<li class="page-item" th:if="${pageMaker.prev}"><a
 								class="page-link page-link-arrow"
-								th:href="@{/admin/buyerList/(pageNum = ${pageMaker.startPage - 1}, ,declareContent=${param.declareContent}, declareReason=${param.declareReason})}">
+								th:href="@{/admin/buyerList/(pageNum = ${pageMaker.endPage - 1}, memberTel=${param.memberTel}, memberId=${param.memberId}
+								,memberName=${param.memberName},businessNumber=${param.businessNumber} )}">
 									<i class="fa fa-caret-left"></i>
 							</a></li>
 							<th:block
@@ -97,14 +103,16 @@
 									th:each="pageButtom : ${#numbers.sequence(start,end)}"
 									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
 									<a class="page-link" href="#"
-									th:href="@{/admin/buyerList/(pageNum= ${pageButtom},declareContent=${param.declareContent}, declareReason=${param.declareReason} )}"
+									th:href="@{/admin/buyerList/(pageNum= ${pageButtom}, memberTel=${param.memberTel}, memberId=${param.memberId}
+								,memberName=${param.memberName},businessNumber=${param.businessNumber} )}"
 									th:text="${pageButtom}" style="font-size : x-large;"></a>
 								</li>
 							</th:block>
 
 							<li class="page-item" th:if="${pageMaker.next}"><a
 								class="page-link page-link-arrow"
-								th:href="@{/admin/buyerList/(pageNum = ${pageMaker.endPage + 1},declareContent=${param.declareContent}, declareReason=${param.declareReason})}">
+								th:href="@{/admin/buyerList/(pageNum = ${pageMaker.endPage + 1}, memberTel=${param.memberTel}, memberId=${param.memberId}
+								,memberName=${param.memberName},businessNumber=${param.businessNumber} )}">
 									<i class="fa fa-caret-right"></i>
 							</a></li>
 						</ul>
@@ -113,7 +121,15 @@
 	</div><!-- container -->
 	<script>
 	$('#memSearchBtn').on('click', function(){
-		let url = "?customInquiryTitle=" + $('#memSearchBar').val()
+		let url;
+		if( $('#searchSelect').val() == "memberId"){
+			url = "?memberId=" + $('#memSearchBar').val();
+		}else if( $('#searchSelect').val() == "memberName"){
+			url = "?memberName=" + $('#memSearchBar').val();
+		}else if( $('#searchSelect').val() == "memberTel"){
+			url = "?memberTel=" + $('#memSearchBar').val();
+		}
+		//let url = "?customInquiryTitle=" + $('#memSearchBar').val()
 		location.href =  url;
 	})
 

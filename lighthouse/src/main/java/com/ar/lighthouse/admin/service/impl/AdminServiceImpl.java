@@ -33,6 +33,26 @@ public class AdminServiceImpl implements AdminService{
 	public int addNotice(NoticeAdminVO noticeAdminVO) {
 		return adminMapper.insertNotice(noticeAdminVO); 
 	}
+	
+	@Override
+	public NoticeAdminVO getNoticeDetail(NoticeAdminVO noticeAdminVO) {
+		return adminMapper.selectNoticeDetail(noticeAdminVO);
+	}
+
+	@Override
+	public FaqVO getFaqDetail(FaqVO faqVO) {
+		return adminMapper.selectFaqDetail(faqVO);
+	}
+	@Override
+	public int editNotice(NoticeAdminVO noticeAdminVO) {
+		return adminMapper.updateNotice(noticeAdminVO);
+	}
+
+	@Override
+	public int editFaq(FaqVO faqVO) {
+		return adminMapper.updateFaq(faqVO);
+	}
+
 
 	@Override
 	public List<DeclareVO> getDeclareList(int amount, int pageNum, String declareContent, String declareReason) {
@@ -158,5 +178,8 @@ public class AdminServiceImpl implements AdminService{
 	public int editSuspendStatus(String memberId) {
 		return adminMapper.updateSuspendStatus(memberId);
 	}
+
+
+
 
 }
