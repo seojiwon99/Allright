@@ -18060,7 +18060,6 @@ fieldset:disabled .btn {
 }
 
 .btn:not([href]):not(button):not(label) {
-    pointer-events: none
 }
 
 .btn:not([href]):not(button):not(label)>a {
