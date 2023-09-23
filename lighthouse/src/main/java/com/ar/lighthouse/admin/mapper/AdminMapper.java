@@ -1,6 +1,7 @@
 package com.ar.lighthouse.admin.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -9,6 +10,8 @@ import com.ar.lighthouse.admin.service.DeclareVO;
 import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.admin.service.NoticeAdminVO;
 import com.ar.lighthouse.admin.service.ProductDetailVO;
+import com.ar.lighthouse.admin.service.SuspendReasonVO;
+import com.ar.lighthouse.admin.service.SuspendVO;
 import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.customsvc.service.FaqVO;
 import com.ar.lighthouse.customsvc.service.InquiryVO;
@@ -33,8 +36,18 @@ public interface AdminMapper {
 			, @Param("declareContent") String declareContent, @Param("declareReason") String declareReason);
 	//처리된 신고 개수
 	public int selectTotalClearDeclareCount(DeclareVO declareVO);
-	
+	//신고 상세보기
 	public DeclareVO selectDeclareDetail(DeclareVO declareVO);
+	//신고 처리, 정지하기
+	public int updateSuspendUser(String suspStatus);
+	//정지 사유 목록
+	public List<SuspendReasonVO> selectSuspReason(); //보류
+	//정지 등록
+	public int insertSuspend(SuspendVO suspendVO);
+	//정지 후 신고 완료 처리
+	public int updateDeclareStatus(SuspendVO suspendVO);
+
+	
 	
 					/*Inquiry*/
 	//문의 개수
@@ -43,6 +56,10 @@ public interface AdminMapper {
 	public int selectTotalClearInquiryCount(InquiryVO inquiryVO);
 	//처리된 문의 개수
 	public List<InquiryVO> selectClearInquiryList(@Param("amount") int amount,  @Param("pageNum") int pageNum,@Param("customInquiryTitle")  String customInquiryTitle);
+	//문의 상세보기
+	public InquiryVO selectInquiryDetail(InquiryVO inquiryVO);
+	//문의 등록
+	public int updateCustomInquiry(InquiryVO inquiryVO);
 	
 					/*User*/
 	//구매자 
@@ -52,6 +69,11 @@ public interface AdminMapper {
 	
 	//유저 수
 	public int selectTotalUserCount(MemberDetailVO memberDetailVO);
+	
+	//유저 페이지에서 정지
+	public int insertSuspendByAdmin(SuspendVO suspendVO);
+	//정지 유저 해제
+	public int updateSuspendStatus(String memberId);
 	
 	
 					/*Product*/

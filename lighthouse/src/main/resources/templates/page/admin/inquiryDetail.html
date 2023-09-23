@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_layout2}">
+<style>
+table {
+	border : 1px;
+}
+</style>
+
+<!-- Content -->
+<div layout:fragment="content" class="col">
+        		<!-- main 영역 -->
+        			<div class="container" style="margin-left: 0px">
+        			<div class="row justify-content-center">
+        			
+					<div class="col" style="    display: flex;
+											    justify-content: space-between;
+											    margin-bottom: 30px;
+											    margin-top:30px;">
+						<!-- Form -->
+						<div>
+						<h2>문의 상세</h2>
+						</div>
+					</div><!--  col -->
+            <form id="faqForm">
+
+              <!-- Email -->
+              <div class="form-group mb-7">
+              
+              <div style="display:flex; justify-content: space-between;">
+              		<div>
+		                <label class="visually">
+		                 No. [[${inquiryDetail.customInquiryCode}]]
+		                </label>
+              		</div>
+              		<div>
+		                <label th:text="${#dates.format(inquiryDetail.customInquiryRegdate,'yyyy-MM-dd')}">
+		                </label>
+              		</div>
+              </div>
+                <textarea class="form-control form-control-sm" name="inquiryTitle"   id="inquiryTitle" rows="1" th:text="|제목 : ${inquiryDetail.customInquiryTitle}|" readonly ></textarea>
+              </div>
+            
+              
+              <div class="form-group mb-7">
+  
+               <div style="display:flex; justify-content: space-between;">
+              		<div>
+		                <label class="visually">
+		                 USER : [[${inquiryDetail.memberId}]]
+		                </label>
+              		</div>
+
+              </div>
+                <textarea class="form-control form-control-sm" name="inquiryContent"   id="inquiryContent" rows="5" th:text="|내용 : ${inquiryDetail.customInquiryContent}|" readonly></textarea>
+              </div>
+
+              <textarea class="form-control form-control-sm w-100" placeholder="답변을 입력해주세요."
+               th:text="${inquiryDetail.customInquiryAnswer}" th:if="${inquiryDetail.customInquiryAnswer} != null"
+               id="inqAnswer" rows="5" style="margin-bottom: 15px"></textarea>
+               <textarea class="form-control form-control-sm w-100" placeholder="답변을 입력해주세요."
+               th:if="${inquiryDetail.customInquiryAnswer} == null"
+               id="inqAnswer" rows="5" style="margin-bottom: 15px"></textarea>
+              <div style="display: flex;  justify-content: center;">
+              </div>
+			<div style="display: flex;  justify-content: center;">
+              <!-- Button -->
+              <button class="btn btn-xs btn-outline-primary btn-underline mb-1" type="button" id="cancel" style="margin:10px">취소</button>
+              <button class="btn btn-xs btn-outline-primary btn-underline mb-1" type="button" id="inqBtn" style="margin:10px">저장하기</button>
+			</div>
+            </form>		
+					</div><!-- row justify -->
+					</div><!-- container -->
+					
+<script th:inline="javascript">
+	$('#noticeBtn').on('click', function(){
+		location.href = "/admin/noticeForm";
+	})
+	$('#calcel').on('click', function(){
+		location.href = "/admin/inquiryList";
+	})
+	$('#inqBtn').on('click', function(){
+		let customInquiryAnswer = $('#inqAnswer').val();
+		let customInquiryCode = [[${inquiryDetail.customInquiryCode}]];
+		
+		$.ajax({
+			url : "updateCustomInquiry",
+			type : "POST",
+			data : JSON.stringify({
+				customInquiryAnswer : customInquiryAnswer,
+				customInquiryCode : customInquiryCode
+			}),
+			contentType : 'application/json',
+			success : function(rs){
+				console.log(rs);
+				location.href="clearInquiryList"
+			},
+			error : function(err){
+				console.log(err);
+			}
+			
+		})	
+	})
+	
+	
+	
+</script>      
+</div>
+</html>

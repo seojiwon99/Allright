@@ -23,6 +23,7 @@ public class DeclareVO {
  	//디테일에 쓰임.
  	int declareCount;
  	String reviewContent;
+ 	int memberAuthor; // 피신고자 권한.
  	
 	
 }

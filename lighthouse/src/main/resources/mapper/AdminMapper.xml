@@ -90,12 +90,53 @@
   			, r.review_content
   			, d.declare_content
   			, d.member_id
+  			,(select member_author from ar_member where member_id = d.member_id) as member_author
   			, d.declare_member
   			, r.product_code
   			, (select count(*) from ar_declare where member_id = d.member_id) as declare_count
 	from ar_declare d JOIN ar_review r ON d.review_code = r.review_code
 	where d.declare_code = #{declareCode}
   	</select>
+  	
+  	<select id="selectSuspReason">
+  		select *
+  		from ar_code 
+  		where master_code = 'member_suspend_reason' 
+  		order by code_id
+  	</select>
+  	<insert id="insertSuspend">
+  		<selectKey resultType="int" keyProperty="suspendCode" order="BEFORE">
+	  		SELECT NVL(MAX(suspend_code),1)+1 FROM ar_suspend
+	  	</selectKey>
+  	
+  	insert into ar_suspend(	suspend_code
+  							, declare_type
+  							, declare_code
+  							, member_id
+  							, susp_reason
+  							, susp_regdate
+  							, susp_enddate
+  							, susp_status)
+				values 	  ( #{suspendCode}
+							,#{declareType}
+							,#{declareCode}
+							,#{memberId}
+							,#{suspReason}
+							,sysdate
+							, sysdate + #{suspDate}
+							, #{suspStatus}
+							)
+  	</insert>
+  	
+  	
+  	<update id="updateDeclareStatus">
+	  	update ar_declare
+		set declare_status = 'Y',
+		suspend_status = #{suspStatus}
+		where review_code = (select review_code
+		                                     from ar_declare
+		                                    where declare_code = #{declareCode})
+  	</update>
   	
   	<!-- ClearDeclare -->
   	
@@ -156,18 +197,24 @@
   	
   	</select>
   	
+  	<select id="selectInquiryDetail">
+  	 	SELECT *
+  	 	FROM ar_custom_inquiry
+  	 	WHERE custom_inquiry_code = #{customInquiryCode}
+  	</select>
+  	
   	
   	<select id="selectTotalClearInquiryCount">
 		  	select count(*)
 			from ar_custom_inquiry
 			where 1=1
-			<if test="customInquiryAnswerStatus == 'Y'">
-			AND customInquiryAnswerStatus = 'Y'
+			<if test='customInquiryAnswerStatus.equals("Y")'>
+			AND custom_inquiry_answer_status = 'Y'
 			</if>
-			<if test="customInquiryAnswerStatus == 'N'">
-			AND customInquiryAnswerStatus = 'N'
+			<if test='customInquiryAnswerStatus.equals("N")'>
+			AND custom_inquiry_answer_status = 'N'
 			</if>
-			<if test="customInquiryTitle != null and !(customInquiryTitle.equals('')) ">
+			<if test='customInquiryTitle != null and !(customInquiryTitle.equals("")) '>
 			AND custom_inquiry_title LIKE '%' || #{customInquiryTitle} || '%'
 			</if>
   	</select>
@@ -179,7 +226,7 @@
 			                FROM   (SELECT *
 			                        FROM AR_CUSTOM_INQUIRY
 			                        where CUSTOM_INQUIRY_ANSWER_STATUS = 'Y'
-                        			<if test="customInquiryTitle != null and !(customInquiryTitle.equals('')) ">
+                        			<if test='customInquiryTitle != null and !(customInquiryTitle.equals("")) '>
 									AND custom_inquiry_title LIKE '%' || #{customInquiryTitle} || '%'
 									</if>
 			                        order by CUSTOM_INQUIRY_REGDATE DESC, CUSTOM_INQUIRY_CODE desc) aci
@@ -188,6 +235,14 @@
 			                ]]>
 			WHERE rt.r  > ( #{pageNum} - 1 ) * #{amount}
   	</select>
+  	
+  	<update id="updateCustomInquiry">
+  		UPDATE ar_custom_inquiry
+  		SET CUSTOM_INQUIRY_ANSWER = #{customInquiryAnswer},
+  		CUSTOM_INQUIRY_ANSWER_STATUS = 	'Y'
+  		WHERE custom_inquiry_code = #{customInquiryCode} 
+  	</update>
+  	
   	
   	<select id="selectMemberList" resultType="MemberDetailVO">
   		SELECT rt.*, d_count(rt.member_id) as declare_count, NVL(recent_susp_name(rt.member_id),'사용 가능') as susp_status
@@ -220,6 +275,36 @@
 		                   ]]>
 		WHERE rt.r  > (#{pageNum} - 1 ) * #{amount}
   	</select>
+  	
+  	<insert id="insertSuspendByAdmin">
+  	
+  	<selectKey keyProperty="suspendCode" order="BEFORE" resultType="int">
+  		SELECT  NVL(MAX(suspend_code),0)+1 FROM ar_suspend
+  	</selectKey>
+  	 INSERT INTO ar_suspend 	(
+  	 							suspend_code
+  	 							,member_id,
+  	 							susp_reason
+  	 							,susp_regdate
+  	 							,susp_enddate
+  	 							,susp_status)
+  	 				VALUES 		(
+  	 							#{suspendCode}
+  	 							,#{memberId}
+  	 							,#{suspReason}
+  	 							, sysdate
+  	 							, sysdate + #{suspDate}
+  	 							, #{suspStatus}
+  	 							)
+  	</insert>
+  	
+  	<update id="updateSuspendStatus" parameterType="String">
+  		update ar_suspend
+      	set susp_status = 0
+      	WHERE member_id = #{memberId} 
+      	AND susp_enddate > sysdate
+  	</update>
+  	
   	
   	<select id="selectTotalUserCount" resultType="int">
 	  	select count(*)

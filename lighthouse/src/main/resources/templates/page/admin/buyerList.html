@@ -64,9 +64,21 @@
 						<td th:text="${mem.memberTel}"></td>
 						<td th:text="${mem.memberEmail}"></td>
 						<td th:text="${mem.suspStatus}"></td>
-						<td>체크박스</td>
-						<td>드롭</td>
-						<td>저장</td>
+						<td>
+						<input type="radio" name="suspDay" value="101">/	
+						<input type="radio" name="suspDay" value="102">/
+						<input type="radio" name="suspDay" value="103">/
+						<input type="radio" name="suspDay" value="0">
+						</td>
+						<td>
+						<select id="suspReasonSelect" style="width:55px">
+							<option th:each="reason : ${suspReason}" th:value="${reason.codeId}">[[${reason.codeName}]]</option>
+						</select>
+						
+						</td>
+						<td>
+						<button class="btn btn-xxs btn-primary saveBtn" type="button" name="saveBtn">저장</button>
+						</td>
 				</tr>
 			  </tbody>
 			</table>
@@ -104,6 +116,54 @@
 		let url = "?customInquiryTitle=" + $('#memSearchBar').val()
 		location.href =  url;
 	})
+
+	$('.saveBtn').on('click', function(e){
+		
+		let thisTr = $(this).parent().parent();
+		console.log(thisTr.children())
+		let memberId = thisTr.children()[0].innerText;
+		console.log(memberId);
+		
+		
+ 		let suspStatus;
+		let inputTag = thisTr.children()[6].children;
+		for(let i of inputTag){
+			if($(i).prop('checked') == true){
+				suspStatus = $(i).val();
+			}
+		}
+		console.log(suspStatus);
+		
+		let suspReason;
+		let selectTag = thisTr.children()[7].children[0];
+		suspReason = $(selectTag).val();
+		console.log(suspReason);
+		
+		
+		let obj = {
+			memberId : 	memberId,
+			suspStatus : suspStatus,
+			suspReason : suspReason
+		};
+		
+		console.log(obj);
+		$.ajax({
+			url : "suspendByAdmin",
+			type : "POST",
+			data : JSON.stringify(obj),
+			contentType : 'application/json',
+			success : function(rs){
+				console.log(rs);
+			},
+			error : function(err){
+				console.log(err);
+			}
+		})
+		
+	})
+	
+	
+
 	</script>
 </div>
 </html>

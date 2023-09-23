@@ -5,13 +5,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ar.lighthouse.admin.service.AdminService;
 import com.ar.lighthouse.admin.service.DeclareVO;
 import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.admin.service.NoticeAdminVO;
 import com.ar.lighthouse.admin.service.ProductDetailVO;
+import com.ar.lighthouse.admin.service.SuspendVO;
 import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.common.PageDTO;
 import com.ar.lighthouse.customsvc.service.CustomService;
@@ -95,10 +98,40 @@ public class AdminController {
 		return "page/admin/declareDetail";
 	}
 	
+	@PostMapping("admin/suspendUser")
+	@ResponseBody
+	public String editSuspendUser(@RequestBody SuspendVO suspendVO) {
+		if(suspendVO.getSuspStatus()%100 == 1) {
+			suspendVO.setSuspDate(30);
+		}else if(suspendVO.getSuspStatus()%100 == 2){
+			suspendVO.setSuspDate(90);
+		}else if(suspendVO.getSuspStatus()%100 == 3) {
+			suspendVO.setSuspDate(9000);
+		}
+		
+		if(adminService.addSuspend(suspendVO)>0) {
+			adminService.editDeclareStatus(suspendVO);
+		};
+		
+		return "success";
+	}
+	
+	@GetMapping("admin/inquiryDetail")
+	public String inquiryDetail(Model model, InquiryVO inquiryVO) {
+		model.addAttribute("inquiryDetail", adminService.getInquiryDetail(inquiryVO));
+		return "page/admin/inquiryDetail";
+	}
+	
+	
+	
+	
 	
 	
 	@GetMapping("admin/inquiryList")
 	public String inquiryList(Criteria cri,Model model, InquiryVO inquiryVO) {
+		String status = "N";
+		inquiryVO.setCustomInquiryAnswerStatus(status);
+		System.out.println(inquiryVO);
 		int totalCnt = adminService.getTotalInquiryCount(inquiryVO);
 		model.addAttribute("inqList", adminService.getInquiryList(cri.getAmount(), cri.getPageNum(), inquiryVO.getCustomInquiryTitle()));
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
@@ -106,10 +139,19 @@ public class AdminController {
 	}
 	@GetMapping("admin/clearInquiryList")
 	public String ClearInquiryList(Criteria cri, Model model, InquiryVO inquiryVO) {
+		String status = "Y"; 
+		inquiryVO.setCustomInquiryAnswerStatus(status);
+		System.out.println(inquiryVO);
 		int totalCnt = adminService.getTotalInquiryCount(inquiryVO);
 		model.addAttribute("inqList", adminService.getClearInquiryList(cri.getAmount(), cri.getPageNum(), inquiryVO.getCustomInquiryTitle()));
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		return "page/admin/clearInquiryList";
+	}
+	@PostMapping("admin/updateCustomInquiry")
+	@ResponseBody
+	public String updateCustomInquiry(@RequestBody InquiryVO inquiryVO) {
+		adminService.editCustomInquiry(inquiryVO);
+		return "success";
 	}
 	
 	
@@ -123,7 +165,7 @@ public class AdminController {
 				, memberDetailVO.getMemberName(), memberDetailVO.getMemberTel()
 				, memberDetailVO.getBusinessNumber(), memberDetailVO.getMemberAuthor())) ;
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
-		
+		model.addAttribute("suspReason", adminService.getSuspReason());
 		
 		return "page/admin/buyerList";
 	}
@@ -137,10 +179,30 @@ public class AdminController {
 				, memberDetailVO.getMemberName(), memberDetailVO.getMemberTel()
 				, memberDetailVO.getBusinessNumber(), memberDetailVO.getMemberAuthor())) ;
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
-		
+		model.addAttribute("suspReason", adminService.getSuspReason());
 		
 		return "page/admin/sellerList";
 	}
+	@PostMapping("admin/suspendByAdmin")
+	@ResponseBody
+	public String addSuspendByAdmin(@RequestBody SuspendVO suspendVO) {
+		if(suspendVO.getSuspStatus() == 0) {
+			//수정
+			adminService.editSuspendStatus(suspendVO.getMemberId());
+		}else {
+			//등록
+			if(suspendVO.getSuspStatus()%100 == 1) {
+				suspendVO.setSuspDate(30);
+			}else if(suspendVO.getSuspStatus()%100 == 2){
+				suspendVO.setSuspDate(90);
+			}else if(suspendVO.getSuspStatus()%100 == 3) {
+				suspendVO.setSuspDate(9000);
+			}
+			adminService.addSuspendByAdmin(suspendVO);
+		}
+		return "success";
+	}
+	
 	@GetMapping("admin/allProductList")
 	public String allProductList(Criteria cri, Model model, ProductDetailVO productDetailVO) {
 		int totalCnt = adminService.getTotalProductCount(productDetailVO);

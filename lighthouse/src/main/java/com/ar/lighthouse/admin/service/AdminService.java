@@ -1,6 +1,7 @@
 package com.ar.lighthouse.admin.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.customsvc.service.FaqVO;
@@ -28,6 +29,18 @@ public interface AdminService {
 	//신고 디테일
 	public DeclareVO getDeclareDetail(DeclareVO declareVO);
 	
+	public int editSuspendUser(String suspStatus); 
+	
+	//정지 사유 목록
+	public List<SuspendReasonVO> getSuspReason();//보류
+	//정지 등록
+	public int addSuspend(SuspendVO suspendVO);
+	//정지 후 신고 완료 처리
+	public int editDeclareStatus(SuspendVO suspendVO);
+	//회원페이지에서 정지
+	public int addSuspendByAdmin(SuspendVO suspendVO);
+	//정지 해제
+	public int editSuspendStatus(String memberId);
 	
 	
 	//문의 목록
@@ -36,7 +49,10 @@ public interface AdminService {
 	public int getTotalInquiryCount(InquiryVO inquiryVO);
 	//처리된 문의 목록
 	public List<InquiryVO> getClearInquiryList(int amount, int pageNum, String customInquiryTitle);
-	
+	//문의 상세보기
+	public InquiryVO getInquiryDetail(InquiryVO inquiryVO);
+	//문의 답변 등록
+	public int editCustomInquiry(InquiryVO inquiryVO);
 	
 	
 	//구매자 리스트

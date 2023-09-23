@@ -71,7 +71,9 @@ table {
               </div>
                 <textarea class="form-control form-control-sm" name="questionAnswer"   id="questionAnswer" rows="10" th:text="${declareDetail.declareContent}" readonly></textarea>
               </div>
+              <input class="form-control form-control-sm w-100" type="text" placeholder="상세 사유를 입력해주세요." id="suspReason" style="margin-bottom: 15px">
               <div style="display: flex;  justify-content: center;">
+              
               <input name="suspStatus" type="radio" id="status" value="1"><label>: 30일&nbsp&nbsp&nbsp</label>
               <input name="suspStatus" type="radio" id="status" value="2"><label>: 90일&nbsp&nbsp&nbsp</label>
               <input name="suspStatus" type="radio" id="status" value="3"><label>: 영구&nbsp&nbsp&nbsp</label>
@@ -86,7 +88,7 @@ table {
 					</div><!-- row justify -->
 					</div><!-- container -->
 					
-<script>
+<script th:inline="javascript">
 	$('#noticeBtn').on('click', function(){
 		location.href = "/admin/noticeForm";
 	})
@@ -95,11 +97,48 @@ table {
 	})
 	$('#suspBtn').on('click', function(){
 		let radios = document.getElementsByName("suspStatus");
-		let chk = $('input[name="suspStatus"]:checked');
+		let chk = $('input[name="suspStatus"]:checked').val();
+		
 		//판매자인지 구매자인지 memberId로 권한 가져올 것
-		console.log(chk);
-		//location.href = "/admin/suspendUser?"
+		console.log();
+		let author = [[${declareDetail.memberAuthor}]];
+		let suspStatus= "";
+		if(chk == undefined){
+			alert("정지 ")
+		}
+		
+		if(author== 1 || author==3){
+			suspStatus = "10"+chk
+		}else if(author==2){
+			suspStatus = "20"+chk
+		}
+		let obj = {
+				//suspendCode : 자동
+				declareType : "1",
+				declareCode : [[${declareDetail.declareCode}]],
+				memberId : [[${declareDetail.memberId}]],
+				suspReason : $('#suspReason').val(),
+				//suspRegdate : 자동 
+				//suspEnddate : "",
+				suspStatus : suspStatus
+		}
+		console.log(obj);
+		$.ajax({
+			url : "suspendUser",
+			type : "POST",
+			data : JSON.stringify(obj),
+			contentType : 'application/json',
+			success : function(rs){
+				console.log(rs)
+			},
+			error : function(err){
+				console.log(err)
+			}
+		})
 	})
+	
+	
+	
 </script>      
 </div>
 </html>
