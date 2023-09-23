@@ -4,28 +4,26 @@ package com.ar.lighthouse.buyp.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.ar.lighthouse.buyp.mapper.BuyerPageMapper;
-import com.ar.lighthouse.buyp.service.BuyCancelVO;
-import com.ar.lighthouse.buyp.service.BuyExchangeVO;
 import com.ar.lighthouse.buyp.service.BuyInfoVO;
-import com.ar.lighthouse.buyp.service.BuyReturnVO;
 import com.ar.lighthouse.buyp.service.BuyerPageService;
 
-
 import com.ar.lighthouse.buyp.service.BuyCancelVO;
-
 import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.buyp.service.BuyExchangeVO;
 import com.ar.lighthouse.buyp.service.MyInquiryVO;
+import com.ar.lighthouse.buyp.service.BuyReturnVO;
+
 import com.ar.lighthouse.buyp.service.TradeVO;
 import com.ar.lighthouse.buyp.service.WishVO;
-
 import com.ar.lighthouse.common.CodeVO;
 
 import co.elastic.clients.elasticsearch.ml.Page;
-
 @Service
 public class BuyerPageServiceImpl implements BuyerPageService {
 	
@@ -52,8 +50,8 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 
 
 	@Override
-	public int editInfo(BuyInfoVO buyInfoVO, String memberId) {
-		return buyerPageMapper.updateInfo(buyInfoVO, memberId);
+	public int editInfo(BuyInfoVO buyInfoVO) {
+		return buyerPageMapper.updateInfo(buyInfoVO);
 	}
 
 
@@ -77,14 +75,12 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 
 	@Override
 	public List<BuyCancelVO> getCancelList(String memberId) {
-
 		return buyerPageMapper.selectCancelList(memberId);
 	}
 
 
 	@Override
 	public List<BuyReturnVO> getReturnList(String memberId) {
-
 
 		return buyerPageMapper.selectReturnList(memberId);
 	}
@@ -144,7 +140,28 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	}
 
 
+	@Override
+	public int addReturn(BuyReturnVO retVO) {
+		return buyerPageMapper.insertReturn(retVO);
+	}
 
+
+	@Override
+	public int editCancel(BuyCancelVO canVO) {
+		return buyerPageMapper.updateCancel(canVO);
+	}
+
+
+	@Override
+	public int editReturn(BuyReturnVO retVO) {
+		return buyerPageMapper.updateReturn(retVO);
+	}
+
+
+	@Override
+	public int editExchange(BuyExchangeVO excVO) {
+		return buyerPageMapper.updateExchange(excVO);
+	}
 	
 	
 	
