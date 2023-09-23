@@ -44,9 +44,12 @@
 			FROM ar_review r left outer join ar_imgs i
 			ON r.review_code = i.review_code
 			WHERE r.product_code = #{productCode}
-			ORDER BY r.review_code
+			ORDER BY r.review_regdate DESC
   	</select>
   	
+  	<select id="countReview" parameterType="ReviewVO" resultType="int">
+  		SELECT count(*) as reviewCount FROM ar_review where product_code = #{productCode}
+  	</select>
   	
   	<insert id="insertReview" parameterType="ReviewVO">
   	<selectKey resultType="int" keyProperty="reviewCode" order="BEFORE">
@@ -97,8 +100,18 @@
     	   )
   	</insert>
   	
+  	<!-- 수정 -->
+  	<update id="updateReview">
+  	
+	update ar_review set 
+	       review_content = #{reviewContent}
+	  	  ,review_star = #{reviewStar}
+	 where review_code=#{reviewCode}
+	        
+  	</update>
+  	
   	<delete id="deleteReview">
-  		DELETE FROM ar_review WHERE member_id = #{memberId}
+  		DELETE FROM ar_review WHERE review_code = #{reviewCode}
   	</delete>
   	
   </mapper>

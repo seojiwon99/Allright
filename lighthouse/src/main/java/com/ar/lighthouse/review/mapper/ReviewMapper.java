@@ -14,6 +14,7 @@ public interface ReviewMapper {
 	public List<ReviewVO> selectReviewList(ReviewVO reviewVO);
 	
 	//리뷰 수
+	public List<ReviewVO> countReview(ReviewVO reviewVO);
 	
 	//리뷰등록
 	public void insertReview(ReviewVO reviewVO);
@@ -21,7 +22,10 @@ public interface ReviewMapper {
 	//리뷰 이미지등록
 	public void insertReviewImg(ImgsVO imgsVo);
 	
+	//리뷰 수정
+	public int updateReview(ReviewVO reviewVO);
+	
 	//리뷰 삭제
-	public int deleteReview(String memberId); 
+	public int deleteReview(int reviewCode); 
 	
 }
