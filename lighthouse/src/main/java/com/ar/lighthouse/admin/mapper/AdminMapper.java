@@ -15,6 +15,7 @@ import com.ar.lighthouse.admin.service.SuspendVO;
 import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.customsvc.service.FaqVO;
 import com.ar.lighthouse.customsvc.service.InquiryVO;
+import com.ar.lighthouse.main.service.EventImgVO;
 
 
 @Mapper
@@ -96,4 +97,10 @@ public interface AdminMapper {
 	public List<NoticeAdminVO>selectAdminNoticeList(@Param("cri") Criteria cri, @Param("noticeAdminVO") NoticeAdminVO noticeAdminVO);
 	//공지 수
 	public int selectTotalNoticeCount(NoticeAdminVO noticeAdminVO);
+	
+	
+					/*Banner*/
+	
+	//배너 목록
+	public List<EventImgVO> selectEventBannerList();
 }

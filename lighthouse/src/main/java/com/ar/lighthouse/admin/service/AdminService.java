@@ -7,6 +7,7 @@ import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.customsvc.service.FaqVO;
 import com.ar.lighthouse.customsvc.service.InquiryVO;
 import com.ar.lighthouse.customsvc.service.NoticeVO;
+import com.ar.lighthouse.main.service.EventImgVO;
 
 public interface AdminService {
 	
@@ -77,6 +78,10 @@ public interface AdminService {
 	public List<ProductDetailVO> getProductList(int amount, int pageNum, String memberId, String memberTel, String businessNumber, String productCode);
 	//상품 개수
 	public int getTotalProductCount(ProductDetailVO productDetailVO);
+	
+	
+	//배너 관리
+	public List<EventImgVO> getEventBannerList();
 	
 	
 	

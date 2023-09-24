@@ -6,32 +6,63 @@
 <!-- Content -->
 <div layout:fragment="content" class="col">
 	<!-- main 영역 -->
-	<div class="container">
     		<div class="container" style="margin-left: 0px">
-        			<div class="row justify-content-center">
         			
 					<div class="col" style="    display: flex;
-											    justify-content: space-between;
-											    margin-bottom: 30px;
-											    margin-top:30px;">
-					<form>
-					<input type="text">
-					<button class="btn btn-secondary btn-xxs">업로드</button>
-					<button class="btn btn-secondary btn-xxs">저장</button>
-					<button class="btn btn-secondary btn-xxs">삭제</button>
-					</form>
-											    
-											    
-											    
-											    
-											    
-											    
-											    
+												    margin-bottom: 30px;
+												    margin-top:30px;">
+					<div class="container " >
+						<div class="row">
+								<div class="col-6 justify-content-between" th:each="b:${banner}">
+									<form >
+											<div>
+												<!-- banner -->
+												<img alt="..." th:src="@{/img/products/}+${b.uploadName}" class="w-100" style=" height:200px; margin: 10px 0px">
+											</div>
+												<!-- content -->
+											<input type="text" class="w-100" placeholder="이미지 설명을 입력해주세요." th:value="${b.imgContent}" name="" style="margin-bottom:10px">
+											<button class="btn btn-secondary btn-xxs uploadBtn">업로드</button>
+											<button class="btn btn-secondary btn-xxs saveBtn">저장</button>
+											<button class="btn btn-secondary btn-xxs delBtn">삭제</button>
+											<div class="form-check form-switch">
+											  <input class="form-check-input bType" type="checkbox" 
+											  th:if='${b.bannerType.equals("y")}' role="switch" id="flexSwitchCheckDefault" checked="true" >
+											  <input class="form-check-input bType" type="checkbox" 
+											  th:if='${b.bannerType.equals("n")}'role="switch" id="flexSwitchCheckDefault">
+											  <label class="form-check-label" for="flexSwitchCheckDefault">전시여부</label>
+											</div>
+									</form>
+								</div>
+				    
+					<button class="btn btn-sm btn-primary">배너 등록</button>	
 				    </div>
 				    </div>
-					<button class="btn btn-sm btn-primary">배너 등록</button>
-		    </div>
+					</div>
+			</div>	
+	<script>
+	$('.uploadBtn').on('click', function(e){
+		e.preventDefault();
+		console.log(this)
+	})
+	$('.saveBtn').on('click', function(e){
+		e.preventDefault();
+		console.log($(this).prev().prev().prev().children()[0]);
+		
+		let imgName = $(this).prev().prev().prev().children()[0];
+		let imgContent = $(this).prev().prev()[0].value;
+		let bannerType = $(this).next().next().children()[0].checked;
 
-	</div>
+	})
+	$('.delBtn').on('click', function(e){
+		e.preventDefault();
+		console.log(this)
+
+	})
+	$('.bType').on('click', function(e){
+		console.log(this.checked)
+
+	})
+	</script>
+
 </div>
 </html>

@@ -80,7 +80,7 @@
 						<ul class="pagination pagination-sm text-gray-400">
 							<li class="page-item" th:if="${pageMaker.prev}"><a
 								class="page-link page-link-arrow"
-								th:href="@{/admin/declareList/(pageNum = ${pageMaker.startPage - 1}, ,declareContent=${param.declareContent}, declareReason=${param.declareReason})}">
+								th:href="@{/admin/declareList/(pageNum = ${pageMaker.startPage - 1},declareContent=${param.declareContent}, declareReason=${param.declareReason})}">
 									<i class="fa fa-caret-left"></i>
 							</a></li>
 							<th:block

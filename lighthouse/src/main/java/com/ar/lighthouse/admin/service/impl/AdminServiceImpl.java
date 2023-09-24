@@ -18,6 +18,7 @@ import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.customsvc.mapper.CustomMapper;
 import com.ar.lighthouse.customsvc.service.FaqVO;
 import com.ar.lighthouse.customsvc.service.InquiryVO;
+import com.ar.lighthouse.main.service.EventImgVO;
 
 @Service
 public class AdminServiceImpl implements AdminService{
@@ -177,6 +178,11 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public int editSuspendStatus(String memberId) {
 		return adminMapper.updateSuspendStatus(memberId);
+	}
+
+	@Override
+	public List<EventImgVO> getEventBannerList() {
+		return adminMapper.selectEventBannerList();
 	}
 
 

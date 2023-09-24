@@ -37,6 +37,9 @@ table {
 		                <label class="visually">
 		                | 사유: [[${declareDetail.declareReason}]]
 		                </label>
+		                <label th:if="${declareDetail.suspendStatus != null}">
+		                | 처리 상태 : [[${declareDetail.suspendStatus}]]
+		                </label>
               		</div>
               		<div>
 		                <label th:text="${#dates.format(declareDetail.declareRegdate,'yyyy-MM-dd')}">
@@ -71,8 +74,8 @@ table {
               </div>
                 <textarea class="form-control form-control-sm" name="questionAnswer"   id="questionAnswer" rows="10" th:text="${declareDetail.declareContent}" readonly></textarea>
               </div>
-              <input class="form-control form-control-sm w-100" type="text" placeholder="상세 사유를 입력해주세요." id="suspReason" style="margin-bottom: 15px">
-              <div style="display: flex;  justify-content: center;">
+              <input class="form-control form-control-sm w-100"  th:if="${declareDetail.suspendStatus == null}" type="text" placeholder="상세 사유를 입력해주세요." id="suspReason" style="margin-bottom: 15px">
+              <div style="display: flex;  justify-content: center;" th:if="${declareDetail.suspendStatus == null}">
               
               <input name="suspStatus" type="radio" id="status" value="1"><label>: 30일&nbsp&nbsp&nbsp</label>
               <input name="suspStatus" type="radio" id="status" value="2"><label>: 90일&nbsp&nbsp&nbsp</label>
@@ -81,29 +84,26 @@ table {
               </div>
 			<div style="display: flex;  justify-content: center;">
               <!-- Button -->
-              <button class="btn btn-xs btn-outline-primary btn-underline mb-1" type="button" id="cancel" style="margin:10px">취소</button>
-              <button class="btn btn-xs btn-outline-primary btn-underline mb-1" type="button" id="suspBtn" style="margin:10px">저장하기</button>
+              <button class="btn btn-xs btn-outline-primary btn-underline mb-1" type="button" id="cancelBtn" style="margin:10px">취소</button>
+              <button class="btn btn-xs btn-outline-primary btn-underline mb-1" type="button" id="suspBtn" style="margin:10px" th:if="${declareDetail.suspendStatus == null}">저장하기</button>
 			</div>
             </form>		
 					</div><!-- row justify -->
 					</div><!-- container -->
 					
 <script th:inline="javascript">
-	$('#noticeBtn').on('click', function(){
-		location.href = "/admin/noticeForm";
-	})
-	$('#calcel').on('click', function(){
-		location.href = "/admin/declareList";
+	$('#cancelBtn').on('click', function(){
+		location.href = "javascript:window.history.back();";
 	})
 	$('#suspBtn').on('click', function(){
 		let radios = document.getElementsByName("suspStatus");
 		let chk = $('input[name="suspStatus"]:checked').val();
 		
-		//판매자인지 구매자인지 memberId로 권한 가져올 것
+		//판매자인지 구매자인지 memberId로 권한 가져올 것(일단 보류)
 		console.log();
 		let author = [[${declareDetail.memberAuthor}]];
 		let suspStatus= "";
-		if(chk == undefined){
+		if(chk == undefined){	
 			alert("정지 ")
 		}
 		
@@ -130,6 +130,7 @@ table {
 			contentType : 'application/json',
 			success : function(rs){
 				console.log(rs)
+				location.href= "clearDeclareList"
 			},
 			error : function(err){
 				console.log(err)

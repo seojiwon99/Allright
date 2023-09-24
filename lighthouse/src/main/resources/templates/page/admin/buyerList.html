@@ -138,7 +138,7 @@
 		let thisTr = $(this).parent().parent();
 		console.log(thisTr.children())
 		let memberId = thisTr.children()[0].innerText;
-		console.log(memberId);
+		console.log(memberId);	
 		
 		
  		let suspStatus;
@@ -164,12 +164,20 @@
 		
 		console.log(obj);
 		$.ajax({
-			url : "suspendByAdmin",
+			url : "/admin/suspendByAdmin",
 			type : "POST",
 			data : JSON.stringify(obj),
 			contentType : 'application/json',
 			success : function(rs){
-				console.log(rs);
+				if(rs == "0"){
+					thisTr.children()[5].innerText = "사용 가능"
+					}else if(rs == "101"){
+						thisTr.children()[5].innerText = "구매자 30일 정지"
+					}else if(rs == "102"){
+						thisTr.children()[5].innerText = "구매자 90일 정지"
+					}else if(rs == "103"){
+						thisTr.children()[5].innerText = "구매자 영구 정지"
+					}
 			},
 			error : function(err){
 				console.log(err);

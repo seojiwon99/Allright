@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default_layout}">
+<!-- Content -->
+<div layout:fragment="content">
+	Hello Test
+	<div class="row">
+	<th:block th:each="product : ${products}">
+	<div class="col-6 col-md-4">
+		<div class="card mb-7">
+			<div class="card-img">
+			<a class="card-img">이미지</a>
+			</div>
+			<div class="card-body px-0">
+				<div class="fs-xs">[[${product.category_code}]]</div>
+				<div class="fw-bold">[[${product.product_name}]]</div>
+				<div class="fw-bold text-muted">
+				<span class="fs-xs text-gray-350 text-decoration-line-through">[[${product.product_cost}]]</span>
+				<span class="text-primary">[[${product.product_cost}-${product.sale_price}]]</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	</th:block>
+	
+	<!-- Pagination -->
+					<nav class="d-flex justify-content-center justify-content-md-center mt-10">
+						<ul class="pagination pagination-sm text-gray-400">
+							<li class="page-item" th:if="${pageMaker.prev}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/elatest/(pageNum = ${pageMaker.startPage - 1})}">
+									<i class="fa fa-caret-left"></i>
+							</a></li>
+							<th:block
+								th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+								<li th:if="${pageMaker.endPage} ne 0"
+									th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+									th:each="pageButtom : ${#numbers.sequence(start,end)}"
+									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
+									<a class="page-link" href="#"
+									th:href="@{/elatest/(pageNum= ${pageButtom})}"
+									th:text="${pageButtom}" style="font-size : x-large;"></a>
+								</li>
+							</th:block>
+
+							<li class="page-item" th:if="${pageMaker.next}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/elatest/(pageNum = ${pageMaker.endPage + 1})}">
+									<i class="fa fa-caret-right"></i>
+							</a></li>
+						</ul>
+					</nav>
+	<!-- pagi end -->
+	</div>
+    <script th:src="@{/js/theme.bundle.js}"></script>
+</div>
+
+
+
+
+</html>

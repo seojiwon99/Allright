@@ -14,6 +14,7 @@
 	<name>lighthouse</name>
 	<description>lighthouse ar project for Spring Boot</description>
 	<properties>
+		<elasticsearch.version>7.15.0</elasticsearch.version>
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
@@ -97,6 +98,31 @@
 		
 		
 		<!-- yujun -->
+		<dependency>
+		   <groupId>org.elasticsearch</groupId>
+		   <artifactId>elasticsearch</artifactId>
+		   <version>${elasticsearch.version}</version>
+		</dependency>
+		<dependency>
+		   <groupId>org.elasticsearch.client</groupId>
+		   <artifactId>elasticsearch-rest-client</artifactId>
+		   <version>${elasticsearch.version}</version>
+		</dependency>
+		<dependency>
+		   <groupId>org.elasticsearch.client</groupId>
+		   <artifactId>elasticsearch-rest-high-level-client</artifactId>
+		   <version>${elasticsearch.version}</version>
+		</dependency>
+		<dependency>
+		   <groupId>org.elasticsearch.plugin</groupId>
+		   <artifactId>percolator-client</artifactId>
+		   <version>${elasticsearch.version}</version>
+		</dependency>
+		<dependency>
+		   <groupId>org.elasticsearch.client</groupId>
+		   <artifactId>transport</artifactId>
+		   <version>${elasticsearch.version}</version>
+		</dependency>
 				
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail -->
 		<!-- mail  -->

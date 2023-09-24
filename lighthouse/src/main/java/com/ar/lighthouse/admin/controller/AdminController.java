@@ -20,6 +20,7 @@ import com.ar.lighthouse.common.PageDTO;
 import com.ar.lighthouse.customsvc.service.CustomService;
 import com.ar.lighthouse.customsvc.service.FaqVO;
 import com.ar.lighthouse.customsvc.service.InquiryVO;
+import com.ar.lighthouse.main.service.MainPageService;
 
 @Controller
 public class AdminController {
@@ -29,6 +30,9 @@ public class AdminController {
 	
 	@Autowired
 	AdminService adminService;
+	
+	@Autowired
+	MainPageService service;
 	
 	@GetMapping("admin/main")
 	public String adminMain() {
@@ -115,6 +119,16 @@ public class AdminController {
 	
 	@GetMapping("admin/declareDetail")
 	public String declareDetail(Model model, DeclareVO declareVO) {
+		System.out.println(declareVO);
+
+		DeclareVO vo = adminService.getDeclareDetail(declareVO);
+		vo.setSuspendStatus(declareVO.getSuspendStatus());
+		model.addAttribute("declareDetail", vo);
+
+		return "page/admin/declareDetail";
+	}
+	@GetMapping("admin/clearDeclareDetail")
+	public String clearDeclareDetail(Model model, DeclareVO declareVO) {
 		model.addAttribute("declareDetail", adminService.getDeclareDetail(declareVO));
 		return "page/admin/declareDetail";
 	}
@@ -221,7 +235,9 @@ public class AdminController {
 			}
 			adminService.addSuspendByAdmin(suspendVO);
 		}
-		return "success";
+		int status = suspendVO.getSuspStatus();
+		String msg = String.valueOf(status);
+		return msg;
 	}
 	
 	@GetMapping("admin/allProductList")
@@ -240,7 +256,8 @@ public class AdminController {
 	
 	
 	@GetMapping("admin/bannerUpdateForm")
-	public String bannerUpdateForm() {
+	public String bannerUpdateForm( Model model) {
+		model.addAttribute("banner",adminService.getEventBannerList());
 		return "page/admin/bannerUpdateForm";
 	}
 	

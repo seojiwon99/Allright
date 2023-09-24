@@ -433,7 +433,11 @@
   	</select>
   	
   	
-  	
+  	<select id="selectEventBannerList">
+  		SELECT *
+		FROM AR_EVENT_IMG
+		WHERE banner_delete = 'n'
+  	</select>
   	
   </mapper>
   
