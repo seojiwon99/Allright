@@ -32,6 +32,7 @@ import com.ar.lighthouse.common.CodeVO;
 
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.orders.service.CreditVO;
+import com.ar.lighthouse.orders.service.DeliveryVO;
 import com.ar.lighthouse.orders.service.OrderPayVO;
 import com.ar.lighthouse.orders.service.OrdersService;
 import com.ar.lighthouse.orders.service.OrdersVO;
@@ -86,9 +87,10 @@ public class OrdersController {
 	//배송지, 배송 주문 테이블 Session 저장
 	@PostMapping("orders/save")
 	@ResponseBody
-	public void ordersSave(HttpServletRequest req, @RequestBody OrderPayVO ordersPay) {
+	public void ordersSave(HttpServletRequest req, @RequestBody List<OrderPayVO> ordersPay, @RequestBody DeliveryVO deliveryVO) {
 		HttpSession session = req.getSession();
 		session.setAttribute("ordersPay", ordersPay);
+		session.setAttribute("deliveryVO", deliveryVO);
 		//delivo 값 새로 만들기 / opderPAy  할인 쿠폰 받은 VO 적용
 	}
 	
@@ -101,36 +103,45 @@ public class OrdersController {
 		
 		//주문, 주문결제 내역 페이지 데이터 저장
 		List<OrdersVO> orderList = (List<OrdersVO>) session.getAttribute("orderGet");
-		OrderPayVO orderPayVO = (OrderPayVO) session.getAttribute("ordersPay");
+		List<OrderPayVO> orderPayVO = (List<OrderPayVO>) session.getAttribute("ordersPay");
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		List<OrdersVO> couponList = (List<OrdersVO>) session.getAttribute("couponList");
+		DeliveryVO deliveryVO = (DeliveryVO) session.getAttribute("deliveryVO");
 		
 		//orderPayVO 쿠폰 사용 시 N으로 변경
 		String memberId = memberVO.getMemberId();
-		int mycouponCode = orderPayVO.getMycouponCode();
-		int couponUse = ordersService.editNotCoupon(memberId, mycouponCode);		
+		
+		int mycouponCode = 0;
 		String optionCouponCheck = "";
-		if(couponUse > 0 ) {
-			optionCouponCheck = "Y";
-		}else {
-			optionCouponCheck = "N";
+		
+		for(OrderPayVO couponNum : orderPayVO) {	
+			mycouponCode = couponNum.getMycouponCode();
+			int couponUse = ordersService.editNotCoupon(memberId, mycouponCode);
+			
+			if(couponUse > 0 ) {
+				optionCouponCheck = "Y";
+			}else {
+				optionCouponCheck = "N";
+			}
 		}
 		
+		
+		
 		//주문 데이터 저장 method (배송 등) 총 주문 결제 정보
-		ordersService.addOrderPay(memberId, orderPayVO);
+		ordersService.addOrderPay(memberId, deliveryVO);
 		
 		//주문 코드 파싱
 		int orderCode =	ordersService.getOrderCode(memberId);
 		int orderSuccess = 0;
 		// 각 주문 내역에 대한 정보 저장
 		for(OrdersVO order : orderList) {
-			if(order.getProductCode().equals(orderPayVO.getProductCode()) ) { //쿠폰 할인 받은 상품
+			if(order.getProductCode().equals(((OrderPayVO) orderPayVO).getProductCode()) ) { //쿠폰 할인 받은 상품
 				order.setOrderCode(orderCode);
 				order.setOptionCouponCheck(optionCouponCheck);
 				order.setMycouponCode(mycouponCode);
-				order.setOrderPrice(orderPayVO.getProductSalePrice());
-				order.setDiscountPrice(orderPayVO.getCouponPrice());
-				order.setPaymentPrice(orderPayVO.getProductSalePrice() - orderPayVO.getCouponPrice());
+				order.setOrderPrice(((OrderPayVO) orderPayVO).getProductSalePrice());
+				order.setDiscountPrice(((OrderPayVO) orderPayVO).getCouponPrice());
+				order.setPaymentPrice(((OrderPayVO) orderPayVO).getProductSalePrice() - ((OrderPayVO) orderPayVO).getCouponPrice());
 				orderSuccess  = ordersService.addOrders(order);
 			}else {
 				System.out.println(order); // 쿠폰 할인 받지 않은 상품

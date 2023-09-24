@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.orders.mapper.OrdersMapper;
 import com.ar.lighthouse.orders.service.CreditVO;
+import com.ar.lighthouse.orders.service.DeliveryVO;
 import com.ar.lighthouse.orders.service.OrderPayVO;
 import com.ar.lighthouse.orders.service.OrdersService;
 import com.ar.lighthouse.orders.service.OrdersVO;
@@ -74,8 +75,8 @@ public class OrdersServiceImpl implements OrdersService{
 
 	@Override
 	// 주문 총 결제 주문정보 insert
-	public int addOrderPay(String memberId, OrderPayVO orderPayVO) {
-		return ordersMapper.insertOrderPayVO(memberId, orderPayVO);
+	public int addOrderPay(String memberId, DeliveryVO deliveryVO) {
+		return ordersMapper.insertOrderPayVO(memberId, deliveryVO);
 	}
 
 	@Override

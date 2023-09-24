@@ -120,16 +120,20 @@
                       </a>
 
                     </div>
-                    <div class="col">
+                    <div class="col couponProduct">
 
                       <!-- Title -->
                       
                       <p class="mb-4 fs-sm fw-bold">  
-                         <input type="hidden" th:value="${gets.productCode}">
+                         <input type="hidden" th:value="${gets.productCode}" class="productNumber">
                          <input type="hidden" name="couponUsePrice" class="text-body" th:text="${gets.productName}" ><br>
+                         
                          상품금액 : <span class="text-muted" style="text-decoration: line-through;" th:text="|${gets.productCost + gets.optionPrice}|" id="selectPrice"></span>원 <br>
+
                         <span class="text-muted" th:text="|할인된 금액 : ${gets.productCost - gets.salePrice + gets.optionPrice}|"></span>원
+                        
                         <input type="hidden" class="selectValue" th:value="${(gets.productCost - gets.salePrice + gets.optionPrice) * gets.cartCount}">
+                        
                         <div class="input-group mb-8">
                           <input style="margin-top: 15px;" type="text" class="form-control" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2" id="couponSelect" readonly>
                           <input type="hidden" class="myCouponCode">
@@ -210,7 +214,7 @@
             
 
             <!-- Card -->
-            <div class="card mb-9 bg-light " style="position: fixed; right: 50; top: 100;">
+            <div class="card mb-9 bg-light " style="position: fixed; top: 100px;">
               <div class="card-body">
                 <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
                   <li class="list-group-item d-flex">
@@ -241,7 +245,6 @@
               </ul>
             </div>
 
-            <!-- Disclaimer -->
           </div>
         </div>
       </div>
@@ -427,7 +430,6 @@
             return;
         }
           
-
         $(coupon).closest(".list-group-item").find('.couponSalePrice').val(roundPrice);
         $(coupon).closest(".list-group-item").find('#couponSelect').val(couName);          
         $(coupon).closest(".list-group-item").find('.myCouponCode').val(couponNum);   
@@ -475,6 +477,21 @@
       $('#addrDt').val($('#mAddr2').val());
       $('#deliveryTel').val($('#mTel').val());
     });
+
+    // let orderVO =[];
+    // $('#testBtn').on('click',function(e){
+      
+    //   $('.couponProduct').each(function(idx,el){
+    //   let orderList ={};
+    //         orderList.mycouponCode = $(el).find('.myCouponCode').val();
+    //         orderList.productCode = $(el).find('.productNumber').val();
+    //         orderList.productSalePrice = $(el).find('.selectValue').val();
+    //         orderList.couponPrice = $(el).find('.couponSalePrice').val();
+    //         orderVO.push(orderList)
+    //   })
+    // })
+
+
     
    //토스 위젯
    	const clientKey = 'test_ck_GjLJoQ1aVZJKQEvkvAWVw6KYe2RN' // 상점을 특정하는 키
@@ -499,7 +516,20 @@
     let amount = Number($('#totalPrice').text()); // 결제 금액
     paymentWidget.renderPaymentMethods('#payment-method', amount)
     let uuid = self.crypto.randomUUID().slice(0,-10);
-    console.log(uuid);
+    
+
+    //쿠폰 할인받은 상품
+    let orderPayVO =[];
+    $('.couponProduct').each(function(idx,el){
+    let orderList ={};
+          orderList.mycouponCode = $(el).find('.myCouponCode').val();
+          orderList.productCode = $(el).find('.productNumber').val();
+          orderList.productSalePrice = $(el).find('.selectValue').val();
+          orderList.couponPrice = $(el).find('.couponSalePrice').val();
+          orderVO.push(orderList)
+    })
+      
+  
 
     //save 주문 내역 insert 할 데이터
     let deliveryReq = '';
@@ -509,32 +539,21 @@
       deliveryReq = $('#selbox').val();
     }
     // productCode productSalePrice
-    let orderPayVO =
+    let deliveryVO =
     {
         orderPrice : amount,
         orderAddr : $('#addr').val(),
         orderDetailsAddr : $('#addrDt').val(),
         recipientName : $('#deliveryName').val(),
         recipientTel : $('#deliveryTel').val(),
-        requestedTerm : deliveryReq,
-        mycouponCode :couponNum,
-        productCode : productNum,
-        productSalePrice : realPrice,
-        couponPrice : roundPrice
+        requestedTerm : deliveryReq      
     }
-
-    // let odersVO = [{
-    //     mycouponCode :couponNum,
-    //     productCode : productNum,
-    //     productSalePrice : realPrice,
-    //     couponPrice : roundPrice
-    // }]
     
     //ajax - async:false - 비동식 save 데이터 받아서 보냄
     $.ajax('/orders/save',{
       async:false,
       type : 'post', 
-      data : JSON.stringify(orderPayVO),   //{변수명 : 변수값}   data : JSON.stringify({orderPayVO:orderPayVO, orderPayVO :provo}),  리스트 넣기.
+      data : JSON.stringify({orderPayVO:orderPayVO, deliveryVO:deliveryVO}),   //{변수명 : 변수값}   data : JSON.stringify({orderPayVO:orderPayVO, orderPayVO :provo}),  리스트 넣기.
       contentType : 'application/json'
     })
 

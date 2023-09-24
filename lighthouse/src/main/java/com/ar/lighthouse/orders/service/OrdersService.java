@@ -19,7 +19,7 @@ public interface OrdersService {
 	public int addCredit(CreditVO creditVO);
 	
 	//결제한 총 주문 테이블 DB 넣을 데이터
-	public int addOrderPay(String memberId, OrderPayVO orderPayVO);
+	public int addOrderPay(String memberId, DeliveryVO deliveryVO);
 	
 	//주문 상품 코드 파싱
 	public int getOrderCode(String memberId);
