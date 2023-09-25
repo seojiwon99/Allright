@@ -23,11 +23,14 @@
     <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
    
    <div class="row gx-0" style="margin-bottom:20px;">
-	<form action="/insertImg" method="post" id="textForm">
-		<div id="editor"></div>
-		<input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" />
-		<input type="submit" id="submit" class="" value="작성완료" />
-	</form>
+   <form action="/insertImg" method="post" id="textForm">
+      <div id="editor"></div>
+	   <div>
+	  	<p th:text="${list}"></p>[[${list}]]
+	  </div>
+      <input type="button" class="addImgBtn btn btn-secondary mt-3 mx-2" value="작성취소" />
+      <input type="submit" id="submit" class="" value="작성완료" />
+   </form>
 
 
 
@@ -58,7 +61,7 @@
   $('.addImgBtn').on('click',function(e){
       e.preventDefault();
       let form = $(this).closest('form');
- 	 $('.inform').remove();
+     $('.inform').remove();
       let formTag = $('.ck .image');
 
       let srcArr = [];
@@ -70,10 +73,10 @@
          let text01 = src.split('/');
          console.log(text01);
          let data = {
-         	imgName : text[1],
-         	uploadPath : text01[1] + '\\' + text01[2] + '\\' + text01[3],
-         	uploadFile : text01[4],
-         	imgContent : $(item).children('figcaption').text()
+            imgName : text[1],
+            uploadPath : text01[1] + '/' + text01[2] + '/' + text01[3],
+            uploadName : text01[4],
+            imgContent : $(item).children('figcaption').text()
          };
          srcArr.push(data);
       })
@@ -86,7 +89,7 @@
             console.log("key" + item );
             console.log("value" + obj[item]);
             let str = `
-            	<input type="text" name="imgsVO[${idx}].${item}" value="${obj[item]}">
+               <input type="text" name="imgsVO[${idx}].${item}" value="${obj[item]}">
             `;
             
             divTag.append(str);
@@ -102,32 +105,72 @@
   })
   
 /*   $('#textForm').sumbit(function(e){
-	  e.preventDefaul();
+     e.preventDefaul();
   }) */
   
+  $(document).ready(function(e){
+     let data = localStorage.getItem("detail");
+     console.log(data);
+     editor.setData(data);
+  })
   $('#submit').on('click',function(e){
-	  	$('textarea[name="productContent"]').remove();
-	  	/* e.preventDefault(); */
-		let form = $(this).closest('form');
-		console.log(form);
-		// form.attr('method', 'post');
-		// form.attr('action', '/insertImg');
-		
-		let data = editor.getData();
-		let textarea = $('<textarea />');
-		textarea.css("display", "none");
-		textarea.attr('name','productContent');
-		
-		$(textarea).text(data);
-		
-		$(textarea).append(data);
-		$(form).append(textarea);
-		
-		console.log($(textarea).val());
+      $('.inform').remove();
+      $('textarea[name="productContent"]').remove();
+      // e.preventDefault();
+      let data = editor.getData();
+      window.localStorage.setItem("detail",data);      
+      let form = $(this).closest('form');
+      console.log(form);
+      // form.attr('method', 'post');
+      // form.attr('action', '/insertImg');
+      
+      let textarea = $('<textarea />');
+      textarea.css("display", "none");
+      textarea.attr('name','productContent');
+      
+      $(textarea).text(data);
+      
+      $(textarea).append(data);
+      $(form).append(textarea);
+      
 
-		
-		
-		// form.submit();
+      let formTag = $('.ck .image');
+
+       let srcArr = [];
+       $(formTag).each(function(idx,item){
+          let src = $(item).children('img').attr('src');
+    
+          let text = src.split('_');
+          
+          let text01 = src.split('/');
+          console.log(text01);
+          let data = {
+             imgName : text[1],
+             uploadPath : text01[1] + '/' + text01[2] + '/' + text01[3],
+             uploadName : text01[4],
+             imgContent : $(item).children('figcaption').text()
+          };
+          srcArr.push(data);
+       })
+       
+       let idx = 0;
+       for(let i =0; i < srcArr.length; i++){
+          let divTag = $('<div/>').addClass('inform');
+          let obj = srcArr[i];
+          for(let item in obj){
+             console.log("key" + item );
+             console.log("value" + obj[item]);
+             let str = `
+                <input type="text" style="display:none;" name="imgsVO[${idx}].${item}" value="${obj[item]}">
+             `;
+             
+             divTag.append(str);
+          }
+          idx++;
+          form.append(divTag);
+       }
+      
+      // form.submit();
   })
    </script>
 </div>
