@@ -38,4 +38,5 @@ public class ProductDetailVO {
  	
  	private String memberTel;
  	private String businessNumber;
+ 	private String memberEmail;
 }

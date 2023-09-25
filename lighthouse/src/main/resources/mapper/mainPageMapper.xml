@@ -66,5 +66,11 @@
 	       AND category_level = 3
 		ORDER SIBLINGS BY category_name
 	</select>
+	
+	<select id="selectAllCategory">
+		SELECT * 
+		FROM ar_category
+		ORDER BY category_level
+	</select>
 
 </mapper>

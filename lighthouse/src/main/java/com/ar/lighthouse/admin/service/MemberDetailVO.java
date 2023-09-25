@@ -25,5 +25,11 @@ public class MemberDetailVO {
 	private int memberAuthor;
 	private String memberTel;
 	
+	//user 상세보기
+	private Date suspRegdate;
+	private Date suspEnddate;
+	private String suspReason;
+	private int suspCount;
+	
 	
 }

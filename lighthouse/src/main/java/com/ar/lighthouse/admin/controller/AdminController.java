@@ -21,6 +21,7 @@ import com.ar.lighthouse.customsvc.service.CustomService;
 import com.ar.lighthouse.customsvc.service.FaqVO;
 import com.ar.lighthouse.customsvc.service.InquiryVO;
 import com.ar.lighthouse.main.service.MainPageService;
+import com.ar.lighthouse.member.mail.RegisterMail;
 
 @Controller
 public class AdminController {
@@ -33,6 +34,9 @@ public class AdminController {
 	
 	@Autowired
 	MainPageService service;
+	
+	@Autowired
+    RegisterMail registerMail;
 	
 	@GetMapping("admin/main")
 	public String adminMain() {
@@ -240,6 +244,14 @@ public class AdminController {
 		return msg;
 	}
 	
+	
+	@GetMapping("admin/memberDetailValue")
+	@ResponseBody
+	public MemberDetailVO selectMemberDetailValue(String memberId) {
+		return adminService.getMemberDetailValue(memberId);
+	}
+	
+	
 	@GetMapping("admin/allProductList")
 	public String allProductList(Criteria cri, Model model, ProductDetailVO productDetailVO) {
 		int totalCnt = adminService.getTotalProductCount(productDetailVO);
@@ -248,9 +260,26 @@ public class AdminController {
 				, productDetailVO.getMemberTel()
 				, productDetailVO.getBusinessNumber(), productDetailVO.getProductCode())) ;
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
+		model.addAttribute("suspReason", adminService.getSuspReason());
 		
 		
 		return "page/admin/allProductList";
+	}
+	
+	@GetMapping("admin/removeProductByAdmin")
+	@ResponseBody
+	public String removeProductByAdmin(String productCode, String deleteReason, String deleteStatus, String memberEmail) {
+		String rs = null;
+		int delRs = adminService.removeProductByAdmin(productCode);
+		System.out.println("delRs : " + delRs);
+		if(delRs>0) {
+			try {
+				rs = registerMail.sendDelMessage(memberEmail,deleteReason);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return rs;
 	}
 	
 	

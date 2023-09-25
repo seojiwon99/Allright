@@ -83,6 +83,9 @@ public interface AdminMapper {
 	public int insertSuspendByAdmin(SuspendVO suspendVO);
 	//정지 유저 해제
 	public int updateSuspendStatus(String memberId);
+	//유저 상세보기
+	public MemberDetailVO selectMemberDetailValue(String memberId);
+
 	
 	
 					/*Product*/
@@ -97,6 +100,8 @@ public interface AdminMapper {
 	public List<NoticeAdminVO>selectAdminNoticeList(@Param("cri") Criteria cri, @Param("noticeAdminVO") NoticeAdminVO noticeAdminVO);
 	//공지 수
 	public int selectTotalNoticeCount(NoticeAdminVO noticeAdminVO);
+	//상품 삭제
+	public int deleteProductByAdmin(String productCode);
 	
 	
 					/*Banner*/

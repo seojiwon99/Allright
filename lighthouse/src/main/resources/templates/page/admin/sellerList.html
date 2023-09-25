@@ -64,6 +64,7 @@
 			  </thead>
 			  <tbody>
 			  <button type="button"  class="visually-hidden" id="modalBtn"data-bs-toggle="modal" data-bs-target="#modalNewsletterVertical">Launch modal</button>
+			  <input type="hidden" id="modalValue">
 			    <tr th:each="mem : ${memList}" th:onclick="testFunc([[${mem.memberId}]])">
 					
 						<td scope="row" th:text="${mem.memberId}"></td>
@@ -135,21 +136,24 @@
         <i class="fe fe-x" aria-hidden="true"></i>
       </button>
       <!-- Body -->
-      <div class="modal-body py-15">
+      <div class="modal-body" >
         <!-- Form -->
-        <form>
+        <form style="height:300px">
           <div class="row gx-5">
  
 
               <!-- Input -->
             <div class="col-3">
 				<span>ID: </span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline" readonly>
             </div>
             <div class="col-3">
 				<span>이름: </span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline"  readonly>
 			</div>
 			<div class="col-3">
 				<span>이메일 : </span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline" readonly >
 			</div>
 
           </div>
@@ -157,27 +161,34 @@
            <div class="row gx-5">
 			<div class="col-3">
 				<span>전화번호 :  </span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline" readonly >
 			</div>
 			<div class="col-3">
 				<span>생년월일 : </span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline" readonly >
 			</div>
 			<div class="col-3">
 				<span>사업자등록번호 : </span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline" readonly >
 			</div>	
           </div>
           
           	<div class="row gx-5">
           	<div class="col-3">
-				<span>신고 누적수 :</span>
+				<span>신고/정지 누적 :</span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline" readonly >
 			</div>
 			<div class="col-3">
 				<span>정지 상태 :</span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline" readonly >
 			</div>
 			<div class="col-3">
 				<span>정지 사유 :</span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline" readonly >
 			</div>
 			<div class="col-3">
 				<span>정지 기간 :</span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline" readonly >
 			</div>
           </div>
           
@@ -190,7 +201,7 @@
         <!-- Checkbox -->
         <div class="form-check">
           <!-- Label -->
-          <label class="form-check-label fs-xs" for="modalNewsletterVerticalCheckbox">
+          <label class="form-check-label fs-xs" for="modalNewsletterVerticalCheckbox" data-bs-dismiss="modal" aria-label="Close">
             닫기
           </label>
         </div>
@@ -203,7 +214,7 @@
   </div>
 </div>
 <!-- modal end -->
-	<script>
+	<script th:inline="javascript">
 	$('#memSearchBtn').on('click', function(){
 		let url;
 		if( $('#searchSelect').val() == "memberId"){
@@ -280,14 +291,40 @@
 	})
 	
 	function testFunc(memberId){
-		alert(memberId);
-		
+		$('#modalValue').val(memberId);
 		$('#modalBtn').trigger('click');
 		
 	}
 	
-	$('#modalNewsletterVertical').on('shown.bs.modal', function(){
-		
+	$('#modalNewsletterVertical').on('show.bs.modal', function(e){
+		let memberId = $('#modalValue').val(); 
+		$.ajax({
+			url :  "/admin/memberDetailValue",
+			type : "get",
+			data : {
+				memberId : memberId
+			},
+			success : function(rs){
+				console.log(rs);
+				let inputTags = document.querySelectorAll('input[name="modalInput"]');
+				
+				inputTags[0].value = rs.memberId;
+				inputTags[1].value = rs.memberName;
+				inputTags[2].value = rs.memberEmail;
+				inputTags[3].value = rs.memberTel;
+				inputTags[4].value = rs.memberBirth;
+				inputTags[5].value = rs.businessNumber;
+				inputTags[6].value = rs.declareCount+'/'+rs.suspCount;
+				inputTags[7].value = rs.suspStatus == null ? '사용 가능' : rs.suspStatus;
+				inputTags[8].value = rs.suspReason == null ? 'X' : rs.suspReason;
+				inputTags[9].value = (rs.suspRegdate == null ? 'X' : (rs.suspRegdate).substr(0,10)) + ' / ' +  (rs.suspEnddate == null ? 'X' : (rs.suspEnddate).substr(0,10));
+				
+				
+			},
+			error : function(err){
+				console.log(err);
+			}
+		})
 	})
 	
 

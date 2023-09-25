@@ -185,6 +185,16 @@ public class AdminServiceImpl implements AdminService{
 		return adminMapper.selectEventBannerList();
 	}
 
+	@Override
+	public MemberDetailVO getMemberDetailValue(String memberId) {
+		return adminMapper.selectMemberDetailValue(memberId);
+	}
+
+	@Override
+	public int removeProductByAdmin(String productCode) {
+		return adminMapper.deleteProductByAdmin(productCode);
+	}
+
 
 
 

@@ -222,282 +222,133 @@
 			<!-- Collapse -->
 			<div class="collapse navbar-collapse" id="navbarClassicCollapse">
 				<!-- Nav -->
-				<ul class="navbar-nav">
-					<a class="nav-link" data-bs-toggle="dropdown" href="#">Category</a>
-
-					<!-- Menu -->
-					<div class="dropdown-menu w-100">
-
+				<div class="col">
+				<ul class="nav navbar-nav nav-divided">
+					<li class="nav-item dropdown hovered">
+						<a class="nav-link" data-bs-toggle="dropdown" href="#">Category</a>
+						<!-- Menu -->
+						<div class="dropdown-menu" style="width:300px; display: flex-end;">
 						<!-- Tabs -->
 						<div class="mb-2 mb-lg-0 border-bottom-lg">
-							<div class="container" style="display: flex">
-								<div class="row" th:each="category:${categories}">
-									
-										<ul  >
-											<li class="nav-item dropdown">
+							<div class="container w-100" style="display: flex-end; justify-content: space-between">
+								<div class="row justify-content-end">
+								
+								<div class="col-3" th:each="category:${categories}">
+										<ul class="nav nav-unstyled nav-divided">
+											<li class="nav-item dropdown hovered" id="deptCategory">
 												<!-- Toggle --> 
-												<a class="nav-link" data-bs-toggle="dropdown" th:text="${category.categoryCode}">Fassion</a> 
-												
+												<a class="nav-link" data-bs-toggle="dropdown" th:text="${category.categoryCode}"></a> 
 												<!-- Menu -->
 												<div class="dropdown-menu" style="min-width: 650px">
 													<div class="card card-lg">
 														<div class="card-body">
 															<div class="row">
-																<div class="col">
+																<!-- 남성 -->
+																<div class="col" th:each="ctgFirst : ${allCtg}" th:if="${ctgFirst.categoryLevel} == 2 and ${(ctgFirst.parentCategoryCode).equals('Fassion')} and ${(category.categoryCode).equals('Fassion')}" >
 																	<!-- Heading -->
-																	<div class="mb-5 fw-bold">남성 상의</div>
-
-																	<!-- Links -->
-																	<ul class="list-styled mb-7 fs-sm">
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" href="./shop.html">Default</a>
-																		</li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" href="./shop-topbar.html">Topbar</a>
-																		</li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" href="./shop-collapse.html">Collapse</a>
-																		</li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" href="./shop-simple.html">Simple</a>
-																		</li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" href="./shop-masonry.html">Masonry</a>
-																		</li>
-																	</ul>
-
-																	<!-- Heading -->
-																	<div class="mb-5 fw-bold">남성하의</div>
-
-																	<!-- Links -->
-																	<ul class="list-styled fs-sm">
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" href="./product.html">Default</a>
-																		</li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link"
-																			href="./product-images-left.html">Images Left</a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link"
-																			href="./product-image-grid.html">Image Grid</a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link"
-																			href="./product-image-slider.html">Image Slider</a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link"
-																			href="./product-images-stacked.html">Images
-																				Stacked</a></li>
-																	</ul>
 																	
-																	
-																	
-																</div>
+																	<th:block  th:each="ctgSec : ${allCtg}" th:if="${ctgSec.categoryLevel} == 3 and
+																	 ${(ctgSec.categoryName).equals('상의')} and ${(ctgSec.parentCategoryCode).equals(ctgFirst.categoryCode)} " >
 																
 																
-																<div class="col">
-																	<!-- Heading -->
-																	<div class="mb-5 fw-bold">남성 신발</div>
-
-																	<!-- Links -->
-																	<ul class="list-styled mb-7 fs-sm">
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" href="./shop.html">Default</a>
-																		</li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" href="./shop-topbar.html">Topbar</a>
-																		</li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" href="./shop-collapse.html">Collapse</a>
-																		</li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" href="./shop-simple.html">Simple</a>
-																		</li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" href="./shop-masonry.html">Masonry</a>
-																		</li>
-																	</ul>
-
-																	<!-- Heading -->
-																	<div class="mb-5 fw-bold">여성 상의</div>
-
-																	<!-- Links -->
-																	<ul class="list-styled fs-sm">
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" href="./product.html">Default</a>
-																		</li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link"
-																			href="./product-images-left.html">Images Left</a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link"
-																			href="./product-image-grid.html">Image Grid</a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link"
-																			href="./product-image-slider.html">Image Slider</a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link"
-																			href="./product-images-stacked.html">Images
-																				Stacked</a></li>
-																	</ul>
-																	
-																	
-																	
-																</div>
 																
-																<div class="col">
+																	<div class="mb-5 fw-bold" th:text="${ctgFirst.categoryName}+${ctgSec.categoryName}">
+																	</div>
+																		<!-- Links -->
+																		<ul class="list-styled mb-7 fs-sm" th:each="ctgThd : ${allCtg}" th:if="${ctgThd.categoryLevel} == 4 and ${(ctgThd.parentCategoryCode).equals(ctgSec.categoryCode)}">
+																			<li class="list-styled-item"><a
+																				class="list-styled-link" href="./shop.html" th:text="${ctgThd.categoryName} + ${ctgThd.categoryCode}">상의</a>
+																			</li>
+																		</ul>
+																	</th:block><!-- sec -->
+																	
+																	<th:block th:each="ctgSec : ${allCtg}" th:if="${ctgSec.categoryLevel} == 3 and
+																	 ${(ctgSec.categoryName).equals('하의')} and ${(ctgSec.parentCategoryCode).equals(ctgFirst.categoryCode)} ">
 																	<!-- Heading -->
-																	<div class="mb-5 fw-bold">여성 하의</div>
-
-																	<!-- Links -->
-																	<ul class="list-styled mb-7 fs-sm">
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" href="./shopping-cart.html">Shopping
-																				Cart</a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" href="./checkout.html">Checkout</a>
-																		</li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link"
-																			href="./order-completed.html">Order Completed</a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link"
-																			href="./shipping-and-returns.html">Shipping &
-																				Returns</a></li>
-																	</ul>
-
-																	<!-- Heading -->
-																	<div class="mb-5 fw-bold">여성 신발</div>
-
-																	<!-- Links -->
-																	<ul class="list-styled fs-sm">
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" href="./account-order.html">Order</a>
-																		</li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" href="./account-orders.html">Orders</a>
-																		</li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link"
-																			href="./account-wishlist.html">Wishlist</a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link"
-																			href="./account-personal-info.html">Personal Info</a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link"
-																			href="./account-address.html">Addresses</a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link"
-																			href="./account-address-edit.html">Addresses: New</a></li>
-																	</ul>
-																</div>
-																<div class="col">
-																	<!-- Links -->
-																	<ul class="list-styled mb-7 fs-sm">
-																		<li class="list-styled-item"><a
-																			class="list-styled-link"
-																			href="./account-payment.html">Payment</a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link"
-																			href="./account-payment-edit.html">Payment: New</a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link"
-																			href="./account-payment-choose.html">Payment:
-																				Choose</a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" href="./auth.html">Auth</a>
-																		</li>
-																	</ul>
-
-																	<!-- Heading -->
-																	<div class="mb-5 fw-bold">공용</div>
-
-																	<!-- Links -->
-																	<ul class="list-styled fs-sm">
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" data-bs-toggle="modal"
-																			href="#modalNewsletterHorizontal"> Newsletter:
-																				Horizontal </a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" data-bs-toggle="modal"
-																			href="#modalNewsletterVertical"> Newsletter:
-																				Vertical </a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" data-bs-toggle="modal"
-																			href="#modalProduct"> Product </a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" data-bs-toggle="offcanvas"
-																			href="#modalSearch"> Search </a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" data-bs-toggle="offcanvas"
-																			href="#modalShoppingCart"> Shopping Cart </a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" data-bs-toggle="modal"
-																			href="#modalSizeChart"> Size Chart </a></li>
-																		<li class="list-styled-item"><a
-																			class="list-styled-link" data-bs-toggle="modal"
-																			href="#modalWaitList"> Wait List </a></li>
-																	</ul>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
+																	<div class="mb-5 fw-bold" th:text="${ctgFirst.categoryName}+${ctgSec.categoryName}" >
+																	</div>
+																		<!-- Links -->
+																		<ul class="list-styled mb-7 fs-sm"  th:each="ctgThd : ${allCtg}" th:if="${ctgThd.categoryLevel} == 4 and ${(ctgThd.parentCategoryCode).equals(ctgSec.categoryCode)}">
+																			<li class="list-styled-item"><a
+																				class="list-styled-link" href="./shop.html" th:text="${ctgThd.categoryName} + ${ctgThd.categoryCode}" >하의</a>
+																			</li>
+																		</ul>
+																	</th:block>
+																		
+																	<th:block th:each="ctgSec : ${allCtg}" th:if="${ctgSec.categoryLevel} == 3 and
+																	 ${(ctgSec.categoryName).equals('신발')} and ${(ctgSec.parentCategoryCode).equals(ctgFirst.categoryCode)} ">
+																	<div class="mb-5 fw-bold" th:text="${ctgFirst.categoryName}+${ctgSec.categoryName}" >
+																	</div>
+																			<!-- Links -->
+																		<ul class="list-styled fs-sm" th:each="ctgThd : ${allCtg}" th:if="${ctgThd.categoryLevel} == 4 and ${(ctgThd.parentCategoryCode).equals(ctgSec.categoryCode)}">
+																			<li class="list-styled-item"><a
+																				class="list-styled-link" href="./product.html"  th:text="${ctgThd.categoryName} + ${ctgThd.categoryCode}"> 신발</a>
+																			</li>
+																		</ul>
+																	</th:block>
+																		
+																	
+																</div><!--  col end -->
+															</div><!-- row -->
+														</div><!-- card-body -->
+													</div><!-- card card-lg -->
+												</div><!-- dropdown-menu -->
 											</li>
 
 										</ul>
 
 									
+								</div><!-- foreach close -->
 								</div>
-							</div>
+							</div><!-- container close -->
+						</div><!-- class mb-2 mb-lg-0 border-bottom-lg close -->
 						</div>
-
-
-
-					</div>
-
-
 					</li>
-
-
-					<!-- 판매순위, 신상 -->
-					<li class="nav-item dropdown">
-						<!-- Toggle --> <a class="nav-link" data-bs-toggle="dropdown"
-						href="#">New</a>
-					</li>
-
-					<li class="nav-item dropdown">
-						<!-- Toggle --> <a class="nav-link" data-bs-toggle="dropdown"
-						href="#">Rank</a>
-					</li>
+							<!-- 판매순위, 신상 -->
+							<li class="nav-item dropdown hovered">
+								<!-- Toggle --> 
+								<a class="nav-link" data-bs-toggle="dropdown" href="#">New</a>
+							</li>
+		
+							<li class="nav-item dropdown hovered">
+								<!-- Toggle --> 
+								<a class="nav-link" data-bs-toggle="dropdown" href="#">Rank</a>
+							</li>
 				</ul>
-				<!-- 판매순위, 신상 -->
-				<!-- Brand -->
-				<a class="navbar-brand mx-auto d-none d-xl-block" href="/"> All
-					Right </a>
-
-				<!-- Nav 찜 장바구니 마이페이지 검색-->
-				<ul class="navbar-nav flex-row">
-					<li class="nav-item"><a class="nav-link"
-						data-bs-toggle="offcanvas" href="#modalSearch"> <i
-							class="fe fe-search"></i>
-					</a></li>
-					<li class="nav-item ms-lg-n4"><a class="nav-link"
-
-						href="page/buyer/orderList"> <i class="fe fe-user"></i>
-					</a></li>
-					<li class="nav-item ms-lg-n4"><a class="nav-link"
-						href="wishList"> <i class="fe fe-heart"></i>
-					</a></li>
-					<li class="nav-item ms-lg-n4">
-						<a class="nav-link" id="cartId" 
-						th:href="${session.loginMember} == null ? @{/page/member/loginForm} : @{/cart/cartView}"> 
-                   <span> <i class="fe fe-shopping-cart"></i></span>
-               </a></li>
-
-				</ul>
-			</div>
-		</div>
-	</nav>
+				</div>
+				
+				
+				
+				
+				
+						<!-- 판매순위, 신상 -->
+						<!-- Brand -->
+						<a class="navbar-brand mx-auto d-none d-xl-block" href="/"> All
+							Right </a>
+		
+						<!-- Nav 찜 장바구니 마이페이지 검색-->
+						<ul class="navbar-nav flex-row">
+							<li class="nav-item"><a class="nav-link"
+								data-bs-toggle="offcanvas" href="#modalSearch"> <i
+									class="fe fe-search"></i>
+							</a></li>
+							<li class="nav-item ms-lg-n4"><a class="nav-link"
+		
+								href="page/buyer/orderList"> <i class="fe fe-user"></i>
+							</a></li>
+							<li class="nav-item ms-lg-n4"><a class="nav-link"
+								href="wishList"> <i class="fe fe-heart"></i>
+							</a></li>
+							<li class="nav-item ms-lg-n4">
+								<a class="nav-link" id="cartId" 
+								th:href="${session.loginMember} == null ? @{/page/member/loginForm} : @{/cart/cartView}"> 
+		                   <span> <i class="fe fe-shopping-cart"></i></span>
+		               </a></li>
+		
+						</ul>
+			</div><!-- navbarClassicCollapse close -->
+		</div> <!-- nav container close -->
+	</nav><!--  nav close -->
 	<script th:inline="javascript">
 		$('#customInq').on('click', function (e) {
 			let member = [[${session.loginMember}]];
@@ -579,7 +430,10 @@
 				}
 			})
 		})
-
+	$('#deptCategory').on('show.bs.collapse',function(es){
+		console.log(es);
+		console.log(this);
+	})
 	</script>
 </div>
 </html>

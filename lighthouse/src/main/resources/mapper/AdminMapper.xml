@@ -305,6 +305,22 @@
 		WHERE rt.r  > (#{pageNum} - 1 ) * #{amount}
   	</select>
   	
+  	
+  	<select id="selectMemberDetailValue">
+  	select *
+	from(
+			select m.*, s.susp_reason, s.susp_regdate, s.susp_enddate, d_count(m.member_id) as declare_count , (select count(*) from ar_suspend where member_id = m.member_id) as susp_count
+			from ar_member m LEFT JOIN ar_suspend s ON m.member_id = s.member_id
+			WHERE m.member_id = #{memberId}
+			ORDER BY s.SUSP_REGDATE desc)
+	where rownum = 1
+  	
+  	</select>
+  	
+  	
+  	
+  	
+  	
   	<insert id="insertSuspendByAdmin">
   	
   	<selectKey keyProperty="suspendCode" order="BEFORE" resultType="int">
@@ -365,7 +381,7 @@
 		  	SELECT  rt.*
 			FROM       (
 		                SELECT   rownum r, pr.*
-		                FROM   (select pp.product_code, pp.product_name, pp.member_id,  mm.member_tel, mm.business_number
+		                FROM   (select pp.product_code, pp.product_name, pp.member_id,  mm.member_tel, mm.business_number, mm.member_email
                                 from ar_products pp JOIN ar_member mm  ON pp.member_id = mm.member_id
 								where 1=1
 								<if test="memberId != null and !(memberId.equals(''))">
@@ -404,6 +420,14 @@
 	        AND pp.PRODUCT_CODE LIKE '%' || #{productCode} || '%'
 	        </if>
   	</select>
+  	
+  	<delete id="deleteProductByAdmin">
+  		DELETE FROM AR_PRODUCTS
+  		WHERE PRODUCT_CODE = #{productCode}
+  	</delete>
+  	
+  	
+  	
   	
   	<select id="selectAdminNoticeList">
   	 		SELECT rt.*

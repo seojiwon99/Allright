@@ -71,6 +71,8 @@ public interface AdminService {
 	public List<MemberDetailVO> getSellerList(int amount, int pageNum, String memberId, String memberName, String memberTel, String businessNumber, int memberAuthor);	
 	//유저 수
 	public int getTotalUserCount(MemberDetailVO memberDetailVO);
+	//클릭 시 상세보기
+	public MemberDetailVO getMemberDetailValue(String memberId);
 	
 	
 	
@@ -78,6 +80,8 @@ public interface AdminService {
 	public List<ProductDetailVO> getProductList(int amount, int pageNum, String memberId, String memberTel, String businessNumber, String productCode);
 	//상품 개수
 	public int getTotalProductCount(ProductDetailVO productDetailVO);
+	//상품 삭제
+	public int removeProductByAdmin(String productCode);
 	
 	
 	//배너 관리

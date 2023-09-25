@@ -12,38 +12,65 @@
 												    margin-bottom: 30px;
 												    margin-top:30px;">
 					<div class="container " >
-						<div class="row">
+						<div class="row" id="maindiv">
 								<div class="col-6 justify-content-between" th:each="b:${banner}">
-									<form >
+									<form>
 											<div>
 												<!-- banner -->
 												<img alt="..." th:src="@{/img/products/}+${b.uploadName}" class="w-100" style=" height:200px; margin: 10px 0px">
 											</div>
 												<!-- content -->
 											<input type="text" class="w-100" placeholder="이미지 설명을 입력해주세요." th:value="${b.imgContent}" name="" style="margin-bottom:10px">
-											<button class="btn btn-secondary btn-xxs uploadBtn">업로드</button>
+											<input type="file"  accept="img/*">
 											<button class="btn btn-secondary btn-xxs saveBtn">저장</button>
 											<button class="btn btn-secondary btn-xxs delBtn">삭제</button>
-											<div class="form-check form-switch">
-											  <input class="form-check-input bType" type="checkbox" 
-											  th:if='${b.bannerType.equals("y")}' role="switch" id="flexSwitchCheckDefault" checked="true" >
-											  <input class="form-check-input bType" type="checkbox" 
-											  th:if='${b.bannerType.equals("n")}'role="switch" id="flexSwitchCheckDefault">
-											  <label class="form-check-label" for="flexSwitchCheckDefault">전시여부</label>
+											<div class="form-check form-switch justify-content-between" style="margin-top: 5px">
+												<div class="form-check form-switch" style="padding:0">
+												  <input class="form-check-input bType" type="checkbox" 
+												  th:if='${b.bannerType.equals("y")}' role="switch" id="flexSwitchCheckDefault" checked="true" >
+												  <input class="form-check-input bType" type="checkbox" 
+												  th:if='${b.bannerType.equals("n")}'role="switch" id="flexSwitchCheckDefault">
+												  <label class="form-check-label" for="flexSwitchCheckDefault">: 전시여부</label>
+												</div>
+												  <div>
+													  <label for="orderNum">배너순서 : </label>
+													  <input type="text" th:value="${b.imgOrder}" id="orderNum" style="width:50px; margin-right:40px">
+												  </div>
 											</div>
 									</form>
 								</div>
+								<div class="visually-hidden">
+								<div class="col-6 justify-content-between" id="clonediv">
+									<form>
+										<div>
+											<img alt="..." src="" class="w-100" style="height:200px; margin: 10px 0px">
+										</div>
+										<!-- content -->
+										<input type="text" class="w-100" placeholder="이미지 설명을 입력해주세요." name="" style="margin-bottom:10px">
+										<input type="file"  accept="img/*">
+											<button class="btn btn-secondary btn-xxs saveBtn">저장</button>
+											<button class="btn btn-secondary btn-xxs delBtn">삭제</button>
+										<div class="form-check form-switch justify-content-between" style="margin-top: 5px">
+											<div class="form-check form-switch" style="padding:0">
+												<input class="form-check-input bType" type="checkbox"  role="switch" id="flexSwitchCheckDefault" checked="true" >
+												<label class="form-check-label" for="flexSwitchCheckDefault">전시여부</label>
+											</div>
+											<div>
+												  <label for="orderNum">배너순서 : </label>
+												  <input type="text"  placeholder="0" id="orderNum" style="width:50px; margin-right:40px">
+												  
+										  </div>
+										</div>
+									</form>
+								</div>
+								</div>
 				    
-					<button class="btn btn-sm btn-primary">배너 등록</button>	
 				    </div>
+					<button class="btn btn-sm btn-primary" id="addBtn">배너 등록</button>	
 				    </div>
 					</div>
 			</div>	
 	<script>
-	$('.uploadBtn').on('click', function(e){
-		e.preventDefault();
-		console.log(this)
-	})
 	$('.saveBtn').on('click', function(e){
 		e.preventDefault();
 		console.log($(this).prev().prev().prev().children()[0]);
@@ -61,6 +88,11 @@
 	$('.bType').on('click', function(e){
 		console.log(this.checked)
 
+	})
+	$('#addBtn').on('click', function(e){
+		let clone = $('#clonediv').clone();
+		$('#maindiv').append(clone);
+		
 	})
 	</script>
 
