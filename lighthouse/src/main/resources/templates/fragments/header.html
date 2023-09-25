@@ -288,7 +288,23 @@
 																	</th:block>
 																		
 																	
-																</div><!--  col end -->
+																</div><!--  fasiion col end -->
+																<div class="col" th:each="ctgFirst : ${allCtg}" th:if="${ctgFirst.categoryLevel} == 2 and ${(ctgFirst.parentCategoryCode).equals('FOOD')} and ${(category.categoryCode).equals('FOOD')}" >
+																	<th:block  th:each="ctgSec : ${allCtg}" th:if="${ctgSec.categoryLevel} == 3 and
+																	 ${(ctgSec.categoryName).equals('닭')} and ${(ctgSec.parentCategoryCode).equals(ctgFirst.categoryCode)} " >
+																
+																
+																
+																	<div class="mb-5 fw-bold" th:text="${ctgFirst.categoryName}+${ctgSec.categoryName}">
+																	</div>
+																		<!-- Links -->
+																		<ul class="list-styled mb-7 fs-sm"  th:if="${ctgSec.categoryLevel} == 3 and ${(ctgSec.parentCategoryCode).equals(ctgFirst.categoryCode)}">
+																			<li class="list-styled-item"><a
+																				class="list-styled-link" href="./shop.html" th:text="${ctgSec.categoryName} + ${ctgSec.categoryCode}">상의</a>
+																			</li>
+																		</ul>
+																	</th:block><!-- sec -->
+																</div><!--  food col -->
 															</div><!-- row -->
 														</div><!-- card-body -->
 													</div><!-- card card-lg -->
