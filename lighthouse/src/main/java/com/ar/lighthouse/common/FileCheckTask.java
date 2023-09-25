@@ -35,9 +35,9 @@ public class FileCheckTask {
 		return str.replace("-", File.separator);
 	}
 	
-	@Scheduled(cron = "0 0 2 * * *")
+	@Scheduled(cron = "2 * * * * *")
 	public void checkFIles() throws Exception{
-		// file list in databast
+		// file list in database
 		List<ImgsVO> fileList = chkMapper.getImgsFiles();
 		
 		// ready for check file in directory with database file list

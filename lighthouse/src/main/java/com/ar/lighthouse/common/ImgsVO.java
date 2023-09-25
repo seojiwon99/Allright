@@ -22,5 +22,4 @@ public class ImgsVO {
 	String productCode;
 	int reviewCode;
 
-	List<ImgsVO> imgVO;
 }

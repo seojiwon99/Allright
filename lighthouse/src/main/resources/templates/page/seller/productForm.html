@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/sellerHtml}">
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/sellerHtml}">
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <!-- Content -->
 
@@ -8,7 +8,7 @@
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/sellerHtml}">
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/sellerHtml}">
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <!-- Content -->
 
@@ -17,483 +17,537 @@
 <div layout:fragment="sellerContent">
 
 
-	<div class="row gx-0">
-		<div class="col-12 col-lg-auto">
+   <div class="row gx-0">
+      <div class="col-12 col-lg-auto">
 
-			<!-- NAVBAR -->
-			<nav class="navbar navbar-expand-lg navbar-vertical navbar-light sticky-start px-lg-7 ">
-				<div class="container-fluid">
+         <!-- NAVBAR -->
+         <nav class="navbar navbar-expand-lg navbar-vertical navbar-light sticky-start px-lg-7 ">
+            <div class="container-fluid">
 
-					<!-- Brand -->
-					<a class="navbar-brand" href="/sellerMain"> 판매자센터 </a>
+               <!-- Brand -->
+               <a class="navbar-brand" href="/sellerMain"> 판매자센터 </a>
 
-					<!-- Toggler -->
-					<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-						data-bs-target="#navbarSidenavLeftCollapse" aria-controls="navbarSidenavLeftCollapse"
-						aria-expanded="false" aria-label="Toggle navigation">
-						<span class="navbar-toggler-icon"></span>
-					</button>
+               <!-- Toggler -->
+               <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#navbarSidenavLeftCollapse" aria-controls="navbarSidenavLeftCollapse"
+                  aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+               </button>
 
-					<!-- Collapse -->
-					<div class="collapse navbar-collapse" id="navbarSidenavLeftCollapse">
+               <!-- Collapse -->
+               <div class="collapse navbar-collapse" id="navbarSidenavLeftCollapse">
 
-						<!-- Nav -->
-						<ul class="navbar-nav fs-lg mb-6 my-lg-12" id="sidenavParent">
-							<li class="nav-item">
-								<!-- Toggle --> <a class="nav-link dropdown-toggle" data-bs-toggle="collapse"
-									href="#sidenavHome"> 상품관리 </a> <!-- Collapse -->
-								<div class="collapse" id="sidenavHome" data-bs-parent="#sidenavParent">
-									<ul class="list-styled fs-base fw-normal py-3 mb-0">
-										<li class="list-styled-item"><a class="list-styled-link" href="/productList">상품
-												조회/수정</a></li>
-										<li class="list-styled-item"><a class="list-styled-link"
-												href="/insertProduct">상품등록</a></li>
+                  <!-- Nav -->
+                  <ul class="navbar-nav fs-lg mb-6 my-lg-12" id="sidenavParent">
+                     <li class="nav-item">
+                        <!-- Toggle --> <a class="nav-link dropdown-toggle" data-bs-toggle="collapse"
+                           href="#sidenavHome"> 상품관리 </a> <!-- Collapse -->
+                        <div class="collapse" id="sidenavHome" data-bs-parent="#sidenavParent">
+                           <ul class="list-styled fs-base fw-normal py-3 mb-0">
+                              <li class="list-styled-item"><a class="list-styled-link" href="/productList">상품
+                                    조회/수정</a></li>
+                              <li class="list-styled-item"><a class="list-styled-link"
+                                    href="/insertProduct">상품등록</a></li>
 
-									</ul>
-								</div>
+                           </ul>
+                        </div>
 
-							</li>
-							<li class="nav-item">
-								<!-- Toggle --> <a class="nav-link dropdown-toggle" data-bs-toggle="collapse"
-									href="#sidenavCatalog"> 판매관리 </a> <!-- Collapse -->
-								<div class="collapse" id="sidenavCatalog" data-bs-parent="#sidenavParent">
-									<div class="row">
-										<div class="col-12 py-3">
-											<!-- Links -->
-											<ul class="list-styled fs-base">
-												<li class="list-styled-item"><a class="list-styled-link"
-														href="/orderManagement">주문확인/발송관리</a></li>
-												<li class="list-styled-item"><a class="list-styled-link"
-														href="/cancelProduct">취소관리</a></li>
-												<li class="list-styled-item"><a class="list-styled-link"
-														href="/exchangeList">교환반품관리</a></li>
+                     </li>
+                     <li class="nav-item">
+                        <!-- Toggle --> <a class="nav-link dropdown-toggle" data-bs-toggle="collapse"
+                           href="#sidenavCatalog"> 판매관리 </a> <!-- Collapse -->
+                        <div class="collapse" id="sidenavCatalog" data-bs-parent="#sidenavParent">
+                           <div class="row">
+                              <div class="col-12 py-3">
+                                 <!-- Links -->
+                                 <ul class="list-styled fs-base">
+                                    <li class="list-styled-item"><a class="list-styled-link"
+                                          href="/orderManagement">주문확인/발송관리</a></li>
+                                    <li class="list-styled-item"><a class="list-styled-link"
+                                          href="/cancelProduct">취소관리</a></li>
+                                    <li class="list-styled-item"><a class="list-styled-link"
+                                          href="/exchangeList">교환반품관리</a></li>
 
-											</ul>
+                                 </ul>
 
-										</div>
+                              </div>
 
-							<li class="nav-item"><a class="nav-link" href="/settlementManagement">정산/통계관리</a></li>
-							<li class="nav-item"><a class="nav-link" href="/productInquiry">문의관리</a></li>
-							<li class="nav-item"><a class="nav-link" href="/sellerMypage">판매자정보</a></li>
-							<li class="nav-item"><a class="nav-link" href="./docs/getting-started.html">고객센터</a></li>
-						</ul>
-
-
+                     <li class="nav-item"><a class="nav-link" href="/settlementManagement">정산/통계관리</a></li>
+                     <li class="nav-item"><a class="nav-link" href="/productInquiry">문의관리</a></li>
+                     <li class="nav-item"><a class="nav-link" href="/sellerMypage">판매자정보</a></li>
+                     <li class="nav-item"><a class="nav-link" href="./docs/getting-started.html">고객센터</a></li>
+                  </ul>
 
 
 
-					</div>
-
-				</div>
-			</nav>
-
-		</div>
 
 
-		<div class="col-12 col-lg">
-			<div class="jumbotron">
-				<div class="container">
-					<h1 class="display-3">상품 등록</h1>
-				</div>
-			</div>
+               </div>
+
+            </div>
+         </nav>
+
+      </div>
 
 
-
-			<div class="container">
-				<form id="insertForm" class="form-horizontal" action="insertProduct" method="post"  enctype="multipart/form-data">
-					<!-- <div id="categoryId">
-						<div class="form-group row">
-							<div>
-								<label class="col-sm-2">카테고리</label>
-
-								<select id="categoryCode" name="categoryCode">
-									<option value="">카테고리선택</option>
-									<option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}"
-										th:text="${category.categoryName}"></option>
-								</select>
-
-								<select th:field="*{getCategoryList}" id="ChildCate" style="display:none;">
-									<option value="">카테고리선택</option>
-									<option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}"
-										th:text="${category.categoryName}"></option>
-								</select>
-
-								<select th:field="*{getCategoryList}" id="ChildOfChildCate" style="display:none;">
-									<option value="">카테고리선택</option>
-									<option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}"
-										th:text="${category.categoryName}"></option>
-								</select>
-
-								<select th:field="*{getCategoryList}" id="thirdOfChildCate" style="display:none;">
-									<option value="">카테고리선택</option>
-									<option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}"
-										th:text="${category.categoryName}"></option>
-								</select><br>
-								<strong id="firstCategoryCode"></strong><strong id="secondCategoryCode"></strong><strong
-									id="thirdCategoryCode"></strong><strong id="quadCategoryCode"></strong>
-							</div>
-						</div>
-						<ul th:each ="category : ${getCategoryList}">
-							<li th:text="${category.categoryName}" ></li>
-						</ul>
-						<ul th:each ="category : ${getCategoryList}">
-							
-						</ul>
-					</div> -->
-
-					<!-- <div class="form-group row">
-						<label class="col-sm-2">상품 코드</label>
-						<div class="col-sm-3">
-							<input type="text" name="productCode" class="form-control">
-						</div>
-					</div> -->
-
-					<div class="form-group row">
-						<label class="col-sm-2" for="productName">상품명</label>
-						<div class="col-sm-3">
-							<input type="text" id="productName" name="productName" class="form-control">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label class="col-sm-2" for="productCost">판매가</label>
-						<div class="col-sm-3">
-							<input type="number"id="productCost" name="productCost" class="form-control">
-						</div>
-						<label class="col-sm-2" for="salePrice">할인가</label>
-						<div class="col-sm-3">
-							<input type="number" id="salePrice" name="salePrice" class="form-control">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label class="col-sm-2" for="optionCount">재고수량</label>
-						<div class="col-sm-3">
-							<input type="number" id="optionCount" name="optionCount" class="form-control">
-						</div>
-					</div>
-					<!-- <div class="form-group row">
-						<label class="col-sm-2" for="productContent">상품content</label>
-						<div class="col-sm-3">
-							<input type="text" id="productContent" name="productContent" class="form-control">
-						</div>
-					</div> -->
-
-					<div class="form-group row">
-						<label class="col-sm-2">옵션 개수</label>
-						<div class="col-sm-3">
-							<select id="optCnt" class="optionsel">
-								<option value="0" selected>----</option>
-								<option value="1">1</option>
-								<option value="2">2</option>
-								<option value="3">3</option>
-							</select>
-							<input type="button" value="옵션등록" id="addOption">
-						</div>
-					</div>
-					<div class="optionBox form-group row" style="display:none;">
-						<label class="col-sm-2">옵션</label>
-						<div class="optionB row g-3">
-
-						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-sm-2" for="">옵션설정</label>
-						<div class="col-sm-3">
-							<table class="table">
-								<thead>
-									<tr>
-										<th>옵션명</th>
-										<th>옵션</th>
-										<th>옵션재고</th>
-										<th>옵션추가돈</th>
-									</tr>
-								</thead>
-								<tbody id="optiontab">
-									
-								</tbody>
-							</table>
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label class="col-sm-2" for="imgName">메인 이미지</label>
-						<div class="col-sm-3">
-							<input type="file" id="imgName" name="files" accept="image/*" onchange="setThumbnail(event);">
-						</div>
-						<div id="image_container" contenteditable="true" style="outline:none; margin:0 auto; border:1px solid black; margin-top : 30px">
-		
-							
-						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-sm-2" for="">상세설명</label>
-						<div class="col-sm-3">
-							<a href="/productContent" target="_blank"><strong name="productContent" class="form-control"
-									style="background-color : #00C73C;">작성하러가기</strong></a>
-						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-sm-2" for="productBrand">브랜드</label>
-						<div class="col-sm-3">
-							<input type="text" id="productBrand" name="productBrand" class="form-control">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-sm-2" for="unitsInStock">상품인증</label>
-						<div class="col-sm-3">
-							<input type="text" id="unitsInStock" name="unitsInStock" class="form-control">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-sm-2" for="productOrigin">원산지</label>
-						<div class="col-sm-3">
-							<input type="text" id="productOrigin" name="productOrigin" class="form-control">
-						</div>
-					</div>
-
-					<div class="form-group row">
-						<label class="col-sm-2" for="productMakeorigin">제조국</label>
-						<div class="col-sm-3">
-							<input type="text" id="productMakeorigin" name="productMakeorigin" class="form-control">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-sm-2" for="minOrder">최소구매수량</label>
-						<div class="col-sm-3">
-							<input type="number" id="minOrder" name="minOrder" class="form-control">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-sm-2" for="maxOrder">최대구매수량</label>
-						<div class="col-sm-3">
-							<input type="number" id="maxOrder" name="maxOrder" class="form-control">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-sm-2" for="productLocation">출고지</label>
-						<div class="col-sm-3">
-							<input type="text" id="productLocation" name="productLocation" class="form-control">
-						</div>
-					</div>
-					
-					<div class="form-group row">
-						<label class="col-sm-2" for="deliveryCost">기본배송비</label>
-						<div class="col-sm-3">
-							<input type="number" id="deliveryCost" name="deliveryCost" class="form-control">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-sm-2" for="exchangeCost">교환배송비</label>
-						<div class="col-sm-3">
-							<input type="number" id="exchangeCost" name="exchangeCost" class="form-control">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-sm-2" for="returnCost">반품배송비</label>
-						<div class="col-sm-3">
-							<input type="number" id="returnCost" name="returnCost" class="form-control">
-						</div>
-					</div>
-					<div class="form-group row">
-						<label class="col-sm-2">택배사</label>
-						<div class="col-sm-3">
-							<select id="deliveryService" name="deliveryService">
-									<option value="" disabled="disabled" selected>택배사 선택</option>
-									<option th:each="del : ${delivery}" th:value="${del.codeId}"
-										th:text="${del.codeName}"></option>
-							</select>
-						</div>
-					</div>
-					<div class="form-group row" th:if="${product != null}">
-						<textarea rows="" cols="" name="productContent">[[${product.productContent}]]</textarea>
-						
-					</div>
-					<div class="form-group row">
-						<div class="col-sm-offset-2 col-sm-10">
-							<button type="submit" class="submit btn btn-primary">등록</button>
-						</div>
-					</div>
-				</form>
-				
-			</div>
-		</div>
-
-		<script>
-		
-			// 옵션 input 창	
--			$('.optionsel').on('change', function (e) {
-				let val = $(this).val();
-				$('.optionB').children().remove();
-				// console.log(val);
-				if (val != 0) {
-					$('.optionBox').show();
-				} else {
-					$('.optionBox').hide();
-				}
-				for (let i = 0; i < val; i++) {
-					let div = $('<div/>').addClass("optionDiv col-md-6");
-					let labelN = $("<label> /").text("옵션이름");
-					let optionN = $('<input name="option['+i+'].optionName1" class="optionN" type="text" id="optionName'+i+'"/>');
-					div.append(labelN);
-					div.append(optionN);
-					$('.optionB').append(div);
-
-					
-					let labelV = $("<label/>").text("옵션");
-					let optionV = $('<input name="option['+i+'].optionValue1" class="optionV" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal'+i+'" />');
-					div.append(labelV);
-					div.append(optionV);
-					$('.optionB').append(div);
-
-				}
-			})
-
-
-			$('#selectCategory').on('change', function () {
-				let val = $(this).val();
-				$.ajax({
-						url: 'childCate',
-						type: 'get',
-						data: {
-							'categoryCode': val
-						}
-					})
-					.done(getCategoryList => {
-						$('#ChildCate').replaceWith(getCategoryList);
-						$('#ChildCate').css('display', '');
-
-						// $('#ChildCate').on('change', createChild());
-						let selectedOptionText = $(this).find('option:selected').text();
-
-						$("#firstCategoryCode").text('선택된 카테고리 : ' + selectedOptionText + ' >');
-					})
-					.fail(reject => {
-						console.log(reject);
-					})
-			})
+      <div class="col-12 col-lg">
+         <div class="jumbotron">
+            <div class="container">
+               <h1 class="display-3">상품 등록</h1>
+            </div>
+         </div>
 
 
 
-			$(document).on("change", "#ChildCate", function () {
-				let val = $(this).val();
-				$.ajax({
-						url: 'childOfCate',
-						type: 'get',
-						data: {
-							'categoryCode': val
-						}
-					})
-					.done(getCategoryList => {
-						console.log(getCategoryList);
-						if (val == null) {
-							$('#ChildOfChildCate').css('display', 'none');
-						}
-						$('#ChildOfChildCate').replaceWith(getCategoryList);
-						$('#ChildOfChildCate').css('display', '');
+         <div class="container">
+            <form id="insertForm" class="form-horizontal" action="insertProduct" method="post"  enctype="multipart/form-data">
+               <!-- <div id="categoryId">
+                  <div class="form-group row">
+                     <div>
+                        <label class="col-sm-2">카테고리</label>
 
-						let selectedOptionText = $(this).find('option:selected').text();
+                        <select id="categoryCode" name="categoryCode">
+                           <option value="">카테고리선택</option>
+                           <option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}"
+                              th:text="${category.categoryName}"></option>
+                        </select>
 
-						$("#secondCategoryCode").text(selectedOptionText + ' >');
+                        <select th:field="*{getCategoryList}" id="ChildCate" style="display:none;">
+                           <option value="">카테고리선택</option>
+                           <option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}"
+                              th:text="${category.categoryName}"></option>
+                        </select>
 
-					})
-					.fail(reject => {
-						console.log(reject);
-					})
-			})
+                        <select th:field="*{getCategoryList}" id="ChildOfChildCate" style="display:none;">
+                           <option value="">카테고리선택</option>
+                           <option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}"
+                              th:text="${category.categoryName}"></option>
+                        </select>
 
-			$(document).on("change", "#ChildOfChildCate", function () {
-				let val = $(this).val();
-				console.log(val);
-				$.ajax({
-						url: 'thirdOfCate',
-						type: 'get',
-						data: {
-							'categoryCode': val
-						}
-					})
-					.done(getCategoryList => {
-						console.log(getCategoryList);
-						if (val == null) {
-							$('#thirdOfChildCate').css('display', 'none');
-						}
-						$('#thirdOfChildCate').replaceWith(getCategoryList);
-						$('#thirdOfChildCate').css('display', '');
+                        <select th:field="*{getCategoryList}" id="thirdOfChildCate" style="display:none;">
+                           <option value="">카테고리선택</option>
+                           <option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}"
+                              th:text="${category.categoryName}"></option>
+                        </select><br>
+                        <strong id="firstCategoryCode"></strong><strong id="secondCategoryCode"></strong><strong
+                           id="thirdCategoryCode"></strong><strong id="quadCategoryCode"></strong>
+                     </div>
+                  </div>
+                  <ul th:each ="category : ${getCategoryList}">
+                     <li th:text="${category.categoryName}" ></li>
+                  </ul>
+                  <ul th:each ="category : ${getCategoryList}">
+                     
+                  </ul>
+               </div> -->
 
-						let selectedOptionText = $(this).find('option:selected').text();
+             <div class="form-group row">
+                  <label class="col-sm-2">상품 코드</label>
+                  <div class="col-sm-3">
+                     <input type="text" name="productCode" class="form-control">
+                  </div>
+               </div>
 
-						$("#thirdCategoryCode").text(selectedOptionText + ' >');
+               <div class="form-group row">
+                  <label class="col-sm-2" for="productName">상품명</label>
+                  <div class="col-sm-3">
+                     <input type="text" id="productName" name="productName" class="form-control">
+                  </div>
+               </div>
 
-						$('#thirdOfChildCate').change(function () {
-							let selectedOptionText = $(this).find('option:selected').text();
-							$("#quadCategoryCode").text(selectedOptionText);
-						});
+               <div class="form-group row">
+                  <label class="col-sm-2" for="productCost">판매가</label>
+                  <div class="col-sm-3">
+                     <input type="number"id="productCost" name="productCost" class="form-control">
+                  </div>
+                  <label class="col-sm-2" for="salePrice">할인가</label>
+                  <div class="col-sm-3">
+                     <input type="number" id="salePrice" name="salePrice" class="form-control">
+                  </div>
+               </div>
+
+               <div class="form-group row">
+                  <label class="col-sm-2" for="optionCount">재고수량</label>
+                  <div class="col-sm-3">
+                     <input type="number" id="optionCount" name="optionCount" class="form-control">
+                  </div>
+               </div>
+               <!-- <div class="form-group row">
+                  <label class="col-sm-2" for="productContent">상품content</label>
+                  <div class="col-sm-3">
+                     <input type="text" id="productContent" name="productContent" class="form-control">
+                  </div>
+               </div> -->
+
+               <div class="form-group row">
+                  <label class="col-sm-2">옵션 개수</label>
+                  <div class="col-sm-3">
+                     <select id="optCnt" class="optionsel" name="optCnt">
+                        <option value="0" selected>----</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                     </select>
+                     <input type="button" value="옵션등록" id="addOption">
+                  </div>
+               </div>
+               <div class="optionBox form-group row" style="display:none;">
+                  <label class="col-sm-2">옵션</label>
+                  <div class="optionB row g-3">
+
+                  </div>
+               </div>
+               <div class="form-group row">
+                  <label class="col-sm-2" for="">옵션설정</label>
+                  <div class="col-sm-3">
+                     <table class="table">
+                        <thead>
+                           <tr>
+                              <th>옵션명</th>
+                              <th>옵션</th>
+                              <th>옵션재고</th>
+                              <th>옵션추가돈</th>
+                           </tr>
+                        </thead>
+                        <tbody id="optiontab">
+                           
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+
+               <div class="form-group row">
+                  <label class="col-sm-2" for="imgName">메인 이미지</label>
+                  <div class="col-sm-3">
+                     <input type="file" id="imgName" name="files" accept="image/*" onchange="setThumbnail(event);">
+                  </div>
+                  <div id="image_container" contenteditable="true" style="outline:none; margin:0 auto; border:1px solid black; margin-top : 30px">
+      
+                     
+                  </div>
+               </div>
+               <div class="form-group row">
+                  <label class="col-sm-2" for="">상세설명</label>
+                  <div class="col-sm-3">
+                     <a target="_blank" class="detailPro"><strong name="productContent" class="form-control"
+                           style="background-color : #00C73C;">작성하러가기</strong></a>
+                  </div>
+               </div>
+               <div class="form-group row">
+                  <label class="col-sm-2" for="productBrand">브랜드</label>
+                  <div class="col-sm-3">
+                     <input type="text" id="productBrand" name="productBrand" class="form-control">
+                  </div>
+               </div>
+               <div class="form-group row">
+                  <label class="col-sm-2" for="unitsInStock">상품인증</label>
+                  <div class="col-sm-3">
+                     <input type="text" id="unitsInStock" name="unitsInStock" class="form-control">
+                  </div>
+               </div>
+               <div class="form-group row">
+                  <label class="col-sm-2" for="productOrigin">원산지</label>
+                  <div class="col-sm-3">
+                     <input type="text" id="productOrigin" name="productOrigin" class="form-control">
+                  </div>
+               </div>
+
+               <div class="form-group row">
+                  <label class="col-sm-2" for="productMakeorigin">제조국</label>
+                  <div class="col-sm-3">
+                     <input type="text" id="productMakeorigin" name="productMakeorigin" class="form-control">
+                  </div>
+               </div>
+               <div class="form-group row">
+                  <label class="col-sm-2" for="minOrder">최소구매수량</label>
+                  <div class="col-sm-3">
+                     <input type="number" id="minOrder" name="minOrder" class="form-control">
+                  </div>
+               </div>
+               <div class="form-group row">
+                  <label class="col-sm-2" for="maxOrder">최대구매수량</label>
+                  <div class="col-sm-3">
+                     <input type="number" id="maxOrder" name="maxOrder" class="form-control">
+                  </div>
+               </div>
+               <div class="form-group row">
+                  <label class="col-sm-2" for="productLocation">출고지</label>
+                  <div class="col-sm-3">
+                     <input type="text" id="productLocation" name="productLocation" class="form-control">
+                  </div>
+               </div>
+               
+               <div class="form-group row">
+                  <label class="col-sm-2" for="deliveryCost">기본배송비</label>
+                  <div class="col-sm-3">
+                     <input type="number" id="deliveryCost" name="deliveryCost" class="form-control">
+                  </div>
+               </div>
+               <div class="form-group row">
+                  <label class="col-sm-2" for="exchangeCost">교환배송비</label>
+                  <div class="col-sm-3">
+                     <input type="number" id="exchangeCost" name="exchangeCost" class="form-control">
+                  </div>
+               </div>
+               <div class="form-group row">
+                  <label class="col-sm-2" for="returnCost">반품배송비</label>
+                  <div class="col-sm-3">
+                     <input type="number" id="returnCost" name="returnCost" class="form-control">
+                  </div>
+               </div>
+               <div class="form-group row">
+                  <label class="col-sm-2">택배사</label>
+                  <div class="col-sm-3">
+                     <select id="deliveryService" name="deliveryService">
+                           <option value="" disabled="disabled" selected>택배사 선택</option>
+                           <option th:each="del : ${delivery}" th:value="${del.codeId}" th:text="${del.codeName}"></option>
+                     </select>
+                  </div>
+               </div>
+               <div class="form-group row" th:if="${product != null}">
+                  <textarea rows="" cols="" name="productContent">[[${product.productContent}]]</textarea>
+                  <th:block th:each="img, status :${detailImg.imgsVO}">
+                  		<input type="text" th:value="${img.imgName}" th:name="|imgsVO[${status.index}].imgName|">
+                  		<input type="text" th:value="${img.uploadName}" th:name="|imgsVO[${status.index}].uploadName|">
+                  		<input type="text" th:value="${img.uploadPath}" th:name="|imgsVO[${status.index}].uploadPath|">
+                  		<input type="text" th:value="${img.imgContent}" th:name="|imgsVO[${status.index}].imgContent|">
+                  </th:block>
+               </div>
+               <div class="form-group row">
+                  <div class="col-sm-offset-2 col-sm-10">
+                     <button type="submit" class="submit btn btn-primary">등록</button>
+                  </div>
+               </div>
+            </form>
+            
+         </div>
+      </div>
+
+      <script>
+         $(document).ready(function(){
+
+            let userData = JSON.parse(localStorage.getItem("product"));
+            if(userData != null){
+               let inputTag = $("#insertForm").find("input").not("[type='button']");
+               let selectTag = $("#insertForm").find("select");
+               for(let i =0; i < selectTag.length; i++){
+                  inputTag.push(selectTag[i]);
+               }
+   
+               $.each(userData, function(key,value){
+                  for(let data of inputTag){
+                     let dataName = $(data).attr('name');            
+                     if(dataName == key){
+                        $(data).val(value);
+                        if(dataName == 'optCnt' && $(data).val() != ''){
+                           let val = $(data).val();
+                           console.log(val);
+                           $('.optionB').children().remove();
+                           // console.log(val);
+                           if (val != 0) {
+                              $('.optionBox').show();
+                           } else {
+                              $('.optionBox').hide();
+                           }
+                           for (let i = 0; i < val; i++) {
+                              let div = $('<div/>').addClass("optionDiv col-md-6");
+                              let labelN = $("<label> /").text("옵션이름");
+                              let optionN = $('<input name="option['+i+'].optionName1" class="optionN" type="text" id="optionName'+i+'"/>');
+                              div.append(labelN);
+                              div.append(optionN);
+                              $('.optionB').append(div);
+
+                              
+                              let labelV = $("<label/>").text("옵션");
+                              let optionV = $('<input name="option['+i+'].optionValue1" class="optionV" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal'+i+'" />');
+                              div.append(labelV);
+                              div.append(optionV);
+                              $('.optionB').append(div);
+
+                           }
+                        }
+                     }
+
+                  }
+
+
+               })
+
+            }
+         })
+         // 옵션 input 창   
+-         $('.optionsel').on('change', function (e) {
+            let val = $(this).val();
+            $('.optionB').children().remove();
+            // console.log(val);
+            if (val != 0) {
+               $('.optionBox').show();
+            } else {
+               $('.optionBox').hide();
+            }
+            for (let i = 0; i < val; i++) {
+               let div = $('<div/>').addClass("optionDiv col-md-6");
+               let labelN = $("<label> /").text("옵션이름");
+               let optionN = $('<input name="option['+i+'].optionName1" class="optionN" type="text" id="optionName'+i+'"/>');
+               div.append(labelN);
+               div.append(optionN);
+               $('.optionB').append(div);
+
+               
+               let labelV = $("<label/>").text("옵션");
+               let optionV = $('<input name="option['+i+'].optionValue1" class="optionV" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal'+i+'" />');
+               div.append(labelV);
+               div.append(optionV);
+               $('.optionB').append(div);
+
+            }
+         })
+
+
+         $('#selectCategory').on('change', function () {
+            let val = $(this).val();
+            $.ajax({
+                  url: 'childCate',
+                  type: 'get',
+                  data: {
+                     'categoryCode': val
+                  }
+               })
+               .done(getCategoryList => {
+                  $('#ChildCate').replaceWith(getCategoryList);
+                  $('#ChildCate').css('display', '');
+
+                  // $('#ChildCate').on('change', createChild());
+                  let selectedOptionText = $(this).find('option:selected').text();
+
+                  $("#firstCategoryCode").text('선택된 카테고리 : ' + selectedOptionText + ' >');
+               })
+               .fail(reject => {
+                  console.log(reject);
+               })
+         })
 
 
 
-					})
-					.fail(reject => {
-						console.log(reject);
-					})
-			})
+         $(document).on("change", "#ChildCate", function () {
+            let val = $(this).val();
+            $.ajax({
+                  url: 'childOfCate',
+                  type: 'get',
+                  data: {
+                     'categoryCode': val
+                  }
+               })
+               .done(getCategoryList => {
+                  console.log(getCategoryList);
+                  if (val == null) {
+                     $('#ChildOfChildCate').css('display', 'none');
+                  }
+                  $('#ChildOfChildCate').replaceWith(getCategoryList);
+                  $('#ChildOfChildCate').css('display', '');
+
+                  let selectedOptionText = $(this).find('option:selected').text();
+
+                  $("#secondCategoryCode").text(selectedOptionText + ' >');
+
+               })
+               .fail(reject => {
+                  console.log(reject);
+               })
+         })
+
+         $(document).on("change", "#ChildOfChildCate", function () {
+            let val = $(this).val();
+            console.log(val);
+            $.ajax({
+                  url: 'thirdOfCate',
+                  type: 'get',
+                  data: {
+                     'categoryCode': val
+                  }
+               })
+               .done(getCategoryList => {
+                  console.log(getCategoryList);
+                  if (val == null) {
+                     $('#thirdOfChildCate').css('display', 'none');
+                  }
+                  $('#thirdOfChildCate').replaceWith(getCategoryList);
+                  $('#thirdOfChildCate').css('display', '');
+
+                  let selectedOptionText = $(this).find('option:selected').text();
+
+                  $("#thirdCategoryCode").text(selectedOptionText + ' >');
+
+                  $('#thirdOfChildCate').change(function () {
+                     let selectedOptionText = $(this).find('option:selected').text();
+                     $("#quadCategoryCode").text(selectedOptionText);
+                  });
 
 
-			// document.querySelector('form[name="insertForm"]')
-			// 	.addEventListener(
-			// 		'submit',
-			// 		function (e) {
-			// 			e.preventDefault();
 
-			// 			let productCode = document.getElementsByName('productCode')[0];
+               })
+               .fail(reject => {
+                  console.log(reject);
+               })
+         })
 
-			// 			if (productCode.value == '') {
-			// 				alert('상품코드를 입력하세요');
-			// 				productCode.focus();
-			// 				return;
-			// 			}
-			// 			alert('상품등록이 완료되었습니다.')
-			// 			insertForm.submit();
-			// 		}
-			// 	)
 
-			$(document).on('click','.submit',function(e){
-				let option = $("input[name='optionName']").val();
-				console.log(option);
-				e.preventDefault();
-				// if($('#selectCategory').val() == null || $('#selectCategory').val() == '' ){
-				// 	alert("카테고리를 선택해주세요");	
-				// 	return;
-				// }
-				let form = $('#insertForm');
-				let data = $(form).find('input[type != hidden]');
-				/* $(data).each(function(idx,item){
-					if($(item).val() == null || $(item).val() == ''){
-						let id = $(item).attr("id");
+         // document.querySelector('form[name="insertForm"]')
+         //    .addEventListener(
+         //       'submit',
+         //       function (e) {
+         //          e.preventDefault();
 
-						// console.log($(item).attr("id"));
-						alert( $('label[for="'+ id+'"]').text()  + "를 입력해주세요");
-						item.focus();
-						return false;
-					}
-				})
+         //          let productCode = document.getElementsByName('productCode')[0];
 
-				if($('#selectdelivery').val() == null || $('#selectdelivery').val() ==''){
-					alert("택배사를 선택 해주세요");
-					return;
-				} */
+         //          if (productCode.value == '') {
+         //             alert('상품코드를 입력하세요');
+         //             productCode.focus();
+         //             return;
+         //          }
+         //          alert('상품등록이 완료되었습니다.')
+         //          insertForm.submit();
+         //       }
+         //    )
 
-				form.submit();
-				
-			})
-			
-			    function setThumbnail(event) {
+         $(document).on('click','.submit',function(e){
+            let option = $("input[name='optionName']").val();
+            console.log(option);
+            e.preventDefault();
+            // if($('#selectCategory').val() == null || $('#selectCategory').val() == '' ){
+            //    alert("카테고리를 선택해주세요");   
+            //    return;
+            // }
+            let form = $('#insertForm');
+            let data = $(form).find('input[type != hidden]');
+            /* $(data).each(function(idx,item){
+               if($(item).val() == null || $(item).val() == ''){
+                  let id = $(item).attr("id");
+
+                  // console.log($(item).attr("id"));
+                  alert( $('label[for="'+ id+'"]').text()  + "를 입력해주세요");
+                  item.focus();
+                  return false;
+               }
+            })
+
+            if($('#selectdelivery').val() == null || $('#selectdelivery').val() ==''){
+               alert("택배사를 선택 해주세요");
+               return;
+            } */
+            localStorage.removeItem('product')
+            form.submit();
+            
+         })
+         
+             function setThumbnail(event) {
         var reader = new FileReader();
 
         reader.onload = function(event) {
-		  // document.querySelector("div#image_container").removeChild();
-		  var div = document.querySelector("div#image_container");
-			div.removeChild(div.firstChild);
-		  var divTag = document.createElement("div");
+        // document.querySelector("div#image_container").removeChild();
+        var div = document.querySelector("div#image_container");
+         div.removeChild(div.firstChild);
+        var divTag = document.createElement("div");
           var img = document.createElement("img");
           img.setAttribute("src", event.target.result);
           img.style.width = "300px";
@@ -503,67 +557,111 @@
           var textarea = document.createElement("textarea");
           textarea.setAttribute("name","productImg[0].imgContent");
     
-			divTag.append(textarea);
-		  
-		  document.querySelector("div#image_container").append(divTag)
+         divTag.append(textarea);
+        
+        document.querySelector("div#image_container").append(divTag)
           
         };
 
         reader.readAsDataURL(event.target.files[0]);
       }
-	  
-	  $('#addOption').on('click',function(e){
-		$('#optiontab').empty();
-		let optionD = $('.optionDiv');
-		let optionN = $('.optionN');
-		let optionV = $('.optionV');
+     
+     $('#addOption').on('click',function(e){
+      $('#optiontab').empty();
+      let optionD = $('.optionDiv');
+      let optionN = $('.optionN');
+      let optionV = $('.optionV');
 
-		let tbody = $('#optiontab');
-		let idx = 0;
-		for(let i = 0; i < optionD.length; i++){
-			let optionN = $(optionD[i]).children('.optionN').val();
-			let optionV = $(optionD[i]).children('.optionV').val();
-			let optionVal = optionV.split(',');
+      let tbody = $('#optiontab');
+      let idx = 0;
+      for(let i = 0; i < optionD.length; i++){
+         let optionN = $(optionD[i]).children('.optionN').val();
+         let optionV = $(optionD[i]).children('.optionV').val();
+         let optionVal = optionV.split(',');
 
-			for(let j = 0; j < optionVal.length; j++){
+         for(let j = 0; j < optionVal.length; j++){
 
-				let tr = $('<tr/>');
-				td = $('<td />');
-				let input = $('<input />').attr('value', optionN);
-				input.attr('name','option['+idx+'].optionName');
-				input.attr('readonly','true');
-				td.append(input);
-				tr.append(td);
+            let tr = $('<tr/>');
+            td = $('<td />');
+            let input = $('<input />').attr('value', optionN);
+            input.attr('name','option['+idx+'].optionName');
+            input.attr('readonly','true');
+            td.append(input);
+            tr.append(td);
 
-				td = $('<td/>');
-				input = $('<input />').attr('value', optionVal[j]);
-				input.attr('name','option['+idx+'].optionValue');
-				input.attr('readonly','true');
-				td.append(input);
-				tr.append(td);
+            td = $('<td/>');
+            input = $('<input />').attr('value', optionVal[j]);
+            input.attr('name','option['+idx+'].optionValue');
+            input.attr('readonly','true');
+            td.append(input);
+            tr.append(td);
 
-				td = $('<td/>');
-				let inputN = $('<input />').attr('type','number');
-				inputN.attr('name','option['+idx+'].optionCount');
-				td.append(inputN);
-				tr.append(td);
+            td = $('<td/>');
+            let inputN = $('<input />').attr('type','number');
+            inputN.attr('name','option['+idx+'].optionCount');
+            td.append(inputN);
+            tr.append(td);
 
-				td = $('<td/>');
-				inputN = $('<input />').attr('type','number');
-				inputN.attr('name','option['+idx+'].optionPrice');
-				td.append(inputN);
-				tr.append(td);
+            td = $('<td/>');
+            inputN = $('<input />').attr('type','number');
+            inputN.attr('name','option['+idx+'].optionPrice');
+            td.append(inputN);
+            tr.append(td);
 
-				idx++;
-				tbody.append(tr);
-			}
-		}
-		
-	  })
-		</script>
-
+            idx++;
+            tbody.append(tr);
+         }
+      }
+      
+     })
 
 
-	</div>
+     // localstorage에 담고 보내기
+     $('.detailPro').on('click',function(e){
+      e.preventDefault();
+        let obj = {
+         productName : $('input[name="productName"]').val(),
+         productCost : $('input[name="productCost"]').val(),
+         salePrice : $('input[name="salePrice"]').val(),
+         optionCount : $('input[name="optionCount"]').val(),
+         files : $('input[name="files"]').val(),
+         productBrand : $('input[name="productBrand"]').val(),
+         optCnt : $('select[name="optCnt"]').val(),
+         unitsInStock : $('input[name="unitsInStock"]').val(),
+         productOrigin : $('input[name="productOrigin"]').val(),
+         productMakeorigin : $('input[name="productMakeorigin"]').val(),
+         minOrder : $('input[name="minOrder"]').val(),
+         maxOrder : $('input[name="maxOrder"]').val(),
+         productLocation : $('input[name="productLocation"]').val(),
+         deliveryCost :$('input[name="deliveryCost"]').val(),
+         exchangeCost : $('input[name="exchangeCost"]').val(),
+         returnCost : $('input[name="returnCost"]').val(),
+         deliveryService : $('input[name="deliveryService"]').val(),
+         option :[
+            {
+               optionName1 : $('input[name="optionName1"]').val(),
+               optionValue1 : $('input[name="optionValue1"]').val(),
+
+            },
+            {
+               optionName1 : $('input[name="optionName1"]').val(),
+               optionValue1 : $('input[name="optionValue1"]').val(),
+
+            },
+            {
+               optionName1 : $('input[name="optionName1"]').val(),
+               optionValue1 : $('input[name="optionValue1"]').val(),
+
+            },
+         ]
+        }
+        window.localStorage.setItem("product",JSON.stringify(obj));
+        location.href = '/productContent';
+     })
+      </script>
+
+
+
+   </div>
 
 </html>

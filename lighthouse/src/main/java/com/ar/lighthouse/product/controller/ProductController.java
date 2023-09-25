@@ -30,15 +30,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import com.ar.lighthouse.cart.service.CartService;
-import com.ar.lighthouse.cart.service.CartVO;
 
 import com.ar.lighthouse.common.CodeVO;
 
@@ -188,13 +185,15 @@ public class ProductController {
   
 	// 상품 등록
 		@PostMapping("insertProduct")
-		public String addProduct(List<MultipartFile> files ,ProductVO productVO,  HttpServletRequest req, RedirectAttributes rtt) {
+		public String addProduct(List<MultipartFile> files ,ProductVO productVO,  HttpServletRequest req, RedirectAttributes rtt, ImgsListVO imgsVO) {
 			HttpSession session = req.getSession();
 			MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 			
+			System.out.println(imgsVO);
 			productVO.setMemberId(memberVO.getMemberId());
-			productVO.setCategoryCode("P00001");
-			productVO.setDeliveryService("영차");
+			productVO.setMemberId("test");
+			productVO.setCategoryCode("MSU");
+			// productVO.setDeliveryService("영차");
 
 			// System.out.println(productVO);
 			productService.addProduct(productVO);
@@ -248,7 +247,7 @@ public class ProductController {
 		        		thumbnail.close();
 		        		
 		        	}
-		        	System.out.println(productVO.getProductImg().get(i));
+		        	// System.out.println(productVO.getProductImg().get(i));
 		        	productService.addProductImg(productVO.getProductImg().get(i));
 		        	i++;
 		        	
@@ -257,20 +256,27 @@ public class ProductController {
 		        }
 		    	
 		  }
+			if(imgsVO != null) {
+				for(int j = 0; j < imgsVO.getImgsVO().size(); j++) {
+					imgsVO.getImgsVO().get(j).setImgOrder(j+1);
+					imgsVO.getImgsVO().get(j).setProductCode(productVO.getProductCode());
+					productService.addProductImg(imgsVO.getImgsVO().get(j));
+				}
+			}
 			 
 			rtt.addFlashAttribute("msg", "등륵성공");
 			
-			return "redirect:insertProductForm/"+memberVO.getMemberId();
+			return "redirect:productList/"+memberVO.getMemberId();
 		}
 
 
 		// 상품 상세보기 사진 정보 보내기
 		@PostMapping("insertDetailImg")
-		public String addDetailImg(Model model,MultipartFile[] uploadFile,ImgsListVO imgVO) {
-			System.out.println(uploadFile);
-			for(var i=0; i<imgVO.getImgsVO().size(); i++) {
-				System.out.println(imgVO.getImgsVO().get(i));			
-			}
+		public String addDetailImg(Model model,MultipartFile[] uploadFile, List<ImgsVO> imgVO) {
+			System.out.println(imgVO);
+//			for(var i=0; i<imgVO.getImgsVO().size(); i++) {
+//				System.out.println(imgVO.getImgsVO().get(i));			
+//			}
 			
 			int idx =0;
 			List<ImgsVO> imgsInfo = new ArrayList<ImgsVO>();
@@ -284,14 +290,14 @@ public class ProductController {
 				String originalName = files.getOriginalFilename();
 				
 				String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
-				imgVO.getImgsVO().get(idx).setImgName(fileName);
+				// imgVO.getImgsVO().get(idx).setImgName(fileName);
 				
 				String folderPath = makeFolder();
 				String uuid = UUID.randomUUID().toString();
-				imgVO.getImgsVO().get(idx).setUploadName(uuid+"_"+fileName);
+				// imgVO.getImgsVO().get(idx).setUploadName(uuid+"_"+fileName);
 				
 				String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
-				imgVO.getImgsVO().get(idx).setUploadPath(folderPath);
+				// imgVO.getImgsVO().get(idx).setUploadPath(folderPath);
 				
 				String saveName = uploadPath + File.separator + uploadFileName;
 				
@@ -528,11 +534,11 @@ public class ProductController {
 	}
 	
 	@PostMapping("insertImg")
-	public String productdetailImg(Model model, ProductVO productVO, RedirectAttributes rttr) {
-//		System.out.println(productVO);
+	public String productdetailImg(Model model, ProductVO productVO,ImgsListVO imgsList,RedirectAttributes rttr) {
+		System.out.println(imgsList);
 //		model.addAttribute("product", productVO);
 		rttr.addFlashAttribute("product", productVO);
-		
+		rttr.addFlashAttribute("detailImg", imgsList);
 		return "redirect:/insertProductForm";
 	}
 
