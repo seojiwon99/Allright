@@ -65,18 +65,17 @@
 													class="list-styled-link" href="/exchangeList">교환반품관리</a></li>
 
 											</ul>
-</div>
-</div>
 										</div>
-
-										<li class="nav-item"><a class="nav-link"
-											href="/settlementManagement">정산/통계관리</a></li>
-										<li class="nav-item"><a class="nav-link"
-											href="/productInquiry">문의관리</a></li>
-										<li class="nav-item"><a class="nav-link"
-											href="/sellerMypage">판매자정보</a></li>
-										<li class="nav-item"><a class="nav-link"
-											href="./docs/getting-started.html">고객센터</a></li>
+									</div>
+								</div>
+							<li class="nav-item"><a class="nav-link"
+								href="/settlementManagement">정산/통계관리</a></li>
+							<li class="nav-item"><a class="nav-link"
+								href="/productInquiry">문의관리</a></li>
+							<li class="nav-item"><a class="nav-link"
+								href="/sellerMypage">판매자정보</a></li>
+							<li class="nav-item"><a class="nav-link"
+								href="./docs/getting-started.html">고객센터</a></li>
 						</ul>
 
 
@@ -93,49 +92,50 @@
 		<div class="col-12 col-lg">
 			<div class="panel-body">
 				<!---->
-				
-											
 
-							<div class="_1Vof48UxmD _oVRNwPvxck">
-								<div class="_KqV0-1BSnB">
-									<button type="button" id="todayBtn" class="btn btn-primary2">
-										<span id="today">오늘</span>
-									</button>
-									<button type="button" id="weekBtn" class="btn btn-primary2">
-										<span id="week">1주일</span>
-									</button>
-									<button type="button" id="oneMonthBtn" class="btn btn-primary2">
-										<span id="onemonth">1개월</span>
-									</button>
-									<button type="button" id="threeMonthBtn"
-										class="btn btn-primary2 active">
-										<span id="thmonth">3개월</span>
-									</button>
 
-									<div id="dateDisplay"></div>
 
-									<label class="_MN8nIh0X4y">상세조건</label> <select
-										class="_4LshyCrDpi" title="리스트 보기">
-										<option selected value="">전체</option>
-										<option value="member_name">구매자명</option>
-										<option value="member_tel">구매자연락처</option>
-										<option value="member_id">구매자ID</option>
-										<option value="product_code">상품코드</option>
-										<option value="delivery_number">송장번호</option>
-									</select> <input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
-									<div>
-										<span>조회기간</span> <input type="DATE" id="from" name="from"
-											autocomplete="off"> <label for="to">~</label> <input
-											type="DATE" id="to" name="to" autocomplete="off">
-									</div>
-								</div>
-							</div>
+				<div class="_1Vof48UxmD _oVRNwPvxck">
+					<div class="_KqV0-1BSnB">
+						<button type="button" id="todayBtn" class="btn btn-primary2">
+							<span id="today">오늘</span>
+						</button>
+						<button type="button" id="weekBtn" class="btn btn-primary2">
+							<span id="week">1주일</span>
+						</button>
+						<button type="button" id="oneMonthBtn" class="btn btn-primary2">
+							<span id="onemonth">1개월</span>
+						</button>
+						<button type="button" id="threeMonthBtn"
+							class="btn btn-primary2 active">
+							<span id="thmonth">3개월</span>
+						</button>
 
-							<button type="button" id="orderSearch">검색</button>
-					<section class="pb-12">
-						<div class="orderBtn" style="margin: 20px;">
-						<input type="button" id="checkOrderBtn" value="반품승인"> 
-						<input type="button" id="insertDeliveryBtn" value="교환승인">
+						<div id="dateDisplay"></div>
+
+						<label class="_MN8nIh0X4y">상세조건</label> <select
+							class="_4LshyCrDpi" title="리스트 보기">
+							<option selected value="">전체</option>
+							<option value="member_name">구매자명</option>
+							<option value="member_tel">구매자연락처</option>
+							<option value="member_id">구매자ID</option>
+							<option value="product_code">주문번호</option>
+							<option value="delivery_number">송장번호</option>
+						</select> <input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
+						<div>
+							<span>조회기간</span> <input type="DATE" id="from" name="from"
+								autocomplete="off"> <label for="to">~</label> <input
+								type="DATE" id="to" name="to" autocomplete="off">
+						</div>
+					</div>
+				</div>
+
+				<button type="button" id="orderSearch">검색</button>
+				<section class="pb-12" style="border:1px">
+					<div class="orderBtn" style="margin: 20px;">
+						<input type="button" id="checkOrderBtn" value="반품승인"> <input
+							type="button" id="insertDeliveryBtn" value="교환승인">
+						<div style="width:100%; height: 300px; overflow:auto; border:1px; ">
 						<table border="1" class="table" id="getProductList">
 							<thead>
 								<tr>
@@ -149,74 +149,55 @@
 									<th>구매자</th>
 								</tr>
 							</thead>
-							<tbody id="exchangeList">
-								<tr th:each="exchange : ${exchangeInfo}">
+							<tbody id="exReSeaList">
+								<tr th:each="exRe : ${exReList}">
 									<td><input type="checkbox"></td>
-
-									<td th:text="${exchange.orderDetailCode}"></td>
-									<td th:text="${exchange.productName}"></td>
-									<td th:text="${exchange.orderStatus}"></td>
-									<td th:text="${exchange.exchangeReason}"></td>
+									
+									<td th:text="${exRe.orderDetailCode}"></td>
+									<td th:text="${exRe.productName}"></td>
+									<td th:text="${exRe.orderStatus}"></td>
 									<td>
-										<span th:if="${exchange.exchangeCode != null}">교환</span>
+									<span
+										th:if="${exRe.exchangeCode != null && exRe.returnCode == null}"
+										th:text="${exRe.exchangeReason}"></span> 
+									<span
+										th:if="${exRe.returnCode != null && exRe.exchangeCode == null}"
+										th:text="${exRe.returnReason}"></span>
 									</td>
-									<td
-										th:text="${#dates.format(exchange.exchangeRegdate, 'yyyy-MM-dd')}"></td>
-									<td th:text="${exchange.memberName}"></td>
-
-								</tr>
-								<tr th:each="return : ${returnList}">
-									<td><input type="checkbox"></td>
-
-									<td th:text="${return.orderDetailCode}"></td>
-									<td th:text="${return.productName}"></td>
-									<td th:text="${return.orderStatus}"></td>
-									<td th:text="${return.returnReason}"></td>
 									<td>
-										<span th:if="${return.returnCode != null}">반품</span>
+									<span
+										th:if="${exRe.exchangeCode != null && exRe.returnCode == null}"
+										th:text="교환"></span> 
+									<span
+										th:if="${exRe.returnCode != null && exRe.exchangeCode == null}"
+										th:text="반품"></span>
 									</td>
-									<td
-										th:text="${#dates.format(return.returnRegdate, 'yyyy-MM-dd')}"></td>
-									<td th:text="${return.memberName}"></td>
-
+									<td>
+									<span
+										th:if="${exRe.exchangeCode != null && exRe.returnCode == null}"
+										th:text="${#dates.format(exRe.exchangeRegdate, 'yyyy-MM-dd')}"></span> 
+									<span
+										th:if="${exRe.returnCode != null && exRe.exchangeCode == null}"
+										th:text="${#dates.format(exRe.returnRegdate, 'yyyy-MM-dd')}"></span>
+									</td>
+									
+									<td th:text="${exRe.memberName}"></td>
 								</tr>
+
 								<!-- 반복문 종료 -->
 							</tbody>
 						</table>
 						</div>
-					</section>
-				</div>
+					</div>
+				</section>
 			</div>
 		</div>
+	</div>
 
 
 	<script>
 	$(document).ready(function () {
-		$(function() {
-			var dateFormat = "mm/dd/yy", from = $("#from").datepicker({
-				defaultDate : "+1w",
-				changeMonth : true,
-				numberOfMonths : 1
-			}).on("change", function() {
-				to.datepicker("option", "minDate", getDate(this));
-			}), to = $("#to").datepicker({
-				defaultDate : "+1w",
-				changeMonth : true,
-				numberOfMonths : 1
-			}).on("change", function() {
-				from.datepicker("option", "maxDate", getDate(this));
-			});
-		});
-			function getDate(element) {
-				var date;
-				try {
-					date = $.datepicker.parseDate(dateFormat, element.value);
-				} catch (error) {
-					date = null;
-				}
-
-				return date;
-			}
+		
 			
 			document.getElementById('allCheck')
 			.addEventListener('click', allCheckEvent);
@@ -241,7 +222,7 @@
 			console.log(key,value,fromDate,toDate);
 
 			$.ajax({
-				url : 'cancelOption',
+				url : 'exchangeOption',
 				type : 'get',
 				data : {
 					"searchValue" : value, 
@@ -252,15 +233,17 @@
 			})
 			 		
 			
-			.done(cancelInfo=>{
-				console.log(cancelInfo);
-				 $('#cancelList').replaceWith(cancelInfo); 
+			.done(exReList=>{
+				console.log(exReList);
+				 $('#exReSeaList').replaceWith(exReList); 
 				 
 
 			})
 			.fail(reject=>{
 				console.log(reject);
 			})
+			
+			
 			
 		})
 		
@@ -317,7 +300,6 @@ function displayDate(range) {
 	// endDate 값을 input 요소에 설정
 	if (startDate) {
 	  // endDate를 yyyy-mm-dd 형식의 문자열로 변환
-	endDate.setDate(endDate.getDate() + 1); // 일자를 +1 하기
 	const formattedEndDate = endDate.toISOString().split('T')[0];
 	console.log(formattedEndDate); // 2023-09-24
 

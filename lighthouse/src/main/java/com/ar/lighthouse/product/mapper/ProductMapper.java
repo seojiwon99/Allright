@@ -14,6 +14,7 @@ import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductVO;
 import com.ar.lighthouse.product.service.ReturnVO;
 import com.ar.lighthouse.product.service.SellerCalVO;
+import com.ar.lighthouse.productinquiry.service.ProductInquiryVO;
 
 @Mapper
 public interface ProductMapper {
@@ -36,8 +37,8 @@ public interface ProductMapper {
 		List<CancelVO> cancelOptionList(CancelVO cancelVO);
 		
 //		return,exchange 조건검색
-		List<ReturnVO> returnSeaList(ReturnVO returnVO);
 		List<ExchangeVO> exchangeSeaList(ExchangeVO exchangeVO);
+		List<ExchangeVO> returnSeaList(ExchangeVO exchangeVO);
 		
 	// 옵션 등록
 		public int insertOption(OptionVO optionVO);
@@ -66,8 +67,10 @@ public interface ProductMapper {
 //		주문상태 변경
 		int updateOrderStatus(DetailVO detailVO);
 
-		
-		
+//		나의 상품에 온 문의	
+		List<ProductInquiryVO> selectSellerInquiry(ProductInquiryVO productInquiryVO);
+//		문의 답변 주기
+		int updateInquiryAns(ProductInquiryVO productInquiryVO);
 		
 //		주문목록 택배사 입력
 		int updateDeliveryInfo(DetailVO detailVO);
@@ -79,7 +82,7 @@ public interface ProductMapper {
 		public List<ExchangeVO> selectExchangeList(ExchangeVO exchangeVO);
 
 	//  반품건 확인
-		public List<ReturnVO> selectReturnList(ReturnVO returnVO);
+		public List<ExchangeVO> selectReturnList(ReturnVO returnVO);
 
 //		정산데이터
 		public List<SellerCalVO> selectCalList(SellerCalVO sellerCalVO);

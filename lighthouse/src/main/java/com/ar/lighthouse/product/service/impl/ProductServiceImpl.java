@@ -18,6 +18,7 @@ import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
 import com.ar.lighthouse.product.service.ReturnVO;
 import com.ar.lighthouse.product.service.SellerCalVO;
+import com.ar.lighthouse.productinquiry.service.ProductInquiryVO;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -125,7 +126,7 @@ public class ProductServiceImpl implements ProductService{
 
 
 		@Override
-		public List<ReturnVO> getReturnList(ReturnVO returnVO) {
+		public List<ExchangeVO> getReturnList(ReturnVO returnVO) {
 			return productMapper.selectReturnList(returnVO);
 		}
 
@@ -150,7 +151,17 @@ public class ProductServiceImpl implements ProductService{
 		
 
 		
-	
+		@Override
+		public List<ProductInquiryVO> getProductInquiry(ProductInquiryVO productInquiryVO) {
+			return productMapper.selectSellerInquiry(productInquiryVO);
+		}
+
+
+		@Override
+		public int updateSellerInquiry(ProductInquiryVO productInquiryVO) {
+			return productMapper.updateInquiryAns(productInquiryVO);
+		}
+
 
 	
 
@@ -192,8 +203,8 @@ public class ProductServiceImpl implements ProductService{
 
 //		반품검색
 		@Override
-		public List<ReturnVO> getReturnSeaList(ReturnVO returnVO) {
-			return productMapper.returnSeaList(returnVO);
+		public List<ExchangeVO> getReturnSeaList(ExchangeVO exchangeVO) {
+			return productMapper.returnSeaList(exchangeVO);
 		}
 
 		
@@ -209,6 +220,8 @@ public class ProductServiceImpl implements ProductService{
 			return 0;
 		}
 
+
+	
 
 
 	

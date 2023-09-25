@@ -188,7 +188,8 @@
 										</div>
 									</div>
 								</div>
-								<table border="1" class="table" id="getProductList">
+								<div style="width:100%; height: 300px; overflow:auto; border:1px; ">
+								<table class="table" id="getProductList">
 									<thead>
 										<tr>
 											<th><input type="checkbox" id="allCheck"></th>
@@ -213,20 +214,25 @@
 											<td th:text="${order.orderCnt}" />
 											<td th:text="${order.memberName}" />
 											<td th:text="${order.requestedTerm}" />
-											<td th:if="${order.deliveryService != null}"
-												th:text="${order.deliveryService}"></td>
-											<td th:unless="${order.deliveryService != null}"><input
-												type="text" id="deliveryService"></td>
-											<td th:if="${order.deliveryNumber != null}"
-												th:text="${order.deliveryNumber}" />
-											<td th:unless="${order.deliveryNumber != null}"><input
-												type="text" id="deliveryNumber"></td>
+											<td th:if="${order.deliveryService != null}">
+												<input th:value="${order.deliveryService}" id="deliveryService"  style="background-color: lightyellow;">
+											</td>
+											<td th:unless="${order.deliveryService != null}">
+											<input th:value="${order.deliveryService}"  id="deliveryService">
+											</td>
+											<td th:if="${order.deliveryNumber != null}">
+											<input th:value="${order.deliveryNumber}" id="deliveryNumber" style="background-color: lightyellow;">
+											</td>
+											<td th:unless="${order.deliveryNumber != null}">
+											<input th:value="${order.deliveryNumber}" id="deliveryNumber" >
+											</td>
 											<td
 												th:text="${#dates.format(order.deliveryStart,'yyyy-MM-dd')}" />
 										</tr>
 										<!-- 반복문 종료 -->
 									</tbody>
 								</table>
+								</div>
 							</section>
 					</div>
 			</div>
@@ -343,12 +349,13 @@
 
             // datasetter
             
+            
             checkTags.each((idx, tag) => {
 				let tr = $(tag).closest('tr')
                let detailOrderCode = tr.data('ordercode');
                let deliveryService = tr.find('#deliveryService').val();
                let deliveryNumber =  tr.find('#deliveryNumber').val();
-			   console.log(detailOrderCode);
+			   console.log(deliveryService);
 			
                let obj = {
 				'orderDetailCode' : detailOrderCode,

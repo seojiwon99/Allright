@@ -82,9 +82,9 @@
 											href="./docs/getting-started.html">고객센터</a></li>
 						</ul>
 
-						
-						
-						
+
+
+
 
 					</div>
 
@@ -94,305 +94,141 @@
 		</div>
 		<div class="col-12 col-lg">
 			<div class="panel-body">
-				<!---->
-				<ui-view name="search">
-				<form name="registerForm" novalidate=""
-					disable-dynamic-validation="false" ng-submit="vm.queryPage()"
-					class="ng-pristine ng-valid ng-valid-required ng-valid-date-time-input"
-					style="">
-					<div class="seller-search-section" ng-init="vm.showCondition=false"
-						ng-show="vm.showCondition" style="">
-						<ul class="seller-list-border">
-							<li><label class="control-label" for="commentType">구분</label>
-							<div class="input-content">
-									<div class="form-inline">
-										<div class="form-group">
-											<div
-												class="selectize-control ng-pristine ng-untouched ng-valid single">
-												<div
-													class="selectize-input items full has-options has-items ng-valid ng-pristine">
-													<div data-value="" class="item">전체</div>
-													<input type="text" autocomplete="off" tabindex="0"
-														readonly="" style="width: 4px;">
-												</div>
-												<div
-													class="selectize-dropdown single ng-pristine ng-untouched ng-valid"
-													style="display: none; width: 206px; top: 34px; left: 0px;">
-													<div class="selectize-dropdown-content">
-														<div data-value="" data-selectable=""
-															class="option selected active">전체</div>
-														<div data-value="PRODUCT_INQUIRY" data-selectable=""
-															class="option">상품 문의</div>
-														<div data-value="STORENEWS_COMMENT" data-selectable=""
-															class="option">소식 댓글</div>
-													</div>
-												</div>
-											</div>
-											<select selectize="" id="commentType" placeholder="전체"
-												config="::vm.config.defaultSelectizeConfig"
-												options="::vm.config.commentType"
-												ng-model="vm.searchFormData.commentType"
-												class="ng-pristine ng-untouched ng-valid selectized ng-valid-required ng-empty"
-												tabindex="-1"
-												style="width: 4px; opacity: 0; position: absolute; left: -10000px;"><option
-													value="" selected="selected">전체</option></select>
-										</div>
-									</div>
-								</div></li>
-							<li><label class="control-label">문의일</label>
-							<div class="input-content">
-									<div class="form-inline narrow-area">
-										<ncp-datetime-range-picker2
-											start-date-model="vm.searchFormData.startDate"
-											end-date-model="vm.searchFormData.endDate"
-											datetime-picker-format-name="DATE" date-max="'TODAY'"
-											date-range-usable="true"
-											date-range-option="::vm.config.datePickerRangeOption"
-											date-markup-option="{onlyDate:true, buttonFixWidth:true}"><!---->
-										<div class="form-group" ng-if="vm.dateRangeUsable" style="">
-											<div class="btn-toolbar">
-												<div class="btn-group fix-width-col-4"
-													ng-class="::{'fix-width-col-4' : vm.dateMarkupOption.buttonFixWidth}"
-													ng-attr-data-nclicks-code="{{::vm.nclicksCodeRangeButton}}">
-													<!---->
-													<button type="button" class="btn btn-primary2"
-														ng-repeat="option in vm.dateRangeOption.periods"
-														ng-click="vm.onClickRangeButton($index)"
-														ng-disabled="vm.dateDisabled"
-														ng-class="{ active: option.active }">오늘</button>
-													<!---->
-													<button type="button" class="btn btn-primary2"
-														ng-repeat="option in vm.dateRangeOption.periods"
-														ng-click="vm.onClickRangeButton($index)"
-														ng-disabled="vm.dateDisabled"
-														ng-class="{ active: option.active }">3일</button>
-													<!---->
-													<button type="button" class="btn btn-primary2"
-														ng-repeat="option in vm.dateRangeOption.periods"
-														ng-click="vm.onClickRangeButton($index)"
-														ng-disabled="vm.dateDisabled"
-														ng-class="{ active: option.active }">1주일</button>
-													<!---->
-													<button type="button" class="btn btn-primary2"
-														ng-repeat="option in vm.dateRangeOption.periods"
-														ng-click="vm.onClickRangeButton($index)"
-														ng-disabled="vm.dateDisabled"
-														ng-class="{ active: option.active }">1개월</button>
-													<!---->
-													<button type="button" class="btn btn-primary2 active"
-														ng-repeat="option in vm.dateRangeOption.periods"
-														ng-click="vm.onClickRangeButton($index)"
-														ng-disabled="vm.dateDisabled"
-														ng-class="{ active: option.active }">3개월</button>
-													<!---->
-												</div>
-											</div>
-										</div>
-										<!---->
-										<div class="form-group only-date"
-											ng-class="::{'only-date' : vm.dateMarkupOption.onlyDate, 'disabled-date-dimmed' : vm.dateMarkupOption.disabledDateDimmed }"
-											style="">
-											<div class="seller-calendar">
-												<div class="input-daterange date form-inline">
-													<div
-														class="form-group _startDate_dropdown seller-datetime-picker _error_start_date_7256533940 dropdown"
-														ng-class="{dropdown : !vm.datetimePickerDropUp, dropup : vm.datetimePickerDropUp}"
-														style="">
-														<div
-															class="input-group dropdown-toggle dropdown_8507834141"
-															data-toggle="dropdown"
-															ng-click="vm.isStartDateShow = !vm.dateDisabled &amp;&amp; true"
-															ng-attr-data-nclicks-code="{{::vm.nclicksCode}}">
-															<input type="text"
-																class="form-control ng-pristine ng-untouched ng-valid ng-not-empty ng-valid-required ng-valid-date-time-input"
-																name="" title="날짜 입력"
-																ng-readonly="::vm.dateInputReadonly"
-																ng-required="vm.dateRequired &amp;&amp; !vm.ignoreStartDateRequired"
-																ng-disabled="vm.dateDisabled || vm.dateDisabledByPeriodType"
-																ncp-disabled="!vm.dateDisabledByPeriodType"
-																ng-model="vm.startDateModel"
-																model-type="YYYY-MM-DDTHH:mm:ss.SSSZ"
-																date-time-input="YYYY.MM.DD."
-																data-date-formats="::vm.inputModelFormats"
-																ncp-message-container="._error_start_date_7256533940"
-																ng-required-err-type="required.daterangepicker.startDate"
-																ncp-validate-change-trigger="" readonly="readOnly"
-																style="">
-															<!---->
-															<span class="input-group-addon"
-																ng-if="!vm.dateDisabled &amp;&amp; !vm.dateDisabledByPeriodType &amp;&amp; !vm.startDatetimePickerDisabled"
-																style=""><a role="button" href=""><i
-																	class="fn fn-calendar1" aria-hidden="true"></i><span
-																	class="sr-only">달력보기</span></a> </span>
-															<!---->
-															<!---->
-														</div>
-														<!---->
-													</div>
-													<div class="form-group dash">
-														<div class="input-group">
-															<span class="input-group-addon">~</span>
-														</div>
-													</div>
-													<div
-														class="form-group _endDate_dropdown seller-datetime-picker _error_end_date_1196331915 dropdown"
-														ng-class="::{dropdown : !vm.datetimePickerDropUp, dropup : vm.datetimePickerDropUp}"
-														style="">
-														<div
-															class="input-group dropdown-toggle dropdown_2678121456"
-															data-toggle="dropdown"
-															ng-click="vm.isEndDateShow = !vm.dateDisabled &amp;&amp; true"
-															ng-attr-data-nclicks-code="{{::vm.nclicksCode}}">
-															<input type="text"
-																class="form-control ng-pristine ng-untouched ng-valid ng-not-empty ng-valid-required ng-valid-date-time-input"
-																name="" title="날짜 입력"
-																ng-readonly="::vm.dateInputReadonly"
-																ng-required="vm.dateRequired &amp;&amp; !vm.ignoreEndDateRequired"
-																ng-disabled="vm.dateDisabled || vm.dateDisabledByPeriodType"
-																ncp-disabled="!vm.dateDisabledByPeriodType"
-																ng-model="vm.endDateModel"
-																model-type="YYYY-MM-DDTHH:mm:ss.SSSZ"
-																date-time-input="YYYY.MM.DD."
-																data-date-formats="::vm.inputModelFormats"
-																ncp-message-container="._error_end_date_1196331915"
-																ng-required-err-type="required.daterangepicker.endDate"
-																ncp-validate-change-trigger="" readonly="readOnly"
-																style="">
-															<!---->
-															<span class="input-group-addon"
-																ng-if="!vm.dateDisabled &amp;&amp; !vm.dateDisabledByPeriodType &amp;&amp; !vm.endDatetimePickerDisabled"
-																style=""><a role="button" href=""><i
-																	class="fn fn-calendar1" aria-hidden="true"></i><span
-																	class="sr-only">달력보기</span></a> </span>
-															<!---->
-															<!---->
-														</div>
-														<!---->
-													</div>
-												</div>
-											</div>
-											<!---->
-										</div>
-										</ncp-datetime-range-picker2>
-									</div>
-								</div></li>
-							<li><label class="control-label" for="sellerAnswer">답변</label>
-							<div class="input-content">
-									<div class="form-inline">
-										<div class="form-group">
-											<div
-												class="selectize-control ng-pristine ng-untouched ng-valid single">
-												<div
-													class="selectize-input items full has-options has-items ng-valid ng-pristine">
-													<div data-value="" class="item">전체</div>
-													<input type="text" autocomplete="off" tabindex="0"
-														readonly=""
-														style="width: 4px; opacity: 0; position: absolute; left: -10000px;">
-												</div>
-												<div
-													class="selectize-dropdown single ng-pristine ng-untouched ng-valid"
-													style="display: none; width: 206px; top: 34px; left: 0px; visibility: visible;">
-													<div class="selectize-dropdown-content">
-														<div data-value="" data-selectable=""
-															class="option selected">전체</div>
-														<div data-value="false" data-selectable="" class="option">미답변</div>
-														<div data-value="true" data-selectable="" class="option">답변완료</div>
-													</div>
-												</div>
-											</div>
-											<select config="::vm.config.defaultSelectizeConfig"
-												id="sellerAnswer" ng-model="vm.searchFormData.sellerAnswer"
-												placeholder="전체" selectize=""
-												class="ng-pristine ng-untouched ng-valid selectized ng-valid-required ng-empty"
-												tabindex="-1"
-												style="width: 4px; opacity: 0; position: absolute; left: -10000px;"><option
-													value="" selected="selected">전체</option></select>
-										</div>
-									</div>
-								</div></li>
-							<li><label class="control-label" for="searchKeywordType">검색어</label>
-							<div class="input-content">
-									<div class="form-inline">
-										<div class="form-group">
-											<div
-												class="selectize-control ng-pristine ng-untouched ng-valid single">
-												<div
-													class="selectize-input items ng-valid ng-pristine full has-options has-items">
-													<div data-value="PRODUCT_NAME" class="item">상품명</div>
-													<input type="text" autocomplete="off" tabindex="0"
-														readonly=""
-														style="width: 4px; opacity: 0; position: absolute; left: -10000px;">
-												</div>
-												<div
-													class="selectize-dropdown single ng-pristine ng-untouched ng-valid"
-													style="display: none; width: 206px; top: 34px; left: 0px;">
-													<div class="selectize-dropdown-content">
-														<div data-value="PRODUCT_NAME" data-selectable=""
-															class="option selected active">상품명</div>
-														<div data-value="CHANNEL_PRODUCT_NO" data-selectable=""
-															class="option">상품번호</div>
-														<div data-value="CONTENTS_NO" data-selectable=""
-															class="option">소식번호</div>
-														<div data-value="SHOP_NEWS_NAME" data-selectable=""
-															class="option">소식제목</div>
-													</div>
-												</div>
-											</div>
-											<select selectize="" id="searchKeywordType" placeholder="상품명"
-												config="::vm.config.searchConfig"
-												options="::vm.config.searchKeywordType"
-												ng-model="vm.searchFormData.searchKeywordType"
-												class="ng-pristine ng-untouched ng-valid selectized ng-valid-required ng-not-empty"
-												tabindex="-1"
-												style="width: 4px; opacity: 0; position: absolute; left: -10000px;"><option
-													value="? string:PRODUCT_NAME ?" selected="selected"></option>
-												<option value="PRODUCT_NAME">상품명</option></select>
-										</div>
-										<div class="form-group">
-											<div class="seller-input-wrap">
-												<input type="text"
-													class="form-control ng-pristine ng-untouched ng-valid ng-empty"
-													id="keyword" ng-model="vm.searchFormData.keyword"
-													ncp-input-clear=""><a role="button"
-													class="btn-clear" tabindex="-1" style="display: none;"><span
-													aria-label="삭제">×</span></a>
-											</div>
-										</div>
-									</div>
-								</div></li>
-							<li><div class="seller-btn-area btn-group-lg">
-									<button type="submit" class="btn btn-primary">검색</button>
-									<button type="button" class="btn btn-default"
-										ng-click="vm.initForm(true)">초기화</button>
-								</div></li>
-						</ul>
-					</div>
-				</form>
-				</ui-view>
-				<!---->
-				<ui-view name="list"><!----><!---->
-				<div class="result-info"
-					ng-if="!vm.commentList || vm.commentList.length === 0">
-					<div ng-show="vm.isLoading" class="ng-hide" style="">
+				<div class="_1Vof48UxmD _oVRNwPvxck">
+
+					<div class="_KqV0-1BSnB">
+						<button type="button" id="todayBtn" class="btn btn-primary2">
+							<span id="today">오늘</span>
+						</button>
+						<button type="button" id="weekBtn" class="btn btn-primary2">
+							<span id="week">1주일</span>
+						</button>
+						<button type="button" id="oneMonthBtn" class="btn btn-primary2">
+							<span id="onemonth">1개월</span>
+						</button>
+						<button type="button" id="threeMonthBtn"
+							class="btn btn-primary2 active">
+							<span id="thmonth">3개월</span>
+						</button>
+
+						<div id="dateDisplay"></div>
+
+						<label class="_MN8nIh0X4y">상세조건</label> <select
+							class="_4LshyCrDpi" title="리스트 보기">
+							<option selected value="">전체</option>
+							<option value="member_name">구매자명</option>
+							<option value="member_tel">구매자연락처</option>
+							<option value="member_id">구매자ID</option>
+							<option value="product_code">주문번호</option>
+							<option value="delivery_number">송장번호</option>
+						</select> <input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
 						<div>
-							<img src="../../images/loading_gray.gif" alt="로딩중">
+							<span>조회기간</span> <input type="DATE" id="from" name="from"
+								autocomplete="off"> <label for="to">~</label> <input
+								type="DATE" id="to" name="to" autocomplete="off">
 						</div>
 					</div>
-					<div ng-show="!vm.isLoading" class="" style="">
-						<i class="fn-shopping fn-65 fn-shopping-caution1 icon-color-big"
-							aria-hidden="true"></i>
-						<h3 class="title title-lg">검색 결과가 없습니다.</h3>
-						<p class="text-sub">
-							설정한 조건에 해당하는 결과가 없습니다.<br>상세 조건을 다시 설정해 주세요.
-						</p>
+				</div>
+
+				<button type="button" id="orderSearch">검색</button>
+			</div>
+			<section class="pb-12">
+				<div
+					style="width: 100%; height: 300px; overflow: auto; border: 1px;">
+					<table border="1" class="table" id="getProductList">
+						<thead>
+							<tr>
+								<th>번호</th>
+								<th>상품코드</th>
+								<th>상품명</th>
+								<th>문의내용</th>
+								<th>작성일자</th>
+								<th>답변상태</th>
+							</tr>
+						</thead>
+						<tbody id="inquiryList">
+							<tr th:each="inquiry, index : ${sellerInquiry}"
+								data-bs-toggle="collapse" th:href="@{#inquiryForm}">
+								<td th:text="${index.count}"></td>
+								<td th:text="${inquiry.productCode}"></td>
+								<td th:text="${inquiry.productName}"></td>
+								<td th:text="${inquiry.queContent}"></td>
+								<td th:text="${#dates.format(inquiry.queRegdate, 'yyyy-MM-dd')}"></td>
+								<td th:if="${inquiry.queAns == null}">X</td>
+								<td th:unless="${inquiry.queAns == null}">O</td>
+							</tr>
+
+							<!-- 반복문 종료 -->
+						</tbody>
+					</table>
+				</div>
+
+				<div class="collapse" id="inquiryForm">
+					<!-- Divider -->
+					<hr class="my-8" />
+
+					<!-- Form -->
+
+					<div class="row"
+						id="inquiryForm">
+						<div class="col-12 mb-6 text-center">
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">문의답변<input type="hidden" />
+										</th>
+										
+										<th scope="col"><textarea
+												class="form-control form-control-sm" rows="5"
+												placeholder="내용을 입력해주세요" id="queContent" name="queContent"
+												required></textarea></th>
+										<th scope="col-12"><input type="text"
+											class="form-control form-control-sm" id="memberId"
+											name="memberId" 
+											readonly /></th>
+										<th scope="col-md-6">
+											<button id="inquiryAdd" class="btn btn-sm btn-dark"
+												type="button">등록하기</button>
+										</th>
+									</tr>
+								</thead>
+								
+							</table>
+						</div>
 					</div>
 				</div>
-				<!---->
-				<ncp-pagination ng-show="!vm.isLoading" page="vm.pageInfo.page"
-					size="vm.pageInfo.size" total="vm.pageInfo.totalCount"
-					range="vm.pageInfo.range" search="vm.queryPage" class="" style=""><!----><!----></ncp-pagination></ui-view>
-			</div>
+
+			</section>
+
 		</div>
 	</div>
+<script>
+    $(document).ready(function() {
+    	
+	
+
+        $('#getProductList tbody tr[data-bs-toggle="collapse"]').click(function() {
+            var row = $(this);
+            var productCode = row.find('td:nth-child(2)').text();
+            var productName = row.find('td:nth-child(3)').text();
+            var queContent = row.find('td:nth-child(4)').text();
+
+            $('#queContent').val(queContent);
+            $('#productCode').val(productCode);
+            $('#productName').val(productName);
+        });
+
+        $('#inquiryAdd').click(function() {
+        	
+        });
+    });
+    
+</script>
+
+	
+		
+		
+
+	
 </div>
 </html>

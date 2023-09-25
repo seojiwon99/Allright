@@ -3,11 +3,10 @@ package com.ar.lighthouse.product.service;
 import java.util.List;
 
 import com.ar.lighthouse.buyp.service.DetailVO;
-
 import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.common.ImgsVO;
-
 import com.ar.lighthouse.member.service.MemberVO;
+import com.ar.lighthouse.productinquiry.service.ProductInquiryVO;
 
 public interface ProductService {
 	
@@ -32,6 +31,11 @@ public interface ProductService {
 //	orderManagement
 	List<DetailVO> getOrderOptionList(DetailVO detailVO);
 	
+//	판매자 상품 문의건
+	List<ProductInquiryVO> getProductInquiry(ProductInquiryVO productInquiryVO);
+	
+//  상품 문의 답변해주기
+	int updateSellerInquiry(ProductInquiryVO productInquiryVO);
 	//상품 단건 상세페이지
 	public ProductVO goodsDetail(ProductVO productVO);
 
@@ -54,13 +58,13 @@ public interface ProductService {
 //	exchangeSearch
 	List<ExchangeVO> getExchangeSeaList(ExchangeVO exchangeVO);
 //	returnSearch
-	List<ReturnVO> getReturnSeaList(ReturnVO returnVO);
+	List<ExchangeVO> getReturnSeaList(ExchangeVO exchangeVO);
 //	주문상태수정
 	public int updateOrderStatus(DetailVO detailVO);
 	
 
 //	반품건 목록
-	List<ReturnVO> getReturnList(ReturnVO returnVO);
+	List<ExchangeVO> getReturnList(ReturnVO returnVO);
 	
 //	정산건 목록
 	List<SellerCalVO> getCalList(SellerCalVO sellerCalVO);

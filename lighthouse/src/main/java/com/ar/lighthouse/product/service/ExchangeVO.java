@@ -27,11 +27,44 @@ public class ExchangeVO {
 	String exchangeAddr;
 	long DeliveryNumber;
 	
-	String productName;
-	String orderStatus;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	Date chargeDate;
 	
-	String memberName;
+	   // 멤버 테이블
+		private String memberId;
+		private String memberName;
+		private int memberTel;
+		   
+		   //상품 테이블 조인
+		   private String orderStatus;
+		   private String productName;
+		   private String productCode;
+	
+//  ajax넘어오는값
+	   String searchValue;
+	   String searchKey;
+	   @DateTimeFormat(pattern="yyyy-MM-dd")
+	   Date fromDate;
+	   @DateTimeFormat(pattern="yyyy-MM-dd")
+	   Date toDate;
+	   
+//	   returnVO
+		String returnCode;
+		String returnReason;
+		
+		@DateTimeFormat(pattern="yyyy-MM-dd")
+		Date returnRegdate;
+		
+		@DateTimeFormat(pattern="yyyy-MM-dd")
+		Date returnRetractDate;
+		
+		String returnStatus;
+		
+		@DateTimeFormat(pattern="yyyy-MM-dd")
+		Date returnProcessingDate;
+		
+		
+		
+		
 }

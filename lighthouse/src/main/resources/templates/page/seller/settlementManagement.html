@@ -110,7 +110,6 @@ $("#statisticsBtn").click(function () {
             $("#contentArea").html(data); 
         },
         error: function () {
-            $("#contentArea").html("통계를 불러오는 중에 오류가 발생했습니다.");
         }
     });
 });
@@ -123,7 +122,7 @@ $("#accountingBtn").click(function () {
             $("#contentArea").html(data);
         },
         error: function () {
-            $("#contentArea").html("정산을 불러오는 중에 오류가 발생했습니다.");
+        	console.log("오류오류")
         }
     });
 });
