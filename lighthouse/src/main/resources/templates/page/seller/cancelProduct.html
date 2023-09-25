@@ -133,6 +133,8 @@
 							</div>
 
 							<button type="button" id="orderSearch">검색</button>
+							<button type="button" id="cancelOk" style="background-color:yellow;">취소승인</button>
+							<button type="button" id="cancelReject" style="background-color:red;">취소거부</button>
 					</div>
 					<section class="pb-12">
 						<div style="width:100%; height: 300px; overflow:auto; border:1px; ">
@@ -160,6 +162,8 @@
 									<td
 										th:text="${#dates.format(cancel.cancelRegdate, 'yyyy-MM-dd')}"></td>
 									<td th:text="${cancel.memberName}"></td>
+									<td th:text="${cancel.orderCode}" class="visually-hidden"></td>
+									<td th:text="${cancel.cancelCode}" class="visually-hidden"></td>
 
 								</tr>
 								<!-- 반복문 종료 -->
@@ -296,6 +300,57 @@ function displayDate(range) {
 	}
   }
 		
+	  $('#cancelOk').on('click',function(){
+		  let checkTags = $('input[type=checkbox]:checked').not(allCheck);
+		  orderChk=[];
+		  checkTags.each((idx, tag)=>{
+			  let orderDetailCode = $(tag).parent().next().text();
+			  let orderCode = $(tag).closest('tr').find('td:eq(8)').text();
+			  let cancelCode = $(tag).closest('tr').find('td:eq(9)').text();
+			  let cancelReason = $(tag).closest('tr').find('td:eq(4)').text();
+			  console.log(cancelCode);
+			  let obj ={
+					  orderDetailCode,
+					  orderCode,
+					  cancelCode,
+					  cancelReason
+			  }
+			  orderChk.push(obj);
+		  })
+		  
+	  })
+	  
+	  $('#cancelReject').on('click', function(){
+		  let checkTags = $('input[type=checkbox]:checked').not(allCheck);
+		  cancelChk = [];
+		  checkTags.each((idx, tag)=>{
+			  let cancelCode = $(tag).closest('tr').find('td:eq(9)').text();
+			  console.log(cancelCode);
+			let obj = {
+					cancelCode
+			}
+			cancelChk.push(obj);
+		  })
+		
+		  $.ajax({
+			  utl:'',
+			  type: 'post',
+			  contentType : 'application/json',
+			  data : JSON.stringify(cancelChk)
+		  })
+		  .done(data=>{
+			  refreshList();
+		  })
+		  .fail(rejext =>{
+			  console.log(reject);
+		  })
+	  })
+	  
+	  function refreshList(){
+         location.reload();
+      } 
+	  
+	  
 })
 	</script>
 </div>

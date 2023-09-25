@@ -156,6 +156,9 @@
 								<td th:text="${#dates.format(inquiry.queRegdate, 'yyyy-MM-dd')}"></td>
 								<td th:if="${inquiry.queAns == null}">X</td>
 								<td th:unless="${inquiry.queAns == null}">O</td>
+								<td th:text="${inquiry.queCode}" id="queCode" class="visually-hidden">
+								<td th:text="${inquiry.queAns}" id="queAns" class="visually-hidden">
+								</td>
 							</tr>
 
 							<!-- 반복문 종료 -->
@@ -169,30 +172,30 @@
 
 					<!-- Form -->
 
-					<div class="row"
-						id="inquiryForm">
+					<div class="row" id="inquiryForm">
 						<div class="col-12 mb-6 text-center">
 							<table class="table">
 								<thead>
 									<tr>
-										<th scope="col">문의답변<input type="hidden" />
+										<th scope="col">문의 답변<input type="hidden" /></th>
+										<th scope="col"><textarea class="form-control" rows="5"
+												readonly id="queContent" name="queContent" required></textarea>
 										</th>
-										
-										<th scope="col"><textarea
-												class="form-control form-control-sm" rows="5"
-												placeholder="내용을 입력해주세요" id="queContent" name="queContent"
-												required></textarea></th>
 										<th scope="col-12"><input type="text"
-											class="form-control form-control-sm" id="memberId"
-											name="memberId" 
-											readonly /></th>
-										<th scope="col-md-6">
-											<button id="inquiryAdd" class="btn btn-sm btn-dark"
-												type="button">등록하기</button>
+											class="form-control" id="memberId" name="memberId" readonly />
 										</th>
 									</tr>
 								</thead>
-								
+								<tbody>
+									<tr>
+										<th scope="col"><textarea class="form-control" rows="5"
+												id="addContent" name="addContent" required placeholder="내용을 입력하세요"></textarea></th>
+										<th scope="col-md-6">
+											<button id="inquiryAdd" class="btn btn-dark btn-sm"
+												type="button">등록하기</button>
+										</th>
+									</tr>
+								</tbody>
 							</table>
 						</div>
 					</div>
@@ -202,33 +205,62 @@
 
 		</div>
 	</div>
-<script>
-    $(document).ready(function() {
-    	
-	
+	<script th:inline="javascript">
+		$(document).ready(
+				function() {
+				
+					$('#getProductList tbody tr[data-bs-toggle="collapse"]').click(function() {
+					    let row = $(this);
+					    let productCode = row.find('td:nth-child(2)').text();
+					    let productName = row.find('td:nth-child(3)').text();
+					    let queContent = row.find('td:nth-child(4)').text();
+					    let queAns = row.find('td:nth-child(8)').text();
+					    let queCodeValue = row.find('td:nth-child(7)').text();
 
-        $('#getProductList tbody tr[data-bs-toggle="collapse"]').click(function() {
-            var row = $(this);
-            var productCode = row.find('td:nth-child(2)').text();
-            var productName = row.find('td:nth-child(3)').text();
-            var queContent = row.find('td:nth-child(4)').text();
+					    $('#queContent').val(queContent);
+					    $('#productCode').val(productCode);
+					    $('#productName').val(productName);
+						$('#addContent').val(queAns);
+						
+						
+						
+					    $('#inquiryAdd').data('queCodeValue', queCodeValue);
+					});
 
-            $('#queContent').val(queContent);
-            $('#productCode').val(productCode);
-            $('#productName').val(productName);
-        });
+					$('#inquiryAdd').click(function() {
+					    let queAns = $('#addContent').val();
+					    let queCodeValue = $('#inquiryAdd').data('queCodeValue'); 
+					    console.log(queAns);
+					    console.log(queCodeValue);
 
-        $('#inquiryAdd').click(function() {
-        	
-        });
-    });
-    
-</script>
+					    $.ajax({
+					        url: 'addInquiryAns',
+					        type: 'post',
+					        contentType: 'application/json',
+					        data: JSON.stringify({
+					            "queAns": queAns,
+					            "queCode": queCodeValue
+					        }),
+					        success: function(data) {
+					            console.log(data);
+					            refreshList();
+					        },
+					        error: function(jqXHR, textStatus, errorThrown) {
+					            console.log(errorThrown);
+					        }
+					    });
+					});
 
-	
-		
-		
+					function refreshList() {
+					    location.reload();
+					}
+				});
+	</script>
 
-	
+
+
+
+
+
 </div>
 </html>

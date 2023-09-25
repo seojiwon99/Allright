@@ -40,6 +40,7 @@ public interface ProductMapper {
 		List<ExchangeVO> exchangeSeaList(ExchangeVO exchangeVO);
 		List<ExchangeVO> returnSeaList(ExchangeVO exchangeVO);
 		
+		
 	// 옵션 등록
 		public int insertOption(OptionVO optionVO);
 		   
@@ -77,6 +78,9 @@ public interface ProductMapper {
 
 //		취소건 확인
 		public List<CancelVO> selectCancelList(CancelVO cancelVO);
+//		취소 거부
+		int updateCancelList(CancelVO cancelVO);
+		
 		
 //		교환건 확인
 		public List<ExchangeVO> selectExchangeList(ExchangeVO exchangeVO);
@@ -86,8 +90,11 @@ public interface ProductMapper {
 
 //		정산데이터
 		public List<SellerCalVO> selectCalList(SellerCalVO sellerCalVO);
+
 		
 
+		
+		
 	//  상품옵션 vo 리스트
 		public List<OptionVO> getOptionList(OptionVO optionVO);
 		

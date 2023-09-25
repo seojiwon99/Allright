@@ -41,6 +41,8 @@ public class CancelVO {
 	   private String productName;
 	   private String productCode;
 	   
+//	   orderVO
+	   int orderCode;
 	   
 	//   ajax넘어오는값
 	   String searchValue;

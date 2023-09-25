@@ -96,23 +96,12 @@ public class ProductController {
 //	판매자 상품문의 답해주기
 	@PostMapping("addInquiryAns")
 	@ResponseBody
-	public List<String> addInqury(@RequestBody List<ProductInquiryVO> addList) {
-	    List<String> addInquryList = new ArrayList<String>();
-	    for (ProductInquiryVO productInquiryVO : addList) {
-	        int result = productService.updateSellerInquiry(productInquiryVO);
-	        if (result > 0) {
-	            // int 값을 String으로 변환하여 List에 추가
-	            addInquryList.add(String.valueOf(productInquiryVO.getQueCode()));
-	        }
-	    }
+	public int addInqury(@RequestBody ProductInquiryVO productInquiryVO) {
+	   
 
-	    return addInquryList;
+	    return productService.updateSellerInquiry(productInquiryVO);
 	}
-//	상품문의 답변 폼
-	@GetMapping("inquiryAnsForm")
-	public String productInquiryAnsForm() {
-		return "page/seller/inquiryAnsForm";
-	}
+
 
 
 //  판매자 mypage

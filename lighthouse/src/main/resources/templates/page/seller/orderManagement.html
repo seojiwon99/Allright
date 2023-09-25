@@ -189,7 +189,7 @@
 									</div>
 								</div>
 								<div style="width:100%; height: 300px; overflow:auto; border:1px; ">
-								<table class="table" id="getProductList">
+								<table class="table" id="getProductList" >
 									<thead>
 										<tr>
 											<th><input type="checkbox" id="allCheck"></th>
@@ -199,6 +199,7 @@
 											<th>구매개수</th>
 											<th>구매자</th>
 											<th>요청사항</th>
+											<th>주문상태</th>
 											<th>택배사</th>
 											<th>송장번호</th>
 											<th>발송일</th>
@@ -214,6 +215,7 @@
 											<td th:text="${order.orderCnt}" />
 											<td th:text="${order.memberName}" />
 											<td th:text="${order.requestedTerm}" />
+											<td th:text="${order.orderStatus}"/>
 											<td th:if="${order.deliveryService != null}">
 												<input th:value="${order.deliveryService}" id="deliveryService"  style="background-color: lightyellow;">
 											</td>
