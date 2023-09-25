@@ -86,11 +86,13 @@
 				if (selOption != "선택") {
 				} else {
 					alert("취소 사유를 선택해주세요.")
+					$('#select').focus();
 					return;
 				}
 				if ($('#content').val() != "") {
 				} else {
 					alert("자세한 취소 사유를 입력해주세요.")
+					$('#content').focus();
 					return;
 				}
 				let reasonName = $('#select option:selected').text().trim()

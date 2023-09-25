@@ -4,10 +4,86 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
   <mapper namespace="com.ar.lighthouse.buyp.mapper.BuyerPageMapper">
-  	
+  <!-- 
+  <select id="selectDetailList" resultType="DetailVO" parameterType="Map">
+  <![CDATA[
+  WITH RankedOrderDetail AS (
+      SELECT 
+          a.order_cnt,
+          a.order_price,
+          a.payment_price,
+          delivery_code_name(a.order_status) AS order_status,
+          a.order_detail_code,
+          a.order_date,
+          a.delivery_number,
+          a.delivery_date,
+          a.option_code,
+          a.order_code,
+          d.product_name,
+          e.img_code,
+          e.img_order,
+          e.img_name,
+          e.upload_name,
+          e.img_content,
+          order_status_name(f.cancel_status) AS cancel_status,
+          f.cancel_regdate,
+          order_status_name(g.return_status) AS return_status,
+          g.return_regdate,
+          order_status_name(h.exchange_status) AS exchange_status,
+          h.exchange_regdate,
+          ROW_NUMBER() OVER (PARTITION BY a.order_detail_code ORDER BY a.order_date DESC) AS rn
+      FROM 
+          ar_order_detail a
+      JOIN 
+          ar_orders b ON a.order_code = b.order_code
+      LEFT OUTER JOIN 
+          ar_option c ON a.option_code = c.option_code
+      LEFT OUTER JOIN 
+          ar_products d ON c.product_code = d.product_code
+      LEFT OUTER JOIN 
+          ar_imgs e ON e.parent_code = d.product_code
+      LEFT OUTER JOIN 
+          ar_cancel f ON a.order_detail_code = f.order_detail_code 
+      LEFT OUTER JOIN 
+          ar_return g ON a.order_detail_code = g.order_detail_code
+      LEFT OUTER JOIN 
+          ar_exchange h ON a.order_detail_code = h.order_detail_code
+      WHERE 
+          b.member_id = #{memberId}
+  )
+  SELECT 
+      order_cnt,
+      order_price,
+      payment_price,
+      order_status,
+      order_detail_code,
+      order_date,
+      delivery_number,
+      delivery_date,
+      option_code,
+      order_code,
+      product_name,
+      img_code,
+      img_order,
+      img_name,
+      upload_name,
+      img_content,
+      cancel_status,
+      cancel_regdate,
+      return_status,
+      return_regdate,
+      exchange_status,
+      exchange_regdate
+  FROM 
+      RankedOrderDetail
+  WHERE 
+      rn BETWEEN #{startRow} AND #{endRow}
+  ]]>
+</select>
+   -->	
   	<!-- 주문 목록 -->
-  	<select id="selectDetailList" resultType="DetailVO" parameterType="String">
-		WITH RankedOrderDetail AS (
+  	<select id="selectDetailList" resultType="DetailVO" parameterType="Criteria">
+WITH RankedOrderDetail AS (
     SELECT 
         a.order_cnt,
         a.order_price,
@@ -34,7 +110,7 @@
         ROW_NUMBER() OVER (PARTITION BY a.order_detail_code ORDER BY a.order_date DESC) AS rn
     FROM 
         ar_order_detail a
-    LEFT OUTER JOIN 
+    JOIN 
         ar_orders b ON a.order_code = b.order_code
     LEFT OUTER JOIN 
         ar_option c ON a.option_code = c.option_code
@@ -81,6 +157,7 @@ WHERE
     rn = 1
 
   	</select>
+
   
   	<!-- 개인정보 -->
   	<select id="selectBuyInfo" resultType="BuyInfoVO" parameterType="String">
@@ -132,7 +209,10 @@ WHERE
 	<!-- 개인정보 수정 -->
 	<update id="updateInfo" parameterType="BuyInfoVO">
 		UPDATE ar_member 
-		SET member_pw = #{memberPw}
+		SET 
+		<if test="memberPw != null and memberPw !=''">
+		      member_pw = #{memberPw}
+		</if>
 		    , member_addr = #{memberAddr}
 		    , member_details_addr = #{memberDetailsAddr}
 		    , member_email = #{memberEmail}
@@ -157,7 +237,8 @@ WHERE
 			     , b.issue_date
 			     , b.coupon_use
 			FROM ar_coupons a
-			LEFT OUTER JOIN ar_coupon_box b ON a.coupon_code = b.coupon_code
+			JOIN ar_coupon_box b 
+			  ON a.coupon_code = b.coupon_code
 			WHERE member_id = #{memberId}
 	</select>
 	
@@ -176,20 +257,30 @@ WHERE
 	
 	
 	<!-- 찜 내역 -->
-	<select id="selectWishList" resultType="WishVO" parameterType="String">
-		SELECT b.favorite_code
-		     , b.member_id
-		     , a.product_name
-		     , a.product_cost
-		     , a.product_code
-		     , a.sale_price
-		     , c.upload_name
-		     , c.img_content
-		FROM ar_products a
-		RIGHT OUTER JOIN ar_favorite b ON a.product_code = b.product_code
-		RIGHT OUTER JOIN ar_imgs c ON a.product_code = c.product_code
-		WHERE a.member_id = #{memberId}
-		ORDER BY b.favorite_code
+	<select id="selectWishList" resultType="WishVO" parameterType="Criteria">
+		select *
+		from(select rownum rn, nt.* 
+			from (
+					SELECT a.favorite_code
+					     , a.member_id
+					     , b.product_name
+					     , b.product_cost
+					     , b.product_code
+					     , b.sale_price
+			             , c.upload_name
+					     , c.img_content
+					 FROM ar_favorite a
+					 JOIN ar_products b ON a.product_code = b.product_code
+					 LEFT OUTER JOIN ar_imgs c ON a.product_code = c.product_code
+					 WHERE a.member_id = #{memberId}
+					 ORDER BY a.favorite_code desc
+		 	) nt
+		 <![CDATA[
+		 	where rownum <= #{pageNum} * #{amount}
+		 ]]>
+		 ORDER BY a.favorite_code desc
+		 )
+		 where rn > (#{pageNum} -1) * #{amount}
 	</select>
 	
 	<!-- 취소 상세 -->
@@ -210,13 +301,13 @@ WHERE
              , f.member_id
              , f.order_code
 		FROM ar_cancel a
-		LEFT join ar_cancel_reject b ON a.CANCEL_REJECTION_REASON = b.CANCEL_REJECTION_REASON
-		LEFT join ar_order_detail c ON c.order_detail_code = a.order_detail_code
-		LEFT join ar_option d ON d.option_code = c.option_code
-		LEFT join ar_products e ON e.product_code = d.product_code
+		LEFT JOIN ar_cancel_reject b ON a.CANCEL_REJECTION_REASON = b.CANCEL_REJECTION_REASON
+		LEFT JOIN ar_order_detail c ON c.order_detail_code = a.order_detail_code
+		LEFT JOIN ar_option d ON d.option_code = c.option_code
+		LEFT JOIN ar_products e ON e.product_code = d.product_code
         LEFT JOIN ar_orders f ON c.order_code = f.order_code
         WHERE f.member_id = #{memberId}
-        
+        ORDER BY a.cancel_regdate DESC
 	</select>
 	
 	<!-- 반품 상세 -->
@@ -234,11 +325,12 @@ WHERE
 		     , d.product_name 
              , e.member_id
 		FROM ar_return a
-		left JOIN ar_order_detail b ON a.order_detail_code = b.order_detail_code
+		LEFT JOIN ar_order_detail b ON a.order_detail_code = b.order_detail_code
 		LEFT JOIN ar_option c ON b.option_code = c.option_code
 		LEFT JOIN ar_products d ON d.product_code = c.product_code
         LEFT JOIN ar_orders e ON e.order_code = b.order_code
 		WHERE e.member_id = #{memberId}
+		ORDER BY a.return_regdate DESC
 	</select>
 	
 	<!-- 교환 상세 -->
@@ -264,7 +356,35 @@ WHERE
 		LEFT JOIN ar_products d ON d.product_code = c.product_code
         LEFT JOIN ar_orders e ON e.order_code = b.order_code
 		WHERE e.member_id = #{memberId}
-		
+		ORDER BY a.exchange_regdate DESC
+	</select>
+	
+	<!-- 취소 신청 넘어가는 값 -->
+	<select id="cancelCodePage" resultType="CodeVO">
+		SELECT b.order_code
+		     , a.order_detail_code
+		     , d.product_name
+		     , b.member_id
+		     , a.payment_price
+		FROM ar_order_detail a
+		JOIN ar_orders b   ON a.order_code = b.order_code
+		JOIN ar_option c   ON c.option_code = a.option_code
+		JOIN ar_products d ON d.product_code = c.product_code
+	   WHERE a.order_detail_code = #{orderDetailCode}
+	</select>
+	
+	<!-- 반품 신청 넘어가는 값 -->
+	<select id="returnCodePage" resultType="CodeVO">
+		SELECT b.order_code
+		     , a.order_detail_code
+		     , d.product_name
+		     , b.member_id
+		     , a.payment_price
+		FROM ar_order_detail a
+		LEFT JOIN ar_orders b ON a.order_code = b.order_code
+		LEFT JOIN ar_option c ON c.option_code = a.option_code
+		LEFT JOIN ar_products d ON d.product_code = c.product_code
+		WHERE a.order_detail_code = #{orderDetailCode}
 	</select>
 	
 	<!-- 교환 신청 넘어가는 값 -->
@@ -278,46 +398,7 @@ WHERE
 		LEFT JOIN ar_orders b ON a.order_code = b.order_code
 		LEFT JOIN ar_option c ON c.option_code = a.option_code
 		LEFT JOIN ar_products d ON d.product_code = c.product_code
-		WHERE b.member_id=#{memberId} AND a.order_detail_code=#{orderDetailCode}
-	</select>
-	
-	<!--교환 코드 -->
-	<select id="selectExchangeCode" resultType="CodeVO" parameterType="String">
-		SELECT master_code
-		     , code_id
-		     , code_name
-		FROM ar_code 
-		WHERE master_code = 'exchange_reason'
-	</select>
-	
-	<!-- 교환 신청 -->
-	<insert id="insertExchange" parameterType="BuyExchangeVO">
-		<selectKey resultType="String" keyProperty="exCode" order="BEFORE">
-			SELECT NVL(MAX(exchange_code),0)+1 FROM ar_exchange
-		</selectKey>
-		INSERT INTO ar_exchange 
-				(EXCHANGE_CODE
-				, ORDER_DETAIL_CODE
-				, EXCHANGE_REASON
-				, EXCHANGE_ADDR)
-		VALUES (#{exCode}
-				, #{orderDetailCode}
-				, #{exchangeReason}
-				, #{exchangeAddr})
-	</insert>
-	
-	<!-- 취소 신청 넘어가는 값 -->
-	<select id="cancelCodePage" resultType="CodeVO">
-		SELECT b.order_code
-		     , a.order_detail_code
-		     , d.product_name
-		     , b.member_id
-		     , a.payment_price
-		FROM ar_order_detail a
-		LEFT JOIN ar_orders b ON a.order_code = b.order_code
-		LEFT JOIN ar_option c ON c.option_code = a.option_code
-		LEFT JOIN ar_products d ON d.product_code = c.product_code
-		WHERE b.member_id=#{memberId} AND a.order_detail_code=#{orderDetailCode}
+		WHERE a.order_detail_code=#{orderDetailCode}
 	</select>
 	
 	<!--취소 코드  -->
@@ -329,34 +410,6 @@ WHERE
 		WHERE master_code = 'cancel_reason'
 	</select>
 	
-	<!--취소 신청  -->
-	<insert id="insertCancel" parameterType="BuyCancelVO">
-		<selectKey resultType="String" keyProperty="caCode" order="BEFORE">
-			SELECT NVL(MAX(cancel_code),0)+1 FROM ar_cancel
-		</selectKey>
-		INSERT INTO ar_cancel 
-				(CANCEL_CODE
-				, ORDER_DETAIL_CODE
-				, CANCEL_REASON)
-		VALUES (#{caCode}
-				, #{orderDetailCode}
-				, #{cancelReason})
-	</insert>
-	
-	<!-- 반품 신청 넘어가는 값 -->
-	<select id="returnCodePage" resultType="CodeVO">
-		SELECT b.order_code
-		     , a.order_detail_code
-		     , d.product_name
-		     , b.member_id
-		     , a.payment_price
-		FROM ar_order_detail a
-		LEFT JOIN ar_orders b ON a.order_code = b.order_code
-		LEFT JOIN ar_option c ON c.option_code = a.option_code
-		LEFT JOIN ar_products d ON d.product_code = c.product_code
-		WHERE b.member_id=#{memberId} AND a.order_detail_code = #{orderDetailCode}
-	</select>
-	
 	<!--반품 코드  -->
 	<select id="selectReturnCode" resultType="CodeVO" parameterType="String">
 		SELECT master_code
@@ -366,14 +419,50 @@ WHERE
 		WHERE master_code = 'return_reason'
 	</select>
 	
+	<!--교환 코드 -->
+	<select id="selectExchangeCode" resultType="CodeVO" parameterType="String">
+		SELECT master_code
+		     , code_id
+		     , code_name
+		FROM ar_code 
+		WHERE master_code = 'exchange_reason'
+	</select>
+	
+	<!--취소 신청  -->
+	<insert id="insertCancel" parameterType="BuyCancelVO">
+		INSERT INTO ar_cancel 
+				(CANCEL_CODE
+				, ORDER_DETAIL_CODE
+				, CANCEL_REASON)
+		VALUES (ca_code
+				, #{orderDetailCode}
+				, #{cancelReason})
+	</insert>
+	
 	<!--반품 신청  -->
 	<insert id="insertReturn" parameterType="BuyReturnVO">
-		<selectKey resultType="String" keyProperty="reCode" order="BEFORE">
-			SELECT NVL(MAX(return_code),0)+1 FROM ar_return
-		</selectKey>
 		INSERT INTO ar_return 
-				(RETURN_CODE, ORDER_DETAIL_CODE, RETURN_REASON, RETURN_STATUS)
-		VALUES (#{reCode}, #{orderDetailCode}, #{returnReason}, 'n')
+				(RETURN_CODE
+			   , ORDER_DETAIL_CODE
+			   , RETURN_REASON
+			   , RETURN_STATUS)
+		VALUES (re_code
+			   , #{orderDetailCode}
+			   , #{returnReason}
+			   , 'n')
+	</insert>
+	
+	<!-- 교환 신청 -->
+	<insert id="insertExchange" parameterType="BuyExchangeVO">
+		INSERT INTO ar_exchange 
+				(EXCHANGE_CODE
+				, ORDER_DETAIL_CODE
+				, EXCHANGE_REASON
+				, EXCHANGE_ADDR)
+		VALUES (ex_code
+				, #{orderDetailCode}
+				, #{exchangeReason}
+				, #{exchangeAddr})
 	</insert>
 	
 	<!-- 주문 취소 -->
@@ -393,5 +482,12 @@ WHERE
 		DELETE ar_exchange
 		WHERE order_detail_code = #{orderDetailCode}
 	</delete>
+	
+	<!-- 찜 취소 -->
+	<delete id="deleteWish" parameterType="WishVO">
+		DELETE ar_favorite
+		WHERE favorite_code = #{favoriteCode}
+	</delete>
+	
 	
   </mapper>

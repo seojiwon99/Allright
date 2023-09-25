@@ -116,73 +116,43 @@
                         </p>
                       </div>
                       <div class="col-6 col-lg-3">
-                        <!-- Heading -->
                         <h6 class="heading-xxxs text-muted">수량:</h6>
-
-                        <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
                           <span th:text="|${lists.orderCnt}|"></span>
                         </p>
                       </div>
                       <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
                         <h6 class="heading-xxxs text-muted">결제 금액:</h6>
-
-                        <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
                           <span th:text="|${lists.paymentPrice}원|"></span>
                         </p>
-
                       </div>
                       <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
                         <h6 class="heading-xxxs text-muted">교환 접수 날짜:</h6>
-
-                        <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
                           <time datetime="2019-10-01">
-                           <span th:text= "|${#dates.format(lists.exchangeRegdate, 'yyyy-MM-dd')}|"></span>
+                           <span th:text= "|${#dates.format(lists.exchangeRegdate, 'yyyy-MM-dd hh:mm:ss')}|"></span>
                           </time>
                         </p>
-
                       </div>
                       <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
                         <h6 class="heading-xxxs text-muted">교환 상태:</h6>
-
-                        <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
                           <span th:text="|${lists.exchangeStatus}|"></span>
                         </p>
-
                       </div>
-                      
                       <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
                         <h6 class="heading-xxxs text-muted">교환 승인 날짜:</h6>
-
-                        <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${#dates.format(lists.exchangeProcessingdate, 'yyyy-MM-dd')}|"></span>
+                         <span th:text="|${#dates.format(lists.exchangeProcessingdate, 'yyyy-MM-dd hh:mm:ss')}|"></span>
                         </p>
-
                       </div>
                       <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
                         <h6 class="heading-xxxs text-muted">교환 받을 주소:</h6>
-
-                        <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
                          <span th:text="|${lists.exchangeAddr}|"></span>
                         </p>
-
                       </div>
-                    
                     </div>
                   </div>
                 <div class="card-footer">
@@ -190,15 +160,12 @@
                   <div class="col-12 col-lg-6">
                     <div class="row gx-5 mb-4 mb-lg-0">
                       <div class="col-3">
-
                         <!-- Image -->
                         <div class="ratio ratio-1x1 bg-cover">
                         <img th:src="@{/img/products/product-1.jpg}" style="max-width: 100%; height: auto">
                         </div>
-
                       </div>
                       <div class="col-3">
-
                         <!-- Image -->
                         <div class="ratio ratio-1x1 bg-cover" style="background-image:">
                         <img th:src="@{/img/products/product-11.jpg}" style="max-width: 100%; height: auto">
@@ -206,7 +173,6 @@
 
                       </div>
                       <div class="col-3">
-
                         <!-- Image -->
                         <div class="ratio ratio-1x1 bg-cover">
                         <img th:src="@{/img/products/product-12.jpg}" style="max-width: 100%; height: auto" >
@@ -214,7 +180,6 @@
 
                       </div>
                       <div class="col-3">
-
                         <!-- Image -->
                         <div class="ratio ratio-1x1 bg-cover" style="background-image:">
                         <img th:src="@{/img/products/product-13.jpg}" style="max-width: 100%; height: auto" >
@@ -227,45 +192,42 @@
 						<div class="row gx-5">
 							<div class="col-6">
 								<!-- Button -->
-								<button class="btn btn-sm w-100 btn-outline-dark" id="deleteBtn">교환 취소</button>
+								<button class="btn btn-sm w-100 btn-outline-dark deleteBtn" data-orderdetailcode="${lists.orderDetailCode}">교환 취소</button>
 							</div>
 						 </div>
 					</div>
-
                   </div>
                 </div>
               </div>
                 </div>
 				</div>
-              
-
             </div>
-
           </div>
         </div>
-
     </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$('#deleteBtn').on('click', function(){
-	let exchangeData = {
-		'orderDetailCode' : $('#orderDetailCode').text(),
-	}
-	$.ajax({
-		url : '/buyer/deleteExchange',
-		type : 'POST',
-		contentType : 'application/json',
-		data : JSON.stringify(exchangeData),
-		success : function(response){
-			alert("수정 완료");
-		},
-		fail : function(errer){
-			console.error('수정 중 오류')
-			console.log(error);
+$(document).ready(function(){
+	$('.deleteBtn').on('click', function(){
+		let orderDetailCode = $(this).data('orderDetailCode');
+		let exchangeData = {
+			'orderDetailCode' : $('#orderDetailCode').text(),
 		}
-	})
-	
-})
+		$.ajax({
+			url : '/buyer/deleteExchange',
+			type : 'POST',
+			contentType : 'application/json',
+			data : JSON.stringify(exchangeData),
+			success : function(response){
+				alert("수정 완료");
+			},
+			fail : function(errer){
+				console.error('수정 중 오류')
+				console.log(error);
+			}
+		})
+	});
+});
 
 </script>
 </div>
