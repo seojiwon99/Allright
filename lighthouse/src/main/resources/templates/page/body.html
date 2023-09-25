@@ -13,8 +13,8 @@
 			<div class="container d-flex flex-column">
 				<div class="row align-items-center py-12" style="min-height: 550px">
 					<!-- productbanner -->
-					<a href="#"><img alt="..."
-						th:src="@{/img/products/}+${banner.uploadName}"></a>
+					<!-- <a href="#"><img alt="..."
+						th:src="@{/img/products/}+${banner.uploadName}"></a> -->
 
 					<div style="display: none" th:text="${banner.imgContent}"></div>
 				</div>
@@ -67,8 +67,8 @@
 						</button>
 
 						<!-- Image -->
-						<img th:src="|@upload/${}|" class="card-img-top"
-							alt="...">
+						<!-- <img th:src="|@upload/${}|" class="card-img-top"
+							alt="..."> -->
 
 						<div style="display: none"
 							th:text="${product.productImg[0].imgContent}"></div>

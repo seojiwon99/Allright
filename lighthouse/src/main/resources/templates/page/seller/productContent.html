@@ -35,6 +35,8 @@
 
 
    <!-- CKEditor -->
+   		<script src="https://cdn.ckeditor.com/ckeditor5/12.4.0/classic/ckeditor.js"></script>
+   
       <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
       <script>      
       ClassicEditor
@@ -111,7 +113,10 @@
   $(document).ready(function(e){
      let data = localStorage.getItem("detail");
      console.log(data);
-     editor.setData(data);
+     if(data != null){
+	     editor.setData(data);
+     }
+    	 
   })
   $('#submit').on('click',function(e){
       $('.inform').remove();

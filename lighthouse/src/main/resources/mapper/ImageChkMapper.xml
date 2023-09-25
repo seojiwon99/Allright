@@ -8,6 +8,6 @@
 	<select id="getImgsFiles" resultType="ImgsVO">
 		SELECT * 
 		  FROM ar_imgs 
-         WHERE upload_path = to_char(sysdate -1, 'yyyy\mm\dd');
+		 WHERE upload_path = to_char(sysdate -1, 'yyyy/MM/dd')
 	</select>
   </mapper>

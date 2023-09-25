@@ -141,12 +141,7 @@
                   </ul>
                </div> -->
 
-             <div class="form-group row">
-                  <label class="col-sm-2">상품 코드</label>
-                  <div class="col-sm-3">
-                     <input type="text" name="productCode" class="form-control">
-                  </div>
-               </div>
+
 
                <div class="form-group row">
                   <label class="col-sm-2" for="productName">상품명</label>
@@ -307,10 +302,10 @@
                <div class="form-group row" th:if="${product != null}">
                   <textarea rows="" cols="" name="productContent">[[${product.productContent}]]</textarea>
                   <th:block th:each="img, status :${detailImg.imgsVO}">
-                  		<input type="text" th:value="${img.imgName}" th:name="|imgsVO[${status.index}].imgName|">
-                  		<input type="text" th:value="${img.uploadName}" th:name="|imgsVO[${status.index}].uploadName|">
-                  		<input type="text" th:value="${img.uploadPath}" th:name="|imgsVO[${status.index}].uploadPath|">
-                  		<input type="text" th:value="${img.imgContent}" th:name="|imgsVO[${status.index}].imgContent|">
+                  		<input type="hidden" th:value="${img.imgName}" th:name="|imgsVO[${status.index}].imgName|">
+                  		<input type="hidden" th:value="${img.uploadName}" th:name="|imgsVO[${status.index}].uploadName|">
+                  		<input type="hidden" th:value="${img.uploadPath}" th:name="|imgsVO[${status.index}].uploadPath|">
+                  		<input type="hidden" th:value="${img.imgContent}" th:name="|imgsVO[${status.index}].imgContent|">
                   </th:block>
                </div>
                <div class="form-group row">
