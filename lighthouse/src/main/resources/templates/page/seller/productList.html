@@ -160,18 +160,19 @@
 		</div>
 	</div>
 
+
 	<script>
-	 $(document).ready(function () {
-		let result = [[${msg}]];
-		alert(result);
-  
-     });
+	
+	
+	
+
+
 	
 	
 	$('#optionList').on('change',function(){
 		
 		let val = $(this).val();
-
+	
 		$.ajax({
 			url : 'getOptionProduct',
 			type :'get',
