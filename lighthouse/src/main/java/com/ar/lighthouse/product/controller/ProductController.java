@@ -36,12 +36,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
+import com.ar.lighthouse.admin.service.DeclareVO;
 import com.ar.lighthouse.cart.service.CartService;
 import com.ar.lighthouse.cart.service.CartVO;
 
 import com.ar.lighthouse.common.CodeVO;
-
+import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.member.service.MemberService;
@@ -345,7 +345,7 @@ public class ProductController {
 	// 리뷰등록
 	@PostMapping("insertReview")
 	@ResponseBody
-	public String addReivew(MultipartFile[] files, ReviewVO review, ImgsVO imgsVO, Model model) {
+	public String addReivew(MultipartFile[] files, ReviewVO review, ImgsVO imgsVO) {
 
 		reviewService.addReview(review);
 
@@ -416,14 +416,60 @@ public class ProductController {
 		return uploadFileName.replace(File.separator, "/");
 	}
 
+	
 	@PostMapping("editReview")
 	@ResponseBody
-	public ReviewVO editReview(MultipartFile[] files,ReviewVO reviewVO) {
+	public ReviewVO editReview(MultipartFile[] files,ReviewVO reviewVO, ImgsVO imgsVO) {
 		System.out.println("review"+reviewVO);
 
 		reviewService.editReview(reviewVO);
-		return reviewVO;
+		//reviewService.editReviewImg(imgsVO);  삭제처리
+		
+		for (MultipartFile uploadFile : files) {
+			if (uploadFile.getContentType().startsWith("image") == false) {
+				System.err.println("this file is not image type");
+				return null;
+			}
 
+			String originalName = uploadFile.getOriginalFilename();
+			System.out.println("originalName : " + originalName);
+			String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
+			imgsVO.setImgName(fileName);
+
+			System.out.println("fileName : " + fileName);
+
+			// 날짜 폴더 생성
+			String folderPath = makeFolder();
+
+			// UUID
+			String uuid = UUID.randomUUID().toString(); // 유니크한 이름 때문에
+			// 저장할 파일 이름 중간에 "_"를 이용하여 구분
+			imgsVO.setUploadName(uuid + "_" + fileName);
+
+			// System.out.println("uuid : " + uuid);
+
+			String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
+			// System.out.println("uploadFileName : " + uploadFileName);
+			imgsVO.setUploadPath(folderPath);
+
+			String saveName = uploadPath + File.separator + uploadFileName;
+			// System.out.println("saveName : " + saveName);
+
+			Path savePath = Paths.get(saveName);
+			// System.out.println("savePath : " + savePath);
+			// Paths.get() 메서드는 특정 경로의 파일 정보를 가져옵니다.(경로 정의하기)
+			// System.out.println("path : " + saveName);
+			try {
+				uploadFile.transferTo(savePath); // 파일의 핵심
+				// uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
+				imgsVO.setReviewCode(reviewVO.getReviewCode());
+				reviewService.addReviewImg(imgsVO);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		
+		}
+		return reviewVO;
 	}
 
 	// 리뷰 삭제
@@ -435,11 +481,19 @@ public class ProductController {
 
 		return "deleteReview";
 	}
+	
+	// 리뷰 신고
+	@PostMapping("reviewDeclare")
+	@ResponseBody
+	public String reviewDeclare(@RequestBody DeclareVO declareVO) {
+		reviewService.addReviewDeclare(declareVO);
+		return null;
+	}
 
 	// qna 등록
 	@PostMapping("insertInquiry")
 	@ResponseBody
-	public ProductInquiryVO addInquiry(Model model, @RequestBody ProductInquiryVO inquiryVO) {
+	public ProductInquiryVO addInquiry(@RequestBody ProductInquiryVO inquiryVO) {
 
 		custominquiryService.addInquiry(inquiryVO);
 
@@ -466,21 +520,21 @@ public class ProductController {
 	// qna 삭제
 	@PostMapping("removeInquiry")
 	@ResponseBody
-	public int removeInquiry(@RequestBody Integer queCode, RedirectAttributes rttr) {
+	public int removeInquiry(@RequestBody Integer queCode) {
 		System.out.println(queCode);
 		if (custominquiryService.removeInquiry(queCode)) {
-			rttr.addFlashAttribute("result", "success");
+	
 		}
 		return queCode;
 
 	}
 
 	// 상품 단건 조회
-
 	@GetMapping("goodDetail")
-
-	public String getGoodDetail(String productCode, Model model, HttpSession session, ProductVO vo, OptionVO optionVO) {
-
+	public String getGoodDetail(String productCode, Model model, HttpSession session, ProductVO vo, OptionVO optionVO, CodeVO codeVO,Criteria cri) {
+		
+		//페이징
+		
 		// 상품정보
 		ProductVO productVO = productService.goodsDetail(vo);
 		model.addAttribute("goods", productVO);
@@ -491,10 +545,15 @@ public class ProductController {
 		model.addAttribute("review", reviewService.getReviewList(reviewVO));
 		model.addAttribute("count", reviewService.countGetReview(reviewVO));
 
+		// 리뷰 신고
+		reviewVO.setProductCode(productCode);
+		model.addAttribute("codes", reviewService.reviewCodeList(codeVO));
+		
 		// qna 조회
 		ProductInquiryVO productInquiryVO = new ProductInquiryVO();
 		productInquiryVO.setProductCode(productCode);
 		model.addAttribute("inquiry", custominquiryService.getInquiryList(productInquiryVO));
+		model.addAttribute("inquiryCount", custominquiryService.countGetInquiry(productInquiryVO));
 
 		// 옵션 조회
 		optionVO.setProductCode(productCode);

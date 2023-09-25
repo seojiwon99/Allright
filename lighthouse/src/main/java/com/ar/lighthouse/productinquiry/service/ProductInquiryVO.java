@@ -16,4 +16,5 @@ public class ProductInquiryVO {
 	Date queUpdatedate;
 	String queAns;
 	String sellerId;
+	int inquiryCount;
 }

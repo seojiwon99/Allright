@@ -32,7 +32,7 @@ public class MainController {
 	}
 
 
-	
+	//메인 페이지
 	@GetMapping("/")
 	public String Body(Model model) {
 	

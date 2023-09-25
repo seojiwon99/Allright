@@ -442,13 +442,18 @@ WHERE member_id = #{memberId}
              , p.return_cost
              , p.exchange_cost
              , p.delivery_service
-             , p.product_status
-               , i.upload_name
-               , i.img_content
-		from ar_products p , ar_imgs i 
-        where p.product_code = i.product_code
-		and p.product_code = #{productCode}
+             , p.product_status 
+		from ar_products p  
+        where p.product_code = #{productCode}
+		
+		
 	</select>
+	
+	<select id="selectImgList" resultType="ImgsVO">
+		select * from ar_imgs  
+		where product_code = #{productCode}
+	</select>
+	
 	
 	<!-- 택배사 가져오기 -->
 	<select id="selectDeliveryList" resultType="CodeVO">

@@ -19,18 +19,15 @@ import com.ar.lighthouse.product.service.ProductVO;
 import com.ar.lighthouse.product.service.ReturnVO;
 
 @Service
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	ProductMapper productMapper;
-	
-
 
 	@Override
 	public List<ProductVO> getproductList(ProductVO productVO) {
-		return  productMapper.selectProductList(productVO);
+		return productMapper.selectProductList(productVO);
 	}
-
 
 	@Override
 	public int updateExStatus(ProductVO productVO) {
@@ -48,11 +45,11 @@ public class ProductServiceImpl implements ProductService{
 	public int addProduct(ProductVO productVO) {
 		int result = productMapper.insertProduct(productVO);
 		List<OptionVO> optionVO = new ArrayList();
-		if(result > 0) {
+		if (result > 0) {
 			int length = 0;
 			String code = productVO.getProductCode();
-			for(int i = 0; i< productVO.getOption().size(); i++) {
-				if(productVO.getOption().get(i).getOptionCount() == 0) {
+			for (int i = 0; i < productVO.getOption().size(); i++) {
+				if (productVO.getOption().get(i).getOptionCount() == 0) {
 					productVO.getOption().get(i).setOptionSellStatus("N");
 				}
 				// value 짜르기
@@ -72,7 +69,7 @@ public class ProductServiceImpl implements ProductService{
 				// System.out.println(productVO.getOption().get(i));
 				productVO.getOption().get(i).setProductCode(code);
 				productMapper.insertOption(productVO.getOption().get(i));
-				
+
 				// System.out.println(productVO.getOption().get(i));
 			}
 			// productMapper.insertOption(productVO.getOption());
@@ -85,19 +82,19 @@ public class ProductServiceImpl implements ProductService{
 	public void addProductImg(ImgsVO imgVO) {
 		productMapper.insertProductImg(imgVO);
 	}
-	
-	//제품 상세 단건조회
+
+	// 제품 상세 단건조회
 	@Override
 	public ProductVO goodsDetail(ProductVO productVO) {
-		return productMapper.selectInfo(productVO);
+		productVO = productMapper.selectInfo(productVO);
+		productVO.setProductImg(productMapper.selectImgList(productVO.getProductCode()));
+		return productVO;
 	}
-
 
 	@Override
 	public List<ProductVO> getProductsByMemberId(String memberId) {
 		return productMapper.getProductsByMemberId(memberId);
 	}
-
 
 	@Override
 	public List<MemberVO> getSellerInfo(MemberVO memberVO) {
@@ -122,24 +119,20 @@ public class ProductServiceImpl implements ProductService{
 		return productMapper.selectExchangeList(exchangeVO);
 	}
 
-
 	@Override
 	public List<ReturnVO> getReturnList(ReturnVO returnVO) {
 		return productMapper.selectReturnList(returnVO);
 	}
-
 
 	@Override
 	public int updateDeliveryInfo(DetailVO detailVO) {
 		return productMapper.updateDeliveryInfo(detailVO);
 	}
 
-
 	@Override
 	public List<OptionVO> getOptionList(OptionVO optionVO) {
 		return productMapper.getOptionList(optionVO);
 	}
-
 
 	// 택배사 코드 가져오기
 	@Override
@@ -147,7 +140,4 @@ public class ProductServiceImpl implements ProductService{
 		return productMapper.selectDeliveryList();
 	}
 
-
-	
-	
 }

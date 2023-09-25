@@ -46,6 +46,9 @@ public interface ProductMapper {
 	
 	//상품 단건조회페이지
 	public ProductVO selectInfo(ProductVO productVO);
+	
+	//상품이미지 
+	public List<ImgsVO> selectImgList(String productCode);
 
 //	상품주문목록
 	List<DetailVO> selectOrderDetail(ProductVO productVO);

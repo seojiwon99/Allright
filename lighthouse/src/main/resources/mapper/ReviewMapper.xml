@@ -110,8 +110,50 @@
 	        
   	</update>
   	
+  	<update id="updateReviewImg">
+  		update ar_imgs set
+  			img_code = #{imgCode}
+    		,parent_code = '2'
+    		,img_order = '1'
+    		,img_name = #{imgName}
+    		,upload_name =#{uploadName}
+    		,img_content =#{imgContent}
+    		,review_code =#{reviewCode}
+    		,upload_path = #{uploadPath}
+  		 
+  	</update>
+  	
+  	
   	<delete id="deleteReview">
   		DELETE FROM ar_review WHERE review_code = #{reviewCode}
   	</delete>
+  	
+  	<!-- 리뷰신고 코드-->
+  	<select id="reviewDeclareCode" resultType="CodeVO">
+  		select master_code, code_id, code_name, code_desc, code_use  
+  		from ar_code where master_code = 'review_declare_reason'
+  	</select>
+  	
+  	<!-- 리뷰 신고 -->
+  	<insert id="reviewDeclare">
+	  	<selectKey resultType="int" keyProperty="declareCode" order="BEFORE">	
+	  		SELECT NVL(0, MAX(declare_code))+1 FROM ar_declare  
+	  	</selectKey>
+  		insert into ar_declare(
+  		declare_code
+  		,review_code
+  		,member_id
+  		,declare_reason
+  		,declare_content
+  		,declare_member
+  		)
+       values( 
+       	#{declareCode}
+       ,#{reviewCode}
+       ,#{memberId}
+       ,#{declareReason}
+       ,#{declareContent}
+       ,#{declareMember}
+  	</insert>
   	
   </mapper>
