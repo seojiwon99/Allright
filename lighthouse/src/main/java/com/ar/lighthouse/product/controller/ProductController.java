@@ -39,6 +39,7 @@ import com.ar.lighthouse.cart.service.CartService;
 
 import com.ar.lighthouse.common.CodeVO;
 
+
 import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.member.service.MemberService;
@@ -79,108 +80,186 @@ public class ProductController {
 	@Autowired
 	CartService cartService;
 
-//	판매자 메인페이지
-	@GetMapping("sellerMain")
-	public String seller() {
-		return "page/seller/sellerMain";
-	}
+//  판매자 메인페이지
+  @GetMapping("sellerMain")
+  public String seller() {
+     return "page/seller/sellerMain";
+  }
 
-//	판매자 상품문의페이지
-	@GetMapping("productInquiry")
-	public String productInquiry() {
-		return "page/seller/productInquiry";
-	}
+//  판매자 상품문의페이지
+  @GetMapping("productInquiry")
+  public String productInquiry() {
+     return "page/seller/productInquiry";
+  }
 
-//	판매자 mypage
-	@GetMapping("sellerMypage/{memberId}")
-	public String findMember(Model model, MemberVO memberVO) {
+//  판매자 mypage
+  @GetMapping("sellerMypage/{memberId}")
+  public String findMember(Model model, MemberVO memberVO) {
 
-		model.addAttribute("sellerInfo", productService.getSellerInfo(memberVO));
-		return "page/seller/sellerMypage";
-	}
+     model.addAttribute("sellerInfo", productService.getSellerInfo(memberVO));
+     return "page/seller/sellerMypage";
+  }
 
-//  주문/발송 페이지
-	@GetMapping("orderManagement")
-	public String productOrder(Model model, ProductVO productVO) {
-		model.addAttribute("orderList", productService.getProductOrder(productVO));
-		return "page/seller/orderManagement";
-	}
+// 주문/발송 페이지
+  @GetMapping("orderManagement")
+  public String productOrder(Model model, ProductVO productVO) {
+     model.addAttribute("orderList", productService.getProductOrder(productVO));
+     return "page/seller/orderManagement";
+  }
 
-//	교환 페이지
-	@GetMapping("exchangeList")
-	public String productExchange() {
-		return "page/seller/exchangeList";
-	}
+//orderOptionManagement
+@GetMapping("orderOptionManagement")
+public String productOrderOption(Model model, DetailVO detailVO ) {
+	  
+	List<DetailVO> orderList = productService.getOrderOptionList(detailVO);
+	  model.addAttribute("orderList", orderList );
+	  
+	  return "page/seller/orderManagement :: #orderChkList";
+}
+  
+  
+//상품 취소검색 기능
+@GetMapping("cancelOption") // Model model, CancelVO cancelVO
+public String cancelSeaList(Model model, CancelVO cancelVO) {
 
-//	정산관리 페이지
-	@GetMapping("settlementManagement")
-	public String settlementManagement() {
-		return "page/seller/settlementManagement";
-	}
+	model.addAttribute("cancelInfo", productService.getCancelSeaList(cancelVO));
+ return "page/seller/cancelProduct :: #cancelList";
+}
+  
+// 교환상품 검색
+@GetMapping("exchangeOption")
+public String exchangeSeaList(Model model, ExchangeVO exchangeVO) {
+	return "";
+}
+//주문배송정보입력
+  
+    @PostMapping("updateDelivery") 
+    @ResponseBody
+    public List<DetailVO> updateDeliveryInfo(@RequestBody List<DetailVO> detailList){ 
+    	System.out.println(detailList);
+    	
+       for(DetailVO detailVo : detailList) { 
+          int result =
+             productService.updateDeliveryInfo(detailVo); 
+          
+          }
+    
+    return detailList;
+    
+    }
+    
+//  주문상태변경
+  @PostMapping("updateOrderStatus")
+  @ResponseBody
+  public List<String> updateOrder(@RequestBody List<DetailVO> orderStatus) {
+     
+	  List<String> delList = new ArrayList<>();
+     for(DetailVO detailVo : orderStatus) { 
+         int result =
+            productService.updateOrderStatus(detailVo); 
+         
+         }
+     return delList;
+     }
 
-//	판매자 상품목록
-	@GetMapping("productList/{memberId}")
-	public String productList(@PathVariable String memberId, Model model) {
-		// memberId를 기반으로 해당 사용자가 등록한 상품 목록 조회
-		List<ProductVO> productList = productService.getProductsByMemberId(memberId);
 
-		// 모델에 상품 목록 추가
-		model.addAttribute("productList", productList);
+  
+   
 
-		return "page/seller/productList";
-	}
+//  정산/통계 페이지
+  @GetMapping("settlementManagement")
+  public String getCalList() {
+	 
+	  
+	  return "page/seller/settlementManagement";
+  }
+//  정산페이지
+  @GetMapping("calculatePage")
+  public String getCalculatePage(Model model, SellerCalVO sellerCalVO) {
+	  model.addAttribute("calList", productService.getCalList(sellerCalVO));
+	  return "page/seller/calculate";
+  }
+  
+//  통계페이지
+  @GetMapping("statisticsPage")
+  public String getstatisticsPage() {
+	  return "page/seller/statistics";
+  }
+  
+  
 
-//	상품 취소관리 페이지
-	@GetMapping("cancelProduct") // Model model, CancelVO cancelVO
-	public String cancelProdructs() {
+//  판매자 상품목록
+  @GetMapping("productList/{memberId}")
+  public String productList(@PathVariable String memberId, Model model) {
+     // memberId를 기반으로 해당 사용자가 등록한 상품 목록 조회
+     List<ProductVO> productList = productService.getProductsByMemberId(memberId);
 
-//		model.addAttribute("cancelInfo", productService.getCancelList(cancelVO));
+     // 모델에 상품 목록 추가
+     model.addAttribute("productList", productList);
 
-		return "page/seller/cancelProduct";
-	}
+     return "page/seller/productList";
+  }
 
-//	상품상세설명등록 페이지
-	@GetMapping("productContent")
-	public String productContent() {
-		return "page/seller/productContent";
-	}
+//  상품 취소관리 페이지
+  @GetMapping("cancelProduct") // Model model, CancelVO cancelVO
+  public String cancelProdructs(Model model, CancelVO cancelVO) {
 
-//	조건순 order by
-	@GetMapping("getOptionProduct")
-	public String productDetail(Model model, ProductVO productVO) {
-		model.addAttribute("productList", productService.getOptionProduct(productVO));
-		return "page/seller/productList :: #sortList";
-	}
+     model.addAttribute("cancelInfo", productService.getCancelList(cancelVO));
 
-//	등록폼
-	@GetMapping("insertProductForm")
-	public String productForm(Model model, CategoryVO categoryVO, CodeVO codeVO) {
-		// model.addAttribute("getCategoryList", mainPageService.getCategoryList());
-		model.addAttribute("delivery", productService.getDeliveryList());
-		System.out.println(model);
-		return "page/seller/productForm";
-	}
+     return "page/seller/cancelProduct";
+  }
 
-//  등록 ( 첫번째 카테고리
-	@GetMapping("childCate")
-	public String childCate(CategoryVO categoryVO, Model model) {
-		model.addAttribute("getCategoryList", mainPageService.getchildCategory(categoryVO));
-		return "page/seller/productForm :: #ChildCate";
-	}
+//  교환 관리 페이지
+  @GetMapping("exchangeList")
+  public String exchangeProducts(Model model, ExchangeVO exchangeVO, ReturnVO returnVO) {
 
-//  등록 ( 두번째 카테고리
-	@GetMapping("childOfCate")
-	public String childOfCate(CategoryVO categoryVO, Model model) {
-		model.addAttribute("getCategoryList", mainPageService.getchildCategory(categoryVO));
-		return "page/seller/productForm :: #ChildOfChildCate";
-	}
+     model.addAttribute("exchangeInfo", productService.getExchangeList(exchangeVO));
+     model.addAttribute("returnList", productService.getReturnList(returnVO));
+     return "page/seller/exchangeList";
+  }
 
-//  등록 ( 세번째 카테고리
-	@GetMapping("thirdOfCate")
-	public String thirdOfCate(CategoryVO categoryVO, Model model) {
-		model.addAttribute("getCategoryList", mainPageService.getchildCategory(categoryVO));
-		return "page/seller/productForm :: #thirdOfChildCate";
-	}
+//  상품상세설명등록 페이지
+  @GetMapping("productContent")
+  public String productContent() {
+     return "page/seller/productContent";
+  }
+
+//  조건순 order by
+  @GetMapping("getOptionProduct")
+  public String productDetail(Model model, ProductVO productVO) {
+	  
+     model.addAttribute("productList", productService.getOptionProduct(productVO));
+     return "page/seller/productList :: #sortList";
+  }
+
+  
+//  등록폼
+  @GetMapping("insertProduct")
+  public String productForm(Model model, CategoryVO categoryVO) {
+     model.addAttribute("getCategoryList", mainPageService.getCategoryList());
+     return "page/seller/productForm";
+  }
+
+// 등록 ( 첫번째 카테고리
+  @GetMapping("childCate")
+  public String childCate(CategoryVO categoryVO, Model model) {
+     model.addAttribute("getCategoryList", mainPageService.getchildCategory(categoryVO));
+     return "page/seller/productForm :: #ChildCate";
+  }
+
+// 등록 ( 두번째 카테고리
+  @GetMapping("childOfCate")
+  public String childOfCate(CategoryVO categoryVO, Model model) {
+     model.addAttribute("getCategoryList", mainPageService.getchildCategory(categoryVO));
+     return "page/seller/productForm :: #ChildOfChildCate";
+  }
+
+// 등록 ( 세번째 카테고리
+  @GetMapping("thirdOfCate")
+  public String thirdOfCate(CategoryVO categoryVO, Model model) {
+     model.addAttribute("getCategoryList", mainPageService.getchildCategory(categoryVO));
+     return "page/seller/productForm :: #thirdOfChildCate";
+  }
 
   
 	// 상품 등록

@@ -1,257 +1,287 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/default_layout}">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default_layout}">
 
 <!-- Content -->
 <div layout:fragment="content">
 
-<!-- CONTENT -->
-    <section class="pt-7 pb-12">
-      <div class="container">
-        <div class="row">
-          <div class="col-12 text-center">
+	<!-- CONTENT -->
+	<section class="pt-7 pb-12">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 text-center">
 
-            <!-- Heading -->
-            <h3 class="mb-10">취소 상세 페이지</h3>
+					<!-- Heading -->
+					<h3 class="mb-10">취소 상세 페이지</h3>
 
-          </div>
-        </div>
-        <div class="row">
-		<div class="col-12 col-md-3">
-
-            <!-- Nav -->
-            <nav class="mb-10 mb-md-0">
-              <div class="list-group list-group-sm list-group-strong list-group-flush-x">
-                <a class="list-group-item list-group-item-action dropend-toggle active" th:href="@{/page/buyer/orderList}">
-                  주문 목록
-                </a>
-				<ul class="list-styled mb-0">
-				<li class="nav-item">
-
-                  <!-- Toggle -->
-                  <a class="list-group-item list-group-item-action dropend-toggle active" data-bs-toggle="collapse" href="#Collapse" aria-expanded="true">
-                   취소/반품/교환내역
-                  </a>
-                  <!-- Collapse -->
-                  <div class="collapse" id="Collapse" data-simplebar-collapse="#seasonGroup">
-                    <div class="form-group form-group-overflow mb-6" id="seasonGroup">
-                      <div class="form-check mb-3">
-                        <a class="form-check-label" for="seasonOne" href="cancelList">
-                          취소
-                        </a>
-                      </div>
-                      <div class="form-check mb-3">
-                        <a class="form-check-label" for="seasonTwo" href="returnList">
-                          반품
-                        </a>
-                      </div>
-                      <div class="form-check">
-                        <a class="form-check-label" for="seasonThree" href="exchangeList">
-                          교환
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                 </li>
-                <li class="nav-item">
-                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/myCoupon}">
-                  나의 쿠폰함
-                </a>
-                </li>
-                <li class="nav-item">
-                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/myInquiry}">
-                  문의내역
-                </a>
-                </li>
-                 <li class="nav-item">
-                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/wishList}">
-                  찜 목록
-                </a>
-                </li>
-                 <li class="nav-item">
-                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/personalInfo}">
-                  개인정보 확인/수정
-                </a>
-                </li>
-                </ul>
-              </div>
-            </nav>
-
-          </div>
-          <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
-			
-            <!-- Order -->
-            <div class="card card-lg mb-5 border">
-              <div class="card-body pb-0">
-				<!-- 반복문 시작 -->
-                <!-- Info -->
-                
-                <div class="card card-sm">
-                
-                <div th:each="lists : ${cancelList}">
-                  <div class="card-body bg-light">
-                    <div class="row">
-                      <div class="col-6 col-lg-3">
-    					
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">취소 번호:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-lg-0 fs-sm fw-bold">
-                          <span th:text= "|${lists.cancelCode}|"></span>
-                        </p>
-
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">상품명:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${lists.productName}|"></span>
-                        </p>
-
-                      </div>
-                      
-                      <div class="col-6 col-lg-3">
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">수량:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${lists.orderCnt}|"></span>
-                        </p>
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">결제 금액:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${lists.paymentPrice}원|"></span>
-                        </p>
-
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">취소 접수 날짜:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-lg-0 fs-sm fw-bold">
-                          <time datetime="2019-10-01">
-                           <span th:text= "|${lists.cancelRegdate}|"></span>
-                          </time>
-                        </p>
-
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">취소 상태:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${lists.cancelStatus}|"></span>
-                        </p>
-
-                      </div>
-                      
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">취소 거절 여부:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${lists.cancelRejectionCode}|"></span>
-                        </p>
-
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">취소 거절 사유:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${lists.cancelRejectionReason}|"></span>
-                        </p>
-
-                      </div>
-                      
-                    </div>
-                  </div>
-                <div class="card-footer">
-                <div class="row align-items-center">
-                  <div class="col-12 col-lg-6">
-                    <div class="row gx-5 mb-4 mb-lg-0">
-                      <div class="col-3">
-
-                        <!-- Image -->
-                        <div class="ratio ratio-1x1 bg-cover">
-                        <img th:src="@{/img/products/product-1.jpg}" style="max-width: 100%; height: auto">
-                        </div>
-
-                      </div>
-                      <div class="col-3">
-
-                        <!-- Image -->
-                        <div class="ratio ratio-1x1 bg-cover" style="background-image:">
-                        <img th:src="@{/img/products/product-11.jpg}" style="max-width: 100%; height: auto">
-                        </div>
-
-                      </div>
-                      <div class="col-3">
-
-                        <!-- Image -->
-                        <div class="ratio ratio-1x1 bg-cover">
-                        <img th:src="@{/img/products/product-12.jpg}" style="max-width: 100%; height: auto" >
-                        </div>
-
-                      </div>
-                      <div class="col-3">
-
-                        <!-- Image -->
-                        <div class="ratio ratio-1x1 bg-cover" style="background-image:">
-                        <img th:src="@{/img/products/product-13.jpg}" style="max-width: 100%; height: auto" >
-                        </div>
-
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12 col-lg-6">
-                    <div class="row gx-5">
-                      <div class="col-6">
-
-                        
-
-                      </div>
-                      <div class="col-6">
-
-                        
-
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-                </div>
 				</div>
-              
+			</div>
+			<div class="row">
+				<div class="col-12 col-md-3">
 
-            </div>
+					<!-- Nav -->
+					<nav class="mb-10 mb-md-0">
+						<div
+							class="list-group list-group-sm list-group-strong list-group-flush-x">
+							<a
+								class="list-group-item list-group-item-action dropend-toggle active"
+								th:href="@{/page/buyer/orderList}"> 주문 목록 </a>
+							<ul class="list-styled mb-0">
+								<li class="nav-item">
+									<!-- Toggle --> <a
+									class="list-group-item list-group-item-action dropend-toggle active"
+									data-bs-toggle="collapse" href="#Collapse" aria-expanded="true">
+										취소/반품/교환내역 </a> <!-- Collapse -->
+									<div class="collapse" id="Collapse"
+										data-simplebar-collapse="#seasonGroup">
+										<div class="form-group form-group-overflow mb-6"
+											id="seasonGroup">
+											<div class="form-check mb-3">
+												<a class="form-check-label" for="seasonOne"
+													href="cancelList"> 취소 </a>
+											</div>
+											<div class="form-check mb-3">
+												<a class="form-check-label" for="seasonTwo"
+													href="returnList"> 반품 </a>
+											</div>
+											<div class="form-check">
+												<a class="form-check-label" for="seasonThree"
+													href="exchangeList"> 교환 </a>
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="nav-item"><a
+									class="list-group-item list-group-item-action dropend-toggle "
+									th:href="@{/page/buyer/myCoupon}"> 나의 쿠폰함 </a></li>
+								<li class="nav-item"><a
+									class="list-group-item list-group-item-action dropend-toggle "
+									th:href="@{/page/buyer/myInquiry}"> 문의내역 </a></li>
+								<li class="nav-item"><a
+									class="list-group-item list-group-item-action dropend-toggle "
+									th:href="@{/page/buyer/wishList}"> 찜 목록 </a></li>
+								<li class="nav-item"><a
+									class="list-group-item list-group-item-action dropend-toggle "
+									th:href="@{/page/buyer/personalInfo}"> 개인정보 확인/수정 </a></li>
+							</ul>
+						</div>
+					</nav>
 
-          </div>
-        </div>
-      </div>
-      </div>
-    </section>
+				</div>
+				<div class="col-12 col-md-9 col-lg-8 offset-lg-1">
 
+					<!-- Order -->
+					<div class="card card-lg mb-5 border">
+						<div class="card-body pb-0">
+							<!-- 반복문 시작 -->
+							<!-- Info -->
+
+							<div class="card card-sm">
+
+								<div th:each="lists : ${cancelList}">
+									<div class="card-body bg-light">
+										<div class="row">
+											<div class="col-6 col-lg-3">
+
+												<!-- Heading -->
+												<h6 class="heading-xxxs text-muted">취소 번호:</h6>
+
+												<!-- Text -->
+												<p class="mb-lg-0 fs-sm fw-bold">
+													<span th:text="|${lists.cancelCode}|" id="cancelCode"></span>
+												</p>
+
+											</div>
+											<div class="col-6 col-lg-3">
+
+												<!-- Heading -->
+												<h6 class="heading-xxxs text-muted">상품명:</h6>
+
+												<!-- Text -->
+												<p class="mb-0 fs-sm fw-bold">
+													<span th:text="|${lists.productName}|"></span>
+												</p>
+
+											</div>
+
+											<div class="col-6 col-lg-3">
+												<!-- Heading -->
+												<h6 class="heading-xxxs text-muted">수량:</h6>
+
+												<!-- Text -->
+												<p class="mb-0 fs-sm fw-bold">
+													<span th:text="|${lists.orderCnt}|"></span>
+												</p>
+											</div>
+											<div class="col-6 col-lg-3">
+
+												<!-- Heading -->
+												<h6 class="heading-xxxs text-muted">결제 금액:</h6>
+
+												<!-- Text -->
+												<p class="mb-0 fs-sm fw-bold">
+													<span th:text="|${lists.paymentPrice}원|"></span>
+												</p>
+
+											</div>
+											<div class="col-6 col-lg-3">
+
+												<!-- Heading -->
+												<h6 class="heading-xxxs text-muted">취소 접수 날짜:</h6>
+
+												<!-- Text -->
+												<p class="mb-lg-0 fs-sm fw-bold">
+													<time datetime="2019-10-01">
+														<span th:text="|${#dates.format(lists.cancelRegdate, 'yyyy-MM-dd')}|"></span>
+													</time>
+												</p>
+
+											</div>
+											<div class="col-6 col-lg-3">
+
+												<!-- Heading -->
+												<h6 class="heading-xxxs text-muted">취소 상태:</h6>
+
+												<!-- Text -->
+												<p class="mb-0 fs-sm fw-bold">
+													<span th:text="|${lists.cancelStatus}|"></span>
+												</p>
+
+											</div>
+
+											<div class="col-6 col-lg-3">
+
+												<!-- Heading -->
+												<h6 class="heading-xxxs text-muted">취소 거절 여부:</h6>
+
+												<!-- Text -->
+												<p class="mb-0 fs-sm fw-bold">
+													<span th:text="|${lists.cancelRejectionCode}|"></span>
+												</p>
+
+											</div>
+											<div class="col-6 col-lg-3">
+
+												<!-- Heading -->
+												<h6 class="heading-xxxs text-muted">취소 거절 사유:</h6>
+
+												<!-- Text -->
+												<p class="mb-0 fs-sm fw-bold">
+													<span th:text="|${lists.cancelRejectionReason}|"></span>
+												</p>
+
+											</div>
+											<div class="col-6 col-lg-3">
+
+												<!-- Heading -->
+												<h6 class="heading-xxxs text-muted" type="hidden"></h6>
+
+												<!-- Text -->
+												<p class="mb-0 fs-sm fw-bold">
+													<span th:text="|${#dates.format(lists.cancelRetractDate, 'yyyy-MM-dd')}|"
+														id="cancelRDate"></span>
+												</p>
+
+											</div>
+										</div>
+									</div>
+									<div class="card-footer">
+										<div class="row align-items-center">
+											<div class="col-12 col-lg-6">
+												<div class="row gx-5 mb-4 mb-lg-0">
+													<div class="col-3">
+
+														<!-- Image -->
+														<div class="ratio ratio-1x1 bg-cover">
+															<img th:src="@{/img/products/product-1.jpg}"
+																style="max-width: 100%; height: auto">
+														</div>
+
+													</div>
+													<div class="col-3">
+
+														<!-- Image -->
+														<div class="ratio ratio-1x1 bg-cover"
+															style="background-image:">
+															<img th:src="@{/img/products/product-11.jpg}"
+																style="max-width: 100%; height: auto">
+														</div>
+
+													</div>
+													<div class="col-3">
+
+														<!-- Image -->
+														<div class="ratio ratio-1x1 bg-cover">
+															<img th:src="@{/img/products/product-12.jpg}"
+																style="max-width: 100%; height: auto">
+														</div>
+
+													</div>
+													<div class="col-3">
+
+														<!-- Image -->
+														<div class="ratio ratio-1x1 bg-cover"
+															style="background-image:">
+															<img th:src="@{/img/products/product-13.jpg}"
+																style="max-width: 100%; height: auto">
+														</div>
+
+													</div>
+													<div></div>
+												</div>
+											</div>
+											<div class="col-12 col-lg-6">
+												<div class="row gx-5">
+													<div class="col-6">
+
+														<!-- Button -->
+														<button class="btn btn-sm w-100 btn-outline-dark"
+															id="updateBtn">취소 철회</button>
+
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$('#updateBtn').on('click', function() {
+
+			let cancelData = {
+				'cancelRetractDate' : $('#cancelRDate').text(),
+				'cancelCode' : $('#cancelCode').text()
+			}
+
+			$.ajax({
+				url : '/buyer/cancelUpdate',
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(cancelData),
+				success : function(response) {
+
+					alert("수정 완료");
+
+				},
+				error : function(err) {
+					console.error('정보 수정 중 오류.');
+					console.log(err);
+				}
+			})
+		});
+	</script>
 </div>
 </html>

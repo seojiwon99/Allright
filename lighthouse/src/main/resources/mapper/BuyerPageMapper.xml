@@ -7,28 +7,79 @@
   	
   	<!-- 주문 목록 -->
   	<select id="selectDetailList" resultType="DetailVO" parameterType="String">
-		SELECT a.order_cnt
-		     , a.order_price
-		     , a.payment_price
-		     , a.order_status
-		     , a.order_detail_code
-		     , a.order_date
-		     , a.delivery_number
-		     , a.delivery_date
-		     , a.option_code
-		     , a.order_code
-		     , d.product_name
-		     , e.img_code
-		     , e.img_order
-		     , e.img_name
-		     , e.upload_name
-		     , e.img_content
-		FROM ar_order_detail a
-		LEFT OUTER JOIN ar_orders b ON a.order_code = b.order_code
-		LEFT OUTER JOIN ar_option c ON a.option_code = c.option_code
-		LEFT OUTER JOIN ar_products d ON c.product_code = d.product_code
-		LEFT OUTER JOIN ar_imgs e ON e.parent_code = d.product_code
-		WHERE b.member_id = #{memberId}
+		WITH RankedOrderDetail AS (
+    SELECT 
+        a.order_cnt,
+        a.order_price,
+        a.payment_price,
+        delivery_code_name(a.order_status) AS order_status,
+        a.order_detail_code,
+        a.order_date,
+        a.delivery_number,
+        a.delivery_date,
+        a.option_code,
+        a.order_code,
+        d.product_name,
+        e.img_code,
+        e.img_order,
+        e.img_name,
+        e.upload_name,
+        e.img_content,
+        order_status_name(f.cancel_status) AS cancel_status,
+        f.cancel_regdate,
+        order_status_name(g.return_status) AS return_status,
+        g.return_regdate,
+        order_status_name(h.exchange_status) AS exchange_status,
+        h.exchange_regdate,
+        ROW_NUMBER() OVER (PARTITION BY a.order_detail_code ORDER BY a.order_date DESC) AS rn
+    FROM 
+        ar_order_detail a
+    LEFT OUTER JOIN 
+        ar_orders b ON a.order_code = b.order_code
+    LEFT OUTER JOIN 
+        ar_option c ON a.option_code = c.option_code
+    LEFT OUTER JOIN 
+        ar_products d ON c.product_code = d.product_code
+    LEFT OUTER JOIN 
+        ar_imgs e ON e.parent_code = d.product_code
+    LEFT OUTER JOIN 
+        ar_cancel f ON a.order_detail_code = f.order_detail_code 
+    LEFT OUTER JOIN 
+        ar_return g ON a.order_detail_code = g.order_detail_code
+    LEFT OUTER JOIN 
+        ar_exchange h ON a.order_detail_code = h.order_detail_code
+    WHERE 
+        b.member_id = #{memberId}
+        
+)
+SELECT 
+    order_cnt,
+    order_price,
+    payment_price,
+    order_status,
+    order_detail_code,
+    order_date,
+    delivery_number,
+    delivery_date,
+    option_code,
+    order_code,
+    product_name,
+    img_code,
+    img_order,
+    img_name,
+    upload_name,
+    img_content,
+    cancel_status,
+    cancel_regdate,
+    return_status,
+    return_regdate,
+    exchange_status,
+    exchange_regdate
+FROM 
+    RankedOrderDetail
+WHERE 
+    rn = 1
+
   	</select>
   
   	<!-- 개인정보 -->
@@ -75,7 +126,7 @@
 		LEFT OUTER JOIN ar_products f ON  e.product_code = f.product_code
 		LEFT OUTER JOIN ar_orders g ON g.order_code = a.order_code
 		LEFT OUTER JOIN ar_imgs h ON f.product_code = h.parent_code
-		WHERE g.member_id = #{memberId}
+		WHERE g.member_id = {#memberId}	
 	</select>
 	
 	<!-- 개인정보 수정 -->
@@ -104,6 +155,7 @@
 			     , b.using_date
 			     , b.end_date
 			     , b.issue_date
+			     , b.coupon_use
 			FROM ar_coupons a
 			LEFT OUTER JOIN ar_coupon_box b ON a.coupon_code = b.coupon_code
 			WHERE member_id = #{memberId}
@@ -161,7 +213,9 @@
 		LEFT join ar_option d ON d.option_code = c.option_code
 		LEFT join ar_products e ON e.product_code = d.product_code
         LEFT JOIN ar_orders f ON c.order_code = f.order_code
-        WHERE f.member_id = #{memberId};
+        WHERE f.member_id = #{memberId}
+        AND a.cancel_retract_date IS NULL
+        
 	</select>
 	
 	<!-- 반품 상세 -->
@@ -172,22 +226,24 @@
 		     , a.return_retractdate
 		     , a.return_status
 		     , b.order_detail_code
+		     , b.order_code
 		     , b.order_cnt
 		     , b.payment_price
 		     , c.option_code
 		     , d.product_name 
              , e.member_id
-		from ar_return a
+		FROM ar_return a
 		left JOIN ar_order_detail b ON a.order_detail_code = b.order_detail_code
 		LEFT JOIN ar_option c ON b.option_code = c.option_code
 		LEFT JOIN ar_products d ON d.product_code = c.product_code
         LEFT JOIN ar_orders e ON e.order_code = b.order_code
-		where e.member_id = #{memberId};
+		WHERE e.member_id = #{memberId}
+		AND a.return_retractdate IS NULL
 	</select>
 	
 	<!-- 교환 상세 -->
 	<select id="selectExchangeList" resultType="BuyExchangeVO" parameterType="String">
-	   select a.exchange_code
+	   SELECT a.exchange_code
 		     , a.exchange_reason
 		     , a.exchange_regdate
 		     , a.exchange_retractdate
@@ -208,6 +264,7 @@
 		LEFT JOIN ar_products d ON d.product_code = c.product_code
         LEFT JOIN ar_orders e ON e.order_code = b.order_code
 		WHERE e.member_id = #{memberId}
+		
 	</select>
 	
 	<!-- 교환 신청 넘어가는 값 -->
@@ -297,7 +354,7 @@
 		LEFT JOIN ar_orders b ON a.order_code = b.order_code
 		LEFT JOIN ar_option c ON c.option_code = a.option_code
 		LEFT JOIN ar_products d ON d.product_code = c.product_code
-		WHERE b.member_id=#{memberId} AND a.order_detail_code=#{orderDetailCode}
+		WHERE b.member_id=#{memberId} AND a.order_detail_code = #{orderDetailCode}
 	</select>
 	
 	<!--반품 코드  -->
@@ -315,13 +372,31 @@
 			select re_code from dual
 		</selectKey>
 		INSERT INTO ar_return 
-				(RETURN_CODE
-				, ORDER_DETAIL_CODE
-				, RETURN_REASON)
-		VALUES (#{reCode}
-				, #{orderDetailCode}
-				, #{returnReason})
+				(RETURN_CODE, ORDER_DETAIL_CODE, RETURN_REASON, RETURN_STATUS)
+		VALUES (#{reCode}, #{orderDetailCode}, #{returnReason}, 'n')
 	</insert>
-	<!--  -->
+	<!-- 취소 철회 -->
+	<update id="updateCancel" parameterType="BuyCancelVO">
+		UPDATE ar_cancel 
+		SET   cancel_retract_date = SYSDATE
+			, cancel_status = 'u'
+		WHERE cancel_code = #{cancelCode}
+	</update>
+	
+	<!-- 반품 철회 -->
+	<update id="updateReturn" parameterType="BuyReturnVO">
+		UPDATE ar_return 
+		SET   return_retractdate = SYSDATE
+		    , return_status = 'u'
+		WHERE return_code =  #{returnCode}
+	</update>
+	
+	<!-- 교환 철회 -->
+	<update id="updateExchange" parameterType="BuyExchangeVO">
+		UPDATE ar_exchange 
+		SET   exchange_retractdate = SYSDATE
+		    , exchange_status = 'u'
+		WHERE exchange_code =  #{exchangeCode}
+	</update>
 	
   </mapper>

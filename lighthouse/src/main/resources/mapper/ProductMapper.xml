@@ -457,8 +457,10 @@ WHERE member_id = #{memberId}
 		 WHERE master_code = '택배사 코드'
 	</select>
 	
+
 	<select id="getImgsFiles">
 		SELECT * 
 		  FROM ar_imgs 
 	</select>
 </mapper>
+

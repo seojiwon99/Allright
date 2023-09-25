@@ -100,9 +100,22 @@
 
                         <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
-                          <span th:text= "|${lists.returnCode}|"></span>
+                          <span th:text= "|${lists.returnCode}|" id="returnCode"></span>
                         </p>
 
+                      </div>
+                      <div class="col-6 col-lg-3">
+
+                        <h6 class="heading-xxxs text-muted">주문번호:</h6>
+
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${lists.orderCode}|"></span>
+                        </p>
+						<h6 class="heading-xxxs text-muted">주문상세번호:</h6>
+
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${lists.orderDetailCode}|"></span>
+                        </p>
                       </div>
                       <div class="col-6 col-lg-3">
 
@@ -144,7 +157,7 @@
                         <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
                           <time datetime="2019-10-01">
-                           <span th:text= "|${lists.returnRegdate}|"></span>
+                           <span th:text= "|${#dates.format(lists.returnRegdate, 'yyyy-MM-dd')}|"></span>
                           </time>
                         </p>
 
@@ -168,18 +181,18 @@
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${lists.returnProcessdate}|"></span>
+                         <span th:text="|${#dates.format(lists.returnProcessdate, 'yyyy-MM-dd')}|"></span>
                         </p>
 
                       </div>
                       <div class="col-6 col-lg-3">
 
                         <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">반품 취소 날짜:</h6>
+                        <h6 class="heading-xxxs text-muted"></h6>
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${lists.returnRetractdate}|"></span>
+                         <span th:text="|${#dates.format(lists.returnRetractdate, 'yyyy-MM-dd')}|" id="returnRDate"></span>
                         </p>
 
                       </div>
@@ -225,20 +238,15 @@
                     </div>
                   </div>
                   <div class="col-12 col-lg-6">
-                    <div class="row gx-5">
-                      <div class="col-6">
+						<div class="row gx-5">
+							<div class="col-6">
 
-                        
+								<!-- Button -->
+								<button class="btn btn-sm w-100 btn-outline-dark" id="updateBtn">반품 철회</button>
 
-                      </div>
-                      <div class="col-6">
-
-                        
-
-                      </div>
-                    </div>
-
-                  </div>
+							</div>
+						</div>
+				  </div>
                 </div>
               </div>
                 </div>
@@ -252,6 +260,30 @@
       </div>
       </div>
     </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$('#updateBtn').on('click', function(){
+			
+			let returnData = {
+					'returnCode' : $('#returnCode').text(),
+					'returnRetractdate' : $('#returnRDate').text()
+			}
+			$.ajax({
+				url : '/buyer/returnUpdate',
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(returnData),
+				success : function(response) {
 
+					alert("수정 완료");
+
+				},
+				error : function(err) {
+					console.error('정보 수정 중 오류.');
+					console.log(err);
+				}
+			})
+		});
+	</script>
 </div>
 </html>
