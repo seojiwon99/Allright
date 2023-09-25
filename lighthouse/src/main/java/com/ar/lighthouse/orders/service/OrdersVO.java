@@ -57,6 +57,7 @@ public class OrdersVO {
 	
 	//ImegsVO
 	private String uploadName;
+	private String uploadPath;
 	
 	//CouponsVO
 	private int couponCode;

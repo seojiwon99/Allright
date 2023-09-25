@@ -15,7 +15,7 @@ public interface OrdersService {
 	//배달 요청사항 코드 전달
 	public List<CodeVO> getCode();
 	
-	//결제 시 결제DB 데이터 저장 데이터 전달
+	//결제 시 결제DB 데이터 저장 데이터 전달 - 토스페이먼츠
 	public int addCredit(CreditVO creditVO);
 	
 	//결제한 총 주문 테이블 DB 넣을 데이터

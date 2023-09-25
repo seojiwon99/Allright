@@ -8,7 +8,7 @@
   	<select id="selectOrders" resultType="com.ar.lighthouse.orders.service.OrdersVO">
   	SELECT c.member_id, m.member_name ,m.member_email, m.member_tel, r.delivery_cost, r.delivery_service, r.product_code,
 			m.member_addr, m.member_details_addr,c.cart_count, p.option_name, p.option_value, p.option_price,
-			r.product_name, r.sale_price, r.product_cost, i.parent_code, i.upload_name, p.option_code
+			r.product_name, r.sale_price, r.product_cost, i.parent_code, i.upload_name, p.option_code, i.upload_path
 	FROM ar_cart c
 			LEFT JOIN ar_option p ON c.option_code = p.option_code
 			LEFT JOIN ar_member m ON c.member_id = m.member_id
@@ -42,7 +42,7 @@
     JOIN ar_coupon_box b    ON m.member_id = b.member_id
     JOIN ar_coupons    c    ON b.coupon_code = c.coupon_code
     
-    where m.member_id = #{memberId} 
+    WHERE m.member_id = #{memberId} 
       AND coupon_use = 'Y'
  	</select>
  	
@@ -61,18 +61,81 @@
   
   	<!-- 토스페이먼츠 결제DB insert -->
   	<insert id="insertCredit">
-  	INSERT INTO AR_CREDIt (PAYMENTKEY, TYPE, ORDERID, ORDERNAME, METHOD, CURRENCY, MID, BALANCEAMOUNT, TOTALAMOUNT, APPROVEDAT)
-    VAlUES (#{paymentKey}, #{type}, #{orderId}, #{orderName}, #{method},#{currency},#{mId},#{balanceAmount},#{totalAmount},#{approvedAt})
+  	INSERT INTO AR_CREDIt 
+  				(
+  				 PAYMENTKEY,
+  				 TYPE,
+  				 ORDERID,
+  				 ORDERNAME,
+  				 METHOD,
+  				 CURRENCY,
+  				 MID,
+  				 BALANCEAMOUNT,
+  				 TOTALAMOUNT,
+  				 APPROVEDAT,
+  				 ORDER_CODE
+  				 )
+    VAlUES (
+    		#{paymentKey},
+    		#{type},
+    		#{orderId},
+    		#{orderName}, 
+    		#{method},
+    		#{currency},
+    		#{mId},
+    		#{balanceAmount},
+    		#{totalAmount},
+    		#{approvedAt},
+    		#{orderCode}
+    		)
+  	</insert>
+  	<!-- 토스페이먼츠 환불 -->
+  	<insert id="insertRefund">
+  		INSERT INTO AR_REFUND
+					  		(
+					  		REFUND_CODE,
+					  		REFUND_TYPE,
+					  		REFUND_TYPECODE,
+					  		REFUND_AMOUNT,
+					  		PAYMENTSKEY
+					  		)
+					  		
+		VALUES				(
+							#{refundCode},
+							#{refundType},
+							#{refundTypecode},
+							#{refundAmount},
+							#{paymentKey}
+							)
   	</insert>
   	
   	<!-- 주문정보 저장 (배송지 등)-->
   	<insert id="insertOrderPayVO">
   		<selectKey resultType="int" keyProperty="orderCode" order="BEFORE">
-			SELECT NVL(MAX(ORDER_CODE),1) + 1 FROM AR_ORDERS
+			SELECT NVL(MAX(ORDER_CODE),1) + 1 
+			FROM AR_ORDERS
 		</selectKey>
-		 INSERT INTO AR_ORDERS (ORDER_CODE, MEMBER_ID,ORDER_PRICE  ,ORDER_ADDR, ORDER_DETAILS_ADDR, RECIPIENT_NAME, RECIPIENT_TEL, REQUESTED_TERM)
-         VALUES(#{orderCode} ,#{memberId}, #{OrderPayVO.orderPrice}, #{OrderPayVO.orderAddr}, #{OrderPayVO.orderDetailsAddr}, #{OrderPayVO.recipientName} 
-        ,#{OrderPayVO.recipientTel},#{OrderPayVO.requestedTerm})
+		 INSERT INTO AR_ORDERS (
+								 ORDER_CODE, 
+								 MEMBER_ID,
+								 ORDER_PRICE ,
+								 ORDER_ADDR, 
+								 ORDER_DETAILS_ADDR, 
+								 RECIPIENT_NAME, 
+								 RECIPIENT_TEL, 
+								 REQUESTED_TERM
+								 )
+								 
+         VALUES					(
+				         		#{orderCode} ,
+				         		#{memberId}, 
+				         		#{DeliveryVO.orderPrice}, 
+				         		#{DeliveryVO.orderAddr}, 
+				         		#{DeliveryVO.orderDetailsAddr}, 
+				         		#{DeliveryVO.recipientName},
+				         		#{DeliveryVO.recipientTel},
+				         		#{DeliveryVO.requestedTerm}
+				         		)
   	</insert>
   	
   	<!-- 주문코드 파싱 -->

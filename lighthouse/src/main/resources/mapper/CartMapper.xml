@@ -6,7 +6,16 @@
   	
   	<!-- 장바구니 상세정보 -->
   	<select id="selectCartList" resultType="com.ar.lighthouse.cart.service.CartVO" parameterType="String">
-  		SELECT c.cart_count, c.cart_code, o.option_name, o.option_value, p.product_name, p.delivery_cost, (p.product_cost + o.option_price) product_cost, p.sale_price, g.upload_name
+  		SELECT c.cart_count, 
+  			   c.cart_code, 
+  			   o.option_name, 
+  			   o.option_value, 
+  			   p.product_name, 
+  			   p.delivery_cost, 
+  			   (p.product_cost + o.option_price) product_cost, 
+  			   p.sale_price, 
+  			   g.upload_name,
+  			   g.upload_path
 			FROM ar_cart c
 			LEFT OUTER JOIN ar_option o ON c.option_code = o.option_code
 			LEFT OUTER JOIN ar_products p ON o.product_code = p.product_code

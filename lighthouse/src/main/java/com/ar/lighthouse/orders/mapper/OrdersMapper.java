@@ -10,6 +10,7 @@ import com.ar.lighthouse.orders.service.CreditVO;
 import com.ar.lighthouse.orders.service.DeliveryVO;
 import com.ar.lighthouse.orders.service.OrderPayVO;
 import com.ar.lighthouse.orders.service.OrdersVO;
+import com.ar.lighthouse.orders.service.RefundVO;
 
 @Mapper
 public interface OrdersMapper {
@@ -29,6 +30,9 @@ public interface OrdersMapper {
 	
 	//토스페이먼츠 결제 DB 데이터 저장
 	public int insertCredit(CreditVO creditVO);
+	
+	//토스페이먼츠 환불 DB 데이터 저장
+	public int insertRefund(RefundVO refundVO);
 	
 	//주문 테이블 DB 저장
 	public int insertOrderPayVO(@Param("memberId") String memberId,@Param("DeliveryVO") DeliveryVO deliveryVO);
