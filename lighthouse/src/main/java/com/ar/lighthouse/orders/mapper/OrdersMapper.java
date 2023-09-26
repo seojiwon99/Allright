@@ -27,6 +27,8 @@ public interface OrdersMapper {
 	//사용기한 지난 쿠폰 사용N으로 변경 사용불가 구현, 결제 시 사용한 쿠폰 N으로 변경
 	public int updatetNotCoupon(String memberId, int mycouponCode); 
 	 
+	//환불 받은 상품의 쿠폰 Y로 사용 가능 변경
+	public int updateRefundCoupon(String memberId, int mycouponCode);
 	
 	//토스페이먼츠 결제 DB 데이터 저장
 	public int insertCredit(CreditVO creditVO);
@@ -49,4 +51,9 @@ public interface OrdersMapper {
 	//주문 결제 시 장바구니 비우기
 	public int deleteCart(String memberId, int cartNum);
 	
+	//환불 credit 테이블 환불 가능 금액 업데이트
+	public int updateTossRefundAmount(String paymentKey, Long refundAmount);
+	
+	//환불 order 테이블 환불 가능 금액 업데이트
+	public int updateOrderRefundAmount(String paymentKey, Long refundAmount);
 }

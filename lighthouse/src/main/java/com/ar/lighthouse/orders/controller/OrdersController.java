@@ -29,6 +29,7 @@ import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.orders.service.CreditVO;
 import com.ar.lighthouse.orders.service.DeliveryVO;
+import com.ar.lighthouse.orders.service.OrderChkVO;
 import com.ar.lighthouse.orders.service.OrderDeliveryVO;
 import com.ar.lighthouse.orders.service.OrderPayVO;
 import com.ar.lighthouse.orders.service.OrdersService;
@@ -97,8 +98,7 @@ public class OrdersController {
 	@GetMapping("orders/credit") 
 	public String creditTest(CreditVO creditVO, HttpSession session) throws IOException, InterruptedException {
 		
-		
-		
+	
 		//주문, 주문결제 내역 페이지 데이터 저장
 		List<OrdersVO> orderList = (List<OrdersVO>) session.getAttribute("orderGet");
 		List<OrderPayVO> orderPayVO = (List<OrderPayVO>) session.getAttribute("orderPayVO");
@@ -122,9 +122,7 @@ public class OrdersController {
 
 		//주문 데이터 저장 method (배송 등) 총 주문 결제 정보
 		ordersService.addOrderPay(memberId, deliveryVO);
-		
-		
-		
+			
 		//주문 코드 파싱
 		int orderCode =	ordersService.getOrderCode(memberId);
 		
@@ -146,7 +144,7 @@ public class OrdersController {
 						 continue;
 					 }
 			 }
-		 }
+		}
 		 
 		// 할인 받지 않은 상품
 				for(OrdersVO order : orderList) {
@@ -160,7 +158,6 @@ public class OrdersController {
 							order.setPaymentPrice(order.getCartCount() * (order.getOptionPrice() + order.getSalePrice()) + order.getDeliveryCost());
 							ordersService.addOrders(order);	
 						}
-						
 							
 					}	
 					for(int cartNum : cartCode) {
@@ -170,9 +167,7 @@ public class OrdersController {
 			
 		}
 	
-	
-	
-	
+
 	//토스 결제 method
 		public CreditVO tossPayment(CreditVO creditVO, int orderCode) throws IOException, InterruptedException {
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -224,37 +219,61 @@ public class OrdersController {
 			return creditVO;
 		}
 		
+		//토스페이먼츠 환불
 		@GetMapping("orders/cancel")
-		public String orderCancel(RefundVO refundVO, HttpSession session) throws IOException, InterruptedException {
+		public String orderCancel(@RequestParam (name="orderChkVO") List<OrderChkVO> orderChkVO, HttpSession session) throws IOException, InterruptedException {
 		
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId(); // 로그인 중인 아이디
+	
+		 for(OrderChkVO chk : orderChkVO) {
+		 RefundVO refund = ordersService.getRefund(chk.getOrderCode(), chk.getOrderDetailCode(), memberId);
+		 
+		 //상품 취소 중 쿠폰 사용한 경우 쿠폰 반환
+		 if(refund.getMycouponCode() != 0) {
+			 ordersService.editRefundCoupon(memberId, refund.getMycouponCode());
+		 }
+		 
+		 //페이먼츠 키 찾을 때 필요한 데이터/ 환불 신청 시 필요한 데이터 = cancelReason, cancelAmount, paymentKey
+		 String paymentKey = refund.getPaymentKey(); // 페이먼츠 키 넣기.
+		 String cancelReason = chk.getCancelReason();
+		 int cancelAmount = (refund.getPaymentPrice() + refund.getDiscountPrice()); //부분 취소할 금액. select 해서 삼풍에서 가져오기. select에서 가져와야함.
+		 
+		 //refund 들어갈 데이터
+
+		 HttpRequest request = HttpRequest.newBuilder()
+				 .uri(URI.create("https://api.tosspayments.com/v1/payments/"+paymentKey+"/cancel")) //   payments/뒤에 넣기 paymentKey
+				 .header("Authorization", "Basic dGVzdF9za19RYmdNR1p6b3J6ZTVXZzJwQWVsVmw1RTFlbTRkOg==")
+				 .header("Content-Type", "application/json") 
+				 .method("POST", HttpRequest.BodyPublishers.ofString("{\"cancelReason\":\""+ cancelReason +"\",\"cancelAmount\":\""+cancelAmount+"\"}")) 
+				 .build();
 		
-		//페이먼츠 키 찾을 때 필요한 데이터
-		int orderCode = 0;
-		int orderDetailCode = 0;
-		String paymentKey =refundVO.getPaymentKey(); // 페이먼츠 키 넣기.
-		
-		
-		// 환불 신청 시 필요한 데이터 = cancelReason, cancelAmount
-		String cancelReason = "단순변심";
-		int cancelAmount = 0; //부분 취소할 금액. select 해서 삼풍에서 가져오기.
-		String refundType = ""; // 취소, 반품 구분 C , R
-		String refundTypecode =""; // 취소, 반품 구분 C , R
-		
-		//주문 상품 delete 삭제 환불 승인될 경우.
-		// orders balandeAmount 값 빼서 총값은 그대로 두기. 업데이트 하기
-		// 상품 지우기 전 쿠폰 Y로 바꾸기.
-		// 환불테이블에 업데이트 하기.
-		
-			HttpRequest request = HttpRequest.newBuilder()
-				    .uri(URI.create("https://api.tosspayments.com/v1/payments/GvaE2lKMZ7DLJOpm5Qrl7Zzo5X62jNVPNdxbWnYzqR4gA6Xy/cancel")) //   payments/뒤에 넣기 paymentKey
-				    .header("Authorization", "Basic dGVzdF9za19RYmdNR1p6b3J6ZTVXZzJwQWVsVmw1RTFlbTRkOg==")
-				    .header("Content-Type", "application/json")
-				    .method("POST", HttpRequest.BodyPublishers.ofString("{\"cancelReason\":\""+ cancelReason +"\"}")) // cancelReason 값 받아와야함.  // cancelAmount":"5000 부분 취소할 경우 추가
-				    .build();
-				HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-				System.out.println(response.body());
-			return "/page/seller/cancelProduct";
+		 HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+		 System.out.println(response.body());
+		 
+		 // 환불테이블에 업데이트 하기.
+		 String refundVal = response.body();
+			JSONParser jsonParser = new JSONParser();
+			Object obj;
+			JSONObject jsonObject = null;
+
+			try {
+				obj = jsonParser.parse(refundVal);
+				jsonObject = (JSONObject) obj;
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
+			Long refundAbleAmount = (Long)jsonObject.get("refundableAmount");
+			refund.setRefundAmount(refundAbleAmount);
+			refund.setPaymentKey(paymentKey);
+			refund.setRefundTypecode(chk.getRefundTypecode()); // 취소, 반품 구분 C , R
+			refund.setRefundType(chk.getRefundType());
+			
+			ordersService.addRefund(refund);
+			//refundBalanceAmount 값 rders테이블,credit테이블 결제액 업데이트
+			ordersService.editTossRefundAmount(paymentKey, refundAbleAmount);
 		}
+		return "/page/seller/cancelProduct";
+	 }
 }
