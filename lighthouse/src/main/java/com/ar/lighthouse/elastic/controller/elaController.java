@@ -262,7 +262,7 @@ public class elaController {
 			model.addAttribute("products", HighLevelClientQueryCtg("ar_products", cri.getPageNum(), keyword, ctg)) ;
 			model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		}
-		return "page/test/body";
+		return "page/test/body"; 
 	}
 	
 	
