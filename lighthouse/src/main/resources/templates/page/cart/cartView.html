@@ -40,10 +40,11 @@
                     <input type="hidden" name="delivery" th:value="${lists.deliveryCost}">
                     <input type="hidden" name="cartNum" th:value="${lists.cartCode}">
                     <input type="hidden" name="cartCnt" th:value="${lists.cartCount}">
+                    <input type="hidden" name="optionPrice" th:value="${lists.optionPrice}">
 
                     <!-- Image -->
                     <a href="product.html">
-                     <img th:src="@{/img/products/}+${lists.uploadName}" alt="..." class="img-fluid">
+                     <img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|" alt="..." class="img-fluid">
                     </a>
 
                   </div>
@@ -51,10 +52,13 @@
                     <!-- Title -->
                     <div class="d-flex mb-2 fw-bold">
                       <a class="text-body" href="product.html"><span th:text= "|상품명 : ${lists.productName}|"></span></a>
-                      <span class="price ms-auto" th:text="| 상품금액 : ${lists.productCost}원|"></span>
+                      <span class="price ms-auto" style="text-decoration: line-through;" th:text="| 상품금액 : ${lists.productCost}원|"></span>
                     </div>
                     <div class="d-flex mb-2 fw-bold">
                     	<span class="ms-auto" th:text="|할인금액 : ${lists.salePrice}원|"></span>
+                    </div>
+                    <div class="d-flex mb-2 fw-bold">
+                    	<span class="ms-auto" th:text="|옵션 추가금액 : ${lists.optionPrice}원|"></span>
                     </div>
                     <div class="d-flex mb-2 fw-bold">
                     	<span class="ms-auto" th:text="|배송비 : ${lists.deliveryCost}원|"></span>
@@ -62,7 +66,7 @@
 
                     <!-- Text -->
                     <!--옵션 종류, 옵션 값-->
-                   <p class="mb-7 fs-sm text-muted" th:text="|${lists.optionName} :  ${lists.optionValue}|"></p>
+                   <p class="mb-7 fs-sm text-muted" th:text="${lists.optionLast}"></p>
                     
 
                     <!--Footer -->
@@ -135,7 +139,7 @@
               <div class="card-body">
                 <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
                   <li class="list-group-item d-flex">
-                    <span>상품금액</span> <span class="ms-auto fs-sm" id="productPrice">원</span>
+                    <span>상품금액</span> <span style="text-decoration: line-through;" class="ms-auto fs-sm" id="productPrice">원</span>
                   </li>
                   <li class="list-group-item d-flex">
                     <span>상품할인금액</span> <span class="ms-auto fs-sm" id="salePrice">원</span>
@@ -150,7 +154,6 @@
                 </ul>
               </div>
             </div>
-            <!-- th:href="@{http://localhost:8090/orders/pay}"-->
             <!-- Button -->
               <button id="payMove" class="btn w-100 btn-dark mb-2" type="button">결제하기</button>
             <!-- Link -->
@@ -223,19 +226,20 @@
     checkboxes.each((idx, tag) => {
 
         let prices = $(tag).val();
-        let salcePrices = $(tag).next().val();
+        let salcePrices = Number($(tag).next().val());
         let deliveryPrices = $(tag).next().next().val();
         let cartCnts = $(tag).next().next().next().next().val();
+        let optionPrice= Number($(tag).next().next().next().next().next().val());
 
         deliveryResult+=Number(deliveryPrices);
-        saleResult+=Number(salcePrices * cartCnts);
+        saleResult+=Number((salcePrices + optionPrice) * cartCnts);
         result+=Number(prices * cartCnts);
     })
 
     document.getElementById('productPrice').innerText = result + '원';
     document.getElementById('salePrice').innerText = saleResult + '원';
     document.getElementById('deliveryPrice').innerText = deliveryResult + '원';
-    document.getElementById('totalPrice').innerText = result - saleResult + deliveryResult + '원';
+    document.getElementById('totalPrice').innerText = saleResult + deliveryResult + '원';
   }
         
     

@@ -30,5 +30,8 @@ public class ReturnVO {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	Date chargeDate;
 	
-	String memberName;
+	// 멤버 테이블
+			private String memberId;
+			private String memberName;
+			private int memberTel;
 }
