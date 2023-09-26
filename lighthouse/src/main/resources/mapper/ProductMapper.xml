@@ -750,4 +750,14 @@
 		WHERE master_code = '택배사 코드'
 	</select>
 
+<<<<<<< HEAD
 </mapper>
+=======
+	<select id="getImgsFiles">
+		SELECT * 
+		  FROM ar_imgs 
+	</select>
+
+</mapper>
+
+>>>>>>> branch 'gyuyoun' of https://github.com/seojiwon99/Allright.git
