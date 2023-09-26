@@ -55,17 +55,17 @@
                   <div class="collapse" id="Collapse" data-simplebar-collapse="#seasonGroup">
                     <div class="form-group form-group-overflow mb-6" id="seasonGroup">
                       <div class="form-check mb-3">
-                        <a class="form-check-label" for="seasonOne" href="cancelList">
+                        <a class="form-check-label"  href="cancelList">
                           취소
                         </a>
                       </div>
                       <div class="form-check mb-3">
-                        <a class="form-check-label" for="seasonTwo" href="returnList">
+                        <a class="form-check-label"  href="returnList">
                           반품
                         </a>
                       </div>
                       <div class="form-check">
-                        <a class="form-check-label" for="seasonThree" href="exchangeList">
+                        <a class="form-check-label"  href="exchangeList">
                           교환
                         </a>
                       </div>
@@ -126,11 +126,11 @@
                         <!-- Heading -->
                         <h6 class="heading-xxxs text-muted">문의 제목:</h6>
 
-                        <!-- Text -->
+ 
                         <p class="mb-lg-0 fs-sm fw-bold">
-                          <time datetime="2019-10-01">
+                          
                            <span th:text= "|${inqs.customInquiryTitle}|"></span>
-                          </time>
+                         
                         </p>
 
                       </div>
@@ -152,7 +152,7 @@
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${inqs.customInquiryRegdate}|"></span>
+                          <span th:text="|${#dates.format(inqs.customInquiryRegdate, 'yyyy-MM-dd')}|"></span>
                         </p>
 
                       </div>

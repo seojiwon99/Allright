@@ -20,6 +20,7 @@ public class CouponVO {
    private Date usingDate;
    @DateTimeFormat(pattern="yyyy-MM-dd")
    private Date endDate;
+   private String couponUse;
    
    
    private String couponName;

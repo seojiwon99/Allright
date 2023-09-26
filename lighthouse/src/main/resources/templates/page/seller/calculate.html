@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h3>정산이요</h3>
+	<table border="1" class="table" id="getProductList">
+					<thead>
+						<tr>
+							<th>주문상세코드</th>
+							<th>상품명</th>
+							<th>구매자명</th>
+							<th>결제금액</th>
+							<th>수수료</th>
+							<th>정산금액</th>
+							<th>정산예정일</th>
+							<th>정산완료일</th>
+						</tr>
+					</thead>
+					<tbody id="calculateChkList">
+						<tr th:each="cal : ${calList}">
+							<td th:text="${cal.orderDetailCode}" />
+							<td th:text="${cal.productName}" />
+							<td th:text="${cal.memberName}" />
+							<td th:text="${cal.paymentPrice}" />
+							<td th:text="${cal.myPrice}" />
+							<td th:text="${cal.yourPrice}" />
+							<td th:text="${#dates.format(cal.settlementDate,'yyyy-MM-dd')}" />
+							<td th:text="${#dates.format(cal.completDate,'yyyy-MM-dd')}" />
+						</tr>
+						<!-- 반복문 종료 -->
+					</tbody>
+				</table>
+</body>
+</html>

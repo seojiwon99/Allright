@@ -5,18 +5,17 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.ar.lighthouse.buyp.service.BuyInfoVO;
-
 import com.ar.lighthouse.buyp.service.BuyCancelVO;
+import com.ar.lighthouse.buyp.service.BuyExchangeVO;
+import com.ar.lighthouse.buyp.service.BuyInfoVO;
+import com.ar.lighthouse.buyp.service.BuyReturnVO;
 import com.ar.lighthouse.buyp.service.CouponVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
-import com.ar.lighthouse.buyp.service.BuyExchangeVO;
 import com.ar.lighthouse.buyp.service.MyInquiryVO;
-import com.ar.lighthouse.buyp.service.BuyReturnVO;
-
 import com.ar.lighthouse.buyp.service.TradeVO;
 import com.ar.lighthouse.buyp.service.WishVO;
 import com.ar.lighthouse.common.CodeVO;
+import com.ar.lighthouse.common.Criteria;
 
 @Mapper
 public interface BuyerPageMapper {
@@ -29,11 +28,11 @@ public interface BuyerPageMapper {
 	
 	public List<CouponVO> selectCouponList(String memberId);
 	
-	public int updateInfo(BuyInfoVO buyInfoVO, String memberId);
+	public int updateInfo(BuyInfoVO buyInfoVO);
 	
 	public List<MyInquiryVO> selectMyInquiryList(String memberId);
 	
-	public List<WishVO> selectWishList(String memberId);
+	public List<WishVO> selectWishList(Criteria cri);
 
 	public List<BuyCancelVO> selectCancelList(String memberId);
 	
@@ -42,7 +41,7 @@ public interface BuyerPageMapper {
 	public List<BuyExchangeVO> selectExchangeList(String memberId);
 	
 	public int insertExchange(BuyExchangeVO excVO);
-	
+
 	public List<CodeVO> selectExchangeCode(String memberId);
 	
 	public CodeVO exchangeCodePage(CodeVO codeVO);
@@ -51,9 +50,22 @@ public interface BuyerPageMapper {
 	
 	public CodeVO returnCodePage(CodeVO codeVO);
 	
-	public List<CodeVO> selectCancelCode(String memberId);
+	public int insertReturn(BuyReturnVO retVO);
+	
+	public List<CodeVO> selectCancelCode();
 	
 	public CodeVO cancelCodePage(CodeVO codeVO);
 	
 	public int insertCancel(BuyCancelVO canVO);
+	
+	public int deleteCancel(BuyCancelVO canVO);
+	
+	public int deleteReturn(BuyReturnVO retVO);
+	
+	public int deleteExchange(BuyExchangeVO excVO);
+	
+	public int deleteWish(int favoriteCode);
+
+	public int getPageCnt(Criteria cri);
+	
 }
