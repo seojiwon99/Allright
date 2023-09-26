@@ -65,7 +65,7 @@
 			    </tr>
 			  </thead>
 			  <tbody>
-			    <tr th:each="declare : ${declareList}">
+			    <tr th:each="declare : ${declareList}" th:onclick="|location.href='@{/admin/declareDetail(declareCode=${declare.declareCode},suspendStatus=${declare.suspendStatus})}'|">
 					
 						<td scope="row" th:text="${declare.declareCode}"></td>
 						

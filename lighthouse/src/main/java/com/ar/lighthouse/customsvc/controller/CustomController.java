@@ -20,10 +20,14 @@ import com.ar.lighthouse.common.PageDTO;
 import com.ar.lighthouse.customsvc.service.CustomService;
 import com.ar.lighthouse.customsvc.service.InquiryVO;
 import com.ar.lighthouse.customsvc.service.NoticeVO;
+import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.member.service.MemberVO;
 
 @Controller
 public class CustomController {
+	@Autowired
+	MainPageService service;
+
 	
 	@Autowired
 	CustomService customService;
@@ -33,6 +37,8 @@ public class CustomController {
 	public String faqList(@RequestParam(required = false, defaultValue = "", value="faqType") String faqType, Model model) {
 		model.addAttribute("faqType", customService.getTypeList());
 		model.addAttribute("faqList", customService.getFaqList(faqType));
+		model.addAttribute("categories",service.getCategoryList());
+		model.addAttribute("allCtg", service.getAllCategoryList());
 		
 		return "page/custom/faqList";
 	}
@@ -43,6 +49,8 @@ public class CustomController {
 		int totalCnt = customService.getTotalCount(cri);
 		model.addAttribute("noticeList", customService.getNoticeList(cri));
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
+		model.addAttribute("categories",service.getCategoryList());
+		model.addAttribute("allCtg", service.getAllCategoryList());
 		return "page/custom/notice";
 	}
 	
@@ -51,7 +59,8 @@ public class CustomController {
 	public String noticeDetail(@RequestParam(defaultValue = "0") int noticeCode,Model model, @ModelAttribute("cri") Criteria cri) {
 		NoticeVO noticeVO = new NoticeVO();
 		noticeVO.setNoticeCode(noticeCode);
-		
+		model.addAttribute("categories",service.getCategoryList());
+		model.addAttribute("allCtg", service.getAllCategoryList());
 		model.addAttribute("noticeInfo",customService.getNotice(noticeVO));
 		return "page/custom/noticeInfo"; 
 	}

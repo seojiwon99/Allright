@@ -44,7 +44,8 @@
 				<a href="/admin/faq/?faqType=5"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">배송</button></a>
 				<a href="/admin/faq/?faqType=6"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">기타</button></a>
 				</div>
-				<div>				
+				<div>
+				<button class="btn btn-xxs btn-info" id="faqAddBtn">등록</button>				
 				</div>
 				</div>
 		</div>
@@ -60,7 +61,7 @@
 			    </tr>
 			  </thead>
 			  <tbody>
-			    <tr th:each="faq : ${faqList}">
+			    <tr th:each="faq : ${faqList}" th:onclick="|location.href='@{/admin/faqDetail(faqCode=${faq.faqCode})}'|">
 					
 						<td scope="row" th:text="${faq.typeName}"></td>
 						<td th:text="${faq.questionTitle}"></td>
@@ -76,6 +77,10 @@
 $('#faqSearchBtn').on('click', function(){
 	let url = "?customInquiryTitle=" + $('#faqSearchBar').val()
 	location.href =  url;
+})
+
+$('#faqAddBtn').on('click',function(){
+	location.href ="faqForm"
 })
 </script>      
 </div>

@@ -23,4 +23,6 @@ public interface mainPageMapper {
 	
 	// 카테고리 자식 가져오기
 	public List<CategoryVO> childCateList(CategoryVO cate);
+	
+	public List<CategoryVO> selectAllCategory();
 }

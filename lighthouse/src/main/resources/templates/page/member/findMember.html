@@ -53,6 +53,9 @@
 		                          이메일 *
 		                        </label>
 		                        <input class="form-control form-control-sm" id="findEmail" type="text" placeholder="이메일 *" required>
+		                        <div class="col">
+		                        <label class="form-check-label fs-xxs visually" for="findEmail" id="emconfirmchk">이메일 *</label>
+		                        </div>
 		                      </div>
 		
 		                    </div>
@@ -160,7 +163,7 @@
 	    form.submit();
 		}
 		
-		//email 입력체크(방지는 좀 그렇고 알려주고 다시 확인하라한 후에 이메일 인증)
+		/*//email 입력체크(방지는 좀 그렇고 알려주고 다시 확인하라한 후에 이메일 인증)
 		$('#findEmail').on('focusout', checkEmail)
 		function checkEmail(e) {
 		     //var regExp = /^([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;   // 이메일 체크 ( id1.id2@test.com 대응불가 )
@@ -173,7 +176,35 @@
 		        return false;
 		      }
 		    }
+		*/
+		//email 입력체크(방지는 좀 그렇고 알려주고 다시 확인하라한 후에 이메일 인증)
+		$('#findEmail').on('keyup', checkEmail)
+		function checkEmail(e) {
+		     //var regExp = /^([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;   // 이메일 체크 ( id1.id2@test.com 대응불가 )
+		     let email = e.currentTarget.value;
+		      let regEmailExp = /^[-!#$%&'*+./0-9=?A-Z^_a-z{|}~]+@[-!#$%&'*+/0-9=?A-Z^_a-z{|}~]+.[-!#$%&'*+./0-9=?A-Z^_a-z{|}~]+$/;
+		      
+		      
+		      if(regEmailExp.test(email)) { // test 는 정규 Methods 입니다. test는 변경없음#				
+		    	  let mailConfirmLabel = $('#emconfirmchk'); 
+					mailConfirmLabel.html("<span id='emconfirmchk2'>이메일 형식입니다.</span>")
+					$("#emconfirmchk2").css({
+						"color" : "#0D6EFD",
+						"font-weight" : "bold",
+						"font-size" : "10px"
 
+					})
+		      } else {
+		    	  	let mailConfirmLabel = $('#emconfirmchk'); 
+			    	mailConfirmLabel.html("<span id='emconfirmchk2'>이메일 형식이 아닙니다.</span>")
+					$("#emconfirmchk2").css({
+						"color" : "#FA3E3E",
+						"font-weight" : "bold",
+						"font-size" : "10px"
+
+				})
+		      }
+		    }
 	</script>
 </div>
 </html>
