@@ -105,7 +105,7 @@
                         <h6 class="heading-xxxs text-muted">주문 날짜:</h6>
                         <p class="mb-lg-0 fs-sm fw-bold">
                           <time datetime="2019-10-01">
-                           <span th:text= "|${#dates.format(lists.orderDate, 'yyyy-MM-dd')}|"></span>
+                           <span th:text= "|${#dates.format(lists.orderDate, 'yyyy-MM-dd hh:mm:ss')}|"></span>
                           </time>
                         </p>
                       </div>
@@ -182,7 +182,6 @@
                         </a>
                       </div>
                     -->
-                  
                     <!-- 교환 Button -->
                       <div class="col-6">
                         <a class="btn btn-sm w-100 btn-outline-dark excBtn" th:href="@{/exchange}" >
@@ -196,7 +195,7 @@
                         </a>
                       </div>
                     <!-- 주문 취소 Button -->
-                      <div class="col-6">
+                      <div class="col-6" th:if="(${lists.orderStatus} == '상품 준비 중')">
                         <a class="btn btn-sm w-100 btn-outline-dark cancelBtn" th:href="@{/cancel}" >
                           주문 취소
                         </a>
@@ -212,12 +211,11 @@
       </div>
     </section>
 	<script>
-  	// 교환 버튼에 클릭 이벤트 리스너 추가
-  document.querySelector(".orderList").addEventListener("click", function(e) {
-	  
+  
+	document.querySelector(".orderList").addEventListener("click", function(e) {
 	e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
-    // 필요한 정보를 변수에 저장
-    var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
+
+	var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
     var url="";
 	if(  e.target.matches(".excBtn") ){
 		var url = "exchange";
@@ -228,13 +226,9 @@
 	}else if(e.target.matches(".retBtn")){
 		var url = "return"
 		window.location.href = url+"?orderDetailCode=" + orderDetailCode;
-	}else if(e.target.matches(".asdasdBtn")){
-		window.location.href = url+"?orderDetailCode=" + orderDetailCode;
 	}else{
 		return;
 	}
-	
-
   });
   	
 

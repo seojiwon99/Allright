@@ -98,11 +98,13 @@
 	    if(selOption != "선택"){
 	  	}else{
 	  		alert("교환 사유를 선택해주세요.")
+	  		$('#select').focus();
 	  		return;
 	  	}
 	  	if($('#content').val() != ""){
 	  	}else{
 	  		alert("자세한 교환 사유를 입력해주세요")
+	  		$('#content').focus();
 	  		return;
 	  	}
 	  	if($('#addr').val() != ""){

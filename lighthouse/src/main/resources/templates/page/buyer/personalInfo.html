@@ -217,9 +217,15 @@
 	</section>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-		
+		$(document).ready(function(){
 		$('#updateBtn').on('click', function(){
-			
+			let pwData = $('#memberPw').val();
+			if( pwData != null){
+			} else {
+				alert("새 비밀번호를 설정해주세요.")
+				$('#buyerPassword').focus();
+				return;
+			}
 			let infoData = {
 				'memberPw' : $('#buyerPassword').val(),
 				'memberPasswordCheck' : $('#buyerPasswordCheck').val(),
@@ -245,6 +251,7 @@
 					console.log(err);
 				}
 			})
+		});
 		});
 		
 		// 비밀번호 확인에서 일치 여부 확인

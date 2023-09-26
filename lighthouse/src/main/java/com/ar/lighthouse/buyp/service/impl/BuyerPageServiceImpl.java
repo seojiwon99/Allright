@@ -22,6 +22,7 @@ import com.ar.lighthouse.buyp.service.BuyReturnVO;
 import com.ar.lighthouse.buyp.service.TradeVO;
 import com.ar.lighthouse.buyp.service.WishVO;
 import com.ar.lighthouse.common.CodeVO;
+import com.ar.lighthouse.common.Criteria;
 
 import co.elastic.clients.elasticsearch.ml.Page;
 @Service
@@ -68,8 +69,8 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 
 
 	@Override
-	public List<WishVO> getWishList(String memberId) {
-		return buyerPageMapper.selectWishList(memberId);
+	public List<WishVO> getWishList(Criteria cri) {
+		return buyerPageMapper.selectWishList(cri);
 	}
 
 
@@ -111,8 +112,8 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 
 
 	@Override
-	public List<CodeVO> getCancelCode(String memberId) {
-		return buyerPageMapper.selectCancelCode(memberId);
+	public List<CodeVO> getCancelCode() {
+		return buyerPageMapper.selectCancelCode();
 	}
 
 
@@ -147,22 +148,36 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 
 
 	@Override
-	public int editCancel(BuyCancelVO canVO) {
-		return buyerPageMapper.updateCancel(canVO);
+	public int removeCancel(BuyCancelVO canVO) {
+		return buyerPageMapper.deleteCancel(canVO);
 	}
 
 
 	@Override
-	public int editReturn(BuyReturnVO retVO) {
-		return buyerPageMapper.updateReturn(retVO);
+	public int removeReturn(BuyReturnVO retVO) {
+		return buyerPageMapper.deleteReturn(retVO);
 	}
 
 
 	@Override
-	public int editExchange(BuyExchangeVO excVO) {
-		return buyerPageMapper.updateExchange(excVO);
+	public int removeExchange(BuyExchangeVO excVO) {
+		return buyerPageMapper.deleteExchange(excVO);
 	}
-	
+
+
+	@Override
+	public int removeWish(int favoriteCode) {
+		return buyerPageMapper.deleteWish(favoriteCode);
+	}
+
+
+	@Override
+	public int getPageCnt(Criteria cri) {
+		return buyerPageMapper.getPageCnt(cri);
+	}
+
+
+
 	
 	
 

@@ -42,7 +42,7 @@
       			</div>
       			<div class="mb-3">
       			<div class="mb-3">
-      				<div th:value="${return.returnStatus}"/>
+      				<div th:value="${return.returnStatus}"></div>
       			</div>
       			<!-- Select -->
                    <select class="form-select form-select-xxs w-auto" id="select">
@@ -90,11 +90,13 @@
 		    if(selOption != "선택"){
 		  	}else{
 		  		alert("반품 사유를 선택해주세요.")
+		  		$('#select').focus();
 		  		return;
 		  	}
 		  	if($('#content').val() != ""){
 		  	}else{
 		  		alert("자세한 반품 사유를 입력해주세요.")
+		  		$('#content').focus();
 		  		return;
 		  	}
 	  		let reasonName =  $('#select option:selected').text().trim()

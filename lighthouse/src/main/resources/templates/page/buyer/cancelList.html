@@ -77,114 +77,82 @@
 						<div class="card-body pb-0">
 							<!-- 반복문 시작 -->
 							<!-- Info -->
-
 							<div class="card card-sm">
-
-								<div th:each="lists : ${cancelList}">
+								<div th:each="lists : ${cancelList}" class="order">
 									<div class="card-body bg-light">
 										<div class="row">
 											<div class="col-6 col-lg-3">
-
-												<!-- Heading -->
 												<h6 class="heading-xxxs text-muted">취소 번호:</h6>
-
-												<!-- Text -->
 												<p class="mb-lg-0 fs-sm fw-bold">
 													<span th:text="|${lists.cancelCode}|" id="cancelCode"></span>
 												</p>
-
 											</div>
 											<div class="col-6 col-lg-3">
-
-												<!-- Heading -->
+												<h6 class="heading-xxxs text-muted">주문번호:</h6>
+												<p class="mb-0 fs-sm fw-bold">
+													<span th:text="|${lists.orderCode}|"></span>
+												</p>
+												<h6 class="heading-xxxs text-muted">주문상세번호:</h6>
+												<p class="mb-0 fs-sm fw-bold">
+													<span th:text="|${lists.orderDetailCode}|"
+														id="orderDetailCode"></span>
+												</p>
+											</div>
+											<div class="col-6 col-lg-3">
 												<h6 class="heading-xxxs text-muted">상품명:</h6>
-
-												<!-- Text -->
 												<p class="mb-0 fs-sm fw-bold">
 													<span th:text="|${lists.productName}|"></span>
 												</p>
-
 											</div>
-
 											<div class="col-6 col-lg-3">
-												<!-- Heading -->
 												<h6 class="heading-xxxs text-muted">수량:</h6>
-
-												<!-- Text -->
 												<p class="mb-0 fs-sm fw-bold">
 													<span th:text="|${lists.orderCnt}|"></span>
 												</p>
 											</div>
 											<div class="col-6 col-lg-3">
-
-												<!-- Heading -->
 												<h6 class="heading-xxxs text-muted">결제 금액:</h6>
-
-												<!-- Text -->
 												<p class="mb-0 fs-sm fw-bold">
 													<span th:text="|${lists.paymentPrice}원|"></span>
 												</p>
-
 											</div>
 											<div class="col-6 col-lg-3">
-
-												<!-- Heading -->
 												<h6 class="heading-xxxs text-muted">취소 접수 날짜:</h6>
-
-												<!-- Text -->
 												<p class="mb-lg-0 fs-sm fw-bold">
 													<time datetime="2019-10-01">
-														<span th:text="|${#dates.format(lists.cancelRegdate, 'yyyy-MM-dd')}|"></span>
+														<span
+															th:text="|${#dates.format(lists.cancelRegdate, 'yyyy-MM-dd hh:mm:ss')}|"></span>
 													</time>
 												</p>
-
 											</div>
 											<div class="col-6 col-lg-3">
-
-												<!-- Heading -->
 												<h6 class="heading-xxxs text-muted">취소 상태:</h6>
-
-												<!-- Text -->
 												<p class="mb-0 fs-sm fw-bold">
 													<span th:text="|${lists.cancelStatus}|"></span>
 												</p>
-
 											</div>
 
 											<div class="col-6 col-lg-3">
-
-												<!-- Heading -->
 												<h6 class="heading-xxxs text-muted">취소 거절 여부:</h6>
-
-												<!-- Text -->
 												<p class="mb-0 fs-sm fw-bold">
 													<span th:text="|${lists.cancelRejectionCode}|"></span>
 												</p>
-
 											</div>
 											<div class="col-6 col-lg-3">
-
-												<!-- Heading -->
 												<h6 class="heading-xxxs text-muted">취소 거절 사유:</h6>
-
-												<!-- Text -->
 												<p class="mb-0 fs-sm fw-bold">
 													<span th:text="|${lists.cancelRejectionReason}|"></span>
 												</p>
-
 											</div>
+											<!--
 											<div class="col-6 col-lg-3">
-
-												<!-- Heading -->
 												<h6 class="heading-xxxs text-muted" type="hidden"></h6>
-
-												<!-- Text -->
 												<p class="mb-0 fs-sm fw-bold">
-													<span th:text="|${#dates.format(lists.cancelRetractDate, 'yyyy-MM-dd')}|"
+													  <span th:text="|${#dates.format(lists.cancelRetractDate, 'yyyy-MM-dd')}|"
 														id="cancelRDate"></span>
 												</p>
-
 											</div>
+											-->
 										</div>
 									</div>
 									<div class="card-footer">
@@ -192,17 +160,12 @@
 											<div class="col-12 col-lg-6">
 												<div class="row gx-5 mb-4 mb-lg-0">
 													<div class="col-3">
-
-														<!-- Image -->
 														<div class="ratio ratio-1x1 bg-cover">
 															<img th:src="@{/img/products/product-1.jpg}"
 																style="max-width: 100%; height: auto">
 														</div>
-
 													</div>
 													<div class="col-3">
-
-														<!-- Image -->
 														<div class="ratio ratio-1x1 bg-cover"
 															style="background-image:">
 															<img th:src="@{/img/products/product-11.jpg}"
@@ -211,8 +174,6 @@
 
 													</div>
 													<div class="col-3">
-
-														<!-- Image -->
 														<div class="ratio ratio-1x1 bg-cover">
 															<img th:src="@{/img/products/product-12.jpg}"
 																style="max-width: 100%; height: auto">
@@ -220,8 +181,6 @@
 
 													</div>
 													<div class="col-3">
-
-														<!-- Image -->
 														<div class="ratio ratio-1x1 bg-cover"
 															style="background-image:">
 															<img th:src="@{/img/products/product-13.jpg}"
@@ -229,29 +188,21 @@
 														</div>
 
 													</div>
-													<div></div>
 												</div>
 											</div>
 											<div class="col-12 col-lg-6">
 												<div class="row gx-5">
 													<div class="col-6">
-
-														<!-- Button -->
-														<button class="btn btn-sm w-100 btn-outline-dark"
-															id="updateBtn">취소 철회</button>
-
+														<button class="btn btn-sm w-100 btn-outline-dark deleteBtn"
+															data-orderdetailcode="${lists.orderDetailCode}"> 주문 취소</button>
 													</div>
 												</div>
-
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-
-
 						</div>
-
 					</div>
 				</div>
 			</div>
@@ -259,22 +210,20 @@
 	</section>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-		$('#updateBtn').on('click', function() {
-
+	
+	$(document).ready(function(){
+		$('.deleteBtn').on('click', function() {
+			let orderDetailCode = $(this).data('orderDetailCode');
 			let cancelData = {
-				'cancelRetractDate' : $('#cancelRDate').text(),
-				'cancelCode' : $('#cancelCode').text()
+				'orderDetailCode' : $('#orderDetailCode').text(),
 			}
-
 			$.ajax({
-				url : '/buyer/cancelUpdate',
+				url : '/buyer/deleteCancel',
 				type : 'POST',
 				contentType : 'application/json',
 				data : JSON.stringify(cancelData),
 				success : function(response) {
-
 					alert("수정 완료");
-
 				},
 				error : function(err) {
 					console.error('정보 수정 중 오류.');
@@ -282,6 +231,9 @@
 				}
 			})
 		});
+	});
+		
+		
 	</script>
 </div>
 </html>
