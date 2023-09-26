@@ -222,7 +222,7 @@ public class OrdersController {
 		//토스페이먼츠 환불
 		@GetMapping("orders/cancel")
 		public String orderCancel(@RequestParam (name="orderChkVO") List<OrderChkVO> orderChkVO, HttpSession session) throws IOException, InterruptedException {
-		
+		 
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId(); // 로그인 중인 아이디
 	
