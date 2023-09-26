@@ -109,28 +109,28 @@ public class BuyerPageController {
 	}
 	
 	// 찜내역
-//	@GetMapping("page/buyer/wishList")
-//	public String wishList(Model model, HttpSession session) {
-//
-//		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-//		String memberId = memberVO.getMemberId();
-//
-//		List<WishVO> wishList = buyerPageService.getWishList(memberId);
-//		model.addAttribute("wishList", wishList);
-//
-//		return "/page/buyer/wishList";
-//	}
-	
-	//찜 내역 페이징
 	@GetMapping("page/buyer/wishList")
-	public String wishPaging(Model model, Criteria cri, HttpSession session) {
+	public String wishList(Model model, HttpSession session) {
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-		int pageCnt = buyerPageService.getPageCnt(cri);
-		model.addAttribute("wishList", buyerPageService.getWishList(cri));
-		model.addAttribute("pageMaker", new PageDTO(cri, pageCnt));
-		return "page/buyer/wishList";
+
+		List<WishVO> wishList = buyerPageService.getWishList(memberId);
+		model.addAttribute("wishList", wishList);
+
+		return "/page/buyer/wishList";
 	}
+	
+	//찜 내역 페이징
+//	@GetMapping("page/buyer/wishList")
+//	public String wishPaging(Model model, Criteria cri, HttpSession session) {
+//		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+//		String memberId = memberVO.getMemberId();
+//		int pageCnt = buyerPageService.getPageCnt(cri);
+//		model.addAttribute("wishList", buyerPageService.getWishList(cri));
+//		model.addAttribute("pageMaker", new PageDTO(cri, pageCnt));
+//		return "page/buyer/wishList";
+//	}
 	
 	// 취소 목록
 	@GetMapping("page/buyer/cancelList")
@@ -275,50 +275,47 @@ public class BuyerPageController {
 	}
 	// 주문취소 취소
 	@PostMapping("buyer/deleteCancel")
-	public ResponseEntity<String> editCancel(@RequestBody BuyCancelVO canVO, HttpSession session) {
+	public String editCancel(@RequestBody BuyCancelVO canVO, HttpSession session) {
 		
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		canVO.setMemberId(memberVO.getMemberId());
 		
 		int deleteCancel = buyerPageService.removeCancel(canVO);
-		return deleteCancel == 1 ? new ResponseEntity<String>("success", HttpStatus.OK)
-				: new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		return deleteCancel == 1 ? "/page/buyer/cancelList :: #test" : "/page/buyer/cancelList";
 	}
 	
 	// 반품 취소
 	@PostMapping("buyer/deleteReturn")
-	public ResponseEntity<String> editReturn(@RequestBody BuyReturnVO retVO, HttpSession session) {
+	public String editReturn(@RequestBody BuyReturnVO retVO, HttpSession session) {
 		
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		retVO.setMemberId(memberVO.getMemberId());
 		
 		int deleteReturn = buyerPageService.removeReturn(retVO);
-		return deleteReturn == 1 ? new ResponseEntity<String>("success", HttpStatus.OK)
-				: new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		return deleteReturn == 1 ? "/page/buyer/returnList :: #test" : "/page/buyer/returnList";
 	}
 	
 	// 교환 취소
 	@PostMapping("buyer/deleteExchange")
-	public ResponseEntity<String> editExchange(@RequestBody BuyExchangeVO excVO, HttpSession session) {
+	public String editExchange(@RequestBody BuyExchangeVO excVO, HttpSession session) {
 		
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		excVO.setMemberId(memberVO.getMemberId());
 		
 		int deleteExchange = buyerPageService.removeExchange(excVO);
-		return deleteExchange == 1 ? new ResponseEntity<String>("success", HttpStatus.OK)
-				: new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		return deleteExchange == 1 ? "/page/buyer/exchangeList :: #test" : "/page/buyer/exchangeList";
 	}
 	
 //	//찜 취소
-//	@GetMapping("buyer/deleteWish")
-//	public String removeWish(int favoriteCode, HttpSession session, Model model){
-//		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-//		String memberId= memberVO.getMemberId();
-//		buyerPageService.removeWish(favoriteCode);
-//		
-//		List<WishVO> wishList = buyerPageService.getWishList(memberId);
-//		model.addAttribute("wishList", wishList);
-//
-//		return "/page/buyer/wishList :: #test";
-//	}
+	@GetMapping("buyer/deleteWish")
+	public String removeWish(int favoriteCode, HttpSession session, Model model){
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId= memberVO.getMemberId();
+		buyerPageService.removeWish(favoriteCode);
+		
+		List<WishVO> wishList = buyerPageService.getWishList(memberId);
+		model.addAttribute("wishList", wishList);
+
+		return "/page/buyer/wishList :: #test";
+	}
 }

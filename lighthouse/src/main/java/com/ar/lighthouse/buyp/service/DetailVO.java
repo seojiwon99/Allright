@@ -16,6 +16,7 @@ import lombok.Data;
 @Data
 public class DetailVO {
 
+
 		private int orderDetailCode;
 	   private int orderCode;
 	   private int optionCode;
@@ -40,6 +41,7 @@ public class DetailVO {
    String memberId;
    String memberName;
    int memberTel;
+
    
    //상품 테이블 조인
    private String productName;
@@ -69,14 +71,17 @@ public class DetailVO {
   
    List<BuyCancelVO> BuyCancel;
    private String cancelStatus;
+   private String cancelStatusNm;
    private Date cancelRegdate;
    
    List<BuyReturnVO> BuyReturn;
    private String returnStatus;
+   private String returnStatusNm;
    private Date returnRegdate;
    
    List<BuyExchangeVO> BuyExchange;
    private String exchangeStatus;
+   private String exchangeStatusNm;
    private Date exchangeRegdate;
    
    // 옵션 VO

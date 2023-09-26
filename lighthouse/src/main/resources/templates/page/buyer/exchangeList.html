@@ -80,7 +80,7 @@
             </nav>
 
           </div>
-          <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
+          <div class="col-12 col-md-9 col-lg-8 offset-lg-1" id="test">
 			
             <!-- Order -->
             <div class="card card-lg mb-5 border">
@@ -192,7 +192,7 @@
 						<div class="row gx-5">
 							<div class="col-6">
 								<!-- Button -->
-								<button class="btn btn-sm w-100 btn-outline-dark deleteBtn" data-orderdetailcode="${lists.orderDetailCode}">교환 취소</button>
+								<button class="btn btn-sm w-100 btn-outline-dark deleteBtn" th:onclick="deleteExchange([[${lists.orderDetailCode}]])" data-orderdetailcode="${lists.orderDetailCode}">교환 취소</button>
 							</div>
 						 </div>
 					</div>
@@ -207,27 +207,27 @@
     </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(document).ready(function(){
-	$('.deleteBtn').on('click', function(){
-		let orderDetailCode = $(this).data('orderDetailCode');
-		let exchangeData = {
+function deleteExchange(code){
+	let exchangeDel = confirm('삭제하시겠습니까?');
+	let exchangeData = {
 			'orderDetailCode' : $('#orderDetailCode').text(),
 		}
-		$.ajax({
-			url : '/buyer/deleteExchange',
-			type : 'POST',
-			contentType : 'application/json',
-			data : JSON.stringify(exchangeData),
-			success : function(response){
-				alert("수정 완료");
-			},
-			fail : function(errer){
-				console.error('수정 중 오류')
-				console.log(error);
-			}
-		})
-	});
-});
+	$.ajax({
+		url : '/buyer/deleteExchange',
+		type : 'POST',
+		contentType : 'application/json',
+		data : JSON.stringify(exchangeData),
+		success : function(response){
+			alert("수정 완료");
+			$('#test').replaceWith(response);
+		},
+		fail : function(errer){
+			console.error('수정 중 오류')
+			console.log(error);
+		}
+	})
+}
+		
 
 </script>
 </div>
