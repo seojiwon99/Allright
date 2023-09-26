@@ -17,11 +17,6 @@
   		 ,seller_id 
 	from ar_inquiry
 	where product_code = #{productCode}
-	order by que_regdate DESC
-  </select>
-  
-  <select id="inquiryCount" resultType="int">
-  	select count(*) as inquiryCount from ar_inquiry where product_code = #{productCode}
   </select>
   
   <insert id="insertInquiry">
