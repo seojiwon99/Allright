@@ -87,6 +87,8 @@ public interface AdminService {
 	//배너 관리
 	public List<EventImgVO> getEventBannerList();
 	
+	public int addBanner(EventImgVO eventImgVO);
+	
 	
 	
 }

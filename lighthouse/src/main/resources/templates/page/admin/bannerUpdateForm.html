@@ -17,7 +17,7 @@
 									<form>
 											<div>
 												<!-- banner -->
-												<img alt="..." th:src="@{/img/products/}+${b.uploadName}" class="w-100" style=" height:200px; margin: 10px 0px">
+												<img alt="..." th:src="|/upload/${b.uploadPath}/${b.uploadName}|" class="w-100" style=" height:200px; margin: 10px 0px">
 											</div>
 												<!-- content -->
 											<input type="text" class="w-100" placeholder="이미지 설명을 입력해주세요." th:value="${b.imgContent}" name="" style="margin-bottom:10px">
@@ -82,18 +82,43 @@
 			let uploadFile = $(this).prev()[0].files[0]; //업로드 파일
 			let imgName = $(this).prev().prev().prev().children()[0]; //img Tag
 			let imgContent = $(this).prev().prev()[0].value; //대체 텍스트 
-			let bannerType = $(this).next().next().children().children()[0].checked //전시 여부
-			let bannerOrder = $(this).next().next().children()[1].children[1].value; //배너 순서
+			let bannerType = $(this).next().next().children().children()[0].checked//전시 여부
+			let imgOrder = $(this).next().next().children()[1].children[1].value; //배너 순서
 			
-			let obj = {
+			let eventImgVO = {
 				uploadFile : uploadFile,
 				imgName : imgName,
 				imgContent : imgContent,
 				bannerType : bannerType,
-				bannerOrder : bannerOrder
+				imgOrder : imgOrder
 			}
+			bannerType = bannerType == true ? 'Y' : 'N';
 			
-			console.log(obj);
+			if(uploadFile == undefined){
+				return false;	
+			}
+			const formData = new FormData();
+			formData.append("uploadFile", uploadFile);
+			formData.append("imgOrder", imgOrder);
+			formData.append("imgContent", imgContent);
+			formData.append("bannerType", bannerType);
+			
+			
+			$.ajax({
+				url : "/admin/addBanner",
+				type : "post",
+				data: formData,
+				enctype: "multipart/form-data",
+	            contentType: false,
+	            processData: false,
+				success : function(rs){
+					console.log(rs);
+				},
+				error : function(err){
+					console.log(err);
+				}
+				
+			})
 
 		})
 		
