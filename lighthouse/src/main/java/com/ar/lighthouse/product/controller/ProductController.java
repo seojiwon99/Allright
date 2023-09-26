@@ -27,7 +27,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,7 +35,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.cart.service.CartService;
+
 import com.ar.lighthouse.common.CodeVO;
+
 import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.member.service.MemberService;
@@ -86,12 +87,15 @@ public class ProductController {
 	@GetMapping("sellerMain")
 	public String seller() {
 		return "page/seller/sellerMain";
+		
 	}
 
 //  판매자 상품문의페이지
 	@GetMapping("productInquiry")
-	public String productInquiry(Model model, ProductInquiryVO productInquiryVO) {
-		model.addAttribute("sellerInquiry", productService.getProductInquiry(productInquiryVO));
+	public String productInquiry(Model model, ProductInquiryVO productInquiryVO, HttpSession session) {
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
+		model.addAttribute("sellerInquiry", productService.getProductInquiry(memberId));
 		return "page/seller/productInquiry";
 	}
 
@@ -118,44 +122,47 @@ public class ProductController {
 	}
 
 //  판매자 mypage
-	@GetMapping("sellerMypage/{memberId}")
-	public String findMember(Model model, MemberVO memberVO) {
+	@GetMapping("sellerMypage")
+	public String findMember(Model model,HttpSession session) {
+		
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
 
-		model.addAttribute("sellerInfo", productService.getSellerInfo(memberVO));
+		model.addAttribute("sellerInfo", productService.getSellerInfo(memberId));
 		return "page/seller/sellerMypage";
 	}
 
 // 주문/발송 페이지
 	@GetMapping("orderManagement")
-	public String productOrder(Model model, ProductVO productVO) {
-		model.addAttribute("orderList", productService.getProductOrder(productVO));
+	public String productOrder(Model model, HttpSession session) {
+		
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
+		model.addAttribute("orderList", productService.getProductOrder(memberId));
 		return "page/seller/orderManagement";
 	}
 
 //orderOptionManagement 선택옵션 리스트
 	@GetMapping("orderOptionManagement")
-	public String productOrderOption(Model model, DetailVO detailVO) {
+	public String productOrderOption(Model model, DetailVO detailVO, HttpSession session) {
 
+		 MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		 String memberId = memberVO.getMemberId();
+
+		    detailVO.setMemberId(memberId);
+		    
 		List<DetailVO> orderList = productService.getOrderOptionList(detailVO);
 		model.addAttribute("orderList", orderList);
 
 		return "page/seller/orderManagement :: #orderChkList";
 	}
 
-//상품 취소검색 기능
-	@GetMapping("cancelOption") // Model model, CancelVO cancelVO
-	public String cancelSeaList(Model model, CancelVO cancelVO) {
-
-		model.addAttribute("cancelInfo", productService.getCancelSeaList(cancelVO));
-		return "page/seller/cancelProduct :: #cancelList";
-	}
 
 //주문배송정보입력
 
 	@PostMapping("updateDelivery")
 	@ResponseBody
 	public List<DetailVO> updateDeliveryInfo(@RequestBody List<DetailVO> detailList) {
-		System.out.println(detailList);
 
 		for (DetailVO detailVo : detailList) {
 			int result = productService.updateDeliveryInfo(detailVo);
@@ -181,8 +188,13 @@ public class ProductController {
 
 //  정산/통계 페이지
 	@GetMapping("settlementManagement")
-	public String getCalList() {
-
+	public String getCalList(HttpSession session, ExchangeVO exchangeVO, ReturnVO returnVO ) {
+		
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
+		
+		exchangeVO.setMemberId(memberId);
+		returnVO.setMemberId(memberId);
 		return "page/seller/settlementManagement";
 	}
 
@@ -201,18 +213,42 @@ public class ProductController {
 
 //  상품 취소관리 페이지
 	@GetMapping("cancelProduct") // Model model, CancelVO cancelVO
-	public String cancelProdructs(Model model, CancelVO cancelVO) {
-
-		model.addAttribute("cancelInfo", productService.getCancelList(cancelVO));
+	public String cancelProdructs(Model model, HttpSession session) {
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
+		model.addAttribute("cancelInfo", productService.getCancelList(memberId));
 
 		return "page/seller/cancelProduct";
 	}
+	
+	//상품 취소검색 기능
+		@GetMapping("cancelOption") // Model model, CancelVO cancelVO
+		public String cancelSeaList(Model model, CancelVO cancelVO, HttpSession session) {
+
+			 MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+			 String memberId = memberVO.getMemberId();
+
+			 cancelVO.setMemberId(memberId);
+			    
+			 model.addAttribute("cancelInfo", productService.getCancelSeaList(cancelVO));
+			
+			
+			return "page/seller/cancelProduct :: #cancelList";
+		}
+
 
 //  교환 관리 페이지
 	@GetMapping("exchangeList")
-	public String exchangeProducts(Model model, ExchangeVO exchangeVO, ReturnVO returnVO) {
+	public String exchangeProducts(Model model, ExchangeVO exchangeVO, ReturnVO returnVO, HttpSession session) {
 		List<ExchangeVO> combinedInfo = new ArrayList<>();
 
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
+		
+		exchangeVO.setMemberId(memberId);
+		returnVO.setMemberId(memberId);
+
+		
 		combinedInfo.addAll(productService.getExchangeList(exchangeVO));
 		combinedInfo.addAll(productService.getReturnList(returnVO));
 
@@ -223,10 +259,15 @@ public class ProductController {
 
 //교환/반품 상품 검색
 	@GetMapping("exchangeOption")
-	public String exchangeSeaList(Model model, ExchangeVO exchangeVO) {
+	public String exchangeSeaList(Model model, ExchangeVO exchangeVO, HttpSession session) {
 
 		List<ExchangeVO> combinedSearch = new ArrayList<>();
 
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
+		
+		exchangeVO.setMemberId(memberId);
+		
 		combinedSearch.addAll(productService.getReturnSeaList(exchangeVO));
 		combinedSearch.addAll(productService.getExchangeSeaList(exchangeVO));
 		model.addAttribute("exReList", combinedSearch);
@@ -241,21 +282,21 @@ public class ProductController {
 	}
 
 //판매자 상품목록
-	@GetMapping("productList/{memberId}")
-	public String productList(@PathVariable String memberId, Model model) {
-		// memberId를 기반으로 해당 사용자가 등록한 상품 목록 조회
-		List<ProductVO> productList = productService.getProductsByMemberId(memberId);
-
+	@GetMapping("productList")
+	public String productList(Model model, HttpSession session) {
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
+		model.addAttribute("productList" , productService.getproductList(memberId));
 		// 모델에 상품 목록 추가
-		model.addAttribute("productList", productList);
-
 		return "page/seller/productList";
 	}
 
 //  조건순 order by
 	@GetMapping("getOptionProduct")
-	public String productDetail(Model model, ProductVO productVO) {
-		model.addAttribute("productSelectList", productService.getOptionProduct(productVO));
+	public String productDetail(Model model, HttpSession session) {
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
+		model.addAttribute("productSelectList", productService.getOptionProduct(memberId));
 
 		return "page/seller/productList :: #sortList";
 	}
@@ -428,6 +469,7 @@ public class ProductController {
 			int result = productService.updateExStatus(productVO);
 			if (result > 0) {
 				delList.add(productVO.getProductCode());
+				delList.add(productVO.getProductExStatus());
 			}
 		}
 
@@ -629,7 +671,7 @@ public class ProductController {
 		return result;
 	}
 
-	@PostMapping("insertImg")
+@PostMapping("insertImg")
 	public String productdetailImg(Model model, ProductVO productVO, ImgsListVO imgsList, RedirectAttributes rttr) {
 		System.out.println(imgsList);
 //		model.addAttribute("product", productVO);

@@ -105,16 +105,13 @@
 
                       </div>
                       <div class="col-6 col-lg-3">
-
                         <h6 class="heading-xxxs text-muted">주문번호:</h6>
-
                         <p class="mb-0 fs-sm fw-bold">
                           <span th:text="|${lists.orderCode}|"></span>
                         </p>
 						<h6 class="heading-xxxs text-muted">주문상세번호:</h6>
-
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${lists.orderDetailCode}|"></span>
+                          <span th:text="|${lists.orderDetailCode}|" id="orderDetailCode"></span>
                         </p>
                       </div>
                       <div class="col-6 col-lg-3">
@@ -181,22 +178,17 @@
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${#dates.format(lists.returnProcessdate, 'yyyy-MM-dd')}|"></span>
+                         <span th:text="|${#dates.format(lists.returnProcessdate, 'yyyy-MM-dd hh:mm:ss')}|"></span>
                         </p>
 
                       </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
+                      <!-- <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted"></h6>
-
-                        <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
                          <span th:text="|${#dates.format(lists.returnRetractdate, 'yyyy-MM-dd')}|" id="returnRDate"></span>
                         </p>
-
                       </div>
-                      
+                       -->
                     </div>
                   </div>
                 <div class="card-footer">
@@ -242,7 +234,7 @@
 							<div class="col-6">
 
 								<!-- Button -->
-								<button class="btn btn-sm w-100 btn-outline-dark" id="updateBtn">반품 철회</button>
+								<button class="btn btn-sm w-100 btn-outline-dark deleteBtn" data-orderdetailcode="${lists.orderDetailCode}">반품 취소</button>
 
 							</div>
 						</div>
@@ -262,21 +254,20 @@
     </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-		$('#updateBtn').on('click', function(){
-			
+	$(document).ready(function(){
+		$('.deleteBtn').on('click', function(){
+			let orderDetailCode = $(this).data('detailDetailCode');
 			let returnData = {
-					'returnCode' : $('#returnCode').text(),
-					'returnRetractdate' : $('#returnRDate').text()
+					'orderDetailCode' : $('#orderDetailCode').text(),
 			}
 			$.ajax({
-				url : '/buyer/returnUpdate',
+				url : '/buyer/deleteReturn',
 				type : 'POST',
 				contentType : 'application/json',
 				data : JSON.stringify(returnData),
 				success : function(response) {
-
 					alert("수정 완료");
-
+					
 				},
 				error : function(err) {
 					console.error('정보 수정 중 오류.');
@@ -284,6 +275,7 @@
 				}
 			})
 		});
+	});
 	</script>
 </div>
 </html>

@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class WishVO {
 
-	private int favorite_code;
+	private int favoriteCode;
 	private String memberId;
 	private String productCode;
 	

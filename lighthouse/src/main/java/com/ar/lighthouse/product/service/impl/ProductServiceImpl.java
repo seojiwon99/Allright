@@ -28,10 +28,12 @@ public class ProductServiceImpl implements ProductService{
    
 
 
-   @Override
-   public List<ProductVO> getproductList(ProductVO productVO) {
-      return  productMapper.selectProductList(productVO);
-   }
+
+	@Override
+	public List<ProductVO> getproductList(String memberId) {
+		return  productMapper.selectProductList(memberId);
+	}
+
 
 
    @Override
@@ -40,10 +42,11 @@ public class ProductServiceImpl implements ProductService{
    }
 
 //  order by list
-   @Override
-   public List<ProductVO> getOptionProduct(ProductVO productVO) {
-      return productMapper.selectOptionProduct(productVO);
-   }
+
+	@Override
+	public List<ProductVO> getOptionProduct(String memberId) {
+		return productMapper.selectOptionProduct(memberId);
+	}
 
 //  상품테이블 등록
    @Override
@@ -88,88 +91,83 @@ public class ProductServiceImpl implements ProductService{
       return 1;
    }
 
-   // 상품이미지 등록
-      @Override
-      public void addProductImg(ImgsVO imgVO) {
-         productMapper.insertProductImg(imgVO);
-      }
-      
-      //제품 상세 단건조회
-      @Override
-      public ProductVO goodsDetail(ProductVO productVO) {
-         return productMapper.selectInfo(productVO);
-      }
+	// 상품이미지 등록
+		@Override
+		public void addProductImg(ImgsVO imgVO) {
+			productMapper.insertProductImg(imgVO);
+		}
+		
+		//제품 상세 단건조회
+		@Override
+		public ProductVO goodsDetail(ProductVO productVO) {
+			return productMapper.selectInfo(productVO);
+		}
 
 
-      @Override
-      public List<ProductVO> getProductsByMemberId(String memberId) {
-         return productMapper.getProductsByMemberId(memberId);
-      }
+
+		@Override
+		public List<MemberVO> getSellerInfo(String memberId) {
+			return productMapper.selectSellerInfo(memberId);
+		}
+
+//		취소건 목록
+		@Override
+		public List<CancelVO> getCancelList(String memberId) {
+			return productMapper.selectCancelList(memberId);
+		}
+
+	//  주문/발주 목록
+		@Override
+		public List<DetailVO> getProductOrder(String memberId) {
+			return productMapper.selectOrderDetail(memberId);
+		}
+
+	// 교환건 목록
+		@Override
+		public List<ExchangeVO> getExchangeList(ExchangeVO exchangeVO) {
+			return productMapper.selectExchangeList(exchangeVO);
+		}
 
 
-      @Override
-      public List<MemberVO> getSellerInfo(MemberVO memberVO) {
-         return productMapper.selectSellerInfo(memberVO);
-      }
-
-//      취소건 목록
-      @Override
-      public List<CancelVO> getCancelList(CancelVO cancelVO) {
-         return productMapper.selectCancelList(cancelVO);
-      }
-
-   //  주문/발주 목록
-      @Override
-      public List<DetailVO> getProductOrder(ProductVO productVO) {
-         return productMapper.selectOrderDetail(productVO);
-      }
-
-   // 교환건 목록
-      @Override
-      public List<ExchangeVO> getExchangeList(ExchangeVO exchangeVO) {
-         return productMapper.selectExchangeList(exchangeVO);
-      }
+		@Override
+		public List<ExchangeVO> getReturnList(ReturnVO returnVO) {
+			return productMapper.selectReturnList(returnVO);
+		}
 
 
-      @Override
-      public List<ExchangeVO> getReturnList(ReturnVO returnVO) {
-         return productMapper.selectReturnList(returnVO);
-      }
+		@Override
+		public int updateDeliveryInfo(DetailVO detailVO) {
+			return productMapper.updateDeliveryInfo(detailVO);
+		}
 
 
-      @Override
-      public int updateDeliveryInfo(DetailVO detailVO) {
-         return productMapper.updateDeliveryInfo(detailVO);
-      }
+		@Override
+		public List<OptionVO> getOptionList(OptionVO optionVO) {
+			return productMapper.getOptionList(optionVO);
+		}
 
 
-      @Override
-      public List<OptionVO> getOptionList(OptionVO optionVO) {
-         return productMapper.getOptionList(optionVO);
-      }
+		// 택배사 코드 가져오기
+		@Override
+		public List<CodeVO> getDeliveryList() {
+			return productMapper.selectDeliveryList();
+		}
+		
+
+		
+		@Override
+		public List<ProductInquiryVO> getProductInquiry(String memberId) {
+			return productMapper.selectSellerInquiry(memberId);
+		}
 
 
-      // 택배사 코드 가져오기
-      @Override
-      public List<CodeVO> getDeliveryList() {
-         return productMapper.selectDeliveryList();
-      }
-      
-
-      
-      @Override
-      public List<ProductInquiryVO> getProductInquiry(ProductInquiryVO productInquiryVO) {
-         return productMapper.selectSellerInquiry(productInquiryVO);
-      }
+		@Override
+		public int updateSellerInquiry(ProductInquiryVO productInquiryVO) {
+			return productMapper.updateInquiryAns(productInquiryVO);
+		}
 
 
-      @Override
-      public int updateSellerInquiry(ProductInquiryVO productInquiryVO) {
-         return productMapper.updateInquiryAns(productInquiryVO);
-      }
-
-
-   
+	
 
 
       
@@ -226,10 +224,4 @@ public class ProductServiceImpl implements ProductService{
          return 0;
       }
 
-
-   
-
-
-   
-   
 }

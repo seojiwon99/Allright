@@ -11,12 +11,11 @@ import com.ar.lighthouse.productinquiry.service.ProductInquiryVO;
 public interface ProductService {
 	
 //	
-	public List<ProductVO> getproductList(ProductVO productVO);
-	List<ProductVO> getProductsByMemberId(String memberId);
+	public List<ProductVO> getproductList(String memberId);
 	
-	List<MemberVO> getSellerInfo(MemberVO memberVO);
+	List<MemberVO> getSellerInfo(String memberId);
 	
-	public List<ProductVO> getOptionProduct(ProductVO productVO);
+	public List<ProductVO> getOptionProduct(String memberId);
 	
 //	전시상태변경
 	public int updateExStatus(ProductVO productVO);
@@ -32,7 +31,7 @@ public interface ProductService {
 	List<DetailVO> getOrderOptionList(DetailVO detailVO);
 	
 //	판매자 상품 문의건
-	List<ProductInquiryVO> getProductInquiry(ProductInquiryVO productInquiryVO);
+	List<ProductInquiryVO> getProductInquiry(String memberId);
 	
 //  상품 문의 답변해주기
 	int updateSellerInquiry(ProductInquiryVO productInquiryVO);
@@ -40,13 +39,13 @@ public interface ProductService {
 	public ProductVO goodsDetail(ProductVO productVO);
 
 //	상품주문목록
-	List<DetailVO> getProductOrder(ProductVO productVO);
+	List<DetailVO> getProductOrder(String memberId);
 	
 //	주문배송정보수정
 	public int updateDeliveryInfo(DetailVO detailVO);
 	
 //	취소건 목록
-	List<CancelVO> getCancelList(CancelVO cancelVO);
+	List<CancelVO> getCancelList(String memberId);
 	
 //	교환건 목록
 	List<ExchangeVO> getExchangeList(ExchangeVO exchangeVO);
