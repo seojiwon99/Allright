@@ -70,9 +70,7 @@ WITH RankedOrderDetail AS (
     		AND a.order_code like '%'||#{searchValue}||'%'
     	</when>
     </choose>
-    <if test="fromDate != null">
-    	AND a.order_date BETWEEN #{fromDate} AND #{toDate}
-    </if>
+
 )
 SELECT *
 FROM 
