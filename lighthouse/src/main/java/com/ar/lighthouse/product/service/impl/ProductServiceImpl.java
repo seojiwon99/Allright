@@ -14,6 +14,7 @@ import com.ar.lighthouse.product.mapper.ProductMapper;
 import com.ar.lighthouse.product.service.CancelVO;
 import com.ar.lighthouse.product.service.ExchangeVO;
 import com.ar.lighthouse.product.service.OptionDetailVO;
+import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
 import com.ar.lighthouse.product.service.ReturnVO;
@@ -130,14 +131,28 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<OptionDetailVO> getOptionList(OptionDetailVO optionVO) {
-		return productMapper.getOptionList(optionVO);
+	public List<OptionVO> getOptionList(OptionVO optionVO) {
+		List<OptionVO> list = productMapper.selectOptionList(optionVO);
+		for (OptionVO i : list) {
+			String[] op = i.getOptionValue().split(",");
+			List<OptionDetailVO> detailList=new ArrayList<OptionDetailVO>();
+			for (String o : op) {
+				detailList.add(new OptionDetailVO(o.trim()));
+			}
+			i.setDetailVO(detailList);
+		}
+		return list;
 	}
 
 	// 택배사 코드 가져오기
 	@Override
 	public List<CodeVO> getDeliveryList() {
 		return productMapper.selectDeliveryList();
+	}
+
+	@Override
+	public List<OptionDetailVO> getOptionDetail(OptionVO optionVO) {
+		return productMapper.selectOptionDetail(optionVO);
 	}
 
 }

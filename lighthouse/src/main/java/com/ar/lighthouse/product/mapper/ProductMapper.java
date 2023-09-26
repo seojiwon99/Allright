@@ -11,6 +11,7 @@ import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.service.CancelVO;
 import com.ar.lighthouse.product.service.ExchangeVO;
 import com.ar.lighthouse.product.service.OptionDetailVO;
+import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductVO;
 import com.ar.lighthouse.product.service.ReturnVO;
 
@@ -70,4 +71,10 @@ public interface ProductMapper {
 	
 	// 택배사 목록 가졍괴
 	public List<CodeVO> selectDeliveryList();
+	
+	//옵션리스트
+	public List<OptionVO> selectOptionList(OptionVO optionVO);
+	
+	public List<OptionDetailVO> selectOptionDetail(OptionVO optionVO);
+	
 }

@@ -49,6 +49,7 @@ import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.service.CategoryVO;
 import com.ar.lighthouse.product.service.ImgsListVO;
 import com.ar.lighthouse.product.service.OptionDetailVO;
+import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
 import com.ar.lighthouse.productinquiry.service.ProductInquiryService;
@@ -530,7 +531,7 @@ public class ProductController {
 
 	// 상품 단건 조회
 	@GetMapping("goodDetail")
-	public String getGoodDetail(String productCode, Model model, HttpSession session, ProductVO vo, OptionDetailVO optionVO,
+	public String getGoodDetail(String productCode, Model model, HttpSession session, ProductVO vo, OptionVO optionVO,
 			CodeVO codeVO, Criteria cri) {
 
 		// 페이징
@@ -559,6 +560,7 @@ public class ProductController {
 		// 옵션 조회
 		optionVO.setProductCode(productCode);
 		model.addAttribute("options", productService.getOptionList(optionVO));
+		model.addAttribute("optionDetail", productService.getOptionDetail(optionVO));
 		System.out.println(model);
 
 		// 장바구니

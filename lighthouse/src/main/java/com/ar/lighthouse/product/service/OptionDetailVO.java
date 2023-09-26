@@ -27,6 +27,11 @@ public class OptionDetailVO {
 	   private int salePrice;
 	   
 	   private String optionLast;
+
+	public OptionDetailVO(String optionName) {
+		super();
+		this.optionName = optionName;
+	}
 	   
-	
+	  
 }

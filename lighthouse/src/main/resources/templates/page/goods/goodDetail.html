@@ -129,9 +129,13 @@
 											</div> */-->
 
 											<div>
-												<div>
-													<select class="form-select mb-2">
-														<option value="1"></option>
+												<div th:each="option:${options}">
+													<select class="selectbox form-select mb-2">
+														<option class="selectbox1" value="">선택하세요</option>
+														<option class="selectbox1"
+															th:each="detail:${option.detailVO}"
+															th:value="${detail.optionName}"
+															th:text="${detail.optionName}"></option>
 													</select>
 												</div>
 											</div>
@@ -144,17 +148,33 @@
 
 
 
-										<div>
+										<div style="font-size: 15px; color: rgba(0, 0, 0, 0.7);">
+											<div id="optionBox" style="display: none">
+												<div id="optionView" class="col-12 col-lg-auto"
+													style="background-color: rgba(0, 0, 0, 0.1); padding: 14px; display: flex; justify-content: space-between;">
+													<div>
+														<p>색상/사이즈 :</p>
+													</div>
+													<div>
+														<div style="padding-bottom: 8px">
+															<span style="font-size: 15px;">수량 : </span> <input
+																type="number" value="1" min="1"
+																style="opacity: 0.7; width: 100px;" class="cnt">
+														</div>
+														<div>
+															<input class="changePrice" type="hidden"
+																th:value="${goods.salePrice}" /> <span>합계
+																:</span> <span class="changePriceShow" style="font-size: 16px"></span>
+														</div>
+													</div>
+												</div>
+											</div>
 											<div class="col-12 col-lg-auto">
 
 												<div
-													style="display: flex; justify-content: space-between; padding: 20px 0px 40px 0px"
+													style="display: flex; justify-content: space-between; padding: 20px 0px 40px 0px; color: black"
 													class="num">
-													<div>
-														<span style="padding-right: 8px;">수량 : </span> <input
-															type="number" value="1" min="1"
-															style="opacity: 0.7; width: 100px;" class="cnt">
-													</div>
+
 													<div>
 														<input class="changePrice" type="hidden"
 															th:value="${goods.salePrice}" /> <span
@@ -909,11 +929,25 @@
 
 
 	<script th:inline="javascript">
-   $(document).ready(function () {
+   $(document).ready(function (){
+	  let optionDetail =[[${optionDetail}]];
+	  
+		  
       
       let price = $(".changePrice").val();
       price = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';   
       $(".changePriceShow").html(price);
+      
+      
+      $('.selectbox').on('change',function(e){
+    	  $('#optionBox').css("display","block")
+    	  let option = $(this).val();
+		  console.log(option);
+		  
+		  $('#optionView p').append(option);
+		  
+		  $('.selectbox').prop("selected", true);
+      })
       
         var count = $('.cnt'); // cnt 배열
         count.change(function () { // input값이 변화가 있을 때 발생하는 이벤트

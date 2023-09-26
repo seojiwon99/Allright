@@ -132,6 +132,16 @@
         ar_products p ON x.product_code = p.product_code
 </select>
 
+<!-- optionVo list -->
+<select id="selectOptionList" resultType="OptionVO">
+	select * from ar_option where product_code = #{productCode}
+</select>
+
+<!-- 옵션 디테일 -->
+<select id="selectOptionDetail" resultType="OptionDetailVO">
+	select * from ar_option_detail where product_code = #{productCode}
+</select>
+
 <!-- 취소목록 -->
 
 <resultMap type="CancelVO" id="selectCancelList">
