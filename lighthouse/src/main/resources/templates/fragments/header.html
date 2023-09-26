@@ -163,6 +163,9 @@
 				<!-- Nav -->
 				<ul class="nav navbar-nav me-8">
 					<li class="nav-item"><a class="nav-link"
+						th:if="${session.loginMember} != null" href="/" th:text="로그아웃" onclick="logoutMember()"></a></li>
+					
+					<li class="nav-item"><a class="nav-link"
 						th:href="${session.loginMember} == null ? @{/page/member/loginForm} : '#'" th:text="${session.loginMember} != null ? ${session.loginMember.memberId} : '로그인' ">Shipping</a></li>
 				
 					<li class="nav-item dropdown hovered">
@@ -534,6 +537,17 @@
 				}
 			})
 		})
+		
+		function logoutMember(e){
+			console.log(e);
+			let memberId = [[${session.loginMember}]]
+			console.log(memberId);
+			window.localStorage.clear();
+			$.ajax({
+				url : '/logout',
+				type : 'POST'
+			})
+		}
 	</script>
     <script th:src="@{/js/theme.bundle.js}"></script>
 </div>

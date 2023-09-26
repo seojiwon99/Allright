@@ -350,6 +350,44 @@ public class AdminController {
         }
 	}
 	
+	@PostMapping("admin/editBanner")
+	@ResponseBody
+	public String editBanner(MultipartFile uploadFile,EventImgVO eventImgVO) {
+		if(uploadFile == null) {
+			adminService.editBanner(eventImgVO);
+			return "update success";
+		}else {
+			String prevPath = adminService.findBannerPath(eventImgVO.getEventImgCode()); // 이전 파일 경로 
+			deleteFile(prevPath); // 삭제 (boolean)
+			
+			String originalName = uploadFile.getOriginalFilename();
+	        String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
+	        eventImgVO.setImgName(fileName);
+	        //날짜 폴더 생성
+	        String folderPath = makeFolder();
+	        
+	        String uuid = UUID.randomUUID().toString();	// 유니크한 이름 때문에
+	        eventImgVO.setUploadName(uuid+"_"+fileName);
+	        
+	        String uploadFileName = folderPath + '/' + uuid + "_" + fileName;
+	        eventImgVO.setUploadPath(folderPath);
+	        
+	        String saveName = uploadPath + '/' + uploadFileName;
+	        Path savePath = Paths.get(saveName);
+	        try{
+	        	uploadFile.transferTo(savePath); // 파일의 핵심
+	        	adminService.editBanner(eventImgVO);
+	        	return "img edit success";
+	        } catch (IOException e) {
+	             e.printStackTrace();	      
+	             return "fail";
+	        }
+			
+		}
+//		
+//		
+	}
+	
 	
 	private String makeFolder() {
 		String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")); // 경로에서 사용하는 /는 인지 못함
@@ -368,6 +406,11 @@ public class AdminController {
 
 	private String setImagePath(String uploadFileName) {
 		return uploadFileName.replace(File.separator, "/");
+	}
+	private boolean deleteFile(String path) {
+		File targetDir = Paths.get(uploadPath, path).toFile();
+		System.out.println("target" + targetDir);
+		return targetDir.delete();
 	}
 	
 	

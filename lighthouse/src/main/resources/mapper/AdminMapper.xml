@@ -485,9 +485,32 @@
   									, #{bannerType}
   									, #{uploadPath}
   									)
-  	
-  	
   	</insert>
+  	
+  	<update id="updateBanner">
+  		UPDATE AR_EVENT_IMG
+  		SET 
+  			<if test="bannerDelete != null">
+  			banner_delete = #{bannerDelete}
+  			</if>
+  			<if test="bannerDelete == null">
+  			IMG_ORDER = #{imgOrder}
+  			, IMG_CONTENT = #{imgContent}
+  			, BANNER_TYPE = #{bannerType}
+  			</if>
+  			<if test="uploadName != null">
+  			, IMG_NAME = #{imgName}
+  			, UPLOAD_NAME = #{uploadName}
+  			, UPLOAD_PATH = #{uploadPath}
+  			</if>
+  		WHERE event_img_code = #{eventImgCode}
+  	</update>
+  	
+  	<select id="selectBannerPath">
+  		SELECT UPLOAD_PATH || '/' ||UPLOAD_NAME
+  		FROM AR_EVENT_IMG
+  		WHERE EVENT_IMG_CODE = #{eventImgCode}
+  	</select>
   	
   </mapper>
   
