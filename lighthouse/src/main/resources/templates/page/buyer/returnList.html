@@ -8,7 +8,7 @@
 <div layout:fragment="content">
 
 <!-- CONTENT -->
-    <section class="pt-7 pb-12">
+    <section class="pt-7 pb-12" >
       <div class="container">
         <div class="row">
           <div class="col-12 text-center">
@@ -80,7 +80,7 @@
             </nav>
 
           </div>
-          <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
+          <div class="col-12 col-md-9 col-lg-8 offset-lg-1" id="test">
 			
             <!-- Order -->
             <div class="card card-lg mb-5 border">
@@ -90,7 +90,7 @@
                 
                 <div class="card card-sm">
                 
-                <div th:each="lists : ${returnList}">
+                <div th:each="lists : ${returnList}" >
                   <div class="card-body bg-light">
                     <div class="row">
                       <div class="col-6 col-lg-3">
@@ -100,9 +100,19 @@
 
                         <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
-                          <span th:text= "|${lists.returnCode}|"></span>
+                          <span th:text= "|${lists.returnCode}|" id="returnCode"></span>
                         </p>
 
+                      </div>
+                      <div class="col-6 col-lg-3">
+                        <h6 class="heading-xxxs text-muted">주문번호:</h6>
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${lists.orderCode}|"></span>
+                        </p>
+						<h6 class="heading-xxxs text-muted">주문상세번호:</h6>
+                        <p class="mb-0 fs-sm fw-bold">
+                          <span th:text="|${lists.orderDetailCode}|" id="orderDetailCode"></span>
+                        </p>
                       </div>
                       <div class="col-6 col-lg-3">
 
@@ -144,7 +154,7 @@
                         <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
                           <time datetime="2019-10-01">
-                           <span th:text= "|${lists.returnRegdate}|"></span>
+                           <span th:text= "|${#dates.format(lists.returnRegdate, 'yyyy-MM-dd')}|"></span>
                           </time>
                         </p>
 
@@ -168,22 +178,17 @@
 
                         <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${lists.returnProcessdate}|"></span>
+                         <span th:text="|${#dates.format(lists.returnProcessdate, 'yyyy-MM-dd hh:mm:ss')}|"></span>
                         </p>
 
                       </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">반품 취소 날짜:</h6>
-
-                        <!-- Text -->
+                      <!-- <div class="col-6 col-lg-3">
+                        <h6 class="heading-xxxs text-muted"></h6>
                         <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${lists.returnRetractdate}|"></span>
+                         <span th:text="|${#dates.format(lists.returnRetractdate, 'yyyy-MM-dd')}|" id="returnRDate"></span>
                         </p>
-
                       </div>
-                      
+                       -->
                     </div>
                   </div>
                 <div class="card-footer">
@@ -225,20 +230,15 @@
                     </div>
                   </div>
                   <div class="col-12 col-lg-6">
-                    <div class="row gx-5">
-                      <div class="col-6">
+						<div class="row gx-5">
+							<div class="col-6">
 
-                        
+								<!-- Button -->
+								<button class="btn btn-sm w-100 btn-outline-dark deleteBtn" th:onclick="deleteReturn([[${lists.orderDetailCode}]])" data-orderdetailcode="${lists.orderDetailCode}">반품 취소</button>
 
-                      </div>
-                      <div class="col-6">
-
-                        
-
-                      </div>
-                    </div>
-
-                  </div>
+							</div>
+						</div>
+				  </div>
                 </div>
               </div>
                 </div>
@@ -252,6 +252,29 @@
       </div>
       </div>
     </section>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+	function deleteReturn(code) {
+		let returnDel = confirm('삭제하시겠습니까?');
+		let returnData = {
+			 'orderDetailCode' : $('#orderDetailCode').text(),
+		}
+		if(returnDel){
+		$.ajax('/buyer/deleteReturn',{
+			type : 'POST',
+			contentType:'application/json',
+			data : JSON.stringify(returnData)
+		})			
+		.done(data => {
+			
+			console.log(data);
+			$('#test').replaceWith(data);
+		})
+		} else {
+			return;
+		}
+	};
+	
+	</script>
 </div>
 </html>

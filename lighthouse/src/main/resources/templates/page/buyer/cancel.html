@@ -1,112 +1,127 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-   xmlns:th="http://www.thymeleaf.org"
-   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-   layout:decorate="~{layouts/default_layout}">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default_layout}">
 
 <!-- Content -->
 <div layout:fragment="content">
-   <!-- BREADCRUMB -->
-   <nav class="py-5">
-      <div class="container">
-         <div class="row">
-            <div class="col-12">
+	<!-- BREADCRUMB -->
+	<nav class="py-5">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
 
-               <!-- Breadcrumb -->
-               <ol class="breadcrumb mb-0 fs-xs text-gray-400">
-                  <li class="breadcrumb-item"><a class="text-gray-400"
-                     href="index.html">Home</a></li>
-                  <li class="breadcrumb-item active">주문취소하기</li>
-               </ol>
+					<!-- Breadcrumb -->
+					<ol class="breadcrumb mb-0 fs-xs text-gray-400">
+						<li class="breadcrumb-item"><a class="text-gray-400"
+							href="index.html">Home</a></li>
+						<li class="breadcrumb-item active">주문취소하기</li>
+					</ol>
 
-            </div>
-         </div>
-      </div>
-   </nav>
+				</div>
+			</div>
+		</div>
+	</nav>
 
-   <!-- CONTENT -->
-   <section class="pt-7 pb-15">
-      <div class="container">
-      	<div class="row justify-content-center">
-      		<div class="col-12 col-lg-10 col-xl-8" id="cancelForm">
-      			<h2>취소 신청 페이지</h2>
-      			<div class="mb-3">
-      			<input type="hidden" th:value="${cancel}" id="hidden">
-      				<label>주문번호</label>
-      				<input type="text" class="form-label" id="orderCode" th:value="${cancel.orderCode}" readonly>
-      				<label>주문상세번호</label>
-      				<input type="text" class="form-label" id="orderDetailCode" th:value="${cancel.orderDetailCode}" readonly>
-      			</div>
-      			<div class="mb-3">
-      				<label>상품 명</label>
-      				<input type="text" class="form-label" id="productName" th:value="${cancel.productName}" readonly>
-      			</div>
-      			<div class="mb-3">
-      			<!-- Select -->
-                   <select class="form-select form-select-xxs w-auto" id="select">
-                      <option value="선택">취소 사유를 선택해주세요</option>
-                      <option th:each="codes: ${codeList}" th:value="${codes.codeId}" th:text="${codes.codeName}"></option>
-                   </select>
-      			</div>
-      			<div class="mb-3">
-      				<textarea class="form-control" id="content" rows="5" placeholder="취소 사유를 입력해주세요"></textarea>
-      			</div>
-      			<div class="mb-3">
-      				
-      			</div>
-      			<div class="mb-3">
-      				<label>입금 계좌번호</label>
-      				<input type="text" class="form-label">
-      			</div>
-      			<div class="mb-3">
-      				<label>예금주</label>
-      				<input type="text" class="form-label">
-      				<label>은행 명</label>
-      				<input type="text" class="form-label">
-      			</div>
-      			<div class="col-12 text-center">
-      			
-      			<button class="btn btn-dark" id="cancelBtn">주문취소신청</button>
-      			<a class="btn btn-gray-500" type="button" th:href="@{/page/buyer/orderList}">취소</a>
-      			</div>
-      		</div>
-      	</div>
-      </div>
-   </section>
-   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-   <script>
-   $(document).ready(function() {
-	   
-	   $('#cancelBtn').on('click', function() {
-		   var cancelCode = $('#cancelCode').val();
-		   var orderDetailCode = $('#orderDetailCode').val();
-		   var productName = $('#productName').val();
-		   var cancelReason = $('#cancelReason').val();
-		   var content = $('#content').val();
-		   
-		   var cancelData = {
-			 cancelCode: cancelCode,
-			 orderDetailCode: orderDetailCode,
-			 productName: productName,
-			 cancelReason: $('#select').val(),
-		   	 cancelContent: content
-		   };
-		   
-		   $.ajax({
-			   type:'POST',
-			   url: '/buyer/cancelInsert',
-			   contentType: 'application/json',
-			   data : JSON.stringify(cancelData),
-			   success: function(response){
-				   alert('취소 신청이 성공적으로 처리되었습니다.');
-			   },
-			   error: function(error){
-				   console.error('취소 실패.');
-				   console.error(error);
-			   }
-		   });
-	   });
-   });
-   </script>
- </div>
- </html>
+	<!-- CONTENT -->
+	<section class="pt-7 pb-15">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-12 col-lg-10 col-xl-8" id="cancelForm">
+					<h2>취소 신청 페이지</h2>
+					<div class="mb-3">
+						<input type="hidden" th:value="${cancel}" id="hidden"> <label>주문번호</label>
+						<input type="text" class="form-label" id="orderCode"
+							th:value="${cancel.orderCode}" readonly> <label>주문상세번호</label>
+						<input type="text" class="form-label" id="orderDetailCode"
+							th:value="${cancel.orderDetailCode}" readonly>
+					</div>
+					<div class="mb-3">
+						<label>상품 명</label> <input type="text" class="form-label"
+							id="productName" th:value="${cancel.productName}" readonly>
+					</div>
+					<div class="mb-3">
+						<!-- Select -->
+						<select class="form-select form-select-xxs w-auto" id="select">
+							<option value="선택">취소 사유를 선택해주세요</option>
+							<option th:each="codes: ${codeList}" th:value="${codes.codeId}"
+								th:text="${codes.codeName}"></option>
+						</select>
+					</div>
+					<div class="mb-3">
+						<textarea class="form-control" id="content" rows="5"
+							placeholder="취소 사유를 입력해주세요"></textarea>
+					</div>
+					<div class="mb-3"></div>
+					<div class="mb-3">
+						<label>입금 계좌번호</label> <input type="text" class="form-label">
+					</div>
+					<div class="mb-3">
+						<label>예금주</label> <input type="text" class="form-label">
+						<label>은행 명</label> <input type="text" class="form-label">
+					</div>
+					<div class="col-12 text-center">
+
+						<button class="btn btn-dark" id="cancelBtn">주문취소신청</button>
+						<a class="btn btn-gray-500" type="button"
+							th:href="@{/page/buyer/orderList}">취소</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$(document).ready(function() {
+
+			let checkBeforeInsert = {};
+
+			console.log(checkBeforeInsert);
+
+			// 반품 신청 버튼 클릭 시 AJAX 요청을 보냅니다.
+			$('#cancelBtn').on('click', function() {
+				// 사용자가 입력한 반품 사유와 주소 정보 가져오기
+				let selOption = $('#select option:selected').val();
+				if (selOption != "선택") {
+				} else {
+					alert("취소 사유를 선택해주세요.")
+					$('#select').focus();
+					return;
+				}
+				if ($('#content').val() != "") {
+				} else {
+					alert("자세한 취소 사유를 입력해주세요.")
+					$('#content').focus();
+					return;
+				}
+				let reasonName = $('#select option:selected').text().trim()
+				let contents = $('#content').val();
+				contents = contents.trim();
+				let caReason = reasonName + ' : ' + contents
+				let cancelData = {
+					'cancelCode' : $('#cancelCode').val(),
+					'orderDetailCode' : $('#orderDetailCode').val(),
+					'productName' : $('#productName').val(),
+					'cancelReason' : caReason,
+				}
+
+				$.ajax({
+					type : 'POST',
+					url : '/buyer/cancelInsert',
+					contentType : 'application/json',
+					data : JSON.stringify(cancelData),
+					success : function(response) {
+						alert('취소 신청이 성공적으로 처리되었습니다.');
+						
+					},
+					error : function(error) {
+						console.error('취소 실패.');
+						console.error(error);
+					}
+				});
+			});
+		});
+	</script>
+</div>
+</html>

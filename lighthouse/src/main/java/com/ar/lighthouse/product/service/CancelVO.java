@@ -25,11 +25,30 @@ public class CancelVO {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	Date cancelDate;
 	String cancelRejectionReason;
-	String productName;
-	String orderStatus;
+
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	Date chargeDate;
 	
-	String memberName;
+	
+	   // 멤버 테이블
+	private String memberId;
+	private String memberName;
+	private int memberTel;
+	   
+	   //상품 테이블 조인
+	   private String orderStatus;
+	   private String productName;
+	   private String productCode;
+	   
+//	   orderVO
+	   int orderCode;
+	   
+	//   ajax넘어오는값
+	   String searchValue;
+	   String searchKey;
+	   @DateTimeFormat(pattern="yyyy-MM-dd")
+	   Date fromDate;
+	   @DateTimeFormat(pattern="yyyy-MM-dd")
+	   Date toDate;
 }
