@@ -23,9 +23,10 @@ import com.ar.lighthouse.productinquiry.service.ProductInquiryVO;
 @Service
 public class ProductServiceImpl implements ProductService{
 
-	@Autowired
-	ProductMapper productMapper;
-	
+   @Autowired
+   ProductMapper productMapper;
+   
+
 
 
 	@Override
@@ -34,53 +35,61 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 
-	@Override
-	public int updateExStatus(ProductVO productVO) {
-		return productMapper.updateExStatus(productVO);
-	}
+
+   @Override
+   public int updateExStatus(ProductVO productVO) {
+      return productMapper.updateExStatus(productVO);
+   }
 
 //  order by list
+
 	@Override
 	public List<ProductVO> getOptionProduct(String memberId) {
 		return productMapper.selectOptionProduct(memberId);
 	}
 
 //  상품테이블 등록
-	@Override
-	public int addProduct(ProductVO productVO) {
-		int result = productMapper.insertProduct(productVO);
-		List<OptionVO> optionVO = new ArrayList();
-		if(result > 0) {
-			int length = 0;
-			String code = productVO.getProductCode();
-			for(int i = 0; i< productVO.getOption().size(); i++) {
-				if(productVO.getOption().get(i).getOptionCount() == 0) {
-					productVO.getOption().get(i).setOptionSellStatus("N");
-				}
-				// value 짜르기
-//				String value = productVO.getOption().get(i).getOptionValue();
-//				String[] optVal = value.split(",");
-//				for(int j =0; j<optVal.length; j++) {
-//					
-//					OptionVO test = new OptionVO();
-//					test.setProductCode(code);
-//					test.setOptionOrder(length + 1);
-//					test.setOptionName(productVO.getOption().get(i).getOptionName());
-//					test.setOptionValue(optVal[j]);
-//					test.setOptionCount(1);
-//					length++;
-//					productMapper.insertOption(test);
-//				}
-				// System.out.println(productVO.getOption().get(i));
-				productVO.getOption().get(i).setProductCode(code);
-				productMapper.insertOption(productVO.getOption().get(i));
-				
-				// System.out.println(productVO.getOption().get(i));
-			}
-			// productMapper.insertOption(productVO.getOption());
-		}
-		return 1;
-	}
+   @Override
+   public int addProduct(ProductVO productVO) {
+      int result = productMapper.insertProduct(productVO);
+      List<OptionVO> optionVO = new ArrayList();
+      if(result > 0) {
+         String code = productVO.getProductCode();
+         if(productVO.getOption().size() == 0) {
+            // productVO.getOption().get(0).setOptionLast("없음");
+            
+            productMapper.insertOption(productVO.getOption().get(0));
+         }else {
+            for(int i = 0; i< productVO.getOption().size(); i++) {
+//               if(productVO.getOption().get(i).getOptionCount() == 0) {
+//                  productVO.getOption().get(i).setOptionSellStatus("N");
+//               }
+               // value 짜르기
+//            String value = productVO.getOption().get(i).getOptionValue();
+//            String[] optVal = value.split(",");
+//            for(int j =0; j<optVal.length; j++) {
+//               
+//               OptionVO test = new OptionVO();
+//               test.setProductCode(code);
+//               test.setOptionOrder(length + 1);
+//               test.setOptionName(productVO.getOption().get(i).getOptionName());
+//               test.setOptionValue(optVal[j]);
+//               test.setOptionCount(1);
+//               length++;
+//               productMapper.insertOption(test);
+//            }
+               // System.out.println(productVO.getOption().get(i));
+               productVO.getOption().get(i).setProductCode(code);
+               productMapper.insertOption(productVO.getOption().get(i));
+               
+               // System.out.println(productVO.getOption().get(i));
+            }
+            
+         }
+         // productMapper.insertOption(productVO.getOption());
+      }
+      return 1;
+   }
 
 	// 상품이미지 등록
 		@Override
@@ -161,64 +170,58 @@ public class ProductServiceImpl implements ProductService{
 	
 
 
-		
-		
+      
+      
 
 
-	
+   
 
 
 
-	// orderManagement
-		@Override
-		public List<DetailVO> getOrderOptionList(DetailVO detailVO) {
-			return productMapper.selectOrderOptionList(detailVO);
-		}
+   // orderManagement
+      @Override
+      public List<DetailVO> getOrderOptionList(DetailVO detailVO) {
+         return productMapper.selectOrderOptionList(detailVO);
+      }
 
 
-		
-	
+      
+   
 
-//		주문상태변경
-		@Override
-		public int updateOrderStatus(DetailVO detailVO) {
-			return productMapper.updateOrderStatus(detailVO);
-		}
+//      주문상태변경
+      @Override
+      public int updateOrderStatus(DetailVO detailVO) {
+         return productMapper.updateOrderStatus(detailVO);
+      }
 
-//		취소 검색
-		@Override
-		public List<CancelVO> getCancelSeaList(CancelVO cancelVO) {
-			return productMapper.cancelOptionList(cancelVO);
-		}
-//		교환검색
-		@Override
-		public List<ExchangeVO> getExchangeSeaList(ExchangeVO exchangeVO) {
-			return productMapper.exchangeSeaList(exchangeVO);
-		}
+//      취소 검색
+      @Override
+      public List<CancelVO> getCancelSeaList(CancelVO cancelVO) {
+         return productMapper.cancelOptionList(cancelVO);
+      }
+//      교환검색
+      @Override
+      public List<ExchangeVO> getExchangeSeaList(ExchangeVO exchangeVO) {
+         return productMapper.exchangeSeaList(exchangeVO);
+      }
 
-//		반품검색
-		@Override
-		public List<ExchangeVO> getReturnSeaList(ExchangeVO exchangeVO) {
-			return productMapper.returnSeaList(exchangeVO);
-		}
+//      반품검색
+      @Override
+      public List<ExchangeVO> getReturnSeaList(ExchangeVO exchangeVO) {
+         return productMapper.returnSeaList(exchangeVO);
+      }
 
-		
-	//  정산건 확인
-		@Override
-		public List<SellerCalVO> getCalList(SellerCalVO sellerCalVO) {
-			return productMapper.selectCalList(sellerCalVO);
-		}
-
-
-		@Override
-		public int addOption(OptionVO optionVO) {
-			return 0;
-		}
+      
+   //  정산건 확인
+      @Override
+      public List<SellerCalVO> getCalList(SellerCalVO sellerCalVO) {
+         return productMapper.selectCalList(sellerCalVO);
+      }
 
 
-	
+      @Override
+      public int addOption(OptionVO optionVO) {
+         return 0;
+      }
 
-
-	
-	
 }

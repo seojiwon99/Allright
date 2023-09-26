@@ -161,11 +161,18 @@
 	</div>
 
 
-	<script>
+	<script th:inline="javascript">
 	
 	
 	
-
+	$(document).ready(function(){
+		let data = [[${msg}]];
+		if(data != null){
+			alert(data);
+			localStorage.removeItem('detail');
+			localStorage.removeItem('product');
+		}
+	})
 
 	
 	

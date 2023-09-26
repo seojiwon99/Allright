@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/sellerHtml}">
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:th="http://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{layouts/sellerHtml}">
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <!-- Content -->
 
 
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/sellerHtml}">
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:th="http://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{layouts/sellerHtml}">
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <!-- Content -->
 
@@ -21,61 +25,71 @@
       <div class="col-12 col-lg-auto">
 
          <!-- NAVBAR -->
-         <nav class="navbar navbar-expand-lg navbar-vertical navbar-light sticky-start px-lg-7 ">
+         <nav
+            class="navbar navbar-expand-lg navbar-vertical navbar-light sticky-start px-lg-7 ">
             <div class="container-fluid">
 
                <!-- Brand -->
                <a class="navbar-brand" href="/sellerMain"> 판매자센터 </a>
 
                <!-- Toggler -->
-               <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#navbarSidenavLeftCollapse" aria-controls="navbarSidenavLeftCollapse"
-                  aria-expanded="false" aria-label="Toggle navigation">
+               <button class="navbar-toggler" type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarSidenavLeftCollapse"
+                  aria-controls="navbarSidenavLeftCollapse" aria-expanded="false"
+                  aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                </button>
 
                <!-- Collapse -->
-               <div class="collapse navbar-collapse" id="navbarSidenavLeftCollapse">
+               <div class="collapse navbar-collapse"
+                  id="navbarSidenavLeftCollapse">
 
                   <!-- Nav -->
                   <ul class="navbar-nav fs-lg mb-6 my-lg-12" id="sidenavParent">
                      <li class="nav-item">
-                        <!-- Toggle --> <a class="nav-link dropdown-toggle" data-bs-toggle="collapse"
-                           href="#sidenavHome"> 상품관리 </a> <!-- Collapse -->
-                        <div class="collapse" id="sidenavHome" data-bs-parent="#sidenavParent">
+                        <!-- Toggle --> <a class="nav-link dropdown-toggle"
+                        data-bs-toggle="collapse" href="#sidenavHome"> 상품관리 </a> <!-- Collapse -->
+                        <div class="collapse" id="sidenavHome"
+                           data-bs-parent="#sidenavParent">
                            <ul class="list-styled fs-base fw-normal py-3 mb-0">
-                              <li class="list-styled-item"><a class="list-styled-link" href="/productList">상품
-                                    조회/수정</a></li>
                               <li class="list-styled-item"><a class="list-styled-link"
-                                    href="/insertProduct">상품등록</a></li>
+                                 href="/productList">상품 조회/수정</a></li>
+                              <li class="list-styled-item"><a class="list-styled-link"
+                                 href="/insertProduct">상품등록</a></li>
 
                            </ul>
                         </div>
 
                      </li>
                      <li class="nav-item">
-                        <!-- Toggle --> <a class="nav-link dropdown-toggle" data-bs-toggle="collapse"
-                           href="#sidenavCatalog"> 판매관리 </a> <!-- Collapse -->
-                        <div class="collapse" id="sidenavCatalog" data-bs-parent="#sidenavParent">
+                        <!-- Toggle --> <a class="nav-link dropdown-toggle"
+                        data-bs-toggle="collapse" href="#sidenavCatalog"> 판매관리 </a> <!-- Collapse -->
+                        <div class="collapse" id="sidenavCatalog"
+                           data-bs-parent="#sidenavParent">
                            <div class="row">
                               <div class="col-12 py-3">
                                  <!-- Links -->
                                  <ul class="list-styled fs-base">
-                                    <li class="list-styled-item"><a class="list-styled-link"
-                                          href="/orderManagement">주문확인/발송관리</a></li>
-                                    <li class="list-styled-item"><a class="list-styled-link"
-                                          href="/cancelProduct">취소관리</a></li>
-                                    <li class="list-styled-item"><a class="list-styled-link"
-                                          href="/exchangeList">교환반품관리</a></li>
+                                    <li class="list-styled-item"><a
+                                       class="list-styled-link" href="/orderManagement">주문확인/발송관리</a></li>
+                                    <li class="list-styled-item"><a
+                                       class="list-styled-link" href="/cancelProduct">취소관리</a></li>
+                                    <li class="list-styled-item"><a
+                                       class="list-styled-link" href="/exchangeList">교환반품관리</a></li>
 
                                  </ul>
 
                               </div>
 
-                     <li class="nav-item"><a class="nav-link" href="/settlementManagement">정산/통계관리</a></li>
-                     <li class="nav-item"><a class="nav-link" href="/productInquiry">문의관리</a></li>
-                     <li class="nav-item"><a class="nav-link" href="/sellerMypage">판매자정보</a></li>
-                     <li class="nav-item"><a class="nav-link" href="./docs/getting-started.html">고객센터</a></li>
+                              <li class="nav-item"><a class="nav-link"
+                                 href="/settlementManagement">정산/통계관리</a></li>
+                              <li class="nav-item"><a class="nav-link"
+                                 href="/productInquiry">문의관리</a></li>
+                              <li class="nav-item"><a class="nav-link"
+                                 href="/sellerMypage">판매자정보</a></li>
+                              <li class="nav-item"><a class="nav-link"
+                                 href="./docs/getting-started.html">고객센터</a></li>
                   </ul>
 
 
@@ -100,7 +114,8 @@
 
 
          <div class="container">
-            <form id="insertForm" class="form-horizontal" action="insertProduct" method="post"  enctype="multipart/form-data">
+            <form id="insertForm" class="form-horizontal" action="insertProduct"
+               method="post" enctype="multipart/form-data">
                <!-- <div id="categoryId">
                   <div class="form-group row">
                      <div>
@@ -141,35 +156,34 @@
                   </ul>
                </div> -->
 
-             <div class="form-group row">
-                  <label class="col-sm-2">상품 코드</label>
-                  <div class="col-sm-3">
-                     <input type="text" name="productCode" class="form-control">
-                  </div>
-               </div>
+
 
                <div class="form-group row">
                   <label class="col-sm-2" for="productName">상품명</label>
                   <div class="col-sm-3">
-                     <input type="text" id="productName" name="productName" class="form-control">
+                     <input type="text" id="productName" name="productName"
+                        class="form-control">
                   </div>
                </div>
 
                <div class="form-group row">
                   <label class="col-sm-2" for="productCost">판매가</label>
                   <div class="col-sm-3">
-                     <input type="number"id="productCost" name="productCost" class="form-control">
+                     <input type="number" id="productCost" name="productCost"
+                        class="form-control">
                   </div>
                   <label class="col-sm-2" for="salePrice">할인가</label>
                   <div class="col-sm-3">
-                     <input type="number" id="salePrice" name="salePrice" class="form-control">
+                     <input type="number" id="salePrice" name="salePrice"
+                        class="form-control">
                   </div>
                </div>
 
                <div class="form-group row">
                   <label class="col-sm-2" for="optionCount">재고수량</label>
                   <div class="col-sm-3">
-                     <input type="number" id="optionCount" name="optionCount" class="form-control">
+                     <input type="number" id="optionCount" name="optionCount"
+                        class="form-control">
                   </div>
                </div>
                <!-- <div class="form-group row">
@@ -187,15 +201,12 @@
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
-                     </select>
-                     <input type="button" value="옵션등록" id="addOption">
+                     </select> <input type="button" value="옵션등록" id="addOption">
                   </div>
                </div>
-               <div class="optionBox form-group row" style="display:none;">
+               <div class="optionBox form-group row" style="display: none;">
                   <label class="col-sm-2">옵션</label>
-                  <div class="optionB row g-3">
-
-                  </div>
+                  <div class="optionB row g-3"></div>
                </div>
                <div class="form-group row">
                   <label class="col-sm-2" for="">옵션설정</label>
@@ -205,12 +216,14 @@
                            <tr>
                               <th>옵션명</th>
                               <th>옵션</th>
-                              <th>옵션재고</th>
-                              <th>옵션추가돈</th>
+                              <th>옵션가격</th>
+                              <th>옵션수량</th>
+                              <th>최소구매수량</th>
+                              <th>최대구매수량</th>
                            </tr>
                         </thead>
                         <tbody id="optiontab">
-                           
+
                         </tbody>
                      </table>
                   </div>
@@ -219,98 +232,116 @@
                <div class="form-group row">
                   <label class="col-sm-2" for="imgName">메인 이미지</label>
                   <div class="col-sm-3">
-                     <input type="file" id="imgName" name="files" accept="image/*" onchange="setThumbnail(event);">
+                     <input type="file" id="imgName" name="files" accept="image/*"
+                        onchange="setThumbnail(event);">
                   </div>
-                  <div id="image_container" contenteditable="true" style="outline:none; margin:0 auto; border:1px solid black; margin-top : 30px">
-      
-                     
+                  <div id="image_container" contenteditable="true"
+                     style="outline: none; margin: 0 auto; border: 1px solid black; margin-top: 30px">
+
+
                   </div>
                </div>
                <div class="form-group row">
                   <label class="col-sm-2" for="">상세설명</label>
                   <div class="col-sm-3">
-                     <a target="_blank" class="detailPro"><strong name="productContent" class="form-control"
-                           style="background-color : #00C73C;">작성하러가기</strong></a>
+                     <a target="_blank" class="detailPro"><strong
+                        name="productContent" class="form-control"
+                        style="background-color: #00C73C;">작성하러가기</strong></a>
                   </div>
                </div>
                <div class="form-group row">
                   <label class="col-sm-2" for="productBrand">브랜드</label>
                   <div class="col-sm-3">
-                     <input type="text" id="productBrand" name="productBrand" class="form-control">
+                     <input type="text" id="productBrand" name="productBrand"
+                        class="form-control">
                   </div>
                </div>
                <div class="form-group row">
                   <label class="col-sm-2" for="unitsInStock">상품인증</label>
                   <div class="col-sm-3">
-                     <input type="text" id="unitsInStock" name="unitsInStock" class="form-control">
+                     <input type="text" id="unitsInStock" name="unitsInStock"
+                        class="form-control">
                   </div>
                </div>
                <div class="form-group row">
                   <label class="col-sm-2" for="productOrigin">원산지</label>
                   <div class="col-sm-3">
-                     <input type="text" id="productOrigin" name="productOrigin" class="form-control">
+                     <input type="text" id="productOrigin" name="productOrigin"
+                        class="form-control">
                   </div>
                </div>
 
                <div class="form-group row">
                   <label class="col-sm-2" for="productMakeorigin">제조국</label>
                   <div class="col-sm-3">
-                     <input type="text" id="productMakeorigin" name="productMakeorigin" class="form-control">
+                     <input type="text" id="productMakeorigin"
+                        name="productMakeorigin" class="form-control">
                   </div>
                </div>
                <div class="form-group row">
                   <label class="col-sm-2" for="minOrder">최소구매수량</label>
                   <div class="col-sm-3">
-                     <input type="number" id="minOrder" name="minOrder" class="form-control">
+                     <input type="number" id="minOrder" name="minOrder"
+                        class="form-control">
                   </div>
                </div>
                <div class="form-group row">
                   <label class="col-sm-2" for="maxOrder">최대구매수량</label>
                   <div class="col-sm-3">
-                     <input type="number" id="maxOrder" name="maxOrder" class="form-control">
+                     <input type="number" id="maxOrder" name="maxOrder"
+                        class="form-control">
                   </div>
                </div>
                <div class="form-group row">
                   <label class="col-sm-2" for="productLocation">출고지</label>
                   <div class="col-sm-3">
-                     <input type="text" id="productLocation" name="productLocation" class="form-control">
+                     <input type="text" id="productLocation" name="productLocation"
+                        class="form-control">
                   </div>
                </div>
-               
+
                <div class="form-group row">
                   <label class="col-sm-2" for="deliveryCost">기본배송비</label>
                   <div class="col-sm-3">
-                     <input type="number" id="deliveryCost" name="deliveryCost" class="form-control">
+                     <input type="number" id="deliveryCost" name="deliveryCost"
+                        class="form-control">
                   </div>
                </div>
                <div class="form-group row">
                   <label class="col-sm-2" for="exchangeCost">교환배송비</label>
                   <div class="col-sm-3">
-                     <input type="number" id="exchangeCost" name="exchangeCost" class="form-control">
+                     <input type="number" id="exchangeCost" name="exchangeCost"
+                        class="form-control">
                   </div>
                </div>
                <div class="form-group row">
                   <label class="col-sm-2" for="returnCost">반품배송비</label>
                   <div class="col-sm-3">
-                     <input type="number" id="returnCost" name="returnCost" class="form-control">
+                     <input type="number" id="returnCost" name="returnCost"
+                        class="form-control">
                   </div>
                </div>
                <div class="form-group row">
                   <label class="col-sm-2">택배사</label>
                   <div class="col-sm-3">
                      <select id="deliveryService" name="deliveryService">
-                           <option value="" disabled="disabled" selected>택배사 선택</option>
-                           <option th:each="del : ${delivery}" th:value="${del.codeId}" th:text="${del.codeName}"></option>
+                        <option value="" disabled="disabled" selected>택배사 선택</option>
+                        <option th:each="del : ${delivery}" th:value="${del.codeId}"
+                           th:text="${del.codeName}"></option>
                      </select>
                   </div>
                </div>
                <div class="form-group row" th:if="${product != null}">
                   <textarea rows="" cols="" name="productContent">[[${product.productContent}]]</textarea>
                   <th:block th:each="img, status :${detailImg.imgsVO}">
-                  		<input type="text" th:value="${img.imgName}" th:name="|imgsVO[${status.index}].imgName|">
-                  		<input type="text" th:value="${img.uploadName}" th:name="|imgsVO[${status.index}].uploadName|">
-                  		<input type="text" th:value="${img.uploadPath}" th:name="|imgsVO[${status.index}].uploadPath|">
-                  		<input type="text" th:value="${img.imgContent}" th:name="|imgsVO[${status.index}].imgContent|">
+                     <input type="hidden" th:value="${img.imgName}"
+                        th:name="|imgsVO[${status.index}].imgName|">
+                     <input type="hidden" th:value="${img.uploadName}"
+                        th:name="|imgsVO[${status.index}].uploadName|">
+                     <input type="hidden" th:value="${img.uploadPath}"
+                        th:name="|imgsVO[${status.index}].uploadPath|">
+                     <input type="hidden" th:value="${img.imgContent}"
+                        th:name="|imgsVO[${status.index}].imgContent|">
                   </th:block>
                </div>
                <div class="form-group row">
@@ -319,7 +350,7 @@
                   </div>
                </div>
             </form>
-            
+
          </div>
       </div>
 
@@ -328,6 +359,11 @@
 
             let userData = JSON.parse(localStorage.getItem("product"));
             if(userData != null){
+               if(Date.now() > userData.expire){
+                  localStorage.removeItem("product");
+                  localStorage.removeItem("detail");
+                  return;
+               }
                let inputTag = $("#insertForm").find("input").not("[type='button']");
                let selectTag = $("#insertForm").find("select");
                for(let i =0; i < selectTag.length; i++){
@@ -335,6 +371,7 @@
                }
    
                $.each(userData, function(key,value){
+                  // console.log(key);
                   for(let data of inputTag){
                      let dataName = $(data).attr('name');            
                      if(dataName == key){
@@ -350,9 +387,10 @@
                               $('.optionBox').hide();
                            }
                            for (let i = 0; i < val; i++) {
+                              
                               let div = $('<div/>').addClass("optionDiv col-md-6");
                               let labelN = $("<label> /").text("옵션이름");
-                              let optionN = $('<input name="option['+i+'].optionName1" class="optionN" type="text" id="optionName'+i+'"/>');
+                              let optionN = $('<input name="option['+i+'].optionName1" class="optionN" type="text" id="optionName'+i+'"/ value="'+key[i].value+'">');
                               div.append(labelN);
                               div.append(optionN);
                               $('.optionB').append(div);
@@ -388,14 +426,14 @@
             for (let i = 0; i < val; i++) {
                let div = $('<div/>').addClass("optionDiv col-md-6");
                let labelN = $("<label> /").text("옵션이름");
-               let optionN = $('<input name="option['+i+'].optionName1" class="optionN" type="text" id="optionName'+i+'"/>');
+               let optionN = $('<input name="option['+i+'].optionName" class="optionN" type="text" id="optionName'+i+'"/>');
                div.append(labelN);
                div.append(optionN);
                $('.optionB').append(div);
 
                
                let labelV = $("<label/>").text("옵션");
-               let optionV = $('<input name="option['+i+'].optionValue1" class="optionV" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal'+i+'" />');
+               let optionV = $('<input name="option['+i+'].optionValue" class="optionV" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal'+i+'" />');
                div.append(labelV);
                div.append(optionV);
                $('.optionB').append(div);
@@ -540,10 +578,11 @@
             
          })
          
-             function setThumbnail(event) {
+       function setThumbnail(event) {
         var reader = new FileReader();
 
         reader.onload = function(event) {
+        console.log(event);
         // document.querySelector("div#image_container").removeChild();
         var div = document.querySelector("div#image_container");
          div.removeChild(div.firstChild);
@@ -571,53 +610,224 @@
       let optionD = $('.optionDiv');
       let optionN = $('.optionN');
       let optionV = $('.optionV');
-
       let tbody = $('#optiontab');
-      let idx = 0;
-      for(let i = 0; i < optionD.length; i++){
-         let optionN = $(optionD[i]).children('.optionN').val();
-         let optionV = $(optionD[i]).children('.optionV').val();
-         let optionVal = optionV.split(',');
 
-         for(let j = 0; j < optionVal.length; j++){
+      let arr = [];
+  
+      for(let i = 0; i < optionV.length; i++){
+         let optionLength =  $(optionV[i]).val();
+         let optionVal = optionLength.split(',');
+         arr.push(optionVal);
+      }
+     let box0 = arr[0];
+     let box1 = arr[1];
+     let box2 = arr[2];
 
+     if(optionV.length == 1){
+         for(let i = 0; i< box0.length; i++){
             let tr = $('<tr/>');
-            td = $('<td />');
-            let input = $('<input />').attr('value', optionN);
-            input.attr('name','option['+idx+'].optionName');
+            let td = $('<td />');
+            let input = $('<input />').attr('value', (i+1) + '번째 옵션');
+            input.attr('name','optionDetail['+i+'].optionName');
             input.attr('readonly','true');
             td.append(input);
             tr.append(td);
 
             td = $('<td/>');
-            input = $('<input />').attr('value', optionVal[j]);
-            input.attr('name','option['+idx+'].optionValue');
+            input = $('<input />').attr('value', box0[i]);
+            input.attr('name','optionDetail['+i+'].optionLast');
             input.attr('readonly','true');
             td.append(input);
             tr.append(td);
 
             td = $('<td/>');
             let inputN = $('<input />').attr('type','number');
-            inputN.attr('name','option['+idx+'].optionCount');
+            inputN.attr('name','optionDetail['+i+'].optionPrice');
+            inputN.attr('id','optionDetail['+i+'].optionPrice'+i);
+            inputN.attr('value',0);
             td.append(inputN);
             tr.append(td);
 
             td = $('<td/>');
             inputN = $('<input />').attr('type','number');
-            inputN.attr('name','option['+idx+'].optionPrice');
+            inputN.attr('name','optionDetail['+i+'].optionCount');
+            inputN.attr('id','optionDetail['+i+'].optionCount'+i);
+            inputN.attr('value',0);
             td.append(inputN);
             tr.append(td);
 
-            idx++;
+            td = $('<td/>');
+            inputN = $('<input />').attr('type','number');
+            inputN.attr('name','optionDetail['+i+'].minOrder');
+            inputN.attr('id','optionDetail['+i+'].minOrder'+i);
+            inputN.attr('value',0);
+            td.append(inputN);
+            tr.append(td);
+			
+            td = $('<td/>');
+            inputN = $('<input />').attr('type','number');
+            inputN.attr('name','optionDetail['+i+'].MaxOrder');
+            inputN.attr('id','optionDetail['+i+'].MaxOrder'+i);
+            inputN.attr('value',0);
+            td.append(inputN);
+            tr.append(td);
             tbody.append(tr);
          }
-      }
+     }else if(optionV.length == 2){
+         for(let i =0; i<box0.length; i++){
+            for(let j = 0; j < box1.length; j++){
+               let tr = $('<tr/>');
+               let td = $('<td />');
+               let input = $('<input />').attr('value', (i+j+1) + '번째 옵션');
+               input.attr('name','option['+i+'].optionName');
+               input.attr('readonly','true');
+               td.append(input);
+               tr.append(td);
+
+               td = $('<td/>');
+               input = $('<input />').attr('value', box0[i] + box1[j]);
+               input.attr('name','option['+i+'].optionLast');
+               input.attr('readonly','true');
+               td.append(input);
+               tr.append(td);
+
+               td = $('<td/>');
+               let inputN = $('<input />').attr('type','number');
+               inputN.attr('name','option['+i+'].optionPrice');
+               inputN.attr('id','option['+i+'].optionPrice'+i);
+               inputN.attr('value',0);
+               td.append(inputN);
+               tr.append(td);
+
+               td = $('<td/>');
+               inputN = $('<input />').attr('type','number');
+               inputN.attr('name','option['+i+'].optionCount');
+               inputN.attr('id','option['+i+'].optionCount'+i);
+               inputN.attr('value',0);
+               td.append(inputN);
+               tr.append(td);
+
+               td = $('<td/>');
+               inputN = $('<input />').attr('type','number');
+               inputN.attr('name','option['+i+'].minOrder');
+               inputN.attr('id','option['+i+'].minOrder'+i);
+               inputN.attr('value',0);
+               td.append(inputN);
+               tr.append(td);
+            
+               td = $('<td/>');
+               inputN = $('<input />').attr('type','number');
+               inputN.attr('name','option['+i+'].MaxOrder');
+               inputN.attr('id','option['+i+'].MaxOrder'+i);
+               inputN.attr('value',0);
+               td.append(inputN);
+               tr.append(td);
+               tbody.append(tr);
+            }
+         }
+     }else if(optionV.length == 3){
+         for(let i =0; i<box0.length; i++){
+            for(let j = 0; j<box1.length; j++){
+               for(let x = 0; x < box2.length; x++){
+                  let tr = $('<tr/>');
+                  let td = $('<td />');
+                  let input = $('<input />').attr('value', (i+j+1) + '번째 옵션');
+                  input.attr('name','option['+i+'].optionName');
+                  input.attr('readonly','true');
+                  td.append(input);
+                  tr.append(td);
+
+                  td = $('<td/>');
+                  input = $('<input />').attr('value', box0[i] + box1[j]+ box0[x]);
+                  input.attr('name','option['+i+'].optionLast');
+                  input.attr('readonly','true');
+                  td.append(input);
+                  tr.append(td);
+
+                  td = $('<td/>');
+                  let inputN = $('<input />').attr('type','number');
+                  inputN.attr('name','option['+i+'].optionPrice');
+                  inputN.attr('id','option['+i+'].optionPrice'+i);
+                  inputN.attr('value',0);
+                  td.append(inputN);
+                  tr.append(td);
+
+                  td = $('<td/>');
+                  inputN = $('<input />').attr('type','number');
+                  inputN.attr('name','option['+i+'].optionCount');
+                  inputN.attr('id','option['+i+'].optionCount'+i);
+                  inputN.attr('value',0);
+                  td.append(inputN);
+                  tr.append(td);
+
+                  td = $('<td/>');
+                  inputN = $('<input />').attr('type','number');
+                  inputN.attr('name','option['+i+'].minOrder');
+                  inputN.attr('id','option['+i+'].minOrder'+i);
+                  inputN.attr('value',0);
+                  td.append(inputN);
+                  tr.append(td);
+               
+                  td = $('<td/>');
+                  inputN = $('<input />').attr('type','number');
+                  inputN.attr('name','option['+i+'].MaxOrder');
+                  inputN.attr('id','option['+i+'].MaxOrder'+i);
+                  inputN.attr('value',0);
+                  td.append(inputN);
+                  tr.append(td);
+                  tbody.append(tr);
+               }
+            }
+         }
+     }
+      let idx = 0;
+      // for(let i = 0; i < optionD.length; i++){
+      //    let optionN = $(optionD[i]).children('.optionN').val();
+      //    let optionV = $(optionD[i]).children('.optionV').val();
+      //    let optionVal = optionV.split(',');
+
+      //    for(let j = 0; j < optionVal.length; j++){
+
+      //       let tr = $('<tr/>');
+      //       td = $('<td />');
+      //       let input = $('<input />').attr('value', optionN);
+      //       input.attr('name','option['+idx+'].optionName');
+      //       input.attr('readonly','true');
+      //       td.append(input);
+      //       tr.append(td);
+
+      //       td = $('<td/>');
+      //       input = $('<input />').attr('value', optionVal[j]);
+      //       input.attr('name','option['+idx+'].optionValue');
+      //       input.attr('readonly','true');
+      //       td.append(input);
+      //       tr.append(td);
+
+      //       // td = $('<td/>');
+      //       // let inputN = $('<input />').attr('type','number');
+      //       // inputN.attr('name','option['+idx+'].optionCount');
+      //       // inputN.attr('id','option['+idx+'].optionCount'+j);
+      //       // td.append(inputN);
+      //       // tr.append(td);
+
+      //       // td = $('<td/>');
+      //       // inputN = $('<input />').attr('type','number');
+      //       // inputN.attr('name','option['+idx+'].optionPrice');
+      //       // inputN.attr('id','option['+idx+'].optionPrice'+j);
+      //       // td.append(inputN);
+      //       // tr.append(td);
+
+      //       idx++;
+      //       tbody.append(tr);
+      //    }
+      // }
       
      })
 
 
      // localstorage에 담고 보내기
      $('.detailPro').on('click',function(e){
+        console.log($('input[id="optionName0"]').val());
       e.preventDefault();
         let obj = {
          productName : $('input[name="productName"]').val(),
@@ -639,29 +849,32 @@
          deliveryService : $('input[name="deliveryService"]').val(),
          option :[
             {
-               optionName1 : $('input[name="optionName1"]').val(),
-               optionValue1 : $('input[name="optionValue1"]').val(),
-
+               optionName1 : $('input[id="optionName0"]').val(),
+               optionValue1 : $('input[id="optionVal0"]').val(),
+               optionCount:  $('input[id="optionCount0"]').val(),
+               optionPrice: $('input[id="optionPrice0"]').val(),
             },
             {
-               optionName1 : $('input[name="optionName1"]').val(),
-               optionValue1 : $('input[name="optionValue1"]').val(),
-
-            },
-            {
-               optionName1 : $('input[name="optionName1"]').val(),
-               optionValue1 : $('input[name="optionValue1"]').val(),
-
-            },
-         ]
+                optionName1 : $('input[id="optionName1"]').val(),
+                optionValue1 : $('input[id="optionVal1"]').val(),
+                optionCount:  $('input[id="optionCount1"]').val(),
+               optionPrice: $('input[id="optionPrice1"]').val(),
+             },
+             {
+                 optionName1 : $('input[id="optionName2"]').val(),
+                 optionValue1 : $('input[id="optionVal2"]').val(),
+                 optionCount:  $('input[id="optionCount2"]').val(),
+                optionPrice: $('input[id="optionPrice2"]').val(),
+              },
+         ],
+         expire : Date.now() + 7200000
         }
         window.localStorage.setItem("product",JSON.stringify(obj));
-        location.href = '/productContent';
+        // location.href = '/productContent';
      })
       </script>
 
 
 
    </div>
-
 </html>
