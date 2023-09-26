@@ -86,43 +86,33 @@
 
 
   $(document).ready(function() {
-	  
+	  console.log($('#select option:selected'));
 	  let checkBeforeInsert = {};
-	  let reasonTrue = "reasonTrue";
-	  let contentTrue = "contentTrue";
-	  let addrTrue = "addrTrue";
-	  checkBeforeInsert[reasonTrue] = false;
-	  checkBeforeInsert[contentTrue] = false;
-	  checkBeforeInsert[addrTrue] = false;
 
 	  console.log(checkBeforeInsert);
 
     // 교환 신청 버튼 클릭 시 AJAX 요청을 보냅니다.
     $('#exchangeBtn').on('click', function() {
       // 사용자가 입력한 교환 사유와 주소 정보 가져오기
-
-	    if($('#select').val() != "${codes.codeId}"){
-	    	checkBeforeInsert[reasonTrue] = true;
+		let selOption = $('#select option:selected').val()
+	    if(selOption != "선택"){
 	  	}else{
-	  		checkBeforeInsert[reasonTrue] = false;
+	  		alert("교환 사유를 선택해주세요.")
+	  		$('#select').focus();
+	  		return;
 	  	}
 	  	if($('#content').val() != ""){
-	  		checkBeforeInsert[contentTrue] = true;
 	  	}else{
-	  		checkBeforeInsert[contentTrue] = false;
+	  		alert("자세한 교환 사유를 입력해주세요")
+	  		$('#content').focus();
+	  		return;
 	  	}
 	  	if($('#addr').val() != ""){
-	  		checkBeforeInsert[addrTrue] = true;
 	  	}else{
-	  		checkBeforeInsert[addrTrue] = false;
+	  		alert("주소를 입력해주세요")
+	  		return;
 	  	}
-	  	
-	  	$.each(checkBeforeInsert, function(idx, obj){
-	  		console.log(idx, obj);
-	  		if(obj == false){
-	  			alert('모든 내용을 입력해주세요.')
-	  		}
-	  	})
+
 	  	
   /*
 	  let exchangeCode = $('#exchangeCode').val();
@@ -131,42 +121,41 @@
       let exchangeReason = $('#exchangeReason').val();
       let content = $('#content').val();
       let addr = $('#addr').val();
+      
   */    
+  		let reasonName =  $('#select option:selected').text().trim()
   
+		let contents = $('#content').val();
+		contents = contents.trim()
+  		let exReason = reasonName + ' : ' +contents
       // 교환 신청 데이터를 JSON 형식으로 만듭니다.
       let exchangeData = {
     	'exchangeCode': $('#exchangeCode').val(),
         'orderDetailCode': $('#orderDetailCode').val(),
         'productName': $('#productName').val(),
-        'exchangeReason': $('#select').val(),
-        'exchangeContent': $('#content').val(),
+        'exchangeReason': exReason,
         'exchangeAddr': $('#addr').val()
       }
-/*      
-      for(let d in exchangeData){
-      console.log(exchangeData[d]);
-      }
-*/
 
       // AJAX 요청 보내기
-      $.ajax({
-        type: 'POST',
-        url: '/buyer/exchangeInsert', // 실제 서버의 엔드포인트 URL로 변경해야 합니다.
-        contentType: 'application/json',
-        data: JSON.stringify(exchangeData),
-        success: function(response) {
-          // AJAX 요청이 성공적으로 완료된 경우 처리
-          alert('교환 신청이 성공적으로 처리되었습니다.');
-          // 여기에서 필요한 추가 동작을 수행하세요.
-        },
-        error: function(error) {
-          // AJAX 요청이 실패한 경우 처리
-          console.error('교환 신청 처리 중 오류가 발생했습니다.');
-          console.error(error);
-        }
-      });
-    });
-  });
+	      $.ajax({
+	        type: 'POST',
+	        url: '/buyer/exchangeInsert', // 실제 서버의 엔드포인트 URL로 변경해야 합니다.
+	        contentType: 'application/json',
+	        data: JSON.stringify(exchangeData),
+	        success: function(response) {
+	          // AJAX 요청이 성공적으로 완료된 경우 처리
+	          alert('교환 신청이 성공적으로 처리되었습니다.');
+	          // 여기에서 필요한 추가 동작을 수행하세요.
+	        },
+	        error: function(error) {
+	          // AJAX 요청이 실패한 경우 처리
+	          console.error('교환 신청 처리 중 오류가 발생했습니다.');
+	          console.error(error);
+	        }
+	      });
+	    });
+	  });
   
   </script>
  </div>

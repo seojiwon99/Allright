@@ -92,165 +92,160 @@
 
 		</div>
 		<div class="col-12 col-lg">
+			<div class="panel-body">
+				<!---->
+				
+											
 
+							<div class="_1Vof48UxmD _oVRNwPvxck">
+								<div class="_KqV0-1BSnB">
+									<button type="button" id="todayBtn" class="btn btn-primary2">
+										<span id="today">오늘</span>
+									</button>
+									<button type="button" id="weekBtn" class="btn btn-primary2">
+										<span id="week">1주일</span>
+									</button>
+									<button type="button" id="oneMonthBtn" class="btn btn-primary2">
+										<span id="onemonth">1개월</span>
+									</button>
+									<button type="button" id="threeMonthBtn"
+										class="btn btn-primary2 active">
+										<span id="thmonth">3개월</span>
+									</button>
 
-			<div class="_1Vof48UxmD _oVRNwPvxck">
-				<div class="_KqV0-1BSnB">
-					<label class="_MN8nIh0X4y">상세조건</label> <select class="_4LshyCrDpi"
-						title="리스트 보기">
-						<option selected="" value="">전체</option>
-						<option value="MEMBER_NAME">구매자명</option>
-						<option value="MEMBER_TEL">구매자연락처</option>
-						<option value="MEMBER_ID">구매자ID</option>
-						<option value="PRODUCT_CODE">상품코드</option>
-						<option value="DELIVERY_NUMBER">송장번호</option>
-					</select> <input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
-					<div>
-						<span>조회기간</span> <input type="text" id="from" name="from"
-							autocomplete="off"> <label for="to">~</label> <input
-							type="text" id="to" name="to" autocomplete="off">
-					</div>
-				</div>
-			</div>
+									<div id="dateDisplay"></div>
 
-			<button type="button" id="searchBtn">검색</button>
-
-
-			<section class="pb-12">
-				<div class="orderBtn" style="margin: 20px;">
-					<input type="button" id="checkOrderBtn" value="발주확인"> <input
-						type="button" id="insertDeliveryBtn" value="발송처리">
-					<!-- 모달 버튼 -->
-					<button type="button" id="cancelModal" data-toggle="modal"
-						data-target="#myModal" style="background-color: red;">판매자
-						직접취소 처리</button>
-
-					<!-- 모달 창 -->
-					<div class="modal" id="myModal">
-						<div class="modal-dialog">
-							<div class="modal-content">
-
-								<!-- 모달 헤더 -->
-								<div class="modal-header">
-									<h4 class="modal-title">모달 제목</h4>
-									<button type="button" class="close" data-dismiss="modal">&times;</button>
-								</div>
-
-								<!-- 모달 본문 -->
-								<div class="modal-body">
-									<table class="table" id="modalData">
-										<thead>
-											<tr>
-												<th>주문상세코드</th>
-												<th>상품명</th>
-												<th>구매개수</th>
-											</tr>
-										</thead>
-										<tbody>
-
-										</tbody>
-									</table>
-									<div id="detailReason"
-										style="display: flex; align-items: flex-start;">
-										<label for="name">상세이유 </label>
-										<textarea
-											style="width: 80%; height: 6.25em; resize: none; margin-left: 30px"></textarea>
+									<label class="_MN8nIh0X4y">상세조건</label> <select
+										class="_4LshyCrDpi" title="리스트 보기">
+										<option selected="" value="">전체</option>
+										<option value="member_name">구매자명</option>
+										<option value="member_tel">구매자연락처</option>
+										<option value="member_id">구매자ID</option>
+										<option value="product_code">상품코드</option>
+										<option value="delivery_number">송장번호</option>
+									</select> <input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
+									<div>
+										<span>조회기간</span> <input type="DATE" id="from" name="from"
+											autocomplete="off"> <label for="to">~</label> <input
+											type="DATE" id="to" name="to" autocomplete="off">
 									</div>
 								</div>
-
-								<!-- 모달 푸터 -->
-								<div class="modal-footer">
-									<button type="button" id="reasonSend" class="btn btn-secondary"
-										data-dismiss="modal">보내기</button>
-									<button type="button" class="btn btn-secondary"
-										data-dismiss="modal">닫기</button>
-								</div>
 							</div>
-						</div>
-					</div>
-				</div>
-				<table border="1" class="table" id="getProductList">
-					<thead>
-						<tr>
-							<th><input type="checkbox" id="allCheck"></th>
-							<th>주문상세코드</th>
-							<th>상품명</th>
-							<th>옵션값</th>
-							<th>구매개수</th>
-							<th>요청사항</th>
-							<th>택배사</th>
-							<th>송장번호</th>
-							<th>발송일</th>
-						</tr>
-					</thead>
-					<tbody id="sortList">
-						<tr th:each="order : ${orderList}">
-							<td><input type="checkbox"></td>
-							<td th:text="${order.orderDetailCode}" />
-							<td th:text="${order.productName}" />
-							<td th:text="${order.option.optionValue}" />
-							<td th:text="${order.orderCnt}" />
-							<td th:text="${order.requestedTerm}" />
-							<td th:if="${order.deliveryCompany != null}"
-								th:text="${order.deliveryCompany}"></td>
-							<td th:unless="${order.deliveryCompany != null}"><input
-								type="text" id="deliveryCompany"></td>
-							<td th:if="${order.deliveryNumber != 0}"
-								th:text="${order.deliveryNumber}" />
-							<td th:unless="${order.deliveryNumber != 0}"><input
-								type="text" id="deliveryNumber"></td>
-							<td th:text="${#dates.format(order.deliveryStart,'yyyy-MM-dd')}" />
-						</tr>
-						<!-- 반복문 종료 -->
-					</tbody>
-				</table>
-			</section>
-		</div>
-	</div>
 
-	<script>
+							<button type="button" id="orderSearch">검색</button>
+
+
+							<section class="pb-12">
+								<div class="orderBtn" style="margin: 20px;">
+									<input type="button" id="checkOrderBtn" value="발주확인"> <input
+										type="button" id="insertDeliveryBtn" value="발송처리">
+									<!-- 모달 버튼 -->
+									<button type="button" id="cancelModal" data-toggle="modal"
+										data-target="#myModal" style="background-color: red;">판매자
+										직접취소 처리</button>
+
+									<!-- 모달 창 -->
+									<div class="modal" id="myModal">
+										<div class="modal-dialog">
+											<div class="modal-content">
+
+												<!-- 모달 헤더 -->
+												<div class="modal-header">
+													<h4 class="modal-title">모달 제목</h4>
+													<button type="button" class="close" data-dismiss="modal">&times;</button>
+												</div>
+
+												<!-- 모달 본문 -->
+												<div class="modal-body">
+													<table class="table" id="modalData">
+														<thead>
+															<tr>
+																<th>주문상세코드</th>
+																<th>상품명</th>
+																<th>구매개수</th>
+															</tr>
+														</thead>
+														<tbody>
+
+														</tbody>
+													</table>
+													<div id="detailReason"
+														style="display: flex; align-items: flex-start;">
+														<label for="name">상세이유 </label>
+														<textarea
+															style="width: 80%; height: 6.25em; resize: none; margin-left: 30px"></textarea>
+													</div>
+												</div>
+
+												<!-- 모달 푸터 -->
+												<div class="modal-footer">
+													<button type="button" id="reasonSend"
+														class="btn btn-secondary" data-dismiss="modal">보내기</button>
+													<button type="button" class="btn btn-secondary"
+														data-dismiss="modal">닫기</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div style="width:100%; height: 300px; overflow:auto; border:1px; ">
+								<table class="table" id="getProductList" >
+									<thead>
+										<tr>
+											<th><input type="checkbox" id="allCheck"></th>
+											<th>주문상세코드</th>
+											<th>상품명</th>
+											<th>옵션값</th>
+											<th>구매개수</th>
+											<th>구매자</th>
+											<th>요청사항</th>
+											<th>주문상태</th>
+											<th>택배사</th>
+											<th>송장번호</th>
+											<th>발송일</th>
+										</tr>
+									</thead>
+									<tbody id="orderChkList">
+										<tr th:each="order : ${orderList}"
+											th:data-ordercode="${order.orderDetailCode}">
+											<td><input type="checkbox"></td>
+											<td th:text="${order.orderDetailCode}" />
+											<td th:text="${order.productName}" />
+											<td th:text="${order.optionLast}" />
+											<td th:text="${order.orderCnt}" />
+											<td th:text="${order.memberName}" />
+											<td th:text="${order.requestedTerm}" />
+											<td th:text="${order.orderStatus}"/>
+											<td th:if="${order.deliveryService != null}">
+												<input th:value="${order.deliveryService}" id="deliveryService"  style="background-color: lightyellow;">
+											</td>
+											<td th:unless="${order.deliveryService != null}">
+											<input th:value="${order.deliveryService}"  id="deliveryService">
+											</td>
+											<td th:if="${order.deliveryNumber != null}">
+											<input th:value="${order.deliveryNumber}" id="deliveryNumber" style="background-color: lightyellow;">
+											</td>
+											<td th:unless="${order.deliveryNumber != null}">
+											<input th:value="${order.deliveryNumber}" id="deliveryNumber" >
+											</td>
+											<td
+												th:text="${#dates.format(order.deliveryStart,'yyyy-MM-dd')}" />
+										</tr>
+										<!-- 반복문 종료 -->
+									</tbody>
+								</table>
+								</div>
+							</section>
+					</div>
+			</div>
+
+			<script>
    $(document).ready(function () {
        
-  
-          $( function() {
-             
-                var dateFormat = "yyyy/MM/dd",
-                  from = $( "#from" )
-                    .datepicker({
-                      defaultDate: "+1w",
-                      changeMonth: true,
-                      numberOfMonths: 1
-                    })
-                    .on( "change", function() {
-                      to.datepicker( "option", "minDate", getDate( this ) );
-                    }),
-                  to = $( "#to" ).datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    numberOfMonths: 1
-                  })
-                  .on( "change", function() {
-                    from.datepicker( "option", "maxDate", getDate( this ) );
-                  });
-             
-                function getDate( element ) {
-                  var date;
-                  try {
-                    date = $.datepicker.parseDate( dateFormat, element.value );
-                  } catch( error ) {
-                    date = null;
-                  }
-             
-                  return date;
-                }
-              });
-         
          
          document.getElementById('allCheck')
          .addEventListener('click', allCheckEvent);
          
-         
-
          function allCheckEvent(e) {
              let allCheckTag = document.getElementById('allCheck');
              let checkTags = document.querySelectorAll('[type="checkbox"]');
@@ -259,12 +254,45 @@
              })
          }
 
+         
+		 $('#orderSearch').on('click',function(){
+			let key = $('._4LshyCrDpi').val();
+			let value = $('._3y2h2mGnkI').val();
+			let fromDate = $('#from').val();
+			let toDate = $('#to').val()
+			
+			console.log(key,value,fromDate,toDate);
 
+			$.ajax({
+				url : 'orderOptionManagement',
+				type : 'get',
+				data : {
+					"searchValue" : value, 
+			 		"searchKey" : key,
+			 		fromDate,
+			 		toDate
+				}
+			})
+			 		
+			
+			.done(orderOptionList=>{
+				console.log(orderOptionList);
+				 $('#orderChkList').replaceWith(orderOptionList); 
+				 
+
+			})
+			.fail(reject=>{
+				console.log(reject);
+			})
+			
+		})
+        
+         
          $('#cancelModal').on('click',function(){
+        	 
             let orderList =[];
             let checkTags = $('input[type="checkbox"]:checked').not('#allCheck');
             checkTags.each((idx, tag) =>{
-               console.log(tag);
                let orderDetailCode = $(tag).closest('tr').find('td:eq(1)').text();
                let productName = $(tag).closest('tr').find('td:eq(2)').text();
                let orderCnt = $(tag).closest('tr').find('td:eq(4)').text();
@@ -290,19 +318,52 @@
          
          })
 
-         
+         $('#checkOrderBtn').on('click', function(){
+			alert('hk');
+			orderChk =[];
+			let checkTags = $('input[type="checkbox"]:checked').not('#allCheck');
+
+			checkTags.each((idx, tag)=>{
+				let orderDetailCode = $(tag).parent().next().text();
+				console.log(orderDetailCode);
+				let obj = {
+					orderDetailCode
+				}
+				orderChk.push(obj);
+			})
+
+			$.ajax({
+				url : 'updateOrderStatus',
+				type : 'post',
+				contentType : 'application/json',
+				data : JSON.stringify(orderChk)
+			})
+			.done(data=>{
+				refreshList();
+			})
+
+		 })
       
 
           $('#insertDeliveryBtn').on('click', function(){
             let deliveryList =[];
             let checkTags = $('#getProductList input[type="checkbox"]:checked').not('#allcheck');
+
+            // datasetter
             
             
             checkTags.each((idx, tag) => {
-               let detailOrderCode = $(tag).parent().next().text();
-               let deliveryCompany = $(tag).parent().find('td:last input#deliveryCompany').val().text();
-               console.log(deliveryCompany);
-               let obj = {'detailOrderCode' : detailOrderCode};
+				let tr = $(tag).closest('tr')
+               let detailOrderCode = tr.data('ordercode');
+               let deliveryService = tr.find('#deliveryService').val();
+               let deliveryNumber =  tr.find('#deliveryNumber').val();
+			   console.log(deliveryService);
+			
+               let obj = {
+				'orderDetailCode' : detailOrderCode,
+				'deliveryService' : deliveryService,
+				'deliveryNumber' : deliveryNumber
+			};
                deliveryList.push(obj);
          })
 
@@ -315,7 +376,7 @@
          })
          .done(data => {
             console.log(data);
-            //refreshList();
+            refreshList();
          })
          .fail(reject => console.log(reject));
       })
@@ -324,11 +385,86 @@
          location.reload();
       } 
       
-   })
-    
-         
-         
+	  const currentDate = new Date();
+	  const formattedDate = currentDate.toISOString().split('T')[0];
+	  $('#to').val(formattedDate);
+ 
+  
+     // 버튼 클릭 이벤트 처리
+	 $('#todayBtn').click(function() {
+		displayDate('today');
+	  });
+	  $('#weekBtn').click(function() {
+		displayDate('week');
+	  });
+	  $('#oneMonthBtn').click(function() {
+		displayDate('oneMonth');
+	  });
+	  $('#threeMonthBtn').click(function() {
+		displayDate('threeMonth');
+	  });
+  
+	  // 날짜 표시 함수
+function displayDate(range) {
+	const currentDate = new Date();
+	let startDate, endDate;
+  
+	switch (range) {
+	  case 'today':
+		startDate = new Date(currentDate);
+		endDate = new Date(currentDate);
+		break;
+	  case 'week':
+		startDate = new Date(currentDate);
+		endDate = new Date(currentDate);
+		startDate.setDate(endDate.getDate() - 7);
+		break;
+	  case 'oneMonth':
+		startDate = new Date(currentDate);
+		endDate = new Date(currentDate);
+		startDate.setMonth(endDate.getMonth() - 1);
+		break;
+	  case 'threeMonth':
+		startDate = new Date(currentDate);
+		endDate = new Date(currentDate);
+		startDate.setMonth(endDate.getMonth() - 3);
+		break;
+	  default:
+		startDate = null;
+		endDate = null;
+	}
+  
+	// endDate 값을 input 요소에 설정
+	if (startDate) {
+	endDate.setDate(endDate.getDate() + 1); // 일자를 +1 하기
+	const formattedEndDate = endDate.toISOString().split('T')[0];
+	console.log(formattedEndDate); 
+
+	//   formattedYear = formattedEndDate.
+
+	  
+	  // input 요소 선택 후 value 설정
+	  $('#to').val(formattedEndDate);
+	} else {
+	  // endDate가 null이면 input 요소 값을 비움
+	  $('#to').val('');
+	}
+  
+	// startDate 값을 input 요소에 설정
+	if (endDate) {
+	  // startDate를 yyyy-mm-dd 형식의 문자열로 변환
+	  const formattedStartDate = startDate.toISOString().split('T')[0];
+	  
+	  // input 요소 선택 후 value 설정
+	  $('#from').val(formattedStartDate);
+	} else {
+	  // startDate가 null이면 input 요소 값을 비움
+	  $('#from').val('');
+	}
+  }
+           
+})    
          </script>
 
-</div>
+		</div>
 </html>

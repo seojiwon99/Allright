@@ -6,9 +6,7 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.common.ImgsVO;
-import com.ar.lighthouse.orders.service.OrdersVO;
 
 import lombok.Data;
 
@@ -29,8 +27,7 @@ public class ProductVO {
 	 	private String productBrand;
 	 	private String productStatus;
 	 	private String productExStatus;
-	 	private int minOrder;
-	 	private int maxOrder;
+	 	
 	 	private List<ImgsVO> productImg;
 
 	 	@DateTimeFormat(pattern="yyyy-MM-dd")
@@ -42,9 +39,14 @@ public class ProductVO {
 	 	private int productCost;
 	 	private int salePrice;
 	 	String optionVal;
-	 	
-	 	
+//	 	통계에 필요한
+	 	private int total_cnt;
 	 	List<OptionVO> option;
+
+	 	List<DetailVO> detail;
+
+
+	 	List<OptionDetailVO> optionDetail;
 
 	 	
 	 	
