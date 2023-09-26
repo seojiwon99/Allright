@@ -31,6 +31,9 @@ public interface OrdersMapper {
 	//토스페이먼츠 결제 DB 데이터 저장
 	public int insertCredit(CreditVO creditVO);
 	
+	//토스페이먼츠 환불 시 필요 데이터 페이먼츠키, 환불금액 select
+	public RefundVO selectRefund(int orderCode, int orderDetailCode, String memberId);
+	
 	//토스페이먼츠 환불 DB 데이터 저장
 	public int insertRefund(RefundVO refundVO);
 	
@@ -44,6 +47,6 @@ public interface OrdersMapper {
 	public int insertOrders(@Param("OrdersVO") OrdersVO ordersVO);
 	
 	//주문 결제 시 장바구니 비우기
-	public int deleteCart(String memberId, int optionCode);
+	public int deleteCart(String memberId, int cartNum);
 	
 }

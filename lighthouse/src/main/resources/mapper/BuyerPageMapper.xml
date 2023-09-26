@@ -15,7 +15,7 @@
 		     , a.order_date
 		     , a.delivery_number
 		     , a.delivery_date
-		     , a.option_code
+		     , a.option_detail_code
 		     , a.order_code
 		     , d.product_name
 		     , e.img_code
@@ -25,7 +25,7 @@
 		     , e.img_content
 		FROM ar_order_detail a
 		LEFT OUTER JOIN ar_orders b ON a.order_code = b.order_code
-		LEFT OUTER JOIN ar_option c ON a.option_code = c.option_code
+		LEFT OUTER JOIN ar_option_detail c ON a.option_detail_code = c.option_detail_code
 		LEFT OUTER JOIN ar_products d ON c.product_code = d.product_code
 		LEFT OUTER JOIN ar_imgs e ON e.parent_code = d.product_code
 		WHERE b.member_id = #{memberId}
@@ -63,7 +63,7 @@
 		       , f.product_code
 		       , f.product_name
 		       , f.product_cost
-		       , e.option_code
+		       , e.option_detail_code
 			   , h.img_name
 			   , h.img_content
 			   , h.upload_name
@@ -71,7 +71,7 @@
 		LEFT OUTER JOIN ar_cancel b ON a.order_detail_code = b.order_detail_code 
 		LEFT OUTER JOIN ar_return c ON a.order_detail_code = c.order_detail_code
 		LEFT OUTER JOIN ar_exchange d ON a.order_detail_code = d.order_detail_code
-		LEFT OUTER JOIN ar_option e ON a.option_code = e.option_code
+		LEFT OUTER JOIN ar_option_detail e ON a.option_detail_code = e.option_detail_code
 		LEFT OUTER JOIN ar_products f ON  e.product_code = f.product_code
 		LEFT OUTER JOIN ar_orders g ON g.order_code = a.order_code
 		LEFT OUTER JOIN ar_imgs h ON f.product_code = h.parent_code
@@ -152,13 +152,13 @@
 		     , b.cancel_rejection_reason
 		     , c.order_cnt
 		     , c.payment_price
-		     , d.option_code
+		     , d.option_detail_code
 		     , e.product_name
              , f.member_id
 		FROM ar_cancel a
 		LEFT join ar_cancel_reject b ON a.CANCEL_REJECTION_REASON = b.CANCEL_REJECTION_REASON
 		LEFT join ar_order_detail c ON c.order_detail_code = a.order_detail_code
-		LEFT join ar_option d ON d.option_code = c.option_code
+		LEFT join ar_option_detail d ON d.option_detail_code = c.option_detail_code
 		LEFT join ar_products e ON e.product_code = d.product_code
         LEFT JOIN ar_orders f ON c.order_code = f.order_code
         WHERE f.member_id = #{memberId};
@@ -174,12 +174,12 @@
 		     , b.order_detail_code
 		     , b.order_cnt
 		     , b.payment_price
-		     , c.option_code
+		     , c.option_detail_code
 		     , d.product_name 
              , e.member_id
 		from ar_return a
 		left JOIN ar_order_detail b ON a.order_detail_code = b.order_detail_code
-		LEFT JOIN ar_option c ON b.option_code = c.option_code
+		LEFT JOIN ar_option_detail c ON b.option_detail_code = c.option_detail_code
 		LEFT JOIN ar_products d ON d.product_code = c.product_code
         LEFT JOIN ar_orders e ON e.order_code = b.order_code
 		where e.member_id = #{memberId};
@@ -198,13 +198,13 @@
 		     , b.order_detail_code
 		     , b.order_cnt
 		     , b.payment_price
-		     , c.option_code
+		     , c.option_detail_code
 		     , d.product_name
              , e.order_code
              , e.member_id
 		FROM ar_exchange a
 		LEFT JOIN ar_order_detail b ON a.order_detail_code = b.order_detail_code
-		LEFT JOIN ar_option c ON c.option_code = b.option_code
+		LEFT JOIN ar_option_detail c ON c.option_detail_code = b.option_detail_code
 		LEFT JOIN ar_products d ON d.product_code = c.product_code
         LEFT JOIN ar_orders e ON e.order_code = b.order_code
 		WHERE e.member_id = #{memberId}
@@ -219,7 +219,7 @@
 		     , a.payment_price
 		FROM ar_order_detail a
 		LEFT JOIN ar_orders b ON a.order_code = b.order_code
-		LEFT JOIN ar_option c ON c.option_code = a.option_code
+		LEFT JOIN ar_option_detail c ON c.option_detail_code = a.option_detail_code
 		LEFT JOIN ar_products d ON d.product_code = c.product_code
 		WHERE b.member_id=#{memberId} AND a.order_detail_code=#{orderDetailCode}
 	</select>
@@ -258,7 +258,7 @@
 		     , a.payment_price
 		FROM ar_order_detail a
 		LEFT JOIN ar_orders b ON a.order_code = b.order_code
-		LEFT JOIN ar_option c ON c.option_code = a.option_code
+		LEFT JOIN ar_option_detail c ON c.option_detail_code = a.option_detail_code
 		LEFT JOIN ar_products d ON d.product_code = c.product_code
 		WHERE b.member_id=#{memberId} AND a.order_detail_code=#{orderDetailCode}
 	</select>
@@ -295,7 +295,7 @@
 		     , a.payment_price
 		FROM ar_order_detail a
 		LEFT JOIN ar_orders b ON a.order_code = b.order_code
-		LEFT JOIN ar_option c ON c.option_code = a.option_code
+		LEFT JOIN ar_option_detail c ON c.option_detail_code = a.option_detail_code
 		LEFT JOIN ar_products d ON d.product_code = c.product_code
 		WHERE b.member_id=#{memberId} AND a.order_detail_code=#{orderDetailCode}
 	</select>

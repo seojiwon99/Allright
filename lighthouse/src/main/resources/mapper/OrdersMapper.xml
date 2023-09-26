@@ -6,15 +6,34 @@
   
   	<!-- 주문결제 필요 데이터 파싱 -->
   	<select id="selectOrders" resultType="com.ar.lighthouse.orders.service.OrdersVO">
-  	SELECT c.member_id, m.member_name ,m.member_email, m.member_tel, r.delivery_cost, r.delivery_service, r.product_code,
-			m.member_addr, m.member_details_addr,c.cart_count, p.option_name, p.option_value, p.option_price,
-			r.product_name, r.sale_price, r.product_cost, i.parent_code, i.upload_name, p.option_code, i.upload_path
-	FROM ar_cart c
-			LEFT JOIN ar_option p ON c.option_code = p.option_code
-			LEFT JOIN ar_member m ON c.member_id = m.member_id
-			LEFT JOIN ar_products r ON p.product_code = r.product_code
-			LEFT JOIN ar_imgs i ON p.product_code = i.product_code
-	WHERE c.member_id = #{memberId} AND c.cart_code = #{cartCode}
+  	 SELECT c.member_id,
+                   m.member_name,
+                   m.member_email,
+                   m.member_tel,
+                   r.delivery_cost,
+                   r.delivery_service,
+                   r.product_code,
+                   m.member_addr,
+                   m.member_details_addr,
+                   c.cart_count,
+                   p.option_price,
+                   r.product_name,
+                   r.sale_price,
+                   r.product_cost,
+                   i.parent_code,
+                   i.upload_name,
+                   p.option_detail_code,
+                   i.upload_path,
+                   c.option_last,
+                   c.cart_code
+            FROM ar_cart c
+            
+                LEFT JOIN ar_option_detail p ON c.option_detail_code = p.option_detail_code
+                LEFT JOIN ar_member m ON c.member_id = m.member_id
+                LEFT JOIN ar_products r ON p.product_code = r.product_code
+                LEFT JOIN ar_imgs i ON p.product_code = i.product_code
+                
+            WHERE c.member_id = #{memberId} AND c.cart_code = #{cartCode} AND i.img_order = 1
   	</select>
  
  
@@ -89,7 +108,16 @@
     		#{orderCode}
     		)
   	</insert>
-  	<!-- 토스페이먼츠 환불 -->
+  	<!-- 토스페이먼츠 환불 시 페이먼츠키, 환불금액 select -->
+  	<select id="selectRefund" resultType="RefundVO">
+  		SELECT c.paymentkey, d.discount_price, d.order_price, d.payment_price
+		FROM ar_orders o
+		JOIN ar_credit c ON o.order_code = c.order_code
+		JOIN ar_order_detail d ON o.order_code = d.order_code
+		WHERE d.order_detail_code = #{orderDetailCode} AND o.member_id = #{memberId} AND o.order_code = #{orderCode}
+  	</select>
+  	
+  	<!-- 토스페이먼츠 환불테이블 DB insert -->
   	<insert id="insertRefund">
   		INSERT INTO AR_REFUND
 					  		(
@@ -101,7 +129,7 @@
 					  		)
 					  		
 		VALUES				(
-							#{refundCode},
+							refund_code,
 							#{refundType},
 							#{refundTypecode},
 							#{refundAmount},
@@ -127,7 +155,7 @@
 								 )
 								 
          VALUES					(
-				         		#{orderCode} ,
+				         		#{orderCode},
 				         		#{memberId}, 
 				         		#{DeliveryVO.orderPrice}, 
 				         		#{DeliveryVO.orderAddr}, 
@@ -157,7 +185,7 @@
   INSERT INTO AR_ORDER_DETAIL
   	      (ORDER_DETAIL_CODE,
 		   ORDER_CODE,
-		   OPTION_CODE,
+		   OPTION_DETAIL_CODE,
 		   ORDER_CNT,
 		   ORDER_PRICE,
 		   DISCOUNT_PRICE,
@@ -168,7 +196,7 @@
    VALUES					  
    		  (#{orderDetailCode},
 		   #{OrdersVO.orderCode},
-		   #{OrdersVO.optionCode},
+		   #{OrdersVO.optionDetailCode},
 		   #{OrdersVO.cartCount},
 		   #{OrdersVO.orderPrice},
 		   #{OrdersVO.discountPrice},
@@ -179,6 +207,6 @@
 	</insert>
 	
 	<delete id="deleteCart">
-		DELETE AR_CART WHERE MEMBER_ID = #{memberId} AND OPTION_CODE = #{optionCode}
+		DELETE AR_CART WHERE MEMBER_ID = #{memberId} AND CART_CODE = #{cartNum}
 	</delete>
   </mapper>

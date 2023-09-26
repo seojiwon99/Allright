@@ -19,8 +19,8 @@ public class CartVO {
 	
 	//옵션 조인해서 받은 값
 	private int salePrice;
-	private String optionName;
-	private String optionValue;
+	private String optionLast;
+	private int optionPrice;
 	
 	//상품명 조인해서 받은 값
 	private String productName; 

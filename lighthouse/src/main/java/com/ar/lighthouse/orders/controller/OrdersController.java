@@ -42,7 +42,6 @@ public class OrdersController {
 	OrdersService ordersService;
 	
 
-	
 	// 장바구니에서 구매 상품 가져옴.
 	@PostMapping("orders/pay")
 	public String orderList(HttpServletRequest request, Model model, @RequestParam (name = "cartCode") int[] cartCode) {
@@ -68,6 +67,7 @@ public class OrdersController {
 		} else {
 			productName = orderGet.get(0).getProductName();	
 		}
+		
 		model.addAttribute("productName",productName);
 		model.addAttribute("orderGet", orderGet);
 		session.setAttribute("orderGet", orderGet);
@@ -75,6 +75,8 @@ public class OrdersController {
 		List<OrdersVO> couponList = ordersService.getCoupon(memberId);
 		session.setAttribute("couponList", couponList);
 		model.addAttribute("couponList",couponList);
+		
+		session.setAttribute("cartCode", cartCode);
 		
 		// 배송지 마스터 코드 전송
 		model.addAttribute("codeList",codeList);
@@ -103,6 +105,7 @@ public class OrdersController {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		List<OrdersVO> couponList = (List<OrdersVO>) session.getAttribute("couponList");
 		DeliveryVO deliveryVO = (DeliveryVO) session.getAttribute("deliveryVO");
+		int[] cartCode = (int[]) session.getAttribute("cartCode");
 		
 		
 		//orderPayVO 쿠폰 사용 시 N으로 변경
@@ -124,7 +127,6 @@ public class OrdersController {
 		
 		//주문 코드 파싱
 		int orderCode =	ordersService.getOrderCode(memberId);
-		int orderSuccess = 0;
 		
 		//토스결제
 		tossPayment(creditVO, orderCode);
@@ -139,10 +141,7 @@ public class OrdersController {
 						order.setOrderPrice(pay.getProductSalePrice());
 						order.setDiscountPrice(pay.getCouponPrice());
 						order.setPaymentPrice(pay.getProductSalePrice() - pay.getCouponPrice() + order.getDeliveryCost());
-						orderSuccess  = ordersService.addOrders(order);
-						if(orderSuccess > 0) {
-							ordersService.removeCart(memberId, order.getOptionCode());
-						}
+						ordersService.addOrders(order);
 					 } else {
 						 continue;
 					 }
@@ -150,24 +149,26 @@ public class OrdersController {
 		 }
 		 
 		// 할인 받지 않은 상품
-			for(OrdersVO order : orderList) {
-				if(str.toString().contains(order.getProductCode())) { //쿠폰 할인 받은 상품
-					continue;
-				}else {
-					System.out.println(order); // 쿠폰 할인 받지 않은 상품
-					order.setOrderCode(orderCode);
-					order.setOptionCouponCheck("N");
-					order.setOrderPrice(order.getCartCount() *(order.getProductCost() + order.getOptionPrice() - order.getSalePrice()));
-					order.setPaymentPrice(order.getCartCount() * (order.getProductCost() + order.getOptionPrice() - order.getSalePrice()) + order.getDeliveryCost());
-					orderSuccess = ordersService.addOrders(order);	
+				for(OrdersVO order : orderList) {
+						if(str.toString().contains(order.getProductCode())) { //쿠폰 할인 받은 상품
+							continue;
+						}else {
+							System.out.println(order); // 쿠폰 할인 받지 않은 상품
+							order.setOrderCode(orderCode);
+							order.setOptionCouponCheck("N");
+							order.setOrderPrice(order.getCartCount() *(order.getOptionPrice() + order.getSalePrice()));
+							order.setPaymentPrice(order.getCartCount() * (order.getOptionPrice() + order.getSalePrice()) + order.getDeliveryCost());
+							ordersService.addOrders(order);	
+						}
+						
+							
+					}	
+					for(int cartNum : cartCode) {
+					ordersService.removeCart(memberId, cartNum); //장바구니 비우기	
 				}
-				if(orderSuccess > 0) {
-					ordersService.removeCart(memberId, order.getOptionCode());
-				}
-			}	
 			return "redirect:/page/buyer/orderList";
-		
-	}
+			
+		}
 	
 	
 	
@@ -224,18 +225,28 @@ public class OrdersController {
 		}
 		
 		@GetMapping("orders/cancel")
-		public String orderCancel(RefundVO refundVO) throws IOException, InterruptedException {
-		String paymentKey =refundVO.getPaymentKey();
+		public String orderCancel(RefundVO refundVO, HttpSession session) throws IOException, InterruptedException {
+		
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId(); // 로그인 중인 아이디
+		
+		//페이먼츠 키 찾을 때 필요한 데이터
 		int orderCode = 0;
 		int orderDetailCode = 0;
+		String paymentKey =refundVO.getPaymentKey(); // 페이먼츠 키 넣기.
+		
+		
+		// 환불 신청 시 필요한 데이터 = cancelReason, cancelAmount
 		String cancelReason = "단순변심";
 		int cancelAmount = 0; //부분 취소할 금액. select 해서 삼풍에서 가져오기.
 		String refundType = ""; // 취소, 반품 구분 C , R
 		String refundTypecode =""; // 취소, 반품 구분 C , R
+		
 		//주문 상품 delete 삭제 환불 승인될 경우.
 		// orders balandeAmount 값 빼서 총값은 그대로 두기. 업데이트 하기
 		// 상품 지우기 전 쿠폰 Y로 바꾸기.
 		// 환불테이블에 업데이트 하기.
+		
 			HttpRequest request = HttpRequest.newBuilder()
 				    .uri(URI.create("https://api.tosspayments.com/v1/payments/GvaE2lKMZ7DLJOpm5Qrl7Zzo5X62jNVPNdxbWnYzqR4gA6Xy/cancel")) //   payments/뒤에 넣기 paymentKey
 				    .header("Authorization", "Basic dGVzdF9za19RYmdNR1p6b3J6ZTVXZzJwQWVsVmw1RTFlbTRkOg==")

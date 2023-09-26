@@ -16,6 +16,7 @@ import com.ar.lighthouse.orders.service.DeliveryVO;
 import com.ar.lighthouse.orders.service.OrderPayVO;
 import com.ar.lighthouse.orders.service.OrdersService;
 import com.ar.lighthouse.orders.service.OrdersVO;
+import com.ar.lighthouse.orders.service.RefundVO;
 
 @Service
 public class OrdersServiceImpl implements OrdersService{
@@ -68,9 +69,21 @@ public class OrdersServiceImpl implements OrdersService{
 	}
 
 	@Override
-	//토스 페이먼트 데이터 DB저장
+	//토스 페이먼트 데이터 DB저장 credit 테이블 저장
 	public int addCredit(CreditVO creditVO) {
 		return ordersMapper.insertCredit(creditVO);
+	}
+	
+	@Override
+	//토스 페이먼츠 환불시 필요 데이터 페이먼츠키, 환불금액 select
+	public RefundVO getRefund(int orderCode, int orderDetailCode, String memberId) {
+		return null;
+	}
+	
+	@Override
+	//토스페이먼츠 환불 DB 데이터 저장
+	public int addRefund(RefundVO refundVO) {
+		return 0;
 	}
 
 	@Override
@@ -94,8 +107,8 @@ public class OrdersServiceImpl implements OrdersService{
 
 	@Override
 	// 주문 완료 후 장바구니 비우기
-	public int removeCart(String memberId, int optionCode) {
-		return ordersMapper.deleteCart(memberId, optionCode);
+	public int removeCart(String memberId, int cartNum) {
+		return ordersMapper.deleteCart(memberId, cartNum);
 	}
-
+	
 }

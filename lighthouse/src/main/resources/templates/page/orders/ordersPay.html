@@ -124,9 +124,10 @@
                       <p class="mb-4 fs-sm fw-bold">  
                          <input type="hidden" th:value="${gets.productCode}" class="productNumber">
                          <input type="hidden" name="couponUsePrice" class="text-body" th:text="${gets.productName}" ><br>
-                         상품금액 : <span class="text-muted" style="text-decoration: line-through;" th:text="|${gets.productCost + gets.optionPrice}|" id="selectPrice"></span>원 <br>
-                        <span class="text-muted" th:text="|할인된 금액 : ${gets.productCost - gets.salePrice + gets.optionPrice}|"></span>원
-                        <input type="hidden" class="selectValue" th:value="${(gets.productCost - gets.salePrice + gets.optionPrice) * gets.cartCount}">
+                         상품금액 : <span class="text-muted" style="text-decoration: line-through;" th:text="|${gets.productCost}|" id="selectPrice"></span>원 <br>
+                        <span class="text-muted" th:text="|할인된 금액 : ${gets.salePrice}|"></span>원<br>
+                        <span class="text-muted" th:text="|옵션 추가금액 : ${gets.optionPrice}|"></span>원
+                        <input type="hidden" class="selectValue" th:value="${(gets.salePrice + gets.optionPrice) * gets.cartCount}">
                         <div class="input-group mb-8">
                           <input style="margin-top: 15px;" type="text" class="form-control" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2" id="couponSelect" readonly>
                           <input type="hidden" class="myCouponCode">
@@ -138,7 +139,7 @@
                         </p>         
                       </p>
                       <!-- Text -->
-                      <div class="fs-sm text-muted" th:text="|${gets.optionName} : ${gets.optionValue}|"></div>
+                      <div class="fs-sm text-muted" th:text="${gets.optionLast}"></div>
                       <div class="fs-sm text-muted" th:text="|수량 :${gets.cartCount}|"></div>
                     </div>
                   </div>
@@ -211,7 +212,7 @@
               <div class="card-body">
                 <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
                   <li class="list-group-item d-flex">
-                    <span>상품금액</span> <span class="ms-auto fs-sm" id="productPrice"></span>원
+                    <span>상품금액</span> <span style="text-decoration: line-through;" class="ms-auto fs-sm" id="productPrice"></span>원
                   </li>
                   <li class="list-group-item d-flex">
                     <span>상품할인금액</span> <span class="ms-auto fs-sm" id="salePrice"></span>원
@@ -358,7 +359,6 @@
     let saleToal = 0;
     let productTotal = 0;
     let toalPay=0;
-    let totalMoney =0;
     let couponTarget;
     let getPrice = [[${orderGet}]];
 
@@ -366,8 +366,7 @@
     
       // total 가격 나중에 쿠폰 가격  빼야함.
       for(let key in  getPrice) {
-      result = result + ((getPrice[key].productCost + getPrice[key].optionPrice - getPrice[key].salePrice ) * getPrice[key].cartCount); 
-      totalMoney = totalMoney + ((getPrice[key].productCost + getPrice[key].optionPrice - getPrice[key].salePrice ) * getPrice[key].cartCount); 
+      result = result + (( getPrice[key].optionPrice + getPrice[key].salePrice ) * getPrice[key].cartCount);  
       }
       // 배송비
       for(let key in getPrice) {
@@ -375,12 +374,12 @@
       }
       //할인 상품 가격
       for(let key in getPrice) {
-        saleToal = saleToal + (getPrice[key].salePrice * getPrice[key].cartCount);
+        saleToal = saleToal + (getPrice[key].salePrice +  getPrice[key].optionPrice) * getPrice[key].cartCount;
       }
       result = result + deliveryPay;
 	   // 상품 가격
       for(let key in getPrice) {
-        productTotal = productTotal + ((getPrice[key].productCost +  getPrice[key].optionPrice)* getPrice[key].cartCount);
+        productTotal = productTotal + ((getPrice[key].productCost )* getPrice[key].cartCount);
       }
       // 상품 가격 - 상품 할인가격
       let realPrice = productTotal - saleToal;
