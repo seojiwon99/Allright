@@ -20,15 +20,14 @@ import com.ar.lighthouse.productinquiry.service.ProductInquiryVO;
 public interface ProductMapper {
 	
 
-	public List<ProductVO> selectProductList(ProductVO productVO);
+	public List<ProductVO> selectProductList(String memberId);
 	
-	List<ProductVO> getProductsByMemberId(String memberId);
 
 //		order by
-		public List<ProductVO> selectOptionProduct(ProductVO productVO);
+		public List<ProductVO> selectOptionProduct(String memberId);
 		
 //		sellerInfo
-		List<MemberVO> selectSellerInfo(MemberVO memberVO); 
+		List<MemberVO> selectSellerInfo(String memberId); 
 		
 //		orderManagement
 		List<DetailVO> selectOrderOptionList(DetailVO detailVO);
@@ -62,14 +61,14 @@ public interface ProductMapper {
 		public ProductVO selectInfo(ProductVO productVO);
 
 //		상품주문목록
-		List<DetailVO> selectOrderDetail(ProductVO productVO);
+		List<DetailVO> selectOrderDetail(String memberId);
 		
 		
 //		주문상태 변경
 		int updateOrderStatus(DetailVO detailVO);
 
 //		나의 상품에 온 문의	
-		List<ProductInquiryVO> selectSellerInquiry(ProductInquiryVO productInquiryVO);
+		List<ProductInquiryVO> selectSellerInquiry(String memberId);
 //		문의 답변 주기
 		int updateInquiryAns(ProductInquiryVO productInquiryVO);
 		
@@ -77,7 +76,7 @@ public interface ProductMapper {
 		int updateDeliveryInfo(DetailVO detailVO);
 
 //		취소건 확인
-		public List<CancelVO> selectCancelList(CancelVO cancelVO);
+		public List<CancelVO> selectCancelList(String memberId);
 //		취소 거부
 		int updateCancelList(CancelVO cancelVO);
 		
@@ -91,7 +90,8 @@ public interface ProductMapper {
 //		정산데이터
 		public List<SellerCalVO> selectCalList(SellerCalVO sellerCalVO);
 
-		
+//		통계 목록
+		public List<ProductVO> selectStatsList(ProductVO productVO); 
 
 		
 		

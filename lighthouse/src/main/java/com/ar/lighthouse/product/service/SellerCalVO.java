@@ -10,12 +10,11 @@ public class SellerCalVO {
 	int orderDetailCode;
 	
 	int fee;
-	int paymentPrice;
-	int settlementAmount;
-	Date settlementDate;
-	Date completDate;
-	int myPrice; // 수수료
-	int yourPrice; // 정산금액
+	int paymentPrice; // 결제금액
+	int settlementAmount; // 정산금액
+	Date settlementDate; // 정산예정일
+	Date completDate; // 정선완료일
+	int permission; // 수수료
 	// productVO
 	String productName;
 	

@@ -25,24 +25,19 @@
 		<result column="option_price" property="optionPrice" />
 	</resultMap>
 
-	<select id="getProductsByMemberId" resultMap="selectProductList">
+	<select id="selectProductList" resultMap="selectProductList">
 		SELECT *
 		FROM
-		ar_products p
+		        ar_products p
 		INNER JOIN ( SELECT product_code,
-		SUM(option_count) AS
-		option_count
-		FROM ar_option
-		GROUP BY product_code
-		) d
-		ON p.product_code =
-		d.product_code
+                    SUM(option_count) AS
+                    option_count
+                    FROM ar_option_detail
+                    GROUP BY product_code
+                    ) d
+		ON p.product_code = d.product_code
 		WHERE p.member_id = #{memberId}
 	</select>
-
-
-
-
 
 
 
@@ -63,16 +58,17 @@
 
 	</resultMap>
 	<select id="selectOptionProduct" resultMap="selectOptionProduct">
-		select *
-		from ar_products p,
-		(select product_code
-		,sum(option_count) AS
-		option_count
-		from ar_option
-		group by product_code, product_code
-		) d
-		where
-		d.product_code = p.product_code
+		SELECT *
+		FROM
+		        ar_products p
+		INNER JOIN ( SELECT product_code,
+                    SUM(option_count) AS
+                    option_count
+                    FROM ar_option_detail
+                    GROUP BY product_code
+                    ) d
+		ON p.product_code = d.product_code
+		WHERE p.member_id = #{memberId}
 		<choose>
 			<when test="optionVal == '상품명순'">
 				ORDER BY product_name
@@ -95,7 +91,7 @@
 		<result column="member_id" property="memberId" />
 		<result column="member_name" property="memberName" />
 		<result column="product_name" property="productName" />
-		<result column="order_status" property="orderStatus"/>
+		<result column="order_status" property="orderStatus" />
 		<result column="order_date" property="orderDate" />
 		<result column="order_detail_code" property="orderDetailCode" />
 		<result column="order_cnt" property="orderCnt" />
@@ -108,18 +104,17 @@
 
 	<!-- OptionVO를 매핑하기 위한 resultMap -->
 	<resultMap type="OptionVO" id="optionList2">
-		<result column="option_name" property="optionName" />
-		<result column="option_value" property="optionValue" />
+		<result column="option_last" property="optionLast" />
 		<result column="product_code" property="productCode" />
 
 	</resultMap>
 	<select id="selectOrderDetail" resultMap="selectOrderDetail">
 		SELECT
 		o.order_detail_code,
-		delivery_code_name(o.order_status) AS order_status,
+		delivery_code_name(o.order_status) AS
+		order_status,
 		p.product_name,
-		x.option_name,
-		x.option_value,
+		x.option_last,
 		r.requested_term,
 		o.order_cnt,
 		o.delivery_service,
@@ -132,15 +127,15 @@
 		ar_orders r ON
 		o.order_code = r.order_code
 		JOIN
-		ar_option x ON o.option_code =
-		x.option_code
+		ar_option_detail x ON o.option_detail_code =
+		x.option_detail_code
 		JOIN
 		ar_products p ON
 		x.product_code = p.product_code
 		JOIN
 		ar_member m ON m.member_id =
 		r.member_id
-		WHERE p.member_id = 'hong1234'
+		WHERE p.member_id = #{memberId}
 		ORDER BY o.order_date DESC
 	</select>
 
@@ -149,7 +144,7 @@
 		<result column="member_id" property="memberId" />
 		<result column="member_name" property="memberName" />
 		<result column="product_name" property="productName" />
-		<result column="order_status" property="orderStatus"/>
+		<result column="order_status" property="orderStatus" />
 		<result column="order_date" property="orderDate" />
 		<result column="order_detail_code" property="orderDetailCode" />
 		<result column="order_cnt" property="orderCnt" />
@@ -162,8 +157,7 @@
 
 	<!-- OptionVO를 매핑하기 위한 resultMap -->
 	<resultMap type="OptionVO" id="optionList3">
-		<result column="option_name" property="optionName" />
-		<result column="option_value" property="optionValue" />
+		<result column="option_last" property="optionLast" />
 		<result column="product_code" property="productCode" />
 
 	</resultMap>
@@ -174,8 +168,7 @@
 		o.order_detail_code,
 		p.product_name,
 		delivery_code_name(o.order_status) AS order_status,
-		x.option_name,
-		x.option_value,
+		x.option_last,
 		r.requested_term,
 		o.order_cnt,
 		o.delivery_service,
@@ -188,14 +181,14 @@
 		JOIN
 		ar_orders r ON o.order_code = r.order_code
 		JOIN
-		ar_option x ON o.option_code = x.option_code
+		ar_option_detail x ON o.option_detail_code = x.option_detail_code
 		JOIN
 		ar_products p ON
 		x.product_code = p.product_code
 		JOIN
 		ar_member m ON m.member_id =
 		r.member_id
-		WHERE p.member_id = 'hong1234'
+		WHERE p.member_id = #{memberId}
 		<choose>
 			<when test="searchKey == 'member_name'">
 				AND m.member_name like '%'||#{searchValue}||'%'
@@ -216,88 +209,85 @@
 		<if test="fromDate != null">
 			AND o.order_date BETWEEN #{fromDate} AND #{toDate}
 		</if>
-
 		ORDER BY o.order_date DESC
 	</select>
 
 
 	<!-- 취소목록 -->
 	<select id="selectCancelList" resultType="CancelVO">
-		select 
-			  c.cancel_code
-			  , d.order_detail_code
-			  , p.product_name
-			  , delivery_code_name(d.order_status) AS order_status
-			  , c.cancel_reason
-			  , o.charge_date
-			  , c.cancel_regdate
-			  , m.member_name
-			  , o.order_code
+		select
+		c.cancel_code
+		, d.order_detail_code
+		, p.product_name
+		, delivery_code_name(d.order_status) AS order_status
+		, c.cancel_reason
+		, o.charge_date
+		, c.cancel_regdate
+		, m.member_name
+		, o.order_code
 		FROM ar_cancel c
-			JOIN
-				 ar_order_detail d ON c.order_detail_code = d.order_detail_code
-			JOIN ar_orders o 
-			  ON d.order_code = o.order_code
-			JOIN ar_option z 
-			  ON z.option_code = d.option_code
-			JOIN ar_products p 
-			  ON p.product_code = z.product_code
-			JOIN ar_member m 
-			  ON m.member_id = o.member_id
+		JOIN
+		ar_order_detail d ON c.order_detail_code = d.order_detail_code
+		JOIN ar_orders o
+		ON d.order_code = o.order_code
+		JOIN ar_option_detail z
+		ON z.option_detail_code = d.option_detail_code
+		JOIN ar_products p
+		ON p.product_code = z.product_code
+		JOIN ar_member m
+		ON m.member_id = o.member_id
+		WHERE p.member_id = #{memberId}
 	</select>
 
-<update id="updateCancelList">
+	<update id="updateCancelList">
 		update ar_cancel
-        set cancel_status = 'N'
-        WHERE cancel_code = #{cancelCode};
-</update>
+		set cancel_status = 'N'
+		WHERE cancel_code = #{cancelCode};
+	</update>
 	<!-- 취소검색목록 -->
-
-
 	<select id="cancelOptionList" resultType="CancelVO">
-		select 
-			  c.cancel_code
-			  , d.order_detail_code
-			  , p.product_name
-			  , delivery_code_name(d.order_status) AS order_status
-			  , c.cancel_reason
-			  , o.charge_date
-			  , c.cancel_regdate
-			  , m.member_name
-			  , o.order_code
+		select
+		c.cancel_code
+		, d.order_detail_code
+		, p.product_name
+		, delivery_code_name(d.order_status) AS order_status
+		, c.cancel_reason
+		, o.charge_date
+		, c.cancel_regdate
+		, m.member_name
+		, o.order_code
 		FROM ar_cancel c
-			JOIN
-				 ar_order_detail d ON c.order_detail_code = d.order_detail_code
-			JOIN ar_orders o 
-			  ON d.order_code = o.order_code
-			JOIN ar_option z 
-			  ON z.option_code = d.option_code
-			JOIN ar_products p 
-			  ON p.product_code = z.product_code
-			JOIN ar_member m 
-			  ON m.member_id = o.member_id
-		<where>
-			<choose>
-				<when test="searchKey == 'member_name'">
-					m.member_name like '%'||#{searchValue}||'%'
-				</when>
-				<when test="searchKey == 'member_id'">
-					m.member_id like '%'||#{searchValue}||'%'
-				</when>
-				<when test="searchKey == 'member_tel'">
-					m.member_tel like '%'||#{searchValue}||'%'
-				</when>
-				<when test="searchKey == 'delivery_number'">
-					d.delivery_number like '%'||#{searchValue}||'%'
-				</when>
-				<when test="searchKey == 'order_detail_code'">
-					d.order_detail_code like '%'||#{searchValue}||'%'
-				</when>
-			</choose>
-			<if test="fromDate != null">
-				AND c.cancel_regdate BETWEEN #{fromDate} AND #{toDate}
-			</if>
-		</where>
+		JOIN
+		ar_order_detail d ON c.order_detail_code = d.order_detail_code
+		JOIN ar_orders o
+		ON d.order_code = o.order_code
+		JOIN ar_option_detail z
+		ON z.option_detail_code = d.option_detail_code
+		JOIN ar_products p
+		ON p.product_code = z.product_code
+		JOIN ar_member m
+		ON m.member_id = o.member_id
+		WHERE p.member_id = #{memberId}
+		<choose>
+			<when test="searchKey == 'member_name'">
+				AND m.member_name like '%'||#{searchValue}||'%'
+			</when>
+			<when test="searchKey == 'member_id'">
+				AND m.member_id like '%'||#{searchValue}||'%'
+			</when>
+			<when test="searchKey == 'member_tel'">
+				AND m.member_tel like '%'||#{searchValue}||'%'
+			</when>
+			<when test="searchKey == 'product_code'">
+				AND p.product_code like '%'||#{searchValue}||'%'
+			</when>
+			<when test="searchKey == 'delivery_number'">
+				AND o.delivery_number like '%'||#{searchValue}||'%'
+			</when>
+		</choose>
+		<if test="fromDate != null">
+			AND o.order_date BETWEEN #{fromDate} AND #{toDate}
+		</if>
 	</select>
 
 
@@ -316,11 +306,12 @@
 		FROM ar_exchange e
 		JOIN ar_order_detail d ON e.order_detail_code = d.order_detail_code
 		JOIN ar_orders o ON d.order_code = o.order_code
-		JOIN ar_option z ON
-		z.option_code = d.option_code
+		JOIN ar_option_detail z ON
+		z.option_detail_code = d.option_detail_code
 		JOIN ar_products p ON p.product_code =
 		z.product_code
 		JOIN ar_member m ON m.member_id = o.member_id
+		WHERE p.member_id = #{memberId}
 	</select>
 
 	<!-- 교환검색 -->
@@ -337,34 +328,32 @@
 		FROM ar_exchange e
 		JOIN ar_order_detail d ON e.order_detail_code = d.order_detail_code
 		JOIN ar_orders o ON d.order_code = o.order_code
-		JOIN ar_option z ON
-		z.option_code = d.option_code
+		JOIN ar_option_detail z ON
+		z.option_detail_code = d.option_detail_code
 		JOIN ar_products p ON p.product_code =
 		z.product_code
 		JOIN ar_member m ON m.member_id = o.member_id
-		<where>
-			<choose>
-				<when test="searchKey == 'member_name'">
-					m.member_name like '%'||#{searchValue}||'%'
-				</when>
-				<when test="searchKey == 'member_id'">
-					m.member_id like '%'||#{searchValue}||'%'
-				</when>
-				<when test="searchKey == 'member_tel'">
-					m.member_tel like '%'||#{searchValue}||'%'
-				</when>
-				<when test="searchKey == 'delivery_number'">
-					d.delivery_number like '%'||#{searchValue}||'%'
-				</when>
-				<when test="searchKey == 'order_detail_code'">
-					d.order_detail_code like '%'||#{searchValue}||'%'
-				</when>
-
-			</choose>
-			<if test="fromDate != null">
-				AND e.exchange_regdate BETWEEN #{fromDate} AND #{toDate}
-			</if>
-		</where>
+		WHERE p.member_id = #{memberId}
+		<choose>
+			<when test="searchKey == 'member_name'">
+				AND m.member_name like '%'||#{searchValue}||'%'
+			</when>
+			<when test="searchKey == 'member_id'">
+				AND m.member_id like '%'||#{searchValue}||'%'
+			</when>
+			<when test="searchKey == 'member_tel'">
+				AND m.member_tel like '%'||#{searchValue}||'%'
+			</when>
+			<when test="searchKey == 'product_code'">
+				AND p.product_code like '%'||#{searchValue}||'%'
+			</when>
+			<when test="searchKey == 'delivery_number'">
+				AND o.delivery_number like '%'||#{searchValue}||'%'
+			</when>
+		</choose>
+		<if test="fromDate != null">
+			AND o.order_date BETWEEN #{fromDate} AND #{toDate}
+		</if>
 	</select>
 
 	<!-- 반품검색 -->
@@ -385,33 +374,32 @@
 		ar_order_detail d ON r.order_detail_code = d.order_detail_code
 		JOIN
 		ar_orders o ON d.order_code = o.order_code
-		JOIN ar_option z ON
-		z.option_code = d.option_code
+		JOIN ar_option_detail z ON
+		z.option_detail_code = d.option_detail_code
 		JOIN ar_products p ON p.product_code =
 		z.product_code
 		JOIN ar_member m ON m.member_id = o.member_id
-		<where>
-			<choose>
-				<when test="searchKey == 'member_name'">
-					m.member_name like '%'||#{searchValue}||'%'
-				</when>
-				<when test="searchKey == 'member_id'">
-					m.member_id like '%'||#{searchValue}||'%'
-				</when>
-				<when test="searchKey == 'member_tel'">
-					m.member_tel like '%'||#{searchValue}||'%'
-				</when>
-				<when test="searchKey == 'delivery_number'">
-					d.delivery_number like '%'||#{searchValue}||'%'
-				</when>
-				<when test="searchKey == 'order_detail_code'">
-					d.order_detail_code like '%'||#{searchValue}||'%'
-				</when>
-			</choose>
-			<if test="fromDate != null">
-				AND r.return_regdate BETWEEN #{fromDate} AND #{toDate}
-			</if>
-		</where>
+		WHERE p.member_id = #{memberId}
+		<choose>
+			<when test="searchKey == 'member_name'">
+				AND m.member_name like '%'||#{searchValue}||'%'
+			</when>
+			<when test="searchKey == 'member_id'">
+				AND m.member_id like '%'||#{searchValue}||'%'
+			</when>
+			<when test="searchKey == 'member_tel'">
+				AND m.member_tel like '%'||#{searchValue}||'%'
+			</when>
+			<when test="searchKey == 'product_code'">
+				AND p.product_code like '%'||#{searchValue}||'%'
+			</when>
+			<when test="searchKey == 'delivery_number'">
+				AND o.delivery_number like '%'||#{searchValue}||'%'
+			</when>
+		</choose>
+		<if test="fromDate != null">
+			AND o.order_date BETWEEN #{fromDate} AND #{toDate}
+		</if>
 	</select>
 
 
@@ -434,11 +422,12 @@
 		ar_order_detail d ON r.order_detail_code = d.order_detail_code
 		JOIN
 		ar_orders o ON d.order_code = o.order_code
-		JOIN ar_option z ON
-		z.option_code = d.option_code
+		JOIN ar_option_detail z ON
+		z.option_detail_code = d.option_detail_code
 		JOIN ar_products p ON p.product_code =
 		z.product_code
 		JOIN ar_member m ON m.member_id = o.member_id
+		WHERE p.member_id = #{memberId}
 		ORDER BY
 		order_detail_code desc
 	</select>
@@ -453,20 +442,20 @@
 		JOIN ar_inquiry i ON p.product_code = i.product_code
 		JOIN
 		ar_member m ON m.member_id = i.member_id
-		WHERE p.member_id=
-		'seo1234'
+		WHERE p.member_id= #{memberId}
 	</select>
 
 	<!-- 판매자 상품문의 답해주기 -->
 	<update id="updateInquiryAns">
 		update ar_inquiry
 		set que_ans = #{queAns}
-		WHERE que_code = #{queCode}
+		WHERE
+		que_code = #{queCode}
 	</update>
 
 	<!-- option 리스트 -->
 	<select id="getOptionList" resultType="OptionVO">
-		select * from ar_option
+		select * from ar_option_detail
 		where product_code = #{productCode}
 	</select>
 
@@ -509,8 +498,8 @@
 		FROM ar_calculate c
 		JOIN ar_order_detail o ON o.order_detail_code = c.order_detail_code
 		JOIN ar_orders r ON r.order_code = o.order_code
-		JOIN ar_option x ON
-		o.option_code = x.option_code
+		JOIN ar_option_detail x ON
+		o.option_detail_code = x.option_detail_code
 		JOIN ar_products p ON x.product_code =
 		p.product_code
 		JOIN ar_member m ON r.member_id = m.member_id
@@ -519,6 +508,23 @@
 	</select>
 
 
+<!-- 통계리스트 -->
+<select id="selectStatsList" resultType = "ProductVO">
+	select p.product_code, p.product_name, o.option_last,o.option_detail_code, (p.sale_price + o.option_price),sum(od.order_cnt),
+        COALESCE(return_cnt(o.option_detail_code),0) AS return_cnt, COALESCE(cancel_cnt(o.option_detail_code),0) AS cancel_cnt
+        , (sum(od.order_cnt)- COALESCE(return_cnt(o.option_detail_code),0)- COALESCE(cancel_cnt(o.option_detail_code),0)) AS total_cnt
+	from ar_products p 
+		INNER JOIN ar_option_detail o 
+									  ON p.product_code = o.product_code
+		INNER JOIN ar_order_detail od
+									  ON o.option_detail_code = od.option_detail_code
+		FULL OUTER join ar_return r 
+									  ON od.order_detail_code = r.order_detail_code
+	where member_id = #{memberId}
+	group by od.option_detail_code, o.option_last, o.option_price, p.product_name, 
+		o.option_detail_code, (p.sale_price + o.option_price), p.sale_price + o.option_price, o.option_price, p.product_code
+		ORDER BY option_detail_code;
+</select>
 
 
 
@@ -528,8 +534,11 @@
 	<!-- 삭제 -->
 	<update id="updateExStatus" parameterType="ProductVO">
 		UPDATE ar_products
-		SET
-		product_exstatus = 'Y'
+		SET product_exstatus =
+		CASE
+		WHEN product_exstatus = 'N' THEN 'Y'
+		WHEN product_exstatus = 'Y' THEN 'N'
+		END
 		WHERE product_code = #{productCode}
 	</update>
 
@@ -550,7 +559,8 @@
 		UPDATE
 		ar_order_detail
 		SET order_status = 2
-		WHERE order_detail_code = #{orderDetailCode}
+		WHERE order_detail_code =
+		#{orderDetailCode}
 	</update>
 
 
@@ -615,7 +625,7 @@
 			, #{memberId} , #{categoryCode} , #{productName} , #{productContent} , #{productLocation} 
 			, #{productCost} , #{salePrice} , #{productBrand} , #{productOrigin} , #{productMakeorigin} 
 			, #{deliveryCost} , #{returnCost} , #{exchangeCost} , #{deliveryService} 
-			, 'Y' ) <selectKey resultType="long" keyProperty="option_code" order="BEFORE"> 
+			, 'Y' ) <selectKey resultType="long" keyProperty="option_detail_code" order="BEFORE"> 
 			SELECT MAX(option_code)+1 FROM ar_option </selectKey> INTO ar_option (option_code 
 			, product_code , option_order , option_name , option_value , option_price 
 			, option_sell_status , option_exstatus , option_count , min_order , max_order 
@@ -629,9 +639,9 @@
 		<selectKey resultType="long" keyProperty="optionCode"
 			order="BEFORE">
 			SELECT NVL(MAX(option_code),0)+1
-			FROM ar_option
+			FROM ar_option_detail
 		</selectKey>
-		INSERT INTO ar_option (option_code
+		INSERT INTO ar_option_detail (option_code
 		, product_code
 		, option_order
 		,

@@ -18,8 +18,9 @@ public class OptionVO {
 	private Long optionCode;
 	   private String productCode;
 	   private int optionOrder;
-	   private String optionName;
 	   private String optionValue;
+	   private String optionName;
+	   private String optionLast;
 	   private int optionPrice;
 	   private String optionSellStatus;
 	   private String optionExStatus;

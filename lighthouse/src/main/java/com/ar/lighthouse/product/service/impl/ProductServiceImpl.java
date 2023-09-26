@@ -29,8 +29,8 @@ public class ProductServiceImpl implements ProductService{
 
 
 	@Override
-	public List<ProductVO> getproductList(ProductVO productVO) {
-		return  productMapper.selectProductList(productVO);
+	public List<ProductVO> getproductList(String memberId) {
+		return  productMapper.selectProductList(memberId);
 	}
 
 
@@ -41,8 +41,8 @@ public class ProductServiceImpl implements ProductService{
 
 //  order by list
 	@Override
-	public List<ProductVO> getOptionProduct(ProductVO productVO) {
-		return productMapper.selectOptionProduct(productVO);
+	public List<ProductVO> getOptionProduct(String memberId) {
+		return productMapper.selectOptionProduct(memberId);
 	}
 
 //  상품테이블 등록
@@ -95,27 +95,22 @@ public class ProductServiceImpl implements ProductService{
 		}
 
 
-		@Override
-		public List<ProductVO> getProductsByMemberId(String memberId) {
-			return productMapper.getProductsByMemberId(memberId);
-		}
-
 
 		@Override
-		public List<MemberVO> getSellerInfo(MemberVO memberVO) {
-			return productMapper.selectSellerInfo(memberVO);
+		public List<MemberVO> getSellerInfo(String memberId) {
+			return productMapper.selectSellerInfo(memberId);
 		}
 
 //		취소건 목록
 		@Override
-		public List<CancelVO> getCancelList(CancelVO cancelVO) {
-			return productMapper.selectCancelList(cancelVO);
+		public List<CancelVO> getCancelList(String memberId) {
+			return productMapper.selectCancelList(memberId);
 		}
 
 	//  주문/발주 목록
 		@Override
-		public List<DetailVO> getProductOrder(ProductVO productVO) {
-			return productMapper.selectOrderDetail(productVO);
+		public List<DetailVO> getProductOrder(String memberId) {
+			return productMapper.selectOrderDetail(memberId);
 		}
 
 	// 교환건 목록
@@ -152,8 +147,8 @@ public class ProductServiceImpl implements ProductService{
 
 		
 		@Override
-		public List<ProductInquiryVO> getProductInquiry(ProductInquiryVO productInquiryVO) {
-			return productMapper.selectSellerInquiry(productInquiryVO);
+		public List<ProductInquiryVO> getProductInquiry(String memberId) {
+			return productMapper.selectSellerInquiry(memberId);
 		}
 
 
