@@ -296,7 +296,7 @@ public class ProductController {
 		RedirectAttributes rtt, ImgsListVO imgsVO) {
 		HttpSession session = req.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-		System.out.println(productVO);
+		// System.out.println(productVO);
 
 		productVO.setMemberId(memberVO.getMemberId());
 		// productVO.setMemberId("test");

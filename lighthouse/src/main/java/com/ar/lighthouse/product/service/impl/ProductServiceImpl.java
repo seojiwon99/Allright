@@ -23,207 +23,213 @@ import com.ar.lighthouse.productinquiry.service.ProductInquiryVO;
 @Service
 public class ProductServiceImpl implements ProductService{
 
-	@Autowired
-	ProductMapper productMapper;
-	
+   @Autowired
+   ProductMapper productMapper;
+   
 
 
-	@Override
-	public List<ProductVO> getproductList(ProductVO productVO) {
-		return  productMapper.selectProductList(productVO);
-	}
+   @Override
+   public List<ProductVO> getproductList(ProductVO productVO) {
+      return  productMapper.selectProductList(productVO);
+   }
 
 
-	@Override
-	public int updateExStatus(ProductVO productVO) {
-		return productMapper.updateExStatus(productVO);
-	}
+   @Override
+   public int updateExStatus(ProductVO productVO) {
+      return productMapper.updateExStatus(productVO);
+   }
 
 //  order by list
-	@Override
-	public List<ProductVO> getOptionProduct(ProductVO productVO) {
-		return productMapper.selectOptionProduct(productVO);
-	}
+   @Override
+   public List<ProductVO> getOptionProduct(ProductVO productVO) {
+      return productMapper.selectOptionProduct(productVO);
+   }
 
 //  상품테이블 등록
-	@Override
-	public int addProduct(ProductVO productVO) {
-		int result = productMapper.insertProduct(productVO);
-		List<OptionVO> optionVO = new ArrayList();
-		if(result > 0) {
-			int length = 0;
-			String code = productVO.getProductCode();
-			for(int i = 0; i< productVO.getOption().size(); i++) {
-				if(productVO.getOption().get(i).getOptionCount() == 0) {
-					productVO.getOption().get(i).setOptionSellStatus("N");
-				}
-				// value 짜르기
-//				String value = productVO.getOption().get(i).getOptionValue();
-//				String[] optVal = value.split(",");
-//				for(int j =0; j<optVal.length; j++) {
-//					
-//					OptionVO test = new OptionVO();
-//					test.setProductCode(code);
-//					test.setOptionOrder(length + 1);
-//					test.setOptionName(productVO.getOption().get(i).getOptionName());
-//					test.setOptionValue(optVal[j]);
-//					test.setOptionCount(1);
-//					length++;
-//					productMapper.insertOption(test);
-//				}
-				// System.out.println(productVO.getOption().get(i));
-				productVO.getOption().get(i).setProductCode(code);
-				productMapper.insertOption(productVO.getOption().get(i));
-				
-				// System.out.println(productVO.getOption().get(i));
-			}
-			// productMapper.insertOption(productVO.getOption());
-		}
-		return 1;
-	}
+   @Override
+   public int addProduct(ProductVO productVO) {
+      int result = productMapper.insertProduct(productVO);
+      List<OptionVO> optionVO = new ArrayList();
+      if(result > 0) {
+         String code = productVO.getProductCode();
+         if(productVO.getOption().size() == 0) {
+            // productVO.getOption().get(0).setOptionLast("없음");
+            
+            productMapper.insertOption(productVO.getOption().get(0));
+         }else {
+            for(int i = 0; i< productVO.getOption().size(); i++) {
+//               if(productVO.getOption().get(i).getOptionCount() == 0) {
+//                  productVO.getOption().get(i).setOptionSellStatus("N");
+//               }
+               // value 짜르기
+//            String value = productVO.getOption().get(i).getOptionValue();
+//            String[] optVal = value.split(",");
+//            for(int j =0; j<optVal.length; j++) {
+//               
+//               OptionVO test = new OptionVO();
+//               test.setProductCode(code);
+//               test.setOptionOrder(length + 1);
+//               test.setOptionName(productVO.getOption().get(i).getOptionName());
+//               test.setOptionValue(optVal[j]);
+//               test.setOptionCount(1);
+//               length++;
+//               productMapper.insertOption(test);
+//            }
+               // System.out.println(productVO.getOption().get(i));
+               productVO.getOption().get(i).setProductCode(code);
+               productMapper.insertOption(productVO.getOption().get(i));
+               
+               // System.out.println(productVO.getOption().get(i));
+            }
+            
+         }
+         // productMapper.insertOption(productVO.getOption());
+      }
+      return 1;
+   }
 
-	// 상품이미지 등록
-		@Override
-		public void addProductImg(ImgsVO imgVO) {
-			productMapper.insertProductImg(imgVO);
-		}
-		
-		//제품 상세 단건조회
-		@Override
-		public ProductVO goodsDetail(ProductVO productVO) {
-			return productMapper.selectInfo(productVO);
-		}
-
-
-		@Override
-		public List<ProductVO> getProductsByMemberId(String memberId) {
-			return productMapper.getProductsByMemberId(memberId);
-		}
-
-
-		@Override
-		public List<MemberVO> getSellerInfo(MemberVO memberVO) {
-			return productMapper.selectSellerInfo(memberVO);
-		}
-
-//		취소건 목록
-		@Override
-		public List<CancelVO> getCancelList(CancelVO cancelVO) {
-			return productMapper.selectCancelList(cancelVO);
-		}
-
-	//  주문/발주 목록
-		@Override
-		public List<DetailVO> getProductOrder(ProductVO productVO) {
-			return productMapper.selectOrderDetail(productVO);
-		}
-
-	// 교환건 목록
-		@Override
-		public List<ExchangeVO> getExchangeList(ExchangeVO exchangeVO) {
-			return productMapper.selectExchangeList(exchangeVO);
-		}
+   // 상품이미지 등록
+      @Override
+      public void addProductImg(ImgsVO imgVO) {
+         productMapper.insertProductImg(imgVO);
+      }
+      
+      //제품 상세 단건조회
+      @Override
+      public ProductVO goodsDetail(ProductVO productVO) {
+         return productMapper.selectInfo(productVO);
+      }
 
 
-		@Override
-		public List<ExchangeVO> getReturnList(ReturnVO returnVO) {
-			return productMapper.selectReturnList(returnVO);
-		}
+      @Override
+      public List<ProductVO> getProductsByMemberId(String memberId) {
+         return productMapper.getProductsByMemberId(memberId);
+      }
 
 
-		@Override
-		public int updateDeliveryInfo(DetailVO detailVO) {
-			return productMapper.updateDeliveryInfo(detailVO);
-		}
+      @Override
+      public List<MemberVO> getSellerInfo(MemberVO memberVO) {
+         return productMapper.selectSellerInfo(memberVO);
+      }
+
+//      취소건 목록
+      @Override
+      public List<CancelVO> getCancelList(CancelVO cancelVO) {
+         return productMapper.selectCancelList(cancelVO);
+      }
+
+   //  주문/발주 목록
+      @Override
+      public List<DetailVO> getProductOrder(ProductVO productVO) {
+         return productMapper.selectOrderDetail(productVO);
+      }
+
+   // 교환건 목록
+      @Override
+      public List<ExchangeVO> getExchangeList(ExchangeVO exchangeVO) {
+         return productMapper.selectExchangeList(exchangeVO);
+      }
 
 
-		@Override
-		public List<OptionVO> getOptionList(OptionVO optionVO) {
-			return productMapper.getOptionList(optionVO);
-		}
+      @Override
+      public List<ExchangeVO> getReturnList(ReturnVO returnVO) {
+         return productMapper.selectReturnList(returnVO);
+      }
 
 
-		// 택배사 코드 가져오기
-		@Override
-		public List<CodeVO> getDeliveryList() {
-			return productMapper.selectDeliveryList();
-		}
-		
-
-		
-		@Override
-		public List<ProductInquiryVO> getProductInquiry(ProductInquiryVO productInquiryVO) {
-			return productMapper.selectSellerInquiry(productInquiryVO);
-		}
+      @Override
+      public int updateDeliveryInfo(DetailVO detailVO) {
+         return productMapper.updateDeliveryInfo(detailVO);
+      }
 
 
-		@Override
-		public int updateSellerInquiry(ProductInquiryVO productInquiryVO) {
-			return productMapper.updateInquiryAns(productInquiryVO);
-		}
+      @Override
+      public List<OptionVO> getOptionList(OptionVO optionVO) {
+         return productMapper.getOptionList(optionVO);
+      }
 
 
-	
+      // 택배사 코드 가져오기
+      @Override
+      public List<CodeVO> getDeliveryList() {
+         return productMapper.selectDeliveryList();
+      }
+      
+
+      
+      @Override
+      public List<ProductInquiryVO> getProductInquiry(ProductInquiryVO productInquiryVO) {
+         return productMapper.selectSellerInquiry(productInquiryVO);
+      }
 
 
-		
-		
+      @Override
+      public int updateSellerInquiry(ProductInquiryVO productInquiryVO) {
+         return productMapper.updateInquiryAns(productInquiryVO);
+      }
 
 
-	
+   
+
+
+      
+      
+
+
+   
 
 
 
-	// orderManagement
-		@Override
-		public List<DetailVO> getOrderOptionList(DetailVO detailVO) {
-			return productMapper.selectOrderOptionList(detailVO);
-		}
+   // orderManagement
+      @Override
+      public List<DetailVO> getOrderOptionList(DetailVO detailVO) {
+         return productMapper.selectOrderOptionList(detailVO);
+      }
 
 
-		
-	
+      
+   
 
-//		주문상태변경
-		@Override
-		public int updateOrderStatus(DetailVO detailVO) {
-			return productMapper.updateOrderStatus(detailVO);
-		}
+//      주문상태변경
+      @Override
+      public int updateOrderStatus(DetailVO detailVO) {
+         return productMapper.updateOrderStatus(detailVO);
+      }
 
-//		취소 검색
-		@Override
-		public List<CancelVO> getCancelSeaList(CancelVO cancelVO) {
-			return productMapper.cancelOptionList(cancelVO);
-		}
-//		교환검색
-		@Override
-		public List<ExchangeVO> getExchangeSeaList(ExchangeVO exchangeVO) {
-			return productMapper.exchangeSeaList(exchangeVO);
-		}
+//      취소 검색
+      @Override
+      public List<CancelVO> getCancelSeaList(CancelVO cancelVO) {
+         return productMapper.cancelOptionList(cancelVO);
+      }
+//      교환검색
+      @Override
+      public List<ExchangeVO> getExchangeSeaList(ExchangeVO exchangeVO) {
+         return productMapper.exchangeSeaList(exchangeVO);
+      }
 
-//		반품검색
-		@Override
-		public List<ExchangeVO> getReturnSeaList(ExchangeVO exchangeVO) {
-			return productMapper.returnSeaList(exchangeVO);
-		}
+//      반품검색
+      @Override
+      public List<ExchangeVO> getReturnSeaList(ExchangeVO exchangeVO) {
+         return productMapper.returnSeaList(exchangeVO);
+      }
 
-		
-	//  정산건 확인
-		@Override
-		public List<SellerCalVO> getCalList(SellerCalVO sellerCalVO) {
-			return productMapper.selectCalList(sellerCalVO);
-		}
-
-
-		@Override
-		public int addOption(OptionVO optionVO) {
-			return 0;
-		}
+      
+   //  정산건 확인
+      @Override
+      public List<SellerCalVO> getCalList(SellerCalVO sellerCalVO) {
+         return productMapper.selectCalList(sellerCalVO);
+      }
 
 
-	
+      @Override
+      public int addOption(OptionVO optionVO) {
+         return 0;
+      }
 
 
-	
-	
+   
+
+
+   
+   
 }

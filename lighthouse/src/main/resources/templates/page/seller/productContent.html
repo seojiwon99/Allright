@@ -25,17 +25,17 @@
    <div class="row gx-0" style="margin-bottom:20px;">
    <form action="/insertImg" method="post" id="textForm">
       <div id="editor"></div>
-	   <div>
-	  	<p th:text="${list}"></p>[[${list}]]
-	  </div>
+      <div>
+        <p th:text="${list}"></p>[[${list}]]
+     </div>
       <input type="button" class="addImgBtn btn btn-secondary mt-3 mx-2" value="작성취소" />
-      <input type="submit" id="submit" class="" value="작성완료" />
+      <input type="submit" id="submit" class="btn btn-primary mt-3 mx-2"" value="작성완료" />
    </form>
 
 
 
    <!-- CKEditor -->
-   		<script src="https://cdn.ckeditor.com/ckeditor5/12.4.0/classic/ckeditor.js"></script>
+         <script src="https://cdn.ckeditor.com/ckeditor5/12.4.0/classic/ckeditor.js"></script>
    
       <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
       <script>      
@@ -114,15 +114,20 @@
      let data = localStorage.getItem("detail");
      console.log(data);
      if(data != null){
-	     editor.setData(data);
+        editor.setData(data);
      }
-    	 
+        
   })
   $('#submit').on('click',function(e){
       $('.inform').remove();
       $('textarea[name="productContent"]').remove();
       // e.preventDefault();
       let data = editor.getData();
+      if(data == null || data == ''){
+         alert("상세정보를 적어주세요");
+         e.preventDefault();
+         return;
+      }
       window.localStorage.setItem("detail",data);      
       let form = $(this).closest('form');
       console.log(form);
@@ -143,6 +148,11 @@
 
        let srcArr = [];
        $(formTag).each(function(idx,item){
+         if($(item).children('figcaption').text() == null || $(item).children('figcaption').text() == ''){
+          alert("이미지 대체텍스트를 입력해주세요")
+            e.preventDefault(); 
+            return;
+         }
           let src = $(item).children('img').attr('src');
     
           let text = src.split('_');

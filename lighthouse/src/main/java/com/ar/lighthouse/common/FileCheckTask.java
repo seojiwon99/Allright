@@ -39,6 +39,8 @@ public class FileCheckTask {
 		return str.replace("-", "/");
 	}
 	
+	
+	// 스케줄러
 	@Scheduled(cron = "* * 2 * * *")
 	public void checkFiles() throws Exception{
 		// file list in database
@@ -47,7 +49,7 @@ public class FileCheckTask {
 		List<ImgsVO> fileList = chkMapper.getImgsFiles();
 		System.out.println(fileList);
 		
-		System.out.println(fileList.stream());
+		System.out.println("test" + fileList.stream().map(vo -> Paths.get("C:\\upload", vo.getUploadPath(), vo.getUploadName())));
 		// ready for check file in directory with database file list
 		List<Path> fileListPaths = fileList.stream()
 				.map(vo -> Paths.get("C:\\upload", vo.getUploadPath(), vo.getUploadName()))
@@ -58,8 +60,9 @@ public class FileCheckTask {
 		
 		// files in yesterday directory
 		File targetDir = Paths.get(uploadPath, getFolderYesterDay()).toFile();
-		File[] removeFiles = targetDir.listFiles(file -> fileListPaths.contains(file.toPath()) == false);
+		System.out.println("target" + targetDir);
 		
+		File[] removeFiles = targetDir.listFiles(file -> fileListPaths.contains(file.toPath()) == false);
 		for(File file : removeFiles) {
 			file.delete();
 		}

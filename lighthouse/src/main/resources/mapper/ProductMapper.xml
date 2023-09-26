@@ -595,32 +595,18 @@ WHERE que_code = #{queCode};
 		<selectKey resultType="long" keyProperty="optionCode"
 			order="BEFORE">
 			SELECT NVL(MAX(option_code),0)+1
-			FROM ar_option
+			FROM ar_optiondetail
 		</selectKey>
 		INSERT INTO ar_option (option_code
 		, product_code
-		, option_order
 		, option_name
 		, option_value
-		, option_price
-		, option_count
-		<if
-			test="optionSellStatus != null and !optionSellStatus.equals('')">
-			, option_sell_status
-		</if>
 		)
 		VALUES
 		(#{optionCode}
 		, #{productCode}
-		, #{optionOrder}
 		, #{optionName}
 		, #{optionValue}
-		, #{optionPrice}
-		, #{optionCount}
-		<if
-			test="optionSellStatus != null and !optionSellStatus.equals('')">
-			, #{optionSellStatus}
-		</if>
 		)
 	</insert>
 
