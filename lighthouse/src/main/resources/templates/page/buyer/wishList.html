@@ -12,13 +12,13 @@
 			<div class="row">
 				<div class="col-12 text-center">
 					<!-- Heading -->
-					<h3 class="mb-10">My Account</h3>
+					<h3 class="mb-10">My WISH</h3>
 
 				</div>
 			</div>
 			<div class="row">
 			<div class="col-12 col-md-3">
-            </div>
+            
 
             <!-- Nav -->
             <nav class="mb-10 mb-md-0">
@@ -77,26 +77,25 @@
                 </ul>
               </div>
             </nav>
-
-          </div>
-				<div class="col-12 col-md-9 col-lg-8 offset-lg-1">
+			</div>
+         
+				<div class="col-12 col-md-9 col-lg-8 offset-lg-1" id="test">
 				<div>
 					<!-- Products -->
-							<div class="row">
+							<div class="row" >
 								
 								<!-- Item -->
 								<!-- 반복문 -->
-								<div class="col-6 col-md-4" th:each="wishes : ${wishList}">
-									
+								<!-- <div class="col-6 col-md-4" th:each="wishes : ${wishList}" th:data-favoritecode="${wishes.favoriteCode}" class="wish"> -->
+									<div class="col-6 col-md-4" th:each="wishes : ${wishList}">
 									<div class="card mb-7">
-									
 										<!-- Image -->
 										<div class="card-img">
 											<!-- Action -->
-											<button
-												class="btn btn-xs btn-circle btn-white-primary card-action card-action-end">
+											<a
+												class="btn btn-xs btn-circle btn-white-primary card-action card-action-end" th:onclick="deleteWish([[${wishes.favoriteCode}]])">
 												<i class="fe fe-x"></i>
-											</button>
+											</a>
 											<!-- Button -->
 											<button class="btn btn-xs w-100 btn-dark card-btn"
 												data-bs-toggle="modal" data-bs-target="#modalProduct">
@@ -105,7 +104,7 @@
 											<!-- Image -->
 											<img class="card-img-top"
 												src="/img/products/product-6.jpg"
-												th:alt="${wishes.imgContent}">
+												th:alt="${wishes.imgContent}" th:value="${wishes.favoriteCode}" id="favoriteCode">
 										</div>
 										<!-- Body -->
 										<div class="card-body fw-bold text-center">
@@ -120,29 +119,52 @@
 						</div>
 					</div>
 
-					<!-- Pagination -->
-					<nav class="d-flex justify-content-center justify-content-md-end">
-						<ul class="pagination pagination-sm text-gray-400">
-							<li class="page-item"><a class="page-link page-link-arrow"
-								href="#"> <i class="fa fa-caret-left"></i>
-							</a></li>
-							<li class="page-item active"><a class="page-link" href="#">1</a>
-							</li>
-							<li class="page-item"><a class="page-link" href="#">2</a></li>
-							<li class="page-item"><a class="page-link" href="#">3</a></li>
-							<li class="page-item"><a class="page-link" href="#">4</a></li>
-							<li class="page-item"><a class="page-link" href="#">5</a></li>
-							<li class="page-item"><a class="page-link" href="#">6</a></li>
-							<li class="page-item"><a class="page-link page-link-arrow"
-								href="#"> <i class="fa fa-caret-right"></i>
-							</a></li>
-						</ul>
-					</nav>
-
-				</div>
-
-
+					<!-- Modal for Delete Confirmation -->
+					<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+					    <div class="modal-dialog">
+					        <div class="modal-content">
+					            <div class="modal-header">
+					                <h5 class="modal-title" id="deleteConfirmationModalLabel">삭제 확인</h5>
+					                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					            </div>
+					            <div class="modal-body">
+					                이 상품을 삭제하시겠습니까?
+					            </div>
+					            <div class="modal-footer">
+					            	<button type="button" class="btn btn-danger" id="confirmDeleteButton">Delete</button>
+					                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+					            </div>
+					        </div>
+					    </div>
+					</div>
+ 					
+ 			</div>
+		</div>
 	</section>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		
+		    function deleteWish(code) {
+		    	
+		        let favoriteDel = confirm('상품을 삭제하시겠습니까?'); 
+		        if(favoriteDel){
+		        	$.ajax('/buyer/deleteWish',{ // 실제 아이템을 삭제할 URL로 대체하세요.
+			            type: 'GET',
+			            data: { 
+			            	favoriteCode : code 
+			            }
+		        	})
+		        	.done(data => {
+		                console.log(data);
+		                $('#test').replaceWith(data);
+		                
+		              })
+		            	
+		            } else {
+		              return;
+		            }
+		    };
 
+	</script>
 </div>
 </html>

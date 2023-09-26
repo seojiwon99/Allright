@@ -3,6 +3,7 @@ package com.ar.lighthouse.buyp.service;
 import java.util.List;
 
 import com.ar.lighthouse.common.CodeVO;
+import com.ar.lighthouse.common.Criteria;
 
 public interface BuyerPageService {
 
@@ -19,7 +20,7 @@ public interface BuyerPageService {
 	public List<CouponVO> getCouponList(String memberId);
 
 	// 개인 정보 수정
-	public int editInfo(BuyInfoVO buyInfoVO, String memberId);
+	public int editInfo(BuyInfoVO buyInfoVO);
 
 	// 문의 내역
 	public List<MyInquiryVO> getMyQuiryList(String memberId);
@@ -28,7 +29,6 @@ public interface BuyerPageService {
 	public List<WishVO> getWishList(String memberId);
 
 	// 취소 상세
-
 	public List<BuyCancelVO> getCancelList(String memberId);
 
 	// 반품 상세
@@ -52,12 +52,33 @@ public interface BuyerPageService {
 	// 반품 페이지에 데이터 넘김
 	public CodeVO getReturnPage(CodeVO codeVO);
 	
+	//반품 신청
+	public int addReturn(BuyReturnVO retVO);
+	
 	// 취소 코드
-	public List<CodeVO> getCancelCode(String memberId);
+	public List<CodeVO> getCancelCode();
 	
 	//취소 페이지에 데이터 넘김
 	public CodeVO getCancelPage(CodeVO codeVO);
 	
 	//취소 신청
 	public int addCancel(BuyCancelVO canVO);
+	
+	//주문 취소
+	public int removeCancel(BuyCancelVO canVO);
+	
+	//반품 취소
+	public int removeReturn(BuyReturnVO retVO);
+	
+	//교환 취소
+	public int removeExchange(BuyExchangeVO excVO);
+	
+	//찜 취소
+	public int removeWish(int favoriteCode);
+	
+	//전체 갯수 가져오기..?
+	public int getPageCnt(Criteria cri);
+	
+	//주문 목록 option 선택
+	
 }

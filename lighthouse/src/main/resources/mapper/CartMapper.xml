@@ -6,13 +6,23 @@
   	
   	<!-- 장바구니 상세정보 -->
   	<select id="selectCartList" resultType="com.ar.lighthouse.cart.service.CartVO" parameterType="String">
-  		SELECT c.cart_count, c.cart_code, o.option_name, o.option_value, p.product_name, p.delivery_cost, (p.product_cost + o.option_price) product_cost, p.sale_price, g.upload_name
+  		SELECT c.cart_count, 
+  			   c.cart_code, 
+  			   p.product_name, 
+  			   p.delivery_cost, 
+  			   p.sale_price, 
+  			   p.product_cost,
+  			   g.upload_name,
+  			   g.upload_path,
+               o.option_detail_code,
+               c.option_last,
+               o.option_price
 			FROM ar_cart c
-			LEFT OUTER JOIN ar_option o ON c.option_code = o.option_code
-			LEFT OUTER JOIN ar_products p ON o.product_code = p.product_code
-			LEFT OUTER JOIN ar_imgs g ON g.product_code = p.product_code
-			LEFT OUTER JOIN ar_member m ON m.member_id = c.member_id
-		where c.member_id = #{memberId}
+			JOIN ar_option_detail o ON c.option_detail_code = o.option_detail_code
+			JOIN ar_products p ON o.product_code = p.product_code
+			JOIN ar_imgs g ON g.product_code = p.product_code
+			JOIN ar_member m ON m.member_id = c.member_id
+            where c.member_id = #{memberId} AND g.img_order =1
   	</select>
   	
   	<delete id="deleteCart">
