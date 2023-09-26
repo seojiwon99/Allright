@@ -11,6 +11,7 @@ public class OptionVO {
 	String productCode;
 	String optionName;
 	String optionValue;
-	
+
 	List<OptionDetailVO> detailVO;
 }
+

@@ -17,4 +17,11 @@ public class ProductInquiryVO {
 	String queAns;
 	String sellerId;
 	int inquiryCount;
+
+	// 상품테이블
+	String productName;
+
+	String memberName;
+	
+
 }

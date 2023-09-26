@@ -16,14 +16,16 @@ public class CreditVO {
 	private String paymentKey;
 	private String type;
 	private String orderId;
+	private String orderName;
 	private String method;
 	private String currency;
-	private String mid;
-	private int amount;
+	private String mId;
+	private Long amount;
 	private String paymentType;
-	private int balanceAmount;
-	private int totalAmount;
+	private Long balanceAmount;
+	private Long totalAmount;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date approvedAt;
+	private int orderCode;
 
 }

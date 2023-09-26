@@ -5,23 +5,24 @@
 <mapper namespace="com.ar.lighthouse.main.mapper.mainPageMapper">
 
 
-	<select id="showEventBanner" resultType="EventImgVO">
-		SELECT IMG_NAME,UPLOAD_NAME,IMG_CONTENT
-		FROM AR_EVENT_IMG
-	</select>
+   <select id="showEventBanner" resultType="EventImgVO">
+      SELECT IMG_NAME,UPLOAD_NAME,IMG_CONTENT
+      FROM AR_EVENT_IMG
+   </select>
 
 
-	<resultMap type="ProductVO" id="productMap">
-		<result column="product_name" property="productName" />
-		<result column="product_code" property="productCode" />
-		<result column="product_cost" property="productCost" />
-		<collection property="productImg" resultMap="productImg" />
-	</resultMap>
+   <resultMap type="ProductVO" id="productMap">
+      <result column="product_name" property="productName" />
+      <result column="product_code" property="productCode" />
+      <result column="product_cost" property="productCost" />
+      <collection property="productImg" resultMap="productImg" />
+   </resultMap>
 
-	<resultMap type="imgsVO" id="productImg">
-		<result property="uploadName" column="upload_name" />
-		<result property="imgContent" column="img_content" />
-	</resultMap>
+   <resultMap type="imgsVO" id="productImg">
+      <result property="uploadName" column="upload_name" />
+      <result property="imgContent" column="img_content" />
+   </resultMap>
+
 
 	<select id="selProductList" resultMap="productMap">
 		select p.product_code, product_name, upload_name, img_content, product_cost
@@ -34,40 +35,41 @@
 		order by product_regdate DESC
 
 
-	</select>
 
-	<select id="randomSelProduct" resultType="ProductVO">
-	select p.product_code, product_name, upload_name, img_content, product_cost
-		from ar_products
-		p join ar_imgs i
-		on p.product_code = i.product_code
-		<![CDATA[
-		where rownum < 8
-		]]>
-		order by product_regdate DESC
+   </select>
 
-	</select>
+   <select id="randomSelProduct" resultType="ProductVO">
+   select p.product_code, product_name, upload_name, img_content, product_cost
+      from ar_products
+      p join ar_imgs i
+      on p.product_code = i.product_code
+      <![CDATA[
+      where rownum < 8
+      ]]>
+      order by product_regdate DESC
 
-	<select id="categoryList" resultType="CategoryVO">
-	  SELECT *
-		FROM ar_category
-	   WHERE category_level = 1
-	   ORDER BY category_name desc
-	</select>
+   </select>
 
-	<select id="childCategory" resultType="CategoryVO">
-	SELECT *
-	FROM ar_category
-	where parent_category_code = #{categoryCode}
-	</select>
-	
-	<select id="childCateList" resultType="CategoryVO">
-		SELECT *
-		  FROM ar_category
-		 START WITH parent_category_code = #{categoryCode}
-	   CONNECT BY parent_category_code = PRIOR category_code
-	       AND category_level = 3
-		ORDER SIBLINGS BY category_name
-	</select>
+   <select id="categoryList" resultType="CategoryVO">
+     SELECT *
+      FROM ar_category
+      WHERE category_level = 1
+      ORDER BY category_name desc
+   </select>
+
+   <select id="childCategory" resultType="CategoryVO">
+   SELECT *
+   FROM ar_category
+   where parent_category_code = #{categoryCode}
+   </select>
+   
+   <select id="childCateList" resultType="CategoryVO">
+      SELECT *
+        FROM ar_category
+       START WITH parent_category_code = #{categoryCode}
+      CONNECT BY parent_category_code = PRIOR category_code
+          AND category_level = 3
+      ORDER SIBLINGS BY category_name
+   </select>
 
 </mapper>

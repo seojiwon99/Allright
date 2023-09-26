@@ -10,6 +10,7 @@
 
 <div layout:fragment="sellerContent">
 
+	
 
 	<div class="row gx-0">
 		<div class="col-12 col-lg-auto">
@@ -72,25 +73,59 @@
 										</div>
 									</div>
 								</div>
-										<li class="nav-item"><a class="nav-link"
-											href="/settlementManagement">정산/통계관리</a></li>
-										<li class="nav-item"><a class="nav-link"
-											href="/productInquiry">문의관리</a></li>
-										<li class="nav-item"><a class="nav-link"
-											href="/sellerMypage">판매자정보</a></li>
-										<li class="nav-item"><a class="nav-link"
-											href="./docs/getting-started.html">고객센터</a></li>
-					
-						
-						
-						
-
+							<li class="nav-item"><a class="nav-link"
+								href="/settlementManagement">정산/통계관리</a></li>
+							<li class="nav-item"><a class="nav-link"
+								href="/productInquiry">문의관리</a></li>
+							<li class="nav-item"><a class="nav-link"
+								href="/sellerMypage">판매자정보</a></li>
+							<li class="nav-item"><a class="nav-link"
+								href="./docs/getting-started.html">고객센터</a></li>
 					</div>
 
 				</div>
 			</nav>
 
 		</div>
+		<div class="col-12 col-lg">
+
+			<button id="statisticsBtn">통계</button>
+			<button id="accountingBtn">정산</button>
+
+			<div id="contentArea">
+				<!-- 비동기로 로드할 내용이 들어갈 영역 -->
+			</div>
+
 		</div>
-		</div>
-		</html>
+
+
+	</div>
+
+<script type="text/javascript">
+$("#statisticsBtn").click(function () {
+    $.ajax({
+        url: "statisticsPage", 
+        method: "GET",
+        success: function (data) {
+            $("#contentArea").html(data); 
+        },
+        error: function () {
+        }
+    });
+});
+
+$("#accountingBtn").click(function () {
+    $.ajax({
+        url: "calculatePage",
+        method: "GET",
+        success: function (data) {
+            $("#contentArea").html(data);
+        },
+        error: function () {
+        	console.log("오류오류")
+        }
+    });
+});
+</script>
+</div>
+</html>

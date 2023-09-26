@@ -128,7 +128,7 @@
 										새 비밀번호
 									</label> 
 									<input class="form-control form-control-sm"
-										id="buyerPassword" type="password" th:value="${personalInfo.memberPw}" placeholder="새 비밀번호 입력">
+										id="buyerPassword" type="password"  placeholder="새 비밀번호 입력">
 
 								</div>
 
@@ -141,7 +141,7 @@
 										새 비밀번호 확인
 									</label> 
 									<input class="form-control form-control-sm"
-										id="buyerPasswordCheck" type="password" th:value="${personalInfo.memberPw}" placeholder="새 비밀번호 확인">
+										id="buyerPasswordCheck" type="password"  placeholder="새 비밀번호 확인">
 								</div>
 
 							</div>
@@ -215,8 +215,47 @@
 			</div>
 		</div>
 	</section>
-	
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
+		$(document).ready(function(){
+		$('#updateBtn').on('click', function(){
+			let pwData = $('#memberPw').val();
+			if( pwData != null){
+			} else {
+				alert("새 비밀번호를 설정해주세요.")
+				$('#buyerPassword').focus();
+				return;
+			}
+			let infoData = {
+				'memberPw' : $('#buyerPassword').val(),
+				'memberPasswordCheck' : $('#buyerPasswordCheck').val(),
+				'memberAddr' : $('#buyerAddr').val(),
+				'memberEmail' : $('#buyerEmail').val(),
+				'memberDetailsAddr' : $('#buyerDetailsAddr').val(),
+				'memberTel' : $('#buyerTel').val(),
+				'memberBirth' : $('#buyerBirth').val()
+			}
+			
+			$.ajax({
+				url: '/buyer/personalInfoEdit',
+				type: 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(infoData),
+				success : function(response){
+
+						alert("수정 완료");
+
+				},
+				error: function(err){
+					console.error('정보 수정 중 오류.');
+					console.log(err);
+				}
+			})
+		});
+		});
+		
+		// 비밀번호 확인에서 일치 여부 확인
+		/*
 		$('#buyerPasswordCheck').on('focusout', function(e){
 			let password = $('#buyerPassword').val();
 			let passwordCheck = $('#buyerPasswordCheck').val();
@@ -226,38 +265,38 @@
 				return;
 			}
 		});
+		*/
 		
-		$('#updateBtn').on('click', function(e){
-			let name = $('#buyerName').val();
-			let password = $('#buyerPassword').val();
-			let passwordCheck = $('#buyerPasswordCheck').val();
-			let addr = $('#buyerAddr').val();
-			let detailAddr = $('#buyerDetailsAddr').val();
-			let tel = $('#buyerTel').val();
-			let birth = $('#buyerBirth').val();
-			
-			$.ajax({
-				url: '#{memberId}',
-				type: 'post',
-				data : {
-					name : name,
-					password : password,
-					passwordCheck : passwordCheck,
-					addr : addr,
-					detailAddr : detailAddr,
-					tel : tel,
-					birth : birth
-				},
-				success : function(result){
-					if(result == 'success'){
-						alert("수정 완료");
-					}
-				},
-				error: function(err){
-					console.log(err);
+		// 비밀번호 확인에서 pw 유효성 검사
+		$('#buyerPasswordCheck').on('focusout', chkPW);
+		function chkPW(){
+				let password = $('#buyerPassword').val();
+				let pwCheck = $('#buyerPasswordCheck').val();
+				
+				if(pwCheck != password){
+					alert("비밀번호가 일치하지 않습니다.");
+					return;
 				}
-			})
-		});
+				//let pw = $("#buyerPassword").val();
+				//let id = $("#id").val();
+			    let checkNumber = pwCheck.search(/[0-9]/g);
+			    let checkEnglish = pwCheck.search(/[a-z]/ig);
+			 
+			    if(!/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/.test(pwCheck)){            
+			        alert('숫자+영문자+특수문자 조합으로 8자리 이상 사용해야 합니다.');
+			        return false;
+			    }else if(checkNumber <0 || checkEnglish <0){
+			        alert("숫자와 영문자를 혼용하여야 합니다.");
+			        return false;
+			    }else if(/(\w)\1\1\1/.test(pwCheck)){
+			        alert('같은 문자를 4번 이상 사용하실 수 없습니다.');
+			        return false;
+			    } else {
+
+					console.log("통과");
+					
+					}
+		}  
 	</script>
 </div>
 </html>
