@@ -29,8 +29,6 @@ import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.buyp.service.TradeVO;
 import com.ar.lighthouse.buyp.service.WishVO;
 import com.ar.lighthouse.common.CodeVO;
-import com.ar.lighthouse.common.Criteria;
-import com.ar.lighthouse.common.PageDTO;
 import com.ar.lighthouse.member.service.MemberVO;
 
 import lombok.AllArgsConstructor;
@@ -45,17 +43,31 @@ public class BuyerPageController {
 
 	// 주문목록
 	@GetMapping("page/buyer/orderList")
-	public String orderList(Model model, HttpSession session) {
+	public String orderList(Model model, HttpSession session, DetailVO detailVO) {
 
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 
 		List<DetailVO> orderList = buyerPageService.getDetailList(memberId);
 		model.addAttribute("orderList", orderList);
-
+		
+		
+		
 		return "/page/buyer/orderList";
 	}
-
+	//order Option 
+	@GetMapping("page/buyer/orderOption")
+	public String orderOption(Model model, HttpSession session, DetailVO detailVO) {
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
+		
+		detailVO.setMemberId(memberId);
+		List<DetailVO> orderOption = buyerPageService.getOptionList(detailVO);
+		model.addAttribute("optionSelect", orderOption);
+		
+		return "page/buyer/orderList :: #orderOption";		
+	}
+	
 	// 구매자 개인정보
 	@GetMapping("page/buyer/personalInfo")
 	public String personalInfo(Model model, HttpSession session) {
@@ -192,7 +204,6 @@ public class BuyerPageController {
 
 		return "page/buyer/exchange";
 	}
-
 
 	// 취소 신청 페이지
 	@GetMapping("page/buyer/cancel")

@@ -86,10 +86,16 @@
 					<option value="">가격순</option>
 					<option value="">구매일자순</option>
 					<option value="">상품명순</option>
-				</select>
+				</select><input type="text" id="selectVal" value="" maxlength="50">
+				<div>
+				<span>조회기간</span> <input type="DATE" id="from" name="from"
+					autocomplete="off"> <label for="to">~</label> <input
+					type="DATE" id="to" name="to" autocomplete="off">
 				</div>
+				</div>
+				<button type="button" id="orderOption">검색</button>
             <div class="card card-lg mb-5 border">
-              <div class="card-body pb-0">
+              <div class="card-body pb-0" id="orderOption">
 				<!-- 반복문 시작 -->
                 <!-- Info -->
                 <div class="card card-sm orderList">
@@ -221,7 +227,6 @@
   
 	document.querySelector(".orderList").addEventListener("click", function(e) {
 	e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
-
 	var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
     var url="";
 	if(  e.target.matches(".excBtn") ){
@@ -238,10 +243,32 @@
 	}
   });
   	
-	$('#optionList').on('change',function(){
-		let selOption = $('#select option:selected').val();
+	$('#orderOption').on('change',function(){
+		let key = $('#optionList').val();
+		let value = #('#selectVal').val();
+		let fromDate = $('#from').val();
+		let toDate = $('#to').val();
 		
-	}
+		console.log(key, value, fromDate, toDate);
+		
+		$.ajax({
+			url: '/page/buyer/orderOption',
+			type: 'get',
+			data: {
+				"searchKey": key,
+				"searchValue" : value,
+				fromDate,
+				toDate
+			}
+		})
+		.done(data => {
+			console.log(data);
+			$('#orderOption').replaceWith(data);
+		})
+		.fail(reject => {
+			console.log(reject);
+		})
+	})
 
 </script>
 </div>

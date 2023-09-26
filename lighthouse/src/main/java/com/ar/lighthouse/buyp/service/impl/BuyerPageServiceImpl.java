@@ -177,6 +177,12 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	}
 
 
+	@Override
+	public List<DetailVO> getOptionList(DetailVO detailVO) {
+		return buyerPageMapper.selectOptionList(detailVO);
+	}
+
+
 
 	
 	

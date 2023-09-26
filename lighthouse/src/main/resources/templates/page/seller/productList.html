@@ -160,18 +160,26 @@
 		</div>
 	</div>
 
-	<script>
-	 $(document).ready(function () {
-		let result = [[${msg}]];
-		alert(result);
-  
-     });
+
+	<script th:inline="javascript">
+	
+	
+	
+	$(document).ready(function(){
+		let data = [[${msg}]];
+		if(data != null){
+			alert(data);
+			localStorage.removeItem('detail');
+			localStorage.removeItem('product');
+		}
+	})
+
 	
 	
 	$('#optionList').on('change',function(){
 		
 		let val = $(this).val();
-
+	
 		$.ajax({
 			url : 'getOptionProduct',
 			type :'get',

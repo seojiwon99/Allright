@@ -4,9 +4,11 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
   <mapper namespace="com.ar.lighthouse.buyp.mapper.BuyerPageMapper">
-
+<resultMap type="DetailVO" id="selectDetailList">
+	
+</resultMap>
   	<!-- 주문 목록 -->
-  	<select id="selectDetailList" resultType="DetailVO" parameterType="String">
+  	<select id="selectDetailList" resultType="DetailVO">
 WITH RankedOrderDetail AS (
     SELECT 
         a.order_cnt,
@@ -55,19 +57,22 @@ WITH RankedOrderDetail AS (
     WHERE 
         b.member_id = #{memberId}
     <choose>
-    	<when test="optionVal == '가격순'">
-    		ORDER BY payment_price
+    	<when test="searchKey == 'payment_price'">
+    		AND a.payment_price like '%'||#{searchValue}||'%'
     	</when>
-    	<when test="optionVal == '구매일순'">
-    		ORDER BY order_date
+    	<when test="searchKey == 'order_date'">
+    		AND a.order_date like '%'||#{searchValue}||'%'
     	</when>
-    	<when test="optionVal == '상품명순'">
-    		ORDER BY product_name
+    	<when test="searchKey == 'product_name'">
+    		AND d.product_name like '%'||#{searchValue}||'%'
     	</when>
-    	<when test="optionVal == '상품번호순'">
-    		ORDER BY order_code
+    	<when test="searchKey == 'order_code'">
+    		AND a.order_code like '%'||#{searchValue}||'%'
     	</when>
     </choose>
+    <if test="fromDate != null">
+    	AND a.order_date BETWEEN #{fromDate} AND #{toDate}
+    </if>
 )
 SELECT *
 FROM 
@@ -276,7 +281,7 @@ WHERE
 		     , b.member_id
 		     , a.payment_price
 		FROM ar_order_detail a
-		JOIN ar_orders b   ON a.order_code = b.order_code
+		JOIN ar_orders b ON a.order_code = b.order_code
 		JOIN ar_option_detail c   ON c.option_detail_code = a.option_detail_code
 		JOIN ar_products d ON d.product_code = c.product_code
 	   WHERE a.order_detail_code = #{orderDetailCode}

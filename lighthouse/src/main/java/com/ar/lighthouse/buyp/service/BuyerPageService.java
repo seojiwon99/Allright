@@ -80,5 +80,5 @@ public interface BuyerPageService {
 	public int getPageCnt(Criteria cri);
 	
 	//주문 목록 option 선택
-	
+	public List<DetailVO> getOptionList(DetailVO detailVO);
 }
