@@ -245,31 +245,43 @@ public class elaController {
 	
 	
 	
-	@GetMapping("elatestCtgKeyword")
-	public String elaTestCategory(Criteria cri, Model model,String keyword, String ctg) {
-		int totalCnt = QueryCtgMatchCount("ar_products", keyword, ctg);
-		model.addAttribute("products", HighLevelClientQueryCtg("ar_products", cri.getPageNum(), keyword, ctg)) ;
-		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
-		return "page/test/body";	
-	}
-	
-	
-	
-	@GetMapping("elatestKeyword")
-	public String elaTestMatch(Criteria cri, Model model,String keyword) {
-		int totalCnt = QueryMatchCount("ar_products", keyword);
-		model.addAttribute("products", HighLevelClientQueryMatch("ar_products", cri.getPageNum(), keyword)) ;
-		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
-		return "page/test/body";
-	}
-	
-	
-	
 	@GetMapping("elatest")
-	public String elaTest(Criteria cri,Model model) {
-		int totalCnt = QueryAllCount("ar_products");
-		model.addAttribute("products", HighLevelClientQuery("ar_products", cri.getPageNum())) ;
-		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
+	public String elaTestCategory(Criteria cri, Model model,String keyword, String ctg) {
+		int totalCnt = -1;
+		if(keyword == "" && ctg == "") {
+			totalCnt = QueryAllCount("ar_products");
+			model.addAttribute("products", HighLevelClientQuery("ar_products", cri.getPageNum())) ;
+			model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
+				
+		}else if(ctg== "") {
+			totalCnt = QueryMatchCount("ar_products", keyword);
+			model.addAttribute("products", HighLevelClientQueryMatch("ar_products", cri.getPageNum(), keyword)) ;
+			model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
+		}else {
+			totalCnt = QueryCtgMatchCount("ar_products", keyword, ctg);
+			model.addAttribute("products", HighLevelClientQueryCtg("ar_products", cri.getPageNum(), keyword, ctg)) ;
+			model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
+		}
 		return "page/test/body";
 	}
+	
+	
+	
+//	@GetMapping("elatest")
+//	public String elaTestMatch(Criteria cri, Model model,String keyword) {
+//		int totalCnt = QueryMatchCount("ar_products", keyword);
+//		model.addAttribute("products", HighLevelClientQueryMatch("ar_products", cri.getPageNum(), keyword)) ;
+//		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
+//		return "page/test/body";
+//	}
+//	
+//	
+//	
+//	@GetMapping("elatest")
+//	public String elaTest(Criteria cri,Model model) {
+//		int totalCnt = QueryAllCount("ar_products");
+//		model.addAttribute("products", HighLevelClientQuery("ar_products", cri.getPageNum())) ;
+//		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
+//		return "page/test/body";
+//	}
 }

@@ -30,7 +30,7 @@
 						<ul class="pagination pagination-sm text-gray-400">
 							<li class="page-item" th:if="${pageMaker.prev}"><a
 								class="page-link page-link-arrow"
-								th:href="@{/elatest/(pageNum = ${pageMaker.startPage - 1})}">
+								th:href="@{/elatest/(pageNum = ${pageMaker.startPage - 1},keyword=${param.keyword}, ctg=${param.ctg})}">
 									<i class="fa fa-caret-left"></i>
 							</a></li>
 							<th:block
@@ -40,14 +40,14 @@
 									th:each="pageButtom : ${#numbers.sequence(start,end)}"
 									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
 									<a class="page-link" href="#"
-									th:href="@{/elatest/(pageNum= ${pageButtom})}"
+									th:href="@{/elatest/(pageNum= ${pageButtom},keyword=${param.keyword}, ctg=${param.ctg})}"
 									th:text="${pageButtom}" style="font-size : x-large;"></a>
 								</li>
 							</th:block>
 
 							<li class="page-item" th:if="${pageMaker.next}"><a
 								class="page-link page-link-arrow"
-								th:href="@{/elatest/(pageNum = ${pageMaker.endPage + 1})}">
+								th:href="@{/elatest/(pageNum = ${pageMaker.endPage + 1},keyword=${param.keyword}, ctg=${param.ctg})}">
 									<i class="fa fa-caret-right"></i>
 							</a></li>
 						</ul>
