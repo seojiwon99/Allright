@@ -51,6 +51,10 @@
   		SELECT count(*) as reviewCount FROM ar_review where product_code = #{productCode}
   	</select>
   	
+  	<select id="reviewStarAvg" resultType="int">
+  		select round(AVG(review_star),0) as reviewStarAvg from ar_review where product_code = #{productCode}
+  	</select>
+  	
   	<insert id="insertReview" parameterType="ReviewVO">
   	<selectKey resultType="int" keyProperty="reviewCode" order="BEFORE">
   		SELECT nvl((max(review_code)),0)+1 FROM ar_review
@@ -75,7 +79,7 @@
   	
   	<insert id="insertReviewImg">
   	<selectKey resultType="int" keyProperty="imgCode" order="BEFORE">	
-  		SELECT NVL(0, MAX(img_code))+1 FROM ar_imgs  
+  		SELECT NVL(MAX(img_code),0)+1 FROM ar_imgs  
   	</selectKey>
   		insert into ar_imgs
     		(img_code
@@ -106,12 +110,56 @@
 	update ar_review set 
 	       review_content = #{reviewContent}
 	  	  ,review_star = #{reviewStar}
-	 where review_code=#{reviewCode}
+	 where review_code = #{reviewCode}
 	        
   	</update>
+  	
+  	<update id="updateReviewImg">
+  		update ar_imgs set
+  			img_code = #{imgCode}
+    		,parent_code = '2'
+    		,img_order = '1'
+    		,img_name = #{imgName}
+    		,upload_name =#{uploadName}
+    		,img_content =#{imgContent}
+    		,review_code =#{reviewCode}
+    		,upload_path = #{uploadPath}
+  		 
+  	</update>
+  	
   	
   	<delete id="deleteReview">
   		DELETE FROM ar_review WHERE review_code = #{reviewCode}
   	</delete>
+  	
+  	<!-- 리뷰신고 코드-->
+  	<select id="reviewDeclareCode" resultType="CodeVO">
+  		select master_code, code_id, code_name, code_desc, code_use  
+  		from ar_code where master_code = 'review_declare_reason'
+  	</select>
+  	
+  	<!-- 리뷰 신고 -->
+  	<insert id="reviewDeclare">
+	  	<selectKey resultType="int" keyProperty="declareCode" order="BEFORE">	
+	  		SELECT NVL(MAX(declare_code),0 )+1 FROM ar_declare  
+	  	</selectKey>
+  		insert into ar_declare
+  		(
+  		declare_code
+  		,review_code
+  		,member_id
+  		,declare_reason
+  		,declare_content
+  		,declare_member
+  		)
+       values( 
+       	#{declareCode}
+       ,#{reviewCode}
+       ,#{memberId}
+       ,#{declareReason}
+       ,#{declareContent}
+       ,#{declareMember}
+       )
+  	</insert>
   	
   </mapper>

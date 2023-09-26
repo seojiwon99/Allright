@@ -13,6 +13,7 @@ import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.mapper.ProductMapper;
 import com.ar.lighthouse.product.service.CancelVO;
 import com.ar.lighthouse.product.service.ExchangeVO;
+import com.ar.lighthouse.product.service.OptionDetailVO;
 import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
@@ -25,9 +26,7 @@ public class ProductServiceImpl implements ProductService{
 
    @Autowired
    ProductMapper productMapper;
-   
-
-
+ 
 
 	@Override
 	public List<ProductVO> getproductList(String memberId) {
@@ -143,8 +142,18 @@ public class ProductServiceImpl implements ProductService{
 
 		@Override
 		public List<OptionVO> getOptionList(OptionVO optionVO) {
-			return productMapper.getOptionList(optionVO);
+			List<OptionVO> list = productMapper.selectOptionList(optionVO);
+			for (OptionVO i : list) {
+				String[] op = i.getOptionValue().split(",");
+				List<OptionDetailVO> detailList=new ArrayList<OptionDetailVO>();
+				for (String o : op) {
+					detailList.add(new OptionDetailVO(o.trim()));
+				}
+				i.setDetailVO(detailList);
+			}
+			return list;
 		}
+
 
 
 		// 택배사 코드 가져오기
@@ -154,7 +163,6 @@ public class ProductServiceImpl implements ProductService{
 		}
 		
 
-		
 		@Override
 		public List<ProductInquiryVO> getProductInquiry(String memberId) {
 			return productMapper.selectSellerInquiry(memberId);
@@ -167,26 +175,11 @@ public class ProductServiceImpl implements ProductService{
 		}
 
 
-	
-
-
-      
-      
-
-
-   
-
-
-
    // orderManagement
       @Override
       public List<DetailVO> getOrderOptionList(DetailVO detailVO) {
          return productMapper.selectOrderOptionList(detailVO);
       }
-
-
-      
-   
 
 //      주문상태변경
       @Override
@@ -223,5 +216,12 @@ public class ProductServiceImpl implements ProductService{
       public int addOption(OptionVO optionVO) {
          return 0;
       }
+
+
+
+      @Override
+  	public List<OptionDetailVO> getOptionDetail(OptionVO optionVO) {
+  		return productMapper.selectOptionDetail(optionVO);
+  	}
 
 }
