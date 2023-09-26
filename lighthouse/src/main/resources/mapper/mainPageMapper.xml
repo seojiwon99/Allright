@@ -70,7 +70,7 @@
 	<select id="selectAllCategory">
 		SELECT * 
 		FROM ar_category
-		ORDER BY category_level
+		ORDER BY category_level, category_name
 	</select>
 
 </mapper>

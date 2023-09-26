@@ -290,4 +290,12 @@ public class AdminController {
 		return "page/admin/bannerUpdateForm";
 	}
 	
+	
+	@GetMapping("header")
+	public String header(Model model) {
+		model.addAttribute("categories",service.getCategoryList());
+		model.addAttribute("allCtg", service.getAllCategoryList());
+		return "fragments/header";
+	}
+	
 }

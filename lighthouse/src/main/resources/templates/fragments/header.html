@@ -227,13 +227,13 @@
 					<li class="nav-item dropdown hovered">
 						<a class="nav-link" data-bs-toggle="dropdown" href="#">Category</a>
 						<!-- Menu -->
-						<div class="dropdown-menu" style="width:300px; display: flex-end;">
+						<div class="dropdown-menu " style="width:500px;">
 						<!-- Tabs -->
 						<div class="mb-2 mb-lg-0 border-bottom-lg">
-							<div class="container w-100" style="display: flex-end; justify-content: space-between">
+							<div class="container" style="display: flex-end; justify-content: space-between">
 								<div class="row justify-content-end">
 								
-								<div class="col-3" th:each="category:${categories}">
+								<div class="col-3 " th:each="category:${categories}">
 										<ul class="nav nav-unstyled nav-divided">
 											<li class="nav-item dropdown hovered" id="deptCategory">
 												<!-- Toggle --> 
@@ -243,7 +243,7 @@
 													<div class="card card-lg">
 														<div class="card-body">
 															<div class="row">
-																<!-- 남성 -->
+																<!-- 카테고리 하위 -->
 																<div class="col" th:each="ctgFirst : ${allCtg}" th:if="${ctgFirst.categoryLevel} == 2 and ${(ctgFirst.parentCategoryCode).equals('Fassion')} and ${(category.categoryCode).equals('Fassion')}" >
 																	<!-- Heading -->
 																	
@@ -288,23 +288,110 @@
 																	</th:block>
 																		
 																	
-																</div><!--  fasiion col end -->
-																<div class="col" th:each="ctgFirst : ${allCtg}" th:if="${ctgFirst.categoryLevel} == 2 and ${(ctgFirst.parentCategoryCode).equals('FOOD')} and ${(category.categoryCode).equals('FOOD')}" >
-																	<th:block  th:each="ctgSec : ${allCtg}" th:if="${ctgSec.categoryLevel} == 3 and
-																	 ${(ctgSec.categoryName).equals('닭')} and ${(ctgSec.parentCategoryCode).equals(ctgFirst.categoryCode)} " >
+																</div><!--  fassion col end -->
 																
-																
-																
-																	<div class="mb-5 fw-bold" th:text="${ctgFirst.categoryName}+${ctgSec.categoryName}">
+																<!-- Food 카테고리 -->
+																<div class="col" th:if="${(category.categoryCode).equals('FOOD')}">
+																	<div class="mb-5 fw-bold">축산
 																	</div>
-																		<!-- Links -->
-																		<ul class="list-styled mb-7 fs-sm"  th:if="${ctgSec.categoryLevel} == 3 and ${(ctgSec.parentCategoryCode).equals(ctgFirst.categoryCode)}">
+																	<ul class="list-styled mb-7 fs-sm">
 																			<li class="list-styled-item"><a
-																				class="list-styled-link" href="./shop.html" th:text="${ctgSec.categoryName} + ${ctgSec.categoryCode}">상의</a>
+																				class="list-styled-link" href="./shop.html">돼지</a>
+																			</li>
+																	</ul>
+																	<ul class="list-styled mb-7 fs-sm">
+																			<li class="list-styled-item"><a
+																				class="list-styled-link" href="./shop.html">닭</a>
+																			</li>
+																	</ul>
+																	<ul class="list-styled mb-7 fs-sm">
+																			<li class="list-styled-item"><a
+																				class="list-styled-link" href="./shop.html">소</a>
+																			</li>
+																	</ul>
+																	<ul class="list-styled mb-7 fs-sm">
+																			<li class="list-styled-item"><a
+																				class="list-styled-link" href="./shop.html">기타</a>
+																			</li>
+																	</ul>
+																	
+																</div>
+																<div class="col" th:if="${(category.categoryCode).equals('FOOD')}">
+																	<div class="mb-5 fw-bold">수산물
+																	</div>
+																	<ul class="list-styled mb-7 fs-sm">
+																			<li class="list-styled-item"><a
+																				class="list-styled-link" href="./shop.html">생선</a>
+																			</li>
+																	</ul>
+																	<ul class="list-styled mb-7 fs-sm">
+																			<li class="list-styled-item"><a
+																				class="list-styled-link" href="./shop.html">해산물</a>
+																			</li>
+																	</ul>
+																	<ul class="list-styled mb-7 fs-sm">
+																			<li class="list-styled-item"><a
+																				class="list-styled-link" href="./shop.html">건어물</a>
+																			</li>
+																	</ul>
+																	
+																</div>
+																<div class="col" th:if="${(category.categoryCode).equals('FOOD')}">
+																	<div class="mb-5 fw-bold">과일/채소
+																	</div>
+																	<ul class="list-styled mb-7 fs-sm">
+																			<li class="list-styled-item"><a
+																				class="list-styled-link" href="./shop.html">과일/채소</a>
+																			</li>
+																	</ul>
+																	
+																	
+																</div><!-- Food col End -->
+																
+																
+																
+																<!-- Life 카테고리 -->
+																<div class="col" th:each="ctgFirst : ${allCtg}" th:if="${ctgFirst.categoryLevel} == 2 and ${(ctgFirst.parentCategoryCode).equals('Life')} and ${(category.categoryCode).equals('Life')}" >
+																	<!-- Heading -->
+																	
+																	<div class="mb-5 fw-bold" th:text="${ctgFirst.categoryName}">
+																	</div>
+																	
+																	<!-- LK, LD, LF  -->
+																	<th:block  th:each="ctgSec : ${allCtg}" th:if="${ctgSec.categoryLevel} == 3 and
+																	 ${(ctgSec.parentCategoryCode).equals('LK')}  and ${(ctgFirst.categoryCode).equals('LK') }" >
+																		<!-- Links -->
+																		<ul class="list-styled mb-7 fs-sm">
+																			<li class="list-styled-item"><a
+																				class="list-styled-link" href="./shop.html" th:text="${ctgSec.categoryName} + ${ctgSec.categoryCode}">가전</a>
 																			</li>
 																		</ul>
 																	</th:block><!-- sec -->
-																</div><!--  food col -->
+																	
+																	<th:block  th:each="ctgSec : ${allCtg}" th:if="${ctgSec.categoryLevel} == 3 and
+																	 ${(ctgSec.parentCategoryCode).equals('LF')}  and ${(ctgFirst.categoryCode).equals('LF') }" >
+																		<!-- Links -->
+																		<ul class="list-styled mb-7 fs-sm">
+																			<li class="list-styled-item"><a
+																				class="list-styled-link" href="./shop.html" th:text="${ctgSec.categoryName} + ${ctgSec.categoryCode}">가구</a>
+																			</li>
+																		</ul>
+																	</th:block><!-- sec -->
+																	
+																	<th:block  th:each="ctgSec : ${allCtg}" th:if="${ctgSec.categoryLevel} == 3 and
+																	 ${(ctgSec.parentCategoryCode).equals('LD')}  and ${(ctgFirst.categoryCode).equals('LD') }" >
+																		<!-- Links -->
+																		<ul class="list-styled mb-7 fs-sm">
+																			<li class="list-styled-item"><a
+																				class="list-styled-link" href="./shop.html" th:text="${ctgSec.categoryName} + ${ctgSec.categoryCode}">생활</a>
+																			</li>
+																		</ul>
+																	</th:block><!-- sec -->
+																	
+																		
+																	
+																</div><!--  Life col end -->
+																
 															</div><!-- row -->
 														</div><!-- card-body -->
 													</div><!-- card card-lg -->
@@ -335,12 +422,13 @@
 				
 				
 				
-				
+						<div>
 				
 						<!-- 판매순위, 신상 -->
 						<!-- Brand -->
 						<a class="navbar-brand mx-auto d-none d-xl-block" href="/"> All
 							Right </a>
+						</div>
 		
 						<!-- Nav 찜 장바구니 마이페이지 검색-->
 						<ul class="navbar-nav flex-row">
@@ -377,7 +465,7 @@
 
 			}
 		})
-
+	
 
 		$('#cartId').on('click', function (e) {
 			let member = [[${session.loginMember}]];
@@ -446,10 +534,7 @@
 				}
 			})
 		})
-	$('#deptCategory').on('show.bs.collapse',function(es){
-		console.log(es);
-		console.log(this);
-	})
 	</script>
+    <script th:src="@{/js/theme.bundle.js}"></script>
 </div>
 </html>
