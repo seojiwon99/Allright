@@ -8,7 +8,7 @@
 <div layout:fragment="content">
 
 <!-- CONTENT -->
-    <section class="pt-7 pb-12">
+    <section class="pt-7 pb-12" >
       <div class="container">
         <div class="row">
           <div class="col-12 text-center">
@@ -80,7 +80,7 @@
             </nav>
 
           </div>
-          <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
+          <div class="col-12 col-md-9 col-lg-8 offset-lg-1" id="test">
 			
             <!-- Order -->
             <div class="card card-lg mb-5 border">
@@ -90,7 +90,7 @@
                 
                 <div class="card card-sm">
                 
-                <div th:each="lists : ${returnList}">
+                <div th:each="lists : ${returnList}" >
                   <div class="card-body bg-light">
                     <div class="row">
                       <div class="col-6 col-lg-3">
@@ -234,7 +234,7 @@
 							<div class="col-6">
 
 								<!-- Button -->
-								<button class="btn btn-sm w-100 btn-outline-dark deleteBtn" data-orderdetailcode="${lists.orderDetailCode}">반품 취소</button>
+								<button class="btn btn-sm w-100 btn-outline-dark deleteBtn" th:onclick="deleteReturn([[${lists.orderDetailCode}]])" data-orderdetailcode="${lists.orderDetailCode}">반품 취소</button>
 
 							</div>
 						</div>
@@ -254,28 +254,27 @@
     </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-	$(document).ready(function(){
-		$('.deleteBtn').on('click', function(){
-			let orderDetailCode = $(this).data('detailDetailCode');
-			let returnData = {
-					'orderDetailCode' : $('#orderDetailCode').text(),
-			}
-			$.ajax({
-				url : '/buyer/deleteReturn',
-				type : 'POST',
-				contentType : 'application/json',
-				data : JSON.stringify(returnData),
-				success : function(response) {
-					alert("수정 완료");
-					
-				},
-				error : function(err) {
-					console.error('정보 수정 중 오류.');
-					console.log(err);
-				}
-			})
-		});
-	});
+	function deleteReturn(code) {
+		let returnDel = confirm('삭제하시겠습니까?');
+		let returnData = {
+			 'orderDetailCode' : $('#orderDetailCode').text(),
+		}
+		if(returnDel){
+		$.ajax('/buyer/deleteReturn',{
+			type : 'POST',
+			contentType:'application/json',
+			data : JSON.stringify(returnData)
+		})			
+		.done(data => {
+			
+			console.log(data);
+			$('#test').replaceWith(data);
+		})
+		} else {
+			return;
+		}
+	};
+	
 	</script>
 </div>
 </html>

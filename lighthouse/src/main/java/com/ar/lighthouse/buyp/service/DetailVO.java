@@ -24,6 +24,7 @@ public class DetailVO {
    private int discountPrice;
    private int paymentPrice;
    private String orderStatus;
+   private String orderStatusNm;
    @DateTimeFormat(pattern="yyyy-MM-dd")
    private Date orderDate;
    private int mycouponCode;
@@ -50,14 +51,17 @@ public class DetailVO {
   
    List<BuyCancelVO> BuyCancel;
    private String cancelStatus;
+   private String cancelStatusNm;
    private Date cancelRegdate;
    
    List<BuyReturnVO> BuyReturn;
    private String returnStatus;
+   private String returnStatusNm;
    private Date returnRegdate;
    
    List<BuyExchangeVO> BuyExchange;
    private String exchangeStatus;
+   private String exchangeStatusNm;
    private Date exchangeRegdate;
    
    

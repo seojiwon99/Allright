@@ -32,7 +32,7 @@ public interface BuyerPageMapper {
 	
 	public List<MyInquiryVO> selectMyInquiryList(String memberId);
 	
-	public List<WishVO> selectWishList(Criteria cri);
+	public List<WishVO> selectWishList(String memberId);
 
 	public List<BuyCancelVO> selectCancelList(String memberId);
 	
