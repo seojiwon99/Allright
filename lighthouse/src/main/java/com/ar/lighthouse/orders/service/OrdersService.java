@@ -43,8 +43,8 @@ public interface OrdersService {
 	public int removeCart(String memberId, int cartNum);
 	
 	//환불 후 환불 가능 금액 credit 테이블 업데이트
-	public int editTossRefundAmount(String paymentKey, Long refundAmount);
+	public int editTossRefundAmount(String paymentKey, int refundAmount);
 	
 	//환불 후 환불 가능 금액 orders 테이블 업데이트
-	public int editOrderRefundAmount(String paymentKey, Long refundAmount);
+	public int editOrderRefundAmount(String paymentKey, int refundAmount);
 }

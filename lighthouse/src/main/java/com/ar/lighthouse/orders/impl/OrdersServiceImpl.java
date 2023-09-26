@@ -119,13 +119,13 @@ public class OrdersServiceImpl implements OrdersService{
 
 	@Override
 	// 환불 후 credit 테이블 환불 가능 금액 업데이트
-	public int editTossRefundAmount(String paymentKey, Long refundAmount) {
+	public int editTossRefundAmount(String paymentKey, int refundAmount) {
 		return ordersMapper.updateTossRefundAmount(paymentKey, refundAmount);
 	}
 
 	@Override
 	// 환불 후 orders 테이블 환불 가능 금액 업데이트
-	public int editOrderRefundAmount(String paymentKey, Long refundAmount) {
+	public int editOrderRefundAmount(String paymentKey, int refundAmount) {
 		return ordersMapper.updateOrderRefundAmount(paymentKey, refundAmount);
 	}
 

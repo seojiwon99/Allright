@@ -19,7 +19,7 @@ public class RefundVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date returnDate;
 	private String refundMethod;
-	private Long refundAmount;
+	private int refundAmount;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date completeDate;
 	private String paymentKey;

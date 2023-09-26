@@ -52,8 +52,8 @@ public interface OrdersMapper {
 	public int deleteCart(String memberId, int cartNum);
 	
 	//환불 credit 테이블 환불 가능 금액 업데이트
-	public int updateTossRefundAmount(String paymentKey, Long refundAmount);
+	public int updateTossRefundAmount(String paymentKey, int refundAmount);
 	
 	//환불 order 테이블 환불 가능 금액 업데이트
-	public int updateOrderRefundAmount(String paymentKey, Long refundAmount);
+	public int updateOrderRefundAmount(String paymentKey, int refundAmount);
 }
