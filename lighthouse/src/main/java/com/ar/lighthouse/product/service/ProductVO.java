@@ -39,15 +39,9 @@ public class ProductVO {
 	 	private int productCost;
 	 	private int salePrice;
 	 	String optionVal;
-<<<<<<< mujun
-	 	
-	 	
-	 	List<OptionDetailVO> option;
-=======
 //	 	통계에 필요한
 	 	private int total_cnt;
 	 	List<OptionVO> option;
->>>>>>> master
 
 	 	List<DetailVO> detail;
 
