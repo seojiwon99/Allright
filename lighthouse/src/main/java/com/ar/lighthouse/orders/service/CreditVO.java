@@ -26,5 +26,6 @@ public class CreditVO {
 	private Long totalAmount;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date approvedAt;
+	private int orderCode;
 
 }
