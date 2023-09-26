@@ -10,6 +10,7 @@ import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.service.CancelVO;
 import com.ar.lighthouse.product.service.ExchangeVO;
+import com.ar.lighthouse.product.service.OptionDetailVO;
 import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductVO;
 import com.ar.lighthouse.product.service.ReturnVO;
@@ -41,8 +42,11 @@ public interface ProductMapper {
 		
 		
 	// 옵션 등록
-		public int insertOption(OptionVO optionVO);
-		   
+
+	public int insertOption(OptionDetailVO optionVO);
+
+		// public int insertOption(OptionVO optionVO);
+
 	// 상품이미지 등록
 		public void insertProductImg(ImgsVO imgsVO);
 //		등록
@@ -59,6 +63,22 @@ public interface ProductMapper {
 		
 		//상품 단건조회페이지
 		public ProductVO selectInfo(ProductVO productVO);
+
+
+//	사진등록
+	public int insertImages(ImgsVO imgsVO);
+	
+//	수정
+	public int modifyProduct(ProductVO productVO);
+	
+//	전시상태 수정
+	public int updateExStatus(ProductVO productVO);
+	
+	//상품 단건조회페이지
+	public ProductVO selectInfo(ProductVO productVO);
+	
+	//상품이미지 
+	public List<ImgsVO> selectImgList(String productCode);
 
 //		상품주문목록
 		List<DetailVO> selectOrderDetail(String memberId);
@@ -87,23 +107,24 @@ public interface ProductMapper {
 	//  반품건 확인
 		public List<ExchangeVO> selectReturnList(ReturnVO returnVO);
 
+
+//  상품옵션 vo 리스트
+	public List<OptionDetailVO> getOptionList(OptionDetailVO optionVO);
+	
+	// 택배사 목록 가졍괴
+	public List<CodeVO> selectDeliveryList();
+	
+	//옵션리스트
+	public List<OptionVO> selectOptionList(OptionVO optionVO);
+	
+	public List<OptionDetailVO> selectOptionDetail(OptionVO optionVO);
+
 //		정산데이터
 		public List<SellerCalVO> selectCalList(SellerCalVO sellerCalVO);
 
 //		통계 목록
 		public List<ProductVO> selectStatsList(ProductVO productVO); 
+		
+	
 
-		
-		
-	//  상품옵션 vo 리스트
-		public List<OptionVO> getOptionList(OptionVO optionVO);
-		
-		// 택배사 목록 가졍괴
-		public List<CodeVO> selectDeliveryList();
-		
-		
-
-		
-
-		
 }

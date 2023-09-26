@@ -16,5 +16,9 @@ public class ReviewVO {
 	int reviewStar;
 	Date reviewRegdate;
 	ImgsVO reviewImg;
+	
 	int reviewCount;
+	
+	//리뷰 평균 별점
+	int reviewStarAvg;
 }

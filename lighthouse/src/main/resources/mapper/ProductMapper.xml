@@ -459,6 +459,47 @@
 		where product_code = #{productCode}
 	</select>
 
+
+<!-- optionVo list -->
+<select id="selectOptionList" resultType="OptionVO">
+	select * from ar_option where product_code = #{productCode}
+</select>
+
+<!-- 옵션 디테일 -->
+<select id="selectOptionDetail" resultType="OptionDetailVO">
+	select * from ar_option_detail where product_code = #{productCode}
+</select>
+
+<!-- 취소목록 -->
+
+<resultMap type="CancelVO" id="selectCancelList">
+	<result column="cancel_code" property="cancelCode"/>
+	<result column="cancel_reason" property="cancelReason"/>
+	<result column="order_detail_code" property="orderDetailCode"/>
+	<result column="product_name" property="productName"/>
+	<result column="order_status" property="orderStatus"/>
+	<result column="charge_date" property="chargeDate"/>
+	<result column="cancel_regdate" property="cancelRegdate"/>
+	<result column="member_name" property="memberName"/>
+</resultMap>
+
+<select id="selectCancelList" resultMap="selectCancelList">
+select c.cancel_code
+      , d.order_detail_code
+      , p.product_name
+      , d.order_status
+      , c.cancel_reason
+      , o.charge_date
+      , c.cancel_regdate
+      , m.member_name
+FROM ar_cancel c
+JOIN ar_order_detail d ON c.order_detail_code = d.order_detail_code
+JOIN ar_orders o ON d.order_code = o.order_code
+JOIN ar_option z ON z.option_code = d.option_code
+JOIN ar_products p ON p.product_code = z.product_code
+JOIN ar_member m ON m.member_id = o.member_id
+</select>
+
 	<!-- 판매자 마이페이지 -->
 	<select id="selectSellerInfo" resultType="MemberVO">
 		select member_name
@@ -472,6 +513,7 @@
 		ar_member
 		WHERE member_id = #{memberId}
 	</select>
+
 
 	<!-- 정산건 목록 -->
 	<resultMap type="SellerCalVO" id="selectCalList">
@@ -683,36 +725,29 @@
 	<!-- 김무준의 상세페이지~~ -->
 	<select id="selectInfo" resultType="ProductVO">
 		select member_id
-		,
-		p.product_code
-		, p.category_code
-		, p.product_name
-		, p.product_content
-		,
-		p.product_location
-		, p.product_cost
-		, p.product_regdate
-		, p.sale_price
-		,
-		p.product_brand
-		, p.product_origin
-		, p.product_makeorigin
-		,
-		p.delivery_cost
-		, p.return_cost
-		, p.exchange_cost
-		, p.delivery_service
-		,
-		p.product_status
-		, i.upload_name
-		, i.img_content
-		from ar_products p ,
-		ar_imgs i
-		where p.product_code = i.product_code
-		and p.product_code =
-		#{productCode}
-	</select>
 
+			 , p.product_code
+             , p.category_code
+             , p.product_name
+             , p.product_content
+             , p.product_location
+             , p.product_cost
+             , p.product_regdate
+             , p.sale_price
+             , p.product_brand
+             , p.product_origin
+             , p.product_makeorigin
+             , p.delivery_cost
+             , p.return_cost
+             , p.exchange_cost
+             , p.delivery_service
+             , p.product_status 
+		from ar_products p  
+        where p.product_code = #{productCode}
+		
+		
+	</select>
+	
 	<!-- 택배사 가져오기 -->
 	<select id="selectDeliveryList" resultType="CodeVO">
 		SELECT *
