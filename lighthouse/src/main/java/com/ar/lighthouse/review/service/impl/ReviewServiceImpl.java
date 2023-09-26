@@ -41,7 +41,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	//리뷰 수
 	@Override
-	public List<ReviewVO> countGetReview(ReviewVO reviewVO) {
+	public int countGetReview(ReviewVO reviewVO) {
 		return mapper.countReview(reviewVO);
 	}
 
@@ -63,6 +63,12 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public void addReviewDeclare(DeclareVO declareVO) {
 		mapper.reviewDeclare(declareVO);
+	}
+
+	//리뷰 평균별점
+	@Override
+	public int starAvg(ReviewVO reviewVO) {
+		return mapper.reviewStarAvg(reviewVO);
 	}
 
 

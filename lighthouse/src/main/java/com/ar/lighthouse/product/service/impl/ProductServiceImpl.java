@@ -13,7 +13,7 @@ import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.mapper.ProductMapper;
 import com.ar.lighthouse.product.service.CancelVO;
 import com.ar.lighthouse.product.service.ExchangeVO;
-import com.ar.lighthouse.product.service.OptionVO;
+import com.ar.lighthouse.product.service.OptionDetailVO;
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
 import com.ar.lighthouse.product.service.ReturnVO;
@@ -44,7 +44,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public int addProduct(ProductVO productVO) {
 		int result = productMapper.insertProduct(productVO);
-		List<OptionVO> optionVO = new ArrayList();
+		List<OptionDetailVO> optionVO = new ArrayList();
 		if (result > 0) {
 			int length = 0;
 			String code = productVO.getProductCode();
@@ -130,7 +130,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<OptionVO> getOptionList(OptionVO optionVO) {
+	public List<OptionDetailVO> getOptionList(OptionDetailVO optionVO) {
 		return productMapper.getOptionList(optionVO);
 	}
 

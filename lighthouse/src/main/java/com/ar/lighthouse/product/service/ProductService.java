@@ -45,7 +45,7 @@ public interface ProductService {
 	List<ReturnVO> getReturnList(ReturnVO returnVO);
 	
 	//  옵션 VO 리스트
-	public List<OptionVO> getOptionList(OptionVO optionVO);
+	public List<OptionDetailVO> getOptionList(OptionDetailVO optionVO);
 	
 	// 택배사 코드 가져오기
 	List<CodeVO> getDeliveryList();

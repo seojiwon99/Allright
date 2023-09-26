@@ -16,7 +16,10 @@ public interface ReviewMapper {
 	public List<ReviewVO> selectReviewList(ReviewVO reviewVO);
 	
 	//리뷰 수
-	public List<ReviewVO> countReview(ReviewVO reviewVO);
+	public int countReview(ReviewVO reviewVO);
+	
+	//리뷰 별점 평균
+	public int reviewStarAvg(ReviewVO reviewVO); 
 	
 	//리뷰등록
 	public void insertReview(ReviewVO reviewVO);

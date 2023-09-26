@@ -48,7 +48,7 @@ import com.ar.lighthouse.member.service.MemberService;
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.service.CategoryVO;
 import com.ar.lighthouse.product.service.ImgsListVO;
-import com.ar.lighthouse.product.service.OptionVO;
+import com.ar.lighthouse.product.service.OptionDetailVO;
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
 import com.ar.lighthouse.productinquiry.service.ProductInquiryService;
@@ -78,7 +78,7 @@ public class ProductController {
 
 	@Autowired
 	MainPageService mainPageService;
-	
+
 	@Autowired
 	CartService cartService;
 
@@ -185,131 +185,131 @@ public class ProductController {
 		return "page/seller/productForm :: #thirdOfChildCate";
 	}
 
-  
 	// 상품 등록
-		@PostMapping("insertProduct")
-		public String addProduct(List<MultipartFile> files ,ProductVO productVO,  HttpServletRequest req, RedirectAttributes rtt) {
-			HttpSession session = req.getSession();
-			MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-			
-			productVO.setMemberId(memberVO.getMemberId());
-			productVO.setCategoryCode("P00001");
-			productVO.setDeliveryService("영차");
+	@PostMapping("insertProduct")
+	public String addProduct(List<MultipartFile> files, ProductVO productVO, HttpServletRequest req,
+			RedirectAttributes rtt) {
+		HttpSession session = req.getSession();
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 
-			// System.out.println(productVO);
-			productService.addProduct(productVO);
-			
-		
-			int i = 0;
-			for(MultipartFile uploadFile : files){
-		    	if(uploadFile.getContentType().startsWith("image") == false){
-		    		System.err.println("this file is not image type");
-		    		return null;
-		    	}
-		    	// System.out.println(i);
-		    	String originalName = uploadFile.getOriginalFilename();
-		        // System.out.println("originalName : " + originalName);
-		        String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
-		        productVO.getProductImg().get(i).setImgName(fileName);
-		        
-		        // System.out.println("fileName : " + fileName);
-		    
-		        //날짜 폴더 생성
-		        String folderPath = makeFolder();
-		        // System.out.println("folderPath"+ folderPath);
-		        String uuid = UUID.randomUUID().toString();	// 유니크한 이름 때문에
-		        //System.out.println("uuid"+uuid);
-		        productVO.getProductImg().get(i).setUploadName(uuid+"_"+fileName);
-		        
-		        String uploadFileName = folderPath +File.separator + uuid + "_" + fileName;
-		        // System.out.println("uploadFileName" + uploadFileName);
-		        productVO.getProductImg().get(i).setUploadPath(folderPath);
-		        
-		        String saveName = uploadPath + File.separator + uploadFileName;
-		        
-		        Path savePath = Paths.get(saveName);
-		        try{
-		        	uploadFile.transferTo(savePath); // 파일의 핵심
-		            //uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
-		        	productVO.getProductImg().get(i).setProductCode(productVO.getProductCode());
-		        	productVO.getProductImg().get(i).setImgOrder(i+1);
-		        	// System.out.println("@@@@@@@@@@@@@" + productVO);
-		        	if(files.get(0) == uploadFile) {
-		        		int idx = originalName.indexOf(".");
-		        		//System.out.println(fileName.substring(fileName.lastIndexOf(".")+1));
-		        		// System.out.println("!!!!!!!!"+originalName.substring(0,idx));
-		        		// System.out.println("여기@@@"+ uploadPath + "\\" + folderPath);
-		        		// System.out.println("파일보기" + "s_" +uuid+"_"+ originalName);
-		        		FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath + "\\" + folderPath, "s_" +uuid+"_"+ originalName));
-		        		// System.out.println("thumbnail" + thumbnail);
-		        		FileInputStream input = new FileInputStream(new File(uploadPath+ "\\" +folderPath, uuid+"_"+originalName));
-		        		Thumbnailator.createThumbnail(input , thumbnail, 100,100);
-		        		
-		        		thumbnail.close();
-		        		
-		        	}
-		        	System.out.println(productVO.getProductImg().get(i));
-		        	productService.addProductImg(productVO.getProductImg().get(i));
-		        	i++;
-		        	
-		        } catch (IOException e) {
-		             e.printStackTrace();	             
-		        }
-		    	
-		  }
-			 
-			rtt.addFlashAttribute("msg", "등륵성공");
-			
-			return "redirect:insertProductForm/"+memberVO.getMemberId();
+		productVO.setMemberId(memberVO.getMemberId());
+		productVO.setCategoryCode("P00001");
+		productVO.setDeliveryService("영차");
+
+		// System.out.println(productVO);
+		productService.addProduct(productVO);
+
+		int i = 0;
+		for (MultipartFile uploadFile : files) {
+			if (uploadFile.getContentType().startsWith("image") == false) {
+				System.err.println("this file is not image type");
+				return null;
+			}
+			// System.out.println(i);
+			String originalName = uploadFile.getOriginalFilename();
+			// System.out.println("originalName : " + originalName);
+			String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
+			productVO.getProductImg().get(i).setImgName(fileName);
+
+			// System.out.println("fileName : " + fileName);
+
+			// 날짜 폴더 생성
+			String folderPath = makeFolder();
+			// System.out.println("folderPath"+ folderPath);
+			String uuid = UUID.randomUUID().toString(); // 유니크한 이름 때문에
+			// System.out.println("uuid"+uuid);
+			productVO.getProductImg().get(i).setUploadName(uuid + "_" + fileName);
+
+			String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
+			// System.out.println("uploadFileName" + uploadFileName);
+			productVO.getProductImg().get(i).setUploadPath(folderPath);
+
+			String saveName = uploadPath + File.separator + uploadFileName;
+
+			Path savePath = Paths.get(saveName);
+			try {
+				uploadFile.transferTo(savePath); // 파일의 핵심
+				// uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
+				productVO.getProductImg().get(i).setProductCode(productVO.getProductCode());
+				productVO.getProductImg().get(i).setImgOrder(i + 1);
+				// System.out.println("@@@@@@@@@@@@@" + productVO);
+				if (files.get(0) == uploadFile) {
+					int idx = originalName.indexOf(".");
+					// System.out.println(fileName.substring(fileName.lastIndexOf(".")+1));
+					// System.out.println("!!!!!!!!"+originalName.substring(0,idx));
+					// System.out.println("여기@@@"+ uploadPath + "\\" + folderPath);
+					// System.out.println("파일보기" + "s_" +uuid+"_"+ originalName);
+					FileOutputStream thumbnail = new FileOutputStream(
+							new File(uploadPath + "\\" + folderPath, "s_" + uuid + "_" + originalName));
+					// System.out.println("thumbnail" + thumbnail);
+					FileInputStream input = new FileInputStream(
+							new File(uploadPath + "\\" + folderPath, uuid + "_" + originalName));
+					Thumbnailator.createThumbnail(input, thumbnail, 100, 100);
+
+					thumbnail.close();
+
+				}
+				System.out.println(productVO.getProductImg().get(i));
+				productService.addProductImg(productVO.getProductImg().get(i));
+				i++;
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		}
 
+		rtt.addFlashAttribute("msg", "등륵성공");
 
-		// 상품 상세보기 사진 정보 보내기
-		@PostMapping("insertDetailImg")
-		public String addDetailImg(Model model,MultipartFile[] uploadFile,ImgsListVO imgVO) {
-			System.out.println(uploadFile);
-			for(var i=0; i<imgVO.getImgsVO().size(); i++) {
-				System.out.println(imgVO.getImgsVO().get(i));			
-			}
-			
-			int idx =0;
-			List<ImgsVO> imgsInfo = new ArrayList<ImgsVO>();
-			
-			for(MultipartFile files : uploadFile) {
-				if(files.getContentType().startsWith("image") == false) {
-					System.err.println("this file is not image type");
-		    		return null;
-				}
-				
-				String originalName = files.getOriginalFilename();
-				
-				String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
-				imgVO.getImgsVO().get(idx).setImgName(fileName);
-				
-				String folderPath = makeFolder();
-				String uuid = UUID.randomUUID().toString();
-				imgVO.getImgsVO().get(idx).setUploadName(uuid+"_"+fileName);
-				
-				String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
-				imgVO.getImgsVO().get(idx).setUploadPath(folderPath);
-				
-				String saveName = uploadPath + File.separator + uploadFileName;
-				
-				Path savePath = Paths.get(saveName);
-				
-				try {
-					files.transferTo(savePath);
-				}catch(IOException e){
-					e.printStackTrace();
-				}
-				
-			}
-			model.addAttribute("img" , imgVO);
-			model.addAttribute("uploadFile", uploadFile);
-			System.out.println(model);
-			return "redirect:insertProductForm";
+		return "redirect:insertProductForm/" + memberVO.getMemberId();
+	}
+
+	// 상품 상세보기 사진 정보 보내기
+	@PostMapping("insertDetailImg")
+	public String addDetailImg(Model model, MultipartFile[] uploadFile, ImgsListVO imgVO) {
+		System.out.println(uploadFile);
+		for (var i = 0; i < imgVO.getImgsVO().size(); i++) {
+			System.out.println(imgVO.getImgsVO().get(i));
 		}
-		
+
+		int idx = 0;
+		List<ImgsVO> imgsInfo = new ArrayList<ImgsVO>();
+
+		for (MultipartFile files : uploadFile) {
+			if (files.getContentType().startsWith("image") == false) {
+				System.err.println("this file is not image type");
+				return null;
+			}
+
+			String originalName = files.getOriginalFilename();
+
+			String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
+			imgVO.getImgsVO().get(idx).setImgName(fileName);
+
+			String folderPath = makeFolder();
+			String uuid = UUID.randomUUID().toString();
+			imgVO.getImgsVO().get(idx).setUploadName(uuid + "_" + fileName);
+
+			String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
+			imgVO.getImgsVO().get(idx).setUploadPath(folderPath);
+
+			String saveName = uploadPath + File.separator + uploadFileName;
+
+			Path savePath = Paths.get(saveName);
+
+			try {
+				files.transferTo(savePath);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+		model.addAttribute("img", imgVO);
+		model.addAttribute("uploadFile", uploadFile);
+		System.out.println(model);
+		return "redirect:insertProductForm";
+	}
+
 //	수정폼
 	@GetMapping("modifyForm")
 	public String modifyForm() {
@@ -416,15 +416,14 @@ public class ProductController {
 		return uploadFileName.replace(File.separator, "/");
 	}
 
-	
 	@PostMapping("editReview")
 	@ResponseBody
-	public ReviewVO editReview(MultipartFile[] files,ReviewVO reviewVO, ImgsVO imgsVO) {
-		System.out.println("review"+reviewVO);
+	public ReviewVO editReview(MultipartFile[] files, ReviewVO reviewVO, ImgsVO imgsVO) {
+		System.out.println("review" + reviewVO);
 
 		reviewService.editReview(reviewVO);
-		//reviewService.editReviewImg(imgsVO);  삭제처리
-		
+		// reviewService.editReviewImg(imgsVO); 삭제처리
+
 		for (MultipartFile uploadFile : files) {
 			if (uploadFile.getContentType().startsWith("image") == false) {
 				System.err.println("this file is not image type");
@@ -467,7 +466,7 @@ public class ProductController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		
+
 		}
 		return reviewVO;
 	}
@@ -481,7 +480,7 @@ public class ProductController {
 
 		return "deleteReview";
 	}
-	
+
 	// 리뷰 신고
 	@PostMapping("reviewDeclare")
 	@ResponseBody
@@ -523,7 +522,7 @@ public class ProductController {
 	public int removeInquiry(@RequestBody Integer queCode) {
 		System.out.println(queCode);
 		if (custominquiryService.removeInquiry(queCode)) {
-	
+
 		}
 		return queCode;
 
@@ -531,10 +530,11 @@ public class ProductController {
 
 	// 상품 단건 조회
 	@GetMapping("goodDetail")
-	public String getGoodDetail(String productCode, Model model, HttpSession session, ProductVO vo, OptionVO optionVO, CodeVO codeVO,Criteria cri) {
-		
-		//페이징
-		
+	public String getGoodDetail(String productCode, Model model, HttpSession session, ProductVO vo, OptionDetailVO optionVO,
+			CodeVO codeVO, Criteria cri) {
+
+		// 페이징
+
 		// 상품정보
 		ProductVO productVO = productService.goodsDetail(vo);
 		model.addAttribute("goods", productVO);
@@ -544,11 +544,12 @@ public class ProductController {
 		reviewVO.setProductCode(productCode);
 		model.addAttribute("review", reviewService.getReviewList(reviewVO));
 		model.addAttribute("count", reviewService.countGetReview(reviewVO));
+		model.addAttribute("reviewAvg", reviewService.starAvg(reviewVO));
 
 		// 리뷰 신고
 		reviewVO.setProductCode(productCode);
 		model.addAttribute("codes", reviewService.reviewCodeList(codeVO));
-		
+
 		// qna 조회
 		ProductInquiryVO productInquiryVO = new ProductInquiryVO();
 		productInquiryVO.setProductCode(productCode);
@@ -559,9 +560,8 @@ public class ProductController {
 		optionVO.setProductCode(productCode);
 		model.addAttribute("options", productService.getOptionList(optionVO));
 		System.out.println(model);
-		
+
 		// 장바구니
-		
 
 		return "page/goods/goodDetail";
 	}
@@ -569,7 +569,7 @@ public class ProductController {
 	// 이미지 보여주기
 	@GetMapping("/display")
 	@ResponseBody
-	public ResponseEntity<byte[]> getFile(String fileName){
+	public ResponseEntity<byte[]> getFile(String fileName) {
 		File file = new File(uploadPath + fileName);
 
 		ResponseEntity<byte[]> result = null;
@@ -585,13 +585,13 @@ public class ProductController {
 		}
 		return result;
 	}
-	
+
 	@PostMapping("insertImg")
 	public String productdetailImg(Model model, ProductVO productVO, RedirectAttributes rttr) {
 //		System.out.println(productVO);
 //		model.addAttribute("product", productVO);
 		rttr.addFlashAttribute("product", productVO);
-		
+
 		return "redirect:/insertProductForm";
 	}
 

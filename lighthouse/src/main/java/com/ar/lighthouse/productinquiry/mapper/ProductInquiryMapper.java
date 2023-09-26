@@ -13,7 +13,7 @@ public interface ProductInquiryMapper {
 	public List<ProductInquiryVO> selectInquiryList(ProductInquiryVO productInquiryVO);
 	
 	//문의 사항 카운트 
-	public List<ProductInquiryVO> inquiryCount(ProductInquiryVO productInquiryVO);
+	public int inquiryCount(ProductInquiryVO productInquiryVO);
 	
 	//문의사항 등록
 	public void insertInquiry(ProductInquiryVO inquiryVO);

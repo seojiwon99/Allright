@@ -12,7 +12,10 @@ public interface ReviewService {
 	public List<ReviewVO> getReviewList(ReviewVO reviewVO);
 	
 	// 리뷰 수 조회
-	public List<ReviewVO> countGetReview(ReviewVO reviewVO); 
+	public int countGetReview(ReviewVO reviewVO); 
+	
+	// 리뷰 별점 평균
+	public int starAvg(ReviewVO reviewVO);
 	
 	//등록
 	public void addReview(ReviewVO reviewVO);
@@ -35,4 +38,8 @@ public interface ReviewService {
 	
 	//리뷰신고
 	public void addReviewDeclare(DeclareVO declareVO);
+
+
+
+
 }

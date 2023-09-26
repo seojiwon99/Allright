@@ -44,7 +44,7 @@ public class ProductVO {
 	 	String optionVal;
 	 	
 	 	
-	 	List<OptionVO> option;
+	 	List<OptionDetailVO> option;
 
 	 	
 	 	

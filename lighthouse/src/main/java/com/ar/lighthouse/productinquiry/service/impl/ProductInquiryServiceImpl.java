@@ -41,7 +41,7 @@ public class ProductInquiryServiceImpl implements ProductInquiryService{
 	}
 
 	@Override
-	public List<ProductInquiryVO> countGetInquiry(ProductInquiryVO productInquiryVO) {
+	public int countGetInquiry(ProductInquiryVO productInquiryVO) {
 		return mapper.inquiryCount(productInquiryVO);
 	}
 

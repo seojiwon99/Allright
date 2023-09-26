@@ -10,7 +10,7 @@ import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.service.CancelVO;
 import com.ar.lighthouse.product.service.ExchangeVO;
-import com.ar.lighthouse.product.service.OptionVO;
+import com.ar.lighthouse.product.service.OptionDetailVO;
 import com.ar.lighthouse.product.service.ProductVO;
 import com.ar.lighthouse.product.service.ReturnVO;
 
@@ -30,7 +30,7 @@ public interface ProductMapper {
 	public int insertProduct(ProductVO productVO);
 	
 	// 옵션 등록
-	public int insertOption(OptionVO optionVO);
+	public int insertOption(OptionDetailVO optionVO);
 	
 	// 상품이미지 등록
 	public void insertProductImg(ImgsVO imgsVO);
@@ -66,7 +66,7 @@ public interface ProductMapper {
 	public List<ReturnVO> selectReturnList(ReturnVO returnVO);
 
 //  상품옵션 vo 리스트
-	public List<OptionVO> getOptionList(OptionVO optionVO);
+	public List<OptionDetailVO> getOptionList(OptionDetailVO optionVO);
 	
 	// 택배사 목록 가졍괴
 	public List<CodeVO> selectDeliveryList();
