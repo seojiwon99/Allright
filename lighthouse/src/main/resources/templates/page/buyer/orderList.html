@@ -82,17 +82,26 @@
           <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
             <!-- Order -->
                 <div>
-				<select id="optionList">
-					<option value="">가격순</option>
-					<option value="">구매일자순</option>
-					<option value="">상품명순</option>
-				</select>
+					<select class="optionList">
+						<option value="payment_price">가격</option>
+						<option value="order_date">구매일자</option>
+						<option value="product_name">상품명</option>
+					</select>
+					<input type="text" class="selectVal" value="" maxlength="50">
+					<div>
+						<span>조회기간</span> 
+						<input type="DATE" id="from" name="from" autocomplete="off"> 
+						<label for="to">~</label> 
+						<input type="DATE" id="to" name="to" autocomplete="off">
+						<input class="count" readonly></input>
+					</div>
 				</div>
+				<button type="button" id="selectOption">검색</button>
             <div class="card card-lg mb-5 border">
-              <div class="card-body pb-0">
+              <div class="card-body pb-0" id="orderOption">
 				<!-- 반복문 시작 -->
                 <!-- Info -->
-                <div class="card card-sm orderList">
+                <div class="card card-sm orderList" id="orderOption">
                 <div th:each="lists : ${orderList}" th:data-orderdetailcode="${lists.orderDetailCode}" class="order">
                   <div class="card-body bg-light">
                     <div class="row">
@@ -221,27 +230,56 @@
   
 	document.querySelector(".orderList").addEventListener("click", function(e) {
 	e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
-
 	var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
     var url="";
-	if(  e.target.matches(".excBtn") ){
-		var url = "exchange";
-		window.location.href = url+"?orderDetailCode=" + orderDetailCode;
-	}else if( e.target.matches(".cancelBtn") ){
-		var url = "cancel"
-		window.location.href = url+"?orderDetailCode=" + orderDetailCode;		
-	}else if(e.target.matches(".retBtn")){
-		var url = "return"
-		window.location.href = url+"?orderDetailCode=" + orderDetailCode;
-	}else{
-		return;
-	}
-  });
-  	
-	$('#optionList').on('change',function(){
-		let selOption = $('#select option:selected').val();
+		if(  e.target.matches(".excBtn") ){
+			var url = "exchange";
+			window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+		}else if( e.target.matches(".cancelBtn") ){
+			var url = "cancel"
+			window.location.href = url+"?orderDetailCode=" + orderDetailCode;		
+		}else if(e.target.matches(".retBtn")){
+			var url = "return"
+			window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+		}else{
+			return;
+		}
+    });
+	
+
+
+	$('#selectOption').on('click',function(){
+		let key = $('.optionList').val();
+		let value = $('.selectVal').val();
+		let fromDate = $('#from').val();
+		let toDate = $('#to').val();
+		var itemCount = document.querySelectorAll(".order").length;
 		
-	}
+	    // document.querySelector(".count").value = itemCount;
+		
+		console.log(key, value, fromDate, toDate, itemCount);
+		
+		$.ajax({
+			url: '/page/buyer/orderOption',
+			type: 'get',
+			data: {
+				"searchKey": key,
+				"searchValue" : value,
+				fromDate,
+				toDate
+			}
+		})
+		.done(data => {
+			
+			$('#orderOption').replaceWith(data);
+			itemCount = document.querySelectorAll(".order").length;
+			console.log(itemCount);
+			document.querySelector(".count").value = itemCount;
+		})
+		.fail(reject => {
+			console.log(reject);
+		})
+	});
 
 </script>
 </div>

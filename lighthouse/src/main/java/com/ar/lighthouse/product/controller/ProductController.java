@@ -302,7 +302,7 @@ public class ProductController {
 	public String productDetail(Model model, HttpSession session) {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-		model.addAttribute("productSelectList", productService.getOptionProduct(memberId));
+		model.addAttribute("getOrderOptionList", productService.getOptionProduct(memberId));
 
 		return "page/seller/productList :: #sortList";
 	}

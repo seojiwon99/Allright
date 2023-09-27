@@ -68,4 +68,6 @@ public interface BuyerPageMapper {
 
 	public int getPageCnt(Criteria cri);
 	
+	public List<DetailVO> selectOptionList(DetailVO detailVO);
+	
 }
