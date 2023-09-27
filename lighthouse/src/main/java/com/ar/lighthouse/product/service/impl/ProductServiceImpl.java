@@ -13,6 +13,7 @@ import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.mapper.ProductMapper;
 import com.ar.lighthouse.product.service.CancelVO;
 import com.ar.lighthouse.product.service.ExchangeVO;
+import com.ar.lighthouse.product.service.OptionDetailVO;
 import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
@@ -25,9 +26,7 @@ public class ProductServiceImpl implements ProductService{
 
    @Autowired
    ProductMapper productMapper;
-   
-
-
+ 
 
 	@Override
 	public List<ProductVO> getproductList(String memberId) {
@@ -49,6 +48,7 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 //  상품테이블 등록
+//  상품테이블 등록
    @Override
    public int addProduct(ProductVO productVO) {
       int result = productMapper.insertProduct(productVO);
@@ -57,10 +57,15 @@ public class ProductServiceImpl implements ProductService{
          String code = productVO.getProductCode();
          if(productVO.getOption().size() == 0) {
             // productVO.getOption().get(0).setOptionLast("없음");
-            
-            productMapper.insertOption(productVO.getOption().get(0));
+        	OptionVO noptionVO = new OptionVO();
+        	noptionVO.setProductCode(code);
+        	noptionVO.setOptionName("없음");
+        	noptionVO.setOptionValue("없음");
+ 
+            productMapper.insertOption(noptionVO);
          }else {
             for(int i = 0; i< productVO.getOption().size(); i++) {
+               
 //               if(productVO.getOption().get(i).getOptionCount() == 0) {
 //                  productVO.getOption().get(i).setOptionSellStatus("N");
 //               }
@@ -80,9 +85,16 @@ public class ProductServiceImpl implements ProductService{
 //            }
                // System.out.println(productVO.getOption().get(i));
                productVO.getOption().get(i).setProductCode(code);
+               System.out.println(productVO.getOption().get(i));
                productMapper.insertOption(productVO.getOption().get(i));
                
                // System.out.println(productVO.getOption().get(i));
+            }
+            if(productVO.getOptionDetail().size() != 0) {
+            	for(int i =0; i<productVO.getOptionDetail().size(); i++) {
+            		productVO.getOptionDetail().get(i).setProductCode(code);
+            		productMapper.insertOptionDetail(productVO.getOptionDetail().get(i));
+            	}            	
             }
             
          }
@@ -143,8 +155,18 @@ public class ProductServiceImpl implements ProductService{
 
 		@Override
 		public List<OptionVO> getOptionList(OptionVO optionVO) {
-			return productMapper.getOptionList(optionVO);
+			List<OptionVO> list = productMapper.selectOptionList(optionVO);
+			for (OptionVO i : list) {
+				String[] op = i.getOptionValue().split(",");
+				List<OptionDetailVO> detailList=new ArrayList<OptionDetailVO>();
+				for (String o : op) {
+					detailList.add(new OptionDetailVO(o.trim()));
+				}
+				i.setDetailVO(detailList);
+			}
+			return list;
 		}
+
 
 
 		// 택배사 코드 가져오기
@@ -154,7 +176,6 @@ public class ProductServiceImpl implements ProductService{
 		}
 		
 
-		
 		@Override
 		public List<ProductInquiryVO> getProductInquiry(String memberId) {
 			return productMapper.selectSellerInquiry(memberId);
@@ -167,26 +188,11 @@ public class ProductServiceImpl implements ProductService{
 		}
 
 
-	
-
-
-      
-      
-
-
-   
-
-
-
    // orderManagement
       @Override
       public List<DetailVO> getOrderOptionList(DetailVO detailVO) {
          return productMapper.selectOrderOptionList(detailVO);
       }
-
-
-      
-   
 
 //      주문상태변경
       @Override
@@ -223,5 +229,20 @@ public class ProductServiceImpl implements ProductService{
       public int addOption(OptionVO optionVO) {
          return 0;
       }
+
+
+
+//	취소건 목록
+	@Override
+	public List<DetailVO> getStaticList(String memberId) {
+		return productMapper.selectStatsList(memberId);
+	}
+
+
+      @Override
+  	public List<OptionDetailVO> getOptionDetail(OptionVO optionVO) {
+  		return productMapper.selectOptionDetail(optionVO);
+  	}
+
 
 }

@@ -5,11 +5,8 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-
+import com.ar.lighthouse.product.service.OptionDetailVO;
 import com.ar.lighthouse.product.service.OptionVO;
-
-import com.ar.lighthouse.common.ImgsVO;
-
 
 import lombok.Data;
 
@@ -17,7 +14,8 @@ import lombok.Data;
 public class DetailVO {
 
 
-		private int orderDetailCode;
+
+	   private int orderDetailCode;
 	   private int orderCode;
 	   private int optionCode;
 	   private int orderCnt;
@@ -25,8 +23,11 @@ public class DetailVO {
 	   private int discountPrice;
 	   private int paymentPrice;
 	   private String orderStatus;
+	   private String orderStatusNm;
+	   
 	   @DateTimeFormat(pattern="yyyy-MM-dd")
 	   private Date orderDate;
+	   
 	   private int mycouponCode;
 	   private String optionCouponCheck;
 	   private String deliveryService;
@@ -41,11 +42,12 @@ public class DetailVO {
    String memberId;
    String memberName;
    int memberTel;
+   String memberEmail;
 
-   
    //상품 테이블 조인
    private String productName;
    private String productCode;
+   private int salePrice;
    
    // 주문 테이블 조인
    private String requestedTerm;
@@ -61,11 +63,14 @@ public class DetailVO {
 // ajax넘어오는값
  String searchValue;
  String searchKey;
+ 
  @DateTimeFormat(pattern="yyyy-MM-dd")
  Date fromDate;
+ 
  @DateTimeFormat(pattern="yyyy-MM-dd")
  Date toDate;
-   
+ int returnCnt;
+ int cancelCnt;
    //취소,반품,교환 
    
   
@@ -86,4 +91,6 @@ public class DetailVO {
    
    // 옵션 VO
    OptionVO option;
+   
+   List<OptionDetailVO> optionDetail;
 }

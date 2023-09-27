@@ -33,11 +33,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ar.lighthouse.admin.service.DeclareVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.cart.service.CartService;
 
 import com.ar.lighthouse.common.CodeVO;
-
+import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.member.service.MemberService;
@@ -87,7 +88,7 @@ public class ProductController {
 	@GetMapping("sellerMain")
 	public String seller() {
 		return "page/seller/sellerMain";
-		
+
 	}
 
 //  판매자 상품문의페이지
@@ -123,8 +124,8 @@ public class ProductController {
 
 //  판매자 mypage
 	@GetMapping("sellerMypage")
-	public String findMember(Model model,HttpSession session) {
-		
+	public String findMember(Model model, HttpSession session) {
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 
@@ -135,7 +136,7 @@ public class ProductController {
 // 주문/발송 페이지
 	@GetMapping("orderManagement")
 	public String productOrder(Model model, HttpSession session) {
-		
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 		model.addAttribute("orderList", productService.getProductOrder(memberId));
@@ -146,17 +147,16 @@ public class ProductController {
 	@GetMapping("orderOptionManagement")
 	public String productOrderOption(Model model, DetailVO detailVO, HttpSession session) {
 
-		 MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-		 String memberId = memberVO.getMemberId();
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
 
-		    detailVO.setMemberId(memberId);
-		    
+		detailVO.setMemberId(memberId);
+
 		List<DetailVO> orderList = productService.getOrderOptionList(detailVO);
 		model.addAttribute("orderList", orderList);
 
 		return "page/seller/orderManagement :: #orderChkList";
 	}
-
 
 //주문배송정보입력
 
@@ -188,11 +188,11 @@ public class ProductController {
 
 //  정산/통계 페이지
 	@GetMapping("settlementManagement")
-	public String getCalList(HttpSession session, ExchangeVO exchangeVO, ReturnVO returnVO ) {
-		
+	public String getCalList(HttpSession session, ExchangeVO exchangeVO, ReturnVO returnVO) {
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-		
+
 		exchangeVO.setMemberId(memberId);
 		returnVO.setMemberId(memberId);
 		return "page/seller/settlementManagement";
@@ -207,7 +207,12 @@ public class ProductController {
 
 //  통계페이지
 	@GetMapping("statisticsPage")
-	public String getstatisticsPage() {
+	public String getstatisticsPage(DetailVO detailVO, HttpSession session, Model model) {
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
+
+		model.addAttribute("staticList", productService.getStaticList(memberId));
+
 		return "page/seller/statistics";
 	}
 
@@ -220,22 +225,20 @@ public class ProductController {
 
 		return "page/seller/cancelProduct";
 	}
-	
-	//상품 취소검색 기능
-		@GetMapping("cancelOption") // Model model, CancelVO cancelVO
-		public String cancelSeaList(Model model, CancelVO cancelVO, HttpSession session) {
 
-			 MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-			 String memberId = memberVO.getMemberId();
+	// 상품 취소검색 기능
+	@GetMapping("cancelOption") // Model model, CancelVO cancelVO
+	public String cancelSeaList(Model model, CancelVO cancelVO, HttpSession session) {
 
-			 cancelVO.setMemberId(memberId);
-			    
-			 model.addAttribute("cancelInfo", productService.getCancelSeaList(cancelVO));
-			
-			
-			return "page/seller/cancelProduct :: #cancelList";
-		}
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
 
+		cancelVO.setMemberId(memberId);
+
+		model.addAttribute("cancelInfo", productService.getCancelSeaList(cancelVO));
+
+		return "page/seller/cancelProduct :: #cancelList";
+	}
 
 //  교환 관리 페이지
 	@GetMapping("exchangeList")
@@ -244,11 +247,10 @@ public class ProductController {
 
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-		
+
 		exchangeVO.setMemberId(memberId);
 		returnVO.setMemberId(memberId);
 
-		
 		combinedInfo.addAll(productService.getExchangeList(exchangeVO));
 		combinedInfo.addAll(productService.getReturnList(returnVO));
 
@@ -265,9 +267,9 @@ public class ProductController {
 
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-		
+
 		exchangeVO.setMemberId(memberId);
-		
+
 		combinedSearch.addAll(productService.getReturnSeaList(exchangeVO));
 		combinedSearch.addAll(productService.getExchangeSeaList(exchangeVO));
 		model.addAttribute("exReList", combinedSearch);
@@ -286,7 +288,7 @@ public class ProductController {
 	public String productList(Model model, HttpSession session) {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-		model.addAttribute("productList" , productService.getproductList(memberId));
+		model.addAttribute("productList", productService.getproductList(memberId));
 		// 모델에 상품 목록 추가
 		return "page/seller/productList";
 	}
@@ -296,15 +298,15 @@ public class ProductController {
 	public String productDetail(Model model, HttpSession session) {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-		model.addAttribute("productSelectList", productService.getOptionProduct(memberId));
+		model.addAttribute("getOrderOptionList", productService.getOptionProduct(memberId));
 
 		return "page/seller/productList :: #sortList";
 	}
 
-	//	등록폼
+	// 등록폼
 	@GetMapping("insertProduct")
 	public String productForm(Model model, CategoryVO categoryVO, CodeVO codeVO) {
-		// model.addAttribute("getCategoryList", mainPageService.getCategoryList());
+		model.addAttribute("getCategoryList", mainPageService.getAllCategoryList());
 		model.addAttribute("delivery", productService.getDeliveryList());
 		System.out.println(model);
 		return "page/seller/productForm";
@@ -334,15 +336,13 @@ public class ProductController {
 	// 상품 등록
 	@PostMapping("insertProduct")
 	public String addProduct(List<MultipartFile> files, ProductVO productVO, HttpServletRequest req,
-		RedirectAttributes rtt, ImgsListVO imgsVO) {
+			RedirectAttributes rtt, ImgsListVO imgsVO) {
 		HttpSession session = req.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-		// System.out.println(productVO);
 
 		productVO.setMemberId(memberVO.getMemberId());
-		// productVO.setMemberId("test");
+
 		productVO.setCategoryCode("MSU");
-		// productVO.setDeliveryService("영차");
 
 		productService.addProduct(productVO);
 
@@ -355,7 +355,6 @@ public class ProductController {
 			String originalName = uploadFile.getOriginalFilename();
 			String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
 			productVO.getProductImg().get(i).setImgName(fileName);
-
 
 			// 날짜 폴더 생성
 			String folderPath = makeFolder();
@@ -376,7 +375,7 @@ public class ProductController {
 				productVO.getProductImg().get(i).setImgOrder(i + 1);
 				if (files.get(0) == uploadFile) {
 					int idx = originalName.indexOf(".");
-	
+
 					FileOutputStream thumbnail = new FileOutputStream(
 							new File(uploadPath + "\\" + folderPath, "s_" + uuid + "_" + originalName));
 					FileInputStream input = new FileInputStream(
@@ -405,7 +404,7 @@ public class ProductController {
 
 		rtt.addFlashAttribute("msg", "등륵성공");
 
-		return "redirect:productList/" + memberVO.getMemberId();
+		return "redirect:productList";
 	}
 
 	// 상품 상세보기 사진 정보 보내기
@@ -563,12 +562,57 @@ public class ProductController {
 
 	@PostMapping("editReview")
 	@ResponseBody
-	public ReviewVO editReview(MultipartFile[] files, @RequestBody ReviewVO reviewVO) {
-		System.out.println(reviewVO);
+	public ReviewVO editReview(MultipartFile[] files, ReviewVO reviewVO, ImgsVO imgsVO) {
+		System.out.println("review" + reviewVO);
 
 		reviewService.editReview(reviewVO);
-		return reviewVO;
+		// reviewService.editReviewImg(imgsVO); 삭제처리
 
+		for (MultipartFile uploadFile : files) {
+			if (uploadFile.getContentType().startsWith("image") == false) {
+				System.err.println("this file is not image type");
+				return null;
+			}
+
+			String originalName = uploadFile.getOriginalFilename();
+			System.out.println("originalName : " + originalName);
+			String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
+			imgsVO.setImgName(fileName);
+
+			System.out.println("fileName : " + fileName);
+
+			// 날짜 폴더 생성
+			String folderPath = makeFolder();
+
+			// UUID
+			String uuid = UUID.randomUUID().toString(); // 유니크한 이름 때문에
+			// 저장할 파일 이름 중간에 "_"를 이용하여 구분
+			imgsVO.setUploadName(uuid + "_" + fileName);
+
+			// System.out.println("uuid : " + uuid);
+
+			String uploadFileName = folderPath + File.separator + uuid + "_" + fileName;
+			// System.out.println("uploadFileName : " + uploadFileName);
+			imgsVO.setUploadPath(folderPath);
+
+			String saveName = uploadPath + File.separator + uploadFileName;
+			// System.out.println("saveName : " + saveName);
+
+			Path savePath = Paths.get(saveName);
+			// System.out.println("savePath : " + savePath);
+			// Paths.get() 메서드는 특정 경로의 파일 정보를 가져옵니다.(경로 정의하기)
+			// System.out.println("path : " + saveName);
+			try {
+				uploadFile.transferTo(savePath); // 파일의 핵심
+				// uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
+				imgsVO.setReviewCode(reviewVO.getReviewCode());
+				reviewService.addReviewImg(imgsVO);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+		return reviewVO;
 	}
 
 	// 리뷰 삭제
@@ -579,6 +623,14 @@ public class ProductController {
 		reviewService.removeReview(reviewCode);
 
 		return "deleteReview";
+	}
+
+	// 리뷰 신고
+	@PostMapping("reviewDeclare")
+	@ResponseBody
+	public String reviewDeclare(@RequestBody DeclareVO declareVO) {
+		reviewService.addReviewDeclare(declareVO);
+		return null;
 	}
 
 	// qna 등록
@@ -602,7 +654,6 @@ public class ProductController {
 		if (custominquiryService.editInquiry(inquiryVO)) {
 			System.out.println("성공");
 		}
-		
 
 		return inquiryVO;
 
@@ -621,10 +672,11 @@ public class ProductController {
 	}
 
 	// 상품 단건 조회
-
 	@GetMapping("goodDetail")
+	public String getGoodDetail(String productCode, Model model, HttpSession session, ProductVO vo, OptionVO optionVO,
+			CodeVO codeVO, Criteria cri) {
 
-	public String getGoodDetail(String productCode, Model model, HttpSession session, ProductVO vo, OptionVO optionVO) {
+		// 페이징
 
 		// 상품정보
 		ProductVO productVO = productService.goodsDetail(vo);
@@ -635,15 +687,22 @@ public class ProductController {
 		reviewVO.setProductCode(productCode);
 		model.addAttribute("review", reviewService.getReviewList(reviewVO));
 		model.addAttribute("count", reviewService.countGetReview(reviewVO));
+		model.addAttribute("reviewAvg", reviewService.starAvg(reviewVO));
+
+		// 리뷰 신고
+		reviewVO.setProductCode(productCode);
+		model.addAttribute("codes", reviewService.reviewCodeList(codeVO));
 
 		// qna 조회
 		ProductInquiryVO productInquiryVO = new ProductInquiryVO();
 		productInquiryVO.setProductCode(productCode);
 		model.addAttribute("inquiry", custominquiryService.getInquiryList(productInquiryVO));
+		model.addAttribute("inquiryCount", custominquiryService.countGetInquiry(productInquiryVO));
 
 		// 옵션 조회
 		optionVO.setProductCode(productCode);
 		model.addAttribute("options", productService.getOptionList(optionVO));
+		model.addAttribute("optionDetail", productService.getOptionDetail(optionVO));
 		System.out.println(model);
 
 		// 장바구니
@@ -671,7 +730,7 @@ public class ProductController {
 		return result;
 	}
 
-@PostMapping("insertImg")
+	@PostMapping("insertImg")
 	public String productdetailImg(Model model, ProductVO productVO, ImgsListVO imgsList, RedirectAttributes rttr) {
 		System.out.println(imgsList);
 //		model.addAttribute("product", productVO);

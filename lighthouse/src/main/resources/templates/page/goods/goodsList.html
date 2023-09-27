@@ -34,7 +34,7 @@
                                        data-bs-parent="#productsNav">
                                        <div class="py-4 ps-5">
                                        
-                                       	<th:block th:each="middle : ${allCtg}" th:if="${middle.categoryLevel} == 2 and ${(middle.parentCategoryCode).equals('Fassion')} and ${(ctg.categoryCode).equals('Fassion')}">
+                                          <th:block th:each="middle : ${allCtg}" th:if="${middle.categoryLevel} == 2 and ${(middle.parentCategoryCode).equals('Fassion')} and ${(ctg.categoryCode).equals('Fassion')}">
                                           <div class="form-check mb-3" >
                                              <input class="form-check-input" th:id="${middle.categoryCode}"
                                                 type="checkbox"> <label class="form-check-label"
@@ -44,10 +44,10 @@
                                         
                                         <th:block th:each="middle : ${allCtg}" th:if="${middle.categoryLevel} == 2 and ${(middle.parentCategoryCode).equals('FOOD')} and ${(ctg.categoryCode).equals('FOOD')}">
                                           <div class="form-check mb-3" >
-                                          	<a th:id="${middle.categoryCode}" th:href="|/PList?ctg=${middle.categoryCode}|">
+                                             <a th:id="${middle.categoryCode}" th:href="|/PList?ctg=${middle.categoryCode}|">
                                                 <label class="form-check-label"
                                                 th:for="${middle.categoryCode}" th:text="${middle.categoryName}"> Women Tops, Tees & Blouses </label>
-                                          	</a>
+                                             </a>
                                           </div>
                                         </th:block>
                                         
@@ -189,25 +189,25 @@
                      </div>
                   </div>
                </div>
-			
+         
 
-		<div class="row" style="padding-top: 30px">
+      <div class="row" style="padding-top: 30px">
                <!-- Products -->
-			<th:block th:each="product : ${products}">
-				<div class="col-6 col-md-4">
-					<div class="card mb-7">
-						<div class="card-img">
-						<a class="card-img"><img th:src="@{/img/products/}+${#strings.replace(product.upload_path,'\','/')}+@{/}+${product.upload_name}"></a><!-- ${product.upload_path}+${product.upload_name} -->
-						</div>
-						<div class="card-body px-0">
-							<div class="fs-xs">[[${product.category_code}]]</div>
-							<div class="fw-bold">[[${product.product_name}]]</div>
-							<div class="fw-bold text-muted">
-							<span class="fs-xs text-gray-350 text-decoration-line-through">[[${product.product_cost}]]</span>
-							<span class="text-primary">[[${product.product_cost}-${product.sale_price}]]</span>
-							</div>
-						</div>
-						<!-- 별점 -->
+         <th:block th:each="product : ${products}">
+            <div class="col-6 col-md-4">
+               <div class="card mb-7">
+                  <div class="card-img">
+                  <a class="card-img"><img th:src="@{/img/products/}+${#strings.replace(product.upload_path,'\','/')}+@{/}+${product.upload_name}"></a><!-- ${product.upload_path}+${product.upload_name} -->
+                  </div>
+                  <div class="card-body px-0">
+                     <div class="fs-xs">[[${product.category_code}]]</div>
+                     <div class="fw-bold">[[${product.product_name}]]</div>
+                     <div class="fw-bold text-muted">
+                     <span class="fs-xs text-gray-350 text-decoration-line-through">[[${product.product_cost}]]</span>
+                     <span class="text-primary">[[${product.product_cost}-${product.sale_price}]]</span>
+                     </div>
+                  </div>
+                  <!-- 별점 -->
                            <div class="col-auto">
                               <!-- Rating -->
                               <div class="rating fs-xs text-dark" data-value="4">
@@ -229,42 +229,42 @@
                               </div>
                               <span class="fw-bold text-muted">(6)</span>
                              </div>
-						<!-- 별점 END -->
-						<!-- 리뷰 수 -->
-						<!-- 리뷰수 -->
-						
-					</div>
-				</div>
-			</th:block>
-		</div>	
-	<!-- Pagination -->
-					<nav class="d-flex justify-content-center justify-content-md-center mt-10">
-						<ul class="pagination pagination-sm text-gray-400">
-							<li class="page-item" th:if="${pageMaker.prev}"><a
-								class="page-link page-link-arrow"
-								th:href="@{/PList/(pageNum = ${pageMaker.startPage - 1},keyword=${param.keyword}, ctg=${param.ctg})}">
-									<i class="fa fa-caret-left"></i>
-							</a></li>
-							<th:block
-								th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
-								<li th:if="${pageMaker.endPage} ne 0"
-									th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
-									th:each="pageButtom : ${#numbers.sequence(start,end)}"
-									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
-									<a class="page-link" href="#"
-									th:href="@{/PList/(pageNum= ${pageButtom},keyword=${param.keyword}, ctg=${param.ctg})}"
-									th:text="${pageButtom}" style="font-size : x-large;"></a>
-								</li>
-							</th:block>
+                  <!-- 별점 END -->
+                  <!-- 리뷰 수 -->
+                  <!-- 리뷰수 -->
+                  
+               </div>
+            </div>
+         </th:block>
+      </div>   
+   <!-- Pagination -->
+               <nav class="d-flex justify-content-center justify-content-md-center mt-10">
+                  <ul class="pagination pagination-sm text-gray-400">
+                     <li class="page-item" th:if="${pageMaker.prev}"><a
+                        class="page-link page-link-arrow"
+                        th:href="@{/PList/(pageNum = ${pageMaker.startPage - 1},keyword=${param.keyword}, ctg=${param.ctg})}">
+                           <i class="fa fa-caret-left"></i>
+                     </a></li>
+                     <th:block
+                        th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+                        <li th:if="${pageMaker.endPage} ne 0"
+                           th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+                           th:each="pageButtom : ${#numbers.sequence(start,end)}"
+                           th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
+                           <a class="page-link" href="#"
+                           th:href="@{/PList/(pageNum= ${pageButtom},keyword=${param.keyword}, ctg=${param.ctg})}"
+                           th:text="${pageButtom}" style="font-size : x-large;"></a>
+                        </li>
+                     </th:block>
 
-							<li class="page-item" th:if="${pageMaker.next}"><a
-								class="page-link page-link-arrow"
-								th:href="@{/PList/(pageNum = ${pageMaker.endPage + 1},keyword=${param.keyword}, ctg=${param.ctg})}">
-									<i class="fa fa-caret-right"></i>
-							</a></li>
-						</ul>
-					</nav>
-	<!-- pagi end -->
+                     <li class="page-item" th:if="${pageMaker.next}"><a
+                        class="page-link page-link-arrow"
+                        th:href="@{/PList/(pageNum = ${pageMaker.endPage + 1},keyword=${param.keyword}, ctg=${param.ctg})}">
+                           <i class="fa fa-caret-right"></i>
+                     </a></li>
+                  </ul>
+               </nav>
+   <!-- pagi end -->
 
             </div>
          </div>

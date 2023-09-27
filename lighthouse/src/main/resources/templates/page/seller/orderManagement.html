@@ -211,7 +211,7 @@
 											<td><input type="checkbox"></td>
 											<td th:text="${order.orderDetailCode}" />
 											<td th:text="${order.productName}" />
-											<td th:text="${order.optionLast}" />
+											<td th:text="${order.optionDetail[0].optionLast}" />
 											<td th:text="${order.orderCnt}" />
 											<td th:text="${order.memberName}" />
 											<td th:text="${order.requestedTerm}" />
@@ -230,6 +230,8 @@
 											</td>
 											<td
 												th:text="${#dates.format(order.deliveryStart,'yyyy-MM-dd')}" />
+											<td th:text="${order.memberId}" class="visually-hidden"></td>
+											<td th:text="${order.memberEmail}" class="visually-hidden"></td>
 										</tr>
 										<!-- 반복문 종료 -->
 									</tbody>
@@ -296,13 +298,17 @@
                let orderDetailCode = $(tag).closest('tr').find('td:eq(1)').text();
                let productName = $(tag).closest('tr').find('td:eq(2)').text();
                let orderCnt = $(tag).closest('tr').find('td:eq(4)').text();
+               let memberId = $(tag).closest('tr').find('td:eq(11)').text();
+               let memberEmail = $(tag).closest('tr').find('td:eq(12)').text();
                let obj = {'orderDetailCode' : orderDetailCode
                         ,'productName' : productName
                         ,'orderCnt' : orderCnt
+                        ,'memberId' : memberId
+                        ,'memberEmail' : memberEmail
                         };
                orderList.push(obj);
             })
-
+			console.log(orderList);
 
             let tbody = $('#modalData tbody');
             tbody.empty(); 
@@ -316,6 +322,10 @@
             });   
 
          
+         })
+         
+         $('#reasonSend').on('click', function(){
+        	 
          })
 
          $('#checkOrderBtn').on('click', function(){

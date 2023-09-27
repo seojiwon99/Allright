@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ar.lighthouse.productinquiry.mapper.ProductInquiryMapper;
 import com.ar.lighthouse.productinquiry.service.ProductInquiryService;
 import com.ar.lighthouse.productinquiry.service.ProductInquiryVO;
+import com.ar.lighthouse.review.service.ReviewVO;
 
 @Service
 public class ProductInquiryServiceImpl implements ProductInquiryService{
@@ -36,8 +37,12 @@ public class ProductInquiryServiceImpl implements ProductInquiryService{
 	//수정
 	@Override
 	public boolean editInquiry(ProductInquiryVO productInquiryVO) {
-		// TODO Auto-generated method stub
 		return mapper.updateInquiry(productInquiryVO)==1;
+	}
+
+	@Override
+	public int countGetInquiry(ProductInquiryVO productInquiryVO) {
+		return mapper.inquiryCount(productInquiryVO);
 	}
 
 }
