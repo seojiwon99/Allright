@@ -25,6 +25,7 @@ public class DetailVO {
 	   private int paymentPrice;
 	   private String orderStatus;
 	   private String orderStatusNm;
+	   private String orderCheck;
 	   
 	   @DateTimeFormat(pattern="yyyy-MM-dd")
 	   private Date orderDate;
