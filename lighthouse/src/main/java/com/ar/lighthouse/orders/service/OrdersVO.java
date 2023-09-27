@@ -42,9 +42,8 @@ public class OrdersVO {
 	private int[] cartCode;
 	
 	//OptionVO
-	private int optionCode;
-	private String optionName;
-	private String optionValue;
+	private int optionDetailCode;
+	private String optionLast;
 	private int optionPrice;
 	
 	//ProductSVO
@@ -57,6 +56,7 @@ public class OrdersVO {
 	
 	//ImegsVO
 	private String uploadName;
+	private String uploadPath;
 	
 	//CouponsVO
 	private int couponCode;

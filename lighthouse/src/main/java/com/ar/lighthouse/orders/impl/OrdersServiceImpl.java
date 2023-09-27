@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.orders.mapper.OrdersMapper;
 import com.ar.lighthouse.orders.service.CreditVO;
+import com.ar.lighthouse.orders.service.DeliveryVO;
 import com.ar.lighthouse.orders.service.OrderPayVO;
 import com.ar.lighthouse.orders.service.OrdersService;
 import com.ar.lighthouse.orders.service.OrdersVO;
+import com.ar.lighthouse.orders.service.RefundVO;
 
 @Service
 public class OrdersServiceImpl implements OrdersService{
@@ -67,22 +69,34 @@ public class OrdersServiceImpl implements OrdersService{
 	}
 
 	@Override
-	//토스 페이먼트 데이터 DB저장
+	//토스 페이먼트 데이터 DB저장 credit 테이블 저장
 	public int addCredit(CreditVO creditVO) {
 		return ordersMapper.insertCredit(creditVO);
+	}
+	
+	@Override
+	//토스 페이먼츠 환불시 필요 데이터 페이먼츠키, 환불금액 select
+	public RefundVO getRefund(int orderCode, int orderDetailCode, String memberId) {
+		return null;
+	}
+	
+	@Override
+	//토스페이먼츠 환불 DB 데이터 저장
+	public int addRefund(RefundVO refundVO) {
+		return 0;
 	}
 
 	@Override
 	// 주문 총 결제 주문정보 insert
-	public int addOrderPay(String memberId, OrderPayVO orderPayVO) {
-		return ordersMapper.insertOrderPayVO(memberId, orderPayVO);
+	public int addOrderPay(String memberId, DeliveryVO deliveryVO) {
+		return ordersMapper.insertOrderPayVO(memberId, deliveryVO);
 	}
 
 	@Override
 	// 주문 결제한 각 주문상품 상세정보
 	public int addOrders(OrdersVO ordersVO) {
 	int orderSuccess = ordersMapper.insertOrders(ordersVO);
-		return ordersMapper.insertOrders(ordersVO);
+		return orderSuccess;
 	}
 
 	@Override
@@ -93,8 +107,8 @@ public class OrdersServiceImpl implements OrdersService{
 
 	@Override
 	// 주문 완료 후 장바구니 비우기
-	public int removeCart(String memberId, int optionCode) {
-		return ordersMapper.deleteCart(memberId, optionCode);
+	public int removeCart(String memberId, int cartNum) {
+		return ordersMapper.deleteCart(memberId, cartNum);
 	}
-
+	
 }

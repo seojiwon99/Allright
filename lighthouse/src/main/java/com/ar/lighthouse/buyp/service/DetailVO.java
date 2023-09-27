@@ -15,6 +15,7 @@ import lombok.Data;
 public class DetailVO {
 
 
+
 	   private int orderDetailCode;
 	   private int orderCode;
 	   private int optionCode;
@@ -42,7 +43,7 @@ public class DetailVO {
    String memberId;
    String memberName;
    int memberTel;
-   
+
    //상품 테이블 조인
    private String productName;
    private String productCode;

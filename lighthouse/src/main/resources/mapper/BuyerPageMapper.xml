@@ -4,11 +4,12 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
   <mapper namespace="com.ar.lighthouse.buyp.mapper.BuyerPageMapper">
+
 <resultMap type="DetailVO" id="selectDetailList">
 	
 </resultMap>
-  	<!-- 주문 목록 -->
-  	<select id="selectDetailList" resultType="DetailVO">
+     <!-- 주문 목록 -->
+     <select id="selectDetailList" resultType="DetailVO" parameterType="String">
 WITH RankedOrderDetail AS (
     SELECT 
         a.order_cnt,
@@ -78,194 +79,194 @@ FROM
 WHERE 
     rn = 1
 
-  	</select>
+     </select>
 
   
-  	<!-- 개인정보 -->
-  	<select id="selectBuyInfo" resultType="BuyInfoVO" parameterType="String">
-  		SELECT member_name
-  			   , member_email
-  			   , member_pw
-  			   , member_addr
-  			   , member_details_addr
-  			   , member_tel
-  			   , member_birth
-		FROM ar_member
-		WHERE member_id = #{memberId}
-		
-  	</select>
-  	
-  	
-  	<!-- 취소/반품/교환 여부 -->
-	<select id="selectTradeList" resultType="TradeVO" parameterType="String">
-		SELECT b.cancel_code
-		       , b.cancel_status
-		       , b.cancel_regdate
-		       , a.order_detail_code
-		       , a.order_status
-		       , a.order_date
-		       , a.order_cnt
-		       , a.payment_price
-		       , c.return_status
-		       , c.return_regdate
-		       , d.exchange_status
-		       , d.exchange_regdate
-		       , f.product_code
-		       , f.product_name
-		       , f.product_cost
-		       , e.option_detail_code
-			   , h.img_name
-			   , h.img_content
-			   , h.upload_name
-		FROM ar_order_detail a
-		LEFT OUTER JOIN ar_cancel b ON a.order_detail_code = b.order_detail_code 
-		LEFT OUTER JOIN ar_return c ON a.order_detail_code = c.order_detail_code
-		LEFT OUTER JOIN ar_exchange d ON a.order_detail_code = d.order_detail_code
-		LEFT OUTER JOIN ar_option_detail e ON a.option_detail_code = e.option_detail_code
-		LEFT OUTER JOIN ar_products f ON  e.product_code = f.product_code
-		LEFT OUTER JOIN ar_orders g ON g.order_code = a.order_code
-		LEFT OUTER JOIN ar_imgs h ON f.product_code = h.parent_code
-		WHERE g.member_id = {#memberId}	
-	</select>
-	
-	<!-- 개인정보 수정 -->
-	<update id="updateInfo" parameterType="BuyInfoVO">
-		UPDATE ar_member 
-		SET 
-		<if test="memberPw != null and memberPw !=''">
-		      member_pw = #{memberPw}
-		</if>
-		    , member_addr = #{memberAddr}
-		    , member_details_addr = #{memberDetailsAddr}
-		    , member_email = #{memberEmail}
-		    , member_tel = #{memberTel}
-		WHERE member_id = #{memberId}
-	</update>
-	
-	
-	<!-- 쿠폰 -->
-	<select id="selectCouponList" resultType="CouponVO" parameterType="String">
-			SELECT a.coupon_code
-			     , a.coupon_name
-			     , a.coupon_content
-			     , a.coupon_deadline
-			     , a.coupon_condition
-			     , a.coupon_min_price
-			     , a.coupon_max_price
-			     , a.coupon_discount_price
-			     , a.coupon_discount_rate
-			     , b.using_date
-			     , b.end_date
-			     , b.issue_date
-			     , b.coupon_use
-			FROM ar_coupons a
-			JOIN ar_coupon_box b 
-			  ON a.coupon_code = b.coupon_code
-			WHERE member_id = #{memberId}
-	</select>
-	
-	
-	<!-- 문의 내역 -->
-	<select id="selectMyInquiryList" resultType="MyInquiryVO" parameterType="String">
-		SELECT custom_inquiry_code
-		     , custom_inquiry_title
-		     , custom_inquiry_content
-		     , custom_inquiry_regdate
-		     , custom_inquiry_answer
-		     , custom_inquiry_answer_status
-		FROM ar_custom_inquiry
-		WHERE member_id = #{memberId}
-	</select>
-	
-	
-	<!-- 찜 내역 -->
-	<select id="selectWishList" resultType="WishVO" parameterType="String">
-					SELECT a.favorite_code
-					     , a.member_id
-					     , b.product_name
-					     , b.product_cost
-					     , b.product_code
-					     , b.sale_price
-			             , c.upload_name
-					     , c.img_content
-					 FROM ar_favorite a
-					 left outer JOIN ar_products b ON a.product_code = b.product_code
-					 LEFT OUTER JOIN ar_imgs c ON a.product_code = c.product_code
-					 WHERE a.member_id = #{memberId}
-					 ORDER BY a.favorite_code desc
-	</select>
-	
-	<!-- 취소 상세 -->
-	<select id="selectCancelList" resultType="BuyCancelVO" parameterType="String">
-		SELECT a.cancel_code
-		     , a.cancel_reason
-		     , a.cancel_regdate
-		     , a.cancel_retract_date
-		     , order_status_name(a.cancel_status) cancel_status
-		     , a.cancel_date
-		     , b.c_detail_reason
-		     , b.cancel_rejection_reason
-		     , c.order_cnt
-		     , c.payment_price
-		     , c.order_detail_code
-		     , d.option_detail_code
-		     , e.product_name
+     <!-- 개인정보 -->
+     <select id="selectBuyInfo" resultType="BuyInfoVO" parameterType="String">
+        SELECT member_name
+              , member_email
+              , member_pw
+              , member_addr
+              , member_details_addr
+              , member_tel
+              , member_birth
+      FROM ar_member
+      WHERE member_id = #{memberId}
+      
+     </select>
+     
+     
+     <!-- 취소/반품/교환 여부 -->
+   <select id="selectTradeList" resultType="TradeVO" parameterType="String">
+      SELECT b.cancel_code
+             , b.cancel_status
+             , b.cancel_regdate
+             , a.order_detail_code
+             , a.order_status
+             , a.order_date
+             , a.order_cnt
+             , a.payment_price
+             , c.return_status
+             , c.return_regdate
+             , d.exchange_status
+             , d.exchange_regdate
+             , f.product_code
+             , f.product_name
+             , f.product_cost
+             , e.option_detail_code
+            , h.img_name
+            , h.img_content
+            , h.upload_name
+      FROM ar_order_detail a
+      LEFT OUTER JOIN ar_cancel b ON a.order_detail_code = b.order_detail_code 
+      LEFT OUTER JOIN ar_return c ON a.order_detail_code = c.order_detail_code
+      LEFT OUTER JOIN ar_exchange d ON a.order_detail_code = d.order_detail_code
+      LEFT OUTER JOIN ar_option_detail e ON a.option_detail_code = e.option_detail_code
+      LEFT OUTER JOIN ar_products f ON  e.product_code = f.product_code
+      LEFT OUTER JOIN ar_orders g ON g.order_code = a.order_code
+      LEFT OUTER JOIN ar_imgs h ON f.product_code = h.parent_code
+      WHERE g.member_id = {#memberId}   
+   </select>
+   
+   <!-- 개인정보 수정 -->
+   <update id="updateInfo" parameterType="BuyInfoVO">
+      UPDATE ar_member 
+      SET 
+      <if test="memberPw != null and memberPw !=''">
+            member_pw = #{memberPw}
+      </if>
+          , member_addr = #{memberAddr}
+          , member_details_addr = #{memberDetailsAddr}
+          , member_email = #{memberEmail}
+          , member_tel = #{memberTel}
+      WHERE member_id = #{memberId}
+   </update>
+   
+   
+   <!-- 쿠폰 -->
+   <select id="selectCouponList" resultType="CouponVO" parameterType="String">
+         SELECT a.coupon_code
+              , a.coupon_name
+              , a.coupon_content
+              , a.coupon_deadline
+              , a.coupon_condition
+              , a.coupon_min_price
+              , a.coupon_max_price
+              , a.coupon_discount_price
+              , a.coupon_discount_rate
+              , b.using_date
+              , b.end_date
+              , b.issue_date
+              , b.coupon_use
+         FROM ar_coupons a
+         JOIN ar_coupon_box b 
+           ON a.coupon_code = b.coupon_code
+         WHERE member_id = #{memberId}
+   </select>
+   
+   
+   <!-- 문의 내역 -->
+   <select id="selectMyInquiryList" resultType="MyInquiryVO" parameterType="String">
+      SELECT custom_inquiry_code
+           , custom_inquiry_title
+           , custom_inquiry_content
+           , custom_inquiry_regdate
+           , custom_inquiry_answer
+           , custom_inquiry_answer_status
+      FROM ar_custom_inquiry
+      WHERE member_id = #{memberId}
+   </select>
+   
+   
+   <!-- 찜 내역 -->
+   <select id="selectWishList" resultType="WishVO" parameterType="String">
+               SELECT a.favorite_code
+                    , a.member_id
+                    , b.product_name
+                    , b.product_cost
+                    , b.product_code
+                    , b.sale_price
+                      , c.upload_name
+                    , c.img_content
+                FROM ar_favorite a
+                left outer JOIN ar_products b ON a.product_code = b.product_code
+                LEFT OUTER JOIN ar_imgs c ON a.product_code = c.product_code
+                WHERE a.member_id = #{memberId}
+                ORDER BY a.favorite_code desc
+   </select>
+   
+   <!-- 취소 상세 -->
+   <select id="selectCancelList" resultType="BuyCancelVO" parameterType="String">
+      SELECT a.cancel_code
+           , a.cancel_reason
+           , a.cancel_regdate
+           , a.cancel_retract_date
+           , order_status_name(a.cancel_status) cancel_status
+           , a.cancel_date
+           , b.c_detail_reason
+           , b.cancel_rejection_reason
+           , c.order_cnt
+           , c.payment_price
+           , c.order_detail_code
+           , d.option_detail_code
+           , e.product_name
              , f.member_id
              , f.order_code
-		FROM ar_cancel a
-		LEFT JOIN ar_cancel_reject b ON a.CANCEL_REJECTION_REASON = b.CANCEL_REJECTION_REASON
-		LEFT JOIN ar_order_detail c ON c.order_detail_code = a.order_detail_code
-		LEFT JOIN ar_option_detail d ON d.option_detail_code = c.option_detail_code
-		LEFT JOIN ar_products e ON e.product_code = d.product_code
+      FROM ar_cancel a
+      LEFT JOIN ar_cancel_reject b ON a.CANCEL_REJECTION_REASON = b.CANCEL_REJECTION_REASON
+      LEFT JOIN ar_order_detail c ON c.order_detail_code = a.order_detail_code
+      LEFT JOIN ar_option_detail d ON d.option_detail_code = c.option_detail_code
+      LEFT JOIN ar_products e ON e.product_code = d.product_code
         LEFT JOIN ar_orders f ON c.order_code = f.order_code
         WHERE f.member_id = #{memberId}
         ORDER BY a.cancel_regdate DESC
-	</select>
-	
-	<!-- 반품 상세 -->
-	<select id="selectReturnList" resultType="BuyReturnVO" parameterType="String">
-		select a.return_code
-		     , a.return_reason
-		     , a.return_regdate
-		     , a.return_retractdate
-		     , order_status_name(a.return_status) return_status
-		     , b.order_detail_code
-		     , b.order_code
-		     , b.order_cnt
-		     , b.payment_price
-		     , c.option_detail_code
-		     , d.product_name 
+   </select>
+   
+   <!-- 반품 상세 -->
+   <select id="selectReturnList" resultType="BuyReturnVO" parameterType="String">
+      select a.return_code
+           , a.return_reason
+           , a.return_regdate
+           , a.return_retractdate
+           , order_status_name(a.return_status) return_status
+           , b.order_detail_code
+           , b.order_code
+           , b.order_cnt
+           , b.payment_price
+           , c.option_detail_code
+           , d.product_name 
              , e.member_id
-		FROM ar_return a
-		LEFT JOIN ar_order_detail b ON a.order_detail_code = b.order_detail_code
-		LEFT JOIN ar_option_detail c ON b.option_detail_code = c.option_detail_code
-		LEFT JOIN ar_products d ON d.product_code = c.product_code
+      FROM ar_return a
+      LEFT JOIN ar_order_detail b ON a.order_detail_code = b.order_detail_code
+      LEFT JOIN ar_option_detail c ON b.option_detail_code = c.option_detail_code
+      LEFT JOIN ar_products d ON d.product_code = c.product_code
         LEFT JOIN ar_orders e ON e.order_code = b.order_code
-		WHERE e.member_id = #{memberId}
-		ORDER BY a.return_regdate DESC
-	</select>
-	
-	<!-- 교환 상세 -->
-	<select id="selectExchangeList" resultType="BuyExchangeVO" parameterType="String">
-	   SELECT a.exchange_code
-		     , a.exchange_reason
-		     , a.exchange_regdate
-		     , a.exchange_retractdate
-		     , order_status_name(a.exchange_status) exchange_status
-		     , a.exchange_processingdate
-		     , a.exchange_addr
-		     , a.delivery_number
-		     , b.order_detail_code
-		     , b.order_cnt
-		     , b.payment_price
-		     , c.option_detail_code
-		     , d.product_name
+      WHERE e.member_id = #{memberId}
+      ORDER BY a.return_regdate DESC
+   </select>
+   
+   <!-- 교환 상세 -->
+   <select id="selectExchangeList" resultType="BuyExchangeVO" parameterType="String">
+      SELECT a.exchange_code
+           , a.exchange_reason
+           , a.exchange_regdate
+           , a.exchange_retractdate
+           , order_status_name(a.exchange_status) exchange_status
+           , a.exchange_processingdate
+           , a.exchange_addr
+           , a.delivery_number
+           , b.order_detail_code
+           , b.order_cnt
+           , b.payment_price
+           , c.option_detail_code
+           , d.product_name
              , e.order_code
              , e.member_id
-		FROM ar_exchange a
-		LEFT JOIN ar_order_detail b ON a.order_detail_code = b.order_detail_code
-		LEFT JOIN ar_option_detail c ON c.option_detail_code = b.option_detail_code
-		LEFT JOIN ar_products d ON d.product_code = c.product_code
+      FROM ar_exchange a
+      LEFT JOIN ar_order_detail b ON a.order_detail_code = b.order_detail_code
+      LEFT JOIN ar_option_detail c ON c.option_detail_code = b.option_detail_code
+      LEFT JOIN ar_products d ON d.product_code = c.product_code
         LEFT JOIN ar_orders e ON e.order_code = b.order_code
 		WHERE e.member_id = #{memberId}
 		ORDER BY a.exchange_regdate DESC
@@ -405,5 +406,138 @@ WHERE
 		WHERE favorite_code = #{favoriteCode}
 	</delete>
 	
-	
+   <!-- 취소 신청 넘어가는 값 -->
+   <select id="cancelCodePage" resultType="CodeVO">
+      SELECT b.order_code
+           , a.order_detail_code
+           , d.product_name
+           , b.member_id
+           , a.payment_price
+      FROM ar_order_detail a
+      JOIN ar_orders b   ON a.order_code = b.order_code
+      JOIN ar_option_detail c   ON c.option_detail_code = a.option_detail_code
+      JOIN ar_products d ON d.product_code = c.product_code
+      WHERE a.order_detail_code = #{orderDetailCode}
+   </select>
+   
+   <!-- 반품 신청 넘어가는 값 -->
+   <select id="returnCodePage" resultType="CodeVO">
+      SELECT b.order_code
+           , a.order_detail_code
+           , d.product_name
+           , b.member_id
+           , a.payment_price
+      FROM ar_order_detail a
+      LEFT JOIN ar_orders b ON a.order_code = b.order_code
+      LEFT JOIN ar_option_detail c ON c.option_detail_code = a.option_detail_code
+      LEFT JOIN ar_products d ON d.product_code = c.product_code
+      WHERE a.order_detail_code = #{orderDetailCode}
+   </select>
+   
+   <!-- 교환 신청 넘어가는 값 -->
+   <select id="exchangeCodePage" resultType="CodeVO">
+      SELECT b.order_code
+           , a.order_detail_code
+           , d.product_name
+           , b.member_id
+           , a.payment_price
+      FROM ar_order_detail a
+      LEFT JOIN ar_orders b ON a.order_code = b.order_code
+      LEFT JOIN ar_option_detail c ON c.option_detail_code = a.option_detail_code
+      LEFT JOIN ar_products d ON d.product_code = c.product_code
+      WHERE a.order_detail_code=#{orderDetailCode}
+   </select>
+   
+   <!--취소 코드  -->
+   <select id="selectCancelCode" resultType="CodeVO" parameterType="String">
+      SELECT master_code
+           , code_id
+           , code_name
+      FROM ar_code 
+      WHERE master_code = 'cancel_reason'
+   </select>
+   
+   <!--반품 코드  -->
+   <select id="selectReturnCode" resultType="CodeVO" parameterType="String">
+      SELECT master_code
+           , code_id
+           , code_name
+      FROM ar_code 
+      WHERE master_code = 'return_reason'
+   </select>
+   
+   <!--교환 코드 -->
+   <select id="selectExchangeCode" resultType="CodeVO" parameterType="String">
+      SELECT master_code
+           , code_id
+           , code_name
+      FROM ar_code 
+      WHERE master_code = 'exchange_reason'
+   </select>
+   
+   <!--취소 신청  -->
+   <insert id="insertCancel" parameterType="BuyCancelVO">
+      INSERT INTO ar_cancel 
+            (CANCEL_CODE
+            , ORDER_DETAIL_CODE
+            , CANCEL_REASON
+            , cancel_status)
+      VALUES (ca_code
+            , #{orderDetailCode}
+            , #{cancelReason}
+            , 'n')
+   </insert>
+   
+   <!--반품 신청  -->
+   <insert id="insertReturn" parameterType="BuyReturnVO">
+      INSERT INTO ar_return 
+            (RETURN_CODE
+            , ORDER_DETAIL_CODE
+            , RETURN_REASON
+            , RETURN_STATUS)
+      VALUES (re_code
+            , #{orderDetailCode}
+            , #{returnReason}
+            , 'n')
+   </insert>
+   
+   <!-- 교환 신청 -->
+   <insert id="insertExchange" parameterType="BuyExchangeVO">
+      INSERT INTO ar_exchange 
+            (EXCHANGE_CODE
+            , ORDER_DETAIL_CODE
+            , EXCHANGE_REASON
+            , EXCHANGE_ADDR
+            , EXCHANGE_STATUS)
+      VALUES (ex_code
+            , #{orderDetailCode}
+            , #{exchangeReason}
+            , #{exchangeAddr}
+            , 'n')
+   </insert>
+   
+   <!-- 주문 취소 -->
+   <delete id="deleteCancel" parameterType="BuyCancelVO">
+      DELETE ar_cancel
+      WHERE order_detail_code = #{orderDetailCode}
+   </delete>
+   
+   <!-- 반품 취소 -->
+   <delete id="deleteReturn" parameterType="BuyReturnVO">
+      DELETE ar_return 
+      WHERE order_detail_code = #{orderDetailCode}
+   </delete>
+   
+   <!-- 교환 취소 -->
+   <delete id="deleteExchange" parameterType="BuyExchangeVO">
+      DELETE ar_exchange
+      WHERE order_detail_code = #{orderDetailCode}
+   </delete>
+   
+   <!-- 찜 취소 -->
+   <delete id="deleteWish" parameterType="WishVO">
+      DELETE ar_favorite
+      WHERE favorite_code = #{favoriteCode}
+   </delete>
+   
   </mapper>
