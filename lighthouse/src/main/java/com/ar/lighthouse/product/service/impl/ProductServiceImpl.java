@@ -55,8 +55,8 @@ public class ProductServiceImpl implements ProductService{
       List<OptionVO> optionVO = new ArrayList();
       if(result > 0) {
          String code = productVO.getProductCode();
-         if(productVO.getOption().size() == 0) {
-            // productVO.getOption().get(0).setOptionLast("없음");
+         if(productVO.getOption() == null || productVO.getOption().size() == 0) {
+        	System.out.println("@@@@@@@@@@@@@@@@");
         	OptionVO noptionVO = new OptionVO();
         	noptionVO.setProductCode(code);
         	noptionVO.setOptionName("없음");
@@ -90,11 +90,19 @@ public class ProductServiceImpl implements ProductService{
                
                // System.out.println(productVO.getOption().get(i));
             }
-            if(productVO.getOptionDetail().size() != 0) {
+            if(productVO.getOptionDetail() != null || productVO.getOptionDetail().size() != 0) {
             	for(int i =0; i<productVO.getOptionDetail().size(); i++) {
             		productVO.getOptionDetail().get(i).setProductCode(code);
             		productMapper.insertOptionDetail(productVO.getOptionDetail().get(i));
             	}            	
+            }else {
+            	OptionDetailVO detailVO = new OptionDetailVO();
+            	detailVO.setProductCode(code);
+            	detailVO.setOptionLast("없음");
+            	detailVO.setOptionPrice(0);
+            	detailVO.setOptionCount(productVO.getProductCount());
+            	productMapper.insertOptionDetail(detailVO);
+            	
             }
             
          }
