@@ -44,6 +44,7 @@ public class OrdersController {
 	@Autowired
 	OrdersService ordersService;
 	
+	
 
 	// 장바구니에서 구매 상품 가져옴.
 	@PostMapping("orders/pay")
@@ -221,20 +222,26 @@ public class OrdersController {
 			return creditVO;
 		}
 		
-		//토스페이먼츠 환불
-		@GetMapping("orders/cancel")
-		public String orderCancel(@RequestParam (name="orderChkVO") List<OrderChkVO> orderChkVO, HttpSession session) throws IOException, InterruptedException {
-		 
-		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-		String memberId = memberVO.getMemberId(); // 로그인 중인 아이디
+		
+		//토스페이먼츠 환불  규연
+		@PostMapping(value = "/orders/cancel")
+		public String orderCancel(String refundList, HttpSession session) throws IOException, InterruptedException {
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		OrderChkVO[] orderchkList= objectMapper.readValue(refundList, OrderChkVO[].class);
+		for(int i =0; i<orderchkList.length; i++) {
+			System.out.println(orderchkList[i]);
+		}
 	
-		 for(OrderChkVO chk : orderChkVO) {
-		 RefundVO refund = ordersService.getRefund(chk.getOrderCode(), chk.getOrderDetailCode(), memberId);
+		 for(OrderChkVO chk : orderchkList) {
+		 System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
+		 RefundVO refund = ordersService.getRefund(chk.getOrderCode(), chk.getOrderDetailCode(), chk.getMemberId());
 		 RefundVO newRefund = new RefundVO();
 		 //상품 취소 중 쿠폰 사용한 경우 쿠폰 반환
-		 if(refund.getMycouponCode() != 0) {
-			 ordersService.editRefundCoupon(memberId, refund.getMycouponCode());
-		 }
+		 System.out.println(refund.getMycouponCode());
+			  if(refund.getMycouponCode() != 0) { ordersService.editRefundCoupon(chk.getMemberId(),
+			  refund.getMycouponCode()); }
+			 
 		 
 		 //페이먼츠 키 찾을 때 필요한 데이터/ 환불 신청 시 필요한 데이터 = cancelReason, cancelAmount, paymentKey
 		 String paymentKey = refund.getPaymentKey(); // 페이먼츠 키 넣기.
@@ -253,7 +260,6 @@ public class OrdersController {
 		 HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 		 System.out.println(response.body());
 		 
-		ObjectMapper objectMapper = new ObjectMapper();
 	 	String refundVal = response.body();
 		
 		int refundAbleAmount = 0;
@@ -286,7 +292,7 @@ public class OrdersController {
 			ordersService.editTossRefundAmount(paymentKey, refundAbleAmount);
 			ordersService.editOrderRefundAmount(chk.getOrderCode(), refundAbleAmount);
 		}
-		return "/page/seller/cancelProduct";
+		return "/cancelProduct";
 	 }
 				
 }

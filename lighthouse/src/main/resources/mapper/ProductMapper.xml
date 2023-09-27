@@ -89,6 +89,7 @@
    <resultMap type="DetailVO" id="selectOrderDetail">
       <result column="member_id" property="memberId" />
       <result column="member_name" property="memberName" />
+      <result column="member_email" property="memberEmail"/>
       <result column="product_name" property="productName" />
       <result column="order_status" property="orderStatus" />
       <result column="order_date" property="orderDate" />
@@ -119,18 +120,18 @@
       o.delivery_service,
       o.delivery_number,
       o.delivery_start,
-      m.member_name
+      m.member_name,
+      m.member_id,
+      m.member_email
       FROM
       ar_order_detail o
       JOIN
       ar_orders r ON
       o.order_code = r.order_code
       JOIN
-      ar_option_detail x ON o.option_detail_code =
-      x.option_detail_code
+      ar_option_detail x ON o.option_detail_code = x.option_detail_code
       JOIN
-      ar_products p ON
-      x.product_code = p.product_code
+      ar_products p ON x.product_code = p.product_code
       JOIN
       ar_member m ON m.member_id =
       r.member_id
@@ -223,6 +224,7 @@
       , o.charge_date
       , c.cancel_regdate
       , m.member_name
+      , m.member_id
       , o.order_code
       FROM ar_cancel c
       JOIN
@@ -254,6 +256,7 @@
       , o.charge_date
       , c.cancel_regdate
       , m.member_name
+      , m.member_id
       , o.order_code
       FROM ar_cancel c
       JOIN

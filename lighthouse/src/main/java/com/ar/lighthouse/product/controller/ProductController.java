@@ -88,7 +88,7 @@ public class ProductController {
 	@GetMapping("sellerMain")
 	public String seller() {
 		return "page/seller/sellerMain";
-		
+
 	}
 
 //  판매자 상품문의페이지
@@ -124,8 +124,8 @@ public class ProductController {
 
 //  판매자 mypage
 	@GetMapping("sellerMypage")
-	public String findMember(Model model,HttpSession session) {
-		
+	public String findMember(Model model, HttpSession session) {
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 
@@ -136,7 +136,7 @@ public class ProductController {
 // 주문/발송 페이지
 	@GetMapping("orderManagement")
 	public String productOrder(Model model, HttpSession session) {
-		
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 		model.addAttribute("orderList", productService.getProductOrder(memberId));
@@ -147,17 +147,16 @@ public class ProductController {
 	@GetMapping("orderOptionManagement")
 	public String productOrderOption(Model model, DetailVO detailVO, HttpSession session) {
 
-		 MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-		 String memberId = memberVO.getMemberId();
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
 
-		    detailVO.setMemberId(memberId);
-		    
+		detailVO.setMemberId(memberId);
+
 		List<DetailVO> orderList = productService.getOrderOptionList(detailVO);
 		model.addAttribute("orderList", orderList);
 
 		return "page/seller/orderManagement :: #orderChkList";
 	}
-
 
 //주문배송정보입력
 
@@ -189,11 +188,11 @@ public class ProductController {
 
 //  정산/통계 페이지
 	@GetMapping("settlementManagement")
-	public String getCalList(HttpSession session, ExchangeVO exchangeVO, ReturnVO returnVO ) {
-		
+	public String getCalList(HttpSession session, ExchangeVO exchangeVO, ReturnVO returnVO) {
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-		
+
 		exchangeVO.setMemberId(memberId);
 		returnVO.setMemberId(memberId);
 		return "page/seller/settlementManagement";
@@ -207,15 +206,15 @@ public class ProductController {
 	}
 
 //  통계페이지
-   @GetMapping("statisticsPage")
-   public String getstatisticsPage(DetailVO detailVO, HttpSession session, Model model) {
-      MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-      String memberId = memberVO.getMemberId();
-      
-      model.addAttribute("staticList", productService.getStaticList(memberId));
-      
-      return "page/seller/statistics";
-   }
+	@GetMapping("statisticsPage")
+	public String getstatisticsPage(DetailVO detailVO, HttpSession session, Model model) {
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
+
+		model.addAttribute("staticList", productService.getStaticList(memberId));
+
+		return "page/seller/statistics";
+	}
 
 //  상품 취소관리 페이지
 	@GetMapping("cancelProduct") // Model model, CancelVO cancelVO
@@ -226,22 +225,20 @@ public class ProductController {
 
 		return "page/seller/cancelProduct";
 	}
-	
-	//상품 취소검색 기능
-		@GetMapping("cancelOption") // Model model, CancelVO cancelVO
-		public String cancelSeaList(Model model, CancelVO cancelVO, HttpSession session) {
 
-			 MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-			 String memberId = memberVO.getMemberId();
+	// 상품 취소검색 기능
+	@GetMapping("cancelOption") // Model model, CancelVO cancelVO
+	public String cancelSeaList(Model model, CancelVO cancelVO, HttpSession session) {
 
-			 cancelVO.setMemberId(memberId);
-			    
-			 model.addAttribute("cancelInfo", productService.getCancelSeaList(cancelVO));
-			
-			
-			return "page/seller/cancelProduct :: #cancelList";
-		}
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
 
+		cancelVO.setMemberId(memberId);
+
+		model.addAttribute("cancelInfo", productService.getCancelSeaList(cancelVO));
+
+		return "page/seller/cancelProduct :: #cancelList";
+	}
 
 //  교환 관리 페이지
 	@GetMapping("exchangeList")
@@ -250,11 +247,10 @@ public class ProductController {
 
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-		
+
 		exchangeVO.setMemberId(memberId);
 		returnVO.setMemberId(memberId);
 
-		
 		combinedInfo.addAll(productService.getExchangeList(exchangeVO));
 		combinedInfo.addAll(productService.getReturnList(returnVO));
 
@@ -271,9 +267,9 @@ public class ProductController {
 
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-		
+
 		exchangeVO.setMemberId(memberId);
-		
+
 		combinedSearch.addAll(productService.getReturnSeaList(exchangeVO));
 		combinedSearch.addAll(productService.getExchangeSeaList(exchangeVO));
 		model.addAttribute("exReList", combinedSearch);
@@ -292,7 +288,7 @@ public class ProductController {
 	public String productList(Model model, HttpSession session) {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-		model.addAttribute("productList" , productService.getproductList(memberId));
+		model.addAttribute("productList", productService.getproductList(memberId));
 		// 모델에 상품 목록 추가
 		return "page/seller/productList";
 	}
@@ -307,7 +303,7 @@ public class ProductController {
 		return "page/seller/productList :: #sortList";
 	}
 
-	//	등록폼
+	// 등록폼
 	@GetMapping("insertProduct")
 	public String productForm(Model model, CategoryVO categoryVO, CodeVO codeVO) {
 		// model.addAttribute("getCategoryList", mainPageService.getCategoryList());
@@ -340,14 +336,13 @@ public class ProductController {
 	// 상품 등록
 	@PostMapping("insertProduct")
 	public String addProduct(List<MultipartFile> files, ProductVO productVO, HttpServletRequest req,
-		RedirectAttributes rtt, ImgsListVO imgsVO) {
+			RedirectAttributes rtt, ImgsListVO imgsVO) {
 		HttpSession session = req.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 
 		productVO.setMemberId(memberVO.getMemberId());
-	
+
 		productVO.setCategoryCode("MSU");
-	
 
 		productService.addProduct(productVO);
 
@@ -360,7 +355,6 @@ public class ProductController {
 			String originalName = uploadFile.getOriginalFilename();
 			String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
 			productVO.getProductImg().get(i).setImgName(fileName);
-
 
 			// 날짜 폴더 생성
 			String folderPath = makeFolder();
@@ -381,7 +375,7 @@ public class ProductController {
 				productVO.getProductImg().get(i).setImgOrder(i + 1);
 				if (files.get(0) == uploadFile) {
 					int idx = originalName.indexOf(".");
-	
+
 					FileOutputStream thumbnail = new FileOutputStream(
 							new File(uploadPath + "\\" + folderPath, "s_" + uuid + "_" + originalName));
 					FileInputStream input = new FileInputStream(
@@ -638,7 +632,7 @@ public class ProductController {
 		reviewService.addReviewDeclare(declareVO);
 		return null;
 	}
-		
+
 	// qna 등록
 	@PostMapping("insertInquiry")
 	@ResponseBody
@@ -660,7 +654,6 @@ public class ProductController {
 		if (custominquiryService.editInquiry(inquiryVO)) {
 			System.out.println("성공");
 		}
-		
 
 		return inquiryVO;
 
@@ -679,43 +672,43 @@ public class ProductController {
 	}
 
 	// 상품 단건 조회
-	   @GetMapping("goodDetail")
-	   public String getGoodDetail(String productCode, Model model, HttpSession session, ProductVO vo, OptionVO optionVO,
-	         CodeVO codeVO, Criteria cri) {
+	@GetMapping("goodDetail")
+	public String getGoodDetail(String productCode, Model model, HttpSession session, ProductVO vo, OptionVO optionVO,
+			CodeVO codeVO, Criteria cri) {
 
-	      // 페이징
+		// 페이징
 
-	      // 상품정보
-	      ProductVO productVO = productService.goodsDetail(vo);
-	      model.addAttribute("goods", productVO);
+		// 상품정보
+		ProductVO productVO = productService.goodsDetail(vo);
+		model.addAttribute("goods", productVO);
 
-	      // 리뷰정보
-	      ReviewVO reviewVO = new ReviewVO();
-	      reviewVO.setProductCode(productCode);
-	      model.addAttribute("review", reviewService.getReviewList(reviewVO));
-	      model.addAttribute("count", reviewService.countGetReview(reviewVO));
-	      model.addAttribute("reviewAvg", reviewService.starAvg(reviewVO));
+		// 리뷰정보
+		ReviewVO reviewVO = new ReviewVO();
+		reviewVO.setProductCode(productCode);
+		model.addAttribute("review", reviewService.getReviewList(reviewVO));
+		model.addAttribute("count", reviewService.countGetReview(reviewVO));
+		model.addAttribute("reviewAvg", reviewService.starAvg(reviewVO));
 
-	      // 리뷰 신고
-	      reviewVO.setProductCode(productCode);
-	      model.addAttribute("codes", reviewService.reviewCodeList(codeVO));
+		// 리뷰 신고
+		reviewVO.setProductCode(productCode);
+		model.addAttribute("codes", reviewService.reviewCodeList(codeVO));
 
-	      // qna 조회
-	      ProductInquiryVO productInquiryVO = new ProductInquiryVO();
-	      productInquiryVO.setProductCode(productCode);
-	      model.addAttribute("inquiry", custominquiryService.getInquiryList(productInquiryVO));
-	      model.addAttribute("inquiryCount", custominquiryService.countGetInquiry(productInquiryVO));
+		// qna 조회
+		ProductInquiryVO productInquiryVO = new ProductInquiryVO();
+		productInquiryVO.setProductCode(productCode);
+		model.addAttribute("inquiry", custominquiryService.getInquiryList(productInquiryVO));
+		model.addAttribute("inquiryCount", custominquiryService.countGetInquiry(productInquiryVO));
 
-	      // 옵션 조회
-	      optionVO.setProductCode(productCode);
-	      model.addAttribute("options", productService.getOptionList(optionVO));
-	      model.addAttribute("optionDetail", productService.getOptionDetail(optionVO));
-	      System.out.println(model);
+		// 옵션 조회
+		optionVO.setProductCode(productCode);
+		model.addAttribute("options", productService.getOptionList(optionVO));
+		model.addAttribute("optionDetail", productService.getOptionDetail(optionVO));
+		System.out.println(model);
 
-	      // 장바구니
+		// 장바구니
 
-	      return "page/goods/goodDetail";
-	   }
+		return "page/goods/goodDetail";
+	}
 
 	// 이미지 보여주기
 	@GetMapping("/display")
@@ -737,7 +730,7 @@ public class ProductController {
 		return result;
 	}
 
-@PostMapping("insertImg")
+	@PostMapping("insertImg")
 	public String productdetailImg(Model model, ProductVO productVO, ImgsListVO imgsList, RedirectAttributes rttr) {
 		System.out.println(imgsList);
 //		model.addAttribute("product", productVO);

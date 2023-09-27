@@ -14,4 +14,5 @@ public class OrderChkVO {
 	private String cancelReason;
 	private String refundTypecode;
 	private String refundType;
+	private String memberId;
 }

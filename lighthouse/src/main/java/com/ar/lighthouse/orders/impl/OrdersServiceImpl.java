@@ -83,7 +83,7 @@ public class OrdersServiceImpl implements OrdersService{
 	@Override
 	//토스 페이먼츠 환불시 필요 데이터 페이먼츠키, 환불금액 select
 	public RefundVO getRefund(int orderCode, int orderDetailCode, String memberId) {
-		return null;
+		return ordersMapper.selectRefund(orderCode, orderDetailCode, memberId);
 	}
 	
 	@Override
