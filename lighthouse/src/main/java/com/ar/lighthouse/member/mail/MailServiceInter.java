@@ -18,5 +18,10 @@ public interface MailServiceInter {
     
     // 메일 발송
     String sendSimpleMessage(String to) throws Exception;
+    
+    
+    MimeMessage productDelMessage(String to, String reason) throws MessagingException, UnsupportedEncodingException;
+    //판매자에게 상품 삭제 메일
+    String sendDelMessage(String to, String reason) throws Exception;
 
 }

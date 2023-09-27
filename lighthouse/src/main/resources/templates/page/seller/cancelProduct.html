@@ -159,11 +159,12 @@
 									<td th:text="${cancel.orderStatus}"></td>
 									<td th:text="${cancel.cancelReason}"></td>
 									<td th:text="${#dates.format(cancel.chargeDate, 'yyyy-MM-dd')}"></td>
-									<td
-										th:text="${#dates.format(cancel.cancelRegdate, 'yyyy-MM-dd')}"></td>
+									<td th:text="${#dates.format(cancel.cancelRegdate, 'yyyy-MM-dd')}"></td>
 									<td th:text="${cancel.memberName}"></td>
+									<td th:text="${cancel.memberId}" class="visually-hidden"></td>
 									<td th:text="${cancel.orderCode}" class="visually-hidden"></td>
 									<td th:text="${cancel.cancelCode}" class="visually-hidden"></td>
+									
 
 								</tr>
 								<!-- 반복문 종료 -->
@@ -300,25 +301,49 @@ function displayDate(range) {
 	}
   }
 		
-	  $('#cancelOk').on('click',function(){
-		  let checkTags = $('input[type=checkbox]:checked').not(allCheck);
-		  orderChk=[];
-		  checkTags.each((idx, tag)=>{
-			  let orderDetailCode = $(tag).parent().next().text();
-			  let orderCode = $(tag).closest('tr').find('td:eq(8)').text();
-			  let cancelCode = $(tag).closest('tr').find('td:eq(9)').text();
-			  let cancelReason = $(tag).closest('tr').find('td:eq(4)').text();
-			  console.log(cancelCode);
-			  let obj ={
-					  orderDetailCode,
-					  orderCode,
-					  cancelCode,
-					  cancelReason
-			  }
-			  orderChk.push(obj);
-		  })
-		  
-	  })
+$('#cancelOk').on('click',function(){
+    let checkTags = $('input[type=checkbox]:checked').not(allCheck);
+    refundListVO=[];
+    checkTags.each((idx, tag)=>{
+       let orderDetailCode = $(tag).parent().next().text();
+       let memberId = $(tag).closest('tr').find('td:eq(8)').text();
+       let orderCode = $(tag).closest('tr').find('td:eq(9)').text();
+       let refundTypecode = $(tag).closest('tr').find('td:eq(10)').text();
+       let refundType = "C";
+       let cancelReason = $(tag).closest('tr').find('td:eq(4)').text();
+       
+       console.log(memberId);
+       
+       let OrderChkVO ={
+    		   orderDetailCode : orderDetailCode ,
+    		   orderCode : orderCode,
+    		   refundTypecode : refundTypecode,
+    		   refundType :refundType  ,
+    		   cancelReason : cancelReason,
+    		   memberId : memberId
+       }
+       refundListVO.push(OrderChkVO);
+    });
+    
+    console.log(refundListVO);
+     
+      let $form = $('<form>', {
+          method: 'POST',
+          action: 'orders/cancel'
+      });
+
+      let $input = $('<input>', {
+          type: 'hidden',
+          name: 'refundList',
+          value: JSON.stringify(refundListVO)
+      });
+
+      $form.append($input);
+
+      $form.appendTo('body').submit(); 
+     
+ });
+ 
 	  
 	  $('#cancelReject').on('click', function(){
 		  let checkTags = $('input[type=checkbox]:checked').not(allCheck);
@@ -344,7 +369,7 @@ function displayDate(range) {
 		  .fail(rejext =>{
 			  console.log(reject);
 		  })
-	  })
+	  });
 	  
 	  function refreshList(){
          location.reload();

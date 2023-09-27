@@ -1,6 +1,7 @@
 package com.ar.lighthouse.admin.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,9 +12,13 @@ import com.ar.lighthouse.admin.service.DeclareVO;
 import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.admin.service.NoticeAdminVO;
 import com.ar.lighthouse.admin.service.ProductDetailVO;
+import com.ar.lighthouse.admin.service.SuspendReasonVO;
+import com.ar.lighthouse.admin.service.SuspendVO;
 import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.customsvc.mapper.CustomMapper;
+import com.ar.lighthouse.customsvc.service.FaqVO;
 import com.ar.lighthouse.customsvc.service.InquiryVO;
+import com.ar.lighthouse.main.service.EventImgVO;
 
 @Service
 public class AdminServiceImpl implements AdminService{
@@ -29,6 +34,26 @@ public class AdminServiceImpl implements AdminService{
 	public int addNotice(NoticeAdminVO noticeAdminVO) {
 		return adminMapper.insertNotice(noticeAdminVO); 
 	}
+	
+	@Override
+	public NoticeAdminVO getNoticeDetail(NoticeAdminVO noticeAdminVO) {
+		return adminMapper.selectNoticeDetail(noticeAdminVO);
+	}
+
+	@Override
+	public FaqVO getFaqDetail(FaqVO faqVO) {
+		return adminMapper.selectFaqDetail(faqVO);
+	}
+	@Override
+	public int editNotice(NoticeAdminVO noticeAdminVO) {
+		return adminMapper.updateNotice(noticeAdminVO);
+	}
+
+	@Override
+	public int editFaq(FaqVO faqVO) {
+		return adminMapper.updateFaq(faqVO);
+	}
+
 
 	@Override
 	public List<DeclareVO> getDeclareList(int amount, int pageNum, String declareContent, String declareReason) {
@@ -57,6 +82,7 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public int getTotalInquiryCount(InquiryVO inquiryVO) {
+		System.out.println("impl" + inquiryVO);
 		return adminMapper.selectTotalClearInquiryCount(inquiryVO);
 	}
 
@@ -101,5 +127,90 @@ public class AdminServiceImpl implements AdminService{
 	public int getTotalNoticeCount(NoticeAdminVO noticeAdminVO) {
 		return adminMapper.selectTotalNoticeCount(noticeAdminVO);
 	}
+
+	@Override
+	public int addFaq(FaqVO faqVO) {
+		return adminMapper.insertFaq(faqVO);
+	}
+
+	@Override
+	public DeclareVO getDeclareDetail(DeclareVO declareVO) {
+		return adminMapper.selectDeclareDetail(declareVO);
+	}
+
+	@Override
+	public int editSuspendUser(String suspStatus) {
+		
+		return adminMapper.updateSuspendUser(suspStatus);
+	}
+
+	@Override
+	public List<SuspendReasonVO> getSuspReason() {
+		return adminMapper.selectSuspReason();
+	}
+
+	@Override
+	public int addSuspend(SuspendVO suspendVO) {
+		return adminMapper.insertSuspend(suspendVO);
+	}
+
+	@Override
+	public int editDeclareStatus(SuspendVO suspendVO) {
+		return adminMapper.updateDeclareStatus(suspendVO);
+	}
+
+	@Override
+	public InquiryVO getInquiryDetail(InquiryVO inquiryVO) {
+		
+		return adminMapper.selectInquiryDetail(inquiryVO);
+	}
+
+	@Override
+	public int editCustomInquiry(InquiryVO inquiryVO) {
+		return adminMapper.updateCustomInquiry(inquiryVO);
+	}
+
+	@Override
+	public int addSuspendByAdmin(SuspendVO suspendVO) {
+		return adminMapper.insertSuspendByAdmin(suspendVO);
+	}
+
+	@Override
+	public int editSuspendStatus(String memberId) {
+		return adminMapper.updateSuspendStatus(memberId);
+	}
+
+	@Override
+	public List<EventImgVO> getEventBannerList() {
+		return adminMapper.selectEventBannerList();
+	}
+
+	@Override
+	public MemberDetailVO getMemberDetailValue(String memberId) {
+		return adminMapper.selectMemberDetailValue(memberId);
+	}
+
+	@Override
+	public int removeProductByAdmin(String productCode) {
+		return adminMapper.deleteProductByAdmin(productCode);
+	}
+
+	@Override
+	public int addBanner(EventImgVO eventImgVO) {
+		return adminMapper.insertBanner(eventImgVO);
+	}
+
+	@Override
+	public int editBanner(EventImgVO eventImgVO) {
+		return adminMapper.updateBanner(eventImgVO);
+	}
+
+	@Override
+	public String findBannerPath(int eventImgCode) {
+		return adminMapper.selectBannerPath(eventImgCode);
+	}
+
+
+
 
 }

@@ -37,7 +37,7 @@ public class MainController {
 	public String Body(Model model) {
 	
 		model.addAttribute("categories",service.getCategoryList());
-		
+		model.addAttribute("allCtg", service.getAllCategoryList());
 		model.addAttribute("productList",service.selProductList());
 		System.out.println(model);
 		

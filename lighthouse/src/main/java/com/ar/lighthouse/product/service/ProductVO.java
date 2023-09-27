@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.ar.lighthouse.buyp.service.DetailVO;
+
 import com.ar.lighthouse.common.ImgsVO;
 
 import lombok.Data;
@@ -28,6 +29,7 @@ public class ProductVO {
 	private String productStatus;
 	private String productExStatus;
 
+	private Integer productCount;
 	private List<ImgsVO> productImg;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

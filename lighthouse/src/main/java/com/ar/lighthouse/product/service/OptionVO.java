@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class OptionVO {
 
-	private int optionCode;
+	Long optionCode;
 	String productCode;
 	String optionName;
 	String optionValue;

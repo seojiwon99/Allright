@@ -7,7 +7,6 @@
 <!-- Content -->
 
 
-
 <div layout:fragment="sellerContent">
 
 	<div class="row gx-0">
@@ -211,7 +210,7 @@
 											<td><input type="checkbox"></td>
 											<td th:text="${order.orderDetailCode}" />
 											<td th:text="${order.productName}" />
-											<td th:text="${order.optionLast}" />
+											<td th:text="${order.optionDetail[0].optionLast}" />
 											<td th:text="${order.orderCnt}" />
 											<td th:text="${order.memberName}" />
 											<td th:text="${order.requestedTerm}" />
@@ -230,6 +229,8 @@
 											</td>
 											<td
 												th:text="${#dates.format(order.deliveryStart,'yyyy-MM-dd')}" />
+											<td th:text="${order.memberId}" class="visually-hidden"></td>
+											<td th:text="${order.memberEmail}" class="visually-hidden"></td>
 										</tr>
 										<!-- 반복문 종료 -->
 									</tbody>
@@ -237,6 +238,7 @@
 								</div>
 							</section>
 					</div>
+				</div>
 			</div>
 
 			<script>
@@ -296,14 +298,19 @@
                let orderDetailCode = $(tag).closest('tr').find('td:eq(1)').text();
                let productName = $(tag).closest('tr').find('td:eq(2)').text();
                let orderCnt = $(tag).closest('tr').find('td:eq(4)').text();
+               let memberId = $(tag).closest('tr').find('td:eq(11)').text();
+               let memberEmail = $(tag).closest('tr').find('td:eq(12)').text();
                let obj = {'orderDetailCode' : orderDetailCode
                         ,'productName' : productName
                         ,'orderCnt' : orderCnt
+                        ,'memberId' : memberId
+                        ,'memberEmail' : memberEmail
                         };
                orderList.push(obj);
             })
-
-
+			
+            $('#reasonSend').data('orderList', orderList);
+            
             let tbody = $('#modalData tbody');
             tbody.empty(); 
 
@@ -316,6 +323,29 @@
             });   
 
          
+         })
+         
+         $('#reasonSend').on('click', function(){
+        	 let memberInfo= $('#reasonSend').data('orderList');
+        	 
+        	  let email = memberInfo.map(function(member) {
+        	        return member.memberEmail;
+        	    });
+        	  console.log(email);
+        	 alert("주문취소가 완료되었습니다.");
+        	 $.ajax({
+        		 url : 'sellerMailConfirm',
+        		 type : 'POST',
+        		 contentType : 'application/json',
+        		 data : JSON.stringify(memberInfo)
+        	 })
+        	 .done(data=>{
+        		 console.log(data);
+        	 })
+        	 .fail(reject =>{
+        		 console.log(reject);
+        	 })
+        	 
          })
 
          $('#checkOrderBtn').on('click', function(){
