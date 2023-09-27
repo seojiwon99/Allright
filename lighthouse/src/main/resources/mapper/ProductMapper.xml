@@ -496,8 +496,12 @@
 
 	<!-- option 리스트 -->
 	<select id="getOptionList" resultType="OptionDetailVO">
+<<<<<<< HEAD
 		select * from
 		ar_option_detail
+=======
+		select * from ar_option_detail
+>>>>>>> refs/remotes/origin/master
 		where product_code = #{productCode}
 	</select>
 
@@ -553,6 +557,7 @@
 	</select>
 
 
+<<<<<<< HEAD
 	<!-- 통계리스트 -->
 	<select id="selectStatsList" resultType="ProductVO">
 		select p.product_code, p.product_name, o.option_last,o.option_detail_code,
@@ -576,6 +581,50 @@
 		o.option_price, p.product_code
 		ORDER BY option_detail_code;
 	</select>
+=======
+<!-- 통계리스트 -->
+<resultMap type="DetailVO" id="selectStatsList">
+		<result column="member_id" property="memberId" />
+		<result column="product_code" property="productCode" />
+		<result column="product_name" property="productName" />
+		<result column="sale_price" property="salePrice" />
+		<result column="order_cnt" property="orderCnt" />
+		<result column="sale_price" property="salePrice" />
+		<collection property="optionDetail" resultMap="optionDetail" />
+	</resultMap>
+
+	<!-- OptionVO를 매핑하기 위한 resultMap -->
+	<resultMap type="OptionDetailVO" id="optionDetail">
+		<result column="option_detail_code" property="optionDetailCode" />
+		<result column="option_count" property="optionCount" />
+		<result column="option_price" property="optionPrice" />
+	</resultMap>
+
+<select id="selectStatsList" resultMap="selectStatsList">
+	select p.product_code
+	      , p.product_name
+	      , o.option_last
+	      , o.option_detail_code
+	      , (p.sale_price + o.option_price) as sale_price
+	      , NVL(sum(od.order_cnt),0)
+	      , COALESCE(return_cnt(o.option_detail_code),0) AS return_cnt
+	      , COALESCE(cancel_cnt(o.option_detail_code),0) AS cancel_cnt
+	from ar_products p 
+	    join ar_option_detail o
+	        on p.product_code = o.product_code
+	    left outer join ar_order_detail od
+	        on o.option_detail_code = od.option_detail_code    
+	where member_id = 'hky03017'
+	group by  o.option_last
+	        , o.option_price
+	        , p.product_name
+	        , o.option_detail_code
+	        , (p.sale_price + o.option_price)
+	        , o.option_price
+	        , p.product_code
+	ORDER BY option_detail_code;
+</select>
+>>>>>>> refs/remotes/origin/master
 
 
 
@@ -666,25 +715,59 @@
 			, 'Y'
 		)
 
+		<!-- INSERT ALL INTO ar_products (product_code , member_id , category_code 
+			, product_name , product_content , product_location , product_cost , sale_price 
+			, product_brand , product_origin , product_makeorigin , delivery_cost , return_cost 
+			, exchange_cost , delivery_service , product_exstatus) VALUES (#{productCode} 
+			, #{memberId} , #{categoryCode} , #{productName} , #{productContent} , #{productLocation} 
+			, #{productCost} , #{salePrice} , #{productBrand} , #{productOrigin} , #{productMakeorigin} 
+			, #{deliveryCost} , #{returnCost} , #{exchangeCost} , #{deliveryService} 
+			, 'Y' ) <selectKey resultType="long" keyProperty="option_detail_code" order="BEFORE"> 
+			SELECT MAX(option_code)+1 FROM ar_option </selectKey> INTO ar_option (option_code 
+			, product_code , option_order , option_name , option_value , option_price 
+			, option_sell_status , option_exstatus , option_count , min_order , max_order 
+			) VALUES (#{optionCode} , #{productCode} , #{optionOrder} , #{optionName} 
+			, #{optionValue} , #{optionPrice} , #{optionSellStatus} , #{optionExStatus} 
+			, #{optionCount} , #{minOrder} , #{maxOrder} ) -->
 	</insert>
 
 	<!-- 상품 옵션 등록 -->
+<<<<<<< HEAD
 	<insert id="insertOption" parameterType="OptionDetailVO">
+=======
+	<insert id="insertOption" parameterType="OptionVO">
+>>>>>>> refs/remotes/origin/master
 		<selectKey resultType="long" keyProperty="optionCode"
 			order="BEFORE">
-			SELECT NVL(MAX(option_code),0)+1
-			FROM ar_optiondetail
+			SELECT NVL(MAX(option_detail_code),0)+1
+			FROM ar_option_detail
 		</selectKey>
-		INSERT INTO ar_option (option_code
+		INSERT INTO ar_option_detail (option_detail_code
 		, product_code
-		, option_name
+		, option_order
+		,
+		option_name
 		, option_value
+		, option_price
+		, option_count
+		<if
+			test="optionSellStatus != null and !optionSellStatus.equals('')">
+			, option_sell_status
+		</if>
 		)
 		VALUES
 		(#{optionCode}
 		, #{productCode}
+		, #{optionOrder}
 		, #{optionName}
-		, #{optionValue}
+		,
+		#{optionValue}
+		, #{optionPrice}
+		, #{optionCount}
+		<if
+			test="optionSellStatus != null and !optionSellStatus.equals('')">
+			, #{optionSellStatus}
+		</if>
 		)
 	</insert>
 
@@ -692,7 +775,7 @@
 	<insert id="insertProductImg" parameterType="ImgsVO">
 		<selectKey resultType="int" keyProperty="imgCode"
 			order="BEFORE">
-			SELECT NVL(MAX(img_code),0)+1 FROM ar_imgs
+			SELECT NVL(0, MAX(img_code))+1 FROM ar_imgs
 		</selectKey>
 		insert into ar_imgs
 		(img_code
@@ -752,6 +835,7 @@
 		FROM ar_code
 		WHERE master_code = '택배사 코드'
 	</select>
+
 
 
 	<select id="getImgsFiles">

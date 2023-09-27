@@ -7,6 +7,11 @@ import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.ar.lighthouse.buyp.service.DetailVO;
+<<<<<<< HEAD
+=======
+import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.buyp.service.DetailVO;
+>>>>>>> refs/remotes/origin/master
 import com.ar.lighthouse.common.ImgsVO;
 
 import lombok.Data;
