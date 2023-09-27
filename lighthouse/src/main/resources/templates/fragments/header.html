@@ -163,6 +163,9 @@
 				<!-- Nav -->
 				<ul class="nav navbar-nav me-8">
 					<li class="nav-item"><a class="nav-link"
+						th:if="${session.loginMember} != null" href="/" th:text="로그아웃" onclick="logoutMember()"></a></li>
+					
+					<li class="nav-item"><a class="nav-link"
 						th:href="${session.loginMember} == null ? @{/page/member/loginForm} : '#'" th:text="${session.loginMember} != null ? ${session.loginMember.memberId} : '로그인' ">Shipping</a></li>
 				
 					<li class="nav-item dropdown hovered">
@@ -220,18 +223,18 @@
 			</button>
 
 			<!-- Collapse -->
-			<div class="collapse navbar-collapse" id="navbarClassicCollapse">
+			<div class="collapse navbar-collapse row justify-content-center" id="navbarClassicCollapse"> 
 				<!-- Nav -->
-				<div class="col">
+				<div class="col-3">
 				<ul class="nav navbar-nav nav-divided">
 					<li class="nav-item dropdown hovered">
 						<a class="nav-link" data-bs-toggle="dropdown" href="#">Category</a>
 						<!-- Menu -->
-						<div class="dropdown-menu " style="width:500px;">
+						<div class="dropdown-menu " style="width:300px;">
 						<!-- Tabs -->
 						<div class="mb-2 mb-lg-0 border-bottom-lg">
 							<div class="container" style="display: flex-end; justify-content: space-between">
-								<div class="row justify-content-end">
+								<div class="row justify-content-around">
 								
 								<div class="col-3 " th:each="category:${categories}">
 										<ul class="nav nav-unstyled nav-divided">
@@ -252,7 +255,7 @@
 																
 																
 																
-																	<div class="mb-5 fw-bold" th:text="${ctgFirst.categoryName}+${ctgSec.categoryName}">
+																	<div class="mb-5 fw-bolder" th:text="${ctgFirst.categoryName}+${ctgSec.categoryName}">
 																	</div>
 																		<!-- Links -->
 																		<ul class="list-styled mb-7 fs-sm" th:each="ctgThd : ${allCtg}" th:if="${ctgThd.categoryLevel} == 4 and ${(ctgThd.parentCategoryCode).equals(ctgSec.categoryCode)}">
@@ -265,7 +268,7 @@
 																	<th:block th:each="ctgSec : ${allCtg}" th:if="${ctgSec.categoryLevel} == 3 and
 																	 ${(ctgSec.categoryName).equals('하의')} and ${(ctgSec.parentCategoryCode).equals(ctgFirst.categoryCode)} ">
 																	<!-- Heading -->
-																	<div class="mb-5 fw-bold" th:text="${ctgFirst.categoryName}+${ctgSec.categoryName}" >
+																	<div class="mb-5 fw-bolder" th:text="${ctgFirst.categoryName}+${ctgSec.categoryName}" >
 																	</div>
 																		<!-- Links -->
 																		<ul class="list-styled mb-7 fs-sm"  th:each="ctgThd : ${allCtg}" th:if="${ctgThd.categoryLevel} == 4 and ${(ctgThd.parentCategoryCode).equals(ctgSec.categoryCode)}">
@@ -277,12 +280,12 @@
 																		
 																	<th:block th:each="ctgSec : ${allCtg}" th:if="${ctgSec.categoryLevel} == 3 and
 																	 ${(ctgSec.categoryName).equals('신발')} and ${(ctgSec.parentCategoryCode).equals(ctgFirst.categoryCode)} ">
-																	<div class="mb-5 fw-bold" th:text="${ctgFirst.categoryName}+${ctgSec.categoryName}" >
+																	<div class="mb-5 fw-bolder" th:text="${ctgFirst.categoryName}+${ctgSec.categoryName}" >
 																	</div>
 																			<!-- Links -->
-																		<ul class="list-styled fs-sm" th:each="ctgThd : ${allCtg}" th:if="${ctgThd.categoryLevel} == 4 and ${(ctgThd.parentCategoryCode).equals(ctgSec.categoryCode)}">
+																		<ul class="list-styled mb-7 fs-sm" th:each="ctgThd : ${allCtg}" th:if="${ctgThd.categoryLevel} == 4 and ${(ctgThd.parentCategoryCode).equals(ctgSec.categoryCode)}">
 																			<li class="list-styled-item"><a
-																				class="list-styled-link" href="./product.html"  th:text="${ctgThd.categoryName} + ${ctgThd.categoryCode}"> 신발</a>
+																				class="list-styled-link" href="./product.html"  th:text="${ctgThd.categoryName} + ${ctgThd.categoryCode}">신발</a>
 																			</li>
 																		</ul>
 																	</th:block>
@@ -292,7 +295,7 @@
 																
 																<!-- Food 카테고리 -->
 																<div class="col" th:if="${(category.categoryCode).equals('FOOD')}">
-																	<div class="mb-5 fw-bold">축산
+																	<div class="mb-5 fw-bolder">축산
 																	</div>
 																	<ul class="list-styled mb-7 fs-sm">
 																			<li class="list-styled-item"><a
@@ -317,7 +320,7 @@
 																	
 																</div>
 																<div class="col" th:if="${(category.categoryCode).equals('FOOD')}">
-																	<div class="mb-5 fw-bold">수산물
+																	<div class="mb-5 fw-bolder">수산물
 																	</div>
 																	<ul class="list-styled mb-7 fs-sm">
 																			<li class="list-styled-item"><a
@@ -337,7 +340,7 @@
 																	
 																</div>
 																<div class="col" th:if="${(category.categoryCode).equals('FOOD')}">
-																	<div class="mb-5 fw-bold">과일/채소
+																	<div class="mb-5 fw-bolder">과일/채소
 																	</div>
 																	<ul class="list-styled mb-7 fs-sm">
 																			<li class="list-styled-item"><a
@@ -354,7 +357,7 @@
 																<div class="col" th:each="ctgFirst : ${allCtg}" th:if="${ctgFirst.categoryLevel} == 2 and ${(ctgFirst.parentCategoryCode).equals('Life')} and ${(category.categoryCode).equals('Life')}" >
 																	<!-- Heading -->
 																	
-																	<div class="mb-5 fw-bold" th:text="${ctgFirst.categoryName}">
+																	<div class="mb-5 fw-bolder" th:text="${ctgFirst.categoryName}">
 																	</div>
 																	
 																	<!-- LK, LD, LF  -->
@@ -422,16 +425,16 @@
 				
 				
 				
-						<div>
+						<div class="col-3">
 				
 						<!-- 판매순위, 신상 -->
 						<!-- Brand -->
-						<a class="navbar-brand mx-auto d-none d-xl-block" href="/"> All
+						<a class="navbar-brand mx-auto d-none d-xl-block" href="/" style="text-align:center"> All
 							Right </a>
 						</div>
-		
+			<div class="col-3">
 						<!-- Nav 찜 장바구니 마이페이지 검색-->
-						<ul class="navbar-nav flex-row">
+						<ul class="navbar-nav flex-row  justify-content-end">
 							<li class="nav-item"><a class="nav-link"
 								data-bs-toggle="offcanvas" href="#modalSearch"> <i
 									class="fe fe-search"></i>
@@ -450,6 +453,7 @@
 		               </a></li>
 		
 						</ul>
+						</div>
 			</div><!-- navbarClassicCollapse close -->
 		</div> <!-- nav container close -->
 	</nav><!--  nav close -->
@@ -534,6 +538,17 @@
 				}
 			})
 		})
+		
+		function logoutMember(e){
+			console.log(e);
+			let memberId = [[${session.loginMember}]]
+			console.log(memberId);
+			window.localStorage.clear();
+			$.ajax({
+				url : '/logout',
+				type : 'POST'
+			})
+		}
 	</script>
     <script th:src="@{/js/theme.bundle.js}"></script>
 </div>

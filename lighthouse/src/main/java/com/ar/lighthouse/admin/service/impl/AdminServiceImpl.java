@@ -195,6 +195,21 @@ public class AdminServiceImpl implements AdminService{
 		return adminMapper.deleteProductByAdmin(productCode);
 	}
 
+	@Override
+	public int addBanner(EventImgVO eventImgVO) {
+		return adminMapper.insertBanner(eventImgVO);
+	}
+
+	@Override
+	public int editBanner(EventImgVO eventImgVO) {
+		return adminMapper.updateBanner(eventImgVO);
+	}
+
+	@Override
+	public String findBannerPath(int eventImgCode) {
+		return adminMapper.selectBannerPath(eventImgCode);
+	}
+
 
 
 

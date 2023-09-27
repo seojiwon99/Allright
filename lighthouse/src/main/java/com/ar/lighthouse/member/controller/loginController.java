@@ -101,6 +101,13 @@ public class loginController {
 			return "fail";
 		}
 	}
+	//로그아웃
+	@PostMapping("logout")
+	@ResponseBody
+	public void logout(HttpSession session) {
+		session.invalidate();
+	}
+	
 	//비밀번호 수정 폼
 	@PostMapping("page/member/editPasswordForm")
 	public String editPasswordForm(@RequestParam(name="memberId") String memberId, Model model) {

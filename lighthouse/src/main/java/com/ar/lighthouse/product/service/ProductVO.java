@@ -29,6 +29,7 @@ public class ProductVO {
 	private String productStatus;
 	private String productExStatus;
 
+	private Integer productCount;
 	private List<ImgsVO> productImg;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
