@@ -282,6 +282,7 @@
                 table{
                   border-collapse: separate;
                   font-size: 11px;
+                  border: 1px solid white;
                 }
                 tr:hover {
                   background-color: #ddd;
@@ -289,6 +290,8 @@
                 td, th {
                   text-align: center;
                   font-size: 12px;
+                  border-radius: 16px;
+                  border: 1px solid white;
                 }
                 .select-button:hover {
                     background-color:#002ead;
@@ -317,7 +320,7 @@
                     
                   </thead>
                   <tbody>
-                 
+              
                     <tr class="clickable-row" th:each="couponRest : ${couponList}">
                       <td th:text="${couponRest.mycouponCode}" th:data-max="${couponRest.couponMaxPrice}" th:data-min="${couponRest.couponMinPrice}"></td>
                       <td th:text="${couponRest.couponName}"></td>

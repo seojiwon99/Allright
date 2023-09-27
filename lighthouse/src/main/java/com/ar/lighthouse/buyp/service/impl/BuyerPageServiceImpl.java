@@ -4,8 +4,6 @@ package com.ar.lighthouse.buyp.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.ar.lighthouse.buyp.mapper.BuyerPageMapper;
@@ -24,7 +22,6 @@ import com.ar.lighthouse.buyp.service.WishVO;
 import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.common.Criteria;
 
-import co.elastic.clients.elasticsearch.ml.Page;
 @Service
 public class BuyerPageServiceImpl implements BuyerPageService {
 	
@@ -174,6 +171,12 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	@Override
 	public int getPageCnt(Criteria cri) {
 		return buyerPageMapper.getPageCnt(cri);
+	}
+
+
+	@Override
+	public List<DetailVO> getOptionList(DetailVO detailVO) {
+		return buyerPageMapper.selectOptionList(detailVO);
 	}
 
 
