@@ -18,5 +18,6 @@ public class OrderPayVO {
 	private String productCode;
 	private int productSalePrice;
 	private int couponPrice;
-	private int orderDetailCode; 
+	private int optionDetailCode; 
+	private int deliveryCost;
 }

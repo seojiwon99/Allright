@@ -123,7 +123,8 @@
                       
                       <p class="mb-4 fs-sm fw-bold">  
                          <input type="hidden" th:value="${gets.productCode}" class="productNumber">
-                         <input type="hidden" th:value="${gets.optionDetailCode}" class="orderDetailCode">
+                         <input type="hidden" th:value="${gets.optionDetailCode}" class="optionDetailCode">
+                         <input type="hidden" th:value="${gets.deliveryCost}" class="deliveryMoney">
                          <input type="hidden" name="couponUsePrice" class="text-body" th:text="${gets.productName}" ><br>
                          상품금액 : <span class="text-muted" style="text-decoration: line-through;" th:text="|${gets.productCost}|" id="selectPrice"></span>원 <br>
                         <span class="text-muted" th:text="|할인된 금액 : ${gets.salePrice}|"></span>원<br>
@@ -568,9 +569,10 @@
      let orderList ={};
             if($(el).find('.myCouponCode').val() != '') {
               orderList.mycouponCode = $(el).find('.myCouponCode').val();
-              orderList.orderDetailCode = $(el).find('.orderDetailCode').val();
+              orderList.optionDetailCode = $(el).find('.optionDetailCode').val();
               orderList.productSalePrice = $(el).find('.selectValue').val();
               orderList.couponPrice = $(el).find('.couponSalePrice').val();
+              orderList.deliveryCost = $(el).find('.deliveryMoney').val();
               orderPayVO.push(orderList)
             }
      })
