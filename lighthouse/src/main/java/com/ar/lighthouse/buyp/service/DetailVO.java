@@ -24,6 +24,7 @@ public class DetailVO {
 	   private int paymentPrice;
 	   private String orderStatus;
 	   private String orderStatusNm;
+	   private String orderCheck;
 	   
 	   @DateTimeFormat(pattern="yyyy-MM-dd")
 	   private Date orderDate;
@@ -71,6 +72,7 @@ public class DetailVO {
  Date toDate;
  int returnCnt;
  int cancelCnt;
+ int totalPrice;
    //취소,반품,교환 
    
   

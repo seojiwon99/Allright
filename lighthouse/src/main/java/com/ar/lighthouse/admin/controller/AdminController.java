@@ -1,6 +1,17 @@
 package com.ar.lighthouse.admin.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ar.lighthouse.admin.service.AdminService;
 import com.ar.lighthouse.admin.service.DeclareVO;
@@ -20,8 +32,11 @@ import com.ar.lighthouse.common.PageDTO;
 import com.ar.lighthouse.customsvc.service.CustomService;
 import com.ar.lighthouse.customsvc.service.FaqVO;
 import com.ar.lighthouse.customsvc.service.InquiryVO;
+import com.ar.lighthouse.main.service.EventImgVO;
 import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.member.mail.RegisterMail;
+
+import net.coobird.thumbnailator.Thumbnailator;
 
 @Controller
 public class AdminController {
@@ -37,6 +52,9 @@ public class AdminController {
 	
 	@Autowired
     RegisterMail registerMail;
+	
+	@Value("${file.upload.path}")
+	private String uploadPath;
 	
 	@GetMapping("admin/main")
 	public String adminMain() {
@@ -288,6 +306,111 @@ public class AdminController {
 	public String bannerUpdateForm( Model model) {
 		model.addAttribute("banner",adminService.getEventBannerList());
 		return "page/admin/bannerUpdateForm";
+	}
+	
+	@PostMapping("admin/addBanner")
+	@ResponseBody
+	public String addBaner(MultipartFile uploadFile, EventImgVO eventImgVO) {
+		
+		if(uploadFile.getContentType().startsWith("image") == false){
+    		System.err.println("this file is not image type");
+    		return null;
+    	}
+		
+    	String originalName = uploadFile.getOriginalFilename();
+        // System.out.println("originalName : " + originalName);
+        String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
+        eventImgVO.setImgName(fileName);
+        
+        // System.out.println("fileName : " + fileName);
+    
+        //날짜 폴더 생성
+        String folderPath = makeFolder();
+        // System.out.println("folderPath"+ folderPath);
+        String uuid = UUID.randomUUID().toString();	// 유니크한 이름 때문에
+        //System.out.println("uuid"+uuid);
+        eventImgVO.setUploadName(uuid+"_"+fileName);
+        
+        String uploadFileName = folderPath + '/' + uuid + "_" + fileName;
+        // System.out.println("uploadFileName" + uploadFileName);
+        eventImgVO.setUploadPath(folderPath);
+        
+        String saveName = uploadPath + '/' + uploadFileName;
+        
+        Path savePath = Paths.get(saveName);
+        try{
+        	uploadFile.transferTo(savePath); // 파일의 핵심
+        	System.out.println(uploadFile);
+        	System.out.println(eventImgVO);
+        	adminService.addBanner(eventImgVO);
+        	return "success";
+        } catch (IOException e) {
+             e.printStackTrace();	      
+             return "fail";
+        }
+	}
+	
+	@PostMapping("admin/editBanner")
+	@ResponseBody
+	public String editBanner(MultipartFile uploadFile,EventImgVO eventImgVO) {
+		if(uploadFile == null) {
+			adminService.editBanner(eventImgVO);
+			return "update success";
+		}else {
+			String prevPath = adminService.findBannerPath(eventImgVO.getEventImgCode()); // 이전 파일 경로 
+			deleteFile(prevPath); // 삭제 (boolean)
+			
+			String originalName = uploadFile.getOriginalFilename();
+	        String fileName = originalName.substring(originalName.lastIndexOf("//")+1);
+	        eventImgVO.setImgName(fileName);
+	        //날짜 폴더 생성
+	        String folderPath = makeFolder();
+	        
+	        String uuid = UUID.randomUUID().toString();	// 유니크한 이름 때문에
+	        eventImgVO.setUploadName(uuid+"_"+fileName);
+	        
+	        String uploadFileName = folderPath + '/' + uuid + "_" + fileName;
+	        eventImgVO.setUploadPath(folderPath);
+	        
+	        String saveName = uploadPath + '/' + uploadFileName;
+	        Path savePath = Paths.get(saveName);
+	        try{
+	        	uploadFile.transferTo(savePath); // 파일의 핵심
+	        	adminService.editBanner(eventImgVO);
+	        	return "img edit success";
+	        } catch (IOException e) {
+	             e.printStackTrace();	      
+	             return "fail";
+	        }
+			
+		}
+//		
+//		
+	}
+	
+	
+	private String makeFolder() {
+		String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")); // 경로에서 사용하는 /는 인지 못함
+		// LocalDate를 문자열로 포멧
+		String folderPath = str;//.replace("/", File.separator); // <- 그래서 separator 사용
+		File uploadPathFoler = new File(uploadPath, folderPath);
+		// File newFile= new File(dir,"파일명");
+		if (uploadPathFoler.exists() == false) {
+			uploadPathFoler.mkdirs();
+			// 만약 uploadPathFolder가 존재하지않는다면 makeDirectory하라는 의미입니다.
+			// mkdir(): 디렉토리에 상위 디렉토리가 존재하지 않을경우에는 생성이 불가능한 함수
+			// mkdirs(): 디렉토리의 상위 디렉토리가 존재하지 않을 경우에는 상위 디렉토리까지 모두 생성하는 함수
+		}
+		return folderPath;
+	}
+
+	private String setImagePath(String uploadFileName) {
+		return uploadFileName.replace(File.separator, "/");
+	}
+	private boolean deleteFile(String path) {
+		File targetDir = Paths.get(uploadPath, path).toFile();
+		System.out.println("target" + targetDir);
+		return targetDir.delete();
 	}
 	
 	

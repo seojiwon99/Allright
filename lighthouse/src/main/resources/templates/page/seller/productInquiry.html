@@ -233,14 +233,16 @@
 					    console.log(queAns);
 					    console.log(queCodeValue);
 
+					    let dataToSend = [{
+					        "queAns": queAns,
+					        "queCode": queCodeValue
+					    }];
+
 					    $.ajax({
 					        url: 'addInquiryAns',
 					        type: 'post',
 					        contentType: 'application/json',
-					        data: JSON.stringify({
-					            "queAns": queAns,
-					            "queCode": queCodeValue
-					        }),
+					        data: JSON.stringify(dataToSend),
 					        success: function(data) {
 					            console.log(data);
 					            refreshList();
@@ -250,6 +252,7 @@
 					        }
 					    });
 					});
+
 
 					function refreshList() {
 					    location.reload();

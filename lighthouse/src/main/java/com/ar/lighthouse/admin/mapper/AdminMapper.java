@@ -108,4 +108,10 @@ public interface AdminMapper {
 	
 	//배너 목록
 	public List<EventImgVO> selectEventBannerList();
+	//배너 등록
+	public int insertBanner(EventImgVO eventImgVO);
+	//배너 업데이트
+	public int updateBanner(EventImgVO eventImgVO);
+	//배너 경로 찾기
+	public String selectBannerPath(int eventImgCode);
 }

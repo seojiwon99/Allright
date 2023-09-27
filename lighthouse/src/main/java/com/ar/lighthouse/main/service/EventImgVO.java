@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class EventImgVO {
 
-	int reviewImgCode;
+	int eventImgCode;
 	int imgOrder;
 	String imgName;
 	String uploadName;
@@ -17,4 +17,5 @@ public class EventImgVO {
 	int bannerOrder;
 	String bannerType;
 	String bannerDelete;
+	String uploadPath;
 }
