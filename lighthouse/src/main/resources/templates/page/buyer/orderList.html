@@ -83,6 +83,7 @@
             <!-- Order -->
                 <div>
 					<select class="optionList">
+						<option value="선택">선택</option>
 						<option value="payment_price">가격</option>
 						<option value="order_date">구매일자</option>
 						<option value="product_name">상품명</option>
@@ -171,21 +172,28 @@
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">취소 여부:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${lists.cancelStatus}|"></span>
+                         <span th:text="|${lists.cancelStatusNm}|"></span>
                         </p>
                       </div>
                     <!-- 반품 여부 -->
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">반품 여부:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${lists.returnStatus}|"></span>
+                         <span th:text="|${lists.returnStatusNm}|"></span>
                         </p>
                       </div>
                     <!-- 교환 여부 -->
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">교환 여부:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${lists.exchangeStatus}|"></span>
+                         <span th:text="|${lists.exchangeStatusNm}|"></span>
+                        </p>
+                      </div>
+                    <!-- 주문 확정 -->
+                      <div class="col-6 col-lg-3">
+                        <h6 class="heading-xxxs text-muted">주문 확정:</h6>
+                        <p class="mb-0 fs-sm fw-bold">
+                         <span th:if="${lists.orderCheck} == 'N'">취소된 상품</span>
                         </p>
                       </div>
                     </div>
