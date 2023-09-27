@@ -33,9 +33,18 @@ public interface OrdersService {
 	//사용한 쿠폰 N으로 변경
 	public int editNotCoupon(String memberId, int mycouponCode);
 	
+	//환불된 쿠폰 Y으로 변경
+	public int editRefundCoupon(String memberId, int mycouponCode);
+	
 	//각 주문 결제 상품별 insert
 	public int addOrders(OrdersVO ordersVO);
 	
 	//주문 후 장바구니 삭제
 	public int removeCart(String memberId, int cartNum);
+	
+	//환불 후 환불 가능 금액 credit 테이블 업데이트
+	public int editTossRefundAmount(String paymentKey, int refundAmount);
+	
+	//환불 후 환불 가능 금액 orders 테이블 업데이트
+	public int editOrderRefundAmount(int orderCode, int refundAmount);
 }

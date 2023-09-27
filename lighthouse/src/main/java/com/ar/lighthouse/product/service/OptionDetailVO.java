@@ -1,11 +1,21 @@
 package com.ar.lighthouse.product.service;
 
-import lombok.Data;
 
+
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Data
 public class OptionDetailVO {
 
-	private Long optionCode;
+
+	private Long optionDetailCode;
 	private String productCode;
 	private Integer optionOrder;
 	private String optionLast;
@@ -15,4 +25,17 @@ public class OptionDetailVO {
 	private Integer optionCount;
 	private Integer minOrder;
 	private Integer MaxOrder;
+
+	   private String optionName;
+	   private String optionValue;
+	   private int salePrice;
+
+
+	public OptionDetailVO(String optionName) {
+		super();
+		this.optionName = optionName;
+	}
+	   
+	  
+
 }

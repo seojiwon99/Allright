@@ -46,6 +46,11 @@ public class MainServiceImpl implements MainPageService{
 	public List<CategoryVO> getChildCateList(CategoryVO cate) {
 		return mapper.childCateList(cate);
 	}
+
+	@Override
+	public List<CategoryVO> getAllCategoryList() {
+		return mapper.selectAllCategory();
+	}
 	
 	
 	

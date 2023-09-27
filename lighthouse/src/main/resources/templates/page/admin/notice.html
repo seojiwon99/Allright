@@ -35,7 +35,7 @@
 						<div class="col" style="    display: flex;
 											    justify-content: end;
 											    margin-top: 30px;">
-						<button class="btn-sm btn-dark" type="button" id="noticeBtn">등록</button>
+						<button class="btn btn-sm btn-info" type="button" id="noticeBtn">등록</button>
 						</div>
 						</form>
 	
@@ -51,7 +51,7 @@
 					</tr>
 					</thead>
 					<tbody>
-					<tr th:each="notice : ${noticeList}">
+					<tr th:each="notice : ${noticeList}" th:onclick="|location.href='@{/admin/noticeDetail(noticeCode=${notice.noticeCode})}'|">
 					
 						<td scope="row" th:switch="${notice.noticeType}">
 						  <span  th:case="'Y'">[공지]</span>

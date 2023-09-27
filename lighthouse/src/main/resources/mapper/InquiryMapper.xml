@@ -19,6 +19,10 @@
 	where product_code = #{productCode}
   </select>
   
+  <select id="inquiryCount" resultType="int">
+  	select count(*) as inquiryCount from ar_inquiry where product_code = #{productCode}
+  </select>
+  
   <insert id="insertInquiry">
   <selectKey  resultType="int" keyProperty="queCode" order="BEFORE"> 
   	SELECT NVL(MAX(que_code),0)+1 FROM ar_inquiry

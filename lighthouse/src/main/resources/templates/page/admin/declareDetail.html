@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_layout2}">
+<style>
+table {
+	border : 1px;
+}
+</style>
+
+<!-- Content -->
+<div layout:fragment="content" class="col">
+        		<!-- main 영역 -->
+        			<div class="container" style="margin-left: 0px">
+        			<div class="row justify-content-center">
+        			
+					<div class="col" style="    display: flex;
+											    justify-content: space-between;
+											    margin-bottom: 30px;
+											    margin-top:30px;">
+						<!-- Form -->
+						<div>
+						<h2>신고 상세</h2>
+						</div>
+					</div><!--  col -->
+            <form id="faqForm">
+
+              <!-- Email -->
+              <div class="form-group mb-7">
+              
+              <div style="display:flex; justify-content: space-between;">
+              		<div>
+		                <label class="visually">
+		                 No. [[${declareDetail.declareCode}]]
+		                </label>
+		                <label class="visually">
+		                | 사유: [[${declareDetail.declareReason}]]
+		                </label>
+		                <label th:if="${declareDetail.suspendStatus != null}">
+		                | 처리 상태 : [[${declareDetail.suspendStatus}]]
+		                </label>
+              		</div>
+              		<div>
+		                <label th:text="${#dates.format(declareDetail.declareRegdate,'yyyy-MM-dd')}">
+		                </label>
+              		</div>
+              </div>
+                <textarea class="form-control form-control-sm" name="questionAnswer"   id="questionAnswer" rows="10" th:text="${declareDetail.reviewContent}" readonly ></textarea>
+    	          <div style="display: flex;  justify-content: center;">
+		               <nav class="nav nav-overflow">
+		             	<a class="nav-link active" href="#!" target="_blank">상품 상세 페이지로.</a>
+		              </nav>
+	              </div>
+              </div>
+            
+              
+              <div class="form-group mb-7">
+  
+               <div style="display:flex; justify-content: space-between;">
+              		<div>
+		                <label class="visually">
+		                 피신고자: [[${declareDetail.memberId}]]
+		                </label>
+		                <label class="visually">
+		                | 누적 신고 : [[${declareDetail.declareCount}]]
+		                </label>
+              		</div>
+              		<div>
+						<label class="visually" for="contactMessage">
+						신고자 : [[${declareDetail.declareMember}]]
+						</label>
+              		</div>
+              </div>
+                <textarea class="form-control form-control-sm" name="questionAnswer"   id="questionAnswer" rows="10" th:text="${declareDetail.declareContent}" readonly></textarea>
+              </div>
+              <input class="form-control form-control-sm w-100"  th:if="${declareDetail.suspendStatus == null}" type="text" placeholder="상세 사유를 입력해주세요." id="suspReason" style="margin-bottom: 15px">
+              <div style="display: flex;  justify-content: center;" th:if="${declareDetail.suspendStatus == null}">
+              
+              <input name="suspStatus" type="radio" id="status" value="1"><label>: 30일&nbsp&nbsp&nbsp</label>
+              <input name="suspStatus" type="radio" id="status" value="2"><label>: 90일&nbsp&nbsp&nbsp</label>
+              <input name="suspStatus" type="radio" id="status" value="3"><label>: 영구&nbsp&nbsp&nbsp</label>
+              
+              </div>
+			<div style="display: flex;  justify-content: center;">
+              <!-- Button -->
+              <button class="btn btn-xs btn-outline-primary btn-underline mb-1" type="button" id="cancelBtn" style="margin:10px">취소</button>
+              <button class="btn btn-xs btn-outline-primary btn-underline mb-1" type="button" id="suspBtn" style="margin:10px" th:if="${declareDetail.suspendStatus == null}">저장하기</button>
+			</div>
+            </form>		
+					</div><!-- row justify -->
+					</div><!-- container -->
+					
+<script th:inline="javascript">
+	$('#cancelBtn').on('click', function(){
+		location.href = "javascript:window.history.back();";
+	})
+	$('#suspBtn').on('click', function(){
+		let radios = document.getElementsByName("suspStatus");
+		let chk = $('input[name="suspStatus"]:checked').val();
+		
+		//판매자인지 구매자인지 memberId로 권한 가져올 것(일단 보류)
+		console.log();
+		let author = [[${declareDetail.memberAuthor}]];
+		let suspStatus= "";
+		if(chk == undefined){	
+			alert("정지 ")
+		}
+		
+		if(author== 1 || author==3){
+			suspStatus = "10"+chk
+		}else if(author==2){
+			suspStatus = "20"+chk
+		}
+		let obj = {
+				//suspendCode : 자동
+				declareType : "1",
+				declareCode : [[${declareDetail.declareCode}]],
+				memberId : [[${declareDetail.memberId}]],
+				suspReason : $('#suspReason').val(),
+				//suspRegdate : 자동 
+				//suspEnddate : "",
+				suspStatus : suspStatus
+		}
+		console.log(obj);
+		$.ajax({
+			url : "suspendUser",
+			type : "POST",
+			data : JSON.stringify(obj),
+			contentType : 'application/json',
+			success : function(rs){
+				console.log(rs)
+				location.href= "clearDeclareList"
+			},
+			error : function(err){
+				console.log(err)
+			}
+		})
+	})
+	
+	
+	
+</script>      
+</div>
+</html>

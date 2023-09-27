@@ -62,6 +62,12 @@ public class OrdersServiceImpl implements OrdersService{
 	}
 	
 	@Override
+	//환불 상품 사용 쿠폰 Y 사용가능으로 변경
+	public int editRefundCoupon(String memberId, int mycouponCode) {
+		return ordersMapper.updateRefundCoupon(memberId, mycouponCode);
+	}
+		
+	@Override
 	// 배송요청 사항 마스터 코드
 	public List<CodeVO> getCode() {
 		
@@ -83,7 +89,7 @@ public class OrdersServiceImpl implements OrdersService{
 	@Override
 	//토스페이먼츠 환불 DB 데이터 저장
 	public int addRefund(RefundVO refundVO) {
-		return 0;
+		return ordersMapper.insertRefund(refundVO);
 	}
 
 	@Override
@@ -110,5 +116,18 @@ public class OrdersServiceImpl implements OrdersService{
 	public int removeCart(String memberId, int cartNum) {
 		return ordersMapper.deleteCart(memberId, cartNum);
 	}
+
+	@Override
+	// 환불 후 credit 테이블 환불 가능 금액 업데이트
+	public int editTossRefundAmount(String paymentKey, int refundAmount) {
+		return ordersMapper.updateTossRefundAmount(paymentKey, refundAmount);
+	}
+
+	@Override
+	// 환불 후 orders 테이블 환불 가능 금액 업데이트
+	public int editOrderRefundAmount(int orderCode, int refundAmount) {
+		return ordersMapper.updateOrderRefundAmount(orderCode, refundAmount);
+	}
+
 	
 }

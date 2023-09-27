@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_layout2}">
+<!-- Content -->
+<div layout:fragment="content" class="col">
+        		<!-- main 영역 -->
+        			<div class="container" style="margin-left: 0px">
+					<div class="col" style="    display: flex;
+											    justify-content: space-between;
+											    margin-bottom: 30px;
+											    margin-top:30px;">
+						<!-- Form -->
+						<div>
+						<h2 class="fst-normal">FAQ 등록</h2>
+						</div>
+	
+					</div>
+					
+
+            <!-- Form -->
+            <form id="faqForm">
+					
+
+					
+              <!-- Email -->
+              <div class="form-group" style="display:flex; justify-content: end; aling-item:center;">
+              
+             <select class="form-select form-select-sm w-25" aria-label="Default select example" id="selectCode" >
+				<option value="1">취소/반품/교환</option>
+				<option value="2">주문/결제</option>
+				<option value="3">회원서비스</option>
+				<option value="4">배송</option>
+				<option value="5">상품</option>
+				<option value="6">기타</option>
+			</select>	
+              </div>
+
+              <!-- Email -->
+              <div class="form-group">
+                <label class="visually-hidden" for="contactTitle">
+                  Title *
+                </label>
+                <input type="hidden" name="faqCode" id="faqCode" th:value="${faqVO.faqCode}">
+                <input class="form-control form-control-sm" name="questionTitle"  th:value="${faqVO.questionTitle}" id="questionTitle" type="text" placeholder="제목 *" required>
+              </div>
+
+              <!-- Email -->
+              <div class="form-group mb-7">
+                <label class="visually-hidden" for="contactMessage">
+                  Message *
+                </label>
+                <textarea class="form-control form-control-sm" name="questionAnswer"   th:text="${faqVO.questionAnswer}"  id="questionAnswer" rows="10" placeholder="내용 *" required></textarea>
+              </div>
+			<div style="display: flex;  justify-content: flex-end;">
+              <!-- Button -->
+              <button class="btn btn-sm btn-info " id="faqBtn">
+                수정
+              </button>
+			</div>
+            </form>
+
+					</div>
+					
+					
+				
+      <script th:inline="javascript">
+      //   <input class="form-control form-control-sm w-25" id="contactName" type="date" required>
+	 $('#selectCode').val([[${faqVO.faqType}]])
+      	
+      $('#faqBtn').on('click', function(e){
+    	  e.preventDefault();
+    	  let obj = {};
+    	  
+    	  $('#faqForm').attr('method', 'POST');
+    	  $('#faqForm').attr('action', 'editFaq');
+    	  let selected = $('#selectCode option:selected').val();
+    	  let tagStr = '<input type="hidden" name="faqType" id="faqType" value="'+ selected +'"/>'
+    	  let hiddenType = $(tagStr)
+    	   $('#faqForm').append(hiddenType)
+    	  
+    	  obj['questionTitle'] = $('#questionTitle').val();
+    	  obj['questionAnswer'] = $('#questionAnswer').val();
+    	  if($('#questionTitle').val() == '' || $('#questionAnswer').val() == ''){
+    		  alert('내용을 정확히 입력해주세요.');
+    		  return;
+    	  }
+    	  $('#faqForm').submit();
+    	  
+      })
+
+      </script>
+</div>
+</html>

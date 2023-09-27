@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html>
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -34,38 +33,32 @@
  <div id="curve_chart" style="width: 900px; height: 500px">
  </div>
  
+ 
  <div style="width:100%; height: 300px; overflow:auto; border:1px; ">
-						<table border="1" class="table" id="getProductList">
-							<thead>
-								<tr>
-									<th></th>
-									<th>상품코드</th>
-									<th>상품명</th>
-									<th>옵션종류</th>
-									<th>상품금액</th>
-									<th>주문수량</th>
-									<th>취소수량</th>
-									<th>반품수량</th>
-									<th>총결제금액</th>
-								</tr>
-							</thead>
-							<tbody id="cancelList">
-								<tr th:each="cancel : ${cancelInfo}">
-									<td th:text="${cancel.orderDetailCode}"></td>
-									<td th:text="${cancel.productName}"></td>
-									<td th:text="${cancel.orderStatus}"></td>
-									<td th:text="${cancel.cancelReason}"></td>
-									<td th:text="${#dates.format(cancel.chargeDate, 'yyyy-MM-dd')}"></td>
-									<td
-										th:text="${#dates.format(cancel.cancelRegdate, 'yyyy-MM-dd')}"></td>
-									<td th:text="${cancel.memberName}"></td>
-									<td th:text="${cancel.orderCode}" class="visually-hidden"></td>
-									<td th:text="${cancel.cancelCode}" class="visually-hidden"></td>
-
-								</tr>
-								<!-- 반복문 종료 -->
-							</tbody>
-						</table>
-						</div>
+                  <table border="1" class="table" id="getProductList">
+                     <thead>
+                        <tr>
+                           <th></th>
+                           <th>상품코드</th>
+                           <th>상품명</th>
+                           <th>옵션종류</th>
+                           <th>상품금액</th>
+                           <th>주문수량</th>
+                           <th>취소수량</th>
+                           <th>반품수량</th>
+                           <th>총결제금액</th>
+                        </tr>
+                     </thead>
+                     <tbody id="cancelList">
+                        <tr th:each="static : ${staticList}">
+                           <td th:text="${static.productCode}"></td>
+                           <td th:text="${static.productName}"></td>
+                           <td th:text="${static.optionDetail[0].optionLast}"></td>
+                         
+                        </tr>
+                        <!-- 반복문 종료 -->
+                     </tbody>
+                  </table>
+                  </div>
 </body>
 </html>
