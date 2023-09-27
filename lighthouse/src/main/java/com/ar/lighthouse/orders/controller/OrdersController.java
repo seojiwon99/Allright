@@ -118,11 +118,14 @@ public class OrdersController {
 		String memberId = memberVO.getMemberId();
 		
 		int mycouponCode = 0;
-		StringBuffer str = new StringBuffer();
-		for(OrderPayVO couponNum : orderPayVO) {		
+		List<Integer> orderCodeList = new ArrayList<Integer>();
+		int idx = 0;
+		for(OrderPayVO couponNum : orderPayVO) {
+			
 			mycouponCode = couponNum.getMycouponCode();
-			str.append(" , " + couponNum.getProductCode());
+			orderCodeList.add(couponNum.getOrderDetailCode());
 			int couponUse = ordersService.editNotCoupon(memberId, mycouponCode);
+			idx++;
 		}
 		
 
@@ -138,7 +141,7 @@ public class OrdersController {
 		//쿠폰 할인 상품
 		 for (OrderPayVO pay : orderPayVO) {
 			 for(OrdersVO order : orderList) {
-				 if(pay.getProductCode().equals(order.getProductCode())) {
+				 if(orderCodeList.contains(pay.getOrderDetailCode())) {
 					 	order.setOrderCode(orderCode);
 						order.setOptionCouponCheck("Y");
 						order.setMycouponCode(mycouponCode);
@@ -154,7 +157,7 @@ public class OrdersController {
 		 
 		// 할인 받지 않은 상품
 				for(OrdersVO order : orderList) {
-						if(str.toString().contains(order.getProductCode())) { //쿠폰 할인 받은 상품
+						if(orderCodeList.contains(order.getOrderDetailCode())) { //쿠폰 할인 받은 상품
 							continue;
 						}else {
 							System.out.println(order); // 쿠폰 할인 받지 않은 상품
