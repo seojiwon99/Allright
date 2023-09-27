@@ -650,43 +650,54 @@
 
 	</insert>
 
+
 	<!-- 상품 옵션 등록 -->
-
-	<insert id="insertOption" parameterType="OptionDetailVO">
-
-		<selectKey resultType="long" keyProperty="optionCode"
-			order="BEFORE">
-			SELECT NVL(MAX(option_detail_code),0)+1
-			FROM ar_option_detail
-		</selectKey>
-		INSERT INTO ar_option_detail (option_detail_code
-		, product_code
-		, option_order
-		,
-		option_name
-		, option_value
-		, option_price
-		, option_count
-		<if
-			test="optionSellStatus != null and !optionSellStatus.equals('')">
-			, option_sell_status
-		</if>
-		)
-		VALUES
-		(#{optionCode}
-		, #{productCode}
-		, #{optionOrder}
-		, #{optionName}
-		,
-		#{optionValue}
-		, #{optionPrice}
-		, #{optionCount}
-		<if
-			test="optionSellStatus != null and !optionSellStatus.equals('')">
-			, #{optionSellStatus}
-		</if>
-		)
-	</insert>
+   <insert id="insertOption" parameterType="OptionVO">
+      <selectKey resultType="long" keyProperty="optionCode" order="BEFORE">
+         SELECT NVL(MAX(option_code),0)+1
+         FROM ar_option
+      </selectKey>
+      INSERT INTO ar_option (
+      option_code
+      , product_code
+      , option_name
+      , option_value
+      )
+      VALUES
+      (
+        #{optionCode}
+      , #{productCode}
+      , #{optionName}
+      , #{optionValue}
+      )
+   </insert>
+   
+   <!-- option detail insert -->
+   <insert id="insertOptionDetail" parameterType="OptionDetailVO">
+      <selectKey resultType="long" keyProperty="optionDetailCode"
+         order="BEFORE">
+         SELECT NVL(MAX(option_detail_code),0)+1
+         FROM ar_option_detail
+      </selectKey>
+      INSERT INTO ar_option_detail(
+           option_detail_code
+         , product_code
+         , option_last
+         , option_price
+         , option_sell_status
+         , option_exstatus
+         , option_count
+      )
+      VALUES (
+           #{optionDetailCode}
+         , #{productCode}
+         , #{optionLast}
+         , #{optionPrice}
+         , 'Y'
+         , 'Y'
+         , #{optionCount}
+      )
+   </insert>
 
 	<!-- 상품 이미지 등록 -->
 	<insert id="insertProductImg" parameterType="ImgsVO">

@@ -48,6 +48,7 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 //  상품테이블 등록
+//  상품테이블 등록
    @Override
    public int addProduct(ProductVO productVO) {
       int result = productMapper.insertProduct(productVO);
@@ -56,10 +57,15 @@ public class ProductServiceImpl implements ProductService{
          String code = productVO.getProductCode();
          if(productVO.getOption().size() == 0) {
             // productVO.getOption().get(0).setOptionLast("없음");
-            
-            productMapper.insertOption(productVO.getOption().get(0));
+        	OptionVO noptionVO = new OptionVO();
+        	noptionVO.setProductCode(code);
+        	noptionVO.setOptionName("없음");
+        	noptionVO.setOptionValue("없음");
+ 
+            productMapper.insertOption(noptionVO);
          }else {
             for(int i = 0; i< productVO.getOption().size(); i++) {
+               
 //               if(productVO.getOption().get(i).getOptionCount() == 0) {
 //                  productVO.getOption().get(i).setOptionSellStatus("N");
 //               }
@@ -79,9 +85,16 @@ public class ProductServiceImpl implements ProductService{
 //            }
                // System.out.println(productVO.getOption().get(i));
                productVO.getOption().get(i).setProductCode(code);
+               System.out.println(productVO.getOption().get(i));
                productMapper.insertOption(productVO.getOption().get(i));
                
                // System.out.println(productVO.getOption().get(i));
+            }
+            if(productVO.getOptionDetail().size() != 0) {
+            	for(int i =0; i<productVO.getOptionDetail().size(); i++) {
+            		productVO.getOptionDetail().get(i).setProductCode(code);
+            		productMapper.insertOptionDetail(productVO.getOptionDetail().get(i));
+            	}            	
             }
             
          }

@@ -208,9 +208,11 @@
                   <label class="col-sm-2">옵션</label>
                   <div class="optionB row g-3"></div>
                </div>
-               <div class="form-group row">
-                  <label class="col-sm-2" for="">옵션설정</label>
-                  <div class="col-sm-3">
+               <div class="form-group row"style="height: 200px; overflow: auto">
+      
+                     <label class="col-sm-2" for="">옵션설정</label>
+           
+                  <div class="col-sm-3" >
                      <table class="table">
                         <thead>
                            <tr>
@@ -628,7 +630,7 @@
             let tr = $('<tr/>');
             let td = $('<td />');
             let input = $('<input />').attr('value', (i+1) + '번째 옵션');
-            input.attr('name','optionDetail['+i+'].optionName');
+            input.attr('name','optionDetail['+i+']');
             input.attr('readonly','true');
             td.append(input);
             tr.append(td);
@@ -644,6 +646,7 @@
             let inputN = $('<input />').attr('type','number');
             inputN.attr('name','optionDetail['+i+'].optionPrice');
             inputN.attr('id','optionDetail['+i+'].optionPrice'+i);
+            inputN.css("width", "100px");
             inputN.attr('value',0);
             td.append(inputN);
             tr.append(td);
@@ -652,6 +655,7 @@
             inputN = $('<input />').attr('type','number');
             inputN.attr('name','optionDetail['+i+'].optionCount');
             inputN.attr('id','optionDetail['+i+'].optionCount'+i);
+            inputN.css("width", "100px");
             inputN.attr('value',0);
             td.append(inputN);
             tr.append(td);
@@ -660,6 +664,7 @@
             inputN = $('<input />').attr('type','number');
             inputN.attr('name','optionDetail['+i+'].minOrder');
             inputN.attr('id','optionDetail['+i+'].minOrder'+i);
+            inputN.css("width", "100px");
             inputN.attr('value',0);
             td.append(inputN);
             tr.append(td);
@@ -668,6 +673,7 @@
             inputN = $('<input />').attr('type','number');
             inputN.attr('name','optionDetail['+i+'].MaxOrder');
             inputN.attr('id','optionDetail['+i+'].MaxOrder'+i);
+            inputN.css("width", "100px");
             inputN.attr('value',0);
             td.append(inputN);
             tr.append(td);
@@ -679,46 +685,50 @@
                let tr = $('<tr/>');
                let td = $('<td />');
                let input = $('<input />').attr('value', (i+j+1) + '번째 옵션');
-               input.attr('name','option['+i+'].optionName');
+               input.attr('name','optionDetail['+i+'].optionName');
                input.attr('readonly','true');
                td.append(input);
                tr.append(td);
 
                td = $('<td/>');
                input = $('<input />').attr('value', box0[i] + box1[j]);
-               input.attr('name','option['+i+'].optionLast');
+               input.attr('name','optionDetail['+i+'].optionLast');
                input.attr('readonly','true');
                td.append(input);
                tr.append(td);
 
                td = $('<td/>');
                let inputN = $('<input />').attr('type','number');
-               inputN.attr('name','option['+i+'].optionPrice');
-               inputN.attr('id','option['+i+'].optionPrice'+i);
+               inputN.attr('name','optionDetail['+i+'].optionPrice');
+               inputN.attr('id','optionDetail['+i+'].optionPrice'+i);
+               inputN.css("width", "100px");
                inputN.attr('value',0);
                td.append(inputN);
                tr.append(td);
 
                td = $('<td/>');
                inputN = $('<input />').attr('type','number');
-               inputN.attr('name','option['+i+'].optionCount');
-               inputN.attr('id','option['+i+'].optionCount'+i);
+               inputN.attr('name','optionDetail['+i+'].optionCount');
+               inputN.attr('id','optionDetail['+i+'].optionCount'+i);
+               inputN.css("width", "100px");
                inputN.attr('value',0);
                td.append(inputN);
                tr.append(td);
 
                td = $('<td/>');
                inputN = $('<input />').attr('type','number');
-               inputN.attr('name','option['+i+'].minOrder');
-               inputN.attr('id','option['+i+'].minOrder'+i);
+               inputN.attr('name','optionDetail['+i+'].minOrder');
+               inputN.attr('id','optionDetail['+i+'].minOrder'+i);
+               inputN.css("width", "100px");
                inputN.attr('value',0);
                td.append(inputN);
                tr.append(td);
             
                td = $('<td/>');
                inputN = $('<input />').attr('type','number');
-               inputN.attr('name','option['+i+'].MaxOrder');
-               inputN.attr('id','option['+i+'].MaxOrder'+i);
+               inputN.attr('name','optionDetail['+i+'].MaxOrder');
+               inputN.attr('id','optionDetail['+i+'].MaxOrder'+i);
+               inputN.css("width", "100px");
                inputN.attr('value',0);
                td.append(inputN);
                tr.append(td);
@@ -732,46 +742,50 @@
                   let tr = $('<tr/>');
                   let td = $('<td />');
                   let input = $('<input />').attr('value', (i+j+1) + '번째 옵션');
-                  input.attr('name','option['+i+'].optionName');
+                  input.attr('name','optionDetail['+i+'].optionName');
                   input.attr('readonly','true');
                   td.append(input);
                   tr.append(td);
 
                   td = $('<td/>');
                   input = $('<input />').attr('value', box0[i] + box1[j]+ box0[x]);
-                  input.attr('name','option['+i+'].optionLast');
+                  input.attr('name','optionDetail['+i+'].optionLast');
                   input.attr('readonly','true');
                   td.append(input);
                   tr.append(td);
 
                   td = $('<td/>');
                   let inputN = $('<input />').attr('type','number');
-                  inputN.attr('name','option['+i+'].optionPrice');
-                  inputN.attr('id','option['+i+'].optionPrice'+i);
+                  inputN.attr('name','optionDetail['+i+'].optionPrice');
+                  inputN.attr('id','optionDetail['+i+'].optionPrice'+i);
+                  inputN.css("width", "100px");
                   inputN.attr('value',0);
                   td.append(inputN);
                   tr.append(td);
 
                   td = $('<td/>');
                   inputN = $('<input />').attr('type','number');
-                  inputN.attr('name','option['+i+'].optionCount');
-                  inputN.attr('id','option['+i+'].optionCount'+i);
+                  inputN.attr('name','optionDetail['+i+'].optionCount');
+                  inputN.attr('id','optionDetail['+i+'].optionCount'+i);
+                  inputN.css("width", "100px");
                   inputN.attr('value',0);
                   td.append(inputN);
                   tr.append(td);
 
                   td = $('<td/>');
                   inputN = $('<input />').attr('type','number');
-                  inputN.attr('name','option['+i+'].minOrder');
-                  inputN.attr('id','option['+i+'].minOrder'+i);
+                  inputN.attr('name','optionDetail['+i+'].minOrder');
+                  inputN.attr('id','optionDetail['+i+'].minOrder'+i);
+                  inputN.css("width", "100px");
                   inputN.attr('value',0);
                   td.append(inputN);
                   tr.append(td);
                
                   td = $('<td/>');
                   inputN = $('<input />').attr('type','number');
-                  inputN.attr('name','option['+i+'].MaxOrder');
-                  inputN.attr('id','option['+i+'].MaxOrder'+i);
+                  inputN.attr('name','optionDetail['+i+'].MaxOrder');
+                  inputN.attr('id','optionDetail['+i+'].MaxOrder'+i);
+                  inputN.css("width", "100px");
                   inputN.attr('value',0);
                   td.append(inputN);
                   tr.append(td);
@@ -828,7 +842,7 @@
      // localstorage에 담고 보내기
      $('.detailPro').on('click',function(e){
         console.log($('input[id="optionName0"]').val());
-      e.preventDefault();
+      	e.preventDefault();
         let obj = {
          productName : $('input[name="productName"]').val(),
          productCost : $('input[name="productCost"]').val(),
@@ -870,7 +884,7 @@
          expire : Date.now() + 7200000
         }
         window.localStorage.setItem("product",JSON.stringify(obj));
-        // location.href = '/productContent';
+        location.href = '/productContent';
      })
       </script>
 

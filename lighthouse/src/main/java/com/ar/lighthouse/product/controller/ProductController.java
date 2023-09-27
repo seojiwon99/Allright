@@ -343,12 +343,11 @@ public class ProductController {
 		RedirectAttributes rtt, ImgsListVO imgsVO) {
 		HttpSession session = req.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-		// System.out.println(productVO);
 
 		productVO.setMemberId(memberVO.getMemberId());
-		// productVO.setMemberId("test");
+	
 		productVO.setCategoryCode("MSU");
-		// productVO.setDeliveryService("영차");
+	
 
 		productService.addProduct(productVO);
 
@@ -411,7 +410,7 @@ public class ProductController {
 
 		rtt.addFlashAttribute("msg", "등륵성공");
 
-		return "redirect:productList/" + memberVO.getMemberId();
+		return "redirect:productList";
 	}
 
 	// 상품 상세보기 사진 정보 보내기
