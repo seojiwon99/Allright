@@ -51,21 +51,20 @@ public class BuyerPageController {
 		List<DetailVO> orderList = buyerPageService.getDetailList(memberId);
 		model.addAttribute("orderList", orderList);
 		
-		
-		
 		return "/page/buyer/orderList";
 	}
-	//order Option 
+	
+	// 주문Option 
 	@GetMapping("page/buyer/orderOption")
 	public String orderOption(Model model, HttpSession session, DetailVO detailVO) {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 		
 		detailVO.setMemberId(memberId);
-		List<DetailVO> orderOption = buyerPageService.getOptionList(detailVO);
-		model.addAttribute("optionSelect", orderOption);
+		List<DetailVO> orderList = buyerPageService.getOptionList(detailVO);
+		model.addAttribute("orderList", orderList);
 		
-		return "page/buyer/orderList :: #orderOption";		
+		return "page/buyer/orderList :: #orderOption";
 	}
 	
 	// 구매자 개인정보

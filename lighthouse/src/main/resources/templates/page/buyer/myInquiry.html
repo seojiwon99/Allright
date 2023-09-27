@@ -106,102 +106,62 @@
                 <!-- Info -->
                 
                 <div class="card card-sm">
-                
-                <div th:each="inqs : ${myInquiry}">
-                  <div class="card-body bg-light">
-                    <div class="row">
-                      <div class="col-6 col-lg-3">
-    					
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">문의 번호:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-lg-0 fs-sm fw-bold">
-                          <span th:text= "|${inqs.customInquiryCode}|"></span>
-                        </p>
-
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">문의 제목:</h6>
-
- 
-                        <p class="mb-lg-0 fs-sm fw-bold">
-                          
-                           <span th:text= "|${inqs.customInquiryTitle}|"></span>
-                         
-                        </p>
-
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">문의 내용:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${inqs.customInquiryContent}|"></span>
-                        </p>
-
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">등록날짜:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${#dates.format(inqs.customInquiryRegdate, 'yyyy-MM-dd')}|"></span>
-                        </p>
-
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">답변여부:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${inqs.customInquiryAnswerStatus}|"></span>
-                        </p>
-
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                          
-                        </p>
-
-                      </div>
-                      <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
-                        <h6 class="heading-xxxs text-muted">:</h6>
-
-                        <!-- Text -->
-                        <p class="mb-0 fs-sm fw-bold">
-                        
-                        </p>
-
-                      </div>
-                   
-                    </div>
-                  </div>
-                </div>
+	                <div th:each="inqs : ${myInquiry}">
+	                  <div class="card-body bg-light">
+	                    <div class="row">
+	                      <div class="col-6 col-lg-3">
+	                        <h6 class="heading-xxxs text-muted">문의 번호:</h6>
+	                        <p class="mb-lg-0 fs-sm fw-bold">
+	                          <span th:text= "|${inqs.customInquiryCode}|"></span>
+	                        </p>
+	                      </div>
+	                      <div class="col-6 col-lg-3">
+	                        <h6 class="heading-xxxs text-muted">문의 제목:</h6>
+	                        <p class="mb-lg-0 fs-sm fw-bold">
+	                           <a th:text="|${inqs.customInquiryTitle}|"></a>
+	                        </p>
+	                      </div>
+	                      <div class="col-6 col-lg-3">
+	                        <h6 class="heading-xxxs text-muted">문의 내용:</h6>
+	                        <p class="mb-0 fs-sm fw-bold">
+	                          <span th:text="|${inqs.customInquiryContent}|"></span>
+	                        </p>
+	                      </div>
+	                      <div class="col-6 col-lg-3">
+	                        <h6 class="heading-xxxs text-muted">등록날짜:</h6>
+	                        <p class="mb-0 fs-sm fw-bold">
+	                          <span th:text="|${#dates.format(inqs.customInquiryRegdate, 'yyyy-MM-dd')}|"></span>
+	                        </p>
+	                      </div>
+	                      <div class="col-6 col-lg-3">
+	                        <h6 class="heading-xxxs text-muted">답변여부:</h6>
+	                        <p class="mb-0 fs-sm fw-bold">
+	                          <span th:text="|${inqs.customInquiryAnswerStatus}|"></span>
+	                        </p>
+	                      </div>
+	                      <!-- 
+	                      <div class="col-6 col-lg-3">
+	                        <h6 class="heading-xxxs text-muted">:</h6>
+	                        <p class="mb-0 fs-sm fw-bold">
+	                        </p>
+	                      </div>
+	                      <div class="col-6 col-lg-3">
+	                        <h6 class="heading-xxxs text-muted">:</h6>
+	                        <p class="mb-0 fs-sm fw-bold">
+	                        </p>
+	                      </div>
+	                      -->
+	                    </div>
+	                  </div>
+	                </div>
+	                
 				</div>
-              
-
             </div>
 
           </div>
         </div>
-			</div>
-			</div>
-			</section>
+	  </div>
+	 </div>
+	</section>
 </div>
 </html>
