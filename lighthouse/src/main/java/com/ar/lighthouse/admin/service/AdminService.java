@@ -86,6 +86,12 @@ public interface AdminService {
 	
 	//배너 관리
 	public List<EventImgVO> getEventBannerList();
+	//배너 등록
+	public int addBanner(EventImgVO eventImgVO);
+	//배너 수정
+	public int editBanner(EventImgVO eventImgVO);
+	//배너 path
+	public String findBannerPath(int eventImgCode);
 	
 	
 	

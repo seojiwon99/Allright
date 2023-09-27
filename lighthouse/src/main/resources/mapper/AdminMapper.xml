@@ -460,7 +460,56 @@
   	<select id="selectEventBannerList">
   		SELECT *
 		FROM AR_EVENT_IMG
-		WHERE banner_delete = 'n'
+		WHERE banner_delete = 'N'
+  	</select>
+  	
+  	<insert id="insertBanner">
+	  	<selectKey resultType="int" keyProperty="eventImgCode" order="BEFORE">
+	  	SELECT NVL(MAX(event_img_code), 0) + 1 FROM ar_event_img
+	  	</selectKey>
+  	
+  		INSERT INTO AR_EVENT_IMG(	
+  									EVENT_IMG_CODE
+  									, IMG_ORDER
+  									, IMG_NAME
+  									, UPLOAD_NAME
+  									, IMG_CONTENT
+  									, BANNER_TYPE
+  									, UPLOAD_PATH
+  									)
+  		VALUES (					#{eventImgCode}
+  									, #{imgOrder}
+  									, #{imgName}
+  									, #{uploadName}
+  									, #{imgContent}
+  									, #{bannerType}
+  									, #{uploadPath}
+  									)
+  	</insert>
+  	
+  	<update id="updateBanner">
+  		UPDATE AR_EVENT_IMG
+  		SET 
+  			<if test="bannerDelete != null">
+  			banner_delete = #{bannerDelete}
+  			</if>
+  			<if test="bannerDelete == null">
+  			IMG_ORDER = #{imgOrder}
+  			, IMG_CONTENT = #{imgContent}
+  			, BANNER_TYPE = #{bannerType}
+  			</if>
+  			<if test="uploadName != null">
+  			, IMG_NAME = #{imgName}
+  			, UPLOAD_NAME = #{uploadName}
+  			, UPLOAD_PATH = #{uploadPath}
+  			</if>
+  		WHERE event_img_code = #{eventImgCode}
+  	</update>
+  	
+  	<select id="selectBannerPath">
+  		SELECT UPLOAD_PATH || '/' ||UPLOAD_NAME
+  		FROM AR_EVENT_IMG
+  		WHERE EVENT_IMG_CODE = #{eventImgCode}
   	</select>
   	
   </mapper>
