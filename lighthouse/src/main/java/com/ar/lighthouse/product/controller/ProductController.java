@@ -207,10 +207,15 @@ public class ProductController {
 	}
 
 //  통계페이지
-	@GetMapping("statisticsPage")
-	public String getstatisticsPage() {
-		return "page/seller/statistics";
-	}
+   @GetMapping("statisticsPage")
+   public String getstatisticsPage(DetailVO detailVO, HttpSession session, Model model) {
+      MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+      String memberId = memberVO.getMemberId();
+      
+      model.addAttribute("staticList", productService.getStaticList(memberId));
+      
+      return "page/seller/statistics";
+   }
 
 //  상품 취소관리 페이지
 	@GetMapping("cancelProduct") // Model model, CancelVO cancelVO

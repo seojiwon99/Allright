@@ -13,18 +13,23 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class OptionDetailVO {
-	private Long optionCode;
-	   private String productCode;
-	   private int optionOrder;
+
+
+	private Long optionDetailCode;
+	private String productCode;
+	private Integer optionOrder;
+	private String optionLast;
+	private Integer optionPrice;
+	private String optionSellStatus;
+	private String optionExStatus;
+	private Integer optionCount;
+	private Integer minOrder;
+	private Integer MaxOrder;
+
 	   private String optionName;
 	   private String optionValue;
-	   private int optionPrice;
-	   private String optionSellStatus;
-	   private String optionExStatus;
-	   private int optionCount;
 	   private int salePrice;
-	   
-	   private String optionLast;
+
 
 	public OptionDetailVO(String optionName) {
 		super();
@@ -32,4 +37,5 @@ public class OptionDetailVO {
 	}
 	   
 	  
+
 }
