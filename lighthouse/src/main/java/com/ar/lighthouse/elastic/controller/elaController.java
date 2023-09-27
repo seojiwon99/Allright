@@ -42,7 +42,7 @@ public class elaController {
     String scheme = "http";
     HttpHost host = new HttpHost(hostname, port, scheme);
     String dd = "http://ec34-58-238-119-6.ngrok.io";
-    HttpHost hos = new HttpHost("e6c7-58-238-119-6.ngrok-free.app");
+    HttpHost hos = new HttpHost("9133-58-238-119-6.ngrok-free.app");
     //RestClientBuilder restClientBuilder = RestClient.builder(host);
     RestClientBuilder restClientBuilder = RestClient.builder(hos);
     
