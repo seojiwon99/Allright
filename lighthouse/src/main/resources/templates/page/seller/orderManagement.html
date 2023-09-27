@@ -7,7 +7,6 @@
 <!-- Content -->
 
 
-
 <div layout:fragment="sellerContent">
 
 	<div class="row gx-0">
@@ -239,6 +238,7 @@
 								</div>
 							</section>
 					</div>
+				</div>
 			</div>
 
 			<script>
@@ -308,8 +308,9 @@
                         };
                orderList.push(obj);
             })
-			console.log(orderList);
-
+			
+            $('#reasonSend').data('orderList', orderList);
+            
             let tbody = $('#modalData tbody');
             tbody.empty(); 
 
@@ -325,6 +326,25 @@
          })
          
          $('#reasonSend').on('click', function(){
+        	 let memberInfo= $('#reasonSend').data('orderList');
+        	 
+        	  let email = memberInfo.map(function(member) {
+        	        return member.memberEmail;
+        	    });
+        	  console.log(email);
+        	 alert("주문취소가 완료되었습니다.");
+        	 $.ajax({
+        		 url : 'sellerMailConfirm',
+        		 type : 'POST',
+        		 contentType : 'application/json',
+        		 data : JSON.stringify(memberInfo)
+        	 })
+        	 .done(data=>{
+        		 console.log(data);
+        	 })
+        	 .fail(reject =>{
+        		 console.log(reject);
+        	 })
         	 
          })
 
