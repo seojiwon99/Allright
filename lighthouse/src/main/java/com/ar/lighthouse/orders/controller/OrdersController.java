@@ -1,7 +1,5 @@
 package com.ar.lighthouse.orders.controller;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -224,81 +222,24 @@ public class OrdersController {
 		}
 		
 		//토스페이먼츠 환불
-//		@GetMapping("orders/cancel")
-//		public String orderCancel(@RequestParam (name="orderChkVO") List<OrderChkVO> orderChkVO, HttpSession session) throws IOException, InterruptedException {
-//		 
-//		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-//		String memberId = memberVO.getMemberId(); // 로그인 중인 아이디
-//	
-//		 for(OrderChkVO chk : orderChkVO) {
-//		 RefundVO refund = ordersService.getRefund(chk.getOrderCode(), chk.getOrderDetailCode(), memberId);
-//		 
-//		 //상품 취소 중 쿠폰 사용한 경우 쿠폰 반환
-//		 if(refund.getMycouponCode() != 0) {
-//			 ordersService.editRefundCoupon(memberId, refund.getMycouponCode());
-//		 }
-//		 
-//		 //페이먼츠 키 찾을 때 필요한 데이터/ 환불 신청 시 필요한 데이터 = cancelReason, cancelAmount, paymentKey
-//		 String paymentKey = refund.getPaymentKey(); // 페이먼츠 키 넣기.
-//		 String cancelReason = chk.getCancelReason();
-//		 int cancelAmount = (refund.getPaymentPrice() + refund.getDiscountPrice()); //부분 취소할 금액. select 해서 삼풍에서 가져오기. select에서 가져와야함.
-//		 
-//		 //refund 들어갈 데이터
-//
-//		 HttpRequest request = HttpRequest.newBuilder()
-//				 .uri(URI.create("https://api.tosspayments.com/v1/payments/"+paymentKey+"/cancel")) //   payments/뒤에 넣기 paymentKey
-//				 .header("Authorization", "Basic dGVzdF9za19RYmdNR1p6b3J6ZTVXZzJwQWVsVmw1RTFlbTRkOg==")
-//				 .header("Content-Type", "application/json") 
-//				 .method("POST", HttpRequest.BodyPublishers.ofString("{\"cancelReason\":\""+ cancelReason +"\",\"cancelAmount\":\""+cancelAmount+"\"}")) 
-//				 .build();
-//		
-//		 HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-//		 System.out.println(response.body());
-//		 
-//		 // 환불테이블에 업데이트 하기.
-//		 String refundVal = response.body();
-//			JSONParser jsonParser = new JSONParser();
-//			Object obj;
-//			JSONObject jsonObject = null;
-//
-//			try {
-//				obj = jsonParser.parse(refundVal);
-//				jsonObject = (JSONObject) obj;
-//			} catch (ParseException e) {
-//				e.printStackTrace();
-//			}
-//			 
-//			Long refundAbleAmount = (Long)jsonObject.get("refundableAmount");
-//			refund.setRefundAmount(refundAbleAmount);
-//			refund.setPaymentKey(paymentKey);
-//			refund.setRefundTypecode(chk.getRefundTypecode()); // 취소, 반품 구분 C , R
-//			refund.setRefundType(chk.getRefundType());
-//			
-//			ordersService.addRefund(refund);
-//			//refundBalanceAmount 값 rders테이블,credit테이블 결제액 업데이트
-//			ordersService.editTossRefundAmount(paymentKey, refundAbleAmount);
-//		}
-//		return "/page/seller/cancelProduct";
-//	 }
 		@GetMapping("orders/cancel")
-		public String orderCancel(HttpSession session) throws IOException, InterruptedException {
+		public String orderCancel(@RequestParam (name="orderChkVO") List<OrderChkVO> orderChkVO, HttpSession session) throws IOException, InterruptedException {
 		 
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId(); // 로그인 중인 아이디
 	
-		
-		 RefundVO refund = ordersService.getRefund(144, 189, memberId);
-		 RefundVO newRefund = null;
-		 int test = 0;
+		 for(OrderChkVO chk : orderChkVO) {
+		 RefundVO refund = ordersService.getRefund(chk.getOrderCode(), chk.getOrderDetailCode(), memberId);
+		 RefundVO newRefund = new RefundVO();
 		 //상품 취소 중 쿠폰 사용한 경우 쿠폰 반환
-		 if(test != 0) {
+		 if(refund.getMycouponCode() != 0) {
 			 ordersService.editRefundCoupon(memberId, refund.getMycouponCode());
 		 }
 		 
 		 //페이먼츠 키 찾을 때 필요한 데이터/ 환불 신청 시 필요한 데이터 = cancelReason, cancelAmount, paymentKey
-		 String paymentKey = "e75jWNka9lpP2YxJ4K87Xvnab2Z5e03RGZwXLObgyB0vMDm1"; // 페이먼츠 키 넣기.
-		 String cancelReason = "단순변심";
-		 int cancelAmount = 8000; //부분 취소할 금액. select 해서 삼풍에서 가져오기. select에서 가져와야함.
+		 String paymentKey = refund.getPaymentKey(); // 페이먼츠 키 넣기.
+		 String cancelReason = chk.getCancelReason();
+		 int cancelAmount = (refund.getPaymentPrice() + refund.getDiscountPrice()); //부분 취소할 금액. select 해서 삼풍에서 가져오기. select에서 가져와야함.
 		 
 		 //refund 들어갈 데이터
 
@@ -307,43 +248,45 @@ public class OrdersController {
 				 .header("Authorization", "Basic dGVzdF9za19RYmdNR1p6b3J6ZTVXZzJwQWVsVmw1RTFlbTRkOg==")
 				 .header("Content-Type", "application/json") 
 				 .method("POST", HttpRequest.BodyPublishers.ofString("{\"cancelReason\":\""+ cancelReason +"\",\"cancelAmount\":\""+cancelAmount+"\"}")) 
-				 .build(); 
+				 .build();
 		
 		 HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 		 System.out.println(response.body());
 		 
-		 // 환불테이블에 업데이트 하기.
-		 ObjectMapper objectMapper = new ObjectMapper();
-		 	String refundVal = response.body();
-			
-			int refundAbleAmount = 0;
-			try {
-				JsonNode rootNode = objectMapper.readTree(refundVal);
-				JsonNode cancels = rootNode.get("cancels");
-				if(cancels.isArray() && cancels.size() > 0) {
-					
-					JsonNode lastCancel = cancels.get(cancels.size() -1);
-					JsonNode refundableAmountNode = lastCancel.get("refundableAmount");
-						if(refundableAmountNode != null) {
-							refundAbleAmount = refundableAmountNode.asInt();
-							System.out.println("Last Value" + refundAbleAmount);
-					}
-				}
+		ObjectMapper objectMapper = new ObjectMapper();
+	 	String refundVal = response.body();
+		
+		int refundAbleAmount = 0;
+		try {
+			JsonNode rootNode = objectMapper.readTree(refundVal);
+			JsonNode cancels = rootNode.get("cancels");
+			if(cancels.isArray() && cancels.size() > 0) {
 				
-			} catch (Exception  e) {
-				e.printStackTrace();
+				JsonNode lastCancel = cancels.get(cancels.size() -1);
+				JsonNode refundableAmountNode = lastCancel.get("refundableAmount");
+					if(refundableAmountNode != null) {
+						refundAbleAmount = refundableAmountNode.asInt();
+						System.out.println("Last Value" + refundAbleAmount);
+				}
 			}
+			
+		} catch (Exception  e) {
+			e.printStackTrace();
+		}
 			System.out.println("test Val:"+refundAbleAmount);
+			 
 			newRefund.setRefundAmount(refundAbleAmount);
 			newRefund.setPaymentKey(paymentKey);
-			newRefund.setRefundTypecode("Cc0004"); // 취소, 반품 구분 C , R
-			newRefund.setRefundType("C");
+			newRefund.setRefundTypecode(chk.getRefundTypecode()); // 취소, 반품 구분 C , R
+			newRefund.setRefundType(chk.getRefundType());
 			
 			ordersService.addRefund(newRefund);
+		
 			//refundBalanceAmount 값 rders테이블,credit테이블 결제액 업데이트
 			ordersService.editTossRefundAmount(paymentKey, refundAbleAmount);
-		
-			return "/page/seller/cancelProduct";
+			ordersService.editOrderRefundAmount(chk.getOrderCode(), refundAbleAmount);
+		}
+		return "/page/seller/cancelProduct";
 	 }
-		
+				
 }

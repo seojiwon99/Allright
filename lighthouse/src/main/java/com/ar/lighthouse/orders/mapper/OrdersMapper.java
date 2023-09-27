@@ -55,5 +55,5 @@ public interface OrdersMapper {
 	public int updateTossRefundAmount(String paymentKey, int refundAmount);
 	
 	//환불 order 테이블 환불 가능 금액 업데이트
-	public int updateOrderRefundAmount(String paymentKey, int refundAmount);
+	public int updateOrderRefundAmount(int orderCode, int refundAmount);
 }

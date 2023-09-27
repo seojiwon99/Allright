@@ -143,7 +143,7 @@
 					  		)
 					  		
 		VALUES				(
-							refund_code,
+							rf_code,
 							#{refundType},
 							#{refundTypecode},
 							#{refundAmount},
@@ -237,7 +237,7 @@
 	<update id="updateOrderRefundAmount">
 		UPDATE AR_ORDERS
 		SET ORDER_PRICE = #{refundAmount}
-		WHERE PAYMENTKEY = #{paymentKey}
+		WHERE ORDER_CODE = #{orderCode}
 	</update>
 	
   </mapper>

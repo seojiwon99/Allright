@@ -89,7 +89,7 @@ public class OrdersServiceImpl implements OrdersService{
 	@Override
 	//토스페이먼츠 환불 DB 데이터 저장
 	public int addRefund(RefundVO refundVO) {
-		return 0;
+		return ordersMapper.insertRefund(refundVO);
 	}
 
 	@Override
@@ -125,8 +125,8 @@ public class OrdersServiceImpl implements OrdersService{
 
 	@Override
 	// 환불 후 orders 테이블 환불 가능 금액 업데이트
-	public int editOrderRefundAmount(String paymentKey, int refundAmount) {
-		return ordersMapper.updateOrderRefundAmount(paymentKey, refundAmount);
+	public int editOrderRefundAmount(int orderCode, int refundAmount) {
+		return ordersMapper.updateOrderRefundAmount(orderCode, refundAmount);
 	}
 
 	
