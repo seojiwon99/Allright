@@ -22,6 +22,7 @@ public interface ProductService {
 	
 	// 상품등록	
 	public int addProduct(ProductVO productVO);
+	
 	public int addOption(OptionVO optionVO);
 	
 	// 상품 이미지 등록
@@ -35,6 +36,7 @@ public interface ProductService {
 	
 //  상품 문의 답변해주기
 	int updateSellerInquiry(ProductInquiryVO productInquiryVO);
+	
 	//상품 단건 상세페이지
 	public ProductVO goodsDetail(ProductVO productVO);
 
@@ -71,9 +73,11 @@ public interface ProductService {
 	List<DetailVO> getStaticList(String memberId);
 	
 	
-	
 	//  옵션 VO 리스트
 	public List<OptionVO> getOptionList(OptionVO optionVO);
+	
+	// 옵션 디테일
+	public List<OptionDetailVO> getOptionDetail(OptionVO optionVO);
 	
 	// 택배사 코드 가져오기
 	List<CodeVO> getDeliveryList();

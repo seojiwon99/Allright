@@ -16,22 +16,18 @@
 							<li class="nav-item">
 								<!-- Toggle --> <a
 								class="nav-link dropdown-toggle fs-lg text-reset border-bottom mb-6"
-								data-bs-toggle="collapse" href="#categoryCollapse"> Fassion
+								data-bs-toggle="collapse" href="#categoryCollapse" style="font-weight: 600; font-size: 18px"> 카테고리
 							</a> <!-- Collapse -->
-								<div class="collapse" id="categoryCollapse">
+								<div class="collapse show" id="categoryCollapse">
 									<div class="form-group">
 										<ul class="list-styled mb-0" id="productsNav">
 											<li class="list-styled-item"><a class="list-styled-link"
 												href="#"> All Products </a></li>
 											<li class="list-styled-item">
-												<!-- Toggle --> 
-												<a class="list-styled-link"
+												<!-- Toggle --> <a class="list-styled-link"
 												data-bs-toggle="collapse" href="#blousesCollapse">
-													Blouses and Shirts </a> 
-												
-												
-												<!-- Collapse -->
-												
+													Blouses and Shirts </a> <!-- Collapse -->
+
 												<div class="collapse" id="blousesCollapse"
 													data-bs-parent="#productsNav">
 													<div class="py-4 ps-5">
@@ -87,7 +83,7 @@
 
 											</li>
 											<li class="list-styled-item">
-												<!-- Toggle --> <a class="list-styled-link"
+												<!-- Toggle --> <a class="list-styled-link "
 												data-bs-toggle="collapse" href="#dressesCollapse"
 												aria-expanded="true"> Dresses </a> <!-- Collapse -->
 												<div class="collapse" id="dressesCollapse"
@@ -100,9 +96,8 @@
 														</div>
 														<div class="form-check mb-3">
 															<input class="form-check-input" id="dressesTwo"
-																type="checkbox" > <label
-																class="form-check-label" for="dressesTwo"> Shift
-																Dresses </label>
+																type="checkbox"> <label class="form-check-label"
+																for="dressesTwo"> Shift Dresses </label>
 														</div>
 														<div class="form-check mb-3">
 															<input class="form-check-input" id="dressesThree"
@@ -118,54 +113,105 @@
 												</div>
 
 											</li>
-											
+
 										</ul>
 									</div>
 								</div>
 
 							</li>
-							
-							
-							
+
+
+
 							<li class="nav-item">
 								<!-- Toggle --> <a
 								class="nav-link dropdown-toggle fs-lg text-reset border-bottom mb-6"
-								data-bs-toggle="collapse" href="#seasonCollapse"> Sort </a> <!-- Collapse -->
-								<div class="collapse" id="seasonCollapse"
+								data-bs-toggle="collapse" href="#seasonCollapse" style="font-weight: 600; font-size: 18px"> 순서 </a> <!-- Collapse -->
+								<div class="collapse show" id="seasonCollapse"
 									data-simplebar-collapse="#seasonGroup">
 									<div class="form-group form-group-overflow mb-6"
 										id="seasonGroup">
 										<div class="form-check mb-3">
 											<input class="form-check-input" id="seasonOne"
-												type="checkbox"> <label
-												class="form-check-label" for="seasonOne"> new </label>
+												type="checkbox"> <label class="form-check-label"
+												for="seasonOne"> new </label>
 										</div>
 										<div class="form-check mb-3">
 											<input class="form-check-input" id="seasonTwo"
 												type="checkbox"> <label class="form-check-label"
 												for="seasonTwo"> Best </label>
 										</div>
-										
+
 									</div>
 								</div>
 
 							</li>
-							
-							
+							<li class="nav-item">
+								<!-- Toggle --> <a
+								class="nav-link dropdown-toggle fs-lg text-reset border-bottom mb-6"
+								data-bs-toggle="collapse" href="#priceCollapse" style="font-weight: 600; font-size: 18px"> 가격 </a> <!-- Collapse -->
+								<div class="collapse show" id="priceCollapse"
+									data-simplebar-collapse="#priceGroup">
+
+									<!-- Form group-->
+									<div class="form-group form-group-overflow mb-6"
+										id="priceGroup">
+										<div class="form-check mb-3">
+											<input class="form-check-input" id="priceOne" type="checkbox">
+											<label class="form-check-label" for="priceOne"> 0원 -
+												50,000원 </label>
+										</div>
+										<div class="form-check mb-3">
+											<input class="form-check-input" id="priceTwo" type="checkbox">
+											<label class="form-check-label" for="priceTwo">
+												50,000원 - 100,000원 </label>
+										</div>
+										<div class="form-check mb-3">
+											<input class="form-check-input" id="priceThree"
+												type="checkbox"> <label class="form-check-label"
+												for="priceThree"> 100,000원 - 200,000원 </label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" id="priceFour"
+												type="checkbox"> <label class="form-check-label"
+												for="priceFour"> 200,000 이상 </label>
+										</div>
+									</div>
+
+									<!-- Range -->
+									<div class="d-flex align-items-center">
+
+										<!-- Input -->
+										<input type="number" class="form-control form-control-xs"
+											placeholder="10,000원" min="10">
+
+										<!-- Divider -->
+										<div class="text-gray-350 mx-2">‒</div>
+
+										<!-- Input -->
+										<input type="number" class="form-control form-control-xs"
+											placeholder="100,000원" max="350">
+
+									</div>
+
+								</div>
+
+							</li>
+
 						</ul>
 					</form>
 
 				</div>
-				
-				
-				
-				
+
+
+
+
 				<div class="col-12 col-md-8 col-lg-9">
 
-					
+
 
 					<!-- Header -->
-					<div class="row align-items-center mb-7">
+					<div class="row align-items-center mb-7"
+						style="border-bottom: 1px solid rgba(0, 0, 0, 0.4); padding-bottom: 26px">
 						<div class="col-12 col-md">
 
 							<!-- Heading -->
@@ -179,68 +225,23 @@
 							</ol>
 
 						</div>
-						<div class="col-12 col-md-auto">
-
-							<!-- Select -->
-							<select class="form-select form-select-xs">
-								<option selected>Most popular</option>
-							</select>
-
+						<div class="input-group" style="width: 400px;">
+							<input class="form-control" type="search"
+								placeholder="키워드를 검색해 주세요">
+							<div class="input-group-append">
+								<button class="btn btn-outline-border" type="submit">
+									<i class="fe fe-search"></i>
+								</button>
+							</div>
 						</div>
 					</div>
 
-					<!-- Tags -->
-					<div class="row mb-7">
-						<div class="col-12">
 
-							<span class="btn btn-xs btn-light fw-normal text-muted me-3 mb-3">
-								Shift dresses <a class="text-reset ms-2" href="#!" role="button">
-									<i class="fe fe-x"></i>
-							</a>
-							</span> <span
-								class="btn btn-xs btn-light fw-normal text-muted me-3 mb-3">
-								Summer <a class="text-reset ms-2" href="#!" role="button"> <i
-									class="fe fe-x"></i>
-							</a>
-							</span> <span
-								class="btn btn-xs btn-light fw-normal text-muted me-3 mb-3">
-								M <a class="text-reset ms-2" href="#!" role="button"> <i
-									class="fe fe-x"></i>
-							</a>
-							</span> <span
-								class="btn btn-xs btn-light fw-normal text-muted me-3 mb-3">
-								White <a class="text-reset ms-2" href="#!" role="button"> <i
-									class="fe fe-x"></i>
-							</a>
-							</span> <span
-								class="btn btn-xs btn-light fw-normal text-muted me-3 mb-3">
-								Red <a class="text-reset ms-2" href="#!" role="button"> <i
-									class="fe fe-x"></i>
-							</a>
-							</span> <span
-								class="btn btn-xs btn-light fw-normal text-muted me-3 mb-3">
-								Adidas <a class="text-reset ms-2" href="#!" role="button"> <i
-									class="fe fe-x"></i>
-							</a>
-							</span> <span
-								class="btn btn-xs btn-light fw-normal text-muted me-3 mb-3">
-								$10.00 - $49.00 <a class="text-reset ms-2" href="#!"
-								role="button"> <i class="fe fe-x"></i>
-							</a>
-							</span> <span
-								class="btn btn-xs btn-light fw-normal text-muted me-3 mb-3">
-								$50.00 - $99.00 <a class="text-reset ms-2" href="#!"
-								role="button"> <i class="fe fe-x"></i>
-							</a>
-							</span>
-
-						</div>
-					</div>
 
 					<!-- Products -->
-					<div class="row" >
-						
-						
+					<div class="row" style="padding-top: 30px">
+
+
 						<div class="col-6 col-md-4" th:each="product:${product}">
 
 							<!-- Card -->
@@ -250,18 +251,19 @@
 								<div class="card-img">
 
 									<!-- Image -->
-									<a class="card-img-hover" href="product.html"> <img
+									<a class="card-img-hover" th:href="@{goodDetail(productCode=${product.productCode})}"> <img
 										class="card-img-top card-img-back"
-										src="../../img/products/product-124.jpg" alt="..."> <img
+										src="../../img/products/product-124.jpg"> <img
 										class="card-img-top card-img-front"
-										src="../../img/products/product-11.jpg" alt="...">
+										src="../../img/products/product-11.jpg">
 									</a>
 
 									<!-- Actions -->
 									<div class="card-actions">
 										<span class="card-action">
 											<button class="btn btn-xs btn-circle btn-white-primary"
-												data-bs-toggle="modal" data-bs-target="#modalProduct" th:onclick="|location.href = '@{goodDetail(productCode=${product.productCode})}'|">
+												data-bs-toggle="modal" data-bs-target="#modalProduct"
+												th:onclick="|location.href = '@{goodDetail(productCode=${product.productCode})}'|">
 												<i class="fe fe-eye"></i>
 											</button>
 										</span> <span class="card-action">
@@ -289,81 +291,50 @@
 
 									<!-- Title -->
 									<div class="fw-bold">
-										<a class="text-body" th:href="@{goodDetail(productCode=${product.productCode})}"> [[${product.productName}]]</a>
+										<a class="text-body"
+											th:href="@{goodDetail(productCode=${product.productCode})}">
+											[[${product.productName}]]</a>
 									</div>
 
 									<!-- Price -->
-									<div class="fw-bold text-muted">[[${product.productCost}]]</div>
-
-								</div>
-
-							</div>
-
-						</div>
-						
-						<!-- new -->
-						<div class="col-6 col-md-4">
-
-							<!-- Card -->
-							<div class="card mb-7">
-
-								<!-- Badge -->
-								<div
-									class="badge bg-white text-body card-badge card-badge text-uppercase">
-									New</div>
-
-								<!-- Image -->
-								<div class="card-img">
-
-									<!-- Image -->
-									<a href="#!"> <img class="card-img-top card-img-front"
-										src="assets/img/products/product-12.jpg" alt="...">
-									</a>
-
-									<!-- Actions -->
-									<div class="card-actions">
-										<span class="card-action">
-											<button class="btn btn-xs btn-circle btn-white-primary"
-												data-bs-toggle="modal" data-bs-target="#modalProduct">
-												<i class="fe fe-eye"></i>
-											</button>
-										</span> <span class="card-action">
-											<button class="btn btn-xs btn-circle btn-white-primary"
-												data-toggle="button">
-												<i class="fe fe-shopping-cart"></i>
-											</button>
-										</span> <span class="card-action">
-											<button class="btn btn-xs btn-circle btn-white-primary"
-												data-toggle="button">
-												<i class="fe fe-heart"></i>
-											</button>
-										</span>
-									</div>
-
-								</div>
-
-								<!-- Body -->
-								<div class="card-body px-0">
-
-									<!-- Category -->
-									<div class="fs-xs">
-										<a class="text-muted" href="shop.html">Shoes</a>
-									</div>
-
-									<!-- Title -->
 									<div class="fw-bold">
-										<a class="text-body" href="product.html"> Heel strappy
-											Sandals </a>
+										<span class="fs-xs text-gray-350 text-decoration-line-through">[[${product.productCost}]]</span>
+										<span class="text-primary">[[${product.salePrice}]]</span>
 									</div>
 
-									<!-- Price -->
-									<div class="fw-bold text-muted">$90.00</div>
+									<!-- 별점 -->
+									<div class="col-auto">
+										<!-- Rating -->
+										<div class="rating fs-xs text-dark" data-value="4">
+											<div class="rating-item">
+												<i class="fas fa-star"></i>
+											</div>
+											<div class="rating-item">
+												<i class="fas fa-star"></i>
+											</div>
+											<div class="rating-item">
+												<i class="fas fa-star"></i>
+											</div>
+											<div class="rating-item">
+												<i class="fas fa-star"></i>
+											</div>
+											<div class="rating-item">
+												<i class="fas fa-star"></i>
+											</div>
+										</div>
+										<!-- 리뷰수 -->
+										<span class="fw-bold text-muted">(6)</span>
+									</div>
+
 
 								</div>
 
 							</div>
 
 						</div>
+
+						<!-- new -->
+						
 					</div>
 
 					<!-- Pagination -->

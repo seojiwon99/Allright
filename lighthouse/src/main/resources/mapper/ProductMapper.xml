@@ -2,8 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper
-   namespace="com.ar.lighthouse.product.mapper.ProductMapper">
+<mapper namespace="com.ar.lighthouse.product.mapper.ProductMapper">
 
 
    <!-- 결과를 매핑하기 위한 resultMap -->
@@ -506,7 +505,106 @@
       WHERE
       o.order_status = 4
    </select>
+	
+	<!-- optionVo list -->
+	<select id="selectOptionList" resultType="OptionVO">
+		select * from ar_option where product_code = #{productCode}
+	</select>
+	
+	<!-- 옵션 디테일 -->
+	<select id="selectOptionDetail" resultType="OptionDetailVO">
+		select * from ar_option_detail where product_code = #{productCode}
+	</select>
+	
+	
 
+
+
+
+	<!-- option 리스트 -->
+	<select id="getOptionList" resultType="OptionDetailVO">
+
+		select * from
+		ar_option_detail
+		where product_code = #{productCode}
+	</select>
+
+	<!-- 판매자 마이페이지 -->
+	<select id="selectSellerInfo" resultType="MemberVO">
+		select member_name
+		,
+		member_id
+		,member_email
+		,member_tel
+		,member_addr
+		,member_details_addr
+		FROM
+		ar_member
+		WHERE member_id = #{memberId}
+	</select>
+
+	<!-- 정산건 목록 -->
+	<resultMap type="SellerCalVO" id="selectCalList">
+		<result column="order_detail_code" property="orderDetailCode" />
+		<result column="fee" property="fee" />
+		<result column="settlement_amount" property="settlementAmount" />
+		<result column="settlement_date" property="settlementDate" />
+		<result column="complet_date" property="completDate" />
+		<result column="product_name" property="productName" />
+		<result column="member_name" property="memberName" />
+	</resultMap>
+	<select id="selectCalList" resultMap="selectCalList">
+		select p.product_name
+		,
+		o.order_detail_code
+		, o.payment_price
+		, o.payment_price * (c.fee * 0.01)
+		myPrice
+		, o.payment_price * (1 - (c.fee * 0.01)) yourPrice
+		,
+		c.settlement_date
+		, c.complet_date
+		, m.member_name
+		FROM ar_calculate c
+		JOIN ar_order_detail o ON o.order_detail_code = c.order_detail_code
+		JOIN ar_orders r ON r.order_code = o.order_code
+		JOIN ar_option_detail x
+		ON
+		o.option_detail_code = x.option_detail_code
+		JOIN ar_products p ON
+		x.product_code =
+		p.product_code
+		JOIN ar_member m ON r.member_id =
+		m.member_id
+		WHERE
+		o.order_status = 4
+	</select>
+
+
+
+	<!-- 통계리스트 -->
+	<select id="selectStatsList" resultType="ProductVO">
+		select p.product_code, p.product_name, o.option_last,o.option_detail_code,
+		(p.sale_price + o.option_price),sum(od.order_cnt),
+		COALESCE(return_cnt(o.option_detail_code),0) AS return_cnt,
+		COALESCE(cancel_cnt(o.option_detail_code),0) AS cancel_cnt
+		, (sum(od.order_cnt)- COALESCE(return_cnt(o.option_detail_code),0)-
+		COALESCE(cancel_cnt(o.option_detail_code),0)) AS total_cnt
+		from ar_products p
+		INNER JOIN ar_option_detail o
+		ON p.product_code = o.product_code
+		INNER JOIN ar_order_detail od
+		ON o.option_detail_code = od.option_detail_code
+		FULL OUTER join ar_return
+		r
+		ON od.order_detail_code = r.order_detail_code
+		where member_id = #{memberId}
+		group by od.option_detail_code, o.option_last, o.option_price,
+		p.product_name,
+		o.option_detail_code, (p.sale_price + o.option_price), p.sale_price + o.option_price,
+		o.option_price, p.product_code
+		ORDER BY option_detail_code;
+	</select>
 
 <!-- 통계리스트 -->
 <resultMap type="DetailVO" id="selectStatsList">
@@ -529,34 +627,28 @@
       <result column="option_price" property="optionPrice" />
    </resultMap>
 
-<select id="selectStatsList" resultMap="selectStatsList">
-   select p.product_code
-         , p.product_name
-         , o.option_last
-         , o.option_detail_code
-         , (p.sale_price + o.option_price) as sale_price
-         , NVL(sum(od.order_cnt),0)
-         , COALESCE(return_cnt(o.option_detail_code),0) AS return_cnt
-         , COALESCE(cancel_cnt(o.option_detail_code),0) AS cancel_cnt
-   from ar_products p 
-       join ar_option_detail o
-           on p.product_code = o.product_code
-       left outer join ar_order_detail od
-           on o.option_detail_code = od.option_detail_code    
-   where member_id = 'hky03017'
-   group by  o.option_last
-           , o.option_price
-           , p.product_name
-           , o.option_detail_code
-           , (p.sale_price + o.option_price)
-           , o.option_price
-           , p.product_code
-   ORDER BY option_detail_code
-</select>
-
-
-
-
+	<select id="selectStatsList" resultType="ProductVO">
+		select p.product_code, p.product_name, o.option_last,o.option_detail_code,
+		(p.sale_price + o.option_price),sum(od.order_cnt),
+		COALESCE(return_cnt(o.option_detail_code),0) AS return_cnt,
+		COALESCE(cancel_cnt(o.option_detail_code),0) AS cancel_cnt
+		, (sum(od.order_cnt)- COALESCE(return_cnt(o.option_detail_code),0)-
+		COALESCE(cancel_cnt(o.option_detail_code),0)) AS total_cnt
+		from ar_products p
+		INNER JOIN ar_option_detail o
+		ON p.product_code = o.product_code
+		INNER JOIN ar_order_detail od
+		ON o.option_detail_code = od.option_detail_code
+		FULL OUTER join ar_return
+		r
+		ON od.order_detail_code = r.order_detail_code
+		where member_id = #{memberId}
+		group by od.option_detail_code, o.option_last, o.option_price,
+		p.product_name,
+		o.option_detail_code, (p.sale_price + o.option_price), p.sale_price + o.option_price,
+		o.option_price, p.product_code
+		ORDER BY option_detail_code;
+	</select>
 
 
    <!-- 삭제 -->
@@ -594,195 +686,162 @@
 
 
 
+	<!-- 상품등록 OptionVO,ProductVO -->
+	<insert id="insertProduct"
+		parameterType="com.ar.lighthouse.product.service.ProductVO">
+		<selectKey order="BEFORE" keyProperty="productCode"
+			resultType="String">
+			SELECT 'P' ||
+			to_char(LPAD(NVL(max(to_number(substr(product_code,-5))),0)+1,5,'0'))
+			FROM ar_products
+		</selectKey>
+		INSERT INTO ar_products (
+			product_code
+			, member_id
+			, category_code
+			, product_name
+			, product_content
+			, product_location
+			, product_cost
+			, sale_price
+			, product_brand
+			, product_origin
+			, product_makeorigin
+			, delivery_cost
+			, return_cost
+			, exchange_cost
+			, delivery_service
+			, product_exstatus
+		)
+		VALUES ( #{productCode}
+			, #{memberId}
+			, #{categoryCode}
+			, #{productName}
+			, #{productContent}
+			, #{productLocation}
+			, #{productCost}
+			, #{salePrice}
+			, #{productBrand}
+			, #{productOrigin}
+			, #{productMakeorigin}
+			, #{deliveryCost}
+			, #{returnCost}
+			, #{exchangeCost}
+			, #{deliveryService}
+			, 'Y'
+		)
 
+	</insert>
 
-   <!-- 상품등록 OptionVO,ProductVO -->
-   <insert id="insertProduct"
-      parameterType="com.ar.lighthouse.product.service.ProductVO">
-      <selectKey order="BEFORE" keyProperty="productCode"
-         resultType="String">
-         SELECT 'P' ||
-         to_char(LPAD(NVL(max(to_number(substr(product_code,-5))),0)+1,5,'0'))
-         FROM ar_products
-      </selectKey>
-      INSERT INTO ar_products (
-      product_code
-      , member_id
-      , category_code
-      ,
-      product_name
-      , product_content
-      , product_location
-      , product_cost
-      ,
-      sale_price
-      , product_brand
-      , product_origin
-      , product_makeorigin
-      ,
-      delivery_cost
-      , return_cost
-      , exchange_cost
-      , delivery_service
-      ,
-      product_exstatus)
-      VALUES ( #{productCode}
-      , #{memberId}
-      , #{categoryCode}
-      , #{productName}
-      , #{productContent}
-      , #{productLocation}
-      ,
-      #{productCost}
-      , #{salePrice}
-      , #{productBrand}
-      , #{productOrigin}
-      ,
-      #{productMakeorigin}
-      , #{deliveryCost}
-      , #{returnCost}
-      , #{exchangeCost}
-      , #{deliveryService}
-      , 'Y'
-      )
+	<!-- 상품 옵션 등록 -->
 
-      <!-- INSERT ALL INTO ar_products (product_code , member_id , category_code 
-         , product_name , product_content , product_location , product_cost , sale_price 
-         , product_brand , product_origin , product_makeorigin , delivery_cost , return_cost 
-         , exchange_cost , delivery_service , product_exstatus) VALUES (#{productCode} 
-         , #{memberId} , #{categoryCode} , #{productName} , #{productContent} , #{productLocation} 
-         , #{productCost} , #{salePrice} , #{productBrand} , #{productOrigin} , #{productMakeorigin} 
-         , #{deliveryCost} , #{returnCost} , #{exchangeCost} , #{deliveryService} 
-         , 'Y' ) <selectKey resultType="long" keyProperty="option_detail_code" order="BEFORE"> 
-         SELECT MAX(option_code)+1 FROM ar_option </selectKey> INTO ar_option (option_code 
-         , product_code , option_order , option_name , option_value , option_price 
-         , option_sell_status , option_exstatus , option_count , min_order , max_order 
-         ) VALUES (#{optionCode} , #{productCode} , #{optionOrder} , #{optionName} 
-         , #{optionValue} , #{optionPrice} , #{optionSellStatus} , #{optionExStatus} 
-         , #{optionCount} , #{minOrder} , #{maxOrder} ) -->
-   </insert>
+	<insert id="insertOption" parameterType="OptionDetailVO">
 
-   <!-- 상품 옵션 등록 -->
-   <insert id="insertOption" parameterType="OptionVO">
-      <selectKey resultType="long" keyProperty="optionCode"
-         order="BEFORE">
-         SELECT NVL(MAX(option_detail_code),0)+1
-         FROM ar_option_detail
-      </selectKey>
-      INSERT INTO ar_option_detail (option_detail_code
-      , product_code
-      , option_order
-      ,
-      option_name
-      , option_value
-      , option_price
-      , option_count
-      <if
-         test="optionSellStatus != null and !optionSellStatus.equals('')">
-         , option_sell_status
-      </if>
-      )
-      VALUES
-      (#{optionCode}
-      , #{productCode}
-      , #{optionOrder}
-      , #{optionName}
-      ,
-      #{optionValue}
-      , #{optionPrice}
-      , #{optionCount}
-      <if
-         test="optionSellStatus != null and !optionSellStatus.equals('')">
-         , #{optionSellStatus}
-      </if>
-      )
-   </insert>
+		<selectKey resultType="long" keyProperty="optionCode"
+			order="BEFORE">
+			SELECT NVL(MAX(option_detail_code),0)+1
+			FROM ar_option_detail
+		</selectKey>
+		INSERT INTO ar_option_detail (option_detail_code
+		, product_code
+		, option_order
+		,
+		option_name
+		, option_value
+		, option_price
+		, option_count
+		<if
+			test="optionSellStatus != null and !optionSellStatus.equals('')">
+			, option_sell_status
+		</if>
+		)
+		VALUES
+		(#{optionCode}
+		, #{productCode}
+		, #{optionOrder}
+		, #{optionName}
+		,
+		#{optionValue}
+		, #{optionPrice}
+		, #{optionCount}
+		<if
+			test="optionSellStatus != null and !optionSellStatus.equals('')">
+			, #{optionSellStatus}
+		</if>
+		)
+	</insert>
 
-   <!-- 상품 이미지 등록 -->
-   <insert id="insertProductImg" parameterType="ImgsVO">
-      <selectKey resultType="int" keyProperty="imgCode"
-         order="BEFORE">
-         SELECT NVL(0, MAX(img_code))+1 FROM ar_imgs
-      </selectKey>
-      insert into ar_imgs
-      (img_code
-      ,parent_code
-      ,img_order
-      ,img_name
-      ,upload_name
-      ,img_content
-      ,product_code
-      ,upload_path
-      )
+	<!-- 상품 이미지 등록 -->
+	<insert id="insertProductImg" parameterType="ImgsVO">
+		<selectKey resultType="int" keyProperty="imgCode"
+			order="BEFORE">
+			SELECT NVL(0, MAX(img_code))+1 FROM ar_imgs
+		</selectKey>
+		insert into ar_imgs
+		(img_code
+		,parent_code
+		,img_order
+		,img_name
+		,upload_name
+		,img_content
+		,product_code
+		,upload_path
+		)
 
-      values(
-      #{imgCode}
-      ,
-      '0'
-      ,#{imgOrder}
-      ,#{imgName}
-      ,#{uploadName}
-      ,#{imgContent}
-      ,#{productCode}
-      ,#{uploadPath}
-      )
+		values(
+		#{imgCode}
+		,
+		'0'
+		,#{imgOrder}
+		,#{imgName}
+		,#{uploadName}
+		,#{imgContent}
+		,#{productCode}
+		,#{uploadPath}
+		)
 
-   </insert>
+	</insert>
 
+	<!-- 김무준의 상세페이지~~ -->
+	<select id="selectInfo" resultType="ProductVO">
+		select member_id
+			, p.product_code
+			, p.category_code
+			, p.product_name
+			, p.product_content
+			, p.product_location
+			, p.product_cost
+			, p.product_regdate
+			, p.sale_price
+			, p.product_brand
+			, p.product_origin
+			, p.product_makeorigin
+			, p.delivery_cost
+			, p.return_cost
+			, p.exchange_cost
+			, p.delivery_service
+			, p.product_status
+			, i.upload_name
+			, i.img_content
+			from ar_products p ,
+			ar_imgs i
+			where p.product_code = i.product_code
+			and p.product_code = #{productCode}
+	</select>
 
-
-
-
-
-
-
-
-
-   <!-- 김무준의 상세페이지~~ -->
-   <select id="selectInfo" resultType="ProductVO">
-      select member_id
-      ,
-      p.product_code
-      , p.category_code
-      , p.product_name
-      , p.product_content
-      ,
-      p.product_location
-      , p.product_cost
-      , p.product_regdate
-      , p.sale_price
-      ,
-      p.product_brand
-      , p.product_origin
-      , p.product_makeorigin
-      ,
-      p.delivery_cost
-      , p.return_cost
-      , p.exchange_cost
-      , p.delivery_service
-      ,
-      p.product_status
-      , i.upload_name
-      , i.img_content
-      from ar_products p ,
-      ar_imgs i
-      where p.product_code = i.product_code
-      and p.product_code =
-      #{productCode}
-   </select>
-
-   <!-- 택배사 가져오기 -->
-   <select id="selectDeliveryList" resultType="CodeVO">
-      SELECT *
-      FROM ar_code
-      WHERE master_code = '택배사 코드'
-   </select>
+	<!-- 택배사 가져오기 -->
+	<select id="selectDeliveryList" resultType="CodeVO">
+		SELECT *
+		FROM ar_code
+		WHERE master_code = '택배사 코드'
+	</select>
 
 
 
-   <select id="getImgsFiles">
-      SELECT * 
-        FROM ar_imgs 
-   </select>
+	<select id="getImgsFiles">
+		SELECT *
+		FROM ar_imgs
+	</select>
+
 
 </mapper>
