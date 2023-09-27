@@ -5,17 +5,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ar.lighthouse.admin.service.AdminService;
 import com.ar.lighthouse.admin.service.DeclareVO;
 import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.admin.service.NoticeAdminVO;
 import com.ar.lighthouse.admin.service.ProductDetailVO;
+import com.ar.lighthouse.admin.service.SuspendVO;
 import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.common.PageDTO;
 import com.ar.lighthouse.customsvc.service.CustomService;
+import com.ar.lighthouse.customsvc.service.FaqVO;
 import com.ar.lighthouse.customsvc.service.InquiryVO;
+import com.ar.lighthouse.main.service.MainPageService;
+import com.ar.lighthouse.member.mail.RegisterMail;
 
 @Controller
 public class AdminController {
@@ -25,6 +31,12 @@ public class AdminController {
 	
 	@Autowired
 	AdminService adminService;
+	
+	@Autowired
+	MainPageService service;
+	
+	@Autowired
+    RegisterMail registerMail;
 	
 	@GetMapping("admin/main")
 	public String adminMain() {
@@ -51,12 +63,46 @@ public class AdminController {
 		return "page/admin/noticeForm";
 	}
 	
+	@GetMapping("admin/noticeDetail")
+	public String noticeDetail(Model model,NoticeAdminVO noticeAdminVO) {
+		model.addAttribute("noticeAdminVO", adminService.getNoticeDetail(noticeAdminVO));
+		
+		return "page/admin/noticeDetail";
+	}
+	
+	@GetMapping("admin/faqForm")
+	public String faqForm() {
+		return "page/admin/faqForm";
+	}
+	@GetMapping("admin/faqDetail")
+	public String faqDetail(Model model, FaqVO faqVO) {
+		model.addAttribute("faqVO", adminService.getFaqDetail(faqVO)); 
+		
+		return "page/admin/faqDetail";
+	}
+	
 	@PostMapping("admin/addNotice")
 	public String addNotice(NoticeAdminVO noticeAdminVO) {
-		System.out.println(noticeAdminVO);
 		adminService.addNotice(noticeAdminVO);
 		return "redirect:/admin/notice";
 	}
+	@PostMapping("admin/addFaq")
+	public String addFaq(FaqVO faqVO) {
+		adminService.addFaq(faqVO);
+		return "redirect:/admin/faq";
+	}
+	@PostMapping("admin/editNotice")
+	public String editNotice(NoticeAdminVO noticeAdminVO) {
+		adminService.editNotice(noticeAdminVO);
+		return "redirect:/admin/notice";
+	}
+	@PostMapping("admin/editFaq")
+	public String editFaq(FaqVO faqVO) {
+		adminService.editFaq(faqVO);
+		return "redirect:/admin/faq";
+	}
+	
+	
 	@GetMapping("admin/declareList")
 	public String declareList(Criteria cri,Model model, DeclareVO declareVO) {
 		System.out.println(declareVO);
@@ -75,10 +121,56 @@ public class AdminController {
 		return "page/admin/clearDeclareList";
 	}
 	
+	@GetMapping("admin/declareDetail")
+	public String declareDetail(Model model, DeclareVO declareVO) {
+		System.out.println(declareVO);
+
+		DeclareVO vo = adminService.getDeclareDetail(declareVO);
+		vo.setSuspendStatus(declareVO.getSuspendStatus());
+		model.addAttribute("declareDetail", vo);
+
+		return "page/admin/declareDetail";
+	}
+	@GetMapping("admin/clearDeclareDetail")
+	public String clearDeclareDetail(Model model, DeclareVO declareVO) {
+		model.addAttribute("declareDetail", adminService.getDeclareDetail(declareVO));
+		return "page/admin/declareDetail";
+	}
+	
+	@PostMapping("admin/suspendUser")
+	@ResponseBody
+	public String editSuspendUser(@RequestBody SuspendVO suspendVO) {
+		if(suspendVO.getSuspStatus()%100 == 1) {
+			suspendVO.setSuspDate(30);
+		}else if(suspendVO.getSuspStatus()%100 == 2){
+			suspendVO.setSuspDate(90);
+		}else if(suspendVO.getSuspStatus()%100 == 3) {
+			suspendVO.setSuspDate(9000);
+		}
+		
+		if(adminService.addSuspend(suspendVO)>0) {
+			adminService.editDeclareStatus(suspendVO);
+		};
+		
+		return "success";
+	}
+	
+	@GetMapping("admin/inquiryDetail")
+	public String inquiryDetail(Model model, InquiryVO inquiryVO) {
+		model.addAttribute("inquiryDetail", adminService.getInquiryDetail(inquiryVO));
+		return "page/admin/inquiryDetail";
+	}
+	
+	
+	
+	
 	
 	
 	@GetMapping("admin/inquiryList")
 	public String inquiryList(Criteria cri,Model model, InquiryVO inquiryVO) {
+		String status = "N";
+		inquiryVO.setCustomInquiryAnswerStatus(status);
+		System.out.println(inquiryVO);
 		int totalCnt = adminService.getTotalInquiryCount(inquiryVO);
 		model.addAttribute("inqList", adminService.getInquiryList(cri.getAmount(), cri.getPageNum(), inquiryVO.getCustomInquiryTitle()));
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
@@ -86,10 +178,19 @@ public class AdminController {
 	}
 	@GetMapping("admin/clearInquiryList")
 	public String ClearInquiryList(Criteria cri, Model model, InquiryVO inquiryVO) {
+		String status = "Y"; 
+		inquiryVO.setCustomInquiryAnswerStatus(status);
+		System.out.println(inquiryVO);
 		int totalCnt = adminService.getTotalInquiryCount(inquiryVO);
 		model.addAttribute("inqList", adminService.getClearInquiryList(cri.getAmount(), cri.getPageNum(), inquiryVO.getCustomInquiryTitle()));
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		return "page/admin/clearInquiryList";
+	}
+	@PostMapping("admin/updateCustomInquiry")
+	@ResponseBody
+	public String updateCustomInquiry(@RequestBody InquiryVO inquiryVO) {
+		adminService.editCustomInquiry(inquiryVO);
+		return "success";
 	}
 	
 	
@@ -103,7 +204,7 @@ public class AdminController {
 				, memberDetailVO.getMemberName(), memberDetailVO.getMemberTel()
 				, memberDetailVO.getBusinessNumber(), memberDetailVO.getMemberAuthor())) ;
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
-		
+		model.addAttribute("suspReason", adminService.getSuspReason());
 		
 		return "page/admin/buyerList";
 	}
@@ -117,10 +218,40 @@ public class AdminController {
 				, memberDetailVO.getMemberName(), memberDetailVO.getMemberTel()
 				, memberDetailVO.getBusinessNumber(), memberDetailVO.getMemberAuthor())) ;
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
-		
+		model.addAttribute("suspReason", adminService.getSuspReason());
 		
 		return "page/admin/sellerList";
 	}
+	@PostMapping("admin/suspendByAdmin")
+	@ResponseBody
+	public String addSuspendByAdmin(@RequestBody SuspendVO suspendVO) {
+		if(suspendVO.getSuspStatus() == 0) {
+			//수정
+			adminService.editSuspendStatus(suspendVO.getMemberId());
+		}else {
+			//등록
+			if(suspendVO.getSuspStatus()%100 == 1) {
+				suspendVO.setSuspDate(30);
+			}else if(suspendVO.getSuspStatus()%100 == 2){
+				suspendVO.setSuspDate(90);
+			}else if(suspendVO.getSuspStatus()%100 == 3) {
+				suspendVO.setSuspDate(9000);
+			}
+			adminService.addSuspendByAdmin(suspendVO);
+		}
+		int status = suspendVO.getSuspStatus();
+		String msg = String.valueOf(status);
+		return msg;
+	}
+	
+	
+	@GetMapping("admin/memberDetailValue")
+	@ResponseBody
+	public MemberDetailVO selectMemberDetailValue(String memberId) {
+		return adminService.getMemberDetailValue(memberId);
+	}
+	
+	
 	@GetMapping("admin/allProductList")
 	public String allProductList(Criteria cri, Model model, ProductDetailVO productDetailVO) {
 		int totalCnt = adminService.getTotalProductCount(productDetailVO);
@@ -129,16 +260,42 @@ public class AdminController {
 				, productDetailVO.getMemberTel()
 				, productDetailVO.getBusinessNumber(), productDetailVO.getProductCode())) ;
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
+		model.addAttribute("suspReason", adminService.getSuspReason());
 		
 		
 		return "page/admin/allProductList";
 	}
 	
+	@GetMapping("admin/removeProductByAdmin")
+	@ResponseBody
+	public String removeProductByAdmin(String productCode, String deleteReason, String deleteStatus, String memberEmail) {
+		String rs = null;
+		int delRs = adminService.removeProductByAdmin(productCode);
+		System.out.println("delRs : " + delRs);
+		if(delRs>0) {
+			try {
+				rs = registerMail.sendDelMessage(memberEmail,deleteReason);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return rs;
+	}
+	
 	
 	
 	@GetMapping("admin/bannerUpdateForm")
-	public String bannerUpdateForm() {
+	public String bannerUpdateForm( Model model) {
+		model.addAttribute("banner",adminService.getEventBannerList());
 		return "page/admin/bannerUpdateForm";
+	}
+	
+	
+	@GetMapping("header")
+	public String header(Model model) {
+		model.addAttribute("categories",service.getCategoryList());
+		model.addAttribute("allCtg", service.getAllCategoryList());
+		return "fragments/header";
 	}
 	
 }

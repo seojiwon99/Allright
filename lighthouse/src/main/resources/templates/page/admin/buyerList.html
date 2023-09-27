@@ -18,6 +18,11 @@
 			<form class="navbar-form w-100" style="max-width: 550px; ">
 				<div class="input-group">
 				<!-- Input -->
+				<select id="searchSelect" class="select" style="margin-right: 1px">
+					<option value="memberId">ID</option>
+					<option value="memberName">이름</option>
+					<option value="memberTel">전화번호</option>
+				</select>
 				<input class="form-control form-control-underline form-control-sm border-dark" type="search" placeholder="검색" id="memSearchBar">
 				<!-- Button -->
 				    <div class="input-group-append">
@@ -56,7 +61,9 @@
 			    </tr>
 			  </thead>
 			  <tbody>
-			    <tr th:each="mem : ${memList}">
+			   <button type="button"  class="visually-hidden" id="modalBtn"data-bs-toggle="modal" data-bs-target="#modalNewsletterVertical">Launch modal</button>
+			  <input type="hidden" id="modalValue">
+			    <tr th:each="mem : ${memList}" th:onclick="testFunc([[${mem.memberId}]])">
 					
 						<td scope="row" th:text="${mem.memberId}"></td>
 						<td th:text="${mem.declareCount}"></td>
@@ -64,9 +71,21 @@
 						<td th:text="${mem.memberTel}"></td>
 						<td th:text="${mem.memberEmail}"></td>
 						<td th:text="${mem.suspStatus}"></td>
-						<td>체크박스</td>
-						<td>드롭</td>
-						<td>저장</td>
+						<td>
+						<input type="radio" name="suspDay" value="101">/	
+						<input type="radio" name="suspDay" value="102">/
+						<input type="radio" name="suspDay" value="103">/
+						<input type="radio" name="suspDay" value="0">
+						</td>
+						<td>
+						<select id="suspReasonSelect" style="width:55px">
+							<option th:each="reason : ${suspReason}" th:value="${reason.codeId}">[[${reason.codeName}]]</option>
+						</select>
+						
+						</td>
+						<td>
+						<button class="btn btn-xxs btn-primary saveBtn" type="button" name="saveBtn">저장</button>
+						</td>
 				</tr>
 			  </tbody>
 			</table>
@@ -75,7 +94,8 @@
 						<ul class="pagination pagination-sm text-gray-400">
 							<li class="page-item" th:if="${pageMaker.prev}"><a
 								class="page-link page-link-arrow"
-								th:href="@{/admin/buyerList/(pageNum = ${pageMaker.startPage - 1}, ,declareContent=${param.declareContent}, declareReason=${param.declareReason})}">
+								th:href="@{/admin/buyerList/(pageNum = ${pageMaker.endPage - 1}, memberTel=${param.memberTel}, memberId=${param.memberId}
+								,memberName=${param.memberName},businessNumber=${param.businessNumber} )}">
 									<i class="fa fa-caret-left"></i>
 							</a></li>
 							<th:block
@@ -85,25 +105,216 @@
 									th:each="pageButtom : ${#numbers.sequence(start,end)}"
 									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
 									<a class="page-link" href="#"
-									th:href="@{/admin/buyerList/(pageNum= ${pageButtom},declareContent=${param.declareContent}, declareReason=${param.declareReason} )}"
+									th:href="@{/admin/buyerList/(pageNum= ${pageButtom}, memberTel=${param.memberTel}, memberId=${param.memberId}
+								,memberName=${param.memberName},businessNumber=${param.businessNumber} )}"
 									th:text="${pageButtom}" style="font-size : x-large;"></a>
 								</li>
 							</th:block>
 
 							<li class="page-item" th:if="${pageMaker.next}"><a
 								class="page-link page-link-arrow"
-								th:href="@{/admin/buyerList/(pageNum = ${pageMaker.endPage + 1},declareContent=${param.declareContent}, declareReason=${param.declareReason})}">
+								th:href="@{/admin/buyerList/(pageNum = ${pageMaker.endPage + 1}, memberTel=${param.memberTel}, memberId=${param.memberId}
+								,memberName=${param.memberName},businessNumber=${param.businessNumber} )}">
 									<i class="fa fa-caret-right"></i>
 							</a></li>
 						</ul>
 					</nav>
 					<!-- pagi end -->
 	</div><!-- container -->
+	
+<!-- Modal -->
+<div class="modal fade" id="modalNewsletterVertical" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 700px">
+    <div class="modal-content">
+
+      <!-- Close -->
+      <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close">
+        <i class="fe fe-x" aria-hidden="true"></i>
+      </button>
+      <!-- Body -->
+      <div class="modal-body" >
+        <!-- Form -->
+        <form style="height:300px">
+          <div class="row gx-5">
+ 
+
+              <!-- Input -->
+            <div class="col-3">
+				<span>ID: </span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline" readonly>
+            </div>
+            <div class="col-3">
+				<span>이름: </span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline"  readonly>
+			</div>
+			<div class="col-3">
+				<span>이메일 : </span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline" readonly >
+			</div>
+
+          </div>
+          
+           <div class="row gx-5">
+			<div class="col-3">
+				<span>전화번호 :  </span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline" readonly >
+			</div>
+			<div class="col-3">
+				<span>생년월일 : </span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline" readonly >
+			</div>
+			<div class="col-3">
+				<span>사업자등록번호 : </span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline" readonly >
+			</div>	
+          </div>
+          
+          	<div class="row gx-5">
+          	<div class="col-3">
+				<span>신고/정지 누적 :</span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline" readonly >
+			</div>
+			<div class="col-3">
+				<span>정지 상태 :</span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline" readonly >
+			</div>
+			<div class="col-3">
+				<span>정지 사유 :</span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline" readonly >
+			</div>
+			<div class="col-3">
+				<span>정지 기간 :</span>
+				<input type="text" name="modalInput" class="form-control form-control-xs form-control-underline" readonly >
+			</div>
+          </div>
+          
+        </form>
+      </div>
+
+
+      <!-- Footer -->
+      <div class="modal-footer justify-content-center pt-0">
+        <!-- Checkbox -->
+        <div class="form-check">
+          <!-- Label -->
+          <label class="form-check-label fs-xs" for="modalNewsletterVerticalCheckbox" data-bs-dismiss="modal" aria-label="Close">
+            닫기
+          </label>
+        </div>
+      </div>
+      
+      
+
+    </div>
+
+  </div>
+</div>
+<!-- modal end -->
 	<script>
 	$('#memSearchBtn').on('click', function(){
-		let url = "?customInquiryTitle=" + $('#memSearchBar').val()
+		let url;
+		if( $('#searchSelect').val() == "memberId"){
+			url = "?memberId=" + $('#memSearchBar').val();
+		}else if( $('#searchSelect').val() == "memberName"){
+			url = "?memberName=" + $('#memSearchBar').val();
+		}else if( $('#searchSelect').val() == "memberTel"){
+			url = "?memberTel=" + $('#memSearchBar').val();
+		}
+		//let url = "?customInquiryTitle=" + $('#memSearchBar').val()
 		location.href =  url;
 	})
+
+	$('.saveBtn').on('click', function(e){
+		
+		let thisTr = $(this).parent().parent();
+		console.log(thisTr.children())
+		let memberId = thisTr.children()[0].innerText;
+		console.log(memberId);	
+		
+		
+ 		let suspStatus;
+		let inputTag = thisTr.children()[6].children;
+		for(let i of inputTag){
+			if($(i).prop('checked') == true){
+				suspStatus = $(i).val();
+			}
+		}
+		console.log(suspStatus);
+		
+		let suspReason;
+		let selectTag = thisTr.children()[7].children[0];
+		suspReason = $(selectTag).val();
+		console.log(suspReason);
+		
+		
+		let obj = {
+			memberId : 	memberId,
+			suspStatus : suspStatus,
+			suspReason : suspReason
+		};
+		
+		console.log(obj);
+		$.ajax({
+			url : "/admin/suspendByAdmin",
+			type : "POST",
+			data : JSON.stringify(obj),
+			contentType : 'application/json',
+			success : function(rs){
+				if(rs == "0"){
+					thisTr.children()[5].innerText = "사용 가능"
+					}else if(rs == "101"){
+						thisTr.children()[5].innerText = "구매자 30일 정지"
+					}else if(rs == "102"){
+						thisTr.children()[5].innerText = "구매자 90일 정지"
+					}else if(rs == "103"){
+						thisTr.children()[5].innerText = "구매자 영구 정지"
+					}
+			},
+			error : function(err){
+				console.log(err);
+			}
+		})
+		
+	})
+	function testFunc(memberId){
+		$('#modalValue').val(memberId);
+		$('#modalBtn').trigger('click');
+		
+	}
+	
+	$('#modalNewsletterVertical').on('show.bs.modal', function(e){
+		let memberId = $('#modalValue').val(); 
+		$.ajax({
+			url :  "/admin/memberDetailValue",
+			type : "get",
+			data : {
+				memberId : memberId
+			},
+			success : function(rs){
+				console.log(rs);
+				let inputTags = document.querySelectorAll('input[name="modalInput"]');
+				
+				inputTags[0].value = rs.memberId;
+				inputTags[1].value = rs.memberName;
+				inputTags[2].value = rs.memberEmail;
+				inputTags[3].value = rs.memberTel;
+				inputTags[4].value = rs.memberBirth;
+				inputTags[5].value = rs.businessNumber == null ? '구매자 고객' : rs.businessNumber;
+				inputTags[6].value = rs.declareCount+'/'+rs.suspCount;
+				inputTags[7].value = rs.suspStatus == null ? '사용 가능' : rs.suspStatus;
+				inputTags[8].value = rs.suspReason == null ? 'X' : rs.suspReason;
+				inputTags[9].value = (rs.suspRegdate == null ? 'X' : (rs.suspRegdate).substr(0,10)) + ' / ' +  (rs.suspEnddate == null ? 'X' : (rs.suspEnddate).substr(0,10));
+				
+				
+			},
+			error : function(err){
+				console.log(err);
+			}
+		})
+	})
+	
+	
+
 	</script>
 </div>
 </html>

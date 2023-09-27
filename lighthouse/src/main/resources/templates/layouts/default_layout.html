@@ -20,7 +20,8 @@
 
 
     <!-- header fragment 사용 -->
-<th:block th:replace="fragments/header :: headerFragment"></th:block>
+<!-- <th:block th:replace="fragments/header :: headerFragment"></th:block> -->
+<div id="headerDiv"></div>
 
 
 
@@ -48,4 +49,8 @@
     <script th:src="@{/js/voice.js}"></script>
     <!-- Theme JS -->
     <script th:src="@{/js/theme.bundle.js}"></script>
+    <script>
+    $('#headerDiv').load('/header')
+    
+    </script>
 </html>

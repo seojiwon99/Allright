@@ -26,7 +26,7 @@ public interface BuyerPageService {
 	public List<MyInquiryVO> getMyQuiryList(String memberId);
 
 	// 찜 내역
-	public List<WishVO> getWishList(Criteria cri);
+	public List<WishVO> getWishList(String memberId);
 
 	// 취소 상세
 	public List<BuyCancelVO> getCancelList(String memberId);
@@ -79,5 +79,6 @@ public interface BuyerPageService {
 	//전체 갯수 가져오기..?
 	public int getPageCnt(Criteria cri);
 	
+	//주문 목록 option 선택
 	
 }

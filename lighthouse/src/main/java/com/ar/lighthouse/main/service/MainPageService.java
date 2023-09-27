@@ -17,4 +17,6 @@ public interface MainPageService {
 	public List<EventImgVO> randomGetProduct();
 	
 	public List<CategoryVO> getChildCateList(CategoryVO cate);
+	
+	public List<CategoryVO> getAllCategoryList();
 }

@@ -5,16 +5,14 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-
+import com.ar.lighthouse.product.service.OptionDetailVO;
 import com.ar.lighthouse.product.service.OptionVO;
-
-import com.ar.lighthouse.common.ImgsVO;
-
 
 import lombok.Data;
 
 @Data
 public class DetailVO {
+
 
 		private int orderDetailCode;
 	   private int orderCode;
@@ -40,10 +38,12 @@ public class DetailVO {
    String memberId;
    String memberName;
    int memberTel;
+
    
    //상품 테이블 조인
    private String productName;
    private String productCode;
+   private int salePrice;
    
    // 주문 테이블 조인
    private String requestedTerm;
@@ -63,22 +63,28 @@ public class DetailVO {
  Date fromDate;
  @DateTimeFormat(pattern="yyyy-MM-dd")
  Date toDate;
-   
+ int returnCnt;
+ int cancelCnt;
    //취소,반품,교환 
    
   
    List<BuyCancelVO> BuyCancel;
    private String cancelStatus;
+   private String cancelStatusNm;
    private Date cancelRegdate;
    
    List<BuyReturnVO> BuyReturn;
    private String returnStatus;
+   private String returnStatusNm;
    private Date returnRegdate;
    
    List<BuyExchangeVO> BuyExchange;
    private String exchangeStatus;
+   private String exchangeStatusNm;
    private Date exchangeRegdate;
    
    // 옵션 VO
    OptionVO option;
+   
+   List<OptionDetailVO> optionDetail;
 }

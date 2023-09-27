@@ -6,9 +6,130 @@
 <!-- Content -->
 <div layout:fragment="content" class="col">
 	<!-- main 영역 -->
-	<div class="container">
-    		
+    		<div class="container" style="margin-left: 0px">
+        			
+					<div class="col" style="    display: flex;
+												    margin-bottom: 30px;
+												    margin-top:30px;">
+					<div class="container " >
+						<div class="row" id="maindiv">
+								<div class="col-6 justify-content-between" th:each="b:${banner}">
+									<form>
+											<div>
+												<!-- banner -->
+												<img alt="..." th:src="@{/img/products/}+${b.uploadName}" class="w-100" style=" height:200px; margin: 10px 0px">
+											</div>
+												<!-- content -->
+											<input type="text" class="w-100" placeholder="이미지 설명을 입력해주세요." th:value="${b.imgContent}" name="" style="margin-bottom:10px">
+											<input type="file"  accept="images/* "  onchange="imageURL(this)">
+											<button class="btn btn-secondary btn-xxs saveBtn">저장</button>
+											<button class="btn btn-secondary btn-xxs delBtn">삭제</button>
+											<div class="form-check form-switch justify-content-between" style="margin-top: 5px">
+												<div class="form-check form-switch" style="padding:0">
+												  <input class="form-check-input bType" type="checkbox" 
+												  th:if='${b.bannerType.equals("y")}' role="switch" id="flexSwitchCheckDefault" checked="true" >
+												  <input class="form-check-input bType" type="checkbox" 
+												  th:if='${b.bannerType.equals("n")}'role="switch" id="flexSwitchCheckDefault">
+												  <label class="form-check-label" for="flexSwitchCheckDefault">: 전시여부</label>
+												</div>
+												  <div>
+													  <label for="orderNum">배너순서 : </label>
+													  <input type="text" th:value="${b.imgOrder}" id="orderNum" style="width:50px; margin-right:40px">
+												  </div>
+											</div>
+									</form>
+								</div>
+								<div class="visually-hidden">
+								<div class="col-6 justify-content-between" id="clonediv">
+									<form>
+										<div>
+											<img alt="..." src="" class="w-100" style="height:200px; margin: 10px 0px">
+										</div>
+										<!-- content -->
+										<input type="text" class="w-100" placeholder="이미지 설명을 입력해주세요." name="" style="margin-bottom:10px">
+										<input type="file"  accept="images/*"  onchange="imageURL(this)">
+											<button class="btn btn-secondary btn-xxs saveBtn">저장</button>
+											<button class="btn btn-secondary btn-xxs delBtn">삭제</button>
+										<div class="form-check form-switch justify-content-between" style="margin-top: 5px">
+											<div class="form-check form-switch" style="padding:0">
+												<input class="form-check-input bType" type="checkbox"  role="switch" id="flexSwitchCheckDefault" checked="true" >
+												<label class="form-check-label" for="flexSwitchCheckDefault">전시여부</label>
+											</div>
+											<div>
+												  <label for="orderNum">배너순서 : </label>
+												  <input type="text"  placeholder="0" id="orderNum" style="width:50px; margin-right:40px">
+												  
+										  </div>
+										</div>
+									</form>
+								</div>
+								</div>
+				    
+				    </div>
+					<button class="btn btn-sm btn-primary" id="addBtn">배너 등록</button>	
+				    </div>
+					</div>
+			</div>	
+	<script>
+	addBtnEvent();
+	
+	function addBtnEvent(){
+		$('.saveBtn').off('click');
+		$('.saveBtn').on('click', function(e){
+			e.preventDefault();
+			
+			
+			let uploadFile = $(this).prev()[0].files[0]; //업로드 파일
+			let imgName = $(this).prev().prev().prev().children()[0]; //img Tag
+			let imgContent = $(this).prev().prev()[0].value; //대체 텍스트 
+			let bannerType = $(this).next().next().children().children()[0].checked //전시 여부
+			let bannerOrder = $(this).next().next().children()[1].children[1].value; //배너 순서
+			
+			let obj = {
+				uploadFile : uploadFile,
+				imgName : imgName,
+				imgContent : imgContent,
+				bannerType : bannerType,
+				bannerOrder : bannerOrder
+			}
+			
+			console.log(obj);
 
-	</div>
+		})
+		
+	}
+	
+	
+    function imageURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            	let img = $(input).prev().prev().children()[0];
+            	console.log(img);
+			
+            reader.onload = function(e) {
+                $(img).attr('src', e.target.result)
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+	
+	$('.delBtn').on('click', function(e){
+		e.preventDefault();
+		console.log(this)
+
+	})
+	$('.bType').on('click', function(e){
+		console.log(this.checked)
+
+	})
+	$('#addBtn').on('click', function(e){
+		let clone = $('#clonediv').clone();
+		$('#maindiv').append(clone);
+		addBtnEvent();
+		
+	})
+	</script>
+
 </div>
 </html>

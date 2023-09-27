@@ -81,6 +81,13 @@
           </div>
           <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
             <!-- Order -->
+                <div>
+				<select id="optionList">
+					<option value="">가격순</option>
+					<option value="">구매일자순</option>
+					<option value="">상품명순</option>
+				</select>
+				</div>
             <div class="card card-lg mb-5 border">
               <div class="card-body pb-0">
 				<!-- 반복문 시작 -->
@@ -141,7 +148,7 @@
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">배송 상태:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${lists.orderStatus}|"></span>
+                          <span th:text="|${lists.orderStatusNm}|"></span>
                         </p>
                       </div>
                     <!-- 배달 완료 날짜 -->
@@ -175,7 +182,7 @@
                     </div>
                   </div>
                 <div class="card-footer">
-                <div class="row align-items-center" th:if="(${lists.returnStatus} == null or ${lists.returnStatus} == '철회') and (${lists.cancelStatus} == null or ${lists.cancelStatus} == '철회') and (${lists.exchangeStatus} == null or ${lists.exchangeStatus} == '철회')">
+                <div class="row align-items-center" th:if="(${lists.returnStatus} == null or ${lists.returnStatus} == 'u') and (${lists.cancelStatus} == null or ${lists.cancelStatus} == 'u') and (${lists.exchangeStatus} == null or ${lists.exchangeStatus} == 'u')">
                      <!-- <div class="col-6">
                         <a class="btn btn-sm w-100 btn-outline-dark" href="account-order.html" >
                           주문 상세
@@ -195,7 +202,7 @@
                         </a>
                       </div>
                     <!-- 주문 취소 Button -->
-                      <div class="col-6" th:if="(${lists.orderStatus} == '상품 준비 중')">
+                      <div class="col-6" th:if="${lists.orderStatus} == '2' or ${lists.orderStatus} == '1'">
                         <a class="btn btn-sm w-100 btn-outline-dark cancelBtn" th:href="@{/cancel}" >
                           주문 취소
                         </a>
@@ -231,6 +238,10 @@
 	}
   });
   	
+	$('#optionList').on('change',function(){
+		let selOption = $('#select option:selected').val();
+		
+	}
 
 </script>
 </div>

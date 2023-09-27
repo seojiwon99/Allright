@@ -96,5 +96,58 @@ public class RegisterMail implements MailServiceInter {
         
         return ePw; // 메일로 사용자에게 보낸 인증코드를 서버로 반환! 인증코드 일치여부를 확인하기 위함 
     }
+
+	@Override
+	public String sendDelMessage(String to, String reason) throws Exception {
+		
+		 MimeMessage message = productDelMessage(to,reason);
+		 System.out.println("========생성된 메시지 ========" + message);
+		try { // 예외처리
+            emailSender.send(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException();
+        }
+		return "mailSend";
+	}
+
+	@Override
+	public MimeMessage productDelMessage(String to, String reason) throws MessagingException, UnsupportedEncodingException {
+		
+		MimeMessage message = emailSender.createMimeMessage();
+
+        message.addRecipients(RecipientType.TO, to); // 메일 받을 사용자
+        message.setSubject("[All Right] 상품삭제 안내를 위한 이메일입니다"); // 이메일 제목
+
+        String msgg = "";
+        // msgg += "<img src=../resources/static/image/emailheader.jpg />"; // header image
+        msgg += "<h1>안녕하세요</h1>";
+        msgg += "<h1>종합쇼핑몰 All Right입니다</h1>";
+        msgg += "<br>";
+        msgg += "<p>죄송합니다. 운영정책상의 문제가 확인되어 삭제 조치 되었습니다.</p>";
+        msgg += "<br>";
+        msgg += "<br>";
+        msgg += "<div align='center' style='border:1px solid black'>";
+        msgg += "<h3 style='color:blue'>아래의 이유로 인해 삭제 되었습니다.</h3>";
+        msgg += "<div style='font-size:130%'>";
+        msgg += "<strong>" + reason + "</strong></div><br/>" ; // 메일에 인증번호 ePw 넣기
+        msgg += "</div>";
+        // msgg += "<img src=../resources/static/image/emailfooter.jpg />"; // footer image
+
+        message.setText(msgg, "utf-8", "html"); // 메일 내용, charset타입, subtype
+        // 보내는 사람의 이메일 주소, 보내는 사람 이름
+        message.setFrom(new InternetAddress("yyj2046@naver.com", "AllRight"));
+        System.out.println("********creatMessage 함수에서 생성된 msgg 메시지********" + msgg);
+        
+        System.out.println("********creatMessage 함수에서 생성된 리턴 메시지********" + message);
+
+        try { // 예외처리
+            emailSender.send(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException();
+        }
+        return message;
+	}
     
 }

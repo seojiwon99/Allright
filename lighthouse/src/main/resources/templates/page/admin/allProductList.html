@@ -18,6 +18,12 @@
 			<form class="navbar-form w-100" style="max-width: 550px; ">
 				<div class="input-group">
 				<!-- Input -->
+				<select id="searchSelect" class="select" style="margin-right: 1px">
+					<option value="memberId">ID</option>
+					<option value="memberTel">전화번호</option>
+					<option value="productCode">상품코드</option>
+					<option value="businessNumber">사업자등록번호</option>
+				</select>
 				<input class="form-control form-control-underline form-control-sm border-dark" type="search" placeholder="검색" id="memSearchBar">
 				<!-- Button -->
 				    <div class="input-group-append">
@@ -62,9 +68,14 @@
 						<td th:text="${pro.memberId}"></td>
 						<td th:text="${pro.memberTel}"></td>
 						<td th:text="${pro.businessNumber}"></td>
-						<td>링크</td>
-						<td>드롭다운</td>
-						<td><button class="btn btn-xxs btn-outline-info"  type="button"> 삭제</button></td>
+						<td><a class="nav-link active" href="#!">Link</a></td>
+						<td style="margin: 0 auto">
+						<select id="suspReasonSelect" style="width:70px;">
+							<option th:each="reason : ${suspReason}" th:value="${reason.codeId}" th:if="${#strings.contains(reason.codeId,'2')}">[[${reason.codeName}]]</option>
+						</select>
+						</td>
+						<td><button class="btn btn-xxs btn-outline-info proDelBtn" type="button"> 삭제</button></td>
+						<input type="hidden" th:id="${pro.memberId}" th:value="${pro.memberEmail}">
 				</tr>
 			  </tbody>
 			</table>
@@ -73,7 +84,8 @@
 						<ul class="pagination pagination-sm text-gray-400">
 							<li class="page-item" th:if="${pageMaker.prev}"><a
 								class="page-link page-link-arrow"
-								th:href="@{/admin/allProductList/(pageNum = ${pageMaker.startPage - 1}, ,declareContent=${param.declareContent}, declareReason=${param.declareReason})}">
+								th:href="@{/admin/allProductList/(pageNum = ${pageMaker.startPage - 1}, memberTel=${param.memberTel}, memberId=${param.memberId}
+								,memberName=${param.memberName},businessNumber=${param.businessNumber})}">
 									<i class="fa fa-caret-left"></i>
 							</a></li>
 							<th:block
@@ -83,14 +95,16 @@
 									th:each="pageButtom : ${#numbers.sequence(start,end)}"
 									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
 									<a class="page-link" href="#"
-									th:href="@{/admin/allProductList/(pageNum= ${pageButtom},declareContent=${param.declareContent}, declareReason=${param.declareReason} )}"
+									th:href="@{/admin/allProductList/(pageNum= ${pageButtom}, memberTel=${param.memberTel}, memberId=${param.memberId}
+								,memberName=${param.memberName},businessNumber=${param.businessNumber})}"
 									th:text="${pageButtom}" style="font-size : x-large;"></a>
 								</li>
 							</th:block>
 
 							<li class="page-item" th:if="${pageMaker.next}"><a
 								class="page-link page-link-arrow"
-								th:href="@{/admin/allProductList/(pageNum = ${pageMaker.endPage + 1},declareContent=${param.declareContent}, declareReason=${param.declareReason})}">
+								th:href="@{/admin/allProductList/(pageNum = ${pageMaker.endPage + 1}, memberTel=${param.memberTel}, memberId=${param.memberId}
+								,memberName=${param.memberName},businessNumber=${param.businessNumber})}">
 									<i class="fa fa-caret-right"></i>
 							</a></li>
 						</ul>
@@ -99,7 +113,17 @@
 	</div><!-- container -->
 	<script>
 	$('#memSearchBtn').on('click', function(){
-		let url = "?customInquiryTitle=" + $('#memSearchBar').val()
+		let url;
+		if( $('#searchSelect').val() == "memberId"){
+			url = "?memberId=" + $('#memSearchBar').val();
+		}else if( $('#searchSelect').val() == "productCode"){
+			url = "?productCode=" + $('#memSearchBar').val();
+		}else if( $('#searchSelect').val() == "memberTel"){
+			url = "?memberTel=" + $('#memSearchBar').val();
+		}else if(  $('#searchSelect').val() == "businessNumber"){
+			url = "?businessNumber=" + $('#memSearchBar').val();
+		}
+		//let url = "?customInquiryTitle=" + $('#memSearchBar').val()
 		location.href =  url;
 	})
 	//style
@@ -108,7 +132,56 @@
 	$('.table-sm tbody td').css("padding", "1rem 1rem");
 	$('.table-sm tbody td').css("font-size", "0.8rem");
 	
-	
+	$('.proDelBtn').on('click',function(e){
+		
+		if(!confirm('정말 삭제하시겠습니까?')){
+			console.log('취소')
+		}else{
+			console.log('삭제')
+			
+			let tr = $(this).parent().parent();
+			
+			let pId = $(this).parent().parent().children()[0].innerText;
+			let email = $(tr).children()[8].value;
+			let selTd = $(this).parent().parent().children()[6];
+			let selectTag = $(selTd).children()[0];
+			let options = $(selectTag).children();
+			
+			let delReason;
+			let delStatus;
+			
+			
+			$.each(options, function(idx,obj){
+				if($(obj).prop('selected') == true){
+					delReason = obj.innerText
+					delStatus = obj.value;
+				};
+			})
+			$.ajax({
+				url : '/admin/removeProductByAdmin',
+				type : 'GET',
+				data : {
+					productCode : pId,
+					deleteReason : delReason,
+					deleteStatus : delStatus,
+					memberEmail : email
+				},
+				success : function(rs){
+					console.log(rs);
+					tr.remove();
+				},
+				error : function(err){
+					
+				}
+			})
+			
+		
+			
+		}
+		
+		
+		
+	})
 	
 	//checkbox 한개 선택
 

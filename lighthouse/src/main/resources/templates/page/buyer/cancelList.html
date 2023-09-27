@@ -73,7 +73,7 @@
 				<div class="col-12 col-md-9 col-lg-8 offset-lg-1">
 
 					<!-- Order -->
-					<div class="card card-lg mb-5 border">
+					<div class="card card-lg mb-5 border" id="test">
 						<div class="card-body pb-0">
 							<!-- 반복문 시작 -->
 							<!-- Info -->
@@ -193,8 +193,11 @@
 											<div class="col-12 col-lg-6">
 												<div class="row gx-5">
 													<div class="col-6">
-														<button class="btn btn-sm w-100 btn-outline-dark deleteBtn"
-															data-orderdetailcode="${lists.orderDetailCode}"> 주문 취소</button>
+														<button
+															class="btn btn-sm w-100 btn-outline-dark deleteBtn"
+															th:onclick="deleteCancel([[${lists.orderDetailCode}]])"
+															data-orderdetailcode="${lists.orderDetailCode}">
+															주문 취소</button>
 													</div>
 												</div>
 											</div>
@@ -211,29 +214,27 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 	
-	$(document).ready(function(){
-		$('.deleteBtn').on('click', function() {
-			let orderDetailCode = $(this).data('orderDetailCode');
-			let cancelData = {
-				'orderDetailCode' : $('#orderDetailCode').text(),
-			}
-			$.ajax({
-				url : '/buyer/deleteCancel',
+	function deleteCancel(code){
+		
+		let cancelDel = confirm('취소하시겠습니까?');
+		let cancelData = {
+			'orderDetailCode' : $('#orderDetailCode').text(),
+		}
+		if(cancelDel){
+			$.ajax('/buyer/deleteCancel',{			
 				type : 'POST',
 				contentType : 'application/json',
-				data : JSON.stringify(cancelData),
-				success : function(response) {
-					alert("수정 완료");
-				},
-				error : function(err) {
-					console.error('정보 수정 중 오류.');
-					console.log(err);
-				}
+				data : JSON.stringify(cancelData)
 			})
-		});
-	});
-		
-		
+			.done(data => {
+					//alert("수정 완료");
+					console.log(data);
+					$('#test').replaceWith(data);
+			})
+			}else{
+				return;
+			}
+		};
 	</script>
 </div>
 </html>
