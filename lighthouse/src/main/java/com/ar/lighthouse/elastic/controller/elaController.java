@@ -33,13 +33,19 @@ import com.ar.lighthouse.main.service.MainPageService;
 
 
 
+
 @Controller
 public class elaController {
     String hostname ="localhost";
+    //String hostname = "e4d7-58-238-119-6.ngrok.io";
     int port = 9200;
     String scheme = "http";
     HttpHost host = new HttpHost(hostname, port, scheme);
-    RestClientBuilder restClientBuilder = RestClient.builder(host);
+    String dd = "http://ec34-58-238-119-6.ngrok.io";
+    HttpHost hos = new HttpHost("e6c7-58-238-119-6.ngrok-free.app");
+    //RestClientBuilder restClientBuilder = RestClient.builder(host);
+    RestClientBuilder restClientBuilder = RestClient.builder(hos);
+    
     RestHighLevelClient client = new RestHighLevelClient(restClientBuilder);
 	
 	
@@ -48,6 +54,7 @@ public class elaController {
 	
 	//matchAll 쿼리
 	public List<Map<String,Object>> HighLevelClientQuery(String indexName, int pageNum){
+		
         List<Map<String,Object>> finalResult = new ArrayList<Map<String,Object>>();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(
@@ -245,43 +252,41 @@ public class elaController {
 	
 	
 	
-	@GetMapping("elatest")
-	public String elaTestCategory(Criteria cri, Model model,String keyword, String ctg) {
+	@GetMapping("PList")
+	public String elaTestCategory(Criteria cri, Model model, String keyword, String ctg) {
+		System.out.println(keyword + "  /  " + ctg);
 		int totalCnt = -1;
-		if(keyword == "" && ctg == "") {
+		if((keyword == "" || keyword == null) && (ctg == "" || ctg == null)) { //키워드와 카테고리 둘다 없을 경우 matchAll
 			totalCnt = QueryAllCount("ar_products");
 			model.addAttribute("products", HighLevelClientQuery("ar_products", cri.getPageNum())) ;
 			model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 				
-		}else if(ctg== "") {
+		}else if((ctg == "" || ctg == null) && (keyword != null || keyword != "")) { // 카테고리는 없고 키워드만 있을 경우 match bool (카테고리 없이 검색)
 			totalCnt = QueryMatchCount("ar_products", keyword);
 			model.addAttribute("products", HighLevelClientQueryMatch("ar_products", cri.getPageNum(), keyword)) ;
 			model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
-		}else {
+		}else if((keyword == "" || keyword == null) && (ctg != null || ctg != "")) { // 키워드는 없고 카테고리만 있을 경우 match must (카테고리 선택)
+			
+		}else { //키워드와 카테고리 둘다 있을 경우 (카테고리 선택 후 검색)
 			totalCnt = QueryCtgMatchCount("ar_products", keyword, ctg);
 			model.addAttribute("products", HighLevelClientQueryCtg("ar_products", cri.getPageNum(), keyword, ctg)) ;
 			model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		}
-		return "page/test/body"; 
+		/*
+		 * 
+		 * 
+		 * New = Regdate가 최근순
+		 * 
+		 * 
+		 * Best = 리뷰 수 * 별점 높은순 
+		 * 
+		 * 
+		 * 정렬 = 가격 순 + -
+		 * 
+		 * 
+		 */
+		model.addAttribute("categories",service.getCategoryList());
+		model.addAttribute("allCtg", service.getAllCategoryList());
+		return "page/goods/goodsList"; 
 	}
-	
-	
-	
-//	@GetMapping("elatest")
-//	public String elaTestMatch(Criteria cri, Model model,String keyword) {
-//		int totalCnt = QueryMatchCount("ar_products", keyword);
-//		model.addAttribute("products", HighLevelClientQueryMatch("ar_products", cri.getPageNum(), keyword)) ;
-//		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
-//		return "page/test/body";
-//	}
-//	
-//	
-//	
-//	@GetMapping("elatest")
-//	public String elaTest(Criteria cri,Model model) {
-//		int totalCnt = QueryAllCount("ar_products");
-//		model.addAttribute("products", HighLevelClientQuery("ar_products", cri.getPageNum())) ;
-//		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
-//		return "page/test/body";
-//	}
 }
