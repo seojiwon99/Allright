@@ -245,4 +245,12 @@ public class ProductServiceImpl implements ProductService{
   	}
 
 
+
+	@Override
+	// 석연 - 취소 완료 시 Y로 상태 변경
+	public int editCancelOk(String cancelCode) {
+		return productMapper.updateCancelOk(cancelCode);
+	}
+
+
 }
