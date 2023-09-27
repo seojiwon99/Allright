@@ -43,6 +43,7 @@ public class DetailVO {
    //상품 테이블 조인
    private String productName;
    private String productCode;
+   private int salePrice;
    
    // 주문 테이블 조인
    private String requestedTerm;
@@ -62,7 +63,8 @@ public class DetailVO {
  Date fromDate;
  @DateTimeFormat(pattern="yyyy-MM-dd")
  Date toDate;
-   
+ int returnCnt;
+ int cancelCnt;
    //취소,반품,교환 
    
   

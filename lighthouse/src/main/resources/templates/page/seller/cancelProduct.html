@@ -300,25 +300,41 @@ function displayDate(range) {
 	}
   }
 		
-	  $('#cancelOk').on('click',function(){
-		  let checkTags = $('input[type=checkbox]:checked').not(allCheck);
-		  orderChk=[];
-		  checkTags.each((idx, tag)=>{
-			  let orderDetailCode = $(tag).parent().next().text();
-			  let orderCode = $(tag).closest('tr').find('td:eq(8)').text();
-			  let cancelCode = $(tag).closest('tr').find('td:eq(9)').text();
-			  let cancelReason = $(tag).closest('tr').find('td:eq(4)').text();
-			  console.log(cancelCode);
-			  let obj ={
-					  orderDetailCode,
-					  orderCode,
-					  cancelCode,
-					  cancelReason
-			  }
-			  orderChk.push(obj);
-		  })
-		  
-	  })
+$('#cancelOk').on('click',function(){
+    let checkTags = $('input[type=checkbox]:checked').not(allCheck);
+    orderChk=[];
+    checkTags.each((idx, tag)=>{
+       let orderDetailCode = $(tag).parent().next().text();
+       let orderCode = $(tag).closest('tr').find('td:eq(8)').text();
+       let cancelCode = $(tag).closest('tr').find('td:eq(9)').text();
+       let cancelReason = $(tag).closest('tr').find('td:eq(4)').text();
+       console.log(cancelCode);
+       let obj ={
+             orderDetailCode,
+             orderCode,
+             cancelCode,
+             cancelReason
+       }
+       orderChk.push(obj);
+    });
+    
+    let $form = $('<form>', {
+          method: 'POST',
+          action: ''
+      });
+
+      let $input = $('<input>', {
+          type: 'hidden',
+          name: 'orderChk',
+          value: JSON.stringify(orderChk)
+      });
+
+      $form.append($input);
+
+      $form.appendTo('body').submit();
+    
+ });
+ 
 	  
 	  $('#cancelReject').on('click', function(){
 		  let checkTags = $('input[type=checkbox]:checked').not(allCheck);

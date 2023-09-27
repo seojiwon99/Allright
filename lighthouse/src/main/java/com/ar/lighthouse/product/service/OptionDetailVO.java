@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class OptionDetailVO {
 
-	private Long optionCode;
+	private Long optionDetailCode;
 	private String productCode;
 	private Integer optionOrder;
 	private String optionLast;

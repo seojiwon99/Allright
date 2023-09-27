@@ -91,7 +91,7 @@ public interface ProductMapper {
 		public List<SellerCalVO> selectCalList(SellerCalVO sellerCalVO);
 
 //		통계 목록
-		public List<ProductVO> selectStatsList(ProductVO productVO); 
+		public List<DetailVO> selectStatsList(String memberId); 
 
 		
 		

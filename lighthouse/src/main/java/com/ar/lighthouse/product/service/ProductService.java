@@ -67,7 +67,8 @@ public interface ProductService {
 	
 //	정산건 목록
 	List<SellerCalVO> getCalList(SellerCalVO sellerCalVO);
-	
+//	취소건 목록
+	List<DetailVO> getStaticList(String memberId);
 	
 	
 	
