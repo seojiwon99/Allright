@@ -71,6 +71,7 @@ public class DetailVO {
  Date toDate;
  int returnCnt;
  int cancelCnt;
+ int totalPrice;
    //취소,반품,교환 
    
   

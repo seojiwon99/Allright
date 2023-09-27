@@ -1,6 +1,7 @@
 package com.ar.lighthouse.member.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,4 +31,5 @@ public class MemberVO {
 		    this.memberPw = passwordEncoder.encode(this.memberPw);
 		    return this;
 	}
+	List<MemberVO> memberList;
 }

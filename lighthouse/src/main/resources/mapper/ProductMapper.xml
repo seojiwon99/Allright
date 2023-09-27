@@ -243,7 +243,7 @@
    <update id="updateCancelList">
       update ar_cancel
       set cancel_status = 'N'
-      WHERE cancel_code = #{cancelCode};
+      WHERE cancel_code = #{cancelCode}
    </update>
    <!-- 취소검색목록 -->
    <select id="cancelOptionList" resultType="CancelVO">
@@ -536,6 +536,7 @@
       <result column="sale_price" property="salePrice" />
       <result column="return_cnt" property="returnCnt" />
       <result column="cancel_cnt" property="cancelCnt" />
+      <result column="total_price" property="totalPrice" />
       <collection property="optionDetail" resultMap="optionDetail" />
    </resultMap>
 
@@ -547,27 +548,30 @@
       <result column="option_price" property="optionPrice" />
    </resultMap>
 
-	<select id="selectStatsList" resultType="ProductVO">
-		select p.product_code, p.product_name, o.option_last,o.option_detail_code,
-		(p.sale_price + o.option_price),sum(od.order_cnt),
-		COALESCE(return_cnt(o.option_detail_code),0) AS return_cnt,
-		COALESCE(cancel_cnt(o.option_detail_code),0) AS cancel_cnt
-		, (sum(od.order_cnt)- COALESCE(return_cnt(o.option_detail_code),0)-
-		COALESCE(cancel_cnt(o.option_detail_code),0)) AS total_cnt
+	<select id="selectStatsList" resultMap="selectStatsList">
+     select p.product_code
+				, p.product_name
+				, NVL(o.option_last,' ') as option_last
+				, COALESCE(o.option_detail_code,0) as option_detail_code
+				, (p.sale_price + o.option_price) AS sale_price
+				, COALESCE(sum(od.order_cnt),0) as order_cnt
+				, COALESCE(return_cnt(o.option_detail_code),0) AS return_cnt
+				, COALESCE(cancel_cnt(o.option_detail_code),0) AS cancel_cnt
+				, NVL((sum(od.order_cnt)- COALESCE(return_cnt(o.option_detail_code),0)-
+				COALESCE(cancel_cnt(o.option_detail_code),0))*NVL((p.sale_price + o.option_price),0) ,0) AS total_price
 		from ar_products p
-		INNER JOIN ar_option_detail o
-		ON p.product_code = o.product_code
-		INNER JOIN ar_order_detail od
-		ON o.option_detail_code = od.option_detail_code
-		FULL OUTER join ar_return
-		r
-		ON od.order_detail_code = r.order_detail_code
-		where member_id = #{memberId}
+		LEFT OUTER JOIN ar_option_detail o
+						ON p.product_code = o.product_code
+		LEFT OUTER JOIN ar_order_detail od
+					ON o.option_detail_code = od.option_detail_code
+		FULL OUTER join ar_return r
+					ON od.order_detail_code = r.order_detail_code
+		where member_id = 'hky03017'
 		group by od.option_detail_code, o.option_last, o.option_price,
-		p.product_name,
-		o.option_detail_code, (p.sale_price + o.option_price), p.sale_price + o.option_price,
-		o.option_price, p.product_code
-		ORDER BY option_detail_code;
+				p.product_name,
+				o.option_detail_code, (p.sale_price + o.option_price), p.sale_price + o.option_price,
+				o.option_price, p.product_code
+		ORDER BY option_detail_code
 	</select>
 
 
