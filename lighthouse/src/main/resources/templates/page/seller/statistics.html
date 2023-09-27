@@ -50,11 +50,16 @@
                         </tr>
                      </thead>
                      <tbody id="cancelList">
-                        <tr th:each="static : ${staticList}">
+                        <tr th:each="static, index : ${staticList}">
+                           <td th:text="${index.count}"></td>
                            <td th:text="${static.productCode}"></td>
                            <td th:text="${static.productName}"></td>
                            <td th:text="${static.optionDetail[0].optionLast}"></td>
-                         
+                           <td th:text="${static.salePrice}"></td>
+                           <td th:text="${static.orderCnt}"></td>
+                           <td th:text="${static.cancelCnt}"></td>
+                           <td th:text="${static.returnCnt}"></td>
+                         	<td data-th-text="${#numbers.formatInteger(static.totalPrice, 1, 'COMMA')+ '원'}"></td>
                         </tr>
                         <!-- 반복문 종료 -->
                      </tbody>
