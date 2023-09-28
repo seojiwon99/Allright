@@ -165,8 +165,8 @@
                   <div class="col-12 col-md">
 
                      <!-- Heading -->
-                     <h3 class="mb-1" th:if="${param.ctg == null}">전체보기</h3>
-                     <h3 class="mb-1" th:if="${param.ctg != null}">[[${param.ctg}]]</h3>
+                     <h3 class="mb-1" th:if="${#strings.isEmpty(param.ctg)}">전체보기</h3>
+                     <h3 class="mb-1" th:if="${!(#strings.isEmpty(param.ctg))}">[[${param.ctg}]]</h3>
                      
                      
                      
@@ -174,7 +174,7 @@
                      <!-- Breadcrumb -->
                      <ol class="breadcrumb mb-md-0 fs-xs text-gray-400">
                         <li class="breadcrumb-item"><a class="text-gray-400"
-                           href="index.html">Home</a></li>
+                           href="/">Home</a></li>
                         <li class="breadcrumb-item active" th:if="${param.ctg != null}">[[${param.ctg}]]</li>
                      </ol>
 
@@ -197,7 +197,9 @@
             <div class="col-6 col-md-4">
                <div class="card mb-7">
                   <div class="card-img">
-                  <a class="card-img"><img th:src="@{/img/products/}+${#strings.replace(product.upload_path,'\','/')}+@{/}+${product.upload_name}"></a><!-- ${product.upload_path}+${product.upload_name} -->
+                  <a class="card-img"  tabindex="0" th:href="|/goodsDetail/?productCode=${product.product_code}|">
+                  <img th:src="@{/img/products/}+${#strings.replace(product.upload_path,'\','/')}+@{/}+${product.upload_name}">
+                  </a><!-- ${product.upload_path}+${product.upload_name} -->
                   </div>
                   <div class="card-body px-0">
                      <div class="fs-xs">[[${product.category_code}]]</div>
@@ -269,6 +271,113 @@
             </div>
          </div>
       </div>
-   </section>
+   </section><!-- [[${#strings.isEmpty(param.ctg)}]] ? '전체' : '카테고리' -->
+   		<textarea id="PListMenual" style="display:none;"> 
+			1번 이전페이지로.    
+			2번 상품 둘러보기.     
+			3번 다음페이지로.      
+			
+			4번 뒤로가기.      
+			5번 검색하기.      
+			6번 메인홈페이지로 가기.      
+			
+			7번 카테고리 선택 페이지로 이동.      
+			
+			
+			0번 다시 듣기.      
+			
+	  	</textarea>
+   <script th:inline="javascript">
+   let audioFileNow = new Audio();
+	   const movePage = function(page) {
+		   const URLSearch = new URLSearchParams(location.search);
+		   URLSearch.set('pageNum', String(page));
+		   const newParam = URLSearch.toString();
+	
+		   window.open(location.pathname + '?' + newParam, '_self');
+		 };
+	let searchBars = document.querySelectorAll('input[type="search"]');
+	//console.log(searchBars);
+	let pSearch = searchBars[0];
+	
+	
+	let productList = document.querySelectorAll('a.card-img');
+	$.each(productList, function(idx,obj){
+		$(obj).on('focus', productTTS)
+	})
+	
+	function productTTS(){
+		let divCardMb = $(this).parent().parent();
+		let divCardBody = $(this).parent().parent().children()[1];
+		let productName = $(divCardBody).children()[1].innerText;
+		let productPrice = $($(divCardBody).children()[2]).children()[1].innerText
+		console.log(productName, productPrice);
+		let productMsg = `상품 이름. :  ${productName}. 상품 가격. : ${productPrice}원`
+		VoiceMenual(productMsg);
+		
+	}
+	
+	// 검색바 포커스 됐을 경우 TTS
+	$(pSearch).on('focus',function(){
+		VoiceMenual('검색창입니다. 마이크를 이용해 입력하시려면 alt 키와 9번을 동시에 입력해주세요. 그리고 말씀하신 후에 엔터키를 눌러주세요.')
+		console.log('go');
+	});
+	
+	//엔터키 입력 시 검색
+	$(pSearch).on('keydown',function(e){
+		if(e.keyCode == 13){
+			let nowURL = new URL(location.href);
+			nowURL.searchParams.set('keyword', $(pSearch).val());
+			location.href = nowURL.href;
+		}
+		console.log('go');
+	})
+	//이하 STT 
+	window.SpeechRecognition =
+		  window.SpeechRecognition || window.webkitSpeechRecognition;
+
+	// 인스턴스 생성
+	const recognition = new SpeechRecognition();
+
+	// true면 음절을 연속적으로 인식하나 false면 한 음절만 기록함
+	recognition.interimResults = true;
+	// 값이 없으면 HTML의 <html lang="en">을 참고합니다. ko-KR, en-US
+	recognition.lang = "ko-KR";
+	// true means continuous, and false means not continuous (single result each time.)
+	// true면 음성 인식이 안 끝나고 계속 됩니다.
+	recognition.continuous = false;
+	// 숫자가 작을수록 발음대로 적고, 크면 문장의 적합도에 따라 알맞은 단어로 대체합니다.
+	// maxAlternatives가 크면 이상한 단어도 문장에 적합하게 알아서 수정합니다.
+	recognition.maxAlternatives = 10000;
+
+	function sttToInput(HTMLTag){
+		console.log("sttToInput Start");
+		let speechToText = "";
+		let tagNow = HTMLTag.value;
+		recognition.addEventListener("result", (e) => {
+			console.log(HTMLTag);
+		  let interimTranscript = "";
+		  for (let i = e.resultIndex, len = e.results.length; i < len; i++) {
+		    let transcript = e.results[i][0].transcript;
+		    console.log(transcript);
+		    if (e.results[i].isFinal) { // 마지막이면 Text에 변환스크립트 concat
+		      speechToText += transcript;
+		    } else { //도중의 경우 interim, concat
+		      interimTranscript += transcript;
+		    }
+		  }
+		  let TotalSTT = speechToText + interimTranscript;	
+		  $(HTMLTag).val(TotalSTT);
+		  console.log('한뭉터기 끝')
+		});
+			console.log("sttToInput End");
+	}
+	recognition.addEventListener('end',function(){
+		let sttResultMsg = '입력하신 값 : '+pSearch.value;
+		VoiceMenual(sttResultMsg)
+	})
+
+   </script>
+   <script src="/js/PList.js"></script>
 </div>
 </html>
