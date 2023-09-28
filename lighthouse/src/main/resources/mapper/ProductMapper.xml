@@ -246,6 +246,15 @@
       WHERE cancel_code = #{cancelCode}
    </update>
    
+
+   <!-- 석연 : 취소 승인 시 Y로 변경 -->
+   <update id="updateCancelOk">
+	  update ar_cancel
+      set cancel_status = 'Y'  
+      WHERE cancel_code = #{cancelCode}    
+   </update>
+   
+
    <!-- 취소검색목록 -->
    <select id="cancelOptionList" resultType="CancelVO">
       select

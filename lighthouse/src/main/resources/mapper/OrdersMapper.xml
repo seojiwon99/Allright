@@ -121,13 +121,14 @@
   			   d.discount_price, 
   			   d.order_price, 
   			   d.payment_price,  
-  			   d.mycoupon_code
-  			   
+  			   d.mycoupon_code,
+  			   p.delivery_cost
 		FROM ar_orders o
 		
 		JOIN ar_credit c ON o.order_code = c.order_code
 		JOIN ar_order_detail d ON o.order_code = d.order_code
-		
+		JOIN ar_option_detail t ON t.option_detail_code = d.option_detail_code
+        JOIN ar_products p ON p.product_code = t.product_code
 		WHERE d.order_detail_code = #{orderDetailCode} AND o.member_id = #{memberId} AND o.order_code = #{orderCode}
   	</select>
   	

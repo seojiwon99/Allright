@@ -106,5 +106,8 @@ public interface ProductMapper {
 	public List<OptionVO> selectOptionList(OptionVO optionVO);
 
 	public List<OptionDetailVO> selectOptionDetail(OptionVO optionVO);
+	
+	//취소 승인 시 Y로 승인 상태 변경 - 석연
+	public int updateCancelOk(String cancelCode);
 
 }

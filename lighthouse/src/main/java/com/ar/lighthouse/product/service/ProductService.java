@@ -84,4 +84,7 @@ public interface ProductService {
 	
 	// 택배사 코드 가져오기
 	List<CodeVO> getDeliveryList();
+	
+	//취소 승인 시 승인 여부 Y로 변경 - 석연
+	public int editCancelOk(String cancelCode);
 }
