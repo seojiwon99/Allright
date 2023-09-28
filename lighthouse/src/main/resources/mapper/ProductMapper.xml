@@ -245,6 +245,7 @@
       set cancel_status = 'N'
       WHERE cancel_code = #{cancelCode}
    </update>
+   
    <!-- 취소검색목록 -->
    <select id="cancelOptionList" resultType="CancelVO">
       select

@@ -253,4 +253,11 @@ public class ProductServiceImpl implements ProductService{
   	}
 
 
+
+	@Override
+	public int updateCancelList(CancelVO cancelVO) {
+		return productMapper.updateCancelList(cancelVO);
+	}
+
+
 }
