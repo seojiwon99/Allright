@@ -132,6 +132,14 @@ function base64ToBlob(base64, fileType) {
 			}
 			if(e.altKey && e.key == 7){ // 카테고리 페이지로 이동
 				location.href = "/";
+				var form = document.createElement('form');
+				form.setAttribute('method', 'post'); 
+				form.setAttribute('action', "/category");
+				document.body.appendChild(form);
+				form.submit();
+			}
+			if(e.altKey && e.key == 8){
+				location.href = "/"; // 장바구니로 이동
 			}
 			if(e.altKey && e.key == 9){ // 마이크로 입력하기
 				console.log(9);
