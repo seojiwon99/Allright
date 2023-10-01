@@ -13,7 +13,7 @@
           <div class="col-12">
 
             <!-- Heading -->
-            <h3 class="mb-10 text-center" tabindex="1">장바구니</h3>
+            <h3 class="mb-10 text-center">장바구니</h3>
 			
 			
           </div>
@@ -21,7 +21,7 @@
         <div class="row">
           <div class="col-12 col-md-7" id="test">
             <div>
-              <input type="checkbox" id="allCheckbox" tabindex="2">전체선택
+              <input type="checkbox" id="allCheckbox">전체선택
              <button type="button" class="btn btn-sm btn-dark" id="chkDelBtn" style="float:right;">선택삭제</button>
              <hr>
             </div>
@@ -29,7 +29,7 @@
             <!-- List group -->
             <!-- 반복문 시작 -->
             <div th:if="${list.size != 0}" id="cartItem">
-            <div th:each="lists : ${list}">
+            <div th:each="lists, listStat : ${list}">
             <ul class="list-group list-group-lg list-group-flush-x mb-6">
               <li class="list-group-item">
                 <div class="row align-items-center">
@@ -45,29 +45,29 @@
 
                     <!-- Image -->
                     <a href="product.html">
-                     <img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|" alt="..." class="img-fluid">
+                     <img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|" alt="..." class="img-fluid" tabindex="-1">
                     </a>
 
                   </div>
                   <div class="col">
                     <!-- Title -->
                     <div class="d-flex mb-2 fw-bold">
-                      <a class="text-body" href="product.html"><span th:text= "|상품명 : ${lists.productName}|"></span></a>
-                      <span class="price ms-auto" style="text-decoration: line-through;" th:text="| 상품금액 : ${lists.productCost}원|"></span>
+                      <a class="text-body" href="product.html"><span th:text= "|상품명 : ${lists.productName}|" tabindex="0"></span></a>
+                      <span class="price ms-auto" style="text-decoration: line-through;" th:text="| 상품금액 : ${lists.productCost}원|" tabindex="0"></span>
                     </div>
                     <div class="d-flex mb-2 fw-bold">
-                    	<span class="ms-auto" th:text="|할인금액 : ${lists.salePrice}원|"></span>
+                    	<span class="ms-auto" th:text="|할인금액 : ${lists.salePrice}원|" tabindex="0"></span>
                     </div>
                     <div class="d-flex mb-2 fw-bold">
-                    	<span class="ms-auto" th:text="|옵션 추가금액 : ${lists.optionPrice}원|"></span>
+                    	<span class="ms-auto" th:text="|옵션 추가금액 : ${lists.optionPrice}원|" tabindex="0"></span>
                     </div>
                     <div class="d-flex mb-2 fw-bold">
-                    	<span class="ms-auto" th:text="|배송비 : ${lists.deliveryCost}원|"></span>
+                    	<span class="ms-auto" th:text="|배송비 : ${lists.deliveryCost}원|" tabindex="0"></span>
                     </div>
 
                     <!-- Text -->
                     <!--옵션 종류, 옵션 값-->
-                   <p class="mb-7 fs-sm text-muted" th:text="${lists.optionLast}"></p>
+                   <p class="mb-7 fs-sm text-muted" th:text="${lists.optionLast}" tabindex="0"></p>
                     
 
                     <!--Footer -->
@@ -75,12 +75,12 @@
 
                       <!-- buy plus mius -->
                       <div class="num">
-                        <span>구매수량 : </span><span th:text="${lists.cartCount}"></span>
+                        <span>구매수량 : </span><span th:text="${lists.cartCount}" tabindex="0"></span>
                       </div>
 
                       <!-- Remove -->
                       <a class="fs-xs text-gray-400 ms-auto" th:onclick="delteResult([[${lists.cartCode}]])">
-                        <i class="fe fe-x"></i> 상품삭제
+                        <button class="fe fe-x productDel" tabindex="0"></button> 상품삭제
                       </a>
                     </div>
                   </div>
@@ -182,11 +182,13 @@
 	function init(){
 		
 		//이벤트 지정
-		$('#allCheckbox').on('click',allCheckEvent);
-    $('#allCheckbox').on('focus',allFocus);
-    $('#allCheckbox').on('keydown',allKeydown);
+		$('#allCheckbox').on('click',allCheckEvent);  // 전체선택
+    $('#allCheckbox').on('focus',allFocus); // 전체선택 포커스 될 경우 read
+    $('#allCheckbox').on('keydown',allKeydown); // 키 눌렀을 경우 읽어줌
 		$('input[name="price"]').on('change', checkedCart);
 		$('#chkDelBtn').on('click',checkedDel);                    //선택 삭제
+    $('.productDel').on('focus',productDel);  // 상품  삭제 read
+    $('#payMove').on('focus',patMove); // 주문 페이지 안내 - 결제 클릭
 		
     
     document.getElementById('productPrice').innerText ='원';
@@ -247,16 +249,6 @@
     document.getElementById('deliveryPrice').innerText = deliveryResult + '원';
     document.getElementById('totalPrice').innerText = saleResult + deliveryResult + '원';
   }   
-
-      function allKeydown(e) {
-        if(e.keyCode === 32) {
-        VoiceTest("장바구니 상품 전체 선택 되었습니다.");
-        }
-      }
-
-      function allFocus(e) {
-        VoiceTest("장바구니에 담긴 상품을 전체 선택 원할 경우 스페이드바 눌러주세요.");
-      } 
     
       //전체 선택
       function allCheckEvent(e) {
@@ -300,6 +292,27 @@
       }
     }
     
+    // tts 정리
+    function allKeydown(e) {
+        if(e.keyCode === 32 && $('#allCheckbox').is(':checked') == false) {
+        VoiceTest("장바구니 상품 전체 선택 되었습니다.");
+        } else if(e.keyCode === 32 && $('#allCheckbox').is(':checked') == true){
+          VoiceTest("전체 상품 선택을 취소했습니다."); 
+        }
+      }
+
+      function allFocus(e) {
+        VoiceTest("장바구니에 담긴 상품을 전체 선택 원할 경우 스페이스바 눌러주세요.");
+      } 
+
+      function productDel(e) {
+        VoiceTest("현재 상품을 삭제 원할 경우 스페이스바 두번 눌러주세요.");
+      }
+      function patMove(e) {
+        VoiceTest("상품 선택을 마치셨다면 엔터키 사용하여 선택한 상품을 가지고 주문 페이지로 이동합니다.");
+      }
+      
+
 
 
 $('#payMove').on('click', function(){
