@@ -126,9 +126,10 @@
                                     for="priceFour"> 200,000 이상 </label>
                               </div>
                            </div>
+                          
 
                            <!-- Range -->
-                           <div class="d-flex align-items-center">
+                           <div class="d-flex align-items-center" id="writeRange">
 
                               <!-- Input -->
                               <input type="number" class="form-control form-control-xs"
@@ -139,8 +140,11 @@
 
                               <!-- Input -->
                               <input type="number" class="form-control form-control-xs"
-                                 placeholder="100,000원" max="350">
+                                 placeholder="100,000원" max="9999999">
 
+                           </div>
+                            <div style="margin-top : 10px">
+                           		<button type="button" class="form-control form-control-xs" id="filterApplyBtn">적용하기</button>
                            </div>
 
                         </div>
@@ -289,13 +293,21 @@
 	  	</textarea>
    <script th:inline="javascript">
    let audioFileNow = new Audio();
-	   const movePage = function(page) {
-		   const URLSearch = new URLSearchParams(location.search);
-		   URLSearch.set('pageNum', String(page));
-		   const newParam = URLSearch.toString();
-	
-		   window.open(location.pathname + '?' + newParam, '_self');
-		 };
+   
+	let NewProduct = [[${products}]];
+	console.log(NewProduct);
+   
+   
+   const movePage = function(page) {
+	   const URLSearch = new URLSearchParams(location.search);
+	   URLSearch.set('pageNum', String(page));
+	   const newParam = URLSearch.toString();
+
+	   window.open(location.pathname + '?' + newParam, '_self');
+	 };
+		 
+		 
+		 
 	let searchBars = document.querySelectorAll('input[type="search"]');
 	//console.log(searchBars);
 	let pSearch = searchBars[0];
@@ -327,11 +339,79 @@
 	$(pSearch).on('keydown',function(e){
 		if(e.keyCode == 13){
 			let nowURL = new URL(location.href);
+			nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
 			nowURL.searchParams.set('keyword', $(pSearch).val());
 			location.href = nowURL.href;
 		}
 		console.log('go');
 	})
+	
+	
+	$('#filterApplyBtn').on('click',function(){
+		$('#priceGroup').find('input:checked') //가격범위       range 가져오기
+		$('#seasonGroup').find('input:checked') //new , best  order순서
+		$('#writeRange').find('input') // 적는 칸 가격 range;
+		let minVal = $('#writeRange').find('input')[0].value;
+		let maxVal = $('#writeRange').find('input')[1].value;
+		if((minVal > 0 && maxVal > 0) && maxVal<minVal){ //최솟값만 입력했을 경우 가능.
+			alert('최소 가격은 최대가격보다 클 수 없습니다.');
+			return;
+		}
+		
+		if($('#priceGroup').find('input:checked').length>0 && (minVal > 0 || maxVal > 0)) { // range 선택했음
+			alert('가격 범위는 하나만 입력해주세요.');
+			return;
+		};
+		if($('#priceGroup').find('input:checked').length>0  ){
+			console.log($('#priceGroup').find('input:checked')[0].id);
+		}
+		
+		
+	})
+	
+	//PriceGroup 단일 체크
+	let pGroup = $('#priceGroup').find('input');
+	let sGroup = $('#seasonGroup').find('input');
+	$.each(sGroup, function(ele,obj){
+		$(obj).on('click', checkOnlyOneSeason);
+	})
+	
+	$.each(pGroup, function(ele,obj){
+		$(obj).on('click', checkOnlyOne);
+	})
+	function checkOnlyOne(e) {
+		let priceGroup = $('#priceGroup').find('input');
+		  
+		$.each(priceGroup, function(ele,obj){
+				obj.checked = false;
+		})
+	  	this.checked = true;
+		
+	}
+	function checkOnlyOneSeason(e) {
+		let priceGroup = $('#seasonGroup').find('input');
+		  
+		$.each(priceGroup, function(ele,obj){
+				obj.checked = false;
+		})
+	  	this.checked = true;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//이하 STT 
 	window.SpeechRecognition =
 		  window.SpeechRecognition || window.webkitSpeechRecognition;

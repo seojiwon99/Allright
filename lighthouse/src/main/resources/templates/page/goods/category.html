@@ -6,10 +6,24 @@
 <!-- Content -->
 <div layout:fragment="content">
       <div class="container">
-         <div class="row">
-            <div class="col-3 " th:each="category:${allCtg}">
-			   <p th:text="|${category.categoryName} : ${category.categoryCode}|">  
-            
+         <div class="row justify-content-between">
+            <div class="col-3 " th:each="category:${allCtg}" th:if="${category.categoryLevel == 1}">
+			   <p th:text="|${category.categoryName} : ${category.categoryCode}|" tabindex=0>  
+			   <div class="row"  th:each="ctgTwo: ${allCtg}" th:if="${ctgTwo.categoryLevel == 2} and ${(ctgTwo.parentCategoryCode).equals(category.categoryCode)}">
+				   <p  th:text="|${ctgTwo.categoryName} : ${ctgTwo.categoryCode}|" tabindex=1>
+				   <div class="row" th:if="${!((category.categoryCode).equals('FOOD'))}">
+				   		<div th:each="ctgThree: ${allCtg}" 
+				   		th:if="${ctgThree.categoryLevel == 3} 
+				   		and ${(ctgThree.parentCategoryCode).equals(ctgTwo.categoryCode)}" >
+				   		<p th:text="|${ctgTwo.categoryName} ${ctgThree.categoryName} : ${ctgThree.categoryCode}|">
+				   			<div th:each="ctgFour : ${allCtg}" th:if="${category.categoryCode.equals('Fassion')} and ${ctgFour.categoryLevel == 4}
+				   			and ${ctgFour.parentCategoryCode.equals(ctgThree.categoryCode)}">
+				   				<p th:text="|${ctgTwo.categoryName} ${ctgFour.categoryName} : ${ctgFour.categoryCode}|"></p>
+				   			</div>
+				   			
+				   		</div>
+				   </div>
+			   </div>
             </div>
          </div>
       </div>
