@@ -49,25 +49,25 @@
                     </a>
 
                   </div>
-                  <div class="col">
+                  <div class="col checkContent">
                     <!-- Title -->
                     <div class="d-flex mb-2 fw-bold">
-                      <a class="text-body" href="product.html"><span th:text= "|상품명 : ${lists.productName}|" tabindex="0"></span></a>
-                      <span class="price ms-auto" style="text-decoration: line-through;" th:text="| 상품금액 : ${lists.productCost}원|" tabindex="0"></span>
+                      <a class="text-body" href="product.html"><span th:text= "|상품명 : ${lists.productName}|" tabindex="0" class="tts1"></span></a>
+                      <span class="price ms-auto tts2" style="text-decoration: line-through;" th:text="| 상품금액 : ${lists.productCost}원|" tabindex="0"></span>
                     </div>
                     <div class="d-flex mb-2 fw-bold">
-                    	<span class="ms-auto" th:text="|할인금액 : ${lists.salePrice}원|" tabindex="0"></span>
+                    	<span class="ms-auto tts3" th:text="|할인금액 : ${lists.salePrice}원|" tabindex="0"></span>
                     </div>
                     <div class="d-flex mb-2 fw-bold">
-                    	<span class="ms-auto" th:text="|옵션 추가금액 : ${lists.optionPrice}원|" tabindex="0"></span>
+                    	<span class="ms-auto tts4" th:text="|옵션 추가금액 : ${lists.optionPrice}원|" tabindex="0"></span>
                     </div>
                     <div class="d-flex mb-2 fw-bold">
-                    	<span class="ms-auto" th:text="|배송비 : ${lists.deliveryCost}원|" tabindex="0"></span>
+                    	<span class="ms-auto tts5" th:text="|배송비 : ${lists.deliveryCost}원|" tabindex="0"></span>
                     </div>
 
                     <!-- Text -->
                     <!--옵션 종류, 옵션 값-->
-                   <p class="mb-7 fs-sm text-muted" th:text="${lists.optionLast}" tabindex="0"></p>
+                   <p class="mb-7 fs-sm text-muted tts6" th:text="${lists.optionLast}" tabindex="0"></p>
                     
 
                     <!--Footer -->
@@ -75,7 +75,7 @@
 
                       <!-- buy plus mius -->
                       <div class="num">
-                        <span>구매수량 : </span><span th:text="${lists.cartCount}" tabindex="0"></span>
+                        <span>구매수량 : </span><span th:text="${lists.cartCount}" tabindex="0" class="tts7"></span>
                       </div>
 
                       <!-- Remove -->
@@ -168,28 +168,39 @@
       
     
     </section>
+    <!--cart 메뉴얼 tts-->
+    <textarea id="cartMenual" style="display: none;">
+      0번 메뉴얼 다시 듣기
+      1번 결제버튼 이동 후 엔터키 사용하면 주문페이지 이동
+      2번 장바구니 상품 전체선택 포커싱
+      3번 첫번째 상품으로 이동
+      4번 뒤로가기
+      6번 메인 페이지 이동
+    </textarea>
 
     <script>
+  let audioFileNow = new Audio();
+  let firstMsg = "장바구니 페이지 입니다. 회원이 담은 상품들을 확인하고 결제를 할 수 있습니다." + "탭을 눌러 이동하며, 체크박스에서는 스페이스바로  선택 가능합니다.";
+  let message =  firstMsg + $('#cartMenual').val();
 
 	$(function(){
   		init();
   		checkedCart();
-      let text = "장바구니 페이지입니다. 회원이 담은 상품들을 확인하고 결제를 할 수 있습니다."
-               + "탭을 눌러 이동하며, 체크박스에서는 스페이스바로  선택 가능합니다.";
-      VoiceTest(text);
+      VoiceMenual(message);
 	})
 	
 	function init(){
 		
 		//이벤트 지정
-		$('#allCheckbox').on('click',allCheckEvent);  // 전체선택
+    $('#allCheckbox').on('click',allCheckEvent);  // 전체선택
     $('#allCheckbox').on('focus',allFocus); // 전체선택 포커스 될 경우 read
     $('#allCheckbox').on('keydown',allKeydown); // 키 눌렀을 경우 읽어줌
-		$('input[name="price"]').on('change', checkedCart);
-		$('#chkDelBtn').on('click',checkedDel);                    //선택 삭제
+    $('input[name="price"]').on('change', checkedCart);
+    $('#chkDelBtn').on('click',checkedDel);                    //선택 삭제
     $('.productDel').on('focus',productDel);  // 상품  삭제 read
     $('#payMove').on('focus',patMove); // 주문 페이지 안내 - 결제 클릭
-		
+    $('input[name="price"]').on('focus', productDetail);
+
     
     document.getElementById('productPrice').innerText ='원';
     document.getElementById('salePrice').innerText = '원';
@@ -199,8 +210,6 @@
 
         //삭제
   function delteResult(code){
-        	//console.log(code);
-        	//e.preventDefault()
           let deleteForm = confirm('삭제를 하시겠습니까?');
           if(deleteForm) {
         	$.ajax('http://localhost:8090/cart/delete',{
@@ -295,23 +304,34 @@
     // tts 정리
     function allKeydown(e) {
         if(e.keyCode === 32 && $('#allCheckbox').is(':checked') == false) {
-        VoiceTest("장바구니 상품 전체 선택 되었습니다.");
+          VoiceMenual("장바구니 상품 전체 선택 되었습니다.");
         } else if(e.keyCode === 32 && $('#allCheckbox').is(':checked') == true){
-          VoiceTest("전체 상품 선택을 취소했습니다."); 
+          VoiceMenual("전체 상품 선택을 취소했습니다."); 
         }
       }
 
       function allFocus(e) {
-        VoiceTest("장바구니에 담긴 상품을 전체 선택 원할 경우 스페이스바 눌러주세요.");
+        VoiceMenual("장바구니에 담긴 상품을 전체 선택 원할 경우 스페이스바 눌러주세요.");
       } 
 
       function productDel(e) {
-        VoiceTest("현재 상품을 삭제 원할 경우 스페이스바 두번 눌러주세요.");
+        VoiceMenual("현재 상품을 삭제 원할 경우 스페이스바 두번 눌러주세요.");
       }
       function patMove(e) {
-        VoiceTest("상품 선택을 마치셨다면 엔터키 사용하여 선택한 상품을 가지고 주문 페이지로 이동합니다.");
+        VoiceMenual("상품 선택을 마치셨다면 엔터키 사용하여 선택한 상품을 가지고 주문 페이지로 이동합니다.");
       }
-      
+      function productDetail(e) {
+       let proName = $(e).closest('.checkContent').find('.tts1').text(); //상품명
+       let proPrice = $(e).closest('.checkContent').find('.tts2').text(); //상품금액
+       let proSalePrice = $(e).closest('.checkContent').find('.tts3').text(); //할인금액
+       let optionVal = $(e).closest('.checkContent').find('.tts4').text(); //옵션 추가 금액
+       let proDelivery = $(e).closest('.checkContent').find('.tts5').text(); //배송비
+       let optionName = $(e).closest('.checkContent').find('.tts6').text(); //옵션종류, 옵션 값
+       let buyCnt = $(e).closest('.checkContent').find('.tts7').text(); //구매수량
+        VoiceMenual('상품명은' + proName + '상품금액은' + proPrice + '할인금액은' + proSalePrice + '옵션 추가 금액은' + optionVal +
+                   '배송비는' + proDelivery + '선택한 옵션의 종류는' + optionName + '구매수량은' + buyCnt +
+                   '입니다. 전체선택을 하지 않고 개별 선택의 경우 스페이스바로 선택해주세요.');
+      }
 
 
 
@@ -361,5 +381,6 @@ $('#payMove').on('click', function(){
 	
 
     </script>
+    <script src="/js/cart.js"></script>
 </div>
 </html>
