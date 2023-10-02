@@ -771,6 +771,12 @@
 			where p.product_code = i.product_code
 			and p.product_code = #{productCode}
 	</select>
+	
+	<select id="selectMember" parameterType="ProductVO" resultType="MemberDetailVO">
+		select m.business_number from ar_member m , ar_products p
+        where m.member_id = p.member_id 
+        and p.product_code = #{productCode}
+	</select>
 
 	<!-- 택배사 가져오기 -->
 	<select id="selectDeliveryList" resultType="CodeVO">

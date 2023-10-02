@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/no_layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="col-12" id="qnaTap">
+			<div style="padding-top: 48px">
+				<div style="padding-bottom: 30px">
+
+					<h5 class="mb-5 text-center">
+						Q&A <strong class="fs-sm" name="inquiryCont">([[${inquiryCount}]])</strong>
+					</h5>
+
+
+					<a class="btn btn-sm btn-dark"
+						th:if="${session.loginMember != null}" data-bs-toggle="collapse"
+						href="#inquiryForm"> 1:1 문의하기 </a> <a class="btn btn-sm btn-dark"
+						th:if="${session.loginMember == null}"
+						href="javascript:parent.location.href='page/member/loginForm'"> 로그인 </a>
+				</div>
+
+				<div class="collapse" id="inquiryForm">
+					<!-- Divider -->
+					<hr class="my-8" />
+
+					<!-- Form -->
+
+					<div class="row" th:if="${session.loginMember != null}"
+						id="inquiryForm">
+						<div class="col-12 mb-6 text-center">
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">리뷰작성<input type="hidden" />
+										</th>
+										<th scope="col">비밀글 : <input type="checkbox"
+											id="queSecret" name="queSecret" checked="checked" />
+										</th>
+										<th scope="col"><label class="visually-hidden"
+											for="reviewContent">Review:</label> <textarea
+												class="form-control form-control-sm" rows="5"
+												placeholder="내용을 입력해주세요" id="queContent" name="queContent"
+												required></textarea></th>
+										<th scope="col-12"><input type="text"
+											class="form-control form-control-sm" id="memberId"
+											name="memberId" th:value="${session.loginMember.memberId}"
+											readonly /></th>
+										<th scope="col-md-6">
+											<button id="inquiryAdd" class="btn btn-sm btn-dark"
+												type="button" onclick="inquiryAdd()">등록하기</button>
+										</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">답변여부</th>
+							<th scope="col">구매자 질문 내용</th>
+							<th scope="col-12">작성자</th>
+							<th scope="col-md-6">등록날짜</th>
+						</tr>
+					</thead>
+					<tbody th:each="inquiry:${inquiry}" id="inquiryList">
+						<!-- 숨겨지는 정보 -->
+						<span id="queAns" name="queAns" style="display: none">[[${inquiry.queAns}]]</span>
+						<span id="queCode" name="queCode" style="display: none">[[${inquiry.queCode}]]</span>
+						<input type="hidden" th:value="${inquiry.queSecret}" />
+						<tr th:onclick="|toggleOn([[${inquiry.queCode}]])|">
+
+							<td th:if="${inquiry.queAns == null}">답변 대기</td>
+							<td th:if="${inquiry.queAns != null}" style="font-weight: 600">답변
+								완료</td>
+
+							<td class="inquiryGetAns" id="queCon"
+								th:if="${inquiry.queSecret != 'Y'} or ${session.loginMember != null} and ${session.loginMember.memberId == inquiry.memberId}"
+								th:text="${inquiry.queContent.length} > 12 ? ${#strings.substring(inquiry.queContent,0,12)}+'...' : ${inquiry.queContent}">
+								<input type="text">
+								<a href="#qnaForm"></a>
+							<td class="inquiryGetAns"
+								th:if="${inquiry.queSecret != 'N'} and ${session.loginMember == null or session.loginMember.memberId != inquiry.memberId} ">
+								<i class="fas fa-lock"></i> 비밀글입니다
+							</td>
+							<td
+								th:text="${inquiry.memberId.length} > 3 ? ${#strings.substring(inquiry.memberId,0,5)}+'***' : ${inquiry.memberId}"></td>
+
+
+							<td>[[${#dates.format(inquiry. queRegdate,'yyyy년 MM월 dd일
+								HH:mm')}]]</td>
+						</tr>
+
+						<!-- 답변 보기 -->
+						<tr th:class="|inquiryGet${inquiry.queCode}|"
+							th:data-code="${inquiry.queCode}" id="ansQueCode"
+							th:if="${session.loginMember == null and inquiry.queSecret == 'N'} or ${session.loginMember != null and session.loginMember.memberId == inquiry.memberId} "
+							style="display: none;">
+							<td class="inquiryGetAns" style="font-size: 18px">
+								<p style="font-size: 14px">Q&A 답변</p>
+							</td>
+
+							<td class="inquiryGetAns" id="answerForm"><textarea
+									style="font-size: 16px; width:100%;  border: none; border-bottom: 1px solid rgba(0, 0, 0, 0.3);" readonly>[[${inquiry.queContent}]]</textarea>
+								<textarea class="form-control form-control-sm" rows="5"
+									style="display: none;" id="que" readonly>[[${inquiry.queContent}]]</textarea>
+								<div style="font-size: 15px; padding-bottom: 50px">
+									[[${inquiry.queAns}]]</div>
+								<div>
+									<span style="font-size: 14px;">판매자:
+										[[${inquiry.sellerId}]]</span>
+								</div></td>
+							<td class="inquiryGetAns">
+
+								<div th:if="${session.loginMember != null}">
+									<div style="padding: 30px 10px 10px 10px" class="inquiryBtn">
+										<a id="modify" th:if="${inquiry.queAns == null}"
+											style="color: black" class="testBtn">수정</a>
+									</div>
+
+									<div style="padding: 30px 10px 10px 10px; display: none"
+										id="modifyBtn">
+										<a style="color: grey;" class="edit"> 저장</a>
+									</div>
+
+									<div style="padding: 10px" class="inquiryBtn">
+										<a class="inquiryBtn"
+											th:onclick="remove([[${inquiry.queCode}]])">삭제</a>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<!-- 답변 보기 -->
+
+					</tbody>
+
+				</table>
+			</div>
+
+
+		</div>
+
+		<nav class="d-flex justify-content-center mt-9" id="inquiryBox"
+			style="padding-bottom: 40px">
+			<ul class="pagination pagination-sm text-gray-400">
+				<li class="page-item"><a class="page-link page-link-arrow"
+					th:if="${pageMaker.prev}"
+					th:href="|javascript:inquiryPageLoad(${pageMaker.startPage - 1})|">
+						<i class="fa fa-caret-left"></i>
+				</a></li>
+				<th:block
+					th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+					<li th:if="${pageMaker.endPage} ne 0"
+						th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+						th:each="pageButtom : ${#numbers.sequence(start,end)}"
+						th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
+						<a class="page-link"
+						th:href="|javascript:inquiryPageLoad(${pageButtom})|"
+						th:text="${pageButtom}"></a>
+					</li>
+				</th:block>
+
+				<li class="page-item" th:if="${pageMaker.next}"><a
+					class="page-link page-link-arrow"
+					th:href="|javascript:inquiryPageLoad(${pageMaker.endPage + 1})|">
+						<i class="fa fa-caret-right"></i>
+				</a></li>
+			</ul>
+		</nav>
+
+
+		<script type="text/javascript">
+		//function goPage(p){
+			//location.href = 'inquiryView?productCode=[[${productCode}]]&pageNum='+p;
+		//}
+		
+		 
+		
+			//qna 조회
+			function toggleOn(idx) {
+				//$(".inquiryGet").css("display","");      
+				//$(".inquiryGet").css("background","lightgrey");
+				$('.inquiryGet' + idx).toggle();
+			};
+
+			//qna 등록
+			function inquiryAdd() {
+				if ($("#queSecret").is(":checked")) {
+					$("#queSecret").val("Y");
+				} else {
+					$("#queSecret").val("N");
+				}
+
+				let object = {
+					memberId : $("#memberId").val(),
+					queSecret : $("#queSecret").val(),
+					productCode : $("#productCode").val(),
+					queContent : $("#queContent").val(),
+					sellerId : $("#sellerId").text(),
+				};
+
+				$.ajax({
+					type : "post",
+					url : "insertInquiry",
+					headers : {
+						"Content-Type" : "application/json"
+					},
+					data : JSON.stringify(object),
+
+					success : function(data) {
+						console.log(data);
+
+						location.reload(true);
+					},
+					error : function(e) {
+						console.log(e);
+					},
+				});
+			}
+
+			//qna 삭제
+			function remove(idx) {
+				console.log(idx);
+				if (!confirm('삭제 하시겠습니까?')) {
+					console.log("삭제 x");
+				} else {
+					console.log("삭제");
+					realRemove();
+				}
+				;
+
+				function realRemove() {
+					$.ajax({
+						url : "removeInquiry",
+						type : "post",
+						headers : {
+							"Content-Type" : "application/json"
+						},
+						data : JSON.stringify(idx),
+						success : function(result) {
+							console.log(result);
+							//$('#qnaTap').load(location.href + ' #qnaTap');
+							location.reload(true);
+
+						},
+						error : function(reject) {
+
+							console.log(reject);
+						}
+					})
+				}
+			}
+
+			//qna 수정
+			$('.testBtn').on(
+					'click',
+					function() {
+						let btn = $(this).parent();
+
+						let queText = btn.parent().parent().parent().children()
+								.next().children().next();
+						let queCode = btn.parent().parent().parent().parent()
+								.children().next().next().data().code;
+						console.log(queCode);
+
+						queText.css("display", "block");
+						queText.attr("readonly", false);
+						btn.next().show();
+						btn.next().next().remove();
+						btn.remove();
+						//queCode = $("#ansQueCode").data("code");
+
+						$(".edit").on("click", function() {
+
+							if (!confirm("이대로 저장하시겠습니까?")) {
+
+							} else {
+								let tmpObj = {
+									queContent : queText.val(),
+									queCode : queCode
+								}
+
+								$.ajax({
+									url : "editInquiry",
+									type : "post",
+									headers : {
+										"Content-Type" : "application/json"
+									},
+									data : JSON.stringify(tmpObj),
+									success : function(result) {
+										console.log(result);
+										location.reload(true);
+									},
+									error : function(reject) {
+										console.log(reject);
+									}
+								})
+							}
+							;
+
+						})
+					})
+		</script>
+	</div>
+</body>
+</html>
+

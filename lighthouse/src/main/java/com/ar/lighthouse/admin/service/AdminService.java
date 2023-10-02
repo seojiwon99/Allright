@@ -93,6 +93,4 @@ public interface AdminService {
 	//배너 path
 	public String findBannerPath(int eventImgCode);
 	
-	
-	
 }

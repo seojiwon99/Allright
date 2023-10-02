@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.common.ImgsVO;
@@ -258,6 +259,14 @@ public class ProductServiceImpl implements ProductService{
 	// 석연 - 취소 완료 시 Y로 상태 변경
 	public int editCancelOk(String cancelCode) {
 		return productMapper.updateCancelOk(cancelCode);
+	}
+
+
+
+	@Override
+	public List<MemberDetailVO> getMemberList(MemberDetailVO memberVO) {
+		return productMapper.selectMember(memberVO);
+		
 	}
 
 

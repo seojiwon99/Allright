@@ -2,6 +2,7 @@ package com.ar.lighthouse.product.service;
 
 import java.util.List;
 
+import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.common.ImgsVO;
@@ -84,4 +85,7 @@ public interface ProductService {
 	
 	//취소 승인 시 승인 여부 Y로 변경 - 석연
 	public int editCancelOk(String cancelCode);
+	
+	//사업자 등록번호
+	public List<MemberDetailVO> getMemberList(MemberDetailVO memberVO);
 }

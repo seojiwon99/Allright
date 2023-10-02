@@ -5,19 +5,29 @@
   
   <mapper namespace="com.ar.lighthouse.productinquiry.mapper.ProductInquiryMapper">
   
-  <select id="selectInquiryList" resultType="ProductInquiryVO">
-  select que_code
-  		 , product_code
-  		 , que_content
-  		 , member_id
-  		 , que_secret
-  		 , que_regdate
-  		 , que_updatedate
-  		 ,que_ans
-  		 ,seller_id 
-	from ar_inquiry
-	where product_code = #{productCode}
+  <select id="selectInquiryList">
+  SELECT *
+  FROM	(SELECT
+  				ROWNUM rn 
+		  		 , que_code
+		  		 , product_code
+		  		 , que_content
+		  		 , member_id
+		  		 , que_secret
+		  		 , que_regdate
+		  		 , que_updatedate
+		  		 ,que_ans
+		  		 ,seller_id 
+			from ar_inquiry
+			where product_code = #{productInquiryVO.productCode}
+		<![CDATA[
+			AND	ROWNUM <= #{cri.pageNum} * #{cri.amount}
+			order by que_regdate desc )
+		WHERE rn > ( #{cri.pageNum} - 1 ) * #{cri.amount}
+		]]>
+	order by que_regdate DESC
   </select>
+  
   
   <select id="inquiryCount" resultType="int">
   	select count(*) as inquiryCount from ar_inquiry where product_code = #{productCode}
