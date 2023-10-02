@@ -84,11 +84,39 @@ function base64ToBlob(base64, fileType) {
         type : mime
     });
 }
+	window.addEventListener("keyup", function(e){ 
+			if(e.key == 'Tab'){
+				if($(':focus').prop('type') == 'number'){
+					let msg = '가격범위를 입력해주세요. 최소 다음 최대 입니다.'
+					VoiceMenual(msg);
+				}else{
+					if($(':focus')[0].className == 'card-img'){
+						console.log('YES');
+						productTTS;
+						return;
+					};
+					if($($(':focus')[0].labels).length>0){
+						let choiceUp = $(':focus').parent().parent().parent().prev()[0].innerText;
+						let choiceNow = $(':focus')[0].labels[0].innerText;
+						let choiceMsg = `${choiceUp}의 ${choiceNow}`
+						VoiceMenual(choiceMsg);
+					}else{
+						if($(':focus')[0].id == 'priceRange'){
+							let rangeMsg = '탭키를 누르고 가격범위를 직접 입력해주세요.'
+							VoiceMenual(rangeMsg);
+							return;
+						}
+						let choiceNow = $(':focus')[0].innerText;
+						VoiceMenual(choiceNow);
+					}
+				}
 
+			}
+		})
 
 
 	window.addEventListener("keydown", function(e){ 
-			console.log(e);
+
 			if(e.altKey && e.key == 1){ //이전 페이지로 가기
 				let nowURL = new URL(location.href);
 				let nowNum = nowURL.searchParams.get('pageNum');

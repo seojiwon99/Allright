@@ -128,6 +128,7 @@ public class elaController {
 
 	    if (ctg != null && !ctg.isEmpty()) { //카테고리가 있을 경우 boolQuery에 추가 
 	        boolQuery.must(QueryBuilders.matchQuery("category_code", ctg)); 
+	        QueryBuilders.wildcardQuery(indexName, order);
 	    }
 
 	    if (keyword != null && !keyword.isEmpty()) { // 키워드가 있을 경우 boolQuery에 추가 
@@ -208,7 +209,7 @@ public class elaController {
 	        }
 		}
 	
-	    //에러 발생. 계산된 가격 필터링 ?
+	    //에러 발생. 계산된 가격 필터링 ? parse까지 성공,  가격 - 할인 이 음수인 경우가 있어서 오류 발생 중.
   		public List<Map<String,Object>> HighLevelClientFilterPriceQuery(String indexName, int pageNum){
   			
   	        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -268,10 +269,13 @@ public class elaController {
 		
 		//필요한 조건들이 있다면 bool쿼리에 축적하여 쌓는방식
 		totalCnt = queryCount("ar_products",keyword,ctg, minPrice, maxPrice);
-//		products = FinalMatchQuery("ar_products", cri.getPageNum(), keyword, ctg, order, minPrice, maxPrice);
+		products = FinalMatchQuery("ar_products", cri.getPageNum(), keyword, ctg, order, minPrice, maxPrice);
 		
-		products = HighLevelClientFilterPriceQuery("ar_products", cri.getPageNum());
+//		products = HighLevelClientFilterPriceQuery("ar_products", cri.getPageNum());
 		
+//		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+//		boolQueryBuilder.must(QueryBuilders.wildcardQuery("message", "ANG*"));
+//		나중에 카테고리 선택시 Filter 추가할 예정
 		
 		System.out.println("전체 수 : =====" + totalCnt);
 		model.addAttribute("products", products);

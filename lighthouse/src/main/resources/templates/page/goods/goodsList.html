@@ -15,14 +15,14 @@
                   <ul class="nav nav-vertical" id="filterNav">
                      <li class="nav-item">
                         <!-- Toggle --> <a
-                        class="nav-link dropdown-toggle fs-lg text-reset border-bottom mb-6"
+                        class="nav-link dropdown-toggle fs-lg text-reset border-bottom mb-6" tabindex=-1
                         data-bs-toggle="collapse" href="#categoryCollapse" style="font-weight: 600; font-size: 18px"> 카테고리
                      </a> <!-- Collapse -->
                         <div class="collapse show" id="categoryCollapse">
                            <div class="form-group">
                               <ul class="list-styled mb-0" id="productsNav">
                                  <li class="list-styled-item"><a class="list-styled-link"
-                                    href="#"> All Products </a></li>
+                                    href="#"> 전체 상품 </a></li>
                                   
                                   
                                   <li class="list-styled-item" th:each="ctg : ${categories}">
@@ -36,26 +36,27 @@
                                        
                                           <th:block th:each="middle : ${allCtg}" th:if="${middle.categoryLevel} == 2 and ${(middle.parentCategoryCode).equals('Fassion')} and ${(ctg.categoryCode).equals('Fassion')}">
                                           <div class="form-check mb-3" >
-                                             <input class="form-check-input" th:id="${middle.categoryCode}"
-                                                type="checkbox"> <label class="form-check-label"
-                                                th:for="${middle.categoryCode}" th:text="${middle.categoryName}"> Women Tops, Tees & Blouses </label>
+                                             <input class="form-check-input" th:id="${middle.categoryCode}" tabindex=0 
+                                                type="checkbox"> <label class="form-check-label" 
+                                                th:for="${middle.categoryCode}" >[[${middle.categoryName}]] </label>
                                           </div>
                                         </th:block>
                                         
                                         <th:block th:each="middle : ${allCtg}" th:if="${middle.categoryLevel} == 2 and ${(middle.parentCategoryCode).equals('FOOD')} and ${(ctg.categoryCode).equals('FOOD')}">
                                           <div class="form-check mb-3" >
-                                             <a th:id="${middle.categoryCode}" th:href="|/PList?ctg=${middle.categoryCode}|">
-                                                <label class="form-check-label"
-                                                th:for="${middle.categoryCode}" th:text="${middle.categoryName}"> Women Tops, Tees & Blouses </label>
-                                             </a>
+                                             <!-- <a th:id="${middle.categoryCode}" th:href="|/PList?ctg=${middle.categoryCode}|"> -->
+                                                <input class="form-check-input" th:id="${middle.categoryCode}" tabindex=0
+                                                type="checkbox"> <label class="form-check-label" 
+                                                th:for="${middle.categoryCode}" > [[${middle.categoryName}]] </label>
+                                             <!-- </a>  -->
                                           </div>
                                         </th:block>
                                         
                                         <th:block th:each="middle : ${allCtg}" th:if="${middle.categoryLevel} == 2 and ${(middle.parentCategoryCode).equals('Life')} and ${(ctg.categoryCode).equals('Life')}">
                                           <div class="form-check mb-3" >
-                                             <input class="form-check-input" th:id="${middle.categoryCode}"
+                                             <input class="form-check-input" th:id="${middle.categoryCode}" tabindex=0
                                                 type="checkbox"> <label class="form-check-label"
-                                                th:for="${middle.categoryCode}" th:text="${middle.categoryName}"> Women Tops, Tees & Blouses </label>
+                                                th:for="${middle.categoryCode}" > [[${middle.categoryName}]] </label>
                                           </div>
                                         </th:block>
                                         
@@ -73,7 +74,7 @@
 
 
                      <li class="nav-item">
-                        <!-- Toggle --> <a
+                        <!-- Toggle --> <a tabindex=-1
                         class="nav-link dropdown-toggle fs-lg text-reset border-bottom mb-6"
                         data-bs-toggle="collapse" href="#seasonCollapse" style="font-weight: 600; font-size: 18px"> 순서 </a> <!-- Collapse -->
                         <div class="collapse show" id="seasonCollapse"
@@ -83,7 +84,7 @@
                               <div class="form-check mb-3">
                                  <input class="form-check-input" id="seasonOne"
                                     type="checkbox"> <label class="form-check-label"
-                                    for="seasonOne"> new </label>
+                                    for="seasonOne"> New </label>
                               </div>
                               <div class="form-check mb-3">
                                  <input class="form-check-input" id="seasonTwo"
@@ -96,7 +97,7 @@
 
                      </li>
                      <li class="nav-item">
-                        <!-- Toggle --> <a
+                        <!-- Toggle --> <a tabindex=-1
                         class="nav-link dropdown-toggle fs-lg text-reset border-bottom mb-6"
                         data-bs-toggle="collapse" href="#priceCollapse" style="font-weight: 600; font-size: 18px"> 가격 </a> <!-- Collapse -->
                         <div class="collapse show" id="priceCollapse"
@@ -106,22 +107,22 @@
                            <div class="form-group form-group-overflow mb-6"
                               id="priceGroup">
                               <div class="form-check mb-3">
-                                 <input class="form-check-input" id="priceOne" type="checkbox">
+                                 <input class="form-check-input" id="priceOne" type="checkbox" name="pricefilter">
                                  <label class="form-check-label" for="priceOne"> 0원 -
                                     50,000원 </label>
                               </div>
                               <div class="form-check mb-3">
-                                 <input class="form-check-input" id="priceTwo" type="checkbox">
+                                 <input class="form-check-input" id="priceTwo" type="checkbox" name="pricefilter">
                                  <label class="form-check-label" for="priceTwo">
                                     50,000원 - 100,000원 </label>
                               </div>
                               <div class="form-check mb-3">
-                                 <input class="form-check-input" id="priceThree"
+                                 <input class="form-check-input" id="priceThree" name="pricefilter"
                                     type="checkbox"> <label class="form-check-label"
                                     for="priceThree"> 100,000원 - 200,000원 </label>
                               </div>
                               <div class="form-check">
-                                 <input class="form-check-input" id="priceFour"
+                                 <input class="form-check-input" id="priceFour" name="pricefilter"
                                     type="checkbox"> <label class="form-check-label"
                                     for="priceFour"> 200,000 이상 </label>
                               </div>
@@ -130,7 +131,9 @@
 
                            <!-- Range -->
                            <div class="d-flex align-items-center" id="writeRange">
-
+								<div class="form-check" style="margin-right: 14px">
+	                                 <input class="form-check-input" id="priceRange" type="checkbox" name="pricefilter">
+                              	</div>
                               <!-- Input -->
                               <input type="number" class="form-control form-control-xs"
                                  placeholder="10,000원" min="10">
@@ -349,52 +352,125 @@
 	
 	$('#filterApplyBtn').on('click',function(){
 		$('#priceGroup').find('input:checked') //가격범위       range 가져오기
-		$('#seasonGroup').find('input:checked') //new , best  order순서
+		let orderFilter = $('#seasonGroup').find('input:checked') //new , best  order순서
 		$('#writeRange').find('input') // 적는 칸 가격 range;
-		let minVal = $('#writeRange').find('input')[0].value;
-		let maxVal = $('#writeRange').find('input')[1].value;
-		if((minVal > 0 && maxVal > 0) && maxVal<minVal){ //최솟값만 입력했을 경우 가능.
-			alert('최소 가격은 최대가격보다 클 수 없습니다.');
-			return;
-		}
+		let ctgs = $('.ps-5').find('input:checked') // 카테고리 선택 Filter
+		let minVal = $('#writeRange').find('input')[1].value;
+		let maxVal = $('#writeRange').find('input')[2].value;
 		
-		if($('#priceGroup').find('input:checked').length>0 && (minVal > 0 || maxVal > 0)) { // range 선택했음
-			alert('가격 범위는 하나만 입력해주세요.');
-			return;
-		};
-		if($('#priceGroup').find('input:checked').length>0  ){
-			console.log($('#priceGroup').find('input:checked')[0].id);
-		}
+		let prices = $('input[type="checkbox"][name="pricefilter"]:checked ');
 		
+		let minPrice;
+		let maxPrice;
+		
+		let filterObj = {};
+		
+		if(prices.length>0  ){
+		let id = prices[0].id;
+			if(id == 'priceRange'){
+				if((minVal > 0 && maxVal > 0) && maxVal<minVal){ //최솟값만 입력했을 경우 가능.
+					alert('최소 가격은 최대가격보다 클 수 없습니다.');
+					return;
+				}else{
+					minPrice = minVal;
+					maxPrice = maxVal;
+				}
+			}else if(id == 'priceOne'){
+				minPrice = 0
+				maxPrice = 50000;
+			}else if(id == 'priceTwo'){
+				minPrice = 50000;
+				maxPrice = 100000;
+			}else if(id == 'priceThree'){
+				minPrice = 100000;
+				maxPrice = 200000;
+			}else if(id == 'priceFour'){
+				minPrice = 200000;
+				maxPrice = 99999999;
+			}
+			
+		}
+		//min, max Price 담기 
+		filterObj['minPrice'] = minPrice;
+		filterObj['maxPrice'] = maxPrice;
+		
+		if(orderFilter.length>0){
+			if(orderFilter[0].id == 'seasonOne'){
+				filterObj['order'] = 'new';
+			}else if(orderFilter[0].id == 'seasonTwo'){
+				filterObj['order'] = 'best';
+			}
+		}
+		// filter가 있다면 new, best 담
+		
+		if(ctgs.length>0){
+			filterObj['ctg'] = ctgs[0].id; 
+		}
+		console.log(filterObj);
 		
 	})
 	
 	//PriceGroup 단일 체크
-	let pGroup = $('#priceGroup').find('input');
+	let pGroup = $('input[type="checkbox"][name="pricefilter"] ');
 	let sGroup = $('#seasonGroup').find('input');
+	let ctgGroup = $('.ps-5').find('input')
+	let chkGroup = [];
+	
+	$.each(ctgGroup, function(ele,obj){
+		$(obj).on('click', checkOnlyOneCtg);
+		$(obj).on('keydown', inputEnter)
+	})
 	$.each(sGroup, function(ele,obj){
 		$(obj).on('click', checkOnlyOneSeason);
+		$(obj).on('keydown', inputEnter)
 	})
 	
 	$.each(pGroup, function(ele,obj){
 		$(obj).on('click', checkOnlyOne);
+		$(obj).on('keydown', inputEnter)
 	})
+	function inputEnter(e){
+		if(e.key == 'Enter'){
+			$(this).trigger('click');
+		}
+	}
+	
 	function checkOnlyOne(e) {
-		let priceGroup = $('#priceGroup').find('input');
-		  
-		$.each(priceGroup, function(ele,obj){
-				obj.checked = false;
-		})
-	  	this.checked = true;
+		console.log($(this).prop('checked'))
+		if($(this).prop('checked')){
+			 
+		     $('input[type="checkbox"][name="pricefilter"]').prop('checked',false);
+		 
+		     $(this).prop('checked',true);
+		 
+		}else{
+			$(this).prop('checked',false);
+		}
 		
 	}
 	function checkOnlyOneSeason(e) {
-		let priceGroup = $('#seasonGroup').find('input');
-		  
-		$.each(priceGroup, function(ele,obj){
-				obj.checked = false;
-		})
-	  	this.checked = true;
+		if($(this).prop('checked')){
+			 
+			$('#seasonGroup').find('input').prop('checked',false);
+		 
+		     $(this).prop('checked',true);
+		 
+		}else{
+			$(this).prop('checked',false);
+		}
+	}
+	function checkOnlyOneCtg(e) {
+		console.log($(this).prop('checked'))
+		if($(this).prop('checked')){
+			 
+			$('.ps-5').find('input').prop('checked',false);
+		 
+		     $(this).prop('checked',true);
+		 
+		}else{
+			$(this).prop('checked',false);
+		}
+		
 	}
 	
 	
@@ -458,6 +534,6 @@
 	})
 
    </script>
-   <script src="/js/PList.js"></script>
+   <script src="/js/PList.js" th:inline="javascript"></script>
 </div>
 </html>
