@@ -13,7 +13,7 @@
           <div class="col-12">
 
             <!-- Heading -->
-            <h3 class="mb-10 text-center">장바구니</h3>
+            <h3 class="mb-10 text-center" tabindex="1">장바구니</h3>
 			
 			
           </div>
@@ -22,7 +22,7 @@
           <div class="col-12 col-md-7" id="test">
             <div>
               <input type="checkbox" id="allCheckbox">전체선택
-             <button type="button" class="btn btn-sm btn-dark" id="chkDelBtn" style="float:right;">선택삭제</button>
+             <button type="button" class="btn btn-sm btn-dark" id="chkDelBtn" style="float:right;" tabindex="-1">선택삭제</button>
              <hr>
             </div>
 
@@ -36,7 +36,7 @@
                   <div class="col-3">
 					
 					<!-- checkbox -->
-                    <input type="checkbox" name="price" th:value="${lists.productCost}">
+                    <input type="checkbox" name="price" th:value="${lists.productCost}" class="firstPro">
                     <input type="hidden" name="sale" th:value="${lists.salePrice}">
                     <input type="hidden" name="delivery" th:value="${lists.deliveryCost}">
                     <input type="hidden" name="cartNum" th:value="${lists.cartCode}">
@@ -44,7 +44,7 @@
                     <input type="hidden" name="optionPrice" th:value="${lists.optionPrice}">
 
                     <!-- Image -->
-                    <a href="product.html">
+                    <a href="product.html" tabindex="-1">
                      <img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|" alt="..." class="img-fluid" tabindex="-1">
                     </a>
 
@@ -52,22 +52,22 @@
                   <div class="col checkContent">
                     <!-- Title -->
                     <div class="d-flex mb-2 fw-bold">
-                      <a class="text-body" href="product.html"><span th:text= "|상품명 : ${lists.productName}|" tabindex="0" class="tts1"></span></a>
-                      <span class="price ms-auto tts2" style="text-decoration: line-through;" th:text="| 상품금액 : ${lists.productCost}원|" tabindex="0"></span>
+                      <a class="text-body" href="product.html" tabindex="-1"><span th:text= "|상품명 : ${lists.productName}|"class="tts1" tabindex="-1"></span></a>
+                      <span class="price ms-auto tts2" style="text-decoration: line-through;" th:text="| 상품금액 : ${lists.productCost}원|"></span>
                     </div>
                     <div class="d-flex mb-2 fw-bold">
-                    	<span class="ms-auto tts3" th:text="|할인금액 : ${lists.salePrice}원|" tabindex="0"></span>
+                    	<span class="ms-auto tts3" th:text="|할인금액 : ${lists.salePrice}원|"></span>
                     </div>
                     <div class="d-flex mb-2 fw-bold">
-                    	<span class="ms-auto tts4" th:text="|옵션 추가금액 : ${lists.optionPrice}원|" tabindex="0"></span>
+                    	<span class="ms-auto tts4" th:text="|옵션 추가금액 : ${lists.optionPrice}원|"></span>
                     </div>
                     <div class="d-flex mb-2 fw-bold">
-                    	<span class="ms-auto tts5" th:text="|배송비 : ${lists.deliveryCost}원|" tabindex="0"></span>
+                    	<span class="ms-auto tts5" th:text="|배송비 : ${lists.deliveryCost}원|"></span>
                     </div>
 
                     <!-- Text -->
                     <!--옵션 종류, 옵션 값-->
-                   <p class="mb-7 fs-sm text-muted tts6" th:text="${lists.optionLast}" tabindex="0"></p>
+                   <p class="mb-7 fs-sm text-muted tts6" th:text="${lists.optionLast}"></p>
                     
 
                     <!--Footer -->
@@ -75,7 +75,7 @@
 
                       <!-- buy plus mius -->
                       <div class="num">
-                        <span>구매수량 : </span><span th:text="${lists.cartCount}" tabindex="0" class="tts7"></span>
+                        <span>구매수량 : </span><span th:text="${lists.cartCount}" class="tts7"></span>
                       </div>
 
                       <!-- Remove -->
@@ -117,7 +117,7 @@
                   
                     </div>
                     <div class="col-auto">
-                      <button class="btn btn-sm btn-dark" th:onclick="shopping()">
+                      <button class="btn btn-sm btn-dark" th:onclick="shopping()" id="shoping">
                         쇼핑 계속하기
                        </button>
                       <!-- Button -->
@@ -170,12 +170,11 @@
     </section>
     <!--cart 메뉴얼 tts-->
     <textarea id="cartMenual" style="display: none;">
-      0번 메뉴얼 다시 듣기
-      1번 결제버튼 이동 후 엔터키 사용하면 주문페이지 이동
-      2번 장바구니 상품 전체선택 포커싱
-      3번 첫번째 상품으로 이동
-      4번 뒤로가기
-      6번 메인 페이지 이동
+      1번 결제버튼 이동 후 엔터키 사용하면 주문페이지 이동.
+      2번 장바구니 상품 전체선택 포커싱.
+      3번 첫번째 상품으로 이동.
+      6번 메인 페이지 이동.
+      0번 메뉴얼 다시 듣기.
     </textarea>
 
     <script>
@@ -199,7 +198,22 @@
     $('#chkDelBtn').on('click',checkedDel);                    //선택 삭제
     $('.productDel').on('focus',productDel);  // 상품  삭제 read
     $('#payMove').on('focus',patMove); // 주문 페이지 안내 - 결제 클릭
-    $('input[name="price"]').on('focus', productDetail);
+    $('input[name="price"]').on('keydown', proKeydown);
+    $('#shoping').on('focus',shoping);
+
+    $('input[name="price"]').on('focus', function productDetail(){
+       let proName = $(this).parent().parent().find('.tts1').text(); //상품명
+       let proPrice = $(this).parent().parent().find('.tts2').text(); //상품금액
+       let proSalePrice = $(this).parent().parent().find('.tts3').text()//할인금액
+       let optionVal = $(this).parent().parent().find('.tts4').text() //옵션 추가 금액
+       let proDelivery = $(this).parent().parent().find('.tts5').text() //배송비
+       let optionName = $(this).parent().parent().find('.tts6').text() //옵션종류, 옵션 값
+       let buyCnt = $(this).parent().parent().find('.tts7').text() //구매수량
+       let productMsg = `${proName}. ${proPrice}. ${proSalePrice}. ${optionVal}. ${proDelivery}. 선택한 옵션의 종류는 ${optionName}. 구매수량은 ${buyCnt} 입니다.
+                        전체선택을 하지 않고 개별 선택의 경우 스페이스바로 선택해주세요.`;
+      
+        VoiceMenual(productMsg);
+    });
 
     
     document.getElementById('productPrice').innerText ='원';
@@ -318,20 +332,24 @@
         VoiceMenual("현재 상품을 삭제 원할 경우 스페이스바 두번 눌러주세요.");
       }
       function patMove(e) {
-        VoiceMenual("상품 선택을 마치셨다면 엔터키 사용하여 선택한 상품을 가지고 주문 페이지로 이동합니다.");
+        let productPay = $('#productPrice').text();
+        let salePay = $('#salePrice').text();
+        let deliveryPay = $('#deliveryPrice').text();
+        let totalPay = $('#totalPrice').text();
+        VoiceMenual(`상품금액은 ${productPay}. 할인금액은 ${salePay}. 배송비는 ${deliveryPay}. 총 결제 금액은 ${totalPay}. 입니다.
+                     상품 선택을 마치셨다면. 엔터키 사용하여. 선택한 상품을 가지고. 주문 페이지로. 이동합니다.`);
       }
-      function productDetail(e) {
-       let proName = $(e).closest('.checkContent').find('.tts1').text(); //상품명
-       let proPrice = $(e).closest('.checkContent').find('.tts2').text(); //상품금액
-       let proSalePrice = $(e).closest('.checkContent').find('.tts3').text(); //할인금액
-       let optionVal = $(e).closest('.checkContent').find('.tts4').text(); //옵션 추가 금액
-       let proDelivery = $(e).closest('.checkContent').find('.tts5').text(); //배송비
-       let optionName = $(e).closest('.checkContent').find('.tts6').text(); //옵션종류, 옵션 값
-       let buyCnt = $(e).closest('.checkContent').find('.tts7').text(); //구매수량
-        VoiceMenual('상품명은' + proName + '상품금액은' + proPrice + '할인금액은' + proSalePrice + '옵션 추가 금액은' + optionVal +
-                   '배송비는' + proDelivery + '선택한 옵션의 종류는' + optionName + '구매수량은' + buyCnt +
-                   '입니다. 전체선택을 하지 않고 개별 선택의 경우 스페이스바로 선택해주세요.');
+      function proKeydown(e) {
+        if(e.keyCode === 32 && $('input[name="price"]').is(':checked') == false) {
+            VoiceMenual("상품 선택 되었습니다.");
+          } else if(e.keyCode === 32 && $('input[name="price"]').is(':checked') == true){
+            VoiceMenual("상품 선택을 취소했습니다."); 
+          }               
       }
+      function shoping(e){
+        VoiceMenual("장바구니 상품이 더 이상 없습니다. 쇼핑 계속 원할 경우 엔터 결제 원할 경우. alt, 1를 눌러 결제하기로 이동하세요.");
+      }
+      
 
 
 

@@ -112,8 +112,8 @@
                     <div class="col-4">
                       
                       <!-- Image -->
-                      <a href="product.html">
-                        <img th:src="|/upload/${gets.uploadPath}/${gets.uploadName}|" alt="..." class="img-fluid">
+                      <a href="product.html" class="img-fluid">
+                        <img th:src="|/upload/${gets.uploadPath}/${gets.uploadName}|" alt="..." >
                       </a>
 
                     </div>
@@ -125,13 +125,14 @@
                          <input type="hidden" th:value="${gets.productCode}" class="productNumber">
                          <input type="hidden" th:value="${gets.optionDetailCode}" class="optionDetailCode">
                          <input type="hidden" th:value="${gets.deliveryCost}" class="deliveryMoney">
-                         <input type="hidden" name="couponUsePrice" class="text-body" th:text="${gets.productName}" ><br>
-                         상품금액 : <span class="text-muted" style="text-decoration: line-through;" th:text="|${gets.productCost}|" id="selectPrice"></span>원 <br>
-                        <span class="text-muted" th:text="|할인된 금액 : ${gets.salePrice}|"></span>원<br>
-                        <span class="text-muted" th:text="|옵션 추가금액 : ${gets.optionPrice}|"></span>원
+                         <input type="hidden" name="couponUsePrice" class="text-body" th:value="${gets.productName}" ><br>
+                         상품이름 : <span class="text-muted pName" th:text="|${gets.productName}|"></span><br>
+                         상품금액 : <span class="text-muted pPay" style="text-decoration: line-through;" th:text="|${gets.productCost}|" id="selectPrice"></span>원 <br>
+                        <span class="text-muted sPay" th:text="|할인된 금액 : ${gets.salePrice}|"></span>원<br>
+                        <span class="text-muted oPay" th:text="|옵션 추가금액 : ${gets.optionPrice}|"></span>원
                         <input type="hidden" class="selectValue" th:value="${(gets.salePrice + gets.optionPrice) * gets.cartCount}">
                         <div class="input-group mb-8">
-                          <input style="margin-top: 15px;" type="text" class="form-control" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2" id="couponSelect" readonly>
+                          <input style="margin-top: 15px;" type="text" class="form-control cSelect" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2" id="couponSelect" readonly>
                           <input type="hidden" class="myCouponCode">
                          <button type="button" class="btn btn-outline-secondary list-styled-link couponBtn" style="margin: 20px;" >쿠폰선택</button>
                          
@@ -139,16 +140,15 @@
                         <p>쿠폰 할인 금액 : <input type="text" style="border-width: 0 0 1px;" readonly class="couponSalePrice">원 
                           <button class="btn btn-outline-secondary couponResult" type="button">사용하기</button>
                         </p>         
-                      </p>
                       <!-- Text -->
-                      <div class="fs-sm text-muted" th:text="${gets.optionLast}"></div>
-                      <div class="fs-sm text-muted" th:text="|수량 :${gets.cartCount}|"></div>
+                      <div class="fs-sm text-muted oName" th:text="${gets.optionLast}"></div>
+                      <div class="fs-sm text-muted pCnt" th:text="|수량 :${gets.cartCount}|"></div>
                     </div>
                   </div>
                </li>
             </ul>
                  <!-- Heading -->
-              <h6 class="mb-7">배송 정보</h6>
+              <h6 class="mb-7" id="deliveryContent">배송 정보</h6>
 
                 <div class="col-12">
                   <!-- Address Line 1 -->
@@ -311,41 +311,120 @@
                 <table class="table table-bordered" style="border-collapse: collapse;">
                   <thead>
                     <tr>
-                      <th>쿠폰코드</th>
-                      <th>쿠폰명</th>
-                      <th>내용</th>
-                      <th>할인금액(원,율)</th>
-                      <th>발급일자</th>
-                      <th>사용종료일자</th>
-                      <th>선택</th>
+                      <th tabindex="0">쿠폰코드</th>
+                      <th tabindex="0">쿠폰명</th>
+                      <th tabindex="0">내용</th>
+                      <th tabindex="0">할인금액(원,율)</th>
+                      <th tabindex="0">발급일자</th>
+                      <th tabindex="0">사용종료일자</th>
+                      <th tabindex="0">선택</th>
                     </tr>
                     
                   </thead>
                   <tbody>
               
                     <tr class="clickable-row" th:each="couponRest : ${couponList}">
-                      <td th:text="${couponRest.mycouponCode}" th:data-max="${couponRest.couponMaxPrice}" th:data-min="${couponRest.couponMinPrice}"></td>
-                      <td th:text="${couponRest.couponName}"></td>
-                      <td th:text="${couponRest.couponContent}"></td>
-                      <td th:text="${couponRest.couponDiscountPrice} == '0' ? |${couponRest.couponDiscountRate}%| : |${couponRest.couponDiscountPrice}원|"></td>
-                      <td th:text="${#dates.format(couponRest.issueDate, 'yy/MM/dd')}"></td> 
-                      <td th:text="${#dates.format(couponRest.endDate, 'yy/MM/dd')}"></td>
-                      <td><button type="button" class="btn btn-warning btn-circle btn-xxs mb-1 select-button"><i class="fe fe-check"></i></button></td>
+                      <td th:text="${couponRest.mycouponCode}" th:data-max="${couponRest.couponMaxPrice}" th:data-min="${couponRest.couponMinPrice}" tabindex="0"></td>
+                      <td th:text="${couponRest.couponName}" tabindex="0"></td>
+                      <td th:text="${couponRest.couponContent}" tabindex="0"></td>
+                      <td th:text="${couponRest.couponDiscountPrice} == '0' ? |${couponRest.couponDiscountRate}%| : |${couponRest.couponDiscountPrice}원|" tabindex="0"></td>
+                      <td th:text="${#dates.format(couponRest.issueDate, 'yy/MM/dd')}" tabindex="0"></td> 
+                      <td th:text="${#dates.format(couponRest.endDate, 'yy/MM/dd')}" tabindex="0"></td>
+                      <td><button type="button" class="btn btn-warning btn-circle btn-xxs mb-1 select-button" tabindex="0"><i class="fe fe-check"></i></button></td>
                     </tr>
                   
-                  </tbody>
-                </table>
+                    </tbody>
+                  </table>
               </div>
-              </div>
+            </div>
           </div>
-      </div>
+       </div>
+  </div>
 </div>
-</div>
+  <textarea id="orderInfo" style="display: none;">
+    1번 결제하기.
+    2번 가입한 배송지 주소로 배송지 등록입니다. alt 2번 이동 후 스페이스바 입력필요합니다.
+    3번 첫번째 주문상품으로 이동 후 조회.
+    4번 현재 위치 상품의 쿠폰 선택.
+    5번 선택한 쿠폰 금액 적용.
+    6번 배송지 정보 조회.
+    7번 배송 시 요청 선택.
+    8번 메인 페이지 이동.
+    0번 다시 듣기.
+
+  </textarea>
   
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script th:inline="javascript">
+    let audioFileNow = new Audio();
+    let firstMsg = "주문 결제 페이지입니다. 배송지, 상품 가격을 확인 후 결제 진행하시면 됩니다.";
+		let message =  firstMsg + $('#orderInfo').val();
 
-     
+    $(function(){
+      VoiceMenual(message); 
+    })
+
+    //tts 내용 이벤트 부여
+    $('#payment-button').on('focus', payInfo); //결제버튼 포커스
+    $('#deliveryInfo').on('focus', deliveryContent); // 배송지로 등록 포커스
+    $('#deliveryInfo').on('keyup', deliverySuccess); // 배송지 등록 완료
+    $('a.img-fluid').on('focus',productInfo);
+
+    //tts 이벤트 진행
+    function payInfo() { // 결제 전 금액 확인
+      let productPay = $('#productPrice').text();
+      let salePay = $('#salePrice').text();
+      let couponPay = $('#couponSale').text();
+      let deliveryPay = $('#deliveryPrice').text();
+      let totalPay = $('#totalPrice').text();
+      let payInfoMessage = `총 상품 금액은. ${productPay}원. 할인 받은 상품 금액은. ${salePay}원. 쿠폰 할인 금액은. ${couponPay}원.
+                            배송비는. ${deliveryPay}원. 총 결제 금액은. ${totalPay}원. 입니다. 결제 원할 경우. 엔터키 입력`;
+      VoiceMenual(payInfoMessage);
+    }
+
+    function deliveryContent() { //배송지 주소로 선택 버튼
+      VoiceMenual("현재 주소지. 배송지로 원할 경우. 스페이스바 입력.");
+      
+    }
+    function deliverySuccess(e) { // 배송지 주소 입력시 성공 여부
+      if(e.code == 'Space'){
+        $('#deliveryInfo').trigger('click');
+
+        if($('#deliveryName').val() != '') {
+          VoiceMenual('배송지 등록 되었습니다.')
+        } else {
+          VoiceMenual('배송지 등록에 실패했습니다.')
+        }
+      }
+    }
+
+    function productInfo() {
+      let prName = $(this).parent().parent().find('.pName').text();
+      let prPay = $(this).parent().parent().find('.pPay').text();
+      let saPay = $(this).parent().parent().find('.sPay').text();
+      let otPay = $(this).parent().parent().find('.oPay').text();
+      let coSelect;
+      let couponSalePay;
+
+      if($(this).parent().parent().find('.cSelect').text() == '') {
+        coSelect = "선택된 쿠폰이 없습니다.";
+      } else {
+        coSelect = $(this).parent().parent().find('.cSelect').text();
+      }
+
+      if($(this).parent().parent().find('.couponSalePrice').text() == '') {
+        couponSalePay = 0;
+      } else {
+        couponSalePay = $(this).parent().parent().find('.couponSalePrice').text();
+      }
+
+      let otName = $(this).parent().parent().find('.oName').text(); 
+      let prCnt = $(this).parent().parent().find('.pCnt').text(); 
+      let productDetailInfo = `선택된 상품의 이름은. ${prName}. 선택한 옵션는. ${otName}. 할인 받지 않은 가격은. ${prPay}원. ${saPay}원.
+                              ${otPay}원. 선택한 쿠폰은. ${coSelect}. 쿠폰 할인 금액은. ${couponSalePay}원. 구매 ${prCnt}. 입니다.`;
+      VoiceMenual(productDetailInfo);
+    }
+
     //주소 api로 입력
     $('#addressSearch').on('click', addrPopup);
     function addrPopup(){
@@ -408,7 +487,6 @@
          myModal.show();
         })
    
-
         
         function closeModal(){
           myModal.hide();
@@ -460,8 +538,7 @@
         if(flag){
             alert("사용된 쿠폰입니다.");
             return;
-        }
-          
+        }          
 
         $(coupon).closest(".list-group-item").find('.couponSalePrice').val(roundPrice);
         $(coupon).closest(".list-group-item").find('#couponSelect').val(couName);          
@@ -471,10 +548,7 @@
         
       });
       
-
     }) 
-   
-  
 
     let conponAll = 0;
     //총 금액에서 쿠폰 값 빼기
@@ -501,6 +575,7 @@
     $('#selbox').change(function(){
       if($('#selbox').val() == 4) {
         $('#selectDirect').show();
+        $('#selectDirect').focus();
       } else {
         $('#selectDirect').hide();
       }
@@ -541,7 +616,7 @@
       alert('배송 정보 빈칸 없이 작성해주세요.');
       return false;
     }
-
+    $('.text-gray-300').last().focus();
     let amount = Number($('#totalPrice').text()); // 결제 금액
     paymentWidget.renderPaymentMethods('#payment-method', amount)
     let uuid = self.crypto.randomUUID().slice(0,-10);
@@ -593,15 +668,14 @@
       customerEmail: [[${orderGet[0].memberEmail}]], 
       customerName: [[${orderGet[0].memberName}]]
       }).catch(function (error) {
-          if (error.code === 'USER_CANCEL') {
-          // 결제 고객이 결제창을 닫았을 때 에러 처리
-          } if (error.code === 'INVALID_CARD_COMPANY') {
-            // 유효하지 않은 카드 코드에 대한 에러 처리
+          if (error.code === 'USER_CANCEL') {// 결제 고객이 결제창을 닫았을 때 에러 처리
+          } if (error.code === 'INVALID_CARD_COMPANY') { // 유효하지 않은 카드 코드에 대한 에러 처리
           }
       })  
+     
   })
-
+   
     </script>
-    
+    <script src="/js/order.js"></script>
 </div>
 </html>

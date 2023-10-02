@@ -12,6 +12,7 @@ window.onload = function() {
     });
 }
 
+
 function VoiceMenual(message) {
     var data = {
         "voice" : {
@@ -77,18 +78,31 @@ function base64ToBlob(base64, fileType) {
 	window.addEventListener("keydown", function(e){ 
 			console.log(e);
 			if(e.altKey && e.key == 1){ //결제하기
-				$('#payMove').focus();
+				$('#payment-button').focus();
 			}
-			if(e.altKey && e.key == 2){ // 상품 포커스
-				$('#allCheckbox').focus();
+			if(e.altKey && e.key == 2){ // 가입한 배송지 주소로 배송지 등록
+				$('#deliveryInfo').focus();
 			}
-			if(e.altKey && e.key == 3) { //장바구니 첫번째 상품
-				$('.firstPro').first().focus();
+			if(e.altKey && e.key == 3) {//첫번째 주문상품 이동
+			console.log($('.img-fluid'));
+				$('a.img-fluid')[0].focus();
 			}
-			if(e.altKey && e.key == 6){ // 메인 페이지로 가기
-				location.href = "/";
+			if(e.altKey && e.key == 4){ // 현재 위치 상품의 쿠폰 선택
+				$('.couponBtn').focus();
 			}
-			if(e.altKey && e.key == 0){
-				VoiceMenual($('#cartMenual').val());
+			if(e.altKey && e.key == 5){ // 선택한 쿠폰 금액 적용
+				$('.couponResult').focus();
+			}
+            if(e.altKey && e.key == 6){ // 배송지 정보 조회
+				$('#deliveryContent').focus();
+			}
+            if(e.altKey && e.key == 7){ // 배송 시 요청 선택
+				$('#selbox').focus();
+			}
+            if(e.altKey && e.key == 8){ // 메인 페이지 이동
+                location.href = "/";
+			}
+			if(e.altKey && e.key == 0){ //다시 듣기
+				VoiceMenual($('#orderInfo').val());
 			}
 	})
