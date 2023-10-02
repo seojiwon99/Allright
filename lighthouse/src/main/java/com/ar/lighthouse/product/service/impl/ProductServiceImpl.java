@@ -257,7 +257,8 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public int updateCancelList(CancelVO cancelVO) {
 		return productMapper.updateCancelList(cancelVO);
-
+	}
+	
 	// 석연 - 취소 완료 시 Y로 상태 변경
     @Override
 	public int editCancelOk(String cancelCode) {
