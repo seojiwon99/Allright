@@ -254,9 +254,12 @@ public class ProductServiceImpl implements ProductService{
 
 
 
+
+
+//  월별 주문 건수
 	@Override
-	public int updateCancelList(CancelVO cancelVO) {
-		return productMapper.updateCancelList(cancelVO);
+	public List<DetailVO> getMonthlyCount(DetailVO detailVO) {
+		return productMapper.selectMonthlyCount(detailVO);
 	}
 	
 	// 석연 - 취소 완료 시 Y로 상태 변경

@@ -2,35 +2,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+google.charts.load('current', {'packages':['corechart']});
 
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['day', 'Sales', 'Expenses'],
-          ['01',  1000,      400],
-          ['02',  1170,      460],
-          ['03',  660,       1120],
-          ['04',  1030,      540]
-        ]);
-
-        var options = {
-          title: 'Company Performance',
-          curveType: 'function',
-          legend: { position: 'bottom' }
-        };
-
-        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
-        chart.draw(data, options);
-      }
-    </script>
+</script>
 </head>
 <body>
 <h3>통계여</h3>
- <div id="curve_chart" style="width: 900px; height: 500px">
+<label for="yearSelect">년도를 고르세요</label>
+    <select id="yearSelect">
+    </select>
+ <div id="chart_div" style="width: 900px; height: 500px">
  </div>
  
  
@@ -65,5 +47,94 @@
                      </tbody>
                   </table>
                   </div>
+<script type="text/javascript">
+$('#yearSelect').change(function() {
+    drawVisualization(); // Year 선택 값이 변경될 때마다 그래프를 다시 그림
+});
+
+function fetchDataFromDatabase() {
+	
+	var selectedYear = $('#yearSelect').val();
+	
+    return $.ajax({
+        url: 'monthlyData',
+        type: 'GET',
+        data : {
+        	year : selectedYear
+        }
+    })
+    .done(function(data) {
+        console.log(data);
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.error(errorThrown);
+    });
+}
+
+function drawVisualization() {
+    fetchDataFromDatabase().done(function(data) {
+        // 월 별 데이터를 저장할 객체 생성
+        var monthlyDataMap = {};
+
+        // 데이터를 반복하면서 월 별 데이터를 맵에 저장
+        data.forEach(function(monthlyData) {
+            monthlyDataMap[monthlyData.month] = monthlyData.totalPrice;
+        });
+
+        // 모든 월을 포함하는 월 배열 생성 (예: 1월부터 12월까지)
+        var allMonths = [];
+        for (var i = 1; i <= 12; i++) {
+            allMonths.push(i);
+        }
+
+        var formattedData = [];
+
+        // 열 헤더 설정
+        formattedData.push(['Month', '판매금액']);
+
+        // 모든 월을 순회하면서 데이터를 추가하거나 0으로 초기화
+        allMonths.forEach(function(month) {
+            var totalPrice = monthlyDataMap[month] || 0;
+            formattedData.push([month.toString(), totalPrice]);
+        });
+
+        
+        var dataTable = google.visualization.arrayToDataTable(formattedData);
+
+        var options = {
+            title: '월별 판매 개수',
+            vAxis: { title: '판매금액',
+            	viewWindow: {min: 1}
+        			},
+            hAxis: { title: '월별' },
+            seriesType: 'bars',
+            series: { 0: { type: 'curve' } }
+        };
+
+        var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+        chart.draw(dataTable, options);
+    });
+}
+   google.charts.setOnLoadCallback(drawVisualization);
+   drawVisualization();
+   
+   
+   var currentYear = new Date().getFullYear();
+
+   // 선택할 수 있는 연도 범위 설정 (현재 년도부터 10년 전까지)
+   var startYear = currentYear - 10;
+
+   // select 요소 가져오기
+   var selectElement = $('#yearSelect');
+
+   // 연도 옵션을 동적으로 생성하여 select 요소에 추가
+   for (var year = currentYear; year >= startYear; year--) {
+       var option = $('<option>');
+       option.val(year);
+       option.text(year);
+       selectElement.append(option);
+   }
+   
+</script>
 </body>
 </html>

@@ -72,9 +72,8 @@ public interface ProductService {
 //	취소건 목록
 	List<DetailVO> getStaticList(String memberId);
 	
-//	취소거부
-	int updateCancelList(CancelVO cancelVO);
-	
+//	월별 주문 건수
+	List<DetailVO> getMonthlyCount(DetailVO detailVO);
 	
 	//  옵션 VO 리스트
 	public List<OptionVO> getOptionList(OptionVO optionVO);

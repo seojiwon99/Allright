@@ -4,18 +4,13 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/sellerHtml}">
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-<script type="text/javascript">
-google.charts.load('current', {'packages':['corechart']});
-</script>
 <!-- Content -->
 
 
 
 <div layout:fragment="sellerContent">
 
-	
-
-	<div class="row gx-0">
+<div class="row gx-0">
 		<div class="col-12 col-lg-auto">
 
 			<!-- NAVBAR -->
@@ -73,17 +68,23 @@ google.charts.load('current', {'packages':['corechart']});
 													class="list-styled-link" href="/exchangeList">교환반품관리</a></li>
 
 											</ul>
+
 										</div>
-									</div>
-								</div>
-							<li class="nav-item"><a class="nav-link"
-								href="/settlementManagement">정산/통계관리</a></li>
-							<li class="nav-item"><a class="nav-link"
-								href="/productInquiry">문의관리</a></li>
-							<li class="nav-item"><a class="nav-link"
-								href="/sellerMypage">판매자정보</a></li>
-							<li class="nav-item"><a class="nav-link"
-								href="/sellerInquiry">고객센터</a></li>
+
+										<li class="nav-item"><a class="nav-link"
+											href="/settlementManagement">정산/통계관리</a></li>
+										<li class="nav-item"><a class="nav-link"
+											href="/productInquiry">문의관리</a></li>
+										<li class="nav-item"><a class="nav-link"
+											href="/sellerMypage">판매자정보</a></li>
+										<li class="nav-item"><a class="nav-link"
+											href="/sellerInquiry">고객센터</a></li>
+						</ul>
+
+						
+						
+						
+
 					</div>
 
 				</div>
@@ -91,47 +92,18 @@ google.charts.load('current', {'packages':['corechart']});
 
 		</div>
 		<div class="col-12 col-lg">
-
-			<button id="statisticsBtn">통계</button>
-			<button id="accountingBtn">정산</button>
-
-			<div id="contentArea">
-				<!-- 비동기로 로드할 내용이 들어갈 영역 -->
-			</div>
-
+		
 		</div>
-
-
-	</div>
-
-<script type="text/javascript">
-$("#statisticsBtn").click(function () {
-    $.ajax({
-        url: "statisticsPage", 
-        method: "GET",
-        success: function (data) {
-            $("#contentArea").html(data); 
-            
-
-            
-        },
-        error: function () {
-        }
-    });
-});
-
-$("#accountingBtn").click(function () {
-    $.ajax({
-        url: "calculatePage",
-        method: "GET",
-        success: function (data) {
-            $("#contentArea").html(data);
-        },
-        error: function () {
-        	console.log("오류오류")
-        }
-    });
-});
-</script>
-</div>
-</html>
+		<textarea id="testInput" style="display:none;">
+		제목 : [[${noticeInfo.noticeTitle}]]
+		작성자 :[[${noticeInfo.noticeWriter}]]
+		작성 일자: [[${#dates.format(noticeInfo.noticeRegdate,'yyyy-MM-dd')}]]
+		내용 : [[${noticeInfo.noticeContent}]]
+		
+	</textarea>
+		
+		
+		</div>
+		
+		</div>
+		</html>
