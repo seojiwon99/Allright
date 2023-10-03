@@ -4,34 +4,28 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/default_layout}">
 <!-- Content -->
-
 <head>
 <style type="text/css">
-/* 감싸는 div */
-.wrap {
+.card-img-top {
 	position: relative;
 	width: 500px;
+	height: 500px;
 	margin: 0 auto;
 }
-/* 확대될 타겟이미지*/
-.target {
-	display: block;
-	width: 100%;
-}
-/* 돋보기 */
-.magnifier {
-	width: 150px;
-	height: 150px;
-	position: absolute;
-	border-radius: 100%;
-	box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.85), 0 0 3px 3px
-		rgba(0, 0, 0, 0.25);
-	display: none;
-}
 
+.photo {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	transition: transform .5s ease-out;
+}
 </style>
 </head>
-
 <body>
 	<div layout:fragment="content">
 		<!-- 단건 조회 -->
@@ -53,10 +47,9 @@
 										<img th:src="|/upload/${img.uploadPath}/${img.uploadName}|"
 										alt="..." width="540" height="480" class="card-img-top"
 										id="imgTarget" data-zoom="3" />-->
-										<a> <img src="../img/products/product-142.jpg" width="540"
-											height="480" class="card-img-top" data-zoom="3" />
-										</a>
-
+										<div class="card-img-top" data-scale="2" width="540"
+											height="480"
+											style="background-image: url('../img/products/product-142.jpg')"></div>
 									</div>
 								</div>
 
@@ -176,27 +169,9 @@
 											<!-- 선택된박스 -->
 											<div style="font-size: 15px; color: rgba(0, 0, 0, 0.7);">
 												<div id="optionBox" style="display: none">
-													<div id="optionView" class="col-12 col-lg-auto"
-														style="background-color: rgba(0, 0, 0, 0.1); padding: 10px">
-														<!-- <div style="display: flex; justify-content: space-between;">
-														<div>
-															<span class="option1"></span><span class="option2"></span>
-														</div>
-														<div>
-															<button>X</button>
-														</div>
-													</div>
-													<div>
-														<span style="font-size: 15px;">수량 : </span> <input
-															type="number" value="1" min="1"
-															style="opacity: 0.7; width: 100px;" class="cnt">
-													</div>
-													<div>
-														<input class="changePrice" type="hidden"
-															th:value="${goods.salePrice}" /> <span>합계 :</span> <span
-															class="changePriceShow" style="font-size: 16px"></span>
-													</div>-->
-													</div>
+													<ul id="optionView" class="col-12 col-lg-auto">
+
+													</ul>
 												</div>
 
 												<div class="col-12 col-lg-auto">
@@ -293,7 +268,7 @@
 										<tbody>
 											<tr>
 												<th scope="row" style="font-weight: 600">사업자번호</th>
-												<th scope="row"></th>
+												<th scope="row" th:text="${goods.businessNumber}"></th>
 												<th scope="row" style="font-weight: 600">원가</th>
 												<th scope="row" th:text="${goods.productCost}+원"></th>
 											</tr>
@@ -342,15 +317,13 @@
 
 
 		<script th:inline="javascript">
-	
-		
 	window.addEventListener("DOMContentLoaded", (event) => {
 		
 		//이벤트 지정
 		
 		$('.cnt').on("change", cntChangeHandler);
 	    $("#loginTag").on("click", loginTagClickHandler);
-		
+	    //cntChangeHandler();
         //리뷰 로드
 		reviewPageLoad(1);
 		inquiryPageLoad(1);
@@ -366,7 +339,6 @@
 		});*/	
 		
 	});   
-	
 	
 	/*------------------------
 	리뷰 페이지 로드
@@ -387,12 +359,6 @@
 	옵션
 	-------------------------*/
 	function changeOptionHandler(){
-		//가격 스크립트
-		let price = $(".changePrice").val();
-		price = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';   
-		$(".changePriceShow").html(price);
-	   
-	      
 		// 옵션 
 		let optionDetail =[[${optionDetail}]];
 		
@@ -406,47 +372,42 @@
 			$(selboxTwo).attr("disabled",false);			
 			
 			let option1 = $(this).val();
+			console.log("첫번쨰 옵션"+option1);
 			
-			let div =$("<div/>");
+			let liTag =$("<li/>");
 			let span =$("<span/>");
 			
-			span.append(option1);
-			div.append(span);
+			span.append(option1);			//첫번쩨 색상 	
 		
-		    
 		    $(selboxTwo).on("change",function(){
 				
 		    	let option2 = $(this).val();
-		    	let span2 =$("<span/>");
-				span2.append(option2);
+		    	console.log("두번쨰 옵션"+option2);
+				span.append(option2);
 				
-				div.append(span2);
-			
-		    	$("#optionView").append(div);
-		    	$(".optionBox").append($("#optionView"));
-		    	$("#optionBox").prop("input","number");
-		    	selboxTwoChange();
+				liTag.append(span);	
 			})
-		    
+			$("#optionView").append(liTag);
+		    $("#optionBox").css("display","block");
+		    $(".selectBox").val("");
 		})
-		 
-	    
-	   
-		
-	}
-    
-	/*------------------------
-	옵션 체크
-	-------------------------*/     
-	function selboxTwoChange() {
-		$("#optionBox").css("display","block");
 		
 	}
 	
+	
+
+	
+	//가격 스크립트
+	let price = $(".changePrice").val();
+	price = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';   
+	$(".changePriceShow").html(price);
    /*------------------------
 	가격값이 변화가 있을 때 발생하는 이벤트 핸들러
 	-------------------------*/  
    function cntChangeHandler() { 
+
+		
+		
        for (var i = 0; i < count.length; i++) {
            // input 값 가져오기
            console.log(count.eq(i).val()); 
@@ -467,8 +428,31 @@
    /*------------------------
 	돋보기기능
 	-------------------------*/
-   
-   
+	$('.card-img-top')
+    .append('<div class="photo"></div>')
+    .children('.photo').css({"background-image": "url(../img/products/product-142.jpg)"});
+    
+    $('.card-img-top')    
+    .on('mouseover', function () {
+        $(this).children('.photo').css({
+            'transform': 'scale(' + $(this).attr('data-scale') + ')'
+        });
+        //$(this).children('.photo').css("z-index","1");
+    })
+
+    $('.card-img-top')
+    .on('mouseout', function () {
+        $(this).children('.photo').css({
+            'transform': 'scale(1)'
+        });
+    })
+    $('.card-img-top')
+    .on('mousemove', function (e) {
+        $(this).children('.photo').css({
+            'transform-origin': ((e.pageX - $(this).offset().left) / $(this).width()) * 100 + '% ' + ((e.pageY - $(this).offset().top) / $(this).height()) * 100 + '%'
+        });
+	})
+
 	/*------------------------
 	회원가입창으로
 	-------------------------*/ 

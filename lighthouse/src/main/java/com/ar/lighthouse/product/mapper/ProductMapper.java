@@ -111,6 +111,4 @@ public interface ProductMapper {
 	//취소 승인 시 Y로 승인 상태 변경 - 석연
 	public int updateCancelOk(String cancelCode);
 
-	//사업자 등록 번호
-	public List<MemberDetailVO> selectMember(MemberDetailVO memberVO);
 }

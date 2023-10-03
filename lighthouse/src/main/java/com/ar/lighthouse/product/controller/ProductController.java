@@ -69,10 +69,9 @@ public class ProductController {
 	@Value("${file.upload.path}")
 	private String uploadPath;
 
-	
 	@Autowired
 	AdminService adminService;
-	
+
 	@Autowired
 	ProductService productService;
 
@@ -569,17 +568,15 @@ public class ProductController {
 
 	@PostMapping("editReview")
 	@ResponseBody
-	public ReviewVO editReview(MultipartFile files, ReviewVO reviewVO, ImgsVO imgsVO,int reviewCode) {
+	public ReviewVO editReview(MultipartFile files, ReviewVO reviewVO, ImgsVO imgsVO, int reviewCode) {
 		System.out.println("review" + reviewVO);
-		
-		if(files == null) {
-				reviewService.editReview(reviewVO);
-				System.out.println("reviewaaaaaaaaaaaaaaaaaaaaaaaaaa" + reviewVO);
-				return reviewVO;
-			}
-			else {
-				
-		
+
+		if (files == null) {
+			reviewService.editReview(reviewVO);
+			System.out.println("reviewaaaaaaaaaaaaaaaaaaaaaaaaaa" + reviewVO);
+			return reviewVO;
+		} else {
+
 			String originalName = files.getOriginalFilename();
 			System.out.println("originalName : " + originalName);
 			String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
@@ -613,7 +610,7 @@ public class ProductController {
 				// uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
 				imgsVO.setReviewCode(reviewVO.getReviewCode());
 				reviewService.removeReviewImg(imgsVO);
-				
+
 				reviewService.addReviewImg(imgsVO);
 				System.out.println("reviewbbbbbbbba" + reviewVO);
 
@@ -648,26 +645,26 @@ public class ProductController {
 	}
 
 	// 리뷰 조회
-		@GetMapping("reviewView")
-		public String reviewView(Model model, String productCode, CodeVO codeVO, Criteria cri) {
-			// 리뷰정보
-			ReviewVO reviewVO = new ReviewVO();
-			reviewVO.setProductCode(productCode);
-			cri.setAmount(5);
-			model.addAttribute("review", reviewService.getReviewList(reviewVO, cri));
-			model.addAttribute("count", reviewService.countGetReview(reviewVO));
-			model.addAttribute("reviewAvg", reviewService.starAvg(reviewVO));
-			model.addAttribute("productCode", productCode);
-			int totalReview = reviewService.countGetReview(reviewVO);
-			model.addAttribute("pageMaker", new PageDTO(cri, totalReview));
-			// 리뷰 신고
-			reviewVO.setProductCode(productCode);
-			model.addAttribute("codes", reviewService.reviewCodeList(codeVO));
+	@GetMapping("reviewView")
+	public String reviewView(Model model, String productCode, CodeVO codeVO, Criteria cri) {
+		// 리뷰정보
+		ReviewVO reviewVO = new ReviewVO();
+		reviewVO.setProductCode(productCode);
+		cri.setAmount(5);
+		model.addAttribute("review", reviewService.getReviewList(reviewVO, cri));
+		model.addAttribute("count", reviewService.countGetReview(reviewVO));
+		model.addAttribute("reviewAvg", reviewService.starAvg(reviewVO));
+		model.addAttribute("productCode", productCode);
+		int totalReview = reviewService.countGetReview(reviewVO);
+		model.addAttribute("pageMaker", new PageDTO(cri, totalReview));
+		// 리뷰 신고
+		reviewVO.setProductCode(productCode);
+		model.addAttribute("codes", reviewService.reviewCodeList(codeVO));
 
-			return "page/goods/review";
+		return "page/goods/review";
 
-		}
-	
+	}
+
 	// qna 등록
 	@PostMapping("insertInquiry")
 	@ResponseBody
@@ -707,52 +704,50 @@ public class ProductController {
 	}
 
 	// qna 조회
-		@GetMapping("inquiryView")
-		public String inquiryView(Criteria cri, Model model, String productCode) {
+	@GetMapping("inquiryView")
+	public String inquiryView(Criteria cri, Model model, String productCode) {
 
-			ProductInquiryVO productInquiryVO = new ProductInquiryVO();
-			productInquiryVO.setProductCode(productCode);
-			cri.setAmount(10);
-			model.addAttribute("inquiry", custominquiryService.getInquiryList(productInquiryVO, cri));
-			model.addAttribute("inquiryCount", custominquiryService.countGetInquiry(productInquiryVO));
-			int totalInquiry = custominquiryService.countGetInquiry(productInquiryVO);
-			model.addAttribute("pageMaker", new PageDTO(cri, totalInquiry));
-			model.addAttribute("productCode", productCode);
-			return "page/goods/qna";
-		}
-	
-		// 상품 단건 조회
-		@GetMapping("goodDetail")
-		public String getGoodDetail(String productCode, Model model, HttpSession session, ProductVO vo, OptionVO optionVO,
-				MemberDetailVO memberVO ,CodeVO codeVO, Criteria cri) {
+		ProductInquiryVO productInquiryVO = new ProductInquiryVO();
+		productInquiryVO.setProductCode(productCode);
+		cri.setAmount(10);
+		model.addAttribute("inquiry", custominquiryService.getInquiryList(productInquiryVO, cri));
+		model.addAttribute("inquiryCount", custominquiryService.countGetInquiry(productInquiryVO));
+		int totalInquiry = custominquiryService.countGetInquiry(productInquiryVO);
+		model.addAttribute("pageMaker", new PageDTO(cri, totalInquiry));
+		model.addAttribute("productCode", productCode);
+		return "page/goods/qna";
+	}
 
-			// 상품정보
-			ProductVO productVO = productService.goodsDetail(vo);
-			model.addAttribute("goods", productVO);
+	// 상품 단건 조회
+	@GetMapping("goodDetail")
+	public String getGoodDetail(String productCode, Model model, HttpSession session, ProductVO vo, OptionVO optionVO,
+			CodeVO codeVO, Criteria cri) {
 
-			// 리뷰 별점
-			ReviewVO reviewVO = new ReviewVO();
-			reviewVO.setProductCode(productCode);
-			model.addAttribute("reviewAvg", reviewService.starAvg(reviewVO));
-			model.addAttribute("count", reviewService.countGetReview(reviewVO));
+		// 상품정보
+		ProductVO productVO = productService.goodsDetail(vo);
+		model.addAttribute("goods", productVO);
 
-			// qna 수
-			ProductInquiryVO productInquiryVO = new ProductInquiryVO();
-			productInquiryVO.setProductCode(productCode);
-			model.addAttribute("inquiryCount", custominquiryService.countGetInquiry(productInquiryVO));
+		// 리뷰 별점
+		ReviewVO reviewVO = new ReviewVO();
+		reviewVO.setProductCode(productCode);
+		model.addAttribute("reviewAvg", reviewService.starAvg(reviewVO));
+		model.addAttribute("count", reviewService.countGetReview(reviewVO));
 
-			// 옵션 조회
-			optionVO.setProductCode(productCode);
-			model.addAttribute("options", productService.getOptionList(optionVO));
-			model.addAttribute("optionDetail", productService.getOptionDetail(optionVO));
-			System.out.println(model);
-			// 장바구니
-			
-			//멤버
-			//model.addAttribute("member", productService.getMemberList(memberVO));
+		// qna 수
+		ProductInquiryVO productInquiryVO = new ProductInquiryVO();
+		productInquiryVO.setProductCode(productCode);
+		model.addAttribute("inquiryCount", custominquiryService.countGetInquiry(productInquiryVO));
 
-			return "page/goods/goodDetail";
-		}
+		// 옵션 조회
+		optionVO.setProductCode(productCode);
+		model.addAttribute("options", productService.getOptionList(optionVO));
+		model.addAttribute("optionDetail", productService.getOptionDetail(optionVO));
+		System.out.println(model);
+		// 장바구니
+
+
+		return "page/goods/goodDetail";
+	}
 
 	// 이미지 보여주기
 	@GetMapping("/display")

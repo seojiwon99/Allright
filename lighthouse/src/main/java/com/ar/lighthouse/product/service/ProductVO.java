@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
 
 import com.ar.lighthouse.common.ImgsVO;
@@ -48,5 +49,7 @@ public class ProductVO {
 	List<DetailVO> detail;
 
 	List<OptionDetailVO> optionDetail;
+	private String businessNumber;
+	
 
 }
