@@ -32,7 +32,7 @@ public interface BuyerPageMapper {
 	
 	public List<MyInquiryVO> selectMyInquiryList(String memberId);
 	
-	public List<WishVO> selectWishList(String memberId);
+	public List<WishVO> selectWishList(String memberId, Criteria cri);
 
 	public List<BuyCancelVO> selectCancelList(String memberId);
 	
@@ -69,5 +69,7 @@ public interface BuyerPageMapper {
 	public int getPageCnt(Criteria cri);
 	
 	public List<DetailVO> selectOptionList(DetailVO detailVO);
+	
+	public int getCouponCnt(Criteria cri);
 	
 }

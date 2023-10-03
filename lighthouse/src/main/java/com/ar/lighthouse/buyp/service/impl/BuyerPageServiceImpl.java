@@ -66,8 +66,8 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 
 
 	@Override
-	public List<WishVO> getWishList(String memberId) {
-		return buyerPageMapper.selectWishList(memberId);
+	public List<WishVO> getWishList(String memberId, Criteria cri) {
+		return buyerPageMapper.selectWishList(memberId, cri);
 	}
 
 
@@ -177,6 +177,12 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	@Override
 	public List<DetailVO> getOptionList(DetailVO detailVO) {
 		return buyerPageMapper.selectOptionList(detailVO);
+	}
+
+
+	@Override
+	public int getCouponCnt(Criteria cri) {
+		return buyerPageMapper.getCouponCnt(cri);
 	}
 
 
