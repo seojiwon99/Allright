@@ -35,6 +35,7 @@ import com.ar.lighthouse.orders.service.OrderPayVO;
 import com.ar.lighthouse.orders.service.OrdersService;
 import com.ar.lighthouse.orders.service.OrdersVO;
 import com.ar.lighthouse.orders.service.RefundVO;
+import com.ar.lighthouse.product.service.ProductService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -44,6 +45,8 @@ public class OrdersController {
 	@Autowired
 	OrdersService ordersService;
 	
+	@Autowired
+	ProductService productService;
 	
 
 	// 장바구니에서 구매 상품 가져옴.
@@ -229,24 +232,25 @@ public class OrdersController {
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		OrderChkVO[] orderchkList= objectMapper.readValue(refundList, OrderChkVO[].class);
-		for(int i =0; i<orderchkList.length; i++) {
-			System.out.println(orderchkList[i]);
-		}
-	
+		RefundVO newRefund = new RefundVO();
 		 for(OrderChkVO chk : orderchkList) {
-		 System.out.println("@@@@@@@@@@@@@@@@@@@@@@@");
+		 if(chk.getCancelReason() == "") {
+			 chk.setCancelReason("판매자 자체 취소");
+		 }
 		 RefundVO refund = ordersService.getRefund(chk.getOrderCode(), chk.getOrderDetailCode(), chk.getMemberId());
-		 RefundVO newRefund = new RefundVO();
+		 
 		 //상품 취소 중 쿠폰 사용한 경우 쿠폰 반환
 		 System.out.println(refund.getMycouponCode());
-			  if(refund.getMycouponCode() != 0) { ordersService.editRefundCoupon(chk.getMemberId(),
-			  refund.getMycouponCode()); }
+			  if(refund.getMycouponCode() != 0) 
+			  { 
+				  ordersService.editRefundCoupon(chk.getMemberId(),refund.getMycouponCode()); 
+			  }
 			 
 		 
-		 //페이먼츠 키 찾을 때 필요한 데이터/ 환불 신청 시 필요한 데이터 = cancelReason, cancelAmount, paymentKey
+		 //페이먼츠 키 찾을 때 필요한 데이터/ 환불 신청 시 필요한 데이터 = cancelReason, cancelAmount, paymentKey 
 		 String paymentKey = refund.getPaymentKey(); // 페이먼츠 키 넣기.
 		 String cancelReason = chk.getCancelReason();
-		 int cancelAmount = (refund.getPaymentPrice() + refund.getDiscountPrice()); //부분 취소할 금액. select 해서 삼풍에서 가져오기. select에서 가져와야함.
+		 int cancelAmount = (refund.getPaymentPrice() + refund.getDiscountPrice() - refund.getDeliveryCost()); //부분 취소할 금액. select 해서 삼풍에서 가져오기. select에서 가져와야함.
 		 
 		 //refund 들어갈 데이터
 
@@ -279,20 +283,19 @@ public class OrdersController {
 		} catch (Exception  e) {
 			e.printStackTrace();
 		}
-			System.out.println("test Val:"+refundAbleAmount);
-			 
 			newRefund.setRefundAmount(refundAbleAmount);
 			newRefund.setPaymentKey(paymentKey);
 			newRefund.setRefundTypecode(chk.getRefundTypecode()); // 취소, 반품 구분 C , R
 			newRefund.setRefundType(chk.getRefundType());
-			
+			  
 			ordersService.addRefund(newRefund);
 		
-			//refundBalanceAmount 값 rders테이블,credit테이블 결제액 업데이트
+			//refundBalanceAmount 값 rders테이블,credit테이블 결제액 업데이트 
+			productService.editCancelOk(newRefund.getRefundTypecode());
 			ordersService.editTossRefundAmount(paymentKey, refundAbleAmount);
-			ordersService.editOrderRefundAmount(chk.getOrderCode(), refundAbleAmount);
+			ordersService.editOrderRefundAmount(chk.getOrderCode(), refundAbleAmount); 
 		}
-		return "/cancelProduct";
+			return newRefund.getRefundType().equals("C") ?  "redirect:/cancelProduct" : "redirect:/exchangeList";	 
+		}
 	 }
 				
-}

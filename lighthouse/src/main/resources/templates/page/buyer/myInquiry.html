@@ -104,7 +104,6 @@
               <div class="card-body pb-0">
 				<!-- 반복문 시작 -->
                 <!-- Info -->
-                
                 <div class="card card-sm">
 	                <div th:each="inqs : ${myInquiry}">
 	                  <div class="card-body bg-light">
@@ -115,7 +114,7 @@
 	                          <span th:text= "|${inqs.customInquiryCode}|"></span>
 	                        </p>
 	                      </div>
-	                      <div class="col-6 col-lg-3">
+	                      <div class="col-6 col-lg-3" data-bs-toggle="modal" th:data-bs-target="|#modalProduct${inqs.customInquiryCode}|">
 	                        <h6 class="heading-xxxs text-muted">문의 제목:</h6>
 	                        <p class="mb-lg-0 fs-sm fw-bold">
 	                           <a th:text="|${inqs.customInquiryTitle}|"></a>
@@ -139,22 +138,53 @@
 	                          <span th:text="|${inqs.customInquiryAnswerStatus}|"></span>
 	                        </p>
 	                      </div>
-	                      <!-- 
-	                      <div class="col-6 col-lg-3">
-	                        <h6 class="heading-xxxs text-muted">:</h6>
-	                        <p class="mb-0 fs-sm fw-bold">
-	                        </p>
-	                      </div>
-	                      <div class="col-6 col-lg-3">
-	                        <h6 class="heading-xxxs text-muted">:</h6>
-	                        <p class="mb-0 fs-sm fw-bold">
-	                        </p>
-	                      </div>
-	                      -->
-	                    </div>
+					    <!-- Modal -->
+					    <div class="modal fade" th:id="|modalProduct${inqs.customInquiryCode}|" tabindex="-1" role="dialog" aria-hidden="true">
+					      <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+					        <div class="modal-content">
+					          <!-- Close -->
+					          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+					            <i class="fe fe-x" aria-hidden="true"></i>
+					          </button>
+					          <!-- Content -->
+					          <div class="container-fluid px-xl-0">
+					            <div class="row align-items-center mx-xl-0">
+					              <div class="col-12 col-lg-6 col-xl-7 py-9 px-md-9">
+					                <label class="h5">문의 제목 :</label>
+					                <h5 class="mb-3" th:text="|${inqs.customInquiryTitle}|"></h5>
+					                <label class="h6">문의 날짜 :</label>
+					                <h6 class="mb-3" th:text="|${#dates.format(inqs.customInquiryRegdate, 'yyyy-MM-dd hh:mm:ss')}|"></h6>
+					                <!-- Form -->
+					                <form>
+					                  <label class="h5">문의 내용 :</label>
+					                  <div class="form-group">
+					    				<textarea rows="10" cols="100" th:text="|${inqs.customInquiryContent}|"></textarea>
+					                  </div>
+					                  <div class="form-group mb-0">
+					                    <div class="row gx-5">
+					    	              <div class="col-12 col-lg">
+					                        <button type="submit" class="btn w-100 btn-dark mb-2">
+					                          닫기
+					                        </button>
+					                      </div>
+					                      <!--<div class="col-12 col-lg-auto">
+					                        <button class="btn btn-outline-dark w-100 mb-2" data-toggle="button">
+					                          닫기
+					                        </button>
+					                      </div>-->
+					                    </div>
+					                  </div>
+					                </form>
+					              </div>
+					            </div>
+					          </div>
+					        </div>
+					      </div>
+						 </div>                     
+	                      <!--  -->
 	                  </div>
 	                </div>
-	                
+	                </div>
 				</div>
             </div>
 
