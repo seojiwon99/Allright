@@ -56,7 +56,7 @@
                       <span class="price ms-auto tts2" style="text-decoration: line-through;" th:text="| 상품금액 : ${lists.productCost}원|"></span>
                     </div>
                     <div class="d-flex mb-2 fw-bold">
-                    	<span class="ms-auto tts3" th:text="|할인금액 : ${lists.salePrice}원|"></span>
+                    	<span class="ms-auto tts3" th:text="|할인된 금액 : ${lists.salePrice}원|"></span>
                     </div>
                     <div class="d-flex mb-2 fw-bold">
                     	<span class="ms-auto tts4" th:text="|옵션 추가금액 : ${lists.optionPrice}원|"></span>
@@ -336,7 +336,7 @@
         let salePay = $('#salePrice').text();
         let deliveryPay = $('#deliveryPrice').text();
         let totalPay = $('#totalPrice').text();
-        VoiceMenual(`상품금액은 ${productPay}. 할인금액은 ${salePay}. 배송비는 ${deliveryPay}. 총 결제 금액은 ${totalPay}. 입니다.
+        VoiceMenual(`상품금액은 ${productPay}. 할인된 금액은 ${salePay}. 배송비는 ${deliveryPay}. 총 결제 금액은 ${totalPay}. 입니다.
                      상품 선택을 마치셨다면. 엔터키 사용하여. 선택한 상품을 가지고. 주문 페이지로. 이동합니다.`);
       }
       function proKeydown(e) {

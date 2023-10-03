@@ -87,19 +87,13 @@ function base64ToBlob(base64, fileType) {
 			console.log($('.img-fluid'));
 				$('a.img-fluid')[0].focus();
 			}
-			if(e.altKey && e.key == 4){ // 현재 위치 상품의 쿠폰 선택
-				$('.couponBtn').focus();
-			}
-			if(e.altKey && e.key == 5){ // 선택한 쿠폰 금액 적용
-				$('.couponResult').focus();
-			}
-            if(e.altKey && e.key == 6){ // 배송지 정보 조회
+            if(e.altKey && e.key == 4){ // 배송지 정보 조회
 				$('#deliveryContent').focus();
 			}
-            if(e.altKey && e.key == 7){ // 배송 시 요청 선택
+            if(e.altKey && e.key == 5){ // 배송 시 요청 선택
 				$('#selbox').focus();
 			}
-            if(e.altKey && e.key == 8){ // 메인 페이지 이동
+            if(e.altKey && e.key == 6){ // 메인 페이지 이동
                 location.href = "/";
 			}
 			if(e.altKey && e.key == 0){ //다시 듣기
