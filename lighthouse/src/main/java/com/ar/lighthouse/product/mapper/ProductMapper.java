@@ -92,6 +92,9 @@ public interface ProductMapper {
 
 //		정산데이터
 	public List<SellerCalVO> selectCalList(SellerCalVO sellerCalVO);
+	
+//	월별 주문건수
+	public List<DetailVO> selectMonthlyCount(DetailVO detailVO);
 
 //		통계 목록
 	public List<DetailVO> selectStatsList(String memberId);
@@ -106,5 +109,8 @@ public interface ProductMapper {
 	public List<OptionVO> selectOptionList(OptionVO optionVO);
 
 	public List<OptionDetailVO> selectOptionDetail(OptionVO optionVO);
+	
+	//취소 승인 시 Y로 승인 상태 변경 - 석연
+	public int updateCancelOk(String cancelCode);
 
 }

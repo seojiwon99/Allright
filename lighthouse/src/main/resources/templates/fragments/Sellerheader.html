@@ -1,0 +1,327 @@
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org">
+<!--headerFragment 선언-->
+
+<div th:fragment="headerFragment">
+	<!-- Search -->
+	<div class="offcanvas offcanvas-end" id="modalSearch" tabindex="-1"
+		role="dialog" aria-hidden="true">
+		<!-- Close -->
+		<button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+			aria-label="Close">
+			<i class="fe fe-x" aria-hidden="true"></i>
+		</button>
+
+		<!-- Header-->
+		<div class="offcanvas-header lh-fixed fs-lg">
+			<strong class="mx-auto">Search Products</strong>
+		</div>
+
+		<!-- Body: Form 여기 우리 카테고리  넣어함-->
+		<div class="offcanvas-body">
+			<form>
+				<div class="form-group">
+					<label class="visually-hidden" for="modalSearchCategories">Categories:</label>
+					<select class="form-select" id="modalSearchCategories">
+						<option selected>All Categories</option>
+						<option>Women</option>
+						<option>Men</option>
+						<option>Kids</option>
+					</select>
+				</div>
+				<div class="input-group input-group-merge">
+					<input class="form-control" type="search" placeholder="Search" />
+					<div class="input-group-append">
+						<button class="btn btn-outline-border" type="submit">
+							<i class="fe fe-search"></i>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<!-- Body: Results (add `.d-none` to disable it) -->
+		<div class="offcanvas-body border-top fs-sm">
+			<!-- Heading -->
+			<p>Search Results:</p>
+
+			<!-- Items -->
+			<div class="row align-items-center position-relative mb-5">
+				<div class="col-4 col-md-3">
+					<!-- Image -->
+					<img class="img-fluid" src="./assets/img/products/product-5.jpg"
+						alt="..." />
+				</div>
+				<div class="col position-static">
+					<!-- Text -->
+					<p class="mb-0 fw-bold">
+						<a class="stretched-link text-body" href="./product.html">Leather
+							mid-heel Sandals</a> <br /> <span class="text-muted">$129.00</span>
+					</p>
+				</div>
+			</div>
+			<div class="row align-items-center position-relative mb-5">
+				<div class="col-4 col-md-3">
+					<!-- Image -->
+					<img class="img-fluid" src="./assets/img/products/product-6.jpg"
+						alt="..." />
+				</div>
+				<div class="col position-static">
+					<!-- Text -->
+					<p class="mb-0 fw-bold">
+						<a class="stretched-link text-body" href="./product.html">Cotton
+							floral print Dress</a> <br /> <span class="text-muted">$40.00</span>
+					</p>
+				</div>
+			</div>
+			<div class="row align-items-center position-relative mb-5">
+				<div class="col-4 col-md-3">
+					<!-- Image -->
+					<img class="img-fluid" src="./assets/img/products/product-7.jpg"
+						alt="..." />
+				</div>
+				<div class="col position-static">
+					<!-- Text -->
+					<p class="mb-0 fw-bold">
+						<a class="stretched-link text-body" href="./product.html">Leather
+							Sneakers</a> <br /> <span class="text-primary">$85.00</span>
+					</p>
+				</div>
+			</div>
+			<div class="row align-items-center position-relative mb-5">
+				<div class="col-4 col-md-3">
+					<!-- Image -->
+					<img class="img-fluid" src="./assets/img/products/product-8.jpg"
+						alt="..." />
+				</div>
+				<div class="col position-static">
+					<!-- Text -->
+					<p class="mb-0 fw-bold">
+						<a class="stretched-link text-body" href="./product.html">Cropped
+							cotton Top</a> <br /> <span class="text-muted">$29.00</span>
+					</p>
+				</div>
+			</div>
+			<div class="row align-items-center position-relative mb-5">
+				<div class="col-4 col-md-3">
+					<!-- Image -->
+					<img class="img-fluid" src="./assets/img/products/product-9.jpg"
+						alt="..." />
+				</div>
+				<div class="col position-static">
+					<!-- Text -->
+					<p class="mb-0 fw-bold">
+						<a class="stretched-link text-body" href="./product.html">Floral
+							print midi Dress</a> <br /> <span class="text-muted">$50.00</span>
+					</p>
+				</div>
+			</div>
+
+			<!-- Button -->
+			<a class="btn btn-link px-0 text-reset" href="./shop.html"> View
+				All <i class="fe fe-arrow-right ms-2"></i>
+			</a>
+		</div>
+
+		<!-- Body: Empty (remove `.d-none` to enable it) -->
+		<div class="offcanvas-body d-none">
+			<!-- Text -->
+			<p class="mb-3 fs-sm text-center">Nothing matches your search</p>
+
+			<!-- Smiley -->
+			<p class="mb-0 fs-sm text-center">😞</p>
+		</div>
+		<!--  검색 div--------------- -->
+	</div>
+
+	<!-- NAVBAR -->
+	<div
+		class="navbar navbar-topbar navbar-expand-xl navbar-light bg-light">
+		<div class="container">
+
+			<!-- Promo -->
+			<div class="me-xl-8">
+				<i class="fe fe-truck me-2"></i> <span class="heading-xxxs">Free
+					shipping worldwide</span>
+			</div>
+
+			<!-- Toggler -->
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#topbarCollapse"
+				aria-controls="topbarCollapse" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<!-- Collapse -->
+			<div class="collapse navbar-collapse" id="topbarCollapse">
+
+				<!-- Nav -->
+				<ul class="nav nav-divided navbar-nav me-auto">
+
+				</ul>
+
+				<!-- Nav -->
+				<ul class="nav navbar-nav me-8">
+					<li class="nav-item"><a class="nav-link"
+						th:if="${session.loginMember} != null" href="/" th:text="로그아웃" onclick="logoutMember()"></a></li>
+					
+					<li class="nav-item"><a class="nav-link"
+						th:href="${session.loginMember} == null ? @{/page/member/loginForm} : '#'" th:text="${session.loginMember} != null ? ${session.loginMember.memberId} : '로그인' ">Shipping</a></li>
+				
+					<li class="nav-item dropdown hovered">
+						<!-- Toggle --> <a class="nav-link" data-bs-toggle="dropdown"
+						href="#" aria-expanded="false">고객센터</a> <!-- Menu -->
+						<div class="dropdown-menu">
+							<div class="card card-lg">
+								<div class="card-body">
+									<ul class="list-styled fs-sm">
+										<li class="list-styled-item"><a class="list-styled-link"
+											href="/custom/faqList">FAQ</a></li>
+										<li class="list-styled-item"><a class="list-styled-link"
+											href="/custom/notice">공지사항</a></li>
+										<li class="list-styled-item"><a class="list-styled-link" id="customInq"
+											href="#">1:1문의</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+					</li>
+				</ul>
+
+				<!-- Nav -->
+				<ul class="nav navbar-nav flex-row">
+					<li class="nav-item"><a class="nav-link text-gray-350"
+						href="#!"> <i class="fab fa-facebook-f"></i>
+					</a></li>
+					<li class="nav-item ms-xl-n4"><a
+						class="nav-link text-gray-350" href="#!"> <i
+							class="fab fa-twitter"></i>
+					</a></li>
+					<li class="nav-item ms-xl-n4"><a
+						class="nav-link text-gray-350" href="#!"> <i
+							class="fab fa-instagram"></i>
+					</a></li>
+					<li class="nav-item ms-xl-n4"><a
+						class="nav-link text-gray-350" href="#!"> <i
+							class="fab fa-medium"></i>
+					</a></li>
+				</ul>
+
+			</div>
+		</div>
+	</div>
+	<!-- NAVBAR -->
+	<nav class="navbar navbar-expand-xl navbar-light">
+		<div class="container">
+			<!-- Toggler -->
+			
+				
+				
+				
+						<div class="col-3">
+				
+						<!-- 판매순위, 신상 -->
+						<!-- Brand -->
+						<a class="navbar-brand mx-auto d-none d-xl-block" href="/" style="text-align:center"> All
+							Right </a>
+						</div>
+			
+		</div> <!-- nav container close -->
+	</nav><!--  nav close -->
+	<script th:inline="javascript">
+		$('#customInq').on('click', function (e) {
+			let member = [[${session.loginMember}]];
+			if (member == null) {
+				alert("로그인 하셔야 서비스를 이용하실 수 있습니다.");
+				location.href="page/member/loginForm";
+				return;
+			}else{
+				location.href="/custom/inquiry";
+
+			}
+		})
+	
+
+		$('#cartId').on('click', function (e) {
+			let member = [[${session.loginMember}]];
+			if (member == null) {
+				alert("로그인 하셔야 서비스를 이용하실 수 있습니다.");
+				location.href="page/member/loginForm";
+				return;
+			}else{
+				location.href="/cart/cartView";
+			}
+		})
+
+		$('.category').on('click',function(e){
+			let parentCode = $(this).data('value');
+			console.log(parentCode);
+			
+			$.ajax({
+				url:'childCateList',
+				type:'post',
+				data : JSON.stringify({
+					categoryCode : parentCode
+				}),	
+		        contentType:'application/json',
+				success:function(result){
+					console.log(result);
+					$('.cate').empty();
+					let box ='';
+					if(parentCode == 'Fassion'){
+						box = 'cate0';
+					}else if(parentCode == 'FOOD'){
+						box = 'cate1';
+					}else{
+						box = 'cate2';
+					}
+					
+					
+					$(result).each(function(idx,item){
+						if(item.categoryLevel == 2){
+							let result01 = item.categoryCode;
+							let map = $($("#template").html()).clone();
+							map.find('.cate-name').text(item.categoryName);
+							$(result).each(function(idx, list){
+								if(result01 == list.parentCategoryCode){
+									console.log(result);
+									// <li class="list-styled-item">
+									// <a class="list-styled-link" href="./shop.html">All Bottoms</a>
+									// </li>
+									let liTag = $('<li />').attr("class","list-styled-item");;
+									let aTag = $('<a/>').attr("class","list-styled-link").text(list.categoryName);
+									liTag.append(aTag);
+									map.find('.child-cate').append(liTag);
+								}
+							})
+							
+							$('#'+box).append(map);
+						
+						}
+					})
+				
+
+
+
+				},
+				error: function(err){
+					console.log(err);
+				}
+			})
+		})
+		
+		function logoutMember(e){
+			console.log(e);
+			let memberId = [[${session.loginMember}]]
+			console.log(memberId);
+			window.localStorage.clear();
+			$.ajax({
+				url : '/logout',
+				type : 'POST'
+			})
+		}
+	</script>
+    <script th:src="@{/js/theme.bundle.js}"></script>
+</div>
+</html>

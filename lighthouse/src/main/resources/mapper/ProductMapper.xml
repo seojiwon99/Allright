@@ -50,39 +50,39 @@
       <result column="product_cost" property="productCost" />
       <result column="sale_price" property="salePrice" />
       <collection property="option" resultMap="optionSelectList" />
-   </resultMap>
-   <resultMap type="OptionDetailVO" id="optionSelectList">
-      <result column="option_count" property="optionCount" />
-      <result column="option_price" property="optionPrice" />
+	</resultMap>
 
-   </resultMap>
-   <select id="selectOptionProduct" resultMap="selectOptionProduct">
-      SELECT *
-      FROM
-              ar_products p
-      INNER JOIN ( SELECT product_code,
-                    SUM(option_count) AS
-                    option_count
-                    FROM ar_option_detail
-                    GROUP BY product_code
-                    ) d
-      ON p.product_code = d.product_code
-      WHERE p.member_id = #{memberId}
-      <choose>
-         <when test="optionVal == '상품명순'">
-            ORDER BY product_name
-         </when>
-         <when test="optionVal == '상품등록일순'">
-            ORDER BY product_regdate
-         </when>
-         <when test="optionVal == '전시중'">
-            AND product_exstatus = 'Y'
-         </when>
-         <when test="optionVal == '전시중지'">
-            AND product_exstatus = 'N'
-         </when>
-      </choose>
-   </select>
+	<resultMap type="OptionDetailVO" id="optionSelectList">
+	   <result column="option_count" property="optionCount" />
+	   <result column="option_price" property="optionPrice" />
+	</resultMap>
+  <select id="selectOptionProduct" resultMap="selectOptionProduct">
+   SELECT *
+   FROM ar_products p
+   INNER JOIN (
+      SELECT product_code, SUM(option_count) AS option_count
+      FROM ar_option_detail
+      GROUP BY product_code
+   ) d ON p.product_code = d.product_code
+   WHERE p.member_id = #{memberId}
+   <choose>
+      <when test="optionVal == '상품명순'">
+         ORDER BY product_name
+      </when>
+      <when test="optionVal == '상품등록일순'">
+         ORDER BY product_regdate
+      </when>
+      <when test="optionVal == '전시중'">
+         AND product_exstatus = 'Y'
+      </when>
+      <when test="optionVal == '전시중지'">
+         AND product_exstatus = 'N'
+      </when>
+      <otherwise>
+         ORDER BY product_name
+      </otherwise>
+   </choose>
+</select>
 
 
    <!-- 주문목록 -->
@@ -244,6 +244,13 @@
       update ar_cancel
       set cancel_status = 'N'
       WHERE cancel_code = #{cancelCode}
+   </update>
+   
+   <!-- 석연 : 취소 승인 시 Y로 변경 -->
+   <update id="updateCancelOk">
+	  update ar_cancel
+      set cancel_status = 'Y'  
+      WHERE cancel_code = #{cancelCode}    
    </update>
    
    <!-- 취소검색목록 -->
@@ -484,14 +491,11 @@
    </resultMap>
    <select id="selectCalList" resultMap="selectCalList">
       select p.product_name
-      ,
-      o.order_detail_code
+      , o.order_detail_code
       , o.payment_price
-      , o.payment_price * (c.fee * 0.01)
-      myPrice
-      , o.payment_price * (1 - (c.fee * 0.01)) yourPrice
-      ,
-      c.settlement_date
+      , o.payment_price * (c.fee * 0.01) AS myPrice
+      , o.payment_price * (1 - (c.fee * 0.01)) AS yourPrice
+      , c.settlement_date
       , c.complet_date
       , m.member_name
       FROM ar_calculate c
@@ -556,10 +560,10 @@
 				, COALESCE(o.option_detail_code,0) as option_detail_code
 				, (p.sale_price + o.option_price) AS sale_price
 				, COALESCE(sum(od.order_cnt),0) as order_cnt
-				, COALESCE(return_cnt(o.option_detail_code),0) AS return_cnt
-				, COALESCE(cancel_cnt(o.option_detail_code),0) AS cancel_cnt
-				, NVL((sum(od.order_cnt)- COALESCE(return_cnt(o.option_detail_code),0)-
-				COALESCE(cancel_cnt(o.option_detail_code),0))*NVL((p.sale_price + o.option_price),0) ,0) AS total_price
+				, COALESCE(SUM(return_cnt(od.order_detail_code)),0) AS return_cnt
+				, COALESCE(SUM(cancel_cnt(od.order_detail_code)),0) AS cancel_cnt
+				, NVL((sum(od.order_cnt)- COALESCE(SUM(return_cnt(od.order_detail_code)),0)-
+				COALESCE(SUM(cancel_cnt(od.order_detail_code)),0))*NVL((p.sale_price + o.option_price),0) ,0) AS total_price
 		from ar_products p
 		LEFT OUTER JOIN ar_option_detail o
 						ON p.product_code = o.product_code
@@ -574,6 +578,31 @@
 				o.option_price, p.product_code
 		ORDER BY option_detail_code
 	</select>
+
+<!-- 월별 주문건수 -->
+<select id="selectMonthlyCount" resultType="DetailVO">
+SELECT
+    EXTRACT(MONTH FROM order_date) AS month,
+    SUM(order_cnt) AS total_order_count,
+    COALESCE(SUM(return_cnt), 0) AS return_cnt,
+    COALESCE(SUM(cancel_cnt), 0) AS cancel_cnt,
+    SUM(total_sales_amount) AS total_price
+FROM (
+    SELECT
+        order_date,
+        order_cnt,
+        COALESCE(return_cnt(od.order_detail_code), 0) AS return_cnt,
+        COALESCE(cancel_cnt(od.order_detail_code), 0) AS cancel_cnt,
+        (order_cnt - COALESCE(return_cnt(od.order_detail_code), 0) - COALESCE(cancel_cnt(od.order_detail_code), 0)) * (p.sale_price + o.option_price) AS total_sales_amount
+    FROM ar_order_detail od
+    JOIN ar_option_detail o ON o.option_detail_code = od.option_detail_code
+    JOIN ar_products p ON p.product_code = o.product_code
+    WHERE EXTRACT(YEAR FROM order_date) = #{year}
+    AND p.member_id = 'hky03017'
+) subquery
+GROUP BY EXTRACT(MONTH FROM order_date)
+ORDER BY EXTRACT(MONTH FROM order_date)
+</select>
 
 
    <!-- 삭제 -->

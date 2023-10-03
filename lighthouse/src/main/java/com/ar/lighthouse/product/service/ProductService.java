@@ -72,9 +72,8 @@ public interface ProductService {
 //	취소건 목록
 	List<DetailVO> getStaticList(String memberId);
 	
-//	취소거부
-	int updateCancelList(CancelVO cancelVO);
-	
+//	월별 주문 건수
+	List<DetailVO> getMonthlyCount(DetailVO detailVO);
 	
 	//  옵션 VO 리스트
 	public List<OptionVO> getOptionList(OptionVO optionVO);
@@ -84,4 +83,7 @@ public interface ProductService {
 	
 	// 택배사 코드 가져오기
 	List<CodeVO> getDeliveryList();
+	
+	//취소 승인 시 승인 여부 Y로 변경 - 석연
+	public int editCancelOk(String cancelCode);
 }
