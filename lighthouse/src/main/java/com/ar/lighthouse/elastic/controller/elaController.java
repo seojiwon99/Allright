@@ -273,7 +273,7 @@ public class elaController {
 			model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		}
 		/*
-		 * 
+		 *as 
 		 * 
 		 * New = Regdate가 최근순
 		 * 
