@@ -30,8 +30,8 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	
 	
 	@Override
-	public List<DetailVO> getDetailList(String memberId) {
-		return buyerPageMapper.selectDetailList(memberId);
+	public List<DetailVO> getDetailList(String memberId, Criteria cri) {
+		return buyerPageMapper.selectDetailList(memberId, cri);
 	}
 
 
@@ -54,20 +54,20 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 
 
 	@Override
-	public List<CouponVO> getCouponList(String memberId) {
-		return buyerPageMapper.selectCouponList(memberId);
+	public List<CouponVO> getCouponList(String memberId, Criteria cri) {
+		return buyerPageMapper.selectCouponList(memberId, cri);
 	}
 
 
 	@Override
-	public List<MyInquiryVO> getMyQuiryList(String memberId) {
-		return buyerPageMapper.selectMyInquiryList(memberId);
+	public List<MyInquiryVO> getMyQuiryList(String memberId, Criteria cri) {
+		return buyerPageMapper.selectMyInquiryList(memberId, cri);
 	}
 
 
 	@Override
-	public List<WishVO> getWishList(String memberId) {
-		return buyerPageMapper.selectWishList(memberId);
+	public List<WishVO> getWishList(String memberId, Criteria cri) {
+		return buyerPageMapper.selectWishList(memberId, cri);
 	}
 
 
@@ -177,6 +177,24 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	@Override
 	public List<DetailVO> getOptionList(DetailVO detailVO) {
 		return buyerPageMapper.selectOptionList(detailVO);
+	}
+
+
+	@Override
+	public int getCouponCnt(Criteria cri) {
+		return buyerPageMapper.getCouponCnt(cri);
+	}
+
+
+	@Override
+	public int getInqCnt(Criteria cri) {
+		return buyerPageMapper.getInqCnt(cri);
+	}
+
+
+	@Override
+	public int getDetailCnt(Criteria cri) {
+		return buyerPageMapper.selectDetailCnt(cri);
 	}
 
 

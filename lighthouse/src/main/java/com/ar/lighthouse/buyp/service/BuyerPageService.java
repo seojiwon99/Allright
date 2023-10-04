@@ -8,7 +8,10 @@ import com.ar.lighthouse.common.Criteria;
 public interface BuyerPageService {
 
 	// 주문 목록 가져오기
-	public List<DetailVO> getDetailList(String memberId);
+	public List<DetailVO> getDetailList(String memberId, Criteria cri);
+	
+	// 주문 갯수 가져오기 (페이징)
+	public int getDetailCnt(Criteria cri);
 
 	// 개인 정보 가져오기
 	public BuyInfoVO getInfo(String memberId);
@@ -17,16 +20,16 @@ public interface BuyerPageService {
 	public List<TradeVO> getTradeList(String memberId);
 
 	// 쿠폰 내역
-	public List<CouponVO> getCouponList(String memberId);
+	public List<CouponVO> getCouponList(String memberId, Criteria cri);
 
 	// 개인 정보 수정
 	public int editInfo(BuyInfoVO buyInfoVO);
 
 	// 문의 내역
-	public List<MyInquiryVO> getMyQuiryList(String memberId);
+	public List<MyInquiryVO> getMyQuiryList(String memberId, Criteria cri);
 
 	// 찜 내역
-	public List<WishVO> getWishList(String memberId);
+	public List<WishVO> getWishList(String memberId, Criteria cri);
 
 	// 취소 상세
 	public List<BuyCancelVO> getCancelList(String memberId);
@@ -81,4 +84,11 @@ public interface BuyerPageService {
 	
 	//주문 목록 option 선택
 	public List<DetailVO> getOptionList(DetailVO detailVO);
+	
+	//쿠폰 전체 갯수
+	public int getCouponCnt(Criteria cri);
+	
+	//문의 전체 갯수
+	public int getInqCnt(Criteria cri);
+	
 }
