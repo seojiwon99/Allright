@@ -155,7 +155,7 @@ function base64ToBlob(base64, fileType) {
 				let searchBars = document.querySelectorAll('input[type="search"]');
 				searchBars[1].focus();;
 			}
-			if(e.altKey && e.key == 6){ // 메인 페이지로 가기
+			if(e.altKey && e.key == 9){ // 메인 페이지로 가기
 				location.href = "/";
 			}
 			if(e.altKey && e.key == 7){ // 카테고리 페이지로 이동
@@ -169,7 +169,7 @@ function base64ToBlob(base64, fileType) {
 			if(e.altKey && e.key == 8){
 				location.href = "/"; // 장바구니로 이동
 			}
-			if(e.altKey && e.key == 9){ // 마이크로 입력하기
+			if(e.altKey && e.key == 6){ // 마이크로 입력하기
 				console.log(9);
 				let activeInput = document.activeElement
 				if(activeInput.tagName=='INPUT'){

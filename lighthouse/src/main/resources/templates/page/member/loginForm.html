@@ -224,201 +224,214 @@
 	</script>
 	
 	<script>
-	let audioFileNow = new Audio();
-	var AudioContext;
-	var audioContext;
-
-	window.onload = function() {
-	    navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
-	        AudioContext = window.AudioContext || window.webkitAudioContext;
-	        audioContext = new AudioContext();
-	    }).catch(e => {
-	        console.error(`Audio permissions denied: ${e}`);
-	    });
+    let TTSIsOk = localStorage.getItem('ttsKey');
+    let sessionAuthor;
+	console.log(sessionStorage.loginMember);    		
+	if(sessionStorage.loginMember != null){
+		sessionAuthor = sessionStorage.loginMember.memberAuthor;
 	}
-	// 먼저 읽히는것 
-	$(document).ready(function() {
-			let firstMsg = "로그인 페이지입니다. Tab키를 눌러 아이디 입력란으로 이동하실 수 있고, 메뉴얼을 들으신 후 alt키와 해당 메뉴얼의 번호를 눌러주세요.";
-			let menual = 
-				"1번 아이디 입력란 듣기."
-			+ "2번 아이디 찾기 페이지로 이동."
-			+ "3번 비밀번호 찾기 페이지로 이동."
-			+ "4번 메인 홈페이지로 이동."
-			+ "5번 회원가입 페이지로 이동."
-			+ "0번 메뉴얼 다시듣기.";
-			let message =  firstMsg + menual;
-	    	VoiceMenual(message);
-	});
-
-	
-	window.addEventListener("keydown", function(e){ 
-		if(e.key == 'Enter'){ // 엔터키로 중복확인
-			let focusNow = $(':focus')[0];
-			if(focusNow.id == 'loginBtn'){
-				e.preventDefault();
-				let id = $('#loginId').val();
-				let pw = $('#loginPassword').val();
-				MemberLoginWithTTS(id,pw,1)
-				
-			}
-		}
-				
-				
-				
-		if(e.altKey && e.key == 1){ //아이디 입력란 다시 듣기
-			let idVal = $('#loginId').val();
-			if(idVal == ""){
-				VoiceMenual("아이디 입력란이 비어있습니다.")
-			}else{
-				let cutMsg = '';
-				let tmpAry = idVal.split('');
-				for(let one of tmpAry){
-					cutMsg = cutMsg + one + ' '
-				}
-				VoiceMenual(cutMsg);
-			}
-		}		
-		if(e.altKey && e.key == 2){ //아이디 찾기 페이지로 이동
-			location.href="/page/member/findMember";
-		}
-		if(e.altKey && e.key == 3){ //비밀번호 찾기 페이지로 이동
-			location.href="/page/member/findPassword";
-		}
-		if(e.altKey && e.key == 4){ // 메인 홈페이지로 이동
-			location.href="/";
-		}
-		if(e.altKey && e.key == 5){ // 회원가입 페이지로 이동
-			location.href="/page/member/joinBuyerForm";
-		}
-		if(e.altKey && e.key == 0){ //메뉴얼 다시듣기
-			let menual = 
-				"1번 아이디 입력란 듣기."
-			+ "2번 아이디 찾기 페이지로 이동."
-			+ "3번 비밀번호 찾기 페이지로 이동."
-			+ "4번 메인 홈페이지로 이동."
-			+ "5번 회원가입 페이지로 이동."
-			+ "0번 메뉴얼 다시듣기.";
-			VoiceMenual(menual);
-		}
-		
-		
-	}) // keydown 이벤트
-	
-	$('#loginId').on('focus', function(){
-	let msg = '아이디 입력란.'
-	VoiceMenual(msg);
-	})
-	$('#loginPassword').on('focus',function(){
-		let msg = '비밀번호 입력란.'
-		VoiceMenual(msg);
-	})
-	$('#loginBtn').on('focus',function(){
-		let msg = '로그인 버튼입니다. 엔터키를 눌러 로그인할 수 있습니다.'
-		VoiceMenual(msg);
-	})
-	$('#fMember').on('focus',function(){
-		let msg = '아이디찾기 링크입니다.'
-		VoiceMenual(msg);
-	})
-	$('#fPassword').on('focus',function(){
-		let msg = '비밀번호찾기 링크입니다.'
-		VoiceMenual(msg);
-	})
-	
-	function MemberLoginWithTTS(id,pw,memberAuthor){
-		
-		let obj = {
-			'memberId' : id,
-			'memberPw' : pw,
-			'memberAuthor' : memberAuthor
-		};
-		$.ajax({
-			url : '/page/member/login',
-			type : 'POST',
-			data : JSON.stringify(obj),
-			contentType : 'application/json',
-			success : function(rs){
-				console.log(rs);
-				if(rs == "success"){
-					location.href="/"
-				}else if(rs == "fail"){
-					VoiceMenual("아이디 혹은 비밀번호가 잘못되었습니다.")
-				}
-			},
-			error : function(err){
-				console.log(err)
-			}
+	    
+   	function ttsInit(){
+    	if(TTSIsOk == null || sessionAuthor == 3){
+    		
+    		
+				let audioFileNow = new Audio();
+				var AudioContext;
+				var audioContext;
 			
-		})
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	function VoiceMenual(message) {
-	    var data = {
-	        "voice" : {
-	            "languageCode" : "ko-KR",
-	            "name" : "ko-KR-Neural2-B"
-	        },
-	        "input" : {
-	            "text" : message
-	        },
-	        "audioConfig" : {
-	            "audioEncoding" : "mp3"
-	        }
-	    }
-	    console.log(data);
-	    $.ajax({
-	        type : 'POST',
-	        url : 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
-	        data : JSON.stringify(data),
-	        dataType : 'JSON',
-	        contentType : "application/json; charset=UTF-8",
-	        success : function(res) {
-	            $('#menuText').val(res.audioContent)
-	            var audioFile = new Audio();
-	            let audioBlob = base64ToBlob(res.audioContent,
-	                    "mp3");
-	            audioFile.src = window.URL
-	                    .createObjectURL(audioBlob);
-	            audioFile.playbackRate = 2; //재생속도
-	            if(audioFileNow.paused == false){
-	            	audioFileNow.pause();
-	            }
-	    		audioFileNow = audioFile;
-	            audioFileNow.play();
-	        
-	        },
-	        error : function(request, status, error) {
-	            alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
-	        }
-	    });
-	};
-	function base64ToBlob(base64, fileType) {
-	    let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
-	    let audioSrc = typeHeader + base64;
-	    let arr = audioSrc.split(",");
-	    let array = arr[0].match(/:(.*?);/);
-	    let mime = (array && array.length > 1 ? array[1] : type) || type;
-	    // url헤더 제거하고 btye로 변환
-	    let bytes = window.atob(arr[1]);
-	    // 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
-	    let ab = new ArrayBuffer(bytes.length);
-	    // 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
-	    let ia = new Uint8Array(ab);
-	    for (let i = 0; i < bytes.length; i++) {
-	        ia[i] = bytes.charCodeAt(i);
-	    }
-	    return new Blob([ ab ], {
-	        type : mime
-	    });
-	}
+				window.onload = function() {
+				    navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
+				        AudioContext = window.AudioContext || window.webkitAudioContext;
+				        audioContext = new AudioContext();
+				    }).catch(e => {
+				        console.error(`Audio permissions denied: ${e}`);
+				    });
+				}
+				// 먼저 읽히는것 
+				$(document).ready(function() {
+						let firstMsg = "로그인 페이지입니다. Tab키를 눌러 아이디 입력란으로 이동하실 수 있고, 메뉴얼을 들으신 후 alt키와 해당 메뉴얼의 번호를 눌러주세요.";
+						let menual = 
+							"1번 아이디 입력란 듣기."
+						+ "2번 아이디 찾기 페이지로 이동."
+						+ "3번 비밀번호 찾기 페이지로 이동."
+						+ "4번 회원가입 페이지로 이동."
+						+ "9번 메인 홈페이지로 이동."
+						+ "0번 메뉴얼 다시듣기.";
+						let message =  firstMsg + menual;
+				    	VoiceMenual(message);
+				});
+			
+				
+				window.addEventListener("keydown", function(e){ 
+					if(e.key == 'Enter'){ // 엔터키로 중복확인
+						let focusNow = $(':focus')[0];
+						if(focusNow.id == 'loginBtn'){
+							e.preventDefault();
+							let id = $('#loginId').val();
+							let pw = $('#loginPassword').val();
+							MemberLoginWithTTS(id,pw,1)
+							
+						}
+					}
+							
+							
+							
+					if(e.altKey && e.key == 1){ //아이디 입력란 다시 듣기
+						let idVal = $('#loginId').val();
+						if(idVal == ""){
+							VoiceMenual("아이디 입력란이 비어있습니다.")
+						}else{
+							let cutMsg = '';
+							let tmpAry = idVal.split('');
+							for(let one of tmpAry){
+								cutMsg = cutMsg + one + ' '
+							}
+							VoiceMenual(cutMsg);
+						}
+					}		
+					if(e.altKey && e.key == 2){ //아이디 찾기 페이지로 이동
+						location.href="/page/member/findMember";
+					}
+					if(e.altKey && e.key == 3){ //비밀번호 찾기 페이지로 이동
+						location.href="/page/member/findPassword";
+					}
+					if(e.altKey && e.key == 9){ // 메인 홈페이지로 이동
+						location.href="/";
+					}
+					if(e.altKey && e.key == 4){ // 회원가입 페이지로 이동
+						location.href="/page/member/joinBuyerForm";
+					}
+					if(e.altKey && e.key == 0){ //메뉴얼 다시듣기
+						let menual = 
+							"1번 아이디 입력란 듣기."
+						+ "2번 아이디 찾기 페이지로 이동."
+						+ "3번 비밀번호 찾기 페이지로 이동."
+						+ "4번 회원가입 페이지로 이동."
+						+ "9번 메인 홈페이지로 이동."
+						+ "0번 메뉴얼 다시듣기.";
+						VoiceMenual(menual);
+					}
+					
+					
+				}) // keydown 이벤트
+				
+				$('#loginId').on('focus', function(){
+				let msg = '아이디 입력란.'
+				VoiceMenual(msg);
+				})
+				$('#loginPassword').on('focus',function(){
+					let msg = '비밀번호 입력란.'
+					VoiceMenual(msg);
+				})
+				$('#loginBtn').on('focus',function(){
+					let msg = '로그인 버튼입니다. 엔터키를 눌러 로그인할 수 있습니다.'
+					VoiceMenual(msg);
+				})
+				$('#fMember').on('focus',function(){
+					let msg = '아이디찾기 링크입니다.'
+					VoiceMenual(msg);
+				})
+				$('#fPassword').on('focus',function(){
+					let msg = '비밀번호찾기 링크입니다.'
+					VoiceMenual(msg);
+				})
+				
+				function MemberLoginWithTTS(id,pw,memberAuthor){
+					
+					let obj = {
+						'memberId' : id,
+						'memberPw' : pw,
+						'memberAuthor' : memberAuthor
+					};
+					$.ajax({
+						url : '/page/member/login',
+						type : 'POST',
+						data : JSON.stringify(obj),
+						contentType : 'application/json',
+						success : function(rs){
+							console.log(rs);
+							if(rs == "success"){
+								location.href="/"
+							}else if(rs == "fail"){
+								VoiceMenual("아이디 혹은 비밀번호가 잘못되었습니다.")
+							}
+						},
+						error : function(err){
+							console.log(err)
+						}
+						
+					})
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				function VoiceMenual(message) {
+				    var data = {
+				        "voice" : {
+				            "languageCode" : "ko-KR",
+				            "name" : "ko-KR-Neural2-B"
+				        },
+				        "input" : {
+				            "text" : message
+				        },
+				        "audioConfig" : {
+				            "audioEncoding" : "mp3"
+				        }
+				    }
+				    console.log(data);
+				    $.ajax({
+				        type : 'POST',
+				        url : 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
+				        data : JSON.stringify(data),
+				        dataType : 'JSON',
+				        contentType : "application/json; charset=UTF-8",
+				        success : function(res) {
+				            $('#menuText').val(res.audioContent)
+				            var audioFile = new Audio();
+				            let audioBlob = base64ToBlob(res.audioContent,
+				                    "mp3");
+				            audioFile.src = window.URL
+				                    .createObjectURL(audioBlob);
+				            audioFile.playbackRate = 2; //재생속도
+				            if(audioFileNow.paused == false){
+				            	audioFileNow.pause();
+				            }
+				    		audioFileNow = audioFile;
+				            audioFileNow.play();
+				        
+				        },
+				        error : function(request, status, error) {
+				            alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
+				        }
+				    });
+				};
+				function base64ToBlob(base64, fileType) {
+				    let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
+				    let audioSrc = typeHeader + base64;
+				    let arr = audioSrc.split(",");
+				    let array = arr[0].match(/:(.*?);/);
+				    let mime = (array && array.length > 1 ? array[1] : type) || type;
+				    // url헤더 제거하고 btye로 변환
+				    let bytes = window.atob(arr[1]);
+				    // 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
+				    let ab = new ArrayBuffer(bytes.length);
+				    // 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
+				    let ia = new Uint8Array(ab);
+				    for (let i = 0; i < bytes.length; i++) {
+				        ia[i] = bytes.charCodeAt(i);
+				    }
+				    return new Blob([ ab ], {
+				        type : mime
+				    });
+				}
+    	}
+   	}
 	</script>
 
 </div>

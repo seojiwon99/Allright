@@ -72,6 +72,7 @@
 		                          Password 확인
 		                        </label>
 		                        <input class="form-control form-control-sm"  tabindex=3 id="pwChk" type="password" placeholder="Password 확인 *" required>
+		                        <label class="form-check-label fs-xxs" for="pwChk" id="pwLabel"></label>
 		                      </div>
 		                    </div>
 		                    
@@ -148,11 +149,20 @@
 		                      <!-- 중복확인 -->
 		                      <div class="form-group">
 		                        <!-- Button -->
-			                    <button class="form-control btn btn-sm btn-secondary" id="phChkChk" type="button">
+			                    <button class="form-control btn btn-sm btn-secondary" id="phChkBtn" type="button">
 			                        휴대폰 인증
 			                    </button>
 		                      </div>
 		                    </div>
+		                    <div class="col-12 col-md-8">
+		                    	<div class="form-group">
+			                        <label class="visually-hidden" for="ph">
+			                          인증번호 
+			                        </label>
+			                        <input class="form-control form-control-sm" tabindex=8 id="phChk" type="text" placeholder="휴대폰 인증번호 *" maxlength=6>
+		                      	</div>
+		                    </div>
+		                    
 		                    
 		                      <!-- 주소 -->
 		                    <div class="col-12 col-md-8">
@@ -229,18 +239,22 @@
 let checkBeforeInsert = {};
 let idTrue = "idTrue"
 let pwTrue = "pwTrue";
+let pwChkTrue = "pwChkTrue";
 let nameTrue = "nameTrue";
 let emailTrue = "emailTrue";
 let telTrue = "telTrue";
 let addrTrue = "addrTrue";
 let detailsAddrTrue = "detailsAddrTrue";
+let responseEmail = "-1";
 checkBeforeInsert[idTrue] = false;
 checkBeforeInsert[pwTrue] = false;
+checkBeforeInsert[pwChkTrue] = false;
 checkBeforeInsert[nameTrue] = false;
 checkBeforeInsert[emailTrue] = false;
-checkBeforeInsert[telTrue] = true
+checkBeforeInsert[telTrue] = false
 checkBeforeInsert[addrTrue] = false;
 checkBeforeInsert[detailsAddrTrue] = false;
+let telChkNum;
 
 console.log(checkBeforeInsert);
 
@@ -272,7 +286,14 @@ $('#joinBtn').on('click', function joinAjax(){
 		alert('이름을 올바르게 입력해주세요.')	
 		return false;
 	}
-	
+	if($('#ph').val() != ""){
+		if(telChkNum == $('#phChk').val()){
+			console.log('ok')
+		}else{
+			alert("휴대폰 인증을 완료해주세요.")
+			return false
+		}
+	}
 	if($('#addr').val() != ""){
 		checkBeforeInsert[addrTrue] = true;
 	}else{
@@ -288,6 +309,7 @@ $('#joinBtn').on('click', function joinAjax(){
 		alert('상세주소를 올바르게 입력해주세요.')	
 		return false;
 	}
+
 	
 	let memberVO = {
 		'memberId' : $('#id').val(),
@@ -324,13 +346,20 @@ $('#joinBtn').on('click', function joinAjax(){
 
 //ID 입력 한글방지
 function checkReg(event) {
-  const regIdExp = /[^0-9a-zA-Z]/g; // 숫자와 영문자만 허용
-//   const regExp = /[^ㄱ-ㅎ|가-힣]/g; // 한글만 허용
-  const del = event.target;
-  if (regIdExp.test(del.value)) {
-    del.value = del.value.replace(regIdExp, '');
-  }
-  checkBeforeInsert[idTrue] = false;
+	console.log(event.key)
+	if(event.key == 'Enter' || event.key == 'Tab'){
+		return false;	
+	}else{
+		
+	  checkBeforeInsert[idTrue] = false;
+	  
+	  const regIdExp = /[^0-9a-zA-Z]/g; // 숫자와 영문자만 허용
+	//   const regExp = /[^ㄱ-ㅎ|가-힣]/g; // 한글만 허용
+	  const del = event.target;
+	  if (regIdExp.test(del.value)) {
+	    del.value = del.value.replace(regIdExp, '');
+	  }
+	}
 };
 //이름 (한글, 영어만) ?? 띄어쓰기는 허용할 것인가
 function checkName(e){
@@ -452,6 +481,7 @@ $('#emailChkBtn').on('click', function(){
 		      },
 		      success : function(data){
 		         console.log("data : "+data);
+		         responseEmail = data;
 		         chkEmailConfirm(data, emailChk, mailConfirmLabel);
 		      }
 		   })
@@ -523,13 +553,14 @@ function sendSMS(){
 	let phoneNum = $('#ph').val();
 	phoneNum = phoneNum.replaceAll('-','');
 	$.ajax({
-		url : "member/send-one",
+		url : "/page/member/send-one",
 		type : "POST",
 		data : {
 			phone : phoneNum
 		},
 		success : function(rs){
 			console.log(rs);
+			telChkNum = rs;
 		},
 		error : function(err){
 			console.log(err);	
@@ -537,7 +568,6 @@ function sendSMS(){
 		
 	})	
 }
-
 //pw 유효성 체크
 /*
  * 문제점 1. id가 비어있을 경우 search = 0  따라서 아이디포함 에러
@@ -554,39 +584,55 @@ function chkPW(){
 	    let checkEnglish = pw.search(/[a-z]/ig);
 	 
 	    if(!/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/.test(pw)){            
-	        alert('숫자+영문자+특수문자 조합으로 8자리 이상 사용해야 합니다.');
+	    	 $('#pwLabel').text('숫자+영문자+특수문자 조합으로 8자리 이상 사용해야 합니다.');
+	    	 $('#pwLabel').css({
+					"color" : "#FA3E3E",
+					"font-weight" : "bold",
+					"font-size" : "10px"
+			})
 	        pwChkInput.focus();
+	        checkBeforeInsert[pwTrue] = false;
 	        return false;
 	    }else if(checkNumber <0 || checkEnglish <0){
-	        alert("숫자와 영문자를 혼용하여야 합니다.");
+	    	 $('#pwLabel').text("숫자와 영문자를 혼용하여야 합니다.");
+	    	 $('#pwLabel').css({
+					"color" : "#FA3E3E",
+					"font-weight" : "bold",
+					"font-size" : "10px"
+			})
 	        pwChkInput.focus();
+	        checkBeforeInsert[pwTrue] = false;
 	        return false;
 	    }else if(/(\w)\1\1\1/.test(pw)){
-	        alert('같은 문자를 4번 이상 사용하실 수 없습니다.');
+	        $('#pwLabel').text('같은 문자를 4번 이상 사용하실 수 없습니다.');
+	        		 $('#pwLabel').css({
+	 					"color" : "#FA3E3E",
+	 					"font-weight" : "bold",
+	 					"font-size" : "10px"
+	 			})
 	        pwChkInput.focus();
+	        checkBeforeInsert[pwTrue] = false;
 	        return false;
-	    }else if(id != ""){
-	    	if(pw.search(id) > -1){
-	 	    alert("비밀번호에 아이디가 포함되었습니다.");
-	 	    pwChkInput.focus();
-	 	    return false;
-	 	    }
-	    	
-	    } else {
-
-		console.log("통과");
+	    }
+		    checkBeforeInsert[pwTrue] = true;
+		    $('#pwLabel').text("통과");
+			 $('#pwLabel').css({
+				 "color" : "#0D6EFD",
+					"font-weight" : "bold",
+					"font-size" : "10px"
+			})
 		
-		}
+		
 
 }
 
 // 비밀번호 확인 입력 후 포커스 아웃 될 때 일치 and pw에 입력값이 있는지 체크
 $('#pwChk').on('focusout', function(){
 	if($('#pwChk').val() == $('#pw').val() && $('#pw').val() != ''){
-		checkBeforeInsert[pwTrue] = true;
+		checkBeforeInsert[pwChkTrue] = true;
 		console.log('일치');
 	}else{
-		checkBeforeInsert[pwTrue] = false;
+		checkBeforeInsert[pwChkTrue] = false;
 		console.log('불일치');
 	}
 });
@@ -628,296 +674,410 @@ function addrPopup(){
 
 </script>
 <!-- TTS and STT -->
-<th:block th:if="ttsCheck" id="thBlock">;
-	<script>
-		console.log('hi');
-	</script>
 
 <script>
-let audioFileNow = new Audio();
-var AudioContext;
-var audioContext;
-
-window.onload = function() {
-    navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
-        AudioContext = window.AudioContext || window.webkitAudioContext;
-        audioContext = new AudioContext();
-    }).catch(e => {
-        console.error(`Audio permissions denied: ${e}`);
-    });
+let TTSIsOk = localStorage.getItem('ttsKey');
+let sessionAuthor;
+console.log(sessionStorage.loginMember);    		
+if(sessionStorage.loginMember != null){
+	sessionAuthor = sessionStorage.loginMember.memberAuthor;
 }
-// 먼저 읽히는것 
-$(document).ready(function() {
-		let firstMsg = "회원가입 페이지입니다. 저희 All Right은 TTS를 통해 음성자료를 제공하고 있습니다. 원치 않으실 경우 아래 체크버튼을 해제해주세요.";
-		let secondMsg = "기본적으로 Tab키를 눌러 진행하실 수 있고 메뉴얼을 들으신 후 alt키와 해당 메뉴얼의 번호를 눌러주세요. "
-		let menual = 
-		 "1번 현재 입력란 다시 듣기."
-		+ "2번 입력 전체 다시 듣기."
-		+ "3번 현재 입력란에서 마이크 사용하기."
-		+ "4번 메인 홈페이지로 가기."
-		+ "0번 메뉴얼 다시듣기.";
-		let message =  firstMsg + secondMsg + menual;
-    	VoiceMenual(message);
-});
-
-window.addEventListener("keydown", function(e){ 
-	if(e.key == 'Enter'){ // 엔터키로 중복확인
-		let focusNow = $(':focus')[0];
-		if(focusNow.id == 'id'){ //엔터키를 누르는 곳이 id 일 때,
-				let checkValue = $('#id').val();
-				if(checkValue.length < 6){
-					VoiceMenual('아이디는 최소 6자 이상입니다.');
-					return false;
-				}
-				if(checkValue.search('admin')>-1){
-					VoiceMenual('사용할 수 없는 단어가 포함되어 있습니다.');
-					return;
-				}
-				$.ajax({
-					url : 'idCheck',
-					type : 'GET',
-					data : {
-						memberId : checkValue
-					},
-					success : function(rs){
-						if(rs > 0){
-							VoiceMenual('중복된 아이디 입니다.');
-						}else{
-							VoiceMenual('사용 가능한 아이디입니다.');
-							checkBeforeInsert[idTrue] = true;
+    
+	function ttsInit(){
+	if(TTSIsOk == null || sessionAuthor == 3){
+		
+		
+		let audioFileNow = new Audio();
+		var AudioContext;
+		var audioContext;
+		
+		window.onload = function() {
+		    navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
+		        AudioContext = window.AudioContext || window.webkitAudioContext;
+		        audioContext = new AudioContext();
+		    }).catch(e => {
+		        console.error(`Audio permissions denied: ${e}`);
+		    });
+		}
+		// 먼저 읽히는것 
+		$(document).ready(function() {
+				let firstMsg = "회원가입 페이지입니다. 저희 All Right은 TTS를 통해 음성자료를 제공하고 있습니다. 원치 않으실 경우 아래 체크버튼을 해제해주세요.";
+				let secondMsg = "기본적으로 Tab키를 눌러 진행하실 수 있고 메뉴얼을 들으신 후 alt키와 해당 메뉴얼의 번호를 눌러주세요. "
+				let menual = 
+				 "1번 현재 입력란 다시 듣기."
+				+ "2번 입력 전체 다시 듣기."
+				+ "3번 현재 입력란에서 마이크 사용하기."
+				+ "9번 메인 홈페이지로 이동."
+				+ "0번 메뉴얼 다시듣기.";
+				let message =  firstMsg + secondMsg + menual;
+		    	VoiceMenual(message);
+		});
+		
+		window.addEventListener("keydown", function(e){ 
+			if(e.key == 'Enter'){ // 엔터키로 중복확인
+				e.preventDefault();
+				let focusNow = $(':focus')[0];
+				console.log(focusNow);
+				if(focusNow.id == 'id'){ //엔터키를 누르는 곳이 id 일 때,
+						let checkValue = $('#id').val();
+						if(checkValue.length < 6){
+							VoiceMenual('아이디는 최소 6자 이상입니다.');
+							return false;
 						}
-					},
-				})
-		}/// id focus 중복확인 end
-		if(focusNow.id == 'email'){ //엔터키를 누르는 곳이 email 일 때,
-			let userEmail = $('#email').val()
-			let emailChk = $('#emailChk');
-			let mailConfirmLabel = $('#mailConfirmLabel');
-			VoiceMenual("해당 이메일로 인증번호 발송이 완료되었습니다. 메일 수신까지 최대 5분이 걸릴 수 있습니다. 확인부탁드립니다.")
-			   $.ajax({
-				      type : "POST",
-				      url : "login/mailConfirmJoin",
-				      data : {
-				         "email" : userEmail
-				      },
-				      success : function(data){
-				         console.log("data : "+data);
-				         chkEmailConfirm(data, emailChk, mailConfirmLabel);
-				      }
-				   })
-			
-		}
-		if(focusNow.id == 'ph'){
-			VoiceMenual("해당 번호로 인증번호 발송이 완료되었습니다. 문자 수신까지 최대 5분이 걸릴 수 있습니다. 확인부탁드립니다.")
-		}
-		if(focusNow.id == 'addr'){
-				let text = "주소 입력창이 나왔습니다. 주소를 입력해주세요. 이후 화면부터 저희가 TTS를 제공할 수 없기 때문에 스크린리더 사용을 권장드립니다."
-				VoiceMenual(text);
-			    new daum.Postcode({
-			    	onsearch: function(data){
-			    		let searchText = "입력되었습니다. 다음에서 선택해주세요."
-			    		VoiceMenual(searchText);
-			    	},
-			        oncomplete: function(data) {
-			            $('#addr').val(data.address);
-			          	$('#addrDt').focus();
-			        }/*,
-			        onclose: function(state) {
-			        //state는 우편번호 찾기 화면이 어떻게 닫혔는지에 대한 상태 변수 이며, 상세 설명은 아래 목록에서 확인하실 수 있습니다.
-				        if(state === 'FORCE_CLOSE'){
-				            //사용자가 브라우저 닫기 버튼을 통해 팝업창을 닫았을 경우, 실행될 코드를 작성하는 부분입니다.
-				        } else if(state === 'COMPLETE_CLOSE'){
-				            //사용자가 검색결과를 선택하여 팝업창이 닫혔을 경우, 실행될 코드를 작성하는 부분입니다.
-				            //oncomplete 콜백 함수가 실행 완료된 후에 실행됩니다.
-				        }
-			    	}*/
-			    }).open();
-			
-			
-			
-		}//if
-		
-		
-	}//enter
+						if(checkValue.search('admin')>-1){
+							VoiceMenual('사용할 수 없는 단어가 포함되어 있습니다.');
+							return;
+						}
+						$.ajax({
+							url : 'idCheck',
+							type : 'GET',
+							data : {
+								memberId : checkValue
+							},
+							success : function(rs){
+								if(rs > 0){
+									VoiceMenual('중복된 아이디 입니다.');
+								}else{
+									VoiceMenual('사용 가능한 아이디입니다.');
+									console.log(checkBeforeInsert[idTrue]);
+									checkBeforeInsert[idTrue] = true;
+									console.log(checkBeforeInsert[idTrue]);
+								}
+							},
+						})
+				}/// id focus 중복확인 end
+				if(focusNow.id == 'email'){ //엔터키를 누르는 곳이 email 일 때,
+					let userEmail = $('#email').val()
+					let emailChk = $('#emailChk');
+					let mailConfirmLabel = $('#mailConfirmLabel');
+					VoiceMenual("해당 이메일로 인증번호 발송이 완료되었습니다. 메일 수신까지 최대 5분이 걸릴 수 있습니다. 확인부탁드립니다.")
+					   $.ajax({
+						      type : "POST",
+						      url : "login/mailConfirmJoin",
+						      data : {
+						         "email" : userEmail
+						      },
+						      success : function(data){
+						         console.log("data : "+data);
+						         responseEmail = data;
+						         chkEmailConfirm(data, emailChk, mailConfirmLabel);
+						      }
+						   })
+					
+				}
+				if(focusNow.id == 'ph'){
+					VoiceMenual("해당 번호로 인증번호 발송이 완료되었습니다. 문자 수신까지 최대 5분이 걸릴 수 있습니다. 확인부탁드립니다.")
+					let phoneNum = $('#ph').val();
+					phoneNum = phoneNum.replaceAll('-','');
+					$.ajax({
+						url : "/page/member/send-one",
+						type : "POST",
+						data : {
+							phone : phoneNum
+						},
+						success : function(rs){
+							console.log(rs);
+							telChkNum = rs;
+						},
+						error : function(err){
+							console.log(err);	
+						}
+						
+					})	
+				}
+				if(focusNow.id == 'addr'){
+						let text = "주소 입력창이 나왔습니다. 주소를 입력해주세요. 이후 화면부터 저희가 TTS를 제공할 수 없기 때문에 스크린리더 사용을 권장드립니다."
+						VoiceMenual(text);
+					    new daum.Postcode({
+					    	onsearch: function(data){
+					    		let searchText = "입력되었습니다. 다음에서 선택해주세요."
+					    		VoiceMenual(searchText);
+					    	},
+					        oncomplete: function(data) {
+					            $('#addr').val(data.address);
+					          	$('#addrDt').focus();
+					        }/*,
+					        onclose: function(state) {
+					        //state는 우편번호 찾기 화면이 어떻게 닫혔는지에 대한 상태 변수 이며, 상세 설명은 아래 목록에서 확인하실 수 있습니다.
+						        if(state === 'FORCE_CLOSE'){
+						            //사용자가 브라우저 닫기 버튼을 통해 팝업창을 닫았을 경우, 실행될 코드를 작성하는 부분입니다.
+						        } else if(state === 'COMPLETE_CLOSE'){
+						            //사용자가 검색결과를 선택하여 팝업창이 닫혔을 경우, 실행될 코드를 작성하는 부분입니다.
+						            //oncomplete 콜백 함수가 실행 완료된 후에 실행됩니다.
+						        }
+					    	}*/
+					    }).open();
+				}//if
+				if(focusNow.id == 'joinBtn'){
+					let memberAuthor = 1;
+					
+					let boolTTS = $('#ttsChk').prop('checked')
+					if(boolTTS){
+						memberAuthor = 3;
+					}
+					
+					if(!checkBeforeInsert[idTrue]){
+						VoiceMenual('아이디를 다시 확인해주세요.')	
+						return;
+					}
+					if(!checkBeforeInsert[pwTrue]){
+						VoiceMenual('비밀번호를 다시 확인해주세요.')	
+						return;
+					}
+					if(!checkBeforeInsert[emailTrue]){
+						VoiceMenual('이메일을 다시 확인해주세요.')	
+						return;
+					}
+					
+					if($('#name').val() != ""){
+						checkBeforeInsert[nameTrue] = true;
+					}else{
+						checkBeforeInsert[nameTrue] = false;
+						VoiceMenual('이름을 올바르게 입력해주세요.')	
+						return false;
+					}
+					if($('#ph').val() != ""){
+						if(telChkNum == $('#phChk').val()){
+							console.log('ok')
+						}else{
+							VoiceMenual("휴대폰 인증을 완료해주세요.")
+							return false
+						}
+					}
+					if($('#addr').val() != ""){
+						checkBeforeInsert[addrTrue] = true;
+					}else{
+						checkBeforeInsert[addrTrue] = false;
+						VoiceMenual('주소를 올바르게 입력해주세요.')	
+						return false;
+						
+					}
+					if($('#addrDt').val() != ""){
+						checkBeforeInsert[detailsAddrTrue] = true;
+					}else{
+						checkBeforeInsert[detailsAddrTrue] = false;
+						VoiceMenual('상세주소를 올바르게 입력해주세요.')	
+						return false;
+					}
 
-	if(e.altKey && e.key == 1){ //현재 입력란 다시 듣기
-		let nowInputValue = $(':focus').val();
-		if(nowInputValue == "" || nowInputValue == undefined){
-			VoiceMenual("포커스된 정보가 없습니다.")
-		}else{
-			let cutMsg = '';
-			let tmpAry = nowInputValue.split('');
-			for(let one of tmpAry){
-				cutMsg = cutMsg + one + ' '
+					
+					let memberVO = {
+						'memberId' : $('#id').val(),
+						'memberPw' : $('#pw').val(),
+						'memberName' : $('#name').val(),
+						'memberBirth' : $('#birth').val(),
+						'memberEmail' : $('#email').val(),
+						'memberTel' : $('#ph').val(),
+						'memberAddr' : $('#addr').val(),
+						'memberDetailsAddr' : $('#addrDt').val(),
+						'memberAuthor' : memberAuthor
+					}
+					console.log(memberVO);
+					$.ajax({
+						url : 'AjaxJoin',
+						type : 'POST',
+						data : JSON.stringify(memberVO),
+						contentType : 'application/json',
+						success : function(rs){
+							if(rs == 'success'){
+									location.href="/page/member/loginForm";	
+							}
+						},
+						error : function(err){
+							console.log(err);	
+						}
+					})
+				}
+				
+				
+			}//enter
+		
+			if(e.altKey && e.key == 1){ //현재 입력란 다시 듣기
+				let nowInputValue = $(':focus').val();
+				if(nowInputValue == "" || nowInputValue == undefined){
+					VoiceMenual("포커스된 정보가 없습니다.")
+				}else{
+					let cutMsg = '';
+					let tmpAry = nowInputValue.split('');
+					for(let one of tmpAry){
+						cutMsg = cutMsg + one + ' '
+					}
+					VoiceMenual(cutMsg);
+					//VoiceMenual(nowInputValue);
+				}
 			}
-			VoiceMenual(cutMsg);
-			//VoiceMenual(nowInputValue);
+			if(e.altKey && e.key == 2){ //전체 입력 듣기
+				let totalMsg = 
+				"아이디 : " + $('#id').val() + ".."
+				+ "비밀번호 일치여부 : " + $("#pw").val() + ".."
+				+ "이름 : " + $("#name").val() + ".."
+				+ "생년월일 : " + $("#birth").val() + ".."
+				+ "이메일 : " + $("#email").val() + ".."
+				+ "휴대폰번호 : " + $("#ph").val() + ".."
+				+ "주소 : " + $("#addr").val() + ".."
+				+ "상세주소 : " + $('#addrDt').val();
+				VoiceMenual(totalMsg);
+			}
+			if(e.altKey && e.key == 3){ // 마이크로 입력하기
+				
+			}
+			if(e.altKey && e.key == 9){ // 메인 홈페이지로 이동
+				location.href="/";
+			}
+			if(e.altKey && e.key == 0){ //메뉴얼 다시듣기
+				let menual = 
+					 "1번 현재 입력란 다시 듣기."
+					+ "2번 입력 전체 다시 듣기."
+					+ "3번 현재 입력란에서 마이크 사용하기."
+					+ "9번 메인 홈페이지로 이동."
+					+ "0번 메뉴얼 다시듣기.";
+				VoiceMenual(menual);
+			}
+			
+		})
+		$('#id').on('focus', function(){
+			let msg = '아이디 입력란입니다. 아이디는 영문과 숫자만 조합하여 여섯자리 이상. 스무자리 이하로 구성해주세요.'
+			VoiceMenual(msg);
+		})
+		$('#idChkBtn').on('focus',function(){
+			let msg = '아이디 중복확인 버튼입니다. 엔터키를 눌러 중복확인해주세요.'
+			VoiceMenual(msg);
+		})
+		$('#pw').on('focus',function(){
+			let msg = '비밀번호 입력란입니다. 비밀번호는 영문,숫자,특수문자를 조합하여 8자리 이상으로 구성해주세요.'
+			VoiceMenual(msg);
+		})
+		$('#pwChk').on('focus',function(){
+			let msg = '비밀번호 중복확인 입력란입니다. 비밀번호와 동일하게 입력해주세요.'
+			VoiceMenual(msg);
+		})
+		$('#name').on('focus',function(){
+			let msg = '이름 입력란입니다. 회원가입하시는 분의 이름을 입력해주세요.'
+			VoiceMenual(msg);
+		})
+		$('#birth').on('focus',function(){
+			let msg = '생년월일 입력란입니다. 6자리로 입력해주세요.'
+			VoiceMenual(msg);
+		})
+		$('#email').on('focus',function(){
+			let msg = '이메일 입력란입니다. 이메일을 입력하시고 엔터키를 눌러 인증번호를 발송해주세요.'
+			VoiceMenual(msg);
+		})
+		$('#emailChk').on('focus',function(){
+			let msg = '이메일 인증번호 입력란입니다. 받으신 메일의 인증번호를 입력해주세요.'
+			VoiceMenual(msg);
+		})
+		$('#emailChk').on('keyup',function(){ //완료 후 입력, 취소 시 또 뜸..
+			let emailChkValue = $('#emailChk').val();
+			if(emailChkValue == responseEmail){
+				VoiceMenual('인증번호가 확인되었습니다.');
+			}
+		})
+		$('#ph').on('focus',function(){
+			let msg = '전화번호 입력란 입니다. 전화번호를 입력하시고 엔터키를 눌러 인증번호를 발송해주세요.'
+			VoiceMenual(msg);
+		})
+		$('#phChk').on('focus',function(){
+			let msg = '휴대폰 인증번호 입력란입니다. 인증번호를 입력해주세요.'
+		})
+		$('#addr').on('focus',function(){
+			let msg = '주소입력란 입니다. 엔터키를 눌러 주소입력창을 띄우시고 다음 안내를 따라주세요.'
+			VoiceMenual(msg);
+		})
+		$('#addrDt').on('focus',function(){
+			let msg = '상세 주소입력란입니다. 상세주소를 입력해주세요.'
+			
+			let nowAddr = $('#addr').val();
+			if(nowAddr.length > 0){
+				msg = "주소는 "+ nowAddr + "이고," + msg;	
+			}
+			VoiceMenual(msg);
+		})
+		$('#joinBtn').on('focus',function(){
+			let msg = "등록 버튼입니다. 엔터키를 눌러 회원가입을 진행해주세요."
+			VoiceMenual(msg);
+		})
+		$('#phChk').on('keyup',function(){
+			if($('#phChk').val() == telChkNum){
+				VoiceMenual('인증이 확인되었습니다.')
+			}
+		})
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		function VoiceMenual(message) {
+		    var data = {
+		        "voice" : {
+		            "languageCode" : "ko-KR",
+		            "name" : "ko-KR-Neural2-B"
+		        },
+		        "input" : {
+		            "text" : message
+		        },
+		        "audioConfig" : {
+		            "audioEncoding" : "mp3"
+		        }
+		    }
+		    console.log(data);
+		    $.ajax({
+		        type : 'POST',
+		        url : 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
+		        data : JSON.stringify(data),
+		        dataType : 'JSON',
+		        contentType : "application/json; charset=UTF-8",
+		        success : function(res) {
+		            $('#menuText').val(res.audioContent)
+		            var audioFile = new Audio();
+		            let audioBlob = base64ToBlob(res.audioContent,
+		                    "mp3");
+		            audioFile.src = window.URL
+		                    .createObjectURL(audioBlob);
+		            audioFile.playbackRate = 2; //재생속도
+		            if(audioFileNow.paused == false){
+		            	audioFileNow.pause();
+		            }
+		    		audioFileNow = audioFile;
+		            audioFileNow.play();
+		        
+		        },
+		        error : function(request, status, error) {
+		            alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
+		        }
+		    });
+		};
+		function base64ToBlob(base64, fileType) {
+		    let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
+		    let audioSrc = typeHeader + base64;
+		    let arr = audioSrc.split(",");
+		    let array = arr[0].match(/:(.*?);/);
+		    let mime = (array && array.length > 1 ? array[1] : type) || type;
+		    // url헤더 제거하고 btye로 변환
+		    let bytes = window.atob(arr[1]);
+		    // 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
+		    let ab = new ArrayBuffer(bytes.length);
+		    // 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
+		    let ia = new Uint8Array(ab);
+		    for (let i = 0; i < bytes.length; i++) {
+		        ia[i] = bytes.charCodeAt(i);
+		    }
+		    return new Blob([ ab ], {
+		        type : mime
+		    });
 		}
 	}
-	if(e.altKey && e.key == 2){ //전체 입력 듣기
-		let totalMsg = 
-		"아이디 : " + $('#id').val() + ".."
-		+ "비밀번호 일치여부 : " + $("#pw").val() + ".."
-		+ "이름 : " + $("#name").val() + ".."
-		+ "생년월일 : " + $("#birth").val() + ".."
-		+ "이메일 : " + $("#email").val() + ".."
-		+ "휴대폰번호 : " + $("#ph").val() + ".."
-		+ "주소 : " + $("#addr").val() + ".."
-		+ "상세주소 : " + $('#addrDt').val();
-		VoiceMenual(totalMsg);
 	}
-	if(e.altKey && e.key == 3){ // 마이크로 입력하기
-		
-	}
-	if(e.altKey && e.key == 4){ // 메인 홈페이지로 이동
-		location.href="/";
-	}
-	if(e.altKey && e.key == 0){ //메뉴얼 다시듣기
-		let menual = 
-			 "1번 현재 입력란 다시 듣기."
-			+ "2번 입력 전체 다시 듣기."
-			+ "3번 현재 입력란에서 마이크 사용하기."
-			+ "4번 메인 홈페이지로 가기."
-			+ "0번 메뉴얼 다시듣기.";
-		VoiceMenual(menual);
-	}
-	
-})
-$('#id').on('focus', function(){
-	let msg = '아이디 입력란입니다. 아이디는 영문과 숫자만 조합하여 여섯자리 이상. 스무자리 이하로 구성해주세요.'
-	VoiceMenual(msg);
-})
-$('#idChkBtn').on('focus',function(){
-	let msg = '아이디 중복확인 버튼입니다. 엔터키를 눌러 중복확인해주세요.'
-	VoiceMenual(msg);
-})
-$('#pw').on('focus',function(){
-	let msg = '비밀번호 입력란입니다. 비밀번호는 영문,숫자,특수문자를 조합하여 8자리 이상으로 구성해주세요.'
-	VoiceMenual(msg);
-})
-$('#pwChk').on('focus',function(){
-	let msg = '비밀번호 중복확인 입력란입니다. 비밀번호와 동일하게 입력해주세요.'
-	VoiceMenual(msg);
-})
-$('#name').on('focus',function(){
-	let msg = '이름 입력란입니다. 회원가입하시는 분의 이름을 입력해주세요.'
-	VoiceMenual(msg);
-})
-$('#birth').on('focus',function(){
-	let msg = '생년월일 입력란입니다. 6자리로 입력해주세요.'
-	VoiceMenual(msg);
-})
-$('#email').on('focus',function(){
-	let msg = '이메일 입력란입니다. 이메일을 입력하시고 엔터키를 눌러 인증번호를 발송해주세요.'
-	VoiceMenual(msg);
-})
-$('#emailChk').on('focus',function(){
-	let msg = '이메일 인증번호 입력란입니다. 받으신 메일의 인증번호를 입력해주세요.'
-	VoiceMenual(msg);
-})
-$('#emailChk').on('keyup',function(){ //완료 후 입력, 취소 시 또 뜸..
-	let emailChkValue = $('#emailChk').val();
-	let isOKEmail = $('#emconfirmchk').text()
-	if(isOKEmail == '인증번호 확인 완료'){
-		VoiceMenual('인증번호가 확인되었습니다.');
-	}
-})
-$('#ph').on('focus',function(){
-	let msg = '전화번호 입력란 입니다. 전화번호를 입력하시고 엔터키를 눌러 인증번호를 발송해주세요.'
-	VoiceMenual(msg);
-})
-$('#addr').on('focus',function(){
-	let msg = '주소입력란 입니다. 엔터키를 눌러 주소입력창을 띄우시고 다음 안내를 따라주세요.'
-	VoiceMenual(msg);
-})
-$('#addrDt').on('focus',function(){
-	let msg = '상세 주소입력란입니다. 상세주소를 입력해주세요.'
-	
-	let nowAddr = $('#addr').val();
-	if(nowAddr.length > 0){
-		msg = "주소는 "+ nowAddr + "이고," + msg;	
-	}
-	VoiceMenual(msg);
-})
-$('#joinBtn').on('focus',function(){
-	let msg = "등록 버튼입니다. 엔터키를 눌러 회원가입을 진행해주세요."
-	VoiceMenual(msg);
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-function VoiceMenual(message) {
-    var data = {
-        "voice" : {
-            "languageCode" : "ko-KR",
-            "name" : "ko-KR-Neural2-B"
-        },
-        "input" : {
-            "text" : message
-        },
-        "audioConfig" : {
-            "audioEncoding" : "mp3"
-        }
-    }
-    console.log(data);
-    $.ajax({
-        type : 'POST',
-        url : 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
-        data : JSON.stringify(data),
-        dataType : 'JSON',
-        contentType : "application/json; charset=UTF-8",
-        success : function(res) {
-            $('#menuText').val(res.audioContent)
-            var audioFile = new Audio();
-            let audioBlob = base64ToBlob(res.audioContent,
-                    "mp3");
-            audioFile.src = window.URL
-                    .createObjectURL(audioBlob);
-            audioFile.playbackRate = 2; //재생속도
-            if(audioFileNow.paused == false){
-            	audioFileNow.pause();
-            }
-    		audioFileNow = audioFile;
-            audioFileNow.play();
-        
-        },
-        error : function(request, status, error) {
-            alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
-        }
-    });
-};
-function base64ToBlob(base64, fileType) {
-    let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
-    let audioSrc = typeHeader + base64;
-    let arr = audioSrc.split(",");
-    let array = arr[0].match(/:(.*?);/);
-    let mime = (array && array.length > 1 ? array[1] : type) || type;
-    // url헤더 제거하고 btye로 변환
-    let bytes = window.atob(arr[1]);
-    // 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
-    let ab = new ArrayBuffer(bytes.length);
-    // 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
-    let ia = new Uint8Array(ab);
-    for (let i = 0; i < bytes.length; i++) {
-        ia[i] = bytes.charCodeAt(i);
-    }
-    return new Blob([ ab ], {
-        type : mime
-    });
-}
-
 </script>
-</th:block>
 </div>
 </body>
 </html>
