@@ -85,7 +85,7 @@ function base64ToBlob(base64, fileType) {
 			if(e.altKey && e.key == 3) { //장바구니 첫번째 상품
 				$('.firstPro').first().focus();
 			}
-			if(e.altKey && e.key == 6){ // 메인 페이지로 가기
+			if(e.altKey && e.key == 9){ // 메인 페이지로 가기
 				location.href = "/";
 			}
 			if(e.altKey && e.key == 0){

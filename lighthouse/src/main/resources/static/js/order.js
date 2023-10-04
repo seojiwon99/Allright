@@ -93,7 +93,7 @@ function base64ToBlob(base64, fileType) {
             if(e.altKey && e.key == 5){ // 배송 시 요청 선택
 				$('#selbox').focus();
 			}
-            if(e.altKey && e.key == 6){ // 메인 페이지 이동
+            if(e.altKey && e.key == 9){ // 메인 페이지 이동
                 location.href = "/";
 			}
 			if(e.altKey && e.key == 0){ //다시 듣기
