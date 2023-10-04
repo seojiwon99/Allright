@@ -45,12 +45,20 @@ public class BuyerPageController {
 
 	// 주문목록
 	@GetMapping("page/buyer/orderList")
-	public String orderList(Model model, HttpSession session, DetailVO detailVO) {
-
+	public String orderList(@RequestParam(value = "pageNum", required = false) Integer pageNum, Model model, HttpSession session, DetailVO detailVO, Criteria cri) {
+		if (pageNum == null) {
+	        // pageNum이 전달되지 않은 경우 기본값을 설정하거나 예외 처리를 수행할 수 있습니다.
+	        pageNum = 1; // 기본값 설정
+	    }
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-
-		List<DetailVO> orderList = buyerPageService.getDetailList(memberId);
+		
+		// Criteria 객체 생성 및 'pageNum' 설정
+	    cri.setPageNum(pageNum);
+	    
+		int totalCnt = buyerPageService.getDetailCnt(cri);
+		model.addAttribute("pageMaker", new PageDTO(cri, totalCnt));
+		List<DetailVO> orderList = buyerPageService.getDetailList(memberId, cri);
 		model.addAttribute("orderList", orderList);
 		
 		return "/page/buyer/orderList";
@@ -61,7 +69,7 @@ public class BuyerPageController {
 	public String orderOption(Model model, HttpSession session, DetailVO detailVO) {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-		
+
 		detailVO.setMemberId(memberId);
 		List<DetailVO> orderList = buyerPageService.getOptionList(detailVO);
 		model.addAttribute("orderList", orderList);
@@ -97,18 +105,13 @@ public class BuyerPageController {
 
 	// 쿠폰내역
 	@GetMapping("page/buyer/myCoupon")
-	public String MyCoupon(@RequestParam(value = "pageNum", required = false) Integer pageNum, Model model, HttpSession session, Criteria cri) {
-		if (pageNum == null) {
-	        // pageNum이 전달되지 않은 경우 기본값을 설정하거나 예외 처리를 수행할 수 있습니다.
-	        pageNum = 1; // 기본값 설정
-	    }
+	public String MyCoupon(Model model, HttpSession session, Criteria cri) {
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-		
-		// Criteria 객체 생성 및 'pageNum' 설정
-	    cri.setPageNum(pageNum);
+
 	    int totalCnt = buyerPageService.getCouponCnt(cri);
-		List<CouponVO> myCoupon = buyerPageService.getCouponList(memberId);
+		List<CouponVO> myCoupon = buyerPageService.getCouponList(memberId, cri);
 		model.addAttribute("myCoupon", myCoupon);
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		return "/page/buyer/myCoupon";
@@ -129,7 +132,7 @@ public class BuyerPageController {
 		return "/page/buyer/myInquiry";
 	}
 	
-	// 찜내역
+	// 찜 내역
 	@GetMapping("page/buyer/wishList")
 	public String wishList(@RequestParam(value = "pageNum", required = false) Integer pageNum, Model model, HttpSession session, Criteria cri) {
 	    if (pageNum == null) {

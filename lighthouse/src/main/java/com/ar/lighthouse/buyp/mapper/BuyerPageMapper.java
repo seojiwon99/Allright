@@ -20,13 +20,13 @@ import com.ar.lighthouse.common.Criteria;
 @Mapper
 public interface BuyerPageMapper {
 	
-	public List<DetailVO> selectDetailList(String memberId);
+	public List<DetailVO> selectDetailList(String memberId, Criteria cri);
 	
 	public BuyInfoVO selectBuyInfo(String memberId);
 
 	public List<TradeVO> selectTradeList(String memberId);
 	
-	public List<CouponVO> selectCouponList(String memberId);
+	public List<CouponVO> selectCouponList(String memberId, Criteria cri);
 	
 	public int updateInfo(BuyInfoVO buyInfoVO);
 	
@@ -73,5 +73,9 @@ public interface BuyerPageMapper {
 	public int getCouponCnt(Criteria cri);
 	
 	public int getInqCnt(Criteria cri);
+	
+	public int selectPageList(Criteria cri);
+	
+	public int selectDetailCnt(Criteria cri);
 	
 }

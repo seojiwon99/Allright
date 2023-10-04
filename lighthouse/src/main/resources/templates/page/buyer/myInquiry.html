@@ -104,7 +104,7 @@
             <div class="card card-lg mb-5 border">
               <div class="card-body pb-0">
                 <div class="card card-sm">
-	               <div class="card-body bg-light">
+
 	                 <div class="row">
 	                      <table class="table">
 						<thead>
@@ -173,17 +173,16 @@
 						 </div>                     
 	                  </div>
 	                </div>
-	                </div>
+
 				</div>
             </div>
           </div>
           <!-- Pagination -->
-					<nav
-						class="d-flex justify-content-center justify-content-md-end mt-10">
+					<nav class="d-flex justify-content-center justify-content-md-end mt-10">
 						<ul class="pagination pagination-sm text-gray-400">
 							<li class="page-item" th:if="${pageMaker.prev}"><a
 								class="page-link page-link-arrow"
-								th:href="@{/buyer/myInquiry/(pageNum = ${pageMaker.startPage - 1})}">
+								th:href="@{/page/buyer/myInquiry/(pageNum = ${pageMaker.startPage - 1})}">
 									<i class="fa fa-caret-left"></i>
 							</a></li>
 							<th:block
@@ -193,23 +192,18 @@
 									th:each="pageButtom : ${#numbers.sequence(start,end)}"
 									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
 									<a class="page-link" href="#"
-									th:href="@{/buyer/myInquiry/(pageNum= ${pageButtom} )}"
+									th:href="@{/page/buyer/myInquiry/(pageNum= ${pageButtom} )}"
 									th:text="${pageButtom}"></a>
 								</li>
 							</th:block>
-
 							<li class="page-item" th:if="${pageMaker.next}"><a
 								class="page-link page-link-arrow"
-								th:href="@{/buyer/myInquiry/(pageNum = ${pageMaker.endPage + 1})}">
+								th:href="@{/page/buyer/myInquiry/(pageNum = ${pageMaker.endPage + 1})}">
 									<i class="fa fa-caret-right"></i>
 							</a></li>
 						</ul>
 					</nav>
-					<form action="/buyer/myInquiry" method="get">
-				<input type="hidden" name="pageNum" th:value="${pageMaker.cri.pageNum}">
-				<input type="hidden" name="amount" th:value="${pageMaker.cri.amount}">
-				<input type="hidden" name="keyword" th:value="${pageMaker.cri.keyword}">
-		</form>
+
         </div>
 	  </div>
 	 </div>

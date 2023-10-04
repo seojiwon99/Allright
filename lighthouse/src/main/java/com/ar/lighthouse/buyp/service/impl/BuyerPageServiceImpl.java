@@ -30,8 +30,8 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	
 	
 	@Override
-	public List<DetailVO> getDetailList(String memberId) {
-		return buyerPageMapper.selectDetailList(memberId);
+	public List<DetailVO> getDetailList(String memberId, Criteria cri) {
+		return buyerPageMapper.selectDetailList(memberId, cri);
 	}
 
 
@@ -54,8 +54,8 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 
 
 	@Override
-	public List<CouponVO> getCouponList(String memberId) {
-		return buyerPageMapper.selectCouponList(memberId);
+	public List<CouponVO> getCouponList(String memberId, Criteria cri) {
+		return buyerPageMapper.selectCouponList(memberId, cri);
 	}
 
 
@@ -189,6 +189,12 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	@Override
 	public int getInqCnt(Criteria cri) {
 		return buyerPageMapper.getInqCnt(cri);
+	}
+
+
+	@Override
+	public int getDetailCnt(Criteria cri) {
+		return buyerPageMapper.selectDetailCnt(cri);
 	}
 
 

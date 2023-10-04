@@ -5,10 +5,13 @@
 
   <mapper namespace="com.ar.lighthouse.buyp.mapper.BuyerPageMapper">
 
-     <!-- 주문 목록 -->
-     <select id="selectDetailList" resultType="DetailVO">
-		WITH RankedOrderDetail AS (
-		    SELECT 
+	 <!-- 주문 목록 -->
+	<select id="selectDetailList" resultType="DetailVO" parameterType="Criteria">
+        SELECT *
+		FROM (
+		    SELECT rownum pn, pg.*
+		    FROM (
+            SELECT 
 		        a.order_cnt,
 		        a.order_price,
 		        a.payment_price,
@@ -54,13 +57,19 @@
 		    LEFT OUTER JOIN 
 		        ar_exchange h ON a.order_detail_code = h.order_detail_code
 		    WHERE 
-		        b.member_id = #{memberId}
-		)
-		SELECT *
-		FROM 
-		    RankedOrderDetail
-		WHERE 
-		    rn = 1
+		        b.member_id = #{memberId}) pg
+		    <![CDATA[
+        WHERE rownum <= #{cri.pageNum} * #{cri.amount}
+        ]]>
+        ORDER BY pg.order_detail_code DESC
+    )
+    WHERE pn > (#{cri.pageNum} - 1) * #{cri.amount}
+	</select>
+     
+     <select id="selectDetailCnt" resultType="int">
+     SELECT count(*)
+	 FROM ar_order_detail
+	 WHERE order_detail_code > 0
      </select>
      
      <!-- 주문목록 옵션 -->
@@ -137,7 +146,6 @@
 		    RankedOrderDetail
 		WHERE 
 		    rn = 1
-
      </select>
 
   
