@@ -116,12 +116,14 @@ public class BuyerPageController {
 
 	// 문의내역
 	@GetMapping("page/buyer/myInquiry")
-	public String myInquiry(Model model, HttpSession session) {
-
+	public String myInquiry(Model model, HttpSession session, Criteria cri) {
+		
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-
-		List<MyInquiryVO> myInquiry = buyerPageService.getMyQuiryList(memberId);
+		
+		int totalCnt = buyerPageService.getInqCnt(cri);
+		model.addAttribute("pageMaker", new PageDTO(cri, totalCnt));
+		List<MyInquiryVO> myInquiry = buyerPageService.getMyQuiryList(memberId, cri);
 		model.addAttribute("myInquiry", myInquiry);
 
 		return "/page/buyer/myInquiry";
@@ -148,16 +150,6 @@ public class BuyerPageController {
 		return "/page/buyer/wishList";
 	}
 	
-	//찜 내역 페이징
-//	@GetMapping("page/buyer/wishList")
-//	public String wishPaging(Model model, Criteria cri, HttpSession session) {
-//		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-//		String memberId = memberVO.getMemberId();
-//		int pageCnt = buyerPageService.getPageCnt(cri);
-//		model.addAttribute("wishList", buyerPageService.getWishList(cri));
-//		model.addAttribute("pageMaker", new PageDTO(cri, pageCnt));
-//		return "page/buyer/wishList";
-//	}
 	
 	// 취소 목록
 	@GetMapping("page/buyer/cancelList")
@@ -332,17 +324,17 @@ public class BuyerPageController {
 		return deleteExchange == 1 ? "/page/buyer/exchangeList :: #test" : "/page/buyer/exchangeList";
 	}
 	
-////	//찜 취소
-//	@GetMapping("buyer/deleteWish")
-//	public String removeWish(int favoriteCode, HttpSession session, Model model, Criteria cri){
-//		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-//		String memberId= memberVO.getMemberId();
-//		buyerPageService.removeWish(favoriteCode);
-//		int totalCnt = buyerPageService.getPageCnt(cri);
-//		List<WishVO> wishList = buyerPageService.getWishList(memberId, cri);
-//		model.addAttribute("wishList", wishList);
-//		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
-//		
-//		return "/page/buyer/wishList :: #test";
-//	}
+//	//찜 취소
+	@GetMapping("buyer/deleteWish")
+	public String removeWish(int favoriteCode, HttpSession session, Model model, Criteria cri){
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId= memberVO.getMemberId();
+		buyerPageService.removeWish(favoriteCode);
+		int totalCnt = buyerPageService.getPageCnt(cri);
+		List<WishVO> wishList = buyerPageService.getWishList(memberId, cri);
+		model.addAttribute("wishList", wishList);
+		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
+		
+		return "/page/buyer/wishList :: #test";
+	}
 }

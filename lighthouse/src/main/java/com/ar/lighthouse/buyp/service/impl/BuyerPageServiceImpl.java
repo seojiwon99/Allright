@@ -60,8 +60,8 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 
 
 	@Override
-	public List<MyInquiryVO> getMyQuiryList(String memberId) {
-		return buyerPageMapper.selectMyInquiryList(memberId);
+	public List<MyInquiryVO> getMyQuiryList(String memberId, Criteria cri) {
+		return buyerPageMapper.selectMyInquiryList(memberId, cri);
 	}
 
 
@@ -183,6 +183,12 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	@Override
 	public int getCouponCnt(Criteria cri) {
 		return buyerPageMapper.getCouponCnt(cri);
+	}
+
+
+	@Override
+	public int getInqCnt(Criteria cri) {
+		return buyerPageMapper.getInqCnt(cri);
 	}
 
 

@@ -203,7 +203,7 @@
    </update>
    
    
-   <!-- 쿠폰 -->
+   <!-- 쿠폰 (페이징) -->
    <select id="selectCouponList" resultType="CouponVO" parameterType="Criteria">
        select *
 		from ( select rownum rn, pg.* 
@@ -233,7 +233,7 @@
     WHERE rn > (#{cri.pageNum} - 1) * #{cri.amount}
    </select>
    
-   <!-- 쿠폰 갯수-->
+   <!-- 쿠폰 갯수(페이징)-->
    <select id="getCouponCnt" resultType="int">
    	SELECT count(*)
   	FROM ar_coupons
@@ -250,10 +250,16 @@
            , custom_inquiry_answer_status
       FROM ar_custom_inquiry
       WHERE member_id = #{memberId}
+      Order by custom_inquiry_code asc
    </select>
    
+   <select id="getInqCnt" resultType="int">
+   	SELECT count(*)
+	FROM ar_custom_inquiry
+	WHERE custom_inquiry_code > 0
+   </select>
    
-   <!-- 찜 내역 -->
+   <!-- 찜 내역 (페이징) -->
    <select id="selectWishList" resultType="WishVO" parameterType="Criteria">
         SELECT *
 		FROM (
@@ -281,7 +287,7 @@
     WHERE rn > (#{cri.pageNum} - 1) * #{cri.amount}
    </select>
    
-   <!-- 찜 갯수-->
+   <!-- 찜 갯수 (페이징) -->
    <select id="getPageCnt" resultType="int">
    	SELECT count(*)
   	FROM ar_favorite

@@ -23,7 +23,7 @@ public interface BuyerPageService {
 	public int editInfo(BuyInfoVO buyInfoVO);
 
 	// 문의 내역
-	public List<MyInquiryVO> getMyQuiryList(String memberId);
+	public List<MyInquiryVO> getMyQuiryList(String memberId, Criteria cri);
 
 	// 찜 내역
 	public List<WishVO> getWishList(String memberId, Criteria cri);
@@ -82,5 +82,10 @@ public interface BuyerPageService {
 	//주문 목록 option 선택
 	public List<DetailVO> getOptionList(DetailVO detailVO);
 	
+	//쿠폰 전체 갯수
 	public int getCouponCnt(Criteria cri);
+	
+	//문의 전체 갯수
+	public int getInqCnt(Criteria cri);
+	
 }

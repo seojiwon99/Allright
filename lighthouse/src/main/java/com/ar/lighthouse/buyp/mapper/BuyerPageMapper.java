@@ -30,7 +30,7 @@ public interface BuyerPageMapper {
 	
 	public int updateInfo(BuyInfoVO buyInfoVO);
 	
-	public List<MyInquiryVO> selectMyInquiryList(String memberId);
+	public List<MyInquiryVO> selectMyInquiryList(String memberId, Criteria cri);
 	
 	public List<WishVO> selectWishList(String memberId, Criteria cri);
 
@@ -71,5 +71,7 @@ public interface BuyerPageMapper {
 	public List<DetailVO> selectOptionList(DetailVO detailVO);
 	
 	public int getCouponCnt(Criteria cri);
+	
+	public int getInqCnt(Criteria cri);
 	
 }

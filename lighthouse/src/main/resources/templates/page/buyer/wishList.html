@@ -123,7 +123,7 @@
 						<ul class="pagination pagination-sm text-gray-400">
 							<li class="page-item" th:if="${pageMaker.prev}"><a
 								class="page-link page-link-arrow"
-								th:href="@{/custom/notice/(pageNum = ${pageMaker.startPage - 1})}">
+								th:href="@{/buyer/wishList/(pageNum = ${pageMaker.startPage - 1})}">
 									<i class="fa fa-caret-left"></i>
 							</a></li>
 							<th:block
@@ -133,14 +133,13 @@
 									th:each="pageButtom : ${#numbers.sequence(start,end)}"
 									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
 									<a class="page-link" href="#"
-									th:href="@{/custom/notice/(pageNum= ${pageButtom} )}"
+									th:href="@{/buyer/wishList/(pageNum= ${pageButtom} )}"
 									th:text="${pageButtom}"></a>
 								</li>
 							</th:block>
-
 							<li class="page-item" th:if="${pageMaker.next}"><a
 								class="page-link page-link-arrow"
-								th:href="@{/custom/notice/(pageNum = ${pageMaker.endPage + 1})}">
+								th:href="@{/buyer/wishList/(pageNum = ${pageMaker.endPage + 1})}">
 									<i class="fa fa-caret-right"></i>
 							</a></li>
 						</ul>
