@@ -214,14 +214,14 @@
         function ttsInit(){
          if(TTSIsOk == null || sessionAuthor == 3){
           let audioFileNow = new Audio();
-          let firstMsg = "취소 목록 페이지입니다. 취소한 내역에 대해서 확인할 수 있습니다.";
+          let firstMsg = "취소 목록 페이지입니다. 취소 신청한 내역에 대해서 확인할 수 있습니다.";
           let message = firstMsg;
 
-          VoiceMenual(message);
+          VoiceMenual(firstMsg);
 
     //tts 이벤트 부여
     $('.cancelCode').on('focus', cancelListInfo);
-
+    $('.deleteBtn').on('focus', deleteBtn);
     //tts 이벤트 진행
     function cancelListInfo() {
     	let cancelCode = $(this).closest('.cancelRow').find('.cancelCode').text();
@@ -242,7 +242,7 @@
     	VoiceMenual(message);
     }
     
-   	functino cancelBtn() {
+   	function deleteBtn() {
    		VoiceMenual('취소 철회 버튼입니다. 취소 철회를 원하시면. 엔터키를 눌러주세요.');
    	}
     
