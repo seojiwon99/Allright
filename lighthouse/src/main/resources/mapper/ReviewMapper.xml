@@ -4,7 +4,8 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.ar.lighthouse.review.mapper.ReviewMapper">
-  	
+  
+	
   	<resultMap type="ReviewVO" id="selectReviewInfo">
   		<result column="review_code" property="reviewCode" />
   		<result column="member_id" property="memberId" />
@@ -27,7 +28,10 @@
   	</resultMap>
   	
   	<select id="selectReviewList" resultMap="selectReviewInfo" resultType="reviewVO">
-		  SELECT r.review_code
+		   SELECT *
+				FROM(SELECT 
+            	ROWNUM rn
+               , r.review_code
 		       , r.member_id
 		       , r.product_code
 		       , r.review_content
@@ -43,8 +47,13 @@
 		       , REPLACE(i.upload_path,'\','/') as upload_path
 			FROM ar_review r left outer join ar_imgs i
 			ON r.review_code = i.review_code
-			WHERE r.product_code = #{productCode}
-			ORDER BY r.review_regdate DESC
+			WHERE r.product_code = #{reviewVO.productCode}
+			<![CDATA[
+			AND	ROWNUM <= #{cri.pageNum} * #{cri.amount}
+			order by r.review_regdate desc )
+		WHERE rn > ( #{cri.pageNum} - 1 ) * #{cri.amount}
+		]]>
+	order by review_regdate DESC
   	</select>
   	
   	<select id="countReview" parameterType="ReviewVO" resultType="int">
@@ -52,7 +61,7 @@
   	</select>
   	
   	<select id="reviewStarAvg" resultType="int">
-  		select round(AVG(review_star),0) as reviewStarAvg from ar_review where product_code = #{productCode}
+  		SELECT NVL(ROUND(AVG(REVIEW_STAR),0),0) as reviewStarAvg from ar_review where product_code = #{productCode}
   	</select>
   	
   	<insert id="insertReview" parameterType="ReviewVO">
@@ -124,12 +133,17 @@
     		,img_content =#{imgContent}
     		,review_code =#{reviewCode}
     		,upload_path = #{uploadPath}
-  		 
+  		where review_code = #{reviewCode} 
   	</update>
   	
-  	
+  	<!-- 리뷰 삭제 -->
   	<delete id="deleteReview">
   		DELETE FROM ar_review WHERE review_code = #{reviewCode}
+  	</delete>
+  	
+  	<!-- 리뷰 이미지 삭제--> 
+  	<delete id="reviewImgDelete">
+  		DELETE FROM ar_imgs where review_code = #{reviewCode}
   	</delete>
   	
   	<!-- 리뷰신고 코드-->
