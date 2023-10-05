@@ -6,15 +6,14 @@
 <!-- Content -->
 <div layout:fragment="content">
 
-	<div data-flickity='{"prevNextButtons": true, "fade": true}'>
+	<div data-flickity='{"prevNextButtons": true, "fade": true, "autoPlay" : true, "wrapAround": true }'>
 
 		<!-- Item -->
 		<div class="w-100 bg-cover" th:each="banner:${productbanner}">
 			<div class="container d-flex flex-column">
 				<div class="row align-items-center py-12" style="min-height: 550px">
 					<!-- productbanner -->
-					<!-- <a href="#"><img alt="..."
-						th:src="@{/img/products/}+${banner.uploadName}"></a> -->
+					<a href="#"><img class="w-100" alt="..." th:src="|/upload/${banner.uploadPath}/${banner.uploadName}|" style="height:400px"></a>
 
 					<div style="display: none" th:text="${banner.imgContent}"></div>
 				</div>

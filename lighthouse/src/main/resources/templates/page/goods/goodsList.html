@@ -296,6 +296,149 @@
 			
 	  	</textarea>
    <script th:inline="javascript">
+	let searchBars = document.querySelectorAll('input[type="search"]');
+	//console.log(searchBars);
+	let pSearch = searchBars[0];
+ //엔터키 입력 시 검색
+	$(pSearch).on('keydown',function(e){
+		if(e.keyCode == 13){
+			let nowURL = new URL(location.href);
+			nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
+			nowURL.searchParams.set('keyword', $(pSearch).val());
+			location.href = nowURL.href;
+		}
+		console.log('go');
+	})
+	
+	
+	$('#filterApplyBtn').on('click',function(){
+		$('#priceGroup').find('input:checked') //가격범위       range 가져오기
+		let orderFilter = $('#seasonGroup').find('input:checked') //new , best  order순서
+		$('#writeRange').find('input') // 적는 칸 가격 range;
+		let ctgs = $('.ps-5').find('input:checked') // 카테고리 선택 Filter
+		let minVal = $('#writeRange').find('input')[1].value;
+		let maxVal = $('#writeRange').find('input')[2].value;
+		
+		let prices = $('input[type="checkbox"][name="pricefilter"]:checked ');
+		
+		let minPrice;
+		let maxPrice;
+		
+		let filterObj = {};
+		
+		if(prices.length>0  ){
+		let id = prices[0].id;
+			if(id == 'priceRange'){
+				if((minVal > 0 && maxVal > 0) && maxVal<minVal){ //최솟값만 입력했을 경우 가능.
+					alert('최소 가격은 최대가격보다 클 수 없습니다.');
+					return;
+				}else{
+					minPrice = minVal;
+					maxPrice = maxVal;
+				}
+			}else if(id == 'priceOne'){
+				minPrice = 0
+				maxPrice = 50000;
+			}else if(id == 'priceTwo'){
+				minPrice = 50000;
+				maxPrice = 100000;
+			}else if(id == 'priceThree'){
+				minPrice = 100000;
+				maxPrice = 200000;
+			}else if(id == 'priceFour'){
+				minPrice = 200000;
+				maxPrice = 99999999;
+			}
+			
+		}
+		//min, max Price 담기 
+		filterObj['minPrice'] = minPrice;
+		filterObj['maxPrice'] = maxPrice;
+		
+		if(orderFilter.length>0){
+			if(orderFilter[0].id == 'seasonOne'){
+				filterObj['order'] = 'new';
+			}else if(orderFilter[0].id == 'seasonTwo'){
+				filterObj['order'] = 'best';
+			}
+		}
+		// filter가 있다면 new, best 담
+		
+		if(ctgs.length>0){
+			filterObj['ctg'] = ctgs[0].id; 
+		}
+		console.log(filterObj);
+		
+	})
+
+	
+	//PriceGroup 단일 체크
+	let pGroup = $('input[type="checkbox"][name="pricefilter"] ');
+	let sGroup = $('#seasonGroup').find('input');
+	let ctgGroup = $('.ps-5').find('input')
+	let chkGroup = [];
+	
+	$.each(ctgGroup, function(ele,obj){
+		$(obj).on('click', checkOnlyOneCtg);
+		$(obj).on('keydown', inputEnter)
+	})
+	$.each(sGroup, function(ele,obj){
+		$(obj).on('click', checkOnlyOneSeason);
+		$(obj).on('keydown', inputEnter)
+	})
+	
+	$.each(pGroup, function(ele,obj){
+		$(obj).on('click', checkOnlyOne);
+		$(obj).on('keydown', inputEnter)
+	})
+	function inputEnter(e){
+		if(e.key == 'Enter'){
+			$(this).trigger('click');
+		}
+	}
+	
+	function checkOnlyOne(e) {
+		console.log($(this).prop('checked'))
+		if($(this).prop('checked')){
+			 
+		     $('input[type="checkbox"][name="pricefilter"]').prop('checked',false);
+		 
+		     $(this).prop('checked',true);
+		 
+		}else{
+			$(this).prop('checked',false);
+		}
+		
+	}
+	function checkOnlyOneSeason(e) {
+		if($(this).prop('checked')){
+			 
+			$('#seasonGroup').find('input').prop('checked',false);
+		 
+		     $(this).prop('checked',true);
+		 
+		}else{
+			$(this).prop('checked',false);
+		}
+	}
+	function checkOnlyOneCtg(e) {
+		console.log($(this).prop('checked'))
+		if($(this).prop('checked')){
+			 
+			$('.ps-5').find('input').prop('checked',false);
+		 
+		     $(this).prop('checked',true);
+		 
+		}else{
+			$(this).prop('checked',false);
+		}
+		
+	}
+	
+	
+	
+   
+   //==============================
    
 	let TTSIsOk = localStorage.getItem('ttsKey');
 	let sessionAuthor;
@@ -323,9 +466,7 @@
 					 
 					 
 					 
-				let searchBars = document.querySelectorAll('input[type="search"]');
-				//console.log(searchBars);
-				let pSearch = searchBars[0];
+
 				
 				
 				let productList = document.querySelectorAll('a.card-img');
@@ -349,143 +490,6 @@
 					VoiceMenual('검색창입니다. 마이크를 이용해 입력하시려면 alt 키와 9번을 동시에 입력해주세요. 그리고 말씀하신 후에 엔터키를 눌러주세요.')
 					console.log('go');
 				});
-				
-				//엔터키 입력 시 검색
-				$(pSearch).on('keydown',function(e){
-					if(e.keyCode == 13){
-						let nowURL = new URL(location.href);
-						nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
-						nowURL.searchParams.set('keyword', $(pSearch).val());
-						location.href = nowURL.href;
-					}
-					console.log('go');
-				})
-				
-				
-				$('#filterApplyBtn').on('click',function(){
-					$('#priceGroup').find('input:checked') //가격범위       range 가져오기
-					let orderFilter = $('#seasonGroup').find('input:checked') //new , best  order순서
-					$('#writeRange').find('input') // 적는 칸 가격 range;
-					let ctgs = $('.ps-5').find('input:checked') // 카테고리 선택 Filter
-					let minVal = $('#writeRange').find('input')[1].value;
-					let maxVal = $('#writeRange').find('input')[2].value;
-					
-					let prices = $('input[type="checkbox"][name="pricefilter"]:checked ');
-					
-					let minPrice;
-					let maxPrice;
-					
-					let filterObj = {};
-					
-					if(prices.length>0  ){
-					let id = prices[0].id;
-						if(id == 'priceRange'){
-							if((minVal > 0 && maxVal > 0) && maxVal<minVal){ //최솟값만 입력했을 경우 가능.
-								alert('최소 가격은 최대가격보다 클 수 없습니다.');
-								return;
-							}else{
-								minPrice = minVal;
-								maxPrice = maxVal;
-							}
-						}else if(id == 'priceOne'){
-							minPrice = 0
-							maxPrice = 50000;
-						}else if(id == 'priceTwo'){
-							minPrice = 50000;
-							maxPrice = 100000;
-						}else if(id == 'priceThree'){
-							minPrice = 100000;
-							maxPrice = 200000;
-						}else if(id == 'priceFour'){
-							minPrice = 200000;
-							maxPrice = 99999999;
-						}
-						
-					}
-					//min, max Price 담기 
-					filterObj['minPrice'] = minPrice;
-					filterObj['maxPrice'] = maxPrice;
-					
-					if(orderFilter.length>0){
-						if(orderFilter[0].id == 'seasonOne'){
-							filterObj['order'] = 'new';
-						}else if(orderFilter[0].id == 'seasonTwo'){
-							filterObj['order'] = 'best';
-						}
-					}
-					// filter가 있다면 new, best 담
-					
-					if(ctgs.length>0){
-						filterObj['ctg'] = ctgs[0].id; 
-					}
-					console.log(filterObj);
-					
-				})
-
-				
-				//PriceGroup 단일 체크
-				let pGroup = $('input[type="checkbox"][name="pricefilter"] ');
-				let sGroup = $('#seasonGroup').find('input');
-				let ctgGroup = $('.ps-5').find('input')
-				let chkGroup = [];
-				
-				$.each(ctgGroup, function(ele,obj){
-					$(obj).on('click', checkOnlyOneCtg);
-					$(obj).on('keydown', inputEnter)
-				})
-				$.each(sGroup, function(ele,obj){
-					$(obj).on('click', checkOnlyOneSeason);
-					$(obj).on('keydown', inputEnter)
-				})
-				
-				$.each(pGroup, function(ele,obj){
-					$(obj).on('click', checkOnlyOne);
-					$(obj).on('keydown', inputEnter)
-				})
-				function inputEnter(e){
-					if(e.key == 'Enter'){
-						$(this).trigger('click');
-					}
-				}
-				
-				function checkOnlyOne(e) {
-					console.log($(this).prop('checked'))
-					if($(this).prop('checked')){
-						 
-					     $('input[type="checkbox"][name="pricefilter"]').prop('checked',false);
-					 
-					     $(this).prop('checked',true);
-					 
-					}else{
-						$(this).prop('checked',false);
-					}
-					
-				}
-				function checkOnlyOneSeason(e) {
-					if($(this).prop('checked')){
-						 
-						$('#seasonGroup').find('input').prop('checked',false);
-					 
-					     $(this).prop('checked',true);
-					 
-					}else{
-						$(this).prop('checked',false);
-					}
-				}
-				function checkOnlyOneCtg(e) {
-					console.log($(this).prop('checked'))
-					if($(this).prop('checked')){
-						 
-						$('.ps-5').find('input').prop('checked',false);
-					 
-					     $(this).prop('checked',true);
-					 
-					}else{
-						$(this).prop('checked',false);
-					}
-					
-				}
-				
 				
 				
 				

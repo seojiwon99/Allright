@@ -330,7 +330,7 @@
          
       </div>
       <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog">
      <div class="modal-content">
        <div class="modal-header">
@@ -349,7 +349,8 @@
  </div>
 
       <script th:inline="javascript">
-         
+         const myModal =  new window.Modal(document.getElementById('exampleModal'))
+         console.log(myModal);
          $(document).ready(function () {
                let userData = JSON.parse(localStorage.getItem("product"));
                if (userData != null) {

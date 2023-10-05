@@ -132,7 +132,6 @@ public class AdminController {
 	
 	@GetMapping("admin/clearDeclareList")
 	public String cleardeclareList(Criteria cri,Model model, DeclareVO declareVO) {
-		System.out.println(declareVO);
 		int totalCnt = adminService.getTotalClearDeclareCount(declareVO);
 		model.addAttribute("declareList", adminService.getClearDeclareList(cri.getAmount(), cri.getPageNum(), declareVO.getDeclareContent(), declareVO.getDeclareReason()));
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
