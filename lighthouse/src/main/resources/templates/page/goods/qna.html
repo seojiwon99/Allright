@@ -146,6 +146,8 @@
 
 		</div>
 
+		<input type="hidden" th:value="${pageMaker.cri.pageNum}" id="qnapageNum" tabindex="-1">
+		<input type="hidden" th:value="${pageMaker.endPage}" id="qnapageEnd" tabindex="-1">
 		<nav class="d-flex justify-content-center mt-9" id="inquiryBox"
 			style="padding-bottom: 40px">
 			<ul class="pagination pagination-sm text-gray-400">
@@ -174,6 +176,27 @@
 			</ul>
 		</nav>
 
+		<th:block>
+			<script>
+				$(document).ready(function(){
+					$('.review').on('focus',reviewBox);
+				})
+
+				// 리뷰 읽기
+				function reviewBox(e){
+					console.log(e);
+
+					let Imgcontent = $(this).find('#imgContent').val();
+					// let Id = $(this).find('#userId').text();
+					// let reg = $(this).find('#regdate').text();
+					let content = $(this).find('#reviewContent').text();
+					console.log(Imgcontent);
+					console.log(content);
+					let msg = "이미지 텍스트" + Imgcontent + " 내용 "+ content;
+					VoiceReturnRead(msg);
+				}
+			</script>
+		</th:block>
 
 		<script type="text/javascript">
 		//function goPage(p){

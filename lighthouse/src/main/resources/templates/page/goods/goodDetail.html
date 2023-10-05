@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/default_layout}">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/default_layout}">
 <!-- Content -->
+
 <head>
 <style type="text/css">
 .card-img-top {
@@ -38,17 +37,15 @@
 								<!-- Card -->
 								<div class="card">
 									<!-- Slider -->
-									<div class="mb-4"
-										data-flickity='{"draggable": false, "fade": true}'
+									<div class="mb-4" data-flickity='{"draggable": false, "fade": true}'
 										id="productSlider">
 										<!-- Item 
-									<a href="#" th:each="img:${goods.productImg}"
-										th:data-bigpicture='|{ "imgSrc": "/upload/${img.uploadPath}/${img.uploadName}"}|'>
-										<img th:src="|/upload/${img.uploadPath}/${img.uploadName}|"
-										alt="..." width="540" height="480" class="card-img-top"
-										id="imgTarget" data-zoom="3" />-->
-										<div class="card-img-top" data-scale="2" width="540"
-											height="480"
+                           <a href="#" th:each="img:${goods.productImg}"
+                              th:data-bigpicture='|{ "imgSrc": "/upload/${img.uploadPath}/${img.uploadName}"}|'>
+                              <img th:src="|/upload/${img.uploadPath}/${img.uploadName}|"
+                              alt="..." width="540" height="480" class="card-img-top"
+                              id="imgTarget" data-zoom="3" />-->
+										<div class="card-img-top" data-scale="2" width="540" height="480"
 											style="background-image: url('../img/products/product-142.jpg')"></div>
 									</div>
 								</div>
@@ -58,11 +55,11 @@
 									data-flickity='{"asNavFor": "#productSlider", "contain": true, "wrapAround": false}'>
 									<!-- Item -->
 
-									<div class="col-12 px-2" style="max-width: 113px"
-										th:each="img:${goods.productImg}">
+									<div class="col-12 px-2" style="max-width: 113px" th:each="img:${goods.productImg}">
 										<!-- Image -->
 										<div class="ratio ratio-1x1 bg-cover"
-											th:style="|background-image: url(/upload/${img.uploadPath}/${img.uploadName});|"></div>
+											th:style="|background-image: url(/upload/${img.uploadPath}/${img.uploadName});|">
+										</div>
 									</div>
 
 
@@ -74,13 +71,11 @@
 								<div class="row mb-1">
 									<div class="col">
 										<!-- Preheading -->
-										<a class="text-muted" href="shop.html"
-											th:text="${goods.categoryCode}"></a>
+										<a class="text-muted" href="shop.html" th:text="${goods.categoryCode}"></a>
 									</div>
 									<div class="col-auto">
 										<!-- Rating -->
-										<div class="rating fs-xs text-dark"
-											th:data-value="${reviewAvg}">
+										<div class="rating fs-xs text-dark" th:data-value="${reviewAvg}">
 											<div class="rating-item">
 												<i class="fas fa-star"></i>
 											</div>
@@ -105,8 +100,7 @@
 
 								<!-- Price -->
 								<div class="mb-7">
-									<span
-										class="fs-lg fw-bold text-gray-350 text-decoration-line-through"
+									<span class="fs-lg fw-bold text-gray-350 text-decoration-line-through"
 										th:text="${goods.productCost}+원"></span>
 									<!-- 할인가격 -->
 									<span class="ms-1 fs-5 fw-bolder text-primary">[[${goods.salePrice}]]원</span>
@@ -114,7 +108,7 @@
 										th:value="${goods.salePrice}">
 								</div>
 
-
+								<!-- Form -->					
 								<div class="form-group"
 									style="font-size: 15px; border-bottom: 1px solid rgba(0, 0, 0, 0.3)">
 									<div style="padding-bottom: 8px; color: grey">
@@ -135,6 +129,7 @@
 									<div class="mb-2" style="padding-bottom: 24px">
 										<!-- option -->
 										<div class="col-12 col-lg-auto">
+
 
 											<!--/* <div th:each="option,status : ${options}">
 												<div
@@ -196,6 +191,7 @@
 
 										<div class="row gx-5 mb-7">
 
+
 											<div class="col-12 col-lg">
 												<!-- Submit -->
 												<button type="button" class="btn w-100 btn-dark mb-2"
@@ -209,6 +205,7 @@
 													onclick="checkWish()">
 													찜 <i class="fe fe-heart ms-2"></i>
 												</button>
+
 											</div>
 										</div>
 
@@ -235,15 +232,14 @@
 					<div class="col-12">
 						<!-- Nav -->
 
-						<div
-							class="nav nav-tabs nav-overflow justify-content-start justify-content-md-center border-bottom"
+						<div class="nav nav-tabs nav-overflow justify-content-start justify-content-md-center border-bottom"
 							style="font-size: 24px; position: sticky; top: 0px; background-color: white; z-index: 1">
-							<a class="nav-link"
+							<a class="menu nav-link"
 								href="javascript:document.querySelector('#descriptionTab').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })">
-								상세정보 </a> <a class="nav-link"
+								상세정보 </a> <a class="menu nav-link"
 								href="javascript:document.querySelector('#sizeTab').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })">리뷰
 								<strong class="fs-sm ms" name="reviewCount">([[${count}]])</strong>
-							</a> <a class="nav-link"
+							</a> <a class="menu nav-link"
 								href="javascript:document.querySelector('#qnaTap').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })">
 								Q&A <strong class="fs-sm" name="inquiryCont">([[${inquiryCount}]])</strong>
 							</a>
@@ -274,38 +270,43 @@
 											</tr>
 											<tr>
 												<td scope="row" style="font-weight: 600">등록날짜</td>
-												<td scope="row"
-													th:text="${#dates.format(goods.productRegdate,'yyyy년 MM월 dd일')}"></td>
-											</tr>
-											<tr>
-												<td scope="row" style="font-weight: 600">배송방법</td>
-												<td scope="row" th:text="${goods.deliveryService}"></td>
-												<td scope="row" style="font-weight: 600">배송비</td>
-												<td scope="row" th:text="${goods.deliveryCost}+원"></td>
-											</tr>
+												<td scope="row" th:text="${#dates.format(goods.productRegdate,'yyyy년 MM월 dd일')}"></td>
+                                 </tr>
+                                 <tr>
+                                    <td scope="row" style="font-weight: 600">배송방법</td>
+                                    <td scope="row" th:text="${goods.deliveryService}"></td>
+                                    <td scope="row" style="font-weight: 600">배송비</td>
+                                    <td scope="row" th:text="${goods.deliveryCost}+원"></td>
+                                 </tr>
 
-											<tr>
-												<td scope="row" style="font-weight: 600">생산지</td>
-												<td scope="row" th:text="${goods.productOrigin}"></td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
+                                 <tr>
+                                    <td scope="row" style="font-weight: 600">생산지</td>
+                                    <td scope="row" th:text="${goods.productOrigin}"></td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
 
-								<!-- 상세내용 -->
-								<div style="padding: 48px 0px">
-									<div th:text="${goods.productContent}"></div>
-								</div>
-							</div>
+                        <!-- 상세내용 -->
+                        <div style="padding: 48px 0px">
+                           <div th:text="${goods.productContent}"></div>
+                        </div>
+                     </div>
 
-							<div>
+                     <div>
 
-								<!-- 리뷰-->
-								<div id="sizeTab"></div>
+                        <!-- 리뷰-->
+                        <div id="sizeTab">
+
+						</div>
+
+                     </div>
+
 
 							</div>
 
 							<!-- qna -->
+              <div id="focusdiv" tabindex="0">test</div>
 							<div id="qnaTap"></div>
 						</div>
 					</div>
@@ -318,152 +319,166 @@
 		<!-- REVIEWS -->
 
 
+	
+	
+    <script th:inline="javascript">
+  let reviewTitle = '';
+		let reviewPage = '';
+		let reviewEnd ='';
 
-		<script th:inline="javascript">
-
-	// 옵션 초기화		
-	let optionDetail =[[${optionDetail}]];
-	let optionLength = [[${#lists.size(options)}]];
-	
-	window.addEventListener("DOMContentLoaded", (event) => {
-		//리뷰 로드
-		reviewPageLoad(1);
-		inquiryPageLoad(1);		
-		changeOptionHandler();
-		
-		
-		//이벤트 지정		
-		$('.selectbox').on("change",changeOptionHandler)
-		$('.cnt').on("change", cntChangeHandler);
-	    $("#loginTag").on("click", loginTagClickHandler);
-		
-	});   
-	
-	/*------------------------
-	리뷰 페이지 로드
-	-------------------------*/  	
-	function reviewPageLoad(p){
-		let productCode = [[${goods.productCode}]];
-		let url = "reviewView?productCode="+productCode+"&pageNum="+p;
-		$("#sizeTab").load(url)
-	}
-	
-	/*------------------------
-	qna 페이지 로드
-	-------------------------*/
-	function inquiryPageLoad(p){
-		let productCode = [[${goods.productCode}]];
-		let url = "inquiryView?productCode="+productCode+"&pageNum="+p;
-		$("#qnaTap").load(url)
-	}
-
-	
-    /*------------------------
-	option 선택 박스
-	-------------------------*/  
-	function changeOptionHandler(){
-  
-		if(!$(this).hasClass("last")){				
-			$(this).next().attr("disabled",false);			
-		}else{
-			//선택 값				
-			let optionVal = '';
-			
-			//select 초기화
-			$('.selectbox').each(function(){
-				optionVal += $(this).val();
-				$(this).val('');
-			})
-			
-			//첫번째 제외 disabled
-			$('.selectbox:gt(0)').attr("disabled",true);
-			console.log(optionVal);
-			
-			let flag = true;
-			//기존 선택 유무
-			$(".optionDetailCodeName").each(function(){
-				if($(this).text()==optionVal){
-					alert("이미 선택된 옵션입니다");
-					flag = false;
-					return true;
-				}
-			})
-			if(flag == false) return;
-			
-			//detailCode, 가격 찾기
-			for(let i=0; i<optionDetail.length; i++){
-				if(optionDetail[i].optionLast == optionVal){
-					let code = optionDetail[i].optionDetailCode;
-					let originPrice = $("#originPrice").val();
-					let price = optionDetail[i].optionPrice;
-					
-					let sum = parseInt(originPrice) + parseInt(price);
-					console.log(sum);
-					
-					let optionView =$("#optionView");
-					let liTag =`<li style="border: 1px solid rgba(0,0,0,0.2); padding:10px; margin-bottom:10px;">
-						<div style="display:flex; justify-content:space-between">
-							<span class="optionDetailCodeName">${optionVal}</span>
-							<button class="optionCloseBtn" type="button" style="all: unset">X</button>
-						</div>
-						
-						<div> 
-							<input type="hidden" name="optionDetailCode" value="${code}"> 
-							개수 : <input type="hidden" value="${price}" name="optionPrice"> 
-							<input type="number" class="orderCnt" min="1" value="1" /> 
-						</div>
-						
-						<div> 가격 : <span><strong>${originPrice}</strong> (현재 할인가)</span> 
-						+ <span class="orderPrice"><strong>${price}</strong> (옵션가격)</span>
-						</div>
-						<div> 
-						<strong style="display:none;" id="orPrice">${sum}</strong>
-						총 가격 : <span class="changePriceShow"><strong>${sum}</strong></span>원
-						</div>
-					</li>`;
-					$("#optionView").append(liTag);
-					break;
-					} //end of if
-				}//end of for
-		}//end of else
-	}//end of function
-	
-	//optionCloseBtn 지우기
-	
-	$(document).on("click",".optionCloseBtn",function(e){
-		$(this).parent().parent().remove();
-	})
-
-	//옵션 가격 올리기
-	$(document).on('change','.orderCnt',function(e){
-		console.log($(this));
-		let choose = $(this).parent().parent().find('strong')[2];
-		console.log(choose.innerText);
-		
-		let price =choose.innerText;
-		
-		let count = $(this).val();
-		console.log(count);
-		
-		let sum = parseInt(price) * count;
-		
-		sum = sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		let strongStr = $('<strong/>').append(sum);
-		let realp = $($(this).parent().next().next().children()[1]).html(strongStr);
-	})
-	
+		let qnaPage = '';
+		let qnaEnd ='';
+      
+   // 옵션 초기화      
+   let optionDetail =[[${optionDetail}]];
+   let optionLength = [[${#lists.size(options)}]];
    
-	//가격 스크립트
-	//let price = $(".changePrice").val();
-	//price = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';   
-	//$(".realPrice").html(price);
-	
+   window.addEventListener("DOMContentLoaded", (event) => {
+      //리뷰 로드
+      reviewPageLoad(1);
+      inquiryPageLoad(1);      
+      changeOptionHandler();
+      
+      
+      //이벤트 지정      
+      $('.selectbox').on("change",changeOptionHandler)
+      $('.cnt').on("change", cntChangeHandler);
+       $("#loginTag").on("click", loginTagClickHandler);
+      
+   });   
+   
+   /*------------------------
+   리뷰 페이지 로드
+   -------------------------*/     
+   function reviewPageLoad(p){
+      let productCode = [[${goods.productCode}]];
+      let url = "reviewView?productCode="+productCode+"&pageNum="+p;
+      $("#sizeTab").load(url,function(){
+				reviewTitle = $('#Reviewtitle');
+				reviewPage = $('#reviewpageNum').val();
+				reviewEnd = $('#reviewpageEnd').val();
+			})
+   }
+   
+   /*------------------------
+   qna 페이지 로드
+   -------------------------*/
+   function inquiryPageLoad(p){
+      let productCode = [[${goods.productCode}]];
+      let url = "inquiryView?productCode="+productCode+"&pageNum="+p;
+     $("#qnaTap").load(url, function(){
+				qnaPage = $('#qnapageNum').val();
+				qnaEnd = $('#qnapageEnd').val();
+			})
+   }
+
+   
+    /*------------------------
+   option 선택 박스
+   -------------------------*/  
+   function changeOptionHandler(){
+  
+      if(!$(this).hasClass("last")){            
+         $(this).next().attr("disabled",false);         
+      }else{
+         //선택 값            
+         let optionVal = '';
+         
+         //select 초기화
+         $('.selectbox').each(function(){
+            optionVal += $(this).val();
+            $(this).val('');
+         })
+         
+         //첫번째 제외 disabled
+         $('.selectbox:gt(0)').attr("disabled",true);
+         console.log(optionVal);
+         
+         let flag = true;
+         //기존 선택 유무
+         $(".optionDetailCodeName").each(function(){
+            if($(this).text()==optionVal){
+               alert("이미 선택된 옵션입니다");
+               flag = false;
+               return true;
+            }
+         })
+         if(flag == false) return;
+         
+         //detailCode, 가격 찾기
+         for(let i=0; i<optionDetail.length; i++){
+            if(optionDetail[i].optionLast == optionVal){
+               let code = optionDetail[i].optionDetailCode;
+               let originPrice = $("#originPrice").val();
+               let price = optionDetail[i].optionPrice;
+               
+               let sum = parseInt(originPrice) + parseInt(price);
+               console.log(sum);
+               
+               let optionView =$("#optionView");
+               let liTag =`<li style="border: 1px solid rgba(0,0,0,0.2); padding:10px; margin-bottom:10px;">
+                  <div style="display:flex; justify-content:space-between">
+                     <span class="optionDetailCodeName">${optionVal}</span>
+                     <button class="optionCloseBtn" type="button" style="all: unset">X</button>
+                  </div>
+                  
+                  <div> 
+                     <input type="hidden" name="optionDetailCode" value="${code}"> 
+                     개수 : <input type="hidden" value="${price}" name="optionPrice"> 
+                     <input type="number" class="orderCnt" min="1" value="1" /> 
+                  </div>
+                  
+                  <div> 가격 : <span><strong>${originPrice}</strong> (현재 할인가)</span> 
+                  + <span class="orderPrice"><strong>${price}</strong> (옵션가격)</span>
+                  </div>
+                  <div> 
+                  <strong style="display:none;" id="orPrice">${sum}</strong>
+                  총 가격 : <span class="changePriceShow"><strong>${sum}</strong></span>원
+                  </div>
+               </li>`;
+               $("#optionView").append(liTag);
+               break;
+               } //end of if
+            }//end of for
+      }//end of else
+   }//end of function
+   
+   //optionCloseBtn 지우기
+   
+   $(document).on("click",".optionCloseBtn",function(e){
+      $(this).parent().parent().remove();
+   })
+
+   //옵션 가격 올리기
+   $(document).on('change','.orderCnt',function(e){
+      console.log($(this));
+      let choose = $(this).parent().parent().find('strong')[2];
+      console.log(choose.innerText);
+      
+      let price =choose.innerText;
+      
+      let count = $(this).val();
+      console.log(count);
+      
+      let sum = parseInt(price) * count;
+      
+      sum = sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      let strongStr = $('<strong/>').append(sum);
+      let realp = $($(this).parent().next().next().children()[1]).html(strongStr);
+   })
+   
+   
+   //가격 스크립트
+   //let price = $(".changePrice").val();
+   //price = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';   
+   //$(".realPrice").html(price);
+   
    
 
    /*------------------------
-	돋보기기능
-	-------------------------*/
-	$('.card-img-top')
+   돋보기기능
+   -------------------------*/
+   $('.card-img-top')
     .append('<div class="photo"></div>')
     .children('.photo').css({"background-image": "url(../img/products/product-142.jpg)"});
     
@@ -486,77 +501,295 @@
         $(this).children('.photo').css({
             'transform-origin': ((e.pageX - $(this).offset().left) / $(this).width()) * 100 + '% ' + ((e.pageY - $(this).offset().top) / $(this).height()) * 100 + '%'
         });
-	})
+   })
 
-	/*------------------------
-	회원가입창으로
-	-------------------------*/ 
-	function loginTagClickHandler() {
-		let result = confirm("회원가입 창으로 이동하시겠습니까?");
+   /*------------------------
+   회원가입창으로
+   -------------------------*/ 
+   function loginTagClickHandler() {
+      let result = confirm("회원가입 창으로 이동하시겠습니까?");
 
-		if (result) {
-			location.replace("/login");
-		} 
-	}
+      if (result) {
+         location.replace("/login");
+      } 
+   }
 
     /*------------------------
-	찜 으로~
-	-------------------------*/
-	function checkWish(){
-		let memberId = $("#hidden").val(); 
-    	if(memberId==''){
-    		alert("로그인 후 사용가능합니다");
-    	}else{
-    	
-		let wishObj = {
-    			memberId : $("#member").val(),
-    			productCode: $("#productCode").val()
-    		}
-		console.log(wishObj);
-		
-    	$.ajax({
-    		url:"buyer/checkWish",
-			type:"get",
-			data:wishObj,
-			success:function(result){
-				if(result>0){
-					alert("이미 찜 목록에 존재합니다");
-				}else{
-					insertWish($("#member").val(),  $("#productCode").val());			
-				}
-			}
-    	})
-    	}
+   찜 으로~
+   -------------------------*/
+   function checkWish(){
+      let memberId = $("#hidden").val(); 
+       if(memberId==''){
+          alert("로그인 후 사용가능합니다");
+       }else{
+       
+      let wishObj = {
+             memberId : $("#member").val(),
+             productCode: $("#productCode").val()
+          }
+      console.log(wishObj);
+      
+       $.ajax({
+          url:"buyer/checkWish",
+         type:"get",
+         data:wishObj,
+         success:function(result){
+            if(result>0){
+               alert("이미 찜 목록에 존재합니다");
+            }else{
+               insertWish($("#member").val(),  $("#productCode").val());         
+            }
+         }
+       })
+       }
     }
-	
-	function insertWish(member,code){
-			let wishObj = {
-    			memberId : member,
-    			productCode: code
-    		}
-			console.log(wishObj);
-			
-    		$.ajax({
-    			url:"buyer/addWish",
-    			type:"post",
-    			data:JSON.stringify(wishObj),
-    			contentType:"application/json",
-    			success:function(result){
-    				console.log(result);
-    				if(!confirm("찜 목록으로 이동하시겠습니까?")){
-    				
-    				}else{
-    					location.href="/page/buyer/wishList";	
-    				}
-    				
-    			},
-    			fail:function(reject){
-    				console.log(reject);
-    			},
-    		})
-    	
+   
+   function insertWish(member,code){
+         let wishObj = {
+             memberId : member,
+             productCode: code
+          }
+         console.log(wishObj);
+         
+          $.ajax({
+             url:"buyer/addWish",
+             type:"post",
+             data:JSON.stringify(wishObj),
+             contentType:"application/json",
+             success:function(result){
+                console.log(result);
+                if(!confirm("찜 목록으로 이동하시겠습니까?")){
+                
+                }else{
+                   location.href="/page/buyer/wishList";   
+                }
+                
+             },
+             fail:function(reject){
+                console.log(reject);
+             },
+          })
+       
     }
     </script>
-	</div>
+      
+      
+	<!-- voice -->
+	<th:block>
+		<script th:inline="javascript">
+			let audioFileNow = new Audio();
+			var AudioContext;
+			var audioContext;
+
+			let qna = [[${NqnaList}]];
+			let chk = false;
+			let idx = 0;
+			
+			window.onload = function() {
+				navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
+					AudioContext = window.AudioContext || window.webkitAudioContext;
+					audioContext = new AudioContext();
+				}).catch(e => {
+					console.error(`Audio permissions denied: ${e}`);
+				});
+
+			}
+
+			function VoiceReturnRead(text) {
+				var data = {
+					"voice": {
+						"languageCode": "ko-KR",
+						"name": "ko-KR-Neural2-B"
+					},
+					"input": {
+						"text": text,
+
+					},
+					"audioConfig": {
+						"audioEncoding": "mp3"
+					}
+				}
+
+				$.ajax({
+					type: 'POST',
+					url: 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
+					data: JSON.stringify(data),
+					dataType: 'JSON',
+					contentType: "application/json; charset=UTF-8",
+					success: function (res) {
+						var audioFile = new Audio();
+						let audioBlob = base64ToBlob(res.audioContent,
+							"mp3");
+						audioFile.src = window.URL
+							.createObjectURL(audioBlob);
+						audioFile.playbackRate = 1; //재생속도
+						if(audioFileNow.paused == false){
+							audioFileNow.pause();
+						}
+						audioFileNow = audioFile;
+						audioFileNow.play();
+					
+
+					},
+					error: function (request, status, error) {
+						alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
+					}
+				});
+			};
+
+			function base64ToBlob(base64, fileType) {
+				let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
+				let audioSrc = typeHeader + base64;
+				let arr = audioSrc.split(",");
+				let array = arr[0].match(/:(.*?);/);
+				let mime = (array && array.length > 1 ? array[1] : type) || type;
+				// url헤더 제거하고 btye로 변환
+				let bytes = window.atob(arr[1]);
+				// 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
+				let ab = new ArrayBuffer(bytes.length);
+				// 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
+				let ia = new Uint8Array(ab);
+				for (let i = 0; i < bytes.length; i++) {
+					ia[i] = bytes.charCodeAt(i);
+				}
+				return new Blob([ ab ], {
+					type : mime
+				});
+			}
+
+			$(document).ready(function(){
+				startVoice();
+				
+				// reviewBox focus -> 읽힘
+				// $('.review').on('focus',reviewBox);
+			})
+	
+
+			function startVoice() {
+				let voice = $('#detailtext').text();
+				let text = '상품 상세보기 페이지입니다. 1. 상품정보 2. 상품 상세보기 3. 리뷰보기 4. 문의글 보기 메뉴를 선택해주세요. 9. 홈으로가기 0. 메뉴 다시듣기';
+				VoiceReturnRead(text);
+			}
+
+
+			idx2 = 0;
+			$(document).on('keydown',function(e){
+				if(e.keyCode == 48){
+					chk = false;
+					idx = 0;
+					startVoice();
+				}else if(e.keyCode == 49){
+					chk = false;
+					idx = 0;
+					let msg = "상품명 : " + [[${goods.productName}]] + "원가 :" + [[${goods.productName}]] + 
+					"할인가 :" + [[${goods.salePrice}]] + "배송정보 :" + [[${goods.deliveryService}]]+ 
+					"배송비" +[[${goods.deliveryCost}]] + "생산지" + [[${goods.productOrigin}]];
+					VoiceReturnRead(msg);
+				}else if(e.keyCode == 50){
+					chk = false;
+					idx = 0;
+					$('.menu').get(0).click();
+					let box = $('.detailPro');
+					let good = [[${goods.memberId}]];
+					let msg = $('.detailtitle').text() + " 제품명:" +[[${goods.productName}]] + " 판매자:" + [[${goods.memberId}]] + " 사업자번호:" 
+					+ [[${goods.productCost}]]+ " 원가:" + [[${goods.productCost}]] + " 등록날짜:" + [[${#dates.format(goods.productRegdate,'yyyy년 MM월 dd일')}]]
+					+ " 배송방법:" + [[${goods.deliveryService}]]+ " 베송비:" +[[${goods.deliveryCost}]] +"원" + " 생산지: " +[[${goods.productOrigin}]] ;  
+					VoiceReturnRead(msg);
+				}else if(e.keyCode == 51){
+					chk = false;
+					idx = 0;
+					$(reviewTitle).focus();
+					$('.menu').get(1).click();
+					let text = '리뷰목록입니다. q. 이전페이지 w. 다음페이지  tab키를 누르면 리뷰를 하나씩 읽어드립니다.';
+					VoiceReturnRead(text);
+					let page = reviewPage;
+				}else if(e.keyCode == 52){
+					$('#qnaTap').focus();
+					$('.menu').get(2).click();
+					chk = true;
+					idx = 0;
+					let text = 'qna목록입니다. tab키를 누르면 문의글을 하나씩 읽어드립니다.';
+					VoiceReturnRead(text);
+				}else if(e.keyCode == 57){
+					chk = false;
+					idx = 0;
+					location.href="/";
+				}else if(e.keyCode == 81){
+					chk = false;
+					idx = 0;
+					let page = reviewPage;
+					let title = reviewTitle;
+
+					if(page == 1){
+						let msg ='리뷰 1페이지입니다.';
+						VoiceReturnRead(msg);
+						
+						return;
+					}
+					page--;
+					$(title).focus();
+
+					msg = page+'페이지 입니다. tab키를 두번 눌러주세요';
+					VoiceReturnRead(msg);
+					reviewPageLoad(page);
+				}else if(e.keyCode == 87){
+					chk = false;
+					idx = 0;
+					let page = Number(reviewPage);
+					let title = reviewTitle;
+					let endPage = reviewEnd;
+
+					if(page == reviewEnd){
+						let msg = '리뷰 마지막페이지입니다.';
+						VoiceReturnRead(msg);
+						return;
+					}
+					
+					page++
+					console.log(page);
+					msg = page+'페이지 입니다. tab키를 두번 눌러주세요';
+					VoiceReturnRead(msg);
+
+					$(title).focus();
+					reviewPageLoad(page);
+				}else if(chk == true && e.keyCode == 9){
+					$('.menu').get(2).click();
+					
+					console.log(idx);
+					// $("#focusdiv").focus();
+					if(idx == qna.length){
+						msg = "다음글이 없습니다.";
+						VoiceReturnRead(msg);
+						idx = qna.length;
+						return;
+					}
+					msg = "문의내용" + qna[idx].queContent +  "작성자" + qna[idx].memberId;
+					idx++;
+					VoiceReturnRead(msg);
+				}else if(chk == true &&  e.shiftKey){
+					$('.menu').get(2).click();
+				
+					//$("#focusdiv").focus();
+					if(idx == 0){
+						msg = "이전 글없습니다.";
+						VoiceReturnRead(msg);
+						idx2 = 0;
+						return;
+					}else if(idx == 1){
+						msg = "이전 글없습니다.";
+						VoiceReturnRead(msg);
+						idx2 = 1;
+						return;
+					}
+					idx--;
+					msg = "문의내용" + qna[idx-1].queContent +  "작성자" + qna[idx-1].memberId;
+					VoiceReturnRead(msg);
+				}
+			});
+			
+		</script>
+
+	</th:block>
+   </div>
 </body>
 </html>

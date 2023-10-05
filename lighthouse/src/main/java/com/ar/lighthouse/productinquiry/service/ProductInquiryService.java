@@ -20,4 +20,7 @@ public interface ProductInquiryService {
 
 	// 문의 사항 삭제
 	public boolean removeInquiry(int queCode);
+	
+	// 문의 N글 가져오기
+	public List<ProductInquiryVO> qnaGetInq(ProductInquiryVO productInquiryVO);
 }

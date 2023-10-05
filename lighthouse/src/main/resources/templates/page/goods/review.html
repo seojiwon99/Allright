@@ -21,7 +21,7 @@
 							<div class="col-12 col-md-auto">
 								<!-- Dropdown -->
 								<div class="dropdown mb-4 mb-md-0">
-									<span style="font-weight: 600">Reviews</span>
+									<span style="font-weight: 600" tabindex="0" id="Reviewtitle">Reviews</span>
 									<strong class="fs-sm ms-2" name="reviewCount">([[${count}]])</strong>
 								</div>
 							</div>
@@ -57,7 +57,7 @@
 									aria-expanded="false" th:if="${session.loginMember != null}">
 									리뷰 작성 </a> <a class="btn btn-sm btn-dark"
 									th:if="${session.loginMember == null}"
-									href="javascript:parent.location.href='page/member/loginForm'">
+									href="javascript:parent.location.href='page/member/loginForm'" tabindex="-1">
 									로그인 </a>
 							</div>
 						</div>
@@ -188,7 +188,7 @@
 						<!-- Reviews -->
 						<div class="mt-8">
 							<!-- Review -->
-							<div class="review" th:each="review:${review}">
+							<div class="review" th:each="review:${review}" tabindex="0">
 								<!-- 이미지 코드, 리뷰코드 -->
 								<div style="display: none">[[${review.reviewCode}]]</div>
 								<div th:if="${review.reviewImg} != null" style="display: none">
@@ -206,6 +206,8 @@
 													<img id="showReviewImg"
 														th:src="|upload/${review.reviewImg.uploadPath}/${review.reviewImg.uploadName}|"
 														width="180px" height="180px">
+													<input type="hidden" th:value="${review.reviewImg.imgContent}" id="imgContent">
+													
 												</div>
 											</div>
 										</div>
@@ -245,16 +247,16 @@
 											</div>
 
 											<!-- Text -->
-											<p class="text-gray-500" th:text="${review.reviewContent}"></p>
+											<p class="text-gray-500" th:text="${review.reviewContent}" id="reviewContent"></p>
 
 											<!-- Footer -->
 											<div class="row align-items-center">
 												<div class="col-auto me-auto">
 													<!-- 좋아요 -->
 													<div class="rate">
-														<a class="rate-item" data-toggle="vote" data-count="0"
+														<a class="rate-item" data-toggle="vote" data-count="0" tabindex="-1"
 															href="#" role="button"> <i class="fe fe-thumbs-up"></i>
-														</a> <a class="rate-item" data-toggle="vote" data-count="0"
+														</a> <a class="rate-item" data-toggle="vote" data-count="0" tabindex="-1"
 															href="#" role="button"> <i class="fe fe-thumbs-down"></i>
 														</a>
 													</div>
@@ -266,16 +268,16 @@
 														<button type="button"
 															th:if="${session.loginMember.memberId == review.memberId}"
 															data-bs-toggle="modal" data-bs-target="#exampleModal"
-															id="reviewModifyBtn"
+															id="reviewModifyBtn" tabindex="-1"
 															class="btn btn-xs btn-outline-border"
 															th:onclick="editReview([[${review}]])">수정</button>
 														<button
 															th:if="${session.loginMember.memberId == review.memberId}"
-															class="btn btn-xs btn-outline-border"
+															class="btn btn-xs btn-outline-border" tabindex="-1"
 															th:onclick="reviewDelete([[${review.reviewCode}]])"
 															id="reviewDelBtn">삭제하기</button>
 													</div>
-													<button class="btn btn-xs btn-outline-border"
+													<button class="btn btn-xs btn-outline-border" tabindex="-1"
 														th:if=" ${session.loginMember == null} or ${session.loginMember.memberId != review.memberId}"
 														data-bs-toggle="modal" data-bs-target="#declareModal"
 														id="revieDeclareBtn">신고하기</button>
@@ -430,7 +432,8 @@
 						</div>
 
 
-
+						<input type="hidden" th:value="${pageMaker.cri.pageNum}" id="reviewpageNum" tabindex="-1">
+						<input type="hidden" th:value="${pageMaker.endPage}" id="reviewpageEnd" tabindex="-1">
 						<!-- Pagination -->
 						<nav class="d-flex justify-content-center mt-9" id="inquiryBox"
 							style="padding-bottom: 40px">
@@ -467,15 +470,36 @@
 
 			</div>
 		</section>
+		<th:block>
+			<script>
+				$(document).ready(function(){
+					$('.review').on('focus',reviewBox);
+				})
+
+				// 리뷰 읽기
+				function reviewBox(e){
+					console.log(e);
+
+					let Imgcontent = $(this).find('#imgContent').val();
+					// let Id = $(this).find('#userId').text();
+					// let reg = $(this).find('#regdate').text();
+					let content = $(this).find('#reviewContent').text();
+					console.log(Imgcontent);
+					console.log(content);
+					let msg = "이미지 텍스트" + Imgcontent + " 내용 "+ content;
+					VoiceReturnRead(msg);
+				}
+			</script>
+		</th:block>
 
 		<script type="text/javascript">
 		
 	//리뷰 토글
 	$("#reviewForm").on("click",function(){
 		
-			$('#reviewForm').toggle("#reviewForm");
+		$('#reviewForm').toggle("#reviewForm");
 		
-	)
+	})
 	
 	function checkExtension(fileName, fileSize) {
 		//이미지 세부사항

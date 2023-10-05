@@ -30,6 +30,8 @@ import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.buyp.service.TradeVO;
 import com.ar.lighthouse.buyp.service.WishVO;
 import com.ar.lighthouse.common.CodeVO;
+import com.ar.lighthouse.common.Criteria;
+import com.ar.lighthouse.common.PageDTO;
 import com.ar.lighthouse.member.service.MemberVO;
 
 import lombok.AllArgsConstructor;
@@ -43,18 +45,27 @@ public class BuyerPageController {
 
 	// 주문목록
 	@GetMapping("page/buyer/orderList")
-	public String orderList(Model model, HttpSession session, DetailVO detailVO) {
-
+	public String orderList(@RequestParam(value = "pageNum", required = false) Integer pageNum, Model model, HttpSession session, DetailVO detailVO, Criteria cri) {
+		if (pageNum == null) {
+	        // pageNum이 전달되지 않은 경우 기본값을 설정하거나 예외 처리를 수행할 수 있습니다.
+	        pageNum = 1; // 기본값 설정
+	    }
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-
-		List<DetailVO> orderList = buyerPageService.getDetailList(memberId);
+		
+		// Criteria 객체 생성 및 'pageNum' 설정
+	    cri.setPageNum(pageNum);
+	    
+		int totalCnt = buyerPageService.getDetailCnt(cri);
+		model.addAttribute("pageMaker", new PageDTO(cri, totalCnt));
+		List<DetailVO> orderList = buyerPageService.getDetailList(memberId, cri);
 		model.addAttribute("orderList", orderList);
 
 		return "/page/buyer/orderList";
 	}
 
-	// 주문Option
+	// 주문 Option 
+
 	@GetMapping("page/buyer/orderOption")
 	public String orderOption(Model model, HttpSession session, DetailVO detailVO) {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
@@ -95,39 +106,51 @@ public class BuyerPageController {
 
 	// 쿠폰내역
 	@GetMapping("page/buyer/myCoupon")
-	public String MyCoupon(Model model, HttpSession session) {
+	public String MyCoupon(Model model, HttpSession session, Criteria cri) {
 
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 
-		List<CouponVO> myCoupon = buyerPageService.getCouponList(memberId);
+	    int totalCnt = buyerPageService.getCouponCnt(cri);
+		List<CouponVO> myCoupon = buyerPageService.getCouponList(memberId, cri);
 		model.addAttribute("myCoupon", myCoupon);
-
+		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		return "/page/buyer/myCoupon";
 	}
 
 	// 문의내역
 	@GetMapping("page/buyer/myInquiry")
-	public String myInquiry(Model model, HttpSession session) {
-
+	public String myInquiry(Model model, HttpSession session, Criteria cri) {
+		
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-
-		List<MyInquiryVO> myInquiry = buyerPageService.getMyQuiryList(memberId);
+		
+		int totalCnt = buyerPageService.getInqCnt(cri);
+		model.addAttribute("pageMaker", new PageDTO(cri, totalCnt));
+		List<MyInquiryVO> myInquiry = buyerPageService.getMyQuiryList(memberId, cri);
 		model.addAttribute("myInquiry", myInquiry);
 
 		return "/page/buyer/myInquiry";
 	}
+	
+	// 찜 내역
 
-	// 찜내역
 	@GetMapping("page/buyer/wishList")
-	public String wishList(Model model, HttpSession session) {
-
+	public String wishList(@RequestParam(value = "pageNum", required = false) Integer pageNum, Model model, HttpSession session, Criteria cri) {
+	    if (pageNum == null) {
+	        // pageNum이 전달되지 않은 경우 기본값을 설정하거나 예외 처리를 수행할 수 있습니다.
+	        pageNum = 1; // 기본값 설정
+	    }
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-
-		List<WishVO> wishList = buyerPageService.getWishList(memberId);
+		
+		// Criteria 객체 생성 및 'pageNum' 설정
+	    cri.setPageNum(pageNum);
+	    
+		int totalCnt = buyerPageService.getPageCnt(cri);
+		List<WishVO> wishList = buyerPageService.getWishList(memberId, cri);
 		model.addAttribute("wishList", wishList);
+		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 
 		return "/page/buyer/wishList";
 	}
@@ -142,6 +165,7 @@ public class BuyerPageController {
 //		model.addAttribute("pageMaker", new PageDTO(cri, pageCnt));
 //		return "page/buyer/wishList";
 //	}
+
 
 	// 취소 목록
 	@GetMapping("page/buyer/cancelList")
@@ -318,14 +342,19 @@ public class BuyerPageController {
 
 //	//찜 취소
 	@GetMapping("buyer/deleteWish")
-	public String removeWish(int favoriteCode, HttpSession session, Model model) {
+
+	public String removeWish(int favoriteCode, HttpSession session, Model model, Criteria cri){
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 		buyerPageService.removeWish(favoriteCode);
 
-		List<WishVO> wishList = buyerPageService.getWishList(memberId);
-		model.addAttribute("wishList", wishList);
+		int totalCnt = buyerPageService.getPageCnt(cri);
+		List<WishVO> wishList = buyerPageService.getWishList(memberId, cri);
 
+		model.addAttribute("wishList", wishList);
+		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
+		
 		return "/page/buyer/wishList :: #test";
 	}
 

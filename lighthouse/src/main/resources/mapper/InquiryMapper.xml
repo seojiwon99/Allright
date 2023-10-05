@@ -28,6 +28,12 @@
 	order by que_regdate DESC
   </select>
   
+  <select id="selectInquiryListN">
+  	SELECT *
+  	  FROM ar_inquiry
+  	 WHERE product_code = #{productCode}
+  	   AND que_secret = 'N'
+  </select>
   
   <select id="inquiryCount" resultType="int">
   	select count(*) as inquiryCount from ar_inquiry where product_code = #{productCode}

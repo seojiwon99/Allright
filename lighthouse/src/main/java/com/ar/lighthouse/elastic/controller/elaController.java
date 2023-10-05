@@ -2,6 +2,8 @@ package com.ar.lighthouse.elastic.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -16,10 +18,24 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
+import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilder;
+import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.metrics.MinAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.ScriptSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
+import org.elasticsearch.script.Script;
+import org.elasticsearch.script.ScriptType;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,12 +53,10 @@ import com.ar.lighthouse.main.service.MainPageService;
 @Controller
 public class elaController {
     String hostname ="localhost";
-    //String hostname = "e4d7-58-238-119-6.ngrok.io";
     int port = 9200;
     String scheme = "http";
     HttpHost host = new HttpHost(hostname, port, scheme);
-    String dd = "http://ec34-58-238-119-6.ngrok.io";
-    HttpHost hos = new HttpHost("e6c7-58-238-119-6.ngrok-free.app");
+    HttpHost hos = new HttpHost("e6c0-111-118-98-16.ngrok-free.app");
     //RestClientBuilder restClientBuilder = RestClient.builder(host);
     RestClientBuilder restClientBuilder = RestClient.builder(hos);
     
@@ -51,187 +65,179 @@ public class elaController {
 	
 	@Autowired
 	MainPageService service;	
-	
-	//matchAll 쿼리
-	public List<Map<String,Object>> HighLevelClientQuery(String indexName, int pageNum){
-		
-        List<Map<String,Object>> finalResult = new ArrayList<Map<String,Object>>();
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(
-                QueryBuilders.matchAllQuery()
-                //QueryBuilders.matchQuery("name", "product")
-        );
-        searchSourceBuilder.from(((pageNum-1)*9));//hit 시작 지점(0~8 /9~)
-        searchSourceBuilder.size(9); //hit 사이즈 (9~17)
-//      searchSourceBuilder.sort(name) // Add a sort against the given field name.
+	//페이징 적용. =======================================================================================================
+	 private void applyPaging(SearchSourceBuilder searchSourceBuilder, int pageNum) {
+	        searchSourceBuilder.from(((pageNum - 1) * 9));
+	        searchSourceBuilder.size(9);
+	    }
+	//필터 적용. ========================================================================================================
+	 private void applyFilter(SearchSourceBuilder searchSourceBuilder, String order) {
+		 if(order == "" || order == null) { //null exception 처리
+			 return;
+		 }
+		 else if(order.equalsIgnoreCase("new")) { // 신상품 순 정렬
+			 searchSourceBuilder.sort(SortBuilders.fieldSort("product_regdate").order(SortOrder.DESC));
+		 }else if(order.equalsIgnoreCase("review")) {
+			 searchSourceBuilder.sort(SortBuilders.fieldSort("review_count").order(SortOrder.DESC));
+			 //DB에 넣을 때부터 아마 review Count * review Star 평균을 한 score 필드를 하나 선언해줘야 할 듯.
+		 }else if(order.equalsIgnoreCase("price_desc")) {
+			 searchSourceBuilder.sort(SortBuilders.fieldSort("product_cost").order(SortOrder.DESC));
+		 }else if(order.equalsIgnoreCase("price_asc")) {
+			 searchSourceBuilder.sort(SortBuilders.fieldSort("product_cost").order(SortOrder.ASC));
+		 }
+	    }
+	//쿼리를 실행하는 메소드 ================================================================================================
+    private List<Map<String, Object>> executeSearch(String indexName, SearchSourceBuilder searchSourceBuilder) {
+        List<Map<String, Object>> finalResult = new ArrayList<>();
 
         try {
-            SearchRequest request = new SearchRequest(indexName); //인덱스 이름으로 검색 객체
-            request.source(searchSourceBuilder); //검색 조건 소스로 searchSouceBuilder 이용
-            SearchResponse response = client.search(request, RequestOptions.DEFAULT); // 응답 = RestHighLevelClient로 부터 검색
-            SearchHits searchHits = response.getHits(); //searchHits 객체에 응답의 hits로 초기화
-            for(SearchHit hit : searchHits){ // 반복문 돌며 hit 하나씩 꺼내서 Map으로 담기
+            SearchRequest request = new SearchRequest(indexName);
+            request.source(searchSourceBuilder);
+
+            SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+            SearchHits searchHits = response.getHits();
+
+            for (SearchHit hit : searchHits) {
                 Map<String, Object> result = hit.getSourceAsMap();
-                finalResult.add(result); // 담은 hit들은 하나의 객체이므로 다시 final에 담기
+                finalResult.add(result);
             }
-            return finalResult;
-            
-            
+
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to execute search.", e);
         }
+
+        return finalResult;
+    }
+
+	/*
+	 * 실제로 사용할 쿼리들 목록 ================================================================
+	*/
+    
+    public List<Map<String, Object>> FinalMatchQuery(String indexName, int pageNum, String keyword, String ctg, String order, Double minPrice, Double maxPrice){
+    	SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+    	BoolQueryBuilder boolQuery = QueryBuilders.boolQuery(); // 실행되야할 boolQuery builder
+    	
+    	if(minPrice != null && maxPrice != null) {
+    		minPrice = (double)minPrice;
+	    	maxPrice = (double)maxPrice;
+	    	RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery("product_cost")
+	                .gte(minPrice)  // Greater than equal
+	                .lte(maxPrice); // Less than equal 
+	    	boolQuery.must(rangeQuery); // 범위 추가
+    	}
+
+	    if (ctg != null && !ctg.isEmpty()) { //카테고리가 있을 경우 boolQuery에 추가 
+	        boolQuery.must(QueryBuilders.matchQuery("category_code", ctg)); 
+	        QueryBuilders.wildcardQuery(indexName, order);
+	    }
+
+	    if (keyword != null && !keyword.isEmpty()) { // 키워드가 있을 경우 boolQuery에 추가 
+	        boolQuery.should(QueryBuilders.matchQuery("product_name", keyword));
+	    }
         
- 
+        searchSourceBuilder.query(boolQuery); // 설정
+    	
+    	applyFilter(searchSourceBuilder, order);
+        applyPaging(searchSourceBuilder, pageNum);
+        
+    	return executeSearch(indexName, searchSourceBuilder);
     }
-	//전체중 키워드 검색
-	public List<Map<String,Object>> HighLevelClientQueryMatch(String indexName, int pageNum, String keyword){
-        List<Map<String,Object>> finalResult = new ArrayList<Map<String,Object>>();
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(
-                QueryBuilders.matchQuery("product_name", keyword)
-                //QueryBuilders.matchQuery("name", "product")
-        );
-        searchSourceBuilder.from(((pageNum-1)*9));
-        searchSourceBuilder.size(9);
-        try {
-            SearchRequest request = new SearchRequest(indexName);
-            request.source(searchSourceBuilder);
-            SearchResponse response = client.search(request, RequestOptions.DEFAULT);
-            SearchHits searchHits = response.getHits();
-            for(SearchHit hit : searchHits){
-                Map<String, Object> result = hit.getSourceAsMap();
-                finalResult.add(result);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return finalResult;
-    }
-	//카테고리 + 키워드 검색
-	public List<Map<String,Object>> HighLevelClientQueryCtg(String indexName, int pageNum, String keyword, String ctg){
-        List<Map<String,Object>> finalResult = new ArrayList<Map<String,Object>>();
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(
-                QueryBuilders.boolQuery()
-                .must(QueryBuilders.matchQuery("category_code", ctg))
-                .should(QueryBuilders.matchQuery("product_name", keyword))
-                //QueryBuilders.matchQuery("name", "product")
-        );
-        searchSourceBuilder.from(((pageNum-1)*9));
-        searchSourceBuilder.size(9);
-        try {
-            SearchRequest request = new SearchRequest(indexName);
-            request.source(searchSourceBuilder);
-            SearchResponse response = client.search(request, RequestOptions.DEFAULT);
-            SearchHits searchHits = response.getHits();
-            for(SearchHit hit : searchHits){
-                Map<String, Object> result = hit.getSourceAsMap();
-                finalResult.add(result);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return finalResult;
-    }
+    	//어디다 쓸지 모르겠음
+	    public List<Map<String, Object>> filterWithBoolQuery(String indexName, List<Map<String, Object>> filters, int pageNum) {
+	        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+	        for (Map<String, Object> filter : filters) {
+	            boolQueryBuilder.filter(QueryBuilders.matchQuery(filter.get("field").toString(), filter.get("value")));
+	        }
 	
+	        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+	        searchSourceBuilder.query(boolQueryBuilder);
+	        applyPaging(searchSourceBuilder, pageNum);
 	
-	
-	
-	public int QueryAllCount(String indexName) {
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(
-                QueryBuilders.matchAllQuery()
-                //QueryBuilders.matchQuery("name", "product")
-        );
-        searchSourceBuilder.size(1000);
-        try {
-        	SearchRequest request = new SearchRequest(indexName);
-        	request.source(searchSourceBuilder);
-            SearchResponse response = client.search(request,RequestOptions.DEFAULT);
-            SearchHits searchHits = null;
+	        return executeSearch(indexName, searchSourceBuilder);
+	    }
+    
 
-            searchHits = response.getHits();
+		//카운트 하는 쿼리 (queryBuilder를 받아서 그에 맞는 TotalHits를 가져온다) -------------------------------------------이하 카운트
+		public int countWithQuery(String indexName, QueryBuilder queryBuilder) {
+		    try {
+		        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+		        searchSourceBuilder.query(queryBuilder);
+		        searchSourceBuilder.size(0); // hits는 필요없고, 전체 수만 가져오면 된다.
+		        SearchRequest request = new SearchRequest(indexName);
+		        request.source(searchSourceBuilder);
 
-            //hit 갯수 가져오기
-            TotalHits hitCount  = searchHits.getTotalHits();
-            String hitTotal = String.valueOf(hitCount);
-            int cnt =  Integer.valueOf(hitTotal.substring(0,hitTotal.indexOf(" "))); // 결과 =  "xx hits" 따라서 0~공백까지 substr 후 변환
-            System.out.println(cnt);
-            return cnt;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-	}
-	public int QueryMatchCount(String indexName,String keyword) {
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(
-                QueryBuilders.matchQuery("product_name", keyword)
-                //QueryBuilders.matchQuery("name", "product")
-        );
-        searchSourceBuilder.size(1000);
-        try {
-        	SearchRequest request = new SearchRequest(indexName);
-        	request.source(searchSourceBuilder);
-            SearchResponse response = client.search(request,RequestOptions.DEFAULT);
-            SearchHits searchHits = null;
+		        SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+		        TotalHits hitCount = response.getHits().getTotalHits();
 
-            searchHits = response.getHits();
+		        return (int) hitCount.value;
+		    } catch (IOException e) {
+		        throw new RuntimeException("Failed to execute search.", e);
+		    }
+		}
+		//들어온 카테고리, 키워드에 따라 쿼리 변동
+		public int queryCount(String indexName, String keyword, String ctg, Double minPrice, Double maxPrice) {
+		    BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+		   
 
-            //hit 갯수 가져오기
-            TotalHits hitCount  = searchHits.getTotalHits();
-            String hitTotal = String.valueOf(hitCount);
-            int cnt =  Integer.valueOf(hitTotal.substring(0,hitTotal.indexOf(" "))); // 결과 =  "xx hits" 따라서 0~공백까지 substr 후 변환
-            System.out.println(cnt);
-            return cnt;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-	}
-	
-	public int QueryCtgMatchCount(String indexName,String keyword,String ctg) {
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(
-                QueryBuilders.boolQuery()
-                .must(QueryBuilders.matchQuery("category_code", ctg))
-                .should(QueryBuilders.matchQuery("product_name", keyword))
-                //QueryBuilders.matchQuery("name", "product")
-        );
-        searchSourceBuilder.size(1000);
-        try {
-        	SearchRequest request = new SearchRequest(indexName);
-        	request.source(searchSourceBuilder);
-            SearchResponse response = client.search(request,RequestOptions.DEFAULT);
-            SearchHits searchHits = null;
+		    if (ctg != null && !ctg.isEmpty()) { //카테고리가 있을 경우
+		        boolQuery.must(QueryBuilders.matchQuery("category_code", ctg));
+		    }
 
-            searchHits = response.getHits();
+		    if (keyword != null && !keyword.isEmpty()) { // 키워드가 있을 경우
+		        boolQuery.should(QueryBuilders.matchQuery("product_name", keyword));
+		    }
+		    if (minPrice != null && maxPrice != null) { //가격범위가 있을 경우
+		    	minPrice = (double)minPrice;
+		    	maxPrice = (double)maxPrice;
+		    	boolQuery.must(QueryBuilders.rangeQuery("product_cost").gte(minPrice).lte(maxPrice));
+		    }
 
-            //hit 갯수 가져오기
-            TotalHits hitCount  = searchHits.getTotalHits();
-            String hitTotal = String.valueOf(hitCount);
-            int cnt =  Integer.valueOf(hitTotal.substring(0,hitTotal.indexOf(" "))); // 결과 =  "xx hits" 따라서 0~공백까지 substr 후 변환
-            System.out.println(cnt);
-            return cnt;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-	}
+		    return countWithQuery(indexName, boolQuery);
+		}
 	
+		//insert or update 아직 쓸 일 없음.
+		public void saveOrUpdate(String indexName, JSONObject json) {
+	        String result  = "";
+	        try {
+	            final IndexRequest request = new IndexRequest(indexName);
+	            request.source(json, XContentType.JSON).id("p00001");
+	            final IndexResponse response = client.index(request, RequestOptions.DEFAULT);
+	            System.out.println("response : " +response.getResult().toString());
+	            result = response.getId().toString();
+	        } catch (IOException e) {
+	            System.out.println(e.toString());
+	        }
+		}
 	
-	//insert or update
-	public void saveOrUpdate(String indexName, JSONObject json) {
-        String result  = "";
-        try {
-            final IndexRequest request = new IndexRequest(indexName);
-            request.source(json, XContentType.JSON).id("p00001");
-            final IndexResponse response = client.index(request, RequestOptions.DEFAULT);
-            System.out.println("response : " +response.getResult().toString());
-            result = response.getId().toString();
-        } catch (IOException e) {
-            System.out.println(e.toString());
-        }
-	}
-	
-	
+	    //에러 발생. 계산된 가격 필터링 ? parse까지 성공,  가격 - 할인 이 음수인 경우가 있어서 오류 발생 중.
+  		public List<Map<String,Object>> HighLevelClientFilterPriceQuery(String indexName, int pageNum){
+  			
+  	        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+  	     // Function Score Query를 사용하여 계산된 점수에 따라 정렬
+  	        ScoreFunctionBuilder<?> scoreFunction = ScoreFunctionBuilders.scriptFunction(
+  	                "doc['product_cost'].value + Long.parseLong(doc['sale_price.keyword'].value)"); // 실제 판매되는 가격 순으로 정렬..?
+
+  	        FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(QueryBuilders.matchAllQuery(), scoreFunction);
+  	        searchSourceBuilder.query(functionScoreQueryBuilder);
+  	        searchSourceBuilder.sort(SortBuilders.scoreSort().order(SortOrder.DESC));
+  	        applyPaging(searchSourceBuilder, pageNum);
+
+            return executeSearch(indexName, searchSourceBuilder);
+  	 
+  	    }
+  		//점수별 전체 쿼리  // 아직 못했음. DB 추가필요
+  		public List<Map<String, Object>> HighLevelClientFilterBestQuery(String indexName, int pageNum) {
+  		    SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+  		    // 스크립트를 사용하여 field1과 field2의 값을 곱한 값을 계산하고 내림차순으로 정렬
+  		    Script script = new Script(ScriptType.INLINE, "painless",
+  		            "doc['field1'].value * doc['field2'].value", null);
+
+  		    searchSourceBuilder.query(QueryBuilders.matchAllQuery());
+  		    searchSourceBuilder.sort(new ScriptSortBuilder(script, ScriptSortBuilder.ScriptSortType.NUMBER).order(SortOrder.DESC));
+            applyPaging(searchSourceBuilder, pageNum);
+            return executeSearch(indexName, searchSourceBuilder);
+  		}	
 	
 	
 	
@@ -253,38 +259,27 @@ public class elaController {
 	
 	
 	@GetMapping("PList")
-	public String elaTestCategory(Criteria cri, Model model, String keyword, String ctg) {
+	public String elaTestCategory(Criteria cri, Model model, String keyword, String ctg, String order, Double minPrice, Double maxPrice) {
 		System.out.println(keyword + "  /  " + ctg);
+		System.out.println("order : ====" + order);
+		
 		int totalCnt = -1;
-		if((keyword == "" || keyword == null) && (ctg == "" || ctg == null)) { //키워드와 카테고리 둘다 없을 경우 matchAll
-			totalCnt = QueryAllCount("ar_products");
-			model.addAttribute("products", HighLevelClientQuery("ar_products", cri.getPageNum())) ;
-			model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
-				
-		}else if((ctg == "" || ctg == null) && (keyword != null || keyword != "")) { // 카테고리는 없고 키워드만 있을 경우 match bool (카테고리 없이 검색)
-			totalCnt = QueryMatchCount("ar_products", keyword);
-			model.addAttribute("products", HighLevelClientQueryMatch("ar_products", cri.getPageNum(), keyword)) ;
-			model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
-		}else if((keyword == "" || keyword == null) && (ctg != null || ctg != "")) { // 키워드는 없고 카테고리만 있을 경우 match must (카테고리 선택)
-			
-		}else { //키워드와 카테고리 둘다 있을 경우 (카테고리 선택 후 검색)
-			totalCnt = QueryCtgMatchCount("ar_products", keyword, ctg);
-			model.addAttribute("products", HighLevelClientQueryCtg("ar_products", cri.getPageNum(), keyword, ctg)) ;
-			model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
-		}
-		/*
-		 *as 
-		 * 
-		 * New = Regdate가 최근순
-		 * 
-		 * 
-		 * Best = 리뷰 수 * 별점 높은순 
-		 * 
-		 * 
-		 * 정렬 = 가격 순 + -
-		 * 
-		 * 
-		 */
+		List<Map<String, Object>> products = new ArrayList<Map<String,Object>>();
+		
+		
+		//필요한 조건들이 있다면 bool쿼리에 축적하여 쌓는방식
+		totalCnt = queryCount("ar_products",keyword,ctg, minPrice, maxPrice);
+		products = FinalMatchQuery("ar_products", cri.getPageNum(), keyword, ctg, order, minPrice, maxPrice);
+		
+//		products = HighLevelClientFilterPriceQuery("ar_products", cri.getPageNum());
+		
+//		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+//		boolQueryBuilder.must(QueryBuilders.wildcardQuery("message", "ANG*"));
+//		나중에 카테고리 선택시 Filter 추가할 예정
+		
+		System.out.println("전체 수 : =====" + totalCnt);
+		model.addAttribute("products", products);
+		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		model.addAttribute("categories",service.getCategoryList());
 		model.addAttribute("allCtg", service.getAllCategoryList());
 		return "page/goods/goodsList"; 

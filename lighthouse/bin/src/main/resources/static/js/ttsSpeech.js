@@ -5,15 +5,12 @@
 	  	function setVoiceList() {
 	  	voices = window.speechSynthesis.getVoices();
 	  	}
-	  	
   
 	 	 setVoiceList();
-	 	 
 	  
 	 	 if (window.speechSynthesis.onvoiceschanged !== undefined) {
 	 	 	window.speechSynthesis.onvoiceschanged = setVoiceList;
 	 	 }
-	 	 
 	  
 	  	function speech(txt) {
 	      if(!window.speechSynthesis) {
@@ -48,16 +45,21 @@
 	      utterThis.lang = lang;
 	      utterThis.pitch = 1;
 	      utterThis.rate = 1; //속도
-	      const synth = window.speechSynthesis;
-	      synth.cancel();
-	      synth.speak(utterThis);
+
+	      window.speechSynthesis.speak(utterThis);
 	  }
 	  
-
-
+	  	  function g_gout(){
+	      var t = document.getElementById("code_reddit");
+	      speech(t.value);
+	  	}
+	  	let msg = "반갑습니다. 생활용품 종합 쇼핑몰 All Right입니다. 메뉴얼을 들으시려면  하나 라고 말씀해주세요."
+	  	
+	  	$(document).ready(function(){
+	  		g_gout();
+	  	})
 	  	function t_gout(text){
 	  		speech(text);
-	  		console.log(speech.status)
 	  	}
 	  	
 	  

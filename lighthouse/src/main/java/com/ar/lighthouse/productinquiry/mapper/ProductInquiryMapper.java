@@ -26,4 +26,6 @@ public interface ProductInquiryMapper {
 
 	// 문의 사항 삭제
 	public int deleteInquiry(int queCode);
+	
+	public List<ProductInquiryVO> selectInquiryListN(ProductInquiryVO productInquiryVO);
 }

@@ -46,4 +46,9 @@ public class ProductInquiryServiceImpl implements ProductInquiryService {
 		return mapper.inquiryCount(productInquiryVO);
 	}
 
+	@Override
+	public List<ProductInquiryVO> qnaGetInq(ProductInquiryVO productInquiryVO) {
+		return mapper.selectInquiryListN(productInquiryVO);
+	}
+
 }
