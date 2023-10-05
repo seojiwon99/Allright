@@ -79,7 +79,7 @@
 										<li class="nav-item"><a class="nav-link"
 											href="/sellerMypage">판매자정보</a></li>
 										<li class="nav-item"><a class="nav-link"
-											href="./docs/getting-started.html">고객센터</a></li>
+											href="/sellerInquiry">고객센터</a></li>
 						</ul>
 
 
@@ -107,7 +107,7 @@
 							<span id="onemonth">1개월</span>
 						</button>
 						<button type="button" id="threeMonthBtn"
-							class="btn btn-primary2 active">
+							class="btn btn-primary2">
 							<span id="thmonth">3개월</span>
 						</button>
 
@@ -257,13 +257,130 @@
 					function refreshList() {
 					    location.reload();
 					}
-				});
+					
+					
+					
+					
+					$('#orderSearch').on('click',function(){
+						let key = $('._4LshyCrDpi').val();
+						let value = $('._3y2h2mGnkI').val();
+						let fromDate = $('#from').val();
+						let toDate = $('#to').val()
+						
+						console.log(key,value,fromDate,toDate);
+
+						$.ajax({
+							url : 'inquirySearch',
+							type : 'get',
+							data : {
+								"searchValue" : value, 
+						 		"searchKey" : key,
+						 		fromDate,
+						 		toDate
+							}
+						})
+						 		
+						
+						.done(sellerInquiry=>{
+							console.log(sellerInquiry);
+							 $('#inquiryList').replaceWith(sellerInquiry); 
+							 
+
+						})
+						.fail(reject=>{
+							console.log(reject);
+						})
+						
+					})
+					
+					
+					const currentDate = new Date();
+					const koreanTime = new Date(currentDate).toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
+					const formattedDate = koreanTime.split('T')[0];
+					$('#to').val(formattedDate);
+					  
+					  
+
+					
+					
+
+					console.log(formattedDate); // 대한민국 시간의 날짜 부분 출력
+					  
+					  
+					 $('#todayBtn').click(function() {
+							displayDate('today');
+						  });
+						  $('#weekBtn').click(function() {
+							displayDate('week');
+						  });
+						  $('#oneMonthBtn').click(function() {
+							displayDate('oneMonth');
+						  });
+						  $('#threeMonthBtn').click(function() {
+							displayDate('threeMonth');
+						  });
+					  
+						  // 날짜 표시 함수
+					function displayDate(range) {
+						const currentDate = new Date();
+						let startDate, endDate;
+					  
+						switch (range) {
+						  case 'today':
+							startDate = new Date(currentDate);
+							endDate = new Date(currentDate);
+							break;
+						  case 'week':
+							startDate = new Date(currentDate);
+							endDate = new Date(currentDate);
+							startDate.setDate(endDate.getDate() - 7);
+							break;
+						  case 'oneMonth':
+							startDate = new Date(currentDate);
+							endDate = new Date(currentDate);
+							startDate.setMonth(endDate.getMonth() - 1);
+							break;
+						  case 'threeMonth':
+							startDate = new Date(currentDate);
+							endDate = new Date(currentDate);
+							startDate.setMonth(endDate.getMonth() - 3);
+							break;
+						  default:
+							startDate = null;
+							endDate = null;
+						}
+					  
+						// endDate 값을 input 요소에 설정
+						if (startDate) {
+						const formattedEndDate = endDate.toISOString().split('T')[0];
+
+
+						  
+						  $('#to').val(formattedEndDate);
+						} else {
+						  $('#to').val('');
+						}
+					  
+						// startDate 값을 input 요소에 설정
+						if (endDate) {
+						  // startDate를 yyyy-mm-dd 형식의 문자열로 변환
+						  const formattedStartDate = startDate.toISOString().split('T')[0];
+						  
+						  // input 요소 선택 후 value 설정
+						  $('#from').val(formattedStartDate);
+						} else {
+						  // startDate가 null이면 input 요소 값을 비움
+						  $('#from').val('');
+						}
+					  }
+		
+		
+		
+		
+});
+		
+		
+		
 	</script>
-
-
-
-
-
-
 </div>
 </html>

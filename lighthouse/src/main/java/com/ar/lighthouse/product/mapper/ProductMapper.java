@@ -92,6 +92,9 @@ public interface ProductMapper {
 
 //		정산데이터
 	public List<SellerCalVO> selectCalList(SellerCalVO sellerCalVO);
+	
+//	월별 주문건수
+	public List<DetailVO> selectMonthlyCount(DetailVO detailVO);
 
 //		통계 목록
 	public List<DetailVO> selectStatsList(String memberId);

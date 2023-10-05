@@ -10,8 +10,7 @@
 
 <div layout:fragment="sellerContent">
 
-
-	<div class="row gx-0">
+<div class="row gx-0">
 		<div class="col-12 col-lg-auto">
 
 			<!-- NAVBAR -->
@@ -46,7 +45,7 @@
 										<li class="list-styled-item"><a class="list-styled-link"
 											href="/productList">상품 조회/수정</a></li>
 										<li class="list-styled-item"><a class="list-styled-link"
-											href="insertProduct">상품등록</a></li>
+											href="/insertProduct">상품등록</a></li>
 
 									</ul>
 								</div>
@@ -69,8 +68,7 @@
 													class="list-styled-link" href="/exchangeList">교환반품관리</a></li>
 
 											</ul>
-								</div>
-									</div>
+
 										</div>
 
 										<li class="nav-item"><a class="nav-link"
@@ -93,13 +91,60 @@
 			</nav>
 
 		</div>
-         <div class="col-12 col-lg">
+		<div class="col-12 col-lg">
+		<table class="table">
+						<thead>
+							<tr>
+								<th>번호</th>
+								<th>제목</th>
+								<th>작성자</th>
+								<th>작성날짜</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="notice,status : ${noticeList}" th:onclick="|location.href='@{/custom/noticeInfo/(noticeCode=${notice.noticeCode},pageNum=${pageMaker.cri.pageNum},keyword=${pageMaker.cri.keyword})}'|">
+								<td style="display:none;"><input type="hidden" th:value="${notice.noticeCode}" th:id="|code${status.index}|"></td>
+								<td th:id="|type${status.index}|">[[${notice.noticeType} == 'Y' ? '공지' : ${pageMaker.total} - (((${pageMaker.cri.pageNum}-1)* ${pageMaker.cri.amount}) + ${status.index})]]</td>
+								<td th:id="|title${status.index}|" th:onclick="|location.href='@{/custom/noticeInfo/(noticeCode=${notice.noticeCode},pageNum=${pageMaker.cri.pageNum})}'|">[[${notice.noticeTitle}]]</td>
+								<td th:id="|writer${status.index}|">[[${notice.noticeWriter}]]</td>
+								<td th:id="|date${status.index}|">[[${#dates.format(notice.noticeRegdate,'yyyy-MM-dd')}]]</td>
+							</tr>
+						</tbody>
+					</table>
 
-      <h3>판매자 메인</h3>
-          
+					<!-- Pagination -->
+					<nav
+						class="d-flex justify-content-center justify-content-md-end mt-10">
+						<ul class="pagination pagination-sm text-gray-400">
+							<li class="page-item" th:if="${pageMaker.prev}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/custom/notice/(pageNum = ${pageMaker.startPage - 1})}">
+									<i class="fa fa-caret-left"></i>
+							</a></li>
+							<th:block
+								th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+								<li th:if="${pageMaker.endPage} ne 0"
+									th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+									th:each="pageButtom : ${#numbers.sequence(start,end)}"
+									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
+									<a class="page-link" href="#"
+									th:href="@{/custom/notice/(pageNum= ${pageButtom} )}"
+									th:text="${pageButtom}"></a>
+								</li>
+							</th:block>
 
-      </div>
+							<li class="page-item" th:if="${pageMaker.next}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/custom/notice/(pageNum = ${pageMaker.endPage + 1})}">
+									<i class="fa fa-caret-right"></i>
+							</a></li>
+						</ul>
+					</nav>
+		
+		
+		</div>
+
+
+
 </div>
-</div>
-
 </html>
