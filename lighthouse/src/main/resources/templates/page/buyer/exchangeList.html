@@ -94,7 +94,7 @@
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">교환 번호:</h6>
                         <p class="mb-lg-0 fs-sm fw-bold">
-                          <span class="exchangeCode" th:text= "|${lists.exchangeCode}|" id="exchangeCode"></span>
+                          <span class="exchangeCode" th:text= "|${lists.exchangeCode}|" id="exchangeCode" tabindex='0'></span>
                         </p>
                       </div>
                       <div class="col-6 col-lg-3">
@@ -140,7 +140,7 @@
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">교환 승인 날짜:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                         <span class="exchangeProcessingdate" th:text="|${#dates.format(lists.exchangeProcessingdate, 'yyyy-MM-dd hh:mm:ss')}|"></span>
+                         <span class="exchangeProcessingdate" th:text="|${#dates.format(lists.exchangeProcessingdate, 'yyyy-MM-dd')}|"></span>
                         </p>
                       </div>
                       <div class="col-6 col-lg-3">
