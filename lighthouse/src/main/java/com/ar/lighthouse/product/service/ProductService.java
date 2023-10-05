@@ -15,7 +15,11 @@ public interface ProductService {
 	
 	List<MemberVO> getSellerInfo(String memberId);
 	
-	public List<ProductVO> getOptionProduct(String memberId);
+	public List<ProductVO> updateProduct(ProductVO productVO);
+	
+	public List<ProductVO> getOptionProduct(ProductVO productVO);
+	
+	public List<DetailVO> getStatusList(DetailVO detailVO);
 	
 //	전시상태변경
 	public int updateExStatus(ProductVO productVO);
@@ -71,10 +75,14 @@ public interface ProductService {
 	List<SellerCalVO> getCalList(SellerCalVO sellerCalVO);
 //	취소건 목록
 	List<DetailVO> getStaticList(String memberId);
-	
+
 //	월별 주문 건수
 	List<DetailVO> getMonthlyCount(DetailVO detailVO);
+
+//  주문 판매자 직접 취소
+	int deleteOrderSelf(DetailVO detailVO);
 	
+
 	//  옵션 VO 리스트
 	public List<OptionVO> getOptionList(OptionVO optionVO);
 	
