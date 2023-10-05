@@ -108,11 +108,10 @@
 							</td>
 
 							<td class="inquiryGetAns" id="answerForm"><textarea
-									style="font-size: 16px; width:100%;  border: none; border-bottom: 1px solid rgba(0, 0, 0, 0.3);" readonly>[[${inquiry.queContent}]]</textarea>
+									style="font-size: 16px; width:100%;  border: none; border-bottom: 1px solid rgba(0, 0, 0, 0.3);" readonly>Q: [[${inquiry.queContent}]]</textarea>
 								<textarea class="form-control form-control-sm" rows="5"
 									style="display: none;" id="que" readonly>[[${inquiry.queContent}]]</textarea>
-								<div style="font-size: 15px; padding-bottom: 50px">
-									[[${inquiry.queAns}]]</div>
+								<textarea style="font-size: 15px; border: none; border-bottom: 1px solid rgba(0, 0, 0, 0.3); width:100%;" readonly>A: [[${inquiry.queAns}]]</textarea>
 								<div>
 									<span style="font-size: 14px;">판매자:
 										[[${inquiry.sellerId}]]</span>

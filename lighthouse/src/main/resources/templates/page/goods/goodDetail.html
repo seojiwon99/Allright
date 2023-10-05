@@ -4,28 +4,27 @@
 <!-- Content -->
 
 <head>
-	<style type="text/css">
-		.card-img-top {
-			position: relative;
-			width: 540px;
-			height: 480px;
-			margin: 0 auto;
-		}
+<style type="text/css">
+.card-img-top {
+	position: relative;
+	width: 540px;
+	height: 480px;
+	margin: 0 auto;
+}
 
-		.photo {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background-repeat: no-repeat;
-			background-position: center;
-			background-size: cover;
-			transition: transform .5s ease-out;
-		}
-	</style>
+.photo {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	transition: transform .5s ease-out;
+}
+</style>
 </head>
-
 <body>
 	<div layout:fragment="content">
 		<!-- 단건 조회 -->
@@ -99,118 +98,126 @@
 								<!-- Heading -->
 								<h3 class="mb-2" th:text="${goods.productName}"></h3>
 
-
 								<!-- Price -->
 								<div class="mb-7">
 									<span class="fs-lg fw-bold text-gray-350 text-decoration-line-through"
 										th:text="${goods.productCost}+원"></span>
 									<!-- 할인가격 -->
-									<span class="ms-1 fs-5 fw-bolder text-primary"
-										th:text="${goods.salePrice}+원"></span>
+									<span class="ms-1 fs-5 fw-bolder text-primary">[[${goods.salePrice}]]원</span>
+									<input type="hidden" id="originPrice"
+										th:value="${goods.salePrice}">
 								</div>
 
-								<!-- Form -->
-								
-								<form>
-
-									<div class="form-group"
-										style="font-size: 15px; border-bottom: 1px solid rgba(0, 0, 0, 0.3)">
-										<div style="padding-bottom: 8px; color: grey">
-											<span>배송정보 : </span> <span>[[${goods.deliveryService}]]</span>
-										</div>
-										<div style="padding-bottom: 8px; color: grey">
-											<span>배송비 : </span> <span>[[${goods.deliveryCost}]]원</span>
-										</div>
-										<div style="padding-bottom: 8px; color: grey">
-											<span>생산지 : </span> <span>[[${goods.productOrigin}]]</span>
-										</div>
+								<!-- Form -->					
+								<div class="form-group"
+									style="font-size: 15px; border-bottom: 1px solid rgba(0, 0, 0, 0.3)">
+									<div style="padding-bottom: 8px; color: grey">
+										<span>배송정보 : </span> <span>[[${goods.deliveryService}]]</span>
 									</div>
+									<div style="padding-bottom: 8px; color: grey">
+										<span>배송비 : </span> <span>[[${goods.deliveryCost}]]원</span>
+									</div>
+									<div style="padding-bottom: 8px; color: grey">
+										<span>생산지 : </span> <span>[[${goods.productOrigin}]]</span>
+									</div>
+								</div>
 
 
-									<div class="form-group">
-										<!-- Label -->
+								<div class="form-group">
+									<!-- Label -->
 
-										<div class="mb-2" style="padding-bottom: 24px">
-											<!-- option -->
-											<div class="col-12 col-lg-auto">
+									<div class="mb-2" style="padding-bottom: 24px">
+										<!-- option -->
+										<div class="col-12 col-lg-auto">
 
-												<!--/* <div th:each="option,status : ${options}">
-                                    <div
-                                       th:with="isDuplicated = ${status.index > 0 && options[status.index-1].optionName == options[status.index].optionName}">
-                                       <div th:if="${isDuplicated} == false">
-                                          [[${option.optionName}]] <select class="form-select mb-2">
-                                             <option value="1" th:each="option1,status:${options}"
-                                                th:if="${option.optionName} == ${option1.optionName}">
-                                                [[${option1.optionValue}]]</option>
-                                          </select>
-                                       </div>
-                                    </div>
-                                 </div> */-->
 
-												<div>
-													<div th:each="option:${options}">
-														<select class="selectbox form-select mb-2" disabled>
-															<option class="selectbox1" value="">선택하세요</option>
-															<option class="selectbox1"
-																th:each="detail:${option.detailVO}"
-																th:value="${detail.optionName}"
-																th:text="${detail.optionName}"></option>
+											<!--/* <div th:each="option,status : ${options}">
+												<div
+													th:with="isDuplicated = ${status.index > 0 && options[status.index-1].optionName == options[status.index].optionName}">
+													<div th:if="${isDuplicated} == false">
+														[[${option.optionName}]] <select class="form-select mb-2">
+															<option value="1" th:each="option1,status:${options}"
+																th:if="${option.optionName} == ${option1.optionName}">
+																[[${option1.optionValue}]]</option>
 														</select>
 													</div>
-
-
 												</div>
+											</div> */-->
 
-												<!-- 선택된박스 -->
-												<div id="optionBox" style="display: none">
-													<ul id="optionView" class="col-12 col-lg-auto">
+											<div>
+												<select th:each="option:${options}"
+													class="selectbox form-select mb-2"
+													th:disabled="!${optionStat.first}"
+													th:classappend="${optionStat.last} ? 'last' : '' ">
+													<option class="selectbox1" value="">[[${option.optionName}]]</option>
+													<option class="selectbox1"
+														th:each="detail:${option.detailVO}"
+														th:value="${detail.optionName}"
+														th:text="${detail.optionName}"></option>
+												</select>
+											</div>
 
+											<!-- 선택된박스 -->
+											<div style="font-size: 15px; color: rgba(0, 0, 0, 0.7);">
+												<div id="optionBox">
+													<ul id="optionView" class="col-12 col-lg-auto"
+														style="list-style: none; padding-left: 0px">
+														<!-- <li>
+																<div><span class="optionDetailCodeName">블랙L</span> </div>
+																<div> <button class="optionCloseBtn btn btn-success">X</button> </div>
+																<div> <input type="text" name="optionDetailCode"> <input type="text" name="optionPrice"> <input type="number" class="orderCnt" /> </div>
+																<div> 가격: <span class="orderPrice">00</span>원 </div>
+															</li>-->
 													</ul>
 												</div>
 											</div>
-											<div class="col-12 col-lg-auto">
-												<div style="display: flex; justify-content: space-between; padding: 20px 0px 40px 0px; color: black"
-													class="num">
-
-													<div>
-														<input class="changePrice" type="hidden"
-															th:value="${goods.salePrice}" /> <span
-															style="font-size: 22px; color: grey">합계 :</span> <span
-															class="changePriceShow" style="font-size: 32px"></span>
-													</div>
-												</div>
-
-											</div>
-
-
-
-											<div class="row gx-5 mb-7">
-
-												<div class="col-12 col-lg">
-													<!-- Submit -->
-													<button type="button" class="btn w-100 btn-dark mb-2"
-														onclick="cart([[${review}]])">
-														장바구니 <i class="fe fe-shopping-cart ms-2"></i>
-													</button>
-												</div>
-												<div class="col-12 col-lg-auto">
-													<!-- Wishlist -->
-													<button class="btn btn-outline-dark w-100 mb-2"
-														data-toggle="button">
-														찜 <i class="fe fe-heart ms-2"></i>
-													</button>
-												</div>
-											</div>
-
-											<!-- Text -->
-											<p th:if="${session.loginMember == null}">
-												<span class="text-gray-500">아이디가 없나요?</span> <a
-													class="text-reset text-decoration-underline" id="loginTag">지금
-													바로 회원가입!</a>
-											</p>
 										</div>
+										<div class="col-12 col-lg-auto">
+											<div
+												style="display: flex; justify-content: space-between; padding: 20px 0px 40px 0px; color: black"
+												class="num">
+
+												<div>
+													<input class="changePrice" type="hidden"
+														th:value="${goods.salePrice}" /> <span
+														style="font-size: 22px; color: grey" id="realPrice">합계
+														:</span>
+												</div>
+											</div>
+
+										</div>
+
+
+
+										<div class="row gx-5 mb-7">
+
+
+											<div class="col-12 col-lg">
+												<!-- Submit -->
+												<button type="button" class="btn w-100 btn-dark mb-2"
+													onclick="cart([[${review}]])">
+													장바구니 <i class="fe fe-shopping-cart ms-2"></i>
+												</button>
+											</div>
+											<div class="col-12 col-lg-auto">
+												<!-- Wishlist -->
+												<button class="btn btn-outline-dark w-100 mb-2"
+													onclick="checkWish()">
+													찜 <i class="fe fe-heart ms-2"></i>
+												</button>
+
+											</div>
+										</div>
+
+										<p th:if="${session.loginMember == null}">
+											<span class="text-gray-500">아이디가 없나요?</span> <a
+												class="text-reset text-decoration-underline" id="loginTag">지금
+												바로 회원가입!</a>
+										</p>
 									</div>
-								</form>
+								</div>
+								<!-- Text -->
+
 							</div>
 						</div>
 					</div>
@@ -295,188 +302,278 @@
 
                      </div>
 
-                     <!-- qna -->
-                     <div id="focusdiv" tabindex="0">test</div>
-                     <div id="qnaTap">
-                     </div>
-					
-                  </div>
-               </div>
-            </div>
-      </section>
-    <input type="hidden" id="hidden" th:value="${session.loginMember}" />
-      <!-- REVIEWS -->
+
+							</div>
+
+							<!-- qna -->
+              <div id="focusdiv" tabindex="0">test</div>
+							<div id="qnaTap"></div>
+						</div>
+					</div>
+				</div>
+		</section>
+		<input type="hidden" id="hidden" th:value="${session.loginMember}" />
+		<div th:if="${session.loginMember != null}">
+		<input type="hidden" id="member" th:value="${session.loginMember.memberId}" />
+		</div>
+		<!-- REVIEWS -->
+
 
 	
 	
     <script th:inline="javascript">
-		let reviewTitle = '';
+  let reviewTitle = '';
 		let reviewPage = '';
 		let reviewEnd ='';
 
 		let qnaPage = '';
 		let qnaEnd ='';
-
-	
-		window.addEventListener("DOMContentLoaded", (event) => {
-			
-			//이벤트 지정
-			
-			$('.cnt').on("change", cntChangeHandler);
-			$("#loginTag").on("click", loginTagClickHandler);
-			//cntChangeHandler();
-				//리뷰 로드
-			reviewPageLoad(1);
-			inquiryPageLoad(1);
-			
-			changeOptionHandler();
-			
-			/*iframe 크기조정
-			let iframe = document.querySelector("#iframe");
-		
-			iframe.addEventListener('load', function() {
-				iframe.style.height = iframe.contentDocument.body.scrollHeight + 'px';
-				iframe.style.width = iframe.contentDocument.body.scrollWidth + 'px';
-			});*/   
-			
-		});   
-		
-		/*------------------------
-		리뷰 페이지 로드
-		-------------------------*/     
-		function reviewPageLoad(p){
-			let productCode = [[${goods.productCode}]];
-			let url = "reviewView?productCode="+productCode+"&pageNum="+p;
-			$("#sizeTab").load(url,function(){
+      
+   // 옵션 초기화      
+   let optionDetail =[[${optionDetail}]];
+   let optionLength = [[${#lists.size(options)}]];
+   
+   window.addEventListener("DOMContentLoaded", (event) => {
+      //리뷰 로드
+      reviewPageLoad(1);
+      inquiryPageLoad(1);      
+      changeOptionHandler();
+      
+      
+      //이벤트 지정      
+      $('.selectbox').on("change",changeOptionHandler)
+      $('.cnt').on("change", cntChangeHandler);
+       $("#loginTag").on("click", loginTagClickHandler);
+      
+   });   
+   
+   /*------------------------
+   리뷰 페이지 로드
+   -------------------------*/     
+   function reviewPageLoad(p){
+      let productCode = [[${goods.productCode}]];
+      let url = "reviewView?productCode="+productCode+"&pageNum="+p;
+      $("#sizeTab").load(url,function(){
 				reviewTitle = $('#Reviewtitle');
 				reviewPage = $('#reviewpageNum').val();
 				reviewEnd = $('#reviewpageEnd').val();
 			})
-		}
-		
-		function inquiryPageLoad(p){
-			let productCode = [[${goods.productCode}]];
-			let url = "inquiryView?productCode="+productCode+"&pageNum="+p;
-			$("#qnaTap").load(url, function(){
+   }
+   
+   /*------------------------
+   qna 페이지 로드
+   -------------------------*/
+   function inquiryPageLoad(p){
+      let productCode = [[${goods.productCode}]];
+      let url = "inquiryView?productCode="+productCode+"&pageNum="+p;
+     $("#qnaTap").load(url, function(){
 				qnaPage = $('#qnapageNum').val();
 				qnaEnd = $('#qnapageEnd').val();
 			})
-		}
-		
-		/*------------------------
-		옵션
-		-------------------------*/
-		function changeOptionHandler(){
-			// 옵션 
-			let optionDetail =[[${optionDetail}]];
-			
-			let selbox = $('.selectbox')[0];
-			let selboxTwo = $('.selectbox')[1];
-			
-			$(selbox).attr("disabled",false);
-		
+   }
 
-			$(selbox).on("change",function(){
-				$(selboxTwo).attr("disabled",false);         
-				
-				let option1 = $(this).val();
-				let liTag = $("<li/>");
-				let spanTag = $("<span>");
-				let divTag = $("<div/>");
-				
-				spanTag.append(option1);
-				divTag.append(spanTag);
-				
-				
-			
-				$(selboxTwo).on("change",function(){
-					let option2 = $(this).val();
-					spanTag.append(option2);
-					divTag.append(spanTag);
-					liTag.append(divTag)
-					
-					$("#optionView").append(liTag);
-					
-					$("#optionBox").css("display","block");
-				})
-				//두번째 옵션 이벤트 끝
-			})
-			//첫번째 옵션 이벤트 끝
-			
-		}
-		
-		
+   
+    /*------------------------
+   option 선택 박스
+   -------------------------*/  
+   function changeOptionHandler(){
+  
+      if(!$(this).hasClass("last")){            
+         $(this).next().attr("disabled",false);         
+      }else{
+         //선택 값            
+         let optionVal = '';
+         
+         //select 초기화
+         $('.selectbox').each(function(){
+            optionVal += $(this).val();
+            $(this).val('');
+         })
+         
+         //첫번째 제외 disabled
+         $('.selectbox:gt(0)').attr("disabled",true);
+         console.log(optionVal);
+         
+         let flag = true;
+         //기존 선택 유무
+         $(".optionDetailCodeName").each(function(){
+            if($(this).text()==optionVal){
+               alert("이미 선택된 옵션입니다");
+               flag = false;
+               return true;
+            }
+         })
+         if(flag == false) return;
+         
+         //detailCode, 가격 찾기
+         for(let i=0; i<optionDetail.length; i++){
+            if(optionDetail[i].optionLast == optionVal){
+               let code = optionDetail[i].optionDetailCode;
+               let originPrice = $("#originPrice").val();
+               let price = optionDetail[i].optionPrice;
+               
+               let sum = parseInt(originPrice) + parseInt(price);
+               console.log(sum);
+               
+               let optionView =$("#optionView");
+               let liTag =`<li style="border: 1px solid rgba(0,0,0,0.2); padding:10px; margin-bottom:10px;">
+                  <div style="display:flex; justify-content:space-between">
+                     <span class="optionDetailCodeName">${optionVal}</span>
+                     <button class="optionCloseBtn" type="button" style="all: unset">X</button>
+                  </div>
+                  
+                  <div> 
+                     <input type="hidden" name="optionDetailCode" value="${code}"> 
+                     개수 : <input type="hidden" value="${price}" name="optionPrice"> 
+                     <input type="number" class="orderCnt" min="1" value="1" /> 
+                  </div>
+                  
+                  <div> 가격 : <span><strong>${originPrice}</strong> (현재 할인가)</span> 
+                  + <span class="orderPrice"><strong>${price}</strong> (옵션가격)</span>
+                  </div>
+                  <div> 
+                  <strong style="display:none;" id="orPrice">${sum}</strong>
+                  총 가격 : <span class="changePriceShow"><strong>${sum}</strong></span>원
+                  </div>
+               </li>`;
+               $("#optionView").append(liTag);
+               break;
+               } //end of if
+            }//end of for
+      }//end of else
+   }//end of function
+   
+   //optionCloseBtn 지우기
+   
+   $(document).on("click",".optionCloseBtn",function(e){
+      $(this).parent().parent().remove();
+   })
 
-		
-		//가격 스크립트
-		let price = $(".changePrice").val();
-		price = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';   
-		$(".changePriceShow").html(price);
-		/*------------------------
-		가격값이 변화가 있을 때 발생하는 이벤트 핸들러
-		-------------------------*/  
-		function cntChangeHandler() { 
+   //옵션 가격 올리기
+   $(document).on('change','.orderCnt',function(e){
+      console.log($(this));
+      let choose = $(this).parent().parent().find('strong')[2];
+      console.log(choose.innerText);
+      
+      let price =choose.innerText;
+      
+      let count = $(this).val();
+      console.log(count);
+      
+      let sum = parseInt(price) * count;
+      
+      sum = sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      let strongStr = $('<strong/>').append(sum);
+      let realp = $($(this).parent().next().next().children()[1]).html(strongStr);
+   })
+   
+   
+   //가격 스크립트
+   //let price = $(".changePrice").val();
+   //price = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';   
+   //$(".realPrice").html(price);
+   
+   
 
-			
-			
-			for (var i = 0; i < count.length; i++) {
-				// input 값 가져오기
-				console.log(count.eq(i).val()); 
-				let cnt =count.eq(i).val();
-				
-				price = $(".changePrice").val();
-				console.log(price);
-				
-				let sum = cnt * price;
-				
-				sum = sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원';   
-				
-				$(".changePriceShow").html(sum);
-				
-			}
-		}
+   /*------------------------
+   돋보기기능
+   -------------------------*/
+   $('.card-img-top')
+    .append('<div class="photo"></div>')
+    .children('.photo').css({"background-image": "url(../img/products/product-142.jpg)"});
+    
+    $('.card-img-top')    
+    .on('mouseover', function () {
+        $(this).children('.photo').css({
+            'transform': 'scale(' + $(this).attr('data-scale') + ')'
+        });
+        //$(this).children('.photo').css("z-index","1");
+    })
 
-		/*------------------------
-		돋보기기능
-		-------------------------*/
-		$('.card-img-top')
-			.append('<div class="photo"></div>')
-			.children('.photo').css({"background-image": "url(../img/products/product-142.jpg)"});
-			
-			$('.card-img-top')    
-			.on('mouseover', function () {
-				$(this).children('.photo').css({
-					'transform': 'scale(' + $(this).attr('data-scale') + ')'
-				});
-				//$(this).children('.photo').css("z-index","1");
-			})
+    $('.card-img-top')
+    .on('mouseout', function () {
+        $(this).children('.photo').css({
+            'transform': 'scale(1)'
+        });
+    })
+    $('.card-img-top')
+    .on('mousemove', function (e) {
+        $(this).children('.photo').css({
+            'transform-origin': ((e.pageX - $(this).offset().left) / $(this).width()) * 100 + '% ' + ((e.pageY - $(this).offset().top) / $(this).height()) * 100 + '%'
+        });
+   })
 
-			$('.card-img-top')
-			.on('mouseout', function () {
-				$(this).children('.photo').css({
-					'transform': 'scale(1)'
-				});
-			})
-			$('.card-img-top')
-			.on('mousemove', function (e) {
-				$(this).children('.photo').css({
-					'transform-origin': ((e.pageX - $(this).offset().left) / $(this).width()) * 100 + '% ' + ((e.pageY - $(this).offset().top) / $(this).height()) * 100 + '%'
-				});
-		})
+   /*------------------------
+   회원가입창으로
+   -------------------------*/ 
+   function loginTagClickHandler() {
+      let result = confirm("회원가입 창으로 이동하시겠습니까?");
 
-		/*------------------------
-		회원가입창으로
-		-------------------------*/ 
-		function loginTagClickHandler() {
-			let result = confirm("회원가입 창으로 이동하시겠습니까?");
+      if (result) {
+         location.replace("/login");
+      } 
+   }
 
-			if (result) {
-				location.replace("/login");
-			} 
-		}
-		
-
+    /*------------------------
+   찜 으로~
+   -------------------------*/
+   function checkWish(){
+      let memberId = $("#hidden").val(); 
+       if(memberId==''){
+          alert("로그인 후 사용가능합니다");
+       }else{
+       
+      let wishObj = {
+             memberId : $("#member").val(),
+             productCode: $("#productCode").val()
+          }
+      console.log(wishObj);
+      
+       $.ajax({
+          url:"buyer/checkWish",
+         type:"get",
+         data:wishObj,
+         success:function(result){
+            if(result>0){
+               alert("이미 찜 목록에 존재합니다");
+            }else{
+               insertWish($("#member").val(),  $("#productCode").val());         
+            }
+         }
+       })
+       }
+    }
+   
+   function insertWish(member,code){
+         let wishObj = {
+             memberId : member,
+             productCode: code
+          }
+         console.log(wishObj);
+         
+          $.ajax({
+             url:"buyer/addWish",
+             type:"post",
+             data:JSON.stringify(wishObj),
+             contentType:"application/json",
+             success:function(result){
+                console.log(result);
+                if(!confirm("찜 목록으로 이동하시겠습니까?")){
+                
+                }else{
+                   location.href="/page/buyer/wishList";   
+                }
+                
+             },
+             fail:function(reject){
+                console.log(reject);
+             },
+          })
+       
+    }
     </script>
+      
+      
 	<!-- voice -->
 	<th:block>
 		<script th:inline="javascript">
