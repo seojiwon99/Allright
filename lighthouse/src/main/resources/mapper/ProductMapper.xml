@@ -864,7 +864,7 @@ ORDER BY EXTRACT(MONTH FROM order_date)
 
 	<!-- 김무준의 상세페이지~~ -->
 	<select id="selectInfo" resultType="ProductVO">
-		select member_id
+		select m.member_id
 			, p.product_code
 			, p.category_code
 			, p.product_name
@@ -883,11 +883,14 @@ ORDER BY EXTRACT(MONTH FROM order_date)
 			, p.product_status
 			, i.upload_name
 			, i.img_content
+			 , m.business_number
 			from ar_products p ,
-			ar_imgs i
-			where p.product_code = i.product_code
+			ar_imgs i, ar_member m
+			where p.product_code = i.product_code 
+			and p.member_id = m.member_id
 			and p.product_code = #{productCode}
 	</select>
+	
 
 	<!-- 택배사 가져오기 -->
 	<select id="selectDeliveryList" resultType="CodeVO">
