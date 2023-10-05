@@ -138,16 +138,37 @@ public class OrdersController {
 		//토스결제
 		tossPayment(creditVO, orderCode);
 		
+		List<String> dcostList = new ArrayList<String>();
+		//같은 상품의 경우 배송비 빼기
+		for(OrdersVO vo : orderList) {
+			if(dcostList.contains(vo.getProductCode())) {
+				vo.setDeliveryCost(0);
+			}else {
+				dcostList.add(vo.getProductCode());
+			}
+		} //같은 상품의 경우 배송비 빼기
+		for(OrderPayVO vo : orderPayVO) {
+			if(dcostList.contains(vo.getProductCode())) {
+				vo.setDeliveryCost(0);
+			}else {
+				dcostList.add(vo.getProductCode());
+			}
+		}
+		
+	
 		//쿠폰 할인 상품
 		 for (OrderPayVO pay : orderPayVO) {
 				 if(optionCodeList.contains(pay.getOptionDetailCode())) {
+					 orderCoupon.setCartCount(pay.getCartCount());
+					 orderCoupon.setOptionDetailCode(pay.getOptionDetailCode());
 					 orderCoupon.setOrderCode(orderCode);
 					 orderCoupon.setOptionCouponCheck("Y");
 					 orderCoupon.setMycouponCode(mycouponCode);
 					 orderCoupon.setOrderPrice(pay.getProductSalePrice());
-					 orderCoupon.setDiscountPrice(pay.getCouponPrice());
+					 orderCoupon.setDiscountPrice(pay.getCouponPrice());			 
 					 orderCoupon.setPaymentPrice(pay.getProductSalePrice() - pay.getCouponPrice() + pay.getDeliveryCost());
-						ordersService.addOrders(orderCoupon);
+					System.out.println("asda@@@@@@@@@@@@@@@@@@@@@@@" + orderCoupon);
+					ordersService.addOrders(orderCoupon);
 					 } else {
 						 continue;
 					 }

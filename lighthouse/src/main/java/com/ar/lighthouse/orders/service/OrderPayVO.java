@@ -1,5 +1,6 @@
 package com.ar.lighthouse.orders.service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderPayVO {
+public class OrderPayVO implements Serializable{
 	
 	//쿠폰 사용 여부 확인 위한 번호, 할인상품확인
 	private List<OrderPayVO> orderList = new ArrayList<OrderPayVO>();
@@ -20,4 +21,5 @@ public class OrderPayVO {
 	private int couponPrice;
 	private int optionDetailCode; 
 	private int deliveryCost;
+	private int cartCount;
 }

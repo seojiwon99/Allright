@@ -51,7 +51,7 @@
             <form>
 
               <!-- Heading -->
-              <h6 class="mb-7">주문자 정보</h6>
+              <h6 class="mb-7" tabindex="0" id="orderMan">주문자 정보</h6>
 
               <!-- Billing details -->
               <div class="row mb-9">
@@ -65,7 +65,6 @@
                     <label class="form-label" for="checkoutBillingFirstName">이름 *</label>
                     <div class="input-group mb-8">                      
                       <input type="text" class="form-control" id="mName" placeholder="이름 작성" aria-label="Recipient's username" aria-describedby="button-addon2" th:value="${gets.memberName}" readonly>                     
-                      <button class="btn btn-outline-secondary" type="button" id="deliveryInfo">배송지 정보로 등록</button>
                     </div>
                     </div>
                   </div>
@@ -142,14 +141,15 @@
                         </p>         
                       <!-- Text -->
                       <div class="fs-sm text-muted oName" th:text="${gets.optionLast}"></div>
-                      <div class="fs-sm text-muted pCnt" th:text="|수량 :${gets.cartCount}|"></div>
+                      <div class="fs-sm text-muted pCnt" th:text="|구매수량 : ${gets.cartCount}|"></div>
+                      <input type="hidden" th:value="${gets.cartCount}" class="cartCnt">
                     </div>
                   </div>
                </li>
             </ul>
                  <!-- Heading -->
               <h6 class="mb-7" id="deliveryContent" tabindex="0">배송 정보</h6>
-
+              <button class="btn btn-outline-secondary" type="button" id="deliveryInfo" style="width: 200px; margin: 10px; ">배송지 정보로 등록</button>
                 <div class="col-12">
                   <!-- Address Line 1 -->
                   <div class="form-group">
@@ -210,7 +210,7 @@
             
 
             <!-- Card -->
-            <div class="card mb-9 bg-light " style="position: fixed; right: 50; top: 100; border-radius: 10px;">
+            <div class="card mb-9 bg-light " style="position: fixed; right: 50; top: 100; border-radius: 10px; z-index: 1500">
               <div class="card-body">
                 <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
                   <li class="list-group-item d-flex">
@@ -226,7 +226,7 @@
                     <span>배송비</span> <span class="ms-auto fs-sm" id="deliveryPrice"></span>원
                   </li>
                   <li class="list-group-item d-flex fs-lg fw-bold">
-                    <span>결제금액</span> <span class="ms-auto" id="totalPrice"></span>원
+                    <span>결제금액</span> <span class="ms-auto" id="totalPrice" style="color: red;"></span>원
                   </li>
                 </ul>
               </div>
@@ -264,7 +264,7 @@
 
   <!-- MODALS -->
   <!-- Newsletter: Horizontal -->
-  <div class="modal fade" id="modalNewsletterHorizontal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal fade" id="modalNewsletterHorizontal" tabindex="-1" role="dialog" aria-hidden="true" style="z-index:2000">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
       <div class="modal-content">
 
@@ -347,174 +347,16 @@
     3번 첫번째 주문상품으로 이동 후 조회.
     4번 배송지 정보 조회.
     5번 배송 시 요청 선택.
+    6번 주문자 정보 확인.
     9번 메인 페이지 이동.
     0번 다시 듣기.
 
   </textarea>
   
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script th:src="@{/js/theme.bundle.js}"></script>
     <script th:inline="javascript">
-    let TTSIsOk = localStorage.getItem('ttsKey');
-    let sessionAuthor;
-	   console.log(sessionStorage.loginMember);          
-	   if(sessionStorage.loginMember != null){
-	      sessionAuthor = sessionStorage.loginMember.memberAuthor;
-	   }
-       
-      function ttsInit(){
-       if(TTSIsOk == null || sessionAuthor == 3){
-
     
-    
-    let audioFileNow = new Audio();
-    let firstMsg = "주문 결제 페이지입니다. 배송지, 상품 가격을 확인 후 결제 진행하시면 됩니다.";
-		let message =  firstMsg + $('#orderInfo').val();
-
-    $(function(){
-      VoiceMenual(message); 
-    })
-
-    //tts 내용 이벤트 부여
-    $('#payment-button').on('focus', payInfo); //결제버튼 포커스
-    $('#deliveryInfo').on('focus', deliveryContent); // 배송지로 등록 포커스
-    $('#deliveryInfo').on('keyup', deliverySuccess); // 배송지 등록 완료
-    $('a.img-fluid').on('focus',productInfo);
-    $('#deliveryContent').on('focus',deliveryInfo); //배송지 정보 읽어 줌.
-    $('#selbox').on('focus', deliveryRequest); // 배송 요청 사항 안내
-    $('.couponBtn').on('focus',couponChoice); //쿠폰 선택 안내
-    $('.cpCode').on('focus', couponInfo); // 각 쿠폰 안내
-    $('#myCouponbox').on('focus',myCouponBox); // 나의 쿠폰함 안내
-    $('.select-button').on('focus', couponSelect); //쿠폰 선택 전 안내
-    $('.couponResult').on('focus', couponUse); //쿠폰 사용 금액 및 사용 전 안내
-    $('.couponResult').on('keydown', couponRs); // 쿠폰 사용 안내
-    $('.cpCode').on('keydown', couponCheck); // 쿠폰 alert 창 tts로 먼저 확인
-
-    //tts 이벤트 진행
-    function payInfo() { // 결제 전 금액 확인
-      if( $('#deliveryName').val() == '' || $('#addr').val() == '' || $('#addrDt').val() == '' || $('#deliveryTel').val() == '') {
-      VoiceMenual('배송 정보 빈칸 없이 작성해주세요.');
-      return;
-    }
-      let productPay = $('#productPrice').text();
-      let salePay = $('#salePrice').text();
-      let couponPay = $('#couponSale').text();
-      let deliveryPay = $('#deliveryPrice').text();
-      let totalPay = $('#totalPrice').text();
-      let payInfoMessage = `총 상품 금액은. ${productPay}원. 할인 받은 상품 금액은. ${salePay}원. 쿠폰 할인 금액은. ${couponPay}원.
-                            배송비는. ${deliveryPay}원. 총 결제 금액은. ${totalPay}원. 입니다. 결제 원할 경우. 엔터키 입력`;
-      VoiceMenual(payInfoMessage);
-    }
-
-    function deliveryContent() { //배송지 주소로 선택 버튼
-      VoiceMenual("현재 주소지. 배송지로 원할 경우. 스페이스바 입력.");
-      
-    }
-    function deliverySuccess(e) { // 배송지 주소 입력시 성공 여부
-      if(e.code == 'Space'){
-        $('#deliveryInfo').trigger('click');
-
-        if($('#deliveryName').val() != '') {
-          VoiceMenual('배송지 등록 되었습니다.')
-        } else {
-          VoiceMenual('배송지 등록에 실패했습니다.')
-        } 
-      }
-    }
-
-    function productInfo() { //주문 전 상품 확인
-      let prName = $(this).parent().parent().find('.pName').text();
-      let prPay = $(this).parent().parent().find('.pPay').text();
-      let saPay = $(this).parent().parent().find('.sPay').text();
-      let otPay = $(this).parent().parent().find('.oPay').text();
-      let coSelect;
-      let couponSalePay;
-
-      if($(this).parent().parent().find('.cSelect').val() == '') {
-        coSelect = "선택된 쿠폰이 없습니다.";
-      } else {
-        coSelect = $(this).parent().parent().find('.cSelect').val();
-      }
-
-      if($(this).parent().parent().find('.couponSalePrice').val() == '') {
-        couponSalePay = 0;
-      } else {
-        couponSalePay = $(this).parent().parent().find('.couponSalePrice').val();
-      }
-
-      let otName = $(this).parent().parent().find('.oName').text(); 
-      let prCnt = $(this).parent().parent().find('.pCnt').text(); 
-      let productDetailInfo = `선택된 상품의 이름은. ${prName}. 선택한 옵션는. ${otName}. 할인 받지 않은 가격은. ${prPay}원. ${saPay}원.
-                              ${otPay}원. 선택한 쿠폰은. ${coSelect}. 쿠폰 할인 금액은. ${couponSalePay}원. 구매 ${prCnt}. 입니다. 쿠폰 선택 원할 경우 탭으로 이동 부탑드립니다.`;
-      VoiceMenual(productDetailInfo);
-    }
-
-    function deliveryInfo() { //배송지 정보 읽어줌
-        let recipient = $('#deliveryName').val();
-        let recipientAddr = $('#addr').val();
-        let recipientAddrDt = $('#addrDt').val();
-        let recipientDeliverTel = $('#deliveryTel').val();
-        
-        let recipientSelbox = $('#selbox').val();
-        if(recipientSelbox == 2) {
-          recipientSelbox = "배송 전에 미리 연락 바랍니다.";
-        } else if (recipientSelbox == 1) {
-          recipientSelbox = "부재 시 경비실에 맡겨주세요.";
-        } else if (recipientSelbox == 3) {
-          recipientSelbox = "부재시 전화 또는 문자 남겨주세요";
-        } else if (recipientSelbox == 4) {
-          recipientSelbox = $('#selectDirect').val();
-        }
-
-        let recipientMessage = `받는 사람 ${recipient}. 받는 주소 ${recipientAddr}. ${recipientAddrDt}. 연락처 ${recipientDeliverTel}. 요청사항 ${recipientSelbox}. 선택했습니다.
-                                만약 요청사항 선택하지 않은 경우. alt 4번으로 이동 후. 작성하시면 됩니다.`;
-        VoiceMenual(recipientMessage);
-    }
-    function deliveryRequest() { //배송 요청 사항 정보 안내
-      let delRequest = "배송 요청 선택에는. 1번. 배송 전에 미리 연락 바랍니다." + 
-                        "2번. 부재 시 경비실에 맡겨주세요. 3번. 부재시 전화 또는 문자 남겨주세요." + 
-                        "4번. 직접 입력하여 요청 사항을 작성할 수 있습니다. 엔터키. 클릭 후. 내려가서 원하는 요청사항 선택하시면 됩니다.";
-          VoiceMenual(delRequest);
-    }
-
-    function couponChoice() { //현재 상품 쿠폰 선택 버튼
-        VoiceMenual("현재 상품에 대한 쿠폰 선택 원할 경우 스페이스바 클릭하여 나의 쿠폰함으로 이동합니다.");
-    }
-
-    function myCouponBox() { //나의 쿠폰함 안내.
-      VoiceMenual('나의 쿠폰함입니다. 탭키로 이동하여 쿠폰 내용 확인 후. 쿠폰 선택하면 적용됩니다.');
-    }
-
-    function couponInfo() { //현재 쿠폰 정보
-      let cpCode = $(this).parent().find('.cpCode').text();
-      let cpName = $(this).parent().find('.cpName').text();
-      let cpContent = $(this).parent().find('.cpContent').text();
-      let cpDiscount = $(this).parent().find('.cpDiscount').text();
-      let cpIssueDate = $(this).parent().find('.cpIssueDate').text();
-      let cpEndDate = $(this).parent().find('.cpEndDate').text();
-      let couponMessage = `쿠폰번호는. ${cpCode}. 쿠폰 이름은. ${cpName}. 쿠폰 내용은. ${cpContent}. 
-                          쿠폰 할인 금액. 또는 할인율은. ${cpDiscount}. 발급일자는. ${cpIssueDate}. 사용종료 일자는. ${cpEndDate} 입니다.
-                          사용을 원할 경우. 탭키 사용하여. 선택 버튼으로 이동해주세요.`;
-      VoiceMenual(couponMessage);
-      
-    }
-
-    function couponSelect(){ // 나의 쿠폰함 선택 버튼 안내.
-      VoiceMenual('현재 쿠폰 선택 원할 경우 스페이스바 눌러주세요.');
-    }
-
-    function couponUse(){
-      if($(this).parent().parent().find('.couponSalePrice').val() == '') {
-        couponSalePay = 0;
-      } else {
-        couponSalePay = $(this).parent().parent().find('.couponSalePrice').val();
-      }
-      let couponVal = `쿠폰 할인 금액은 ${couponSalePay}원.입니다. 사용 원할 경우 스페이스바 눌러주세요.`;
-      VoiceMenual(couponVal);
-    }
-
-    function couponRs() {
-      VoiceMenual('쿠폰 사용 되었습니다.');
-    }
 
     //주소 api로 입력
     $('#addressSearch').on('click', addrPopup);
@@ -544,8 +386,12 @@
       result = result + (( getPrice[key].optionPrice + getPrice[key].salePrice ) * getPrice[key].cartCount);  
       }
       // 배송비
+      let pList = [];
       for(let key in getPrice) {
-        deliveryPay = deliveryPay + (getPrice[key].deliveryCost);
+        if(!(pList.includes(getPrice[key].productCode))) {
+          pList.push(getPrice[key].productCode);
+          deliveryPay = deliveryPay + (getPrice[key].deliveryCost);
+        }
       }
       //할인 상품 가격
       for(let key in getPrice) {
@@ -642,52 +488,7 @@
       
     }) 
 
-    //tts alert창 확인
-    function couponCheck() { //쿠폰 alert창 확인
-        let thisRow = $(this).closest('tr');
-        console.log(thisRow);
-        let maxPrice =  thisRow.find('td:eq(0)').data('max'); // 최소 사용 금액
-        let minPrice = thisRow.find('td:eq(0)').data('min'); // 최대 할인율 - 할인금액
-       
-        let couponNum = thisRow.find('td:eq(0)').text();
-        let couName = thisRow.find('td:eq(1)').text(); 
-        let couDiscount = Number(thisRow.find('td:eq(3)').text().slice(0,-1));
-        
-        let couponDisRt = Number($(coupon).closest(".list-group-item").find('.selectValue').val()); // 상품 가격
-      if(couponDisRt < minPrice) { // 쿠폰 최소 금액 사용 조건
-        VoiceMenual(minPrice + "원이 최소 사용금액입니다. 탭키를 눌러. 다음 쿠폰으로. 이동해주세요.") 
-          return false;
-        }
-
-        if(couDiscount < 100) {
-          couDiscount  = couponDisRt * couDiscount / 100;
-          if(couDiscount > maxPrice) { // 할인쿠폰 최대 사용 제한 조건
-            VoiceMenual(maxPrice + '원이. 최대 할인금액 입니다. 사용 원할 경우 탭키 두번 눌러주세요.');
-            couDiscount = maxPrice;
-          }
-        } else {
-          couDiscount;
-        }
-        roundPrice = (Math.ceil(couDiscount / 100) * 100);
-        console.log(roundPrice);
-        
-        if(roundPrice >= couponDisRt) {
-          VoiceMenual('쿠폰 할인금액 보다 상품 가격이 적습니다. 탭키를 눌러. 다음 쿠폰으로. 이동해주세요.')
-          return false;
-        }
-
-        let flag=false;
-        $('.myCouponCode[value]').each(function(idx,el){
-          if(el.value == couponNum){            	
-            flag = true;
-            return false;
-          }            	
-        })
-        if(flag){
-          VoiceMenual("사용된 쿠폰입니다. 탭키를 눌러. 다음 쿠폰으로. 이동해주세요.");
-            return;
-        }        
-    }
+    
 
     let conponAll = 0;
     //총 금액에서 쿠폰 값 빼기
@@ -787,6 +588,7 @@
               orderList.productSalePrice = $(el).find('.selectValue').val();
               orderList.couponPrice = $(el).find('.couponSalePrice').val();
               orderList.deliveryCost = $(el).find('.deliveryMoney').val();
+              orderList.cartCount = $(el).find('.cartCnt').val();
               orderPayVO.push(orderList)
             }
      })
@@ -813,6 +615,225 @@
       })  
      
   })
+
+  let TTSIsOk = localStorage.getItem('ttsKey');
+    let sessionAuthor;
+	   console.log(sessionStorage.loginMember);          
+	   if(sessionStorage.loginMember != null){
+	      sessionAuthor = sessionStorage.loginMember.memberAuthor;
+	   }
+       
+      function ttsInit(){
+       if(TTSIsOk == null || sessionAuthor == 3){
+
+    
+    
+    let audioFileNow = new Audio();
+    let firstMsg = "주문 결제 페이지입니다. 배송지, 상품 가격을 확인 후 결제 진행하시면 됩니다.";
+		let message =  firstMsg + $('#orderInfo').val();
+    
+      VoiceMenual(message); 
+
+
+    //tts 내용 이벤트 부여
+    $('#payment-button').on('focus', payInfo); //결제버튼 포커스
+    $('#deliveryInfo').on('focus', deliveryContent); // 배송지로 등록 포커스
+    $('#deliveryInfo').on('keyup', deliverySuccess); // 배송지 등록 완료
+    $('a.img-fluid').on('focus',productInfo);
+    $('#deliveryContent').on('focus',deliveryInfo); //배송지 정보 읽어 줌.
+    $('#selbox').on('focus', deliveryRequest); // 배송 요청 사항 안내
+    $('.couponBtn').on('focus',couponChoice); //쿠폰 선택 안내
+    $('.cpCode').on('focus', couponInfo); // 각 쿠폰 안내
+    $('#myCouponbox').on('focus',myCouponBox); // 나의 쿠폰함 안내
+    $('.select-button').on('focus', couponSelect); //쿠폰 선택 전 안내
+    $('.couponResult').on('focus', couponUse); //쿠폰 사용 금액 및 사용 전 안내
+    $('.couponResult').on('keydown', couponRs); // 쿠폰 사용 안내
+    $('.cpCode').on('keydown', couponCheck); // 쿠폰 alert 창 tts로 먼저 확인
+    $('#orderMan').on('focus',orderManInfo); //주문자 정보
+
+    //tts 이벤트 진행
+    function payInfo() { // 결제 전 금액 확인
+      if( $('#deliveryName').val() == '' || $('#addr').val() == '' || $('#addrDt').val() == '' || $('#deliveryTel').val() == '') {
+      VoiceMenual('배송 정보 빈칸 없이 작성해주세요.');
+      return;
+    }
+      let productPay = $('#productPrice').text();
+      let salePay = $('#salePrice').text();
+      let couponPay = $('#couponSale').text();
+      let deliveryPay = $('#deliveryPrice').text();
+      let totalPay = $('#totalPrice').text();
+      let payInfoMessage = `총 상품 금액은. ${productPay}원. 할인 받은 상품 금액은. ${salePay}원. 쿠폰 할인 금액은. ${couponPay}원.
+                            배송비는. ${deliveryPay}원. 총 결제 금액은. ${totalPay}원. 입니다. 결제 원할 경우. 엔터키 입력`;
+      VoiceMenual(payInfoMessage);
+    }
+
+    function deliveryContent() { //배송지 주소로 선택 버튼
+      VoiceMenual("현재 주소지. 배송지로 원할 경우. 스페이스바 입력.");
+      
+    }
+    function deliverySuccess(e) { // 배송지 주소 입력시 성공 여부
+      if(e.code == 'Space'){
+        $('#deliveryInfo').trigger('click');
+
+        if($('#deliveryName').val() != '') {
+          VoiceMenual('배송지 등록 되었습니다.')
+        } else {
+          VoiceMenual('배송지 등록에 실패했습니다.')
+        } 
+      }
+    }
+    function orderManInfo(){
+    let manName =  $('#mName').val();
+    let manAddr =  $('#mAddr1').val();
+    let manAddr1 = $('#mAddr2').val();
+    let manTel =   $('#mTel').val();
+    let manMessage = `주문자 이름은. ${manName}. 주소는. ${manAddr}. ${manAddr1}. 전화번호는. ${manTel} 입니다.
+                      현재 주문자. 정보로 배송지 원할 경우. alt, 2 눌러서 이동하세요.`;
+    VoiceMenual(manMessage);
+    }
+
+    function productInfo() { //주문 전 상품 확인
+      let prName = $(this).parent().parent().find('.pName').text();
+      let prPay = $(this).parent().parent().find('.pPay').text();
+      let saPay = $(this).parent().parent().find('.sPay').text();
+      let otPay = $(this).parent().parent().find('.oPay').text();
+      let coSelect;
+      let couponSalePay;
+
+      if($(this).parent().parent().find('.cSelect').val() == '') {
+        coSelect = "선택된 쿠폰이 없습니다.";
+      } else {
+        coSelect = $(this).parent().parent().find('.cSelect').val();
+      }
+
+      if($(this).parent().parent().find('.couponSalePrice').val() == '') {
+        couponSalePay = 0;
+      } else {
+        couponSalePay = $(this).parent().parent().find('.couponSalePrice').val();
+      }
+
+      let otName = $(this).parent().parent().find('.oName').text(); 
+      let prCnt = $(this).parent().parent().find('.pCnt').text(); 
+      let productDetailInfo = `선택된 상품의 이름은. ${prName}. 선택한 옵션는. ${otName}. 할인 받지 않은 가격은. ${prPay}원. ${saPay}원.
+                              ${otPay}원. 선택한 쿠폰은. ${coSelect}. 쿠폰 할인 금액은. ${couponSalePay}원. 구매 ${prCnt}. 입니다. 쿠폰 선택 원할 경우 탭으로 이동 부탑드립니다.`;
+      VoiceMenual(productDetailInfo);
+    }
+
+    function deliveryInfo() { //배송지 정보 읽어줌
+        let recipient = $('#deliveryName').val();
+        let recipientAddr = $('#addr').val();
+        let recipientAddrDt = $('#addrDt').val();
+        let recipientDeliverTel = $('#deliveryTel').val();
+        
+        let recipientSelbox = $('#selbox').val();
+        if(recipientSelbox == 2) {
+          recipientSelbox = "배송 전에 미리 연락 바랍니다.";
+        } else if (recipientSelbox == 1) {
+          recipientSelbox = "부재 시 경비실에 맡겨주세요.";
+        } else if (recipientSelbox == 3) {
+          recipientSelbox = "부재시 전화 또는 문자 남겨주세요";
+        } else if (recipientSelbox == 4) {
+          recipientSelbox = $('#selectDirect').val();
+        }
+
+        let recipientMessage = `받는 사람 ${recipient}. 받는 주소 ${recipientAddr}. ${recipientAddrDt}. 연락처 ${recipientDeliverTel}. 요청사항 ${recipientSelbox}. 선택했습니다.
+                                만약 요청사항 선택하지 않은 경우. alt 4번으로 이동 후. 작성하시면 됩니다.`;
+        VoiceMenual(recipientMessage);
+    }
+    function deliveryRequest() { //배송 요청 사항 정보 안내
+      let delRequest = "배송 요청 선택에는. 1번. 배송 전에 미리 연락 바랍니다." + 
+                        "2번. 부재 시 경비실에 맡겨주세요. 3번. 부재시 전화 또는 문자 남겨주세요." + 
+                        "4번. 직접 입력하여 요청 사항을 작성할 수 있습니다. 엔터키. 클릭 후. 내려가서 원하는 요청사항 선택하시면 됩니다.";
+          VoiceMenual(delRequest);
+    }
+
+    function couponChoice() { //현재 상품 쿠폰 선택 버튼
+        VoiceMenual("현재 상품에 대한 쿠폰 선택 원할 경우 스페이스바 클릭하여 나의 쿠폰함으로 이동합니다.");
+    }
+
+    function myCouponBox() { //나의 쿠폰함 안내.
+      VoiceMenual('나의 쿠폰함입니다. 탭키로 이동하여 쿠폰 내용 확인 후. 쿠폰 선택하면 적용됩니다.');
+    }
+
+    function couponInfo() { //현재 쿠폰 정보
+      let cpCode = $(this).parent().find('.cpCode').text();
+      let cpName = $(this).parent().find('.cpName').text();
+      let cpContent = $(this).parent().find('.cpContent').text();
+      let cpDiscount = $(this).parent().find('.cpDiscount').text();
+      let cpIssueDate = $(this).parent().find('.cpIssueDate').text();
+      let cpEndDate = $(this).parent().find('.cpEndDate').text();
+      let couponMessage = `쿠폰번호는. ${cpCode}. 쿠폰 이름은. ${cpName}. 쿠폰 내용은. ${cpContent}. 
+                          쿠폰 할인 금액. 또는 할인율은. ${cpDiscount}. 발급일자는. ${cpIssueDate}. 사용종료 일자는. ${cpEndDate} 입니다.
+                          사용을 원할 경우. 탭키 사용하여. 선택 버튼으로 이동해주세요.`;
+      VoiceMenual(couponMessage);
+      
+    }
+
+    function couponSelect(){ // 나의 쿠폰함 선택 버튼 안내.
+      VoiceMenual('현재 쿠폰 선택 원할 경우 스페이스바 눌러주세요.');
+    }
+
+    function couponUse(){
+      if($(this).parent().parent().find('.couponSalePrice').val() == '') {
+        couponSalePay = 0;
+      } else {
+        couponSalePay = $(this).parent().parent().find('.couponSalePrice').val();
+      }
+      let couponVal = `쿠폰 할인 금액은 ${couponSalePay}원.입니다. 사용 원할 경우 스페이스바 눌러주세요.`;
+      VoiceMenual(couponVal);
+    }
+
+    function couponRs() {
+      VoiceMenual('쿠폰 사용 되었습니다.');
+    }
+
+
+    //tts alert창 확인
+    function couponCheck() { //쿠폰 alert창 확인
+        let thisRow = $(this).closest('tr');
+        console.log(thisRow);
+        let maxPrice =  thisRow.find('td:eq(0)').data('max'); // 최소 사용 금액
+        let minPrice = thisRow.find('td:eq(0)').data('min'); // 최대 할인율 - 할인금액
+       
+        let couponNum = thisRow.find('td:eq(0)').text();
+        let couName = thisRow.find('td:eq(1)').text(); 
+        let couDiscount = Number(thisRow.find('td:eq(3)').text().slice(0,-1));
+        
+        let couponDisRt = Number($(coupon).closest(".list-group-item").find('.selectValue').val()); // 상품 가격
+      if(couponDisRt < minPrice) { // 쿠폰 최소 금액 사용 조건
+        VoiceMenual(minPrice + "원이 최소 사용금액입니다. 탭키를 눌러. 다음 쿠폰으로. 이동해주세요.") 
+          return false;
+        }
+
+        if(couDiscount < 100) {
+          couDiscount  = couponDisRt * couDiscount / 100;
+          if(couDiscount > maxPrice) { // 할인쿠폰 최대 사용 제한 조건
+            VoiceMenual(maxPrice + '원이. 최대 할인금액 입니다. 사용 원할 경우 탭키 두번 눌러주세요.');
+            couDiscount = maxPrice;
+          }
+        } else {
+          couDiscount;
+        }
+        roundPrice = (Math.ceil(couDiscount / 100) * 100);
+        console.log(roundPrice);
+        
+        if(roundPrice >= couponDisRt) {
+          VoiceMenual('쿠폰 할인금액 보다 상품 가격이 적습니다. 탭키를 눌러. 다음 쿠폰으로. 이동해주세요.')
+          return false;
+        }
+
+        let flag=false;
+        $('.myCouponCode[value]').each(function(idx,el){
+          if(el.value == couponNum){            	
+            flag = true;
+            return false;
+          }            	
+        })
+        if(flag){
+          VoiceMenual("사용된 쿠폰입니다. 탭키를 눌러. 다음 쿠폰으로. 이동해주세요.");
+            return;
+        }        
+    }
   
   console.log('hello js');
 
@@ -903,13 +924,16 @@ function base64ToBlob(base64, fileType) {
 			console.log($('.img-fluid'));
 				$('a.img-fluid')[0].focus();
 			}
-            if(e.altKey && e.key == 4){ // 배송지 정보 조회
+      if(e.altKey && e.key == 4){ // 배송지 정보 조회
 				$('#deliveryContent').focus();
 			}
-            if(e.altKey && e.key == 5){ // 배송 시 요청 선택
+      if(e.altKey && e.key == 5){ // 배송 시 요청 선택
 				$('#selbox').focus();
 			}
-            if(e.altKey && e.key == 9){ // 메인 페이지 이동
+      if(e.altKey && e.key == 6){ // 주문자 정보 이동
+				$('#orderMan').focus();
+			}
+      if(e.altKey && e.key == 9){ // 메인 페이지 이동
                 location.href = "/";
 			}
 			if(e.altKey && e.key == 0){ //다시 듣기
