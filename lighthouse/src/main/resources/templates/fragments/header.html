@@ -2,104 +2,105 @@
 <!--headerFragment 선언-->
 
 <div th:fragment="headerFragment">
-	<!-- Search -->
+   <!-- Search -->
 
-	<!-- NAVBAR -->
-	<div
-		class="navbar navbar-topbar navbar-expand-xl navbar-light bg-light">
-		<div class="container">
+   <!-- NAVBAR -->
+   <div
+      class="navbar navbar-topbar navbar-expand-xl navbar-light bg-light">
+      <div class="container">
 
-			<!-- Promo -->
-			<div class="me-xl-8">
-				<i class="fe fe-truck me-2"></i> <span class="heading-xxxs">Free
-					shipping worldwide</span>
-			</div>
+         <!-- Promo -->
+         <div class="me-xl-8">
+            <i class="fe fe-truck me-2"></i> <span class="heading-xxxs">Free
+               shipping worldwide</span>
+         </div>
 
-			<!-- Toggler -->
-			<button class="navbar-toggler" type="button"
-				data-bs-toggle="collapse" data-bs-target="#topbarCollapse"
-				aria-controls="topbarCollapse" aria-expanded="false"
-				aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
+         <!-- Toggler -->
+         <button class="navbar-toggler" type="button"
+            data-bs-toggle="collapse" data-bs-target="#topbarCollapse"
+            aria-controls="topbarCollapse" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+         </button>
 
-			<!-- Collapse -->
-			<div class="collapse navbar-collapse" id="topbarCollapse">
+         <!-- Collapse -->
+         <div class="collapse navbar-collapse" id="topbarCollapse">
 
-				<!-- Nav -->
-				<ul class="nav nav-divided navbar-nav me-auto">
+            <!-- Nav -->
+            <ul class="nav nav-divided navbar-nav me-auto">
 
-				</ul>
+            </ul>
 
-				<!-- Nav -->
-				<ul class="nav navbar-nav me-8">
-					<li class="nav-item"><a class="nav-link"
-						th:if="${session.loginMember} != null" href="/" th:text="로그아웃" onclick="logoutMember()"></a></li>
-					
-					<li class="nav-item"><a class="nav-link"
-						th:href="${session.loginMember} == null ? @{/page/member/loginForm} : '#'" th:text="${session.loginMember} != null ? ${session.loginMember.memberId} : '로그인' ">Shipping</a></li>
-				
-					<li class="nav-item dropdown hovered">
-						<!-- Toggle --> <a class="nav-link" data-bs-toggle="dropdown"
-						href="#" aria-expanded="false">고객센터</a> <!-- Menu -->
-						<div class="dropdown-menu">
-							<div class="card card-lg">
-								<div class="card-body">
-									<ul class="list-styled fs-sm">
-										<li class="list-styled-item"><a class="list-styled-link"
-											href="/custom/faqList">FAQ</a></li>
-										<li class="list-styled-item"><a class="list-styled-link"
-											href="/custom/notice">공지사항</a></li>
-										<li class="list-styled-item"><a class="list-styled-link" id="customInq"
-											href="#">1:1문의</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
+            <!-- Nav -->
+            <ul class="nav navbar-nav me-8">
+               <li class="nav-item"><a class="nav-link"
+                  th:if="${session.loginMember} != null" href="/" th:text="로그아웃" onclick="logoutMember()"></a></li>
+               
+               <li class="nav-item"><a class="nav-link"
+                  th:href="${session.loginMember} == null ? @{/page/member/loginForm} : '#'" th:text="${session.loginMember} != null ? ${session.loginMember.memberId} : '로그인' ">Shipping</a></li>
+            
+               <li class="nav-item dropdown hovered">
+                  <!-- Toggle --> <a class="nav-link" data-bs-toggle="dropdown"
+                  href="#" aria-expanded="false">고객센터</a> <!-- Menu -->
+                  <div class="dropdown-menu">
+                     <div class="card card-lg">
+                        <div class="card-body">
+                           <ul class="list-styled fs-sm">
+                              <li class="list-styled-item"><a class="list-styled-link"
+                                 href="/custom/faqList">FAQ</a></li>
+                              <li class="list-styled-item"><a class="list-styled-link"
+                                 href="/custom/notice">공지사항</a></li>
+                              <li class="list-styled-item"><a class="list-styled-link" id="customInq"
+                                 href="#">1:1문의</a></li>
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
 
-					</li>
-           		  	<li style="align-item:center">
-		               	<div class="form-check form-switch">
-						  <input class="form-check-input" type="checkbox" role="switch" id="sessionTTS" style="color:blue;">
-						  <label class="form-check-label" for="sessionTTS">TTS 사용</label>
-						</div>
-           		  	</li>
-							
-				</ul>
+               </li>
+                      <li style="align-item:center">
+                        <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="sessionTTS" style="color:blue;">
+                    <label class="form-check-label" for="sessionTTS">TTS 사용</label>
+                  </div>
+                      </li>
+                     
+            </ul>
 
-				<!-- Nav -->
-				<ul class="nav navbar-nav flex-row">
-					<li class="nav-item"><a class="nav-link text-gray-350"
-						href="#!"> <i class="fab fa-facebook-f"></i>
-					</a></li>
-					<li class="nav-item ms-xl-n4"><a
-						class="nav-link text-gray-350" href="#!"> <i
-							class="fab fa-twitter"></i>
-					</a></li>
-					<li class="nav-item ms-xl-n4"><a
-						class="nav-link text-gray-350" href="#!"> <i
-							class="fab fa-instagram"></i>
-					</a></li>
-					<li class="nav-item ms-xl-n4"><a
-						class="nav-link text-gray-350" href="#!"> <i
-							class="fab fa-medium"></i>
-					</a></li>
-				</ul>
+            <!-- Nav -->
+            <ul class="nav navbar-nav flex-row">
+               <li class="nav-item"><a class="nav-link text-gray-350"
+                  href="#!"> <i class="fab fa-facebook-f"></i>
+               </a></li>
+               <li class="nav-item ms-xl-n4"><a
+                  class="nav-link text-gray-350" href="#!"> <i
+                     class="fab fa-twitter"></i>
+               </a></li>
+               <li class="nav-item ms-xl-n4"><a
+                  class="nav-link text-gray-350" href="#!"> <i
+                     class="fab fa-instagram"></i>
+               </a></li>
+               <li class="nav-item ms-xl-n4"><a
+                  class="nav-link text-gray-350" href="#!"> <i
+                     class="fab fa-medium"></i>
+               </a></li>
+            </ul>
 
-			</div>
-		</div>
-	</div>
-	<!-- NAVBAR -->
-	<nav class="navbar navbar-expand-xl navbar-light">
-		<div class="container">
-			<!-- Toggler -->
-			<button class="navbar-toggler" type="button"
-				data-bs-toggle="collapse" data-bs-target="#navbarClassicCollapse"
-				aria-controls="navbarClassicCollapse" aria-expanded="false"
-				aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
+         </div>
+      </div>
+   </div>
+   <!-- NAVBAR -->
+   <nav class="navbar navbar-expand-xl navbar-light">
+      <div class="container">
+         <!-- Toggler -->
+         <button class="navbar-toggler" type="button"
+            data-bs-toggle="collapse" data-bs-target="#navbarClassicCollapse"
+            aria-controls="navbarClassicCollapse" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+         </button>
 
+<<<<<<< HEAD
 			<!-- Collapse -->
 			<div class="collapse navbar-collapse row justify-content-center" id="navbarClassicCollapse"> 
 				<!-- Nav -->
@@ -283,9 +284,190 @@
 													</div><!-- card card-lg -->
 												</div><!-- dropdown-menu -->
 											</li>
+=======
+         <!-- Collapse -->
+         <div class="collapse navbar-collapse row justify-content-center" id="navbarClassicCollapse"> 
+            <!-- Nav -->
+            <div class="col-3">
+            <ul class="nav navbar-nav nav-divided">
+               <li class="nav-item dropdown hovered">
+                  <a class="nav-link" data-bs-toggle="dropdown" href="#">Category</a>
+                  <!-- Menu -->
+                  <div class="dropdown-menu " style="width:300px;">
+                  <!-- Tabs -->
+                  <div class="mb-2 mb-lg-0 border-bottom-lg">
+                     <div class="container" style="display: flex-end; justify-content: space-between">
+                        <div class="row justify-content-around">
+                        
+                        <div class="col-3 " th:each="category:${categories}">
+                              <ul class="nav nav-unstyled nav-divided">
+                                 <li class="nav-item dropdown hovered" id="deptCategory">
+                                    <!-- Toggle --> 
+                                    <a class="nav-link" data-bs-toggle="dropdown" th:text="${category.categoryCode}"></a> 
+                                    <!-- Menu -->
+                                    <div class="dropdown-menu" style="min-width: 650px">
+                                       <div class="card card-lg">
+                                          <div class="card-body">
+                                             <div class="row">
+                                                <!-- 카테고리 하위 -->
+                                                <div class="col" th:each="ctgFirst : ${allCtg}" th:if="${ctgFirst.categoryLevel} == 2 and ${(ctgFirst.parentCategoryCode).equals('Fassion')} and ${(category.categoryCode).equals('Fassion')}" >
+                                                   <!-- Heading -->
+                                                   
+                                                   <th:block  th:each="ctgSec : ${allCtg}" th:if="${ctgSec.categoryLevel} == 3 and
+                                                    ${(ctgSec.categoryName).equals('상의')} and ${(ctgSec.parentCategoryCode).equals(ctgFirst.categoryCode)} " >
+                                                
+                                                
+                                                
+                                                   <div class="mb-5 fw-bolder" th:text="${ctgFirst.categoryName}+${ctgSec.categoryName}">
+                                                   </div>
+                                                      <!-- Links -->
+                                                      <ul class="list-styled mb-7 fs-sm" th:each="ctgThd : ${allCtg}" th:if="${ctgThd.categoryLevel} == 4 and ${(ctgThd.parentCategoryCode).equals(ctgSec.categoryCode)}">
+                                                         <li class="list-styled-item"><a
+                                                            class="list-styled-link" href="./shop.html" th:text="${ctgThd.categoryName} + ${ctgThd.categoryCode}">상의</a>
+                                                         </li>
+                                                      </ul>
+                                                   </th:block><!-- sec -->
+                                                   
+                                                   <th:block th:each="ctgSec : ${allCtg}" th:if="${ctgSec.categoryLevel} == 3 and
+                                                    ${(ctgSec.categoryName).equals('하의')} and ${(ctgSec.parentCategoryCode).equals(ctgFirst.categoryCode)} ">
+                                                   <!-- Heading -->
+                                                   <div class="mb-5 fw-bolder" th:text="${ctgFirst.categoryName}+${ctgSec.categoryName}" >
+                                                   </div>
+                                                      <!-- Links -->
+                                                      <ul class="list-styled mb-7 fs-sm"  th:each="ctgThd : ${allCtg}" th:if="${ctgThd.categoryLevel} == 4 and ${(ctgThd.parentCategoryCode).equals(ctgSec.categoryCode)}">
+                                                         <li class="list-styled-item"><a
+                                                            class="list-styled-link" href="./shop.html" th:text="${ctgThd.categoryName} + ${ctgThd.categoryCode}" >하의</a>
+                                                         </li>
+                                                      </ul>
+                                                   </th:block>
+                                                      
+                                                   <th:block th:each="ctgSec : ${allCtg}" th:if="${ctgSec.categoryLevel} == 3 and
+                                                    ${(ctgSec.categoryName).equals('신발')} and ${(ctgSec.parentCategoryCode).equals(ctgFirst.categoryCode)} ">
+                                                   <div class="mb-5 fw-bolder" th:text="${ctgFirst.categoryName}+${ctgSec.categoryName}" >
+                                                   </div>
+                                                         <!-- Links -->
+                                                      <ul class="list-styled mb-7 fs-sm" th:each="ctgThd : ${allCtg}" th:if="${ctgThd.categoryLevel} == 4 and ${(ctgThd.parentCategoryCode).equals(ctgSec.categoryCode)}">
+                                                         <li class="list-styled-item"><a
+                                                            class="list-styled-link" href="./product.html"  th:text="${ctgThd.categoryName} + ${ctgThd.categoryCode}">신발</a>
+                                                         </li>
+                                                      </ul>
+                                                   </th:block>
+                                                      
+                                                   
+                                                </div><!--  fassion col end -->
+                                                
+                                                <!-- Food 카테고리 -->
+                                                <div class="col" th:if="${(category.categoryCode).equals('FOOD')}">
+                                                   <div class="mb-5 fw-bolder">축산
+                                                   </div>
+                                                   <ul class="list-styled mb-7 fs-sm">
+                                                         <li class="list-styled-item"><a
+                                                            class="list-styled-link" href="./shop.html">돼지</a>
+                                                         </li>
+                                                   </ul>
+                                                   <ul class="list-styled mb-7 fs-sm">
+                                                         <li class="list-styled-item"><a
+                                                            class="list-styled-link" href="./shop.html">닭</a>
+                                                         </li>
+                                                   </ul>
+                                                   <ul class="list-styled mb-7 fs-sm">
+                                                         <li class="list-styled-item"><a
+                                                            class="list-styled-link" href="./shop.html">소</a>
+                                                         </li>
+                                                   </ul>
+                                                   <ul class="list-styled mb-7 fs-sm">
+                                                         <li class="list-styled-item"><a
+                                                            class="list-styled-link" href="./shop.html">기타</a>
+                                                         </li>
+                                                   </ul>
+                                                   
+                                                </div>
+                                                <div class="col" th:if="${(category.categoryCode).equals('FOOD')}">
+                                                   <div class="mb-5 fw-bolder">수산물
+                                                   </div>
+                                                   <ul class="list-styled mb-7 fs-sm">
+                                                         <li class="list-styled-item"><a
+                                                            class="list-styled-link" href="./shop.html">생선</a>
+                                                         </li>
+                                                   </ul>
+                                                   <ul class="list-styled mb-7 fs-sm">
+                                                         <li class="list-styled-item"><a
+                                                            class="list-styled-link" href="./shop.html">해산물</a>
+                                                         </li>
+                                                   </ul>
+                                                   <ul class="list-styled mb-7 fs-sm">
+                                                         <li class="list-styled-item"><a
+                                                            class="list-styled-link" href="./shop.html">건어물</a>
+                                                         </li>
+                                                   </ul>
+                                                   
+                                                </div>
+                                                <div class="col" th:if="${(category.categoryCode).equals('FOOD')}">
+                                                   <div class="mb-5 fw-bolder">과일/채소
+                                                   </div>
+                                                   <ul class="list-styled mb-7 fs-sm">
+                                                         <li class="list-styled-item"><a
+                                                            class="list-styled-link" href="./shop.html">과일/채소</a>
+                                                         </li>
+                                                   </ul>
+                                                   
+                                                   
+                                                </div><!-- Food col End -->
+                                                
+                                                
+                                                
+                                                <!-- Life 카테고리 -->
+                                                <div class="col" th:each="ctgFirst : ${allCtg}" th:if="${ctgFirst.categoryLevel} == 2 and ${(ctgFirst.parentCategoryCode).equals('Life')} and ${(category.categoryCode).equals('Life')}" >
+                                                   <!-- Heading -->
+                                                   
+                                                   <div class="mb-5 fw-bolder" th:text="${ctgFirst.categoryName}">
+                                                   </div>
+                                                   
+                                                   <!-- LK, LD, LF  -->
+                                                   <th:block  th:each="ctgSec : ${allCtg}" th:if="${ctgSec.categoryLevel} == 3 and
+                                                    ${(ctgSec.parentCategoryCode).equals('LK')}  and ${(ctgFirst.categoryCode).equals('LK') }" >
+                                                      <!-- Links -->
+                                                      <ul class="list-styled mb-7 fs-sm">
+                                                         <li class="list-styled-item"><a
+                                                            class="list-styled-link" href="./shop.html" th:text="${ctgSec.categoryName} + ${ctgSec.categoryCode}">가전</a>
+                                                         </li>
+                                                      </ul>
+                                                   </th:block><!-- sec -->
+                                                   
+                                                   <th:block  th:each="ctgSec : ${allCtg}" th:if="${ctgSec.categoryLevel} == 3 and
+                                                    ${(ctgSec.parentCategoryCode).equals('LF')}  and ${(ctgFirst.categoryCode).equals('LF') }" >
+                                                      <!-- Links -->
+                                                      <ul class="list-styled mb-7 fs-sm">
+                                                         <li class="list-styled-item"><a
+                                                            class="list-styled-link" href="./shop.html" th:text="${ctgSec.categoryName} + ${ctgSec.categoryCode}">가구</a>
+                                                         </li>
+                                                      </ul>
+                                                   </th:block><!-- sec -->
+                                                   
+                                                   <th:block  th:each="ctgSec : ${allCtg}" th:if="${ctgSec.categoryLevel} == 3 and
+                                                    ${(ctgSec.parentCategoryCode).equals('LD')}  and ${(ctgFirst.categoryCode).equals('LD') }" >
+                                                      <!-- Links -->
+                                                      <ul class="list-styled mb-7 fs-sm">
+                                                         <li class="list-styled-item"><a
+                                                            class="list-styled-link" href="./shop.html" th:text="${ctgSec.categoryName} + ${ctgSec.categoryCode}">생활</a>
+                                                         </li>
+                                                      </ul>
+                                                   </th:block><!-- sec -->
+                                                   
+                                                      
+                                                   
+                                                </div><!--  Life col end -->
+                                                
+                                             </div><!-- row -->
+                                          </div><!-- card-body -->
+                                       </div><!-- card card-lg -->
+                                    </div><!-- dropdown-menu -->
+                                 </li>
+>>>>>>> branch 'yujun' of https://github.com/seojiwon99/Allright.git
 
-										</ul>
+                              </ul>
 
+<<<<<<< HEAD
 									
 								</div><!-- foreach close -->
 								</div>
@@ -343,151 +525,197 @@
 								th:href="${session.loginMember} == null ? @{/page/member/loginForm} : @{/cart/cartView}"> 
 		                   <span> <i class="fe fe-shopping-cart"></i></span>
 		            		   </a></li>
+=======
+                           
+                        </div><!-- foreach close -->
+                        </div>
+                     </div><!-- container close -->
+                  </div><!-- class mb-2 mb-lg-0 border-bottom-lg close -->
+                  </div>
+               </li>
+                     <!-- 판매순위, 신상 -->
+                     <li class="nav-item dropdown hovered">
+                        <!-- Toggle --> 
+                        <a class="nav-link" data-bs-toggle="dropdown" href="#">New</a>
+                     </li>
+      
+                     <li class="nav-item dropdown hovered">
+                        <!-- Toggle --> 
+                        <a class="nav-link" data-bs-toggle="dropdown" href="#">Rank</a>
+                     </li>
+            </ul>
+            </div>
+            
+            
+            
+                  <div class="col-3">
+            
+                  <!-- 판매순위, 신상 -->
+                  <!-- Brand -->
+                  <a class="navbar-brand mx-auto d-none d-xl-block" href="/" style="text-align:center"> All
+                     Right </a>
+                  </div>
+         <div class="col-3">
+                  <!-- Nav 찜 장바구니 마이페이지 검색-->
+                  <ul class="navbar-nav flex-row  justify-content-end">
+                     <li class="nav-item" style="margin-right: 5px; align-items: end;">
+                     <div class="input-group" >
+                     <input class="form-control form-control-underline form-control-xxs border-dark "type="text">
+                     <!-- 
+                     <a class="nav-link"   data-bs-toggle="offcanvas" href="#modalSearch"> 
+                        <i class="fe fe-search"></i>
+                     </a> 
+                     -->
+                     <button class="btn btn-underline btn-xxs border-dark" type="button" >
+                        <i class="fe fe-search"></i>
+                     </button>
+                     </div>
+                     </li>
+                     <li class="nav-item ms-lg-n4"><a class="nav-link"
+      
+                        href="page/buyer/orderList"> <i class="fe fe-user"></i>
+                     </a></li>
+                     <li class="nav-item ms-lg-n4"><a class="nav-link"
+                        href="wishList"> <i class="fe fe-heart"></i>
+                     </a></li>
+                     <li class="nav-item ms-lg-n4">
+                        <a class="nav-link" id="cartId" 
+                        th:href="${session.loginMember} == null ? @{/page/member/loginForm} : @{/cart/cartView}"> 
+                         <span> <i class="fe fe-shopping-cart"></i></span>
+                           </a></li>
+>>>>>>> branch 'yujun' of https://github.com/seojiwon99/Allright.git
 
-		
-						</ul>
-						</div>
-			</div><!-- navbarClassicCollapse close -->
-		</div> <!-- nav container close -->
-	</nav><!--  nav close -->
-	<script th:inline="javascript">
-		//session TTS check
-		if(getWithExpiry('ttsKey') == null){
-			$('#sessionTTS')[0].checked = true;
-		}
-		$('#customInq').on('click', function (e) {
-			let member = [[${session.loginMember}]];
-			if (member == null) {
-				alert("로그인 하셔야 서비스를 이용하실 수 있습니다.");
-				location.href="page/member/loginForm";
-				return;
-			}else{
-				location.href="/custom/inquiry";
+      
+                  </ul>
+                  </div>
+         </div><!-- navbarClassicCollapse close -->
+      </div> <!-- nav container close -->
+   </nav><!--  nav close -->
+   <script th:inline="javascript">
+      //session TTS check
+      if(getWithExpiry('ttsKey') == null){
+         $('#sessionTTS')[0].checked = true;
+      }
+      $('#cartId').on('click', function (e) {
+         let member = [[${session.loginMember}]];
+         if (member == null) {
+            alert("로그인 하셔야 서비스를 이용하실 수 있습니다.");
+            location.href="page/member/loginForm";
+            return;
+         }else{
+            location.href="/cart/cartView";
+         }
+      })
 
-			}
-		})
-	
-
-		$('#cartId').on('click', function (e) {
-			let member = [[${session.loginMember}]];
-			if (member == null) {
-				alert("로그인 하셔야 서비스를 이용하실 수 있습니다.");
-				location.href="page/member/loginForm";
-				return;
-			}else{
-				location.href="/cart/cartView";
-			}
-		})
-
-		$('.category').on('click',function(e){
-			let parentCode = $(this).data('value');
-			console.log(parentCode);
-			
-			$.ajax({
-				url:'childCateList',
-				type:'post',
-				data : JSON.stringify({
-					categoryCode : parentCode
-				}),	
-		        contentType:'application/json',
-				success:function(result){
-					console.log(result);
-					$('.cate').empty();
-					let box ='';
-					if(parentCode == 'Fassion'){
-						box = 'cate0';
-					}else if(parentCode == 'FOOD'){
-						box = 'cate1';
-					}else{
-						box = 'cate2';
-					}
-					
-					
-					$(result).each(function(idx,item){
-						if(item.categoryLevel == 2){
-							let result01 = item.categoryCode;
-							let map = $($("#template").html()).clone();
-							map.find('.cate-name').text(item.categoryName);
-							$(result).each(function(idx, list){
-								if(result01 == list.parentCategoryCode){
-									console.log(result);
-									// <li class="list-styled-item">
-									// <a class="list-styled-link" href="./shop.html">All Bottoms</a>
-									// </li>
-									let liTag = $('<li />').attr("class","list-styled-item");;
-									let aTag = $('<a/>').attr("class","list-styled-link").text(list.categoryName);
-									liTag.append(aTag);
-									map.find('.child-cate').append(liTag);
-								}
-							})
-							
-							$('#'+box).append(map);
-						
-						}
-					})
-				
+      $('.category').on('click',function(e){
+         let parentCode = $(this).data('value');
+         console.log(parentCode);
+         
+         $.ajax({
+            url:'childCateList',
+            type:'post',
+            data : JSON.stringify({
+               categoryCode : parentCode
+            }),   
+              contentType:'application/json',
+            success:function(result){
+               console.log(result);
+               $('.cate').empty();
+               let box ='';
+               if(parentCode == 'Fassion'){
+                  box = 'cate0';
+               }else if(parentCode == 'FOOD'){
+                  box = 'cate1';
+               }else{
+                  box = 'cate2';
+               }
+               
+               
+               $(result).each(function(idx,item){
+                  if(item.categoryLevel == 2){
+                     let result01 = item.categoryCode;
+                     let map = $($("#template").html()).clone();
+                     map.find('.cate-name').text(item.categoryName);
+                     $(result).each(function(idx, list){
+                        if(result01 == list.parentCategoryCode){
+                           console.log(result);
+                           // <li class="list-styled-item">
+                           // <a class="list-styled-link" href="./shop.html">All Bottoms</a>
+                           // </li>
+                           let liTag = $('<li />').attr("class","list-styled-item");;
+                           let aTag = $('<a/>').attr("class","list-styled-link").text(list.categoryName);
+                           liTag.append(aTag);
+                           map.find('.child-cate').append(liTag);
+                        }
+                     })
+                     
+                     $('#'+box).append(map);
+                  
+                  }
+               })
+            
 
 
 
-				},
-				error: function(err){
-					console.log(err);
-				}
-			})
-		})
-		
-		function logoutMember(e){
-			console.log(e);
-			let memberId = [[${session.loginMember}]]
-			console.log(memberId);
-			$.ajax({
-				url : '/logout',
-				type : 'POST'
-			})
-		}
-		
-		ttsInit();
-		
-		$('#sessionTTS').on('click',function(){
-			console.log($('#sessionTTS')[0].checked);
-			
-			if($('#sessionTTS')[0].checked == false){ // 세션 추가(TTS 안듣기)
-				setWithExpiry('ttsKey', 'true', 604800); // 604800 = 7일
-				console.log(getWithExpiry('ttsKey'));
-			}else if($('#sessionTTS')[0].checked == true){ //세션 삭제(TTS 듣기)
-				if(getWithExpiry('ttsKey')){
-					localStorage.removeItem('ttsKey');
-				}
-				console.log(getWithExpiry('ttsKey'));
-			}
-		})
-		function setWithExpiry(key,value,ttl){
-			const now = new Date();
-			
-			const item = {
-					value : value,
-					expiry : now.getTime() + ttl,
-			}
-			localStorage.setItem(key, JSON.stringify(item));
-		}
-		function getWithExpiry(key) {
-		    const itemStr = localStorage.getItem(key)
-		    // if the item doesn't exist, return null
-		    if (!itemStr) {
-		        return null
-		    }
-		    const item = JSON.parse(itemStr)
-		    const now = new Date()
-		    // compare the expiry time of the item with the current time
-		    if (now.getTime() > item.expiry) {
-		        // If the item is expired, delete the item from storage
-		        // and return null
-		        localStorage.removeItem(key)
-		        return null
-		    }
-		    return item.value
-		}
-	</script>
+            },
+            error: function(err){
+               console.log(err);
+            }
+         })
+      })
+      
+      function logoutMember(e){
+         console.log(e);
+         let memberId = [[${session.loginMember}]]
+         console.log(memberId);
+         $.ajax({
+            url : '/logout',
+            type : 'POST'
+         })
+      }
+      
+      ttsInit();
+      
+      $('#sessionTTS').on('click',function(){
+         console.log($('#sessionTTS')[0].checked);
+         
+         if($('#sessionTTS')[0].checked == false){ // 세션 추가(TTS 안듣기)
+            setWithExpiry('ttsKey', 'true', 604800); // 604800 = 7일
+            console.log(getWithExpiry('ttsKey'));
+         }else if($('#sessionTTS')[0].checked == true){ //세션 삭제(TTS 듣기)
+            if(getWithExpiry('ttsKey')){
+               localStorage.removeItem('ttsKey');
+            }
+            console.log(getWithExpiry('ttsKey'));
+         }
+      })
+      function setWithExpiry(key,value,ttl){
+         const now = new Date();
+         
+         const item = {
+               value : value,
+               expiry : now.getTime() + ttl,
+         }
+         localStorage.setItem(key, JSON.stringify(item));
+      }
+      function getWithExpiry(key) {
+          const itemStr = localStorage.getItem(key)
+          // if the item doesn't exist, return null
+          if (!itemStr) {
+              return null
+          }
+          const item = JSON.parse(itemStr)
+          const now = new Date()
+          // compare the expiry time of the item with the current time
+          if (now.getTime() > item.expiry) {
+              // If the item is expired, delete the item from storage
+              // and return null
+              localStorage.removeItem(key)
+              return null
+          }
+          return item.value
+      }
+   </script>
     <script th:src="@{/js/theme.bundle.js}"></script>
 </div>
 </html>

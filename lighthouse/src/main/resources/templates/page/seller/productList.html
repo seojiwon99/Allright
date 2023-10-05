@@ -80,7 +80,7 @@
 										<li class="nav-item"><a class="nav-link"
 											href="/sellerMypage">판매자정보</a></li>
 										<li class="nav-item"><a class="nav-link"
-											href="./docs/getting-started.html">고객센터</a></li>
+											href="/sellerInquiry">고객센터</a></li>
 						</ul>
 
 						
@@ -136,11 +136,14 @@
 					<tbody id="sortList">
 						<tr th:each="product : ${productList}">
 							<td><input type="checkbox"></td>
-							<td><a href="/modifyForm"><button id="modifyForm"
-										type="button">수정</button></a></td>
+							<td> 
+							<a th:href="@{'/modifyForm?productCode=' + ${product.productCode}}">
+                             <button id="modifyForm" type="button">수정</button>
+                         	</a>
+                         	</td>
 							<td th:text="${product.productCode}"></td>
 							<td th:text="${product.productName}"></td>
-							<td th:text="${product.optionDetail[0].optionCount}"></td>
+							<td th:text="${product.optionDetail[0].optionCount}" />
 							<td th:text="${product.productCost}"></td>
 							<td th:text="${product.salePrice}"></td>
 							<td th:text="${product.deliveryCost}"></td>
@@ -172,14 +175,14 @@
 			localStorage.removeItem('detail');
 			localStorage.removeItem('product');
 		}
-	})
+
 
 	
 	
 	$('#optionList').on('change',function(){
 		
 		let val = $(this).val();
-	
+		console.log(val);
 		$.ajax({
 			url : 'getOptionProduct',
 			type :'get',
@@ -228,10 +231,10 @@
 	
 		
 		
-		$.ajax('http://localhost:8090/updateExStatus',{
+		$.ajax({
 			/* let val = $(this).val();
 			console.log(val); */
-		
+			url : 'updateExStatus',
 			type: 'post',
 			contentType : 'application/json',
 			data : JSON.stringify(proList)
@@ -245,7 +248,7 @@
 	
 	});
 	
-	/*  $('#chkY').on('click',function(){
+	  $('#chkY').on('click',function(){
 		let proList = [];
 		let checkTags = $('input[type="checkbox"]:checked').not('#allcheck');
 		
@@ -259,10 +262,9 @@
 	
 		
 		
-		$.ajax('http://localhost:8090/updateExStatus',{
-			/* let val = $(this).val();
-			console.log(val); 
-		
+		$.ajax({
+			
+			url : 'updateExStatus',
 			type: 'post',
 			contentType : 'application/json',
 			data : JSON.stringify(proList)
@@ -274,13 +276,35 @@
 		})
 		.fail(reject => console.log(reject));
 	
-	});  */
+	});  
 
 	
 	function refreshList(){
 		location.reload();
 	}
 	
+	$('#modifyForm').on('click', function () {
+	    let productCode = $(this).closest('tr').find('td:eq(2)').text();
+	    console.log(productCode);
+
+	    $.ajax({
+	        url: 'modifyForm',
+	        type: 'get',
+	        data: {
+	            productCode
+	        }
+	    })
+	    .done(data => {
+	        console.log(data);
+	        window.location.href = '/modifyForm?productCode=' + productCode;
+	    })
+	    .fail(reject => {
+	        console.log(reject);
+	    });
+	});
+
+	
+})
 </script>
 
 </div>

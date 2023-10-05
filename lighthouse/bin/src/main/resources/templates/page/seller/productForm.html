@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default_layout}">
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<div layout:fragment="content">
+
+	<div class="row gx-0">
+		<div class="col-12 col-lg-auto">
+
+			<!-- NAVBAR -->
+			<nav
+				class="navbar navbar-expand-lg navbar-vertical navbar-light sticky-start px-lg-7 ">
+				<div class="container-fluid">
+
+					<!-- Brand -->
+					<a class="navbar-brand" href="/sellerMain"> 판매자센터 </a>
+
+					<!-- Toggler -->
+					<button class="navbar-toggler" type="button"
+						data-bs-toggle="collapse"
+						data-bs-target="#navbarSidenavLeftCollapse"
+						aria-controls="navbarSidenavLeftCollapse" aria-expanded="false"
+						aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+
+					<!-- Collapse -->
+					<div class="collapse navbar-collapse"
+						id="navbarSidenavLeftCollapse">
+
+						<!-- Nav -->
+						<ul class="navbar-nav fs-lg mb-6 my-lg-12" id="sidenavParent">
+							<li class="nav-item">
+								<!-- Toggle --> <a class="nav-link dropdown-toggle"
+								data-bs-toggle="collapse" href="#sidenavHome"> 상품관리 </a> <!-- Collapse -->
+								<div class="collapse" id="sidenavHome"
+									data-bs-parent="#sidenavParent">
+									<ul class="list-styled fs-base fw-normal py-3 mb-0">
+										<li class="list-styled-item"><a class="list-styled-link"
+											href="/productList">상품 조회/수정</a></li>
+										<li class="list-styled-item"><a class="list-styled-link"
+											href="/insertProduct">상품등록</a></li>
+
+									</ul>
+								</div>
+
+							</li>
+							<li class="nav-item">
+								<!-- Toggle --> <a class="nav-link dropdown-toggle"
+								data-bs-toggle="collapse" href="#sidenavCatalog"> 판매관리 </a> <!-- Collapse -->
+								<div class="collapse" id="sidenavCatalog"
+									data-bs-parent="#sidenavParent">
+									<div class="row">
+										<div class="col-12 py-3">
+											<!-- Links -->
+											<ul class="list-styled fs-base">
+												<li class="list-styled-item"><a
+													class="list-styled-link" href="./shop.html">주문확인/발송관리</a></li>
+												<li class="list-styled-item"><a
+													class="list-styled-link" href="./shop.html">취소관리</a></li>
+												<li class="list-styled-item"><a
+													class="list-styled-link" href="./shop.html">교환반품관리</a></li>
+
+											</ul>
+
+										</div>
+
+										<li class="nav-item">
+											<!-- Toggle --> <a class="nav-link dropdown-toggle"
+											data-bs-toggle="collapse" href="#sidenavShop"> 정산/통계관리 </a>
+										<li class="nav-item">
+											<!-- Toggle --> <a class="nav-link dropdown-toggle"
+											data-bs-toggle="collapse" href="#sidenavPages"> 문의관리 </a>
+										<li class="nav-item">
+											<!-- Toggle --> <a class="nav-link dropdown-toggle"
+											data-bs-toggle="collapse" href="#sidenavBlog"> 판매자정보 </a>
+										<li class="nav-item"><a class="nav-link"
+											href="./docs/getting-started.html">고객센터</a></li>
+						</ul>
+
+
+					</div>
+
+				</div>
+			</nav>
+
+		</div>
+
+
+		<div class="col-12 col-lg">
+			<div class="jumbotron">
+				<div class="container">
+					<h1 class="display-3">상품 등록</h1>
+				</div>
+			</div>
+
+
+		
+			<div class="container">
+				<form id = "insertForm" class="form-horizontal" action="insertProduct" method="post">
+					<div id="categoryId">
+						<div class="form-group row">
+							<div>
+							<label class="col-sm-2">카테고리</label>
+						
+						<select  id="selectCategory">
+							<option value="">카테고리선택</option>
+						    <option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}" th:text="${category.categoryName}"></option>
+						</select>
+						
+						<select  th:field="*{getCategoryList}" id="ChildCate" style="display:none;">
+							<option value="">카테고리선택</option>
+							<option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}" th:text="${category.categoryName}" ></option>
+						</select>
+						
+						<select  th:field="*{getCategoryList}" id="ChildOfChildCate" style="display:none;">
+							<option value="">카테고리선택</option>
+							<option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}" th:text="${category.categoryName}" ></option>
+						</select>
+						
+						<select  th:field="*{getCategoryList}" id="thirdOfChildCate" style="display:none;">
+							<option value="">카테고리선택</option>
+							<option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}" th:text="${category.categoryName}" ></option>
+						</select><br>
+						<strong id="firstCategoryCode"></strong><strong id="secondCategoryCode"></strong><strong id="thirdCategoryCode"></strong><strong id="quadCategoryCode"></strong>
+						</div>
+</div>
+						<!-- <ul th:each ="category : ${getCategoryList}">
+							<li th:text="${category.categoryName}" ></li>
+						</ul> -->
+						<!-- <ul th:each ="category : ${getCategoryList}">
+							
+						</ul> -->
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">회원 ID</label>
+						<div class="col-sm-3">
+							<input type="text" name="memberId" class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">상품 코드</label>
+						<div class="col-sm-3">
+							<input type="text" name="productCode" class="form-control">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-2">상품명</label>
+						<div class="col-sm-3">
+							<input type="text" name="productName" class="form-control">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-2">판매가</label>
+						<div class="col-sm-3">
+							<input type="text" name="productCost" class="form-control">
+						</div>
+						<label class="col-sm-2">할인가</label>
+						<div class="col-sm-3">
+							<input type="text" name="salePrice" class="form-control">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-2">재고수량</label>
+						<div class="col-sm-3">
+							<textarea name="optionCount" cols="50" rows="2"></textarea>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-2">옵션 개수</label>
+						<div class="col-sm-3">
+							<select id="optCnt">
+								<option>1</option>
+								<option>2</option>
+								<option>3</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-2">이미지</label>
+						<div class="col-sm-3">
+							<input type="file" name="imgName" accept="image/*" >
+
+
+							<!-- 업로드 버튼 -->
+							<input type="submit" value="이미지 업로드">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-2">상세설명</label>
+						<div class="col-sm-3">
+							<input type="text" name="productContent" class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">브랜드</label>
+						<div class="col-sm-3">
+							<input type="text" name="productBrand" class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">상품인증</label>
+						<div class="col-sm-3">
+							<input type="text" name="unitsInStock" class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">원산지</label>
+						<div class="col-sm-3">
+							<input type="text" name="productOrigin" class="form-control">
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-sm-2">제조국</label>
+						<div class="col-sm-3">
+							<input type="text" name="productMakeorigin" class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">최소구매수량</label>
+						<div class="col-sm-3">
+							<input type="text" name="minOrder" class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">최대구매수량</label>
+						<div class="col-sm-3">
+							<input type="text" name="maxOrder" class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">출고지</label>
+						<div class="col-sm-3">
+							<input type="text" name="productLocation" class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">택배사</label>
+						<div class="col-sm-3">
+							<input type="text" name="deliveryService" class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">기본배송비</label>
+						<div class="col-sm-3">
+							<input type="text" name="deliveryCost" class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">교환배송비</label>
+						<div class="col-sm-3">
+							<input type="text" name="exchangeCost" class="form-control">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2">반품배송비</label>
+						<div class="col-sm-3">
+							<input type="text" name="returnCost" class="form-control">
+						</div>
+					</div>
+
+
+
+
+
+					<div class="form-group row">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="submit" class="btn btn-primary">등록</button>
+						</div>
+					</div>
+
+				</form>
+
+			</div>
+		</div>
+
+	</div>
+	<script>
+		
+
+		
+
+		$('#selectCategory').on('change', function(){
+		let val = $(this).val();
+		$.ajax({
+			url : 'childCate',
+			type : 'get',
+			data : {'categoryCode' : val}
+		})
+		.done(getCategoryList => {
+			$('#ChildCate').replaceWith(getCategoryList);
+			$('#ChildCate').css('display','');
+			
+			// $('#ChildCate').on('change', createChild());
+			let selectedOptionText = $(this).find('option:selected').text();
+
+			$("#firstCategoryCode").text('선택된 카테고리 : ' + selectedOptionText + ' >');
+		})	
+		.fail(reject => {
+			console.log(reject);
+		})
+	})
+	
+	
+	
+	$(document).on("change", "#ChildCate", function(){
+		let val = $(this).val();
+		$.ajax({
+			url : 'childOfCate',
+			type : 'get',
+			data : {'categoryCode' : val}
+		})
+		.done(getCategoryList => {
+			if(val == null){
+				$('#ChildOfChildCate').css('display','none');
+			} 
+			$('#ChildOfChildCate').replaceWith(getCategoryList);
+			$('#ChildOfChildCate').css('display','');
+			
+			let selectedOptionText = $(this).find('option:selected').text();
+
+			$("#secondCategoryCode").text(selectedOptionText + ' >');
+			
+		})	
+		.fail(reject => {
+			console.log(reject);
+		})
+	})
+	
+	$(document).on("change", "#ChildOfChildCate", function(){
+		let val = $(this).val();
+		$.ajax({
+			url : 'thirdOfCate',
+			type : 'get',
+			data : {'categoryCode' : val}
+		})
+		.done(getCategoryList => {
+			if(val == null){
+				$('#thirdOfChildCate').css('display','none');
+			} 
+			$('#thirdOfChildCate').replaceWith(getCategoryList);
+			$('#thirdOfChildCate').css('display','');
+			
+			let selectedOptionText = $(this).find('option:selected').text();
+	
+			$("#thirdCategoryCode").text(selectedOptionText + ' >');
+			
+			$('#thirdOfChildCate').change(function(){
+				let selectedOptionText = $(this).find('option:selected').text();
+				$("#quadCategoryCode").text(selectedOptionText);
+					});
+			
+			
+			
+		})	
+		.fail(reject => {
+			console.log(reject);
+		})
+	})
+
+	
+ document.querySelector('form[name="insertForm"]')
+			.addEventListener(
+				'submit',
+				function(e){
+					e.preventDefault();
+					
+					let productCode = document.getElementsByName('productCode')[0];
+					
+					if(productCode.value ==''){
+						alert('상품코드를 입력하세요');
+						productCode.focus();
+						return;
+					}
+					alert('상품등록이 완료되었습니다.')
+					insertForm.submit();
+				}
+			) 
+	
+		        
+
+	</script>
+
+	
+	
+	</div>
+	</html>

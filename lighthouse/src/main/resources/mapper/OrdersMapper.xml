@@ -24,7 +24,7 @@
                    i.upload_name,
                    p.option_detail_code,
                    i.upload_path,
-                   c.option_last,
+                   p.option_last,
                    c.cart_code
             FROM ar_cart c
             
