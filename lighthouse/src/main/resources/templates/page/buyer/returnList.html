@@ -226,8 +226,29 @@
       0번 다시듣기.
     </textarea>
 	<script>
-	let TTSIsOk = localStorage.getItem('ttsKey');
-	    let sessionAuthor;
+		function deleteReturn(code) {
+			let returnDel = confirm('삭제하시겠습니까?');
+			let returnData = {
+				 'orderDetailCode' : $('#orderDetailCode').text(),
+			}
+			if(returnDel){
+			$.ajax('/buyer/deleteReturn',{
+				type : 'POST',
+				contentType:'application/json',
+				data : JSON.stringify(returnData)
+			})			
+			.done(data => {
+				
+				console.log(data);
+				$('#test').replaceWith(data);
+			})
+			} else {
+				return;
+			}
+		};
+		
+	   let TTSIsOk = localStorage.getItem('ttsKey');
+	   let sessionAuthor;
 	   console.log(sessionStorage.loginMember);          
 	   if(sessionStorage.loginMember != null){
 	      sessionAuthor = sessionStorage.loginMember.memberAuthor;
@@ -268,26 +289,6 @@
 	 		VoiceMenual('반품 취소 버튼입니다. 반품 철회를 원하시면. 엔터키를 눌러주세요.');
 	 	}
 		
-		function deleteReturn(code) {
-			let returnDel = confirm('삭제하시겠습니까?');
-			let returnData = {
-				 'orderDetailCode' : $('#orderDetailCode').text(),
-			}
-			if(returnDel){
-			$.ajax('/buyer/deleteReturn',{
-				type : 'POST',
-				contentType:'application/json',
-				data : JSON.stringify(returnData)
-			})			
-			.done(data => {
-				
-				console.log(data);
-				$('#test').replaceWith(data);
-			})
-			} else {
-				return;
-			}
-		};
 		//tts 부분
 		console.log('hello js');
 		
@@ -405,7 +406,7 @@
 		                 location.href = "/";
 		          }
 		         else if(e.altKey && e.key == 0){ //다시 듣기
-		             VoiceMenual($('#orderInfo').val());
+		             VoiceMenual($('#orderMenual').val());
 		          }
 		   })
 		  } //ttsInit()의 if문

@@ -215,7 +215,28 @@
       0번 다시듣기.
     </textarea>
 	<script>
-	let TTSIsOk = localStorage.getItem('ttsKey');
+		function deleteExchange(code){
+			let exchangeDel = confirm('삭제하시겠습니까?');
+			let exchangeData = {
+					'orderDetailCode' : $('#orderDetailCode').text(),
+				}
+			$.ajax({
+				url : '/buyer/deleteExchange',
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(exchangeData),
+				success : function(response){
+					alert("수정 완료");
+					$('#test').replaceWith(response);
+				},
+				fail : function(errer){
+					console.error('수정 중 오류')
+					console.log(error);
+				}
+			})
+		};
+	
+		let TTSIsOk = localStorage.getItem('ttsKey');
 		let sessionAuthor;
 		console.log(sessionStorage.loginMember);          
 		if(sessionStorage.loginMember != null){
@@ -257,26 +278,6 @@
 				VoiceMenual('교환 철회 버튼입니다. 교환 철회를 원하시면. 엔터키를 눌러주세요.');
 			}
 			
-		function deleteExchange(code){
-			let exchangeDel = confirm('삭제하시겠습니까?');
-			let exchangeData = {
-					'orderDetailCode' : $('#orderDetailCode').text(),
-				}
-			$.ajax({
-				url : '/buyer/deleteExchange',
-				type : 'POST',
-				contentType : 'application/json',
-				data : JSON.stringify(exchangeData),
-				success : function(response){
-					alert("수정 완료");
-					$('#test').replaceWith(response);
-				},
-				fail : function(errer){
-					console.error('수정 중 오류')
-					console.log(error);
-				}
-			})
-		};
 		
 		//tts 부분
 		console.log('hello js');
@@ -334,6 +335,7 @@
 		        }
 		    });
 		};
+		
 		function base64ToBlob(base64, fileType) {
 		    let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
 		    let audioSrc = typeHeader + base64;
@@ -395,7 +397,7 @@
 		                 location.href = "/";
 		          }
 		         else if(e.altKey && e.key == 0){ //다시 듣기
-		             VoiceMenual($('#orderInfo').val());
+		             VoiceMenual($('#orderMenual').val());
 		          }
 		   })
 		  } //ttsInit()의 if문

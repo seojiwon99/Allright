@@ -113,49 +113,49 @@
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">쿠폰 번호:</h6>
                         <p class="mb-lg-0 fs-sm fw-bold">
-                          <span th:text= "|${coupons.couponCode}|" class="couponCode"></span>
+                          <span th:text= "|${coupons.couponCode}|" class="couponCode" tabindex="0"></span>
                         </p>
                       </div>
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">쿠폰 명:</h6>
                         <p class="mb-lg-0 fs-sm fw-bold">
-                           <span th:text= "|${coupons.couponName}|" class></span>
+                           <span th:text= "|${coupons.couponName}|" class="couponName"></span>
                         </p>
                       </div>
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">쿠폰 설명:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${coupons.couponContent}|"></span>
+                          <span th:text="|${coupons.couponContent}|" class="couponContent"></span>
                         </p>
                       </div>
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">사용조건:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${coupons.couponCondition}|"></span>
+                          <span th:text="|${coupons.couponCondition}|"class="couponCondition"></span>
                         </p>
                       </div>
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">발급일자:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${#dates.format(coupons.issueDate, 'yyyy-MM-dd')}|"></span>
+                          <span th:text="|${#dates.format(coupons.issueDate, 'yyyy-MM-dd')}|" class="issueDate"></span>
                         </p>
                       </div>
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">사용기한:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${#dates.format(coupons.couponDeadline, 'yyyy-MM-dd')}|"></span>
+                          <span th:text="|${#dates.format(coupons.couponDeadline, 'yyyy-MM-dd')}|" class="couponDeadline"></span>
                         </p>
                       </div>
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">사용 시작 일자:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${#dates.format(coupons.usingDate, 'yyyy-MM-dd')}|"></span>
+                         <span th:text="|${#dates.format(coupons.usingDate, 'yyyy-MM-dd')}|" class="usingDate"></span>
                         </p>
                       </div>
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">사용 종료 일자:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${#dates.format(coupons.endDate, 'yyyy-MM-dd')}|"></span>
+                          <span th:text="|${#dates.format(coupons.endDate, 'yyyy-MM-dd')}|" class="endDate"></span>
                         </p>
                       </div>
                     </div>
@@ -212,7 +212,6 @@
       9번 메인페이지 이동.
       0번 다시듣기.
     </textarea>
-        
    <script>
     //tts 시작 
      let TTSIsOk = localStorage.getItem('ttsKey');
@@ -231,36 +230,25 @@
            VoiceMenual(message);
 
      //tts 이벤트 부여
-     $('.orderCode').on('focus',couponInfo);
+     $('.couponCode').on('focus',couponInfo);
 
      //tts 이벤트 진행
      function couponInfo() {
+    	 let couponCode = $(this).closest('.couponRow').find('.couponCode').text();
+	     let couponName = $(this).closest('.couponRow').find('.couponName').text();
+	     let couponContent =  $(this).closest('.couponRow').find('.couponContent').text();
+	     let couponCondition =  $(this).closest('.couponRow').find('.couponCondition').text();
+	     let issueDate = $(this).closest('.couponRow').find('.issueDate').text();
+	     let couponDeadline = $(this).closest('.couponRow').find('.couponDeadline').text();
+	     let usingDate = $(this).closest('.couponRow').find('.usingDate').text();
+	     let endDate = $(this).closest('.couponRow').find('.endDate').text();
     	 
-    	 
-    	 
+	     let message= `쿠폰 번호는 ${couponCode}. 쿠폰 명은 ${couponName}. 쿠폰 설명은 ${couponContent}.
+			           쿠폰 사용 조건은 ${couponCondition}. 발급일자는 ${issueDate}. 사용 기한은 ${couponDeadline}. 사용 시작 날짜는 ${usingDate}.
+			           사용 종료 날짜는 ${endDate}. 입니다.`;
     	 
     	 VoiceMenual(message);
      }
-     
- 
-		   document.querySelector(".orderList").addEventListener("click", function(e) {
-		   e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
-		   var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
-		    var url="";
-		      if( e.target.matches(".excBtn") ){
-		         var url = "/page/buyer/exchange";
-		         window.location.href = url+"?orderDetailCode=" + orderDetailCode;
-		      }else if( e.target.matches(".cancelBtn") ){
-		         var url = "/page/buyer/cancel"
-		         window.location.href = url+"?orderDetailCode=" + orderDetailCode;      
-		      }else if(e.target.matches(".retBtn")){
-		         var url = "/page/buyer/return"
-		         window.location.href = url+"?orderDetailCode=" + orderDetailCode;
-		      }else{
-		         return;
-		      }
-		    });
-
 
 		//tts 부분
 		console.log('hello js');
@@ -345,14 +333,17 @@
 		             VoiceMenual('주문목록 페이지 원할 경우. 엔터키 입력');
 		          }
 		         else if(e.altKey && e.key == 2){ //취소내역
+		        	 $(".collapse").addClass("show")
 		             $('#cancel').focus();
 		             VoiceMenual('취소. 페이지 원할 경우. 엔터키 입력');
 		          }
 		         else if(e.altKey && e.key == 3) {//반품내역
+		        	 $(".collapse").addClass("show")
 		             $('#reList').focus();
 		             VoiceMenual('반품. 페이지 원할 경우. 엔터키 입력');
 		          }
 		         else if(e.altKey && e.key == 4){ // 교환내역
+		        	 $(".collapse").addClass("show")
 		             $('#exchange').focus();
 		             VoiceMenual('교환. 페이지 원할 경우. 엔터키 입력');
 		          }
@@ -376,7 +367,7 @@
 		                 location.href = "/";
 		          }
 		         else if(e.altKey && e.key == 0){ //다시 듣기
-		             VoiceMenual($('#orderInfo').val());
+		             VoiceMenual($('#orderMenual').val());
 		          }
 		    })
 		  } //ttsInit()의 if문

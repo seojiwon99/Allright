@@ -99,7 +99,7 @@
             </div>
             <button type="button" id="selectOption">검색</button>
             <div class="card card-lg mb-5 border">
-              <div class="card-body pb-0">
+            <div class="card-body pb-0">
             <!-- 반복문 시작 -->
                 <!-- Info -->
                 <div class="card card-sm orderList"  id="orderOption">
@@ -278,6 +278,61 @@
       0번 다시듣기.
     </textarea>
    <script>
+	   document.querySelector(".orderList").addEventListener("click", function(e) {
+	   e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
+	   var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
+	    var url="";
+	      if( e.target.matches(".excBtn") ){
+	         var url = "/page/buyer/exchange";
+	         window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+	      }else if( e.target.matches(".cancelBtn") ){
+	         var url = "/page/buyer/cancel"
+	         window.location.href = url+"?orderDetailCode=" + orderDetailCode;      
+	      }else if(e.target.matches(".retBtn")){
+	         var url = "/page/buyer/return"
+	         window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+	      }else{
+	         return;
+	      }
+	    });
+	   
+	   $('#selectOption').on('click',function(){
+	      let key = $('.optionList').val();
+	      let value = $('.selectVal').val();
+	      let fromDate = $('#from').val();
+	      let toDate = $('#to').val();
+	      var itemCount = document.querySelectorAll(".order").length;
+	      
+	       // document.querySelector(".count").value = itemCount;
+	      
+	      console.log(key, value, fromDate, toDate, itemCount);
+	      
+	      $.ajax({
+	         url: '/page/buyer/orderOption',
+	         type: 'get',
+	         data: {
+	            "searchKey": key,
+	            "searchValue" : value,
+	            fromDate,
+	            toDate
+	         }
+	      })
+	      .done(data => {
+	         
+	         $('#orderOption').html(data);
+	         setTimeout(function(){
+	               $('.orderCode').on('focus',orderDetailInfo);
+	            }, 1000);
+	         itemCount = document.querySelectorAll(".order").length;
+	         console.log(itemCount);
+	         document.querySelector(".count").value = itemCount;
+	      })
+	      .fail(reject => {
+	        console.log(reject);
+	      })
+	    });
+	   
+	   
 	    //tts 시작 
 	     let TTSIsOk = localStorage.getItem('ttsKey');
 	       let sessionAuthor;
@@ -321,67 +376,13 @@
 	
 	       VoiceMenual(message);
 	     }
+	     
 	     function exchageBtn() {
 	    	 VoiceMenual('교환 버튼입니다. 교환을 원하시면. 엔터키를 눌러주세요.');
 	     }
 	 
-	   document.querySelector(".orderList").addEventListener("click", function(e) {
-	   e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
-	   var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
-	    var url="";
-	      if( e.target.matches(".excBtn") ){
-	         var url = "/page/buyer/exchange";
-	         window.location.href = url+"?orderDetailCode=" + orderDetailCode;
-	      }else if( e.target.matches(".cancelBtn") ){
-	         var url = "/page/buyer/cancel"
-	         window.location.href = url+"?orderDetailCode=" + orderDetailCode;      
-	      }else if(e.target.matches(".retBtn")){
-	         var url = "/page/buyer/return"
-	         window.location.href = url+"?orderDetailCode=" + orderDetailCode;
-	      }else{
-	         return;
-	      }
-	    });
-	   
-	
-	
-	   $('#selectOption').on('click',function(){
-	      let key = $('.optionList').val();
-	      let value = $('.selectVal').val();
-	      let fromDate = $('#from').val();
-	      let toDate = $('#to').val();
-	      var itemCount = document.querySelectorAll(".order").length;
-	      
-	       // document.querySelector(".count").value = itemCount;
-	      
-	      console.log(key, value, fromDate, toDate, itemCount);
-	      
-	      $.ajax({
-	         url: '/page/buyer/orderOption',
-	         type: 'get',
-	         data: {
-	            "searchKey": key,
-	            "searchValue" : value,
-	            fromDate,
-	            toDate
-	         }
-	      })
-	      .done(data => {
-	         
-	         $('#orderOption').html(data);
-	         setTimeout(function(){
-	               $('.orderCode').on('focus',orderDetailInfo);
-	            }, 1000);
-	         itemCount = document.querySelectorAll(".order").length;
-	         console.log(itemCount);
-	         document.querySelector(".count").value = itemCount;
-	      })
-	      .fail(reject => {
-	        console.log(reject);
-	      })
-	    });
-	   //tts 부분
-	    console.log('hello js');
+	//tts 부분
+	console.log('hello js');
 	
 	var AudioContext;
 	var audioContext;
@@ -497,13 +498,11 @@
 	                 location.href = "/";
 	          }
 	         else if(e.altKey && e.key == 0){ //다시 듣기
-	             VoiceMenual($('#orderInfo').val());
+	             VoiceMenual($('#orderMenual').val());
 	          }
 	   })
 	  } //ttsInit()의 if문
 	} // ttsInit() close
-
-  
 </script>
 </div>
 </html>

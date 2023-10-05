@@ -214,8 +214,28 @@
       9번 메인페이지 이동.
       0번 다시듣기.
     </textarea>
-    
 	<script>
+	function deleteCancel(code){
+		let cancelDel = confirm('취소하시겠습니까?');
+		let cancelData = {
+			'orderDetailCode' : $('#orderDetailCode').text(),
+		}
+		if(cancelDel){
+			$.ajax('/buyer/deleteCancel',{			
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(cancelData)
+			})
+			.done(data => {
+					//alert("수정 완료");
+					console.log(data);
+					$('#test').replaceWith(data);
+			})
+			}else{
+				return;
+			}
+		};
+	
 	//tts 시작 
     let TTSIsOk = localStorage.getItem('ttsKey');
       let sessionAuthor;
@@ -259,28 +279,6 @@
    		VoiceMenual('취소 철회 버튼입니다. 취소 철회를 원하시면. 엔터키를 눌러주세요.');
    	}
     
-    
-	function deleteCancel(code){
-		
-		let cancelDel = confirm('취소하시겠습니까?');
-		let cancelData = {
-			'orderDetailCode' : $('#orderDetailCode').text(),
-		}
-		if(cancelDel){
-			$.ajax('/buyer/deleteCancel',{			
-				type : 'POST',
-				contentType : 'application/json',
-				data : JSON.stringify(cancelData)
-			})
-			.done(data => {
-					//alert("수정 완료");
-					console.log(data);
-					$('#test').replaceWith(data);
-			})
-			}else{
-				return;
-			}
-		};
 		
 		//tts 부분
 	    console.log('hello js');
@@ -399,7 +397,7 @@
 	                 location.href = "/";
 	          }
 	         else if(e.altKey && e.key == 0){ //다시 듣기
-	             VoiceMenual($('#orderInfo').val());
+	             VoiceMenual($('#orderMenual').val());
 	          }
 	   })
 	  } //ttsInit()의 if문
