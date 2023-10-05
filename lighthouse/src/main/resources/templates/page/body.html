@@ -29,9 +29,7 @@
 		<div class="row">
 			<div class="col-12">
 				<!-- Heading -->
-				<h2 class="mb-10 text-center">New Arrivals
-					
-				</h2>
+				<h2 class="mb-10 text-center">New Arrivals</h2>
 			</div>
 		</div>
 	</div>
@@ -39,57 +37,59 @@
 	<section class="py-12">
 		<div class="container">
 
-		<div class="flickity-page-dots-progress"
-			data-flickity='{"pageDots": true}'>
-			<!-- Item -->
-			<div class="col px-4" style="max-width: 300px"
-				th:each="product : ${productList}">
-				<div class="card">
-					<!-- Image -->
-					<div class="card-img">
-					<!-- Badge -->
-						<div
-							class="badge bg-white text-body card-badge card-badge-start text-uppercase">
-							New</div>
-					
-						<!-- 상품 찜 하기 -->
-						<button
-							class="btn btn-xs btn-circle btn-white-primary card-action card-action-end"
-							data-toggle="button">
-							<i class="fe fe-heart"></i>
-						</button>
-
-						<!-- 상품 페이지로 이동 -->
-						<button class="test btn btn-xs w-100 btn-dark card-btn"
-							data-bs-toggle="modal"
-							th:onclick="|location.href = '@{goodDetail(productCode=${product.productCode})}'|"
-							> 
-							<i class="fe fe-eye me-2 mb-1"></i> 자세히 보기
-						</button>
-
+			<div class="flickity-page-dots-progress"
+				data-flickity='{"pageDots": true}'>
+				<!-- Item -->
+				<div class="col px-4" style="max-width: 300px"
+					th:each="product : ${productList}">
+					<div class="card">
 						<!-- Image -->
-						<!-- <img th:src="|@upload/${}|" class="card-img-top"
+						<div class="card-img" th:each="img:${product.productImg}"
+							style="width: 270px; height: 320">
+							<img alt=""
+								th:src="|/upload/${img.uploadPath}/${img.uploadName}|">
+							<!-- Badge -->
+							<div
+								class="badge bg-white text-body card-badge card-badge-start text-uppercase">
+								New</div>
+
+							<!-- 상품 찜 하기 -->
+							<button
+								class="btn btn-xs btn-circle btn-white-primary card-action card-action-end"
+								data-toggle="button">
+								<i class="fe fe-heart"></i>
+							</button>
+
+							<!-- 상품 페이지로 이동 -->
+							<button class="test btn btn-xs w-100 btn-dark card-btn"
+								data-bs-toggle="modal"
+								th:onclick="|location.href = '@{goodDetail(productCode=${product.productCode})}'|">
+								<i class="fe fe-eye me-2 mb-1"></i> 자세히 보기
+							</button>
+
+							<!-- Image -->
+							<!-- <img th:src="|@upload/${}|" class="card-img-top"
 							alt="..."> -->
 
-						<div style="display: none"
-							th:text="${product.productImg[0].imgContent}"></div>
+							<div style="display: none"
+								th:text="${product.productImg[0].imgContent}"></div>
+						</div>
+						<!-- <img class="card-img-top" th:src="@{/img/products/${product.uploadName}" alt="..."/> -->
+						<!-- 대체 콘텐트 -->
+
+
+						<!-- Body -->
+						<div class="card-body fw-bold text-center">
+							<a class="text-body"
+								th:onclick="|location.href = '@{/goodDetail(productCode=${product.productCode})}'|">
+								<div th:text="${product.productName}">상품이름</div>
+								<div th:text="${product.productCost} + 원"></div>
+							</a>
+						</div>
+
 					</div>
-					<!-- <img class="card-img-top" th:src="@{/img/products/${product.uploadName}" alt="..."/> -->
-					<!-- 대체 콘텐트 -->
-
-
-					<!-- Body -->
-					<div class="card-body fw-bold text-center">
-						<a class="text-body"
-							th:onclick="|location.href = '@{/goodDetail(productCode=${product.productCode})}'|">
-							<div th:text="${product.productName}">상품이름</div>
-							<div th:text="${product.productCost} + 원"></div>
-						</a>
-					</div>
-
 				</div>
 			</div>
-		</div>
 		</div>
 	</section>
 
@@ -116,11 +116,11 @@
 						<!-- Image -->
 						<div class="card-img" data-flickity='{"draggable": false}'
 							id="productOneImg">
-							<a class="d-block w-100"> <img class="card-img-top"
-								src="../img/products/product-5.jpg" alt="..." />
+							<a class="d-block w-100" th:each="img:${product.productImg}">
+								<img class="card-img-top"
+								th:src="|/upload/${img.uploadPath}/${img.uploadName}|" alt="..." />
 							</a> <a class="d-block w-100" href="product.html"> <img
-								class="card-img-top" src="../img/products/product-142.jpg"
-								alt="..." />
+								class="card-img-top" alt="..." />
 							</a>
 						</div>
 
@@ -191,7 +191,7 @@
 												class="form-check form-check-inline form-check-text fs-xs">
 												<input class="form-check-input" type="radio"
 													id="productOneSizeOne" name="sizeRadio" /> <label
-													class="form-check-label" for="productOneSizeOne">6</label>
+													class="form-check-label" for="productOneSizeOne"></label>
 											</div>
 
 										</div>
@@ -204,108 +204,7 @@
 					</div>
 
 				</div>
-				<div class="col-6 col-sm-6 col-md-4 col-lg-3">
 
-					<!-- Card -->
-					<div class="card mb-7" data-toggle="card-collapse">
-
-						<!-- Image -->
-						<div class="card-img" data-flickity='{"draggable": false}'
-							id="productEightImg">
-							<a class="d-block w-100" href="product.html"> <img
-								class="card-img-top" src="../img/products/product-12.jpg"
-								alt="..." />
-							</a> <a class="d-block w-100" href="product.html"> <img
-								class="card-img-top" src="../img/products/product-145.jpg"
-								alt="..." />
-							</a>
-						</div>
-
-						<!-- Collapse -->
-						<div class="card-collapse-parent">
-
-							<!-- Body -->
-							<div class="card-body px-0 pb-0 bg-white">
-								<div class="row gx-0">
-									<div class="col">
-
-										<!-- Title -->
-										<a class="d-block fw-bold text-body" href="product.html">
-											Heel strappy Sandals </a>
-
-										<!-- Category -->
-										<a class="fs-xs text-muted" href="shop.html"> Shoes </a>
-
-									</div>
-									<div class="col-auto">
-
-										<!-- Price -->
-										<div class="fs-sm fw-bold text-muted">$90.00</div>
-
-									</div>
-								</div>
-							</div>
-
-							<!-- Footer -->
-							<div class="card-collapse collapse">
-								<div class="card-footer px-0 bg-white">
-									<form>
-										<div class="mb-1">
-											<div class="form-check form-check-inline form-check-color">
-												<input class="form-check-input" type="radio"
-													id="productEightColorOne" name="productEightColor"
-													data-toggle="flickity" data-target="#productEightImg"
-													data-slide="0" style="background-color: black;" checked />
-											</div>
-											<div
-												class="form-check form-check-inline form-check-color ms-n2">
-												<input class="form-check-input" type="radio"
-													id="productEightColorTwo" name="productEightColor"
-													data-toggle="flickity" data-target="#productEightImg"
-													data-slide="1" style="background-color: red;" />
-											</div>
-										</div>
-										<div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productEightSizeOne" name="sizeRadio" /> <label
-													class="form-check-label" for="productEightSizeOne">6</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productEightSizeTwo" name="sizeRadio" /> <label
-													class="form-check-label" for="productEightSizeTwo">6.5</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productEightSizeThree" name="sizeRadio" /> <label
-													class="form-check-label" for="productEightSizeThree">7</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productEightSizeFour" name="sizeRadio" /> <label
-													class="form-check-label" for="productEightSizeFour">7.5</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productEightSizeFive" name="sizeRadio" /> <label
-													class="form-check-label" for="productEightSizeFive">8.5</label>
-											</div>
-										</div>
-									</form>
-								</div>
-							</div>
-
-						</div>
-
-					</div>
-
-				</div>
 			</div>
 			<div class="row">
 				<div class="col-12">
@@ -404,8 +303,11 @@
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+		</div>
 	</section>
-	<textarea id="mainMenual" style="display:none;">
+	<textarea id="mainMenual" style="display: none;">
 		1번 회원가입.
 		2번 로그인.
 		3번 로그아웃.
@@ -420,8 +322,8 @@
 		0번 다시듣기.
 	</textarea>
 
-    <script th:src="@{/js/theme.bundle.js}"></script>
-    <script th:inline="javascript">
+	<script th:src="@{/js/theme.bundle.js}"></script>
+	<script th:inline="javascript">
     let TTSIsOk = localStorage.getItem('ttsKey');
     let sessionAuthor;
 	console.log(sessionStorage.loginMember);    		
@@ -586,7 +488,7 @@
 	    }// TTS if문
     }
     </script>
-   	</th:block>
+	</th:block>
 </div>
 
 

@@ -58,6 +58,7 @@ import com.ar.lighthouse.product.service.CancelVO;
 import com.ar.lighthouse.product.service.CategoryVO;
 import com.ar.lighthouse.product.service.ExchangeVO;
 import com.ar.lighthouse.product.service.ImgsListVO;
+import com.ar.lighthouse.product.service.OptionDetailVO;
 import com.ar.lighthouse.product.service.OptionVO;
 import com.ar.lighthouse.product.service.ProductService;
 import com.ar.lighthouse.product.service.ProductVO;
@@ -85,10 +86,10 @@ public class ProductController {
 
 	@Autowired
 	ReviewService reviewService;
-	
+
 	@Autowired
 	CustomService customService;
-	
+
 	@Autowired
 	ProductInquiryService custominquiryService;
 
@@ -100,7 +101,7 @@ public class ProductController {
 
 	@Autowired
 	CartService cartService;
-	
+
 	@Autowired
 	MainPageService service;
 
@@ -116,24 +117,24 @@ public class ProductController {
 	public String noticeList(Model model, Criteria cri) {
 		int totalCnt = customService.getTotalCount(cri);
 		model.addAttribute("noticeList", customService.getNoticeList(cri));
-		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
-		model.addAttribute("categories",service.getCategoryList());
+		model.addAttribute("pageMaker", new PageDTO(cri, totalCnt));
+		model.addAttribute("categories", service.getCategoryList());
 		model.addAttribute("allCtg", service.getAllCategoryList());
 		return "page/seller/sellerInquiry";
 	}
-	
+
 	// 공지사항 상세화면
 	@GetMapping("sellerInquiryInfo")
-	public String noticeDetail(@RequestParam(defaultValue = "0") int noticeCode,Model model, @ModelAttribute("cri") Criteria cri) {
+	public String noticeDetail(@RequestParam(defaultValue = "0") int noticeCode, Model model,
+			@ModelAttribute("cri") Criteria cri) {
 		NoticeVO noticeVO = new NoticeVO();
 		noticeVO.setNoticeCode(noticeCode);
-		model.addAttribute("categories",service.getCategoryList());
+		model.addAttribute("categories", service.getCategoryList());
 		model.addAttribute("allCtg", service.getAllCategoryList());
-		model.addAttribute("noticeInfo",customService.getNotice(noticeVO));
-		return "page/seller/sellerInquiryInfo"; 
+		model.addAttribute("noticeInfo", customService.getNotice(noticeVO));
+		return "page/seller/sellerInquiryInfo";
 	}
-	
-	
+
 //  판매자 상품문의페이지
 	@GetMapping("productInquiry")
 	public String productInquiry(Model model, ProductInquiryVO productInquiryVO, HttpSession session) {
@@ -200,28 +201,28 @@ public class ProductController {
 
 		return "page/seller/orderManagement :: #orderChkList";
 	}
-	
+
 //	주문상태에 따른 list
 	@GetMapping("statusOrder")
 	public String orderStatusList(Model model, DetailVO detailVO, HttpSession session) {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-		
+
 		detailVO.setMemberId(memberId);
 		System.out.println("@@@" + detailVO.getOrderStatus());
 		model.addAttribute("orderList", productService.getStatusList(detailVO));
-		
+
 		return "page/seller/orderManagement :: #orderChkList";
 	}
-	
+
 //	판매자 직접 취소처리
 	@PostMapping("deleteOrderSelf")
 	@ResponseBody
-	public List<String> deleteOrderSelf(@RequestBody List<DetailVO> orderCancelList){
+	public List<String> deleteOrderSelf(@RequestBody List<DetailVO> orderCancelList) {
 		List<String> CancelSelf = new ArrayList<String>();
-		for(DetailVO detailVO : orderCancelList ) {
+		for (DetailVO detailVO : orderCancelList) {
 			int result = productService.deleteOrderSelf(detailVO);
-			if(result >0) {
+			if (result > 0) {
 				CancelSelf.add(String.valueOf(detailVO.getOrderDetailCode()));
 			}
 		}
@@ -285,14 +286,14 @@ public class ProductController {
 
 		return "page/seller/statistics";
 	}
-	
+
 //	월별 주문 금액
 	@GetMapping("monthlyData")
 	@ResponseBody
-	public List<DetailVO> getMonthlyCount(DetailVO detialVO, Model model){
+	public List<DetailVO> getMonthlyCount(DetailVO detialVO, Model model) {
 		System.out.println(detialVO.getMonth());
-		List<DetailVO> list =productService.getMonthlyCount(detialVO);
-		for(DetailVO vo : list) {
+		List<DetailVO> list = productService.getMonthlyCount(detialVO);
+		for (DetailVO vo : list) {
 			System.out.println(vo);
 		}
 		return productService.getMonthlyCount(detialVO);
@@ -380,14 +381,13 @@ public class ProductController {
 	public String productDetail(Model model, HttpSession session, ProductVO productVO) {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-		
+
 		productVO.setMemberId(memberId);
-		
+
 		List<ProductVO> productList = productService.getOptionProduct(productVO);
 		model.addAttribute("productList", productList);
 		return "page/seller/productList :: #sortList";
-		
-		
+
 	}
 
 	// 등록폼
@@ -542,24 +542,21 @@ public class ProductController {
 
 //	수정폼
 	@GetMapping("modifyForm")
-	public String modifyForm(Model model,ImgsListVO imgsList, ProductVO productVO) {
-		
+	public String modifyForm(Model model, ImgsListVO imgsList, ProductVO productVO) {
+
 		return "page/seller/modifyForm";
 	}
-	
+
 //	수정할 상품 정보
 	@RequestMapping("modifiedForm")
-	public String productInfo(Model model, ProductVO productVO,ImgsListVO imgsList, RedirectAttributes rttr) {
+	public String productInfo(Model model, ProductVO productVO, ImgsListVO imgsList, RedirectAttributes rttr) {
 		/*
 		 * Map<Object, Object> map = new HashMap<Object, Object>();
 		 * map.put(productService.updateProduct(productVO), map);
 		 */
-	    rttr.addFlashAttribute("rttr", productService.updateProduct(productVO));
-	    return "redirect:/modifyForm";
+		rttr.addFlashAttribute("rttr", productService.updateProduct(productVO));
+		return "redirect:/modifyForm";
 	}
-	
-	
-
 
 //	선택전시상태변경
 	@PostMapping("updateExStatus")
@@ -816,7 +813,7 @@ public class ProductController {
 	// 상품 단건 조회
 	@GetMapping("goodDetail")
 	public String getGoodDetail(String productCode, Model model, HttpSession session, ProductVO vo, OptionVO optionVO,
-			CodeVO codeVO, Criteria cri) {
+			CodeVO codeVO, Criteria cri, OptionDetailVO optionDetailVO) {
 
 		// 상품정보
 		ProductVO productVO = productService.goodsDetail(vo);
@@ -831,7 +828,7 @@ public class ProductController {
 		// qna 수
 		ProductInquiryVO productInquiryVO = new ProductInquiryVO();
 		productInquiryVO.setProductCode(productCode);
-		
+
 		model.addAttribute("NqnaList", custominquiryService.qnaGetInq(productInquiryVO));
 		model.addAttribute("inquiryCount", custominquiryService.countGetInquiry(productInquiryVO));
 
@@ -841,7 +838,6 @@ public class ProductController {
 		model.addAttribute("optionDetail", productService.getOptionDetail(optionVO));
 		System.out.println(model);
 		// 장바구니
-		
 
 		return "page/goods/goodDetail";
 	}

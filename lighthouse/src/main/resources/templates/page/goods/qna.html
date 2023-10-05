@@ -102,20 +102,18 @@
 						<tr th:class="|inquiryGet${inquiry.queCode}|"
 							th:data-code="${inquiry.queCode}" id="ansQueCode"
 							th:if="${session.loginMember == null and inquiry.queSecret == 'N'} or ${session.loginMember != null and session.loginMember.memberId == inquiry.memberId} "
-							style="display: none;">
+							style="display: none; background-color: rgba(0,0,0,0.1)">
 							<td class="inquiryGetAns" style="font-size: 18px">
 								<p style="font-size: 14px">Q&A 답변</p>
 							</td>
 
-							<td class="inquiryGetAns" id="answerForm"><textarea
-									style="font-size: 16px; width:100%;  border: none; border-bottom: 1px solid rgba(0, 0, 0, 0.3);" readonly>Q: [[${inquiry.queContent}]]</textarea>
+							<td class="inquiryGetAns" id="answerForm">
+							<div class="hideInquiry"
+									style="font-size: 16px; width:200px;  border: none; border-bottom: 1px solid rgba(0, 0, 0, 0.3);">Q: [[${inquiry.queContent}]]</div>
 								<textarea class="form-control form-control-sm" rows="5"
 									style="display: none;" id="que" readonly>[[${inquiry.queContent}]]</textarea>
-								<textarea style="font-size: 15px; border: none; border-bottom: 1px solid rgba(0, 0, 0, 0.3); width:100%;" readonly>A: [[${inquiry.queAns}]]</textarea>
-								<div>
-									<span style="font-size: 14px;">판매자:
-										[[${inquiry.sellerId}]]</span>
-								</div></td>
+								<div style="font-size: 15px; border: none; border-bottom: 1px solid rgba(0, 0, 0, 0.3); width:200px; padding-top: 20px">A: [[${inquiry.queAns}]]</div>
+								</td>
 							<td class="inquiryGetAns">
 
 								<div th:if="${session.loginMember != null}">
@@ -135,6 +133,7 @@
 									</div>
 								</div>
 							</td>
+							<td></td>
 						</tr>
 						<!-- 답변 보기 -->
 
@@ -285,7 +284,10 @@
 					'click',
 					function() {
 						let btn = $(this).parent();
-
+						let hideque = btn.parent().parent().parent().children().next().children()[0];
+						//$(".hideInquiry").css("display","none");
+						$(hideque).css("display","none");
+						
 						let queText = btn.parent().parent().parent().children()
 								.next().children().next();
 						let queCode = btn.parent().parent().parent().parent()

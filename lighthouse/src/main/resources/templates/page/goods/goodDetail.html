@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/default_layout}">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default_layout}">
 <!-- Content -->
 
 <head>
@@ -37,16 +39,19 @@
 								<!-- Card -->
 								<div class="card">
 									<!-- Slider -->
-									<div class="mb-4" data-flickity='{"draggable": false, "fade": true}'
-										id="productSlider">
+									<div class="mb-4"
+										data-flickity='{"draggable": false, "fade": true}'
+										th:each="img:${goods.productImg}" id="productSlider">
 										<!-- Item 
                            <a href="#" th:each="img:${goods.productImg}"
                               th:data-bigpicture='|{ "imgSrc": "/upload/${img.uploadPath}/${img.uploadName}"}|'>
+                              
                               <img th:src="|/upload/${img.uploadPath}/${img.uploadName}|"
                               alt="..." width="540" height="480" class="card-img-top"
                               id="imgTarget" data-zoom="3" />-->
-										<div class="card-img-top" data-scale="2" width="540" height="480"
-											style="background-image: url('../img/products/product-142.jpg')"></div>
+										<div class="card-img-top" data-scale="2" width="540"
+											height="480"
+											style="background-image: url('/upload/${img.uploadPath}/${img.uploadName}')"></div>
 									</div>
 								</div>
 
@@ -55,7 +60,8 @@
 									data-flickity='{"asNavFor": "#productSlider", "contain": true, "wrapAround": false}'>
 									<!-- Item -->
 
-									<div class="col-12 px-2" style="max-width: 113px" th:each="img:${goods.productImg}">
+									<div class="col-12 px-2" style="max-width: 113px"
+										th:each="img:${goods.productImg}">
 										<!-- Image -->
 										<div class="ratio ratio-1x1 bg-cover"
 											th:style="|background-image: url(/upload/${img.uploadPath}/${img.uploadName});|">
@@ -71,11 +77,13 @@
 								<div class="row mb-1">
 									<div class="col">
 										<!-- Preheading -->
-										<a class="text-muted" href="shop.html" th:text="${goods.categoryCode}"></a>
+										<a class="text-muted" href="shop.html"
+											th:text="${goods.categoryCode}"></a>
 									</div>
 									<div class="col-auto">
 										<!-- Rating -->
-										<div class="rating fs-xs text-dark" th:data-value="${reviewAvg}">
+										<div class="rating fs-xs text-dark"
+											th:data-value="${reviewAvg}">
 											<div class="rating-item">
 												<i class="fas fa-star"></i>
 											</div>
@@ -100,7 +108,8 @@
 
 								<!-- Price -->
 								<div class="mb-7">
-									<span class="fs-lg fw-bold text-gray-350 text-decoration-line-through"
+									<span
+										class="fs-lg fw-bold text-gray-350 text-decoration-line-through"
 										th:text="${goods.productCost}+원"></span>
 									<!-- 할인가격 -->
 									<span class="ms-1 fs-5 fw-bolder text-primary">[[${goods.salePrice}]]원</span>
@@ -108,7 +117,7 @@
 										th:value="${goods.salePrice}">
 								</div>
 
-								<!-- Form -->					
+								<!-- Form -->
 								<div class="form-group"
 									style="font-size: 15px; border-bottom: 1px solid rgba(0, 0, 0, 0.3)">
 									<div style="padding-bottom: 8px; color: grey">
@@ -195,7 +204,7 @@
 											<div class="col-12 col-lg">
 												<!-- Submit -->
 												<button type="button" class="btn w-100 btn-dark mb-2"
-													onclick="cart([[${review}]])">
+													onclick="cartCheck()">
 													장바구니 <i class="fe fe-shopping-cart ms-2"></i>
 												</button>
 											</div>
@@ -232,7 +241,8 @@
 					<div class="col-12">
 						<!-- Nav -->
 
-						<div class="nav nav-tabs nav-overflow justify-content-start justify-content-md-center border-bottom"
+						<div
+							class="nav nav-tabs nav-overflow justify-content-start justify-content-md-center border-bottom"
 							style="font-size: 24px; position: sticky; top: 0px; background-color: white; z-index: 1">
 							<a class="menu nav-link"
 								href="javascript:document.querySelector('#descriptionTab').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })">
@@ -270,58 +280,58 @@
 											</tr>
 											<tr>
 												<td scope="row" style="font-weight: 600">등록날짜</td>
-												<td scope="row" th:text="${#dates.format(goods.productRegdate,'yyyy년 MM월 dd일')}"></td>
-                                 </tr>
-                                 <tr>
-                                    <td scope="row" style="font-weight: 600">배송방법</td>
-                                    <td scope="row" th:text="${goods.deliveryService}"></td>
-                                    <td scope="row" style="font-weight: 600">배송비</td>
-                                    <td scope="row" th:text="${goods.deliveryCost}+원"></td>
-                                 </tr>
+												<td scope="row"
+													th:text="${#dates.format(goods.productRegdate,'yyyy년 MM월 dd일')}"></td>
+											</tr>
+											<tr>
+												<td scope="row" style="font-weight: 600">배송방법</td>
+												<td scope="row" th:text="${goods.deliveryService}"></td>
+												<td scope="row" style="font-weight: 600">배송비</td>
+												<td scope="row" th:text="${goods.deliveryCost}+원"></td>
+											</tr>
 
-                                 <tr>
-                                    <td scope="row" style="font-weight: 600">생산지</td>
-                                    <td scope="row" th:text="${goods.productOrigin}"></td>
-                                 </tr>
-                              </tbody>
-                           </table>
-                        </div>
+											<tr>
+												<td scope="row" style="font-weight: 600">생산지</td>
+												<td scope="row" th:text="${goods.productOrigin}"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
 
-                        <!-- 상세내용 -->
-                        <div style="padding: 48px 0px">
-                           <div th:text="${goods.productContent}"></div>
-                        </div>
-                     </div>
+								<!-- 상세내용 -->
+								<div style="padding: 48px 0px">
+									<div th:text="${goods.productContent}"></div>
+								</div>
+							</div>
 
-                     <div>
+							<div>
 
-                        <!-- 리뷰-->
-                        <div id="sizeTab">
-
-						</div>
-
-                     </div>
-
+								<!-- 리뷰-->
+								<div id="sizeTab"></div>
 
 							</div>
 
-							<!-- qna -->
-              <div id="focusdiv" tabindex="0">test</div>
-							<div id="qnaTap"></div>
+
 						</div>
+
+						<!-- qna -->
+						<div id="focusdiv" tabindex="0">test</div>
+						<div id="qnaTap"></div>
 					</div>
 				</div>
+			</div>
 		</section>
 		<input type="hidden" id="hidden" th:value="${session.loginMember}" />
 		<div th:if="${session.loginMember != null}">
-		<input type="hidden" id="member" th:value="${session.loginMember.memberId}" />
+			<input type="hidden" id="member"
+				th:value="${session.loginMember.memberId}" />
 		</div>
 		<!-- REVIEWS -->
 
 
-	
-	
-    <script th:inline="javascript">
+
+
+		<script th:inline="javascript">
   let reviewTitle = '';
 		let reviewPage = '';
 		let reviewEnd ='';
@@ -425,7 +435,7 @@
                   <div> 
                      <input type="hidden" name="optionDetailCode" value="${code}"> 
                      개수 : <input type="hidden" value="${price}" name="optionPrice"> 
-                     <input type="number" class="orderCnt" min="1" value="1" /> 
+                     <input type="number" class="orderCnt" name="cartCount" min="1" value="1" /> 
                   </div>
                   
                   <div> 가격 : <span><strong>${originPrice}</strong> (현재 할인가)</span> 
@@ -514,7 +524,69 @@
       } 
    }
 
-    /*------------------------
+   	/*------------------------
+    장바구니로~
+    -------------------------*/
+    function cartCheck(){
+    	let memberId = $("#hidden").val(); 
+   		
+        if(memberId==''){
+	           alert("로그인 후 사용가능합니다");
+	       }else{
+	    	   
+	    	   let cartOptionList = [];
+	       	   	$(".optionDetailCodeName").each((idx,tag) => {
+	   				let cartObj = {
+	   						memberId : $("#member").val(),
+	   						productCode : $("#productCode").val(),
+	   						optionLast : $(tag).text(),
+	   						optionCount : $(tag).parent().next().children()[2].value
+	   						}
+	      			cartOptionList.push(cartObj);
+	      		})
+	      			
+	      		$.ajax({
+	    	         url:"cart/cartCheck",
+	    	         type:"get",
+	    	         data:cartOptionList,
+	    	         success:function(result){
+	    	            if(result>0){
+	    	               alert("같은 옵션이 장바구니에 있습니다");
+	    	            }else{
+	    	            	console.log("등록");
+	    	            	cart(cartOptionList);         
+	    	            }
+	    	         }
+	    	       })
+	      		}
+   	}
+    function cart(arr){
+    		console.log(arr);
+	    	   
+	   			$.ajax({
+	   				url:"cart/addCart",
+	   				type:"post",
+	   				data:JSON.stringify(arr),
+	   				contentType:"application/json",
+	   				success:function(result){
+	   					console.log(result);
+	   					if(result == 'sucs'){
+	   						if(!confirm("장바구니로 이동하시겠습니까?")){
+	   							console.log("이동x");
+	   						}else{
+	   							location.href="cart/cartView"; 
+	   						};
+	   					}
+	   				},
+	   				fail:function(reject){
+	   					console.log(reject);
+	   				}
+	   			})
+	       
+        }
+   	
+    
+   /*------------------------
    찜 으로~
    -------------------------*/
    function checkWish(){
@@ -522,7 +594,7 @@
        if(memberId==''){
           alert("로그인 후 사용가능합니다");
        }else{
-       
+      
       let wishObj = {
              memberId : $("#member").val(),
              productCode: $("#productCode").val()
@@ -530,14 +602,14 @@
       console.log(wishObj);
       
        $.ajax({
-          url:"buyer/checkWish",
+         url:"buyer/checkWish",
          type:"get",
          data:wishObj,
          success:function(result){
             if(result>0){
                alert("이미 찜 목록에 존재합니다");
             }else{
-               insertWish($("#member").val(),  $("#productCode").val());         
+               insertWish($("#member").val(), $("#productCode").val());         
             }
          }
        })
@@ -572,11 +644,11 @@
        
     }
     </script>
-      
-      
-	<!-- voice -->
-	<th:block>
-		<script th:inline="javascript">
+
+
+		<!-- voice -->
+		<th:block>
+			<script th:inline="javascript">
 			let audioFileNow = new Audio();
 			var AudioContext;
 			var audioContext;
@@ -789,7 +861,7 @@
 			
 		</script>
 
-	</th:block>
-   </div>
+		</th:block>
+	</div>
 </body>
 </html>
