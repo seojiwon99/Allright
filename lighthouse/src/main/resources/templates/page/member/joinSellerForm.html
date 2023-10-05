@@ -105,6 +105,7 @@
 		                          Email 주소
 		                        </label>
 		                        <input class="form-control form-control-sm" name="memberEmail" id="email" type="text" placeholder="Email 주소 *" required>
+		                         <label class="form-check-label fs-xxs visually" for="email" id="emconfirmchk2">이메일 *</label>
 		                      </div>
 		                    </div>
 		                    
@@ -401,20 +402,33 @@ function autoHypen(str){
     return str
 }   
 //email 입력체크(방지는 좀 그렇고 알려주고 다시 확인하라한 후에 이메일 인증)
-$('#email').on('focusout', checkEmail)
-function checkEmail(e) {
-     //var regExp = /^([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;   // 이메일 체크 ( id1.id2@test.com 대응불가 )
-     let email = e.currentTarget.value;
-     console.log(e.currentTarget.value);
-      let regEmailExp = /^[-!#$%&'*+./0-9=?A-Z^_a-z{|}~]+@[-!#$%&'*+/0-9=?A-Z^_a-z{|}~]+.[-!#$%&'*+./0-9=?A-Z^_a-z{|}~]+$/;
-      if(regEmailExp.test(email)) { // test 는 정규 Methods 입니다. test는 변경없음
-        return true;
-      } else {
-        alert('정규식 위반')
-        return false;
-      }
-    }
+	$('#email').on('keyup', checkEmail)
+	function checkEmail(e) {
+	     //var regExp = /^([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;   // 이메일 체크 ( id1.id2@test.com 대응불가 )
+	     let email = e.currentTarget.value;
+	      let regEmailExp = /^[-!#$%&'*+./0-9=?A-Z^_a-z{|}~]+@[-!#$%&'*+/0-9=?A-Z^_a-z{|}~]+.[-!#$%&'*+./0-9=?A-Z^_a-z{|}~]+$/;
+	      
+	      
+	      if(regEmailExp.test(email)) { // test 는 정규 Methods 입니다. test는 변경없음#				
+	    	  let mailConfirmLabel = $('#emconfirmchk2'); 
+				mailConfirmLabel.html("<span id='emconfirmchk2'>이메일 형식입니다.</span>")
+				$("#emconfirmchk2").css({
+					"color" : "#0D6EFD",
+					"font-weight" : "bold",
+					"font-size" : "10px"
 
+				})
+	      } else {
+	    	  	let mailConfirmLabel = $('#emconfirmchk2'); 
+		    	mailConfirmLabel.html("<span id='emconfirmchk2'>이메일 형식이 아닙니다.</span>")
+				$("#emconfirmchk2").css({
+					"color" : "#FA3E3E",
+					"font-weight" : "bold",
+					"font-size" : "10px"
+
+			})
+	      }
+	    }
 //id 중복체크 ajax
 $('#idChkBtn').on('click', function(){
 	
