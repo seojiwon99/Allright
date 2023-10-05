@@ -1,8 +1,11 @@
 package com.ar.lighthouse.admin.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.ar.lighthouse.product.service.ProductVO;
 
 import lombok.Data;
 
@@ -30,6 +33,5 @@ public class MemberDetailVO {
 	private Date suspEnddate;
 	private String suspReason;
 	private int suspCount;
-	
-	
+
 }

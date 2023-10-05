@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ar.lighthouse.buyp.service.BuyCancelVO;
 import com.ar.lighthouse.buyp.service.BuyExchangeVO;
@@ -40,7 +41,6 @@ import lombok.AllArgsConstructor;
 
 public class BuyerPageController {
 
-
 	BuyerPageService buyerPageService;
 
 	// 주문목록
@@ -60,11 +60,12 @@ public class BuyerPageController {
 		model.addAttribute("pageMaker", new PageDTO(cri, totalCnt));
 		List<DetailVO> orderList = buyerPageService.getDetailList(memberId, cri);
 		model.addAttribute("orderList", orderList);
-		
+
 		return "/page/buyer/orderList";
 	}
-	
-	// 주문Option 
+
+	// 주문 Option 
+
 	@GetMapping("page/buyer/orderOption")
 	public String orderOption(Model model, HttpSession session, DetailVO detailVO) {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
@@ -73,10 +74,10 @@ public class BuyerPageController {
 		detailVO.setMemberId(memberId);
 		List<DetailVO> orderList = buyerPageService.getOptionList(detailVO);
 		model.addAttribute("orderList", orderList);
-		
+
 		return "page/buyer/orderList :: #orderOption";
 	}
-	
+
 	// 구매자 개인정보
 	@GetMapping("page/buyer/personalInfo")
 	public String personalInfo(Model model, HttpSession session) {
@@ -133,6 +134,7 @@ public class BuyerPageController {
 	}
 	
 	// 찜 내역
+
 	@GetMapping("page/buyer/wishList")
 	public String wishList(@RequestParam(value = "pageNum", required = false) Integer pageNum, Model model, HttpSession session, Criteria cri) {
 	    if (pageNum == null) {
@@ -152,8 +154,19 @@ public class BuyerPageController {
 
 		return "/page/buyer/wishList";
 	}
-	
-	
+
+	// 찜 내역 페이징
+//	@GetMapping("page/buyer/wishList")
+//	public String wishPaging(Model model, Criteria cri, HttpSession session) {
+//		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+//		String memberId = memberVO.getMemberId();
+//		int pageCnt = buyerPageService.getPageCnt(cri);
+//		model.addAttribute("wishList", buyerPageService.getWishList(cri));
+//		model.addAttribute("pageMaker", new PageDTO(cri, pageCnt));
+//		return "page/buyer/wishList";
+//	}
+
+
 	// 취소 목록
 	@GetMapping("page/buyer/cancelList")
 	public String cancelList(Model model, HttpSession session) {
@@ -190,7 +203,6 @@ public class BuyerPageController {
 		String memberId = memberVO.getMemberId();
 
 		List<BuyExchangeVO> exchangeList = buyerPageService.getExchangeList(memberId);
-
 
 		model.addAttribute("exchangeList", exchangeList);
 
@@ -232,7 +244,7 @@ public class BuyerPageController {
 	// 반품 신청 페이지
 	@GetMapping("page/buyer/return")
 	public String returnForm(Model model, HttpSession session, @RequestParam int orderDetailCode) {
-		
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 
@@ -250,7 +262,7 @@ public class BuyerPageController {
 	// 교환
 	@PostMapping("buyer/exchangeInsert")
 	public ResponseEntity<String> addExchange(@RequestBody BuyExchangeVO excVO, HttpSession session) {
-		
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		excVO.setMemberId(memberVO.getMemberId());
 
@@ -282,62 +294,85 @@ public class BuyerPageController {
 		return insertReturn == 1 ? new ResponseEntity<String>("success", HttpStatus.OK)
 				: new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
 	// 개인정보수정
 	@PostMapping("buyer/personalInfoEdit")
 	public ResponseEntity<String> editInfo(@RequestBody BuyInfoVO buyInfoVO, HttpSession session) {
-		
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		buyInfoVO.setMemberId(memberVO.getMemberId());
-		
+
 		int updateInfo = buyerPageService.editInfo(buyInfoVO);
 		return updateInfo == 1 ? new ResponseEntity<String>("success", HttpStatus.OK)
 				: new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+
 	// 주문취소 취소
 	@PostMapping("buyer/deleteCancel")
 	public String editCancel(@RequestBody BuyCancelVO canVO, HttpSession session) {
-		
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		canVO.setMemberId(memberVO.getMemberId());
-		
+
 		int deleteCancel = buyerPageService.removeCancel(canVO);
 		return deleteCancel == 1 ? "/page/buyer/cancelList :: #test" : "/page/buyer/cancelList";
 	}
-	
+
 	// 반품 취소
 	@PostMapping("buyer/deleteReturn")
 	public String editReturn(@RequestBody BuyReturnVO retVO, HttpSession session) {
-		
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		retVO.setMemberId(memberVO.getMemberId());
-		
+
 		int deleteReturn = buyerPageService.removeReturn(retVO);
 		return deleteReturn == 1 ? "/page/buyer/returnList :: #test" : "/page/buyer/returnList";
 	}
-	
+
 	// 교환 취소
 	@PostMapping("buyer/deleteExchange")
 	public String editExchange(@RequestBody BuyExchangeVO excVO, HttpSession session) {
-		
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		excVO.setMemberId(memberVO.getMemberId());
-		
+
 		int deleteExchange = buyerPageService.removeExchange(excVO);
 		return deleteExchange == 1 ? "/page/buyer/exchangeList :: #test" : "/page/buyer/exchangeList";
 	}
-	
+
 //	//찜 취소
 	@GetMapping("buyer/deleteWish")
+
 	public String removeWish(int favoriteCode, HttpSession session, Model model, Criteria cri){
+
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-		String memberId= memberVO.getMemberId();
+		String memberId = memberVO.getMemberId();
 		buyerPageService.removeWish(favoriteCode);
+
 		int totalCnt = buyerPageService.getPageCnt(cri);
 		List<WishVO> wishList = buyerPageService.getWishList(memberId, cri);
+
 		model.addAttribute("wishList", wishList);
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		
 		return "/page/buyer/wishList :: #test";
+	}
+
+	// 찜 등록 , 상품 단건용 ,메인페이지용
+	@PostMapping("buyer/addWish")
+	@ResponseBody
+	public String addWish(@RequestBody WishVO wishVO) {
+
+		buyerPageService.addWish(wishVO);
+
+		return null;
+	}
+
+	// 찜 중복체크
+	@GetMapping("buyer/checkWish")
+	@ResponseBody
+	public int checkWish(WishVO wishVO) {
+
+		return buyerPageService.checkWish(wishVO);
 	}
 }
