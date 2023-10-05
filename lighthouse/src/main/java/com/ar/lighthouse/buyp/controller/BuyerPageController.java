@@ -64,7 +64,7 @@ public class BuyerPageController {
 		return "/page/buyer/orderList";
 	}
 	
-	// 주문Option 
+	// 주문 Option 
 	@GetMapping("page/buyer/orderOption")
 	public String orderOption(Model model, HttpSession session, DetailVO detailVO) {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");

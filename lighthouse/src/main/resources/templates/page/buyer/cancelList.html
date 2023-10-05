@@ -39,15 +39,15 @@
 										<div class="form-group form-group-overflow mb-6"
 											id="seasonGroup">
 											<div class="form-check mb-3">
-												<a class="form-check-label" for="seasonOne"
+												<a class="form-check-label" 
 													href="cancelList"> 취소 </a>
 											</div>
 											<div class="form-check mb-3">
-												<a class="form-check-label" for="seasonTwo"
+												<a class="form-check-label" 
 													href="returnList"> 반품 </a>
 											</div>
 											<div class="form-check">
-												<a class="form-check-label" for="seasonThree"
+												<a class="form-check-label" 
 													href="exchangeList"> 교환 </a>
 											</div>
 										</div>
@@ -80,79 +80,70 @@
 							<div class="card card-sm">
 								<div th:each="lists : ${cancelList}" class="order" id="test">
 									<div class="card-body bg-light">
-										<div class="row">
+										<div class="row cancelRow">
 											<div class="col-6 col-lg-3">
 												<h6 class="heading-xxxs text-muted">취소 번호:</h6>
 												<p class="mb-lg-0 fs-sm fw-bold">
-													<span th:text="|${lists.cancelCode}|" id="cancelCode"></span>
+													<span class="cancelCode" th:text="|${lists.cancelCode}|" tabindex="0" id="cancelCode"></span>
 												</p>
 											</div>
 											<div class="col-6 col-lg-3">
 												<h6 class="heading-xxxs text-muted">주문번호:</h6>
 												<p class="mb-0 fs-sm fw-bold">
-													<span th:text="|${lists.orderCode}|"></span>
+													<span class="orderCode" th:text="|${lists.orderCode}|"></span>
 												</p>
 												<h6 class="heading-xxxs text-muted">주문상세번호:</h6>
 												<p class="mb-0 fs-sm fw-bold">
-													<span th:text="|${lists.orderDetailCode}|"
+													<span class="orderDetailCode" th:text="|${lists.orderDetailCode}|"
 														id="orderDetailCode"></span>
 												</p>
 											</div>
 											<div class="col-6 col-lg-3">
 												<h6 class="heading-xxxs text-muted">상품명:</h6>
 												<p class="mb-0 fs-sm fw-bold">
-													<span th:text="|${lists.productName}|"></span>
+													<span class="productName" th:text="|${lists.productName}|"></span>
 												</p>
 											</div>
 											<div class="col-6 col-lg-3">
 												<h6 class="heading-xxxs text-muted">수량:</h6>
 												<p class="mb-0 fs-sm fw-bold">
-													<span th:text="|${lists.orderCnt}|"></span>
+													<span class="orderCnt" th:text="|${lists.orderCnt}|"></span>
 												</p>
 											</div>
 											<div class="col-6 col-lg-3">
 												<h6 class="heading-xxxs text-muted">결제 금액:</h6>
 												<p class="mb-0 fs-sm fw-bold">
-													<span th:text="|${lists.paymentPrice}원|"></span>
+													<span class="paymentPrice" th:text="|${lists.paymentPrice}원|"></span>
 												</p>
 											</div>
 											<div class="col-6 col-lg-3">
 												<h6 class="heading-xxxs text-muted">취소 접수 날짜:</h6>
 												<p class="mb-lg-0 fs-sm fw-bold">
 													<time datetime="2019-10-01">
-														<span
-															th:text="|${#dates.format(lists.cancelRegdate, 'yyyy-MM-dd hh:mm:ss')}|"></span>
+														<span class="cancelRegdate"
+															th:text="|${#dates.format(lists.cancelRegdate, 'yyyy-MM-dd')}|"></span>
 													</time>
 												</p>
 											</div>
 											<div class="col-6 col-lg-3">
 												<h6 class="heading-xxxs text-muted">취소 상태:</h6>
 												<p class="mb-0 fs-sm fw-bold">
-													<span th:text="|${lists.cancelStatus}|"></span>
+													<span class="cancelStatus" th:text="|${lists.cancelStatus}|"></span>
 												</p>
 											</div>
 
 											<div class="col-6 col-lg-3">
 												<h6 class="heading-xxxs text-muted">취소 거절 여부:</h6>
 												<p class="mb-0 fs-sm fw-bold">
-													<span th:text="|${lists.cancelRejectionCode}|"></span>
+													<span class="cancelRejectionCode" th:text="|${lists.cancelRejectionCode}|"></span>
 												</p>
 											</div>
 											<div class="col-6 col-lg-3">
 												<h6 class="heading-xxxs text-muted">취소 거절 사유:</h6>
 												<p class="mb-0 fs-sm fw-bold">
-													<span th:text="|${lists.cancelRejectionReason}|"></span>
+													<span class="cancelRejectionReason" th:text="|${lists.cancelRejectionReason}|"></span>
 												</p>
 											</div>
-											<!--
-											<div class="col-6 col-lg-3">
-												<h6 class="heading-xxxs text-muted" type="hidden"></h6>
-												<p class="mb-0 fs-sm fw-bold">
-													  <span th:text="|${#dates.format(lists.cancelRetractDate, 'yyyy-MM-dd')}|"
-														id="cancelRDate"></span>
-												</p>
-											</div>
-											-->
 										</div>
 									</div>
 									<div class="card-footer">
@@ -196,7 +187,7 @@
 															class="btn btn-sm w-100 btn-outline-dark deleteBtn"
 															th:onclick="deleteCancel([[${lists.orderDetailCode}]])"
 															data-orderdetailcode="${lists.orderDetailCode}">
-															주문 취소</button>
+															취소 철회</button>
 													</div>
 												</div>
 											</div>
@@ -211,8 +202,64 @@
 		</div>
 	</section>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<textarea id="orderMenual" style="display: none;">
+      1번 주문목록.
+      2번 취소목록.
+      3번 반품목록.
+      4번 교환목록.
+      5번 나의 쿠폰함.
+      6번 문의내역.
+      7번 찜 목록.
+      8번 개인정보 확인/수정.
+      9번 메인페이지 이동.
+      0번 다시듣기.
+    </textarea>
+    
 	<script>
-	
+	//tts 시작 
+    let TTSIsOk = localStorage.getItem('ttsKey');
+      let sessionAuthor;
+     console.log(sessionStorage.loginMember);          
+     if(sessionStorage.loginMember != null){
+        sessionAuthor = sessionStorage.loginMember.memberAuthor;
+     }
+         
+        function ttsInit(){
+         if(TTSIsOk == null || sessionAuthor == 3){
+          let audioFileNow = new Audio();
+          let firstMsg = "취소 목록 페이지입니다. 취소 신청한 내역에 대해서 확인할 수 있습니다.";
+          let message = firstMsg;
+
+          VoiceMenual(firstMsg);
+
+    //tts 이벤트 부여
+    $('.cancelCode').on('focus', cancelListInfo);
+    $('.deleteBtn').on('focus', deleteBtn);
+    //tts 이벤트 진행
+    function cancelListInfo() {
+    	let cancelCode = $(this).closest('.cancelRow').find('.cancelCode').text();
+    	let orderCode = $(this).closest('.cancelRow').find('.orderCode').text();
+    	let orderDetailCode = $(this).closest('.cancelRow').find('.orderDetailCode').text();
+    	let productName = $(this).closest('.cancelRow').find('.productName').text();
+    	let orderCnt = $(this).closest('.cancelRow').find('.orderCnt').text();
+    	let paymentPrice = $(this).closest('.cancelRow').find('.paymentPrice').text();
+    	let cancelRegdate = $(this).closest('.cancelRow').find('.cancelRegdate').text();
+    	let cancelStatus = $(this).closest('.cancelRow').find('.cancelStatus').text();
+    	let cancelRejectionCode = $(this).closest('.cancelRow').find('.cancelRejectionCode').text();
+    	let cancelRejectionReason = $(this).closest('.cancelRow').find('.cancelRejectionReason').text();
+    	
+    	let message = `취소번호는 ${cancelCode}. 주문번호는 ${orderCode}. 주문상세번호는 ${orderDetailCode}. 상품명은 ${productName}.
+    					상품 수량은 ${orderCnt}.  결제 금액은 ${paymentPrice}. 취소 접수날짜는 ${cancelRegdate}. 취소 상태는 ${cancelStatus}.
+    					취소 거절 여부는 ${cancelRejectionCode}. 취소 거절 사유는 ${cancelRejectionReason}. 입니다.`;
+    	
+    	VoiceMenual(message);
+    }
+    
+   	function deleteBtn() {
+   		VoiceMenual('취소 철회 버튼입니다. 취소 철회를 원하시면. 엔터키를 눌러주세요.');
+   	}
+    
+    
 	function deleteCancel(code){
 		
 		let cancelDel = confirm('취소하시겠습니까?');
@@ -234,6 +281,111 @@
 				return;
 			}
 		};
+		
+		//tts 부분
+	    console.log('hello js');
+
+	var AudioContext;
+	var audioContext;
+
+	window.onload = function() {
+	    navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
+	        AudioContext = window.AudioContext || window.webkitAudioContext;
+	        audioContext = new AudioContext();
+	    }).catch(e => {
+	        console.error(`Audio permissions denied: ${e}`);
+	    });
+	}
+
+
+	function VoiceMenual(message) {
+	    var data = {
+	        "voice" : {
+	            "languageCode" : "ko-KR",
+	            "name" : "ko-KR-Neural2-B"
+	        },
+	        "input" : {
+	            "text" : message
+	        },
+	        "audioConfig" : {
+	            "audioEncoding" : "mp3"
+	        }
+	    }
+	    console.log(data);
+	    $.ajax({
+	        type : 'POST',
+	        url : 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
+	        data : JSON.stringify(data),
+	        dataType : 'JSON',
+	        contentType : "application/json; charset=UTF-8",
+	        success : function(res) {
+	            $('#menuText').val(res.audioContent)
+	            var audioFile = new Audio();
+	            let audioBlob = base64ToBlob(res.audioContent,
+	                    "mp3");
+	            audioFile.src = window.URL
+	                    .createObjectURL(audioBlob);
+	            audioFile.playbackRate = 2; //재생속도
+	            if(audioFileNow.paused == false){
+	               audioFileNow.pause();
+	            }
+	          audioFileNow = audioFile;
+	            audioFileNow.play();
+	        
+	        },
+	        error : function(request, status, error) {
+	            alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
+	        }
+	    });
+	};
+	function base64ToBlob(base64, fileType) {
+	    let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
+	    let audioSrc = typeHeader + base64;
+	    let arr = audioSrc.split(",");
+	    let array = arr[0].match(/:(.*?);/);
+	    let mime = (array && array.length > 1 ? array[1] : type) || type;
+	    // url헤더 제거하고 btye로 변환
+	    let bytes = window.atob(arr[1]);
+	    // 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
+	    let ab = new ArrayBuffer(bytes.length);
+	    // 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
+	    let ia = new Uint8Array(ab);
+	    for (let i = 0; i < bytes.length; i++) {
+	        ia[i] = bytes.charCodeAt(i);
+	    }
+	    return new Blob([ ab ], {
+	        type : mime
+	    });
+	}
+
+	   window.addEventListener("keydown", function(e){ 
+	         console.log(e);
+	         if(e.altKey && e.key == 1){ //결제하기
+	            $('#payment-button').focus();
+	         }
+	         if(e.altKey && e.key == 2){ // 가입한 배송지 주소로 배송지 등록
+	            $('#deliveryInfo').focus();
+	         }
+	         if(e.altKey && e.key == 3) {//첫번째 주문상품 이동
+	         console.log($('.img-fluid'));
+	            $('a.img-fluid')[0].focus();
+	         }
+	            if(e.altKey && e.key == 4){ // 배송지 정보 조회
+	            $('#deliveryContent').focus();
+	         }
+	            if(e.altKey && e.key == 5){ // 배송 시 요청 선택
+	            $('#selbox').focus();
+	         }
+	            if(e.altKey && e.key == 9){ // 메인 페이지 이동
+	                location.href = "/";
+	         }
+	         if(e.altKey && e.key == 0){ //다시 듣기
+	            VoiceMenual($('#orderInfo').val());
+	         }
+	   })
+	  } //ttsInit()의 if문
+	} // ttsInit() close
+
 	</script>
 </div>
 </html>
