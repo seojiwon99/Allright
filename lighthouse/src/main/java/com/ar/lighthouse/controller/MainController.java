@@ -57,5 +57,11 @@ public class MainController {
 		
 		return service.getChildCateList(cate);
 	}
+	
+	@PostMapping("category")
+	public String TTScategory(Model model) {
+		model.addAttribute("allCtg", service.getAllCategoryList());
+		return "page/goods/category";
+	}
 
 }

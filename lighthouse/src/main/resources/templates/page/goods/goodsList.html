@@ -15,14 +15,14 @@
                   <ul class="nav nav-vertical" id="filterNav">
                      <li class="nav-item">
                         <!-- Toggle --> <a
-                        class="nav-link dropdown-toggle fs-lg text-reset border-bottom mb-6"
+                        class="nav-link dropdown-toggle fs-lg text-reset border-bottom mb-6" tabindex=-1
                         data-bs-toggle="collapse" href="#categoryCollapse" style="font-weight: 600; font-size: 18px"> 카테고리
                      </a> <!-- Collapse -->
                         <div class="collapse show" id="categoryCollapse">
                            <div class="form-group">
                               <ul class="list-styled mb-0" id="productsNav">
                                  <li class="list-styled-item"><a class="list-styled-link"
-                                    href="#"> All Products </a></li>
+                                    href="#"> 전체 상품 </a></li>
                                   
                                   
                                   <li class="list-styled-item" th:each="ctg : ${categories}">
@@ -36,26 +36,27 @@
                                        
                                           <th:block th:each="middle : ${allCtg}" th:if="${middle.categoryLevel} == 2 and ${(middle.parentCategoryCode).equals('Fassion')} and ${(ctg.categoryCode).equals('Fassion')}">
                                           <div class="form-check mb-3" >
-                                             <input class="form-check-input" th:id="${middle.categoryCode}"
-                                                type="checkbox"> <label class="form-check-label"
-                                                th:for="${middle.categoryCode}" th:text="${middle.categoryName}"> Women Tops, Tees & Blouses </label>
+                                             <input class="form-check-input" th:id="${middle.categoryCode}" tabindex=0 
+                                                type="checkbox"> <label class="form-check-label" 
+                                                th:for="${middle.categoryCode}" >[[${middle.categoryName}]] </label>
                                           </div>
                                         </th:block>
                                         
                                         <th:block th:each="middle : ${allCtg}" th:if="${middle.categoryLevel} == 2 and ${(middle.parentCategoryCode).equals('FOOD')} and ${(ctg.categoryCode).equals('FOOD')}">
                                           <div class="form-check mb-3" >
-                                             <a th:id="${middle.categoryCode}" th:href="|/PList?ctg=${middle.categoryCode}|">
-                                                <label class="form-check-label"
-                                                th:for="${middle.categoryCode}" th:text="${middle.categoryName}"> Women Tops, Tees & Blouses </label>
-                                             </a>
+                                             <!-- <a th:id="${middle.categoryCode}" th:href="|/PList?ctg=${middle.categoryCode}|"> -->
+                                                <input class="form-check-input" th:id="${middle.categoryCode}" tabindex=0
+                                                type="checkbox"> <label class="form-check-label" 
+                                                th:for="${middle.categoryCode}" > [[${middle.categoryName}]] </label>
+                                             <!-- </a>  -->
                                           </div>
                                         </th:block>
                                         
                                         <th:block th:each="middle : ${allCtg}" th:if="${middle.categoryLevel} == 2 and ${(middle.parentCategoryCode).equals('Life')} and ${(ctg.categoryCode).equals('Life')}">
                                           <div class="form-check mb-3" >
-                                             <input class="form-check-input" th:id="${middle.categoryCode}"
+                                             <input class="form-check-input" th:id="${middle.categoryCode}" tabindex=0
                                                 type="checkbox"> <label class="form-check-label"
-                                                th:for="${middle.categoryCode}" th:text="${middle.categoryName}"> Women Tops, Tees & Blouses </label>
+                                                th:for="${middle.categoryCode}" > [[${middle.categoryName}]] </label>
                                           </div>
                                         </th:block>
                                         
@@ -73,7 +74,7 @@
 
 
                      <li class="nav-item">
-                        <!-- Toggle --> <a
+                        <!-- Toggle --> <a tabindex=-1
                         class="nav-link dropdown-toggle fs-lg text-reset border-bottom mb-6"
                         data-bs-toggle="collapse" href="#seasonCollapse" style="font-weight: 600; font-size: 18px"> 순서 </a> <!-- Collapse -->
                         <div class="collapse show" id="seasonCollapse"
@@ -83,7 +84,7 @@
                               <div class="form-check mb-3">
                                  <input class="form-check-input" id="seasonOne"
                                     type="checkbox"> <label class="form-check-label"
-                                    for="seasonOne"> new </label>
+                                    for="seasonOne"> New </label>
                               </div>
                               <div class="form-check mb-3">
                                  <input class="form-check-input" id="seasonTwo"
@@ -96,7 +97,7 @@
 
                      </li>
                      <li class="nav-item">
-                        <!-- Toggle --> <a
+                        <!-- Toggle --> <a tabindex=-1
                         class="nav-link dropdown-toggle fs-lg text-reset border-bottom mb-6"
                         data-bs-toggle="collapse" href="#priceCollapse" style="font-weight: 600; font-size: 18px"> 가격 </a> <!-- Collapse -->
                         <div class="collapse show" id="priceCollapse"
@@ -106,30 +107,33 @@
                            <div class="form-group form-group-overflow mb-6"
                               id="priceGroup">
                               <div class="form-check mb-3">
-                                 <input class="form-check-input" id="priceOne" type="checkbox">
+                                 <input class="form-check-input" id="priceOne" type="checkbox" name="pricefilter">
                                  <label class="form-check-label" for="priceOne"> 0원 -
                                     50,000원 </label>
                               </div>
                               <div class="form-check mb-3">
-                                 <input class="form-check-input" id="priceTwo" type="checkbox">
+                                 <input class="form-check-input" id="priceTwo" type="checkbox" name="pricefilter">
                                  <label class="form-check-label" for="priceTwo">
                                     50,000원 - 100,000원 </label>
                               </div>
                               <div class="form-check mb-3">
-                                 <input class="form-check-input" id="priceThree"
+                                 <input class="form-check-input" id="priceThree" name="pricefilter"
                                     type="checkbox"> <label class="form-check-label"
                                     for="priceThree"> 100,000원 - 200,000원 </label>
                               </div>
                               <div class="form-check">
-                                 <input class="form-check-input" id="priceFour"
+                                 <input class="form-check-input" id="priceFour" name="pricefilter"
                                     type="checkbox"> <label class="form-check-label"
                                     for="priceFour"> 200,000 이상 </label>
                               </div>
                            </div>
+                          
 
                            <!-- Range -->
-                           <div class="d-flex align-items-center">
-
+                           <div class="d-flex align-items-center" id="writeRange">
+								<div class="form-check" style="margin-right: 14px">
+	                                 <input class="form-check-input" id="priceRange" type="checkbox" name="pricefilter">
+                              	</div>
                               <!-- Input -->
                               <input type="number" class="form-control form-control-xs"
                                  placeholder="10,000원" min="10">
@@ -139,8 +143,11 @@
 
                               <!-- Input -->
                               <input type="number" class="form-control form-control-xs"
-                                 placeholder="100,000원" max="350">
+                                 placeholder="100,000원" max="9999999">
 
+                           </div>
+                            <div style="margin-top : 10px">
+                           		<button type="button" class="form-control form-control-xs" id="filterApplyBtn">적용하기</button>
                            </div>
 
                         </div>
@@ -165,8 +172,8 @@
                   <div class="col-12 col-md">
 
                      <!-- Heading -->
-                     <h3 class="mb-1" th:if="${param.ctg == null}">전체보기</h3>
-                     <h3 class="mb-1" th:if="${param.ctg != null}">[[${param.ctg}]]</h3>
+                     <h3 class="mb-1" th:if="${#strings.isEmpty(param.ctg)}">전체보기</h3>
+                     <h3 class="mb-1" th:if="${!(#strings.isEmpty(param.ctg))}">[[${param.ctg}]]</h3>
                      
                      
                      
@@ -174,7 +181,7 @@
                      <!-- Breadcrumb -->
                      <ol class="breadcrumb mb-md-0 fs-xs text-gray-400">
                         <li class="breadcrumb-item"><a class="text-gray-400"
-                           href="index.html">Home</a></li>
+                           href="/">Home</a></li>
                         <li class="breadcrumb-item active" th:if="${param.ctg != null}">[[${param.ctg}]]</li>
                      </ol>
 
@@ -197,7 +204,9 @@
             <div class="col-6 col-md-4">
                <div class="card mb-7">
                   <div class="card-img">
-                  <a class="card-img"><img th:src="@{/img/products/}+${#strings.replace(product.upload_path,'\','/')}+@{/}+${product.upload_name}"></a><!-- ${product.upload_path}+${product.upload_name} -->
+                  <a class="card-img"  tabindex="0" th:href="|/goodsDetail/?productCode=${product.product_code}|">
+                  <img th:src="@{/img/products/}+${#strings.replace(product.upload_path,'\','/')}+@{/}+${product.upload_name}">
+                  </a><!-- ${product.upload_path}+${product.upload_name} -->
                   </div>
                   <div class="card-body px-0">
                      <div class="fs-xs">[[${product.category_code}]]</div>
@@ -269,6 +278,485 @@
             </div>
          </div>
       </div>
-   </section>
+   </section><!-- [[${#strings.isEmpty(param.ctg)}]] ? '전체' : '카테고리' -->
+   		<textarea id="PListMenual" style="display:none;"> 
+			1번 이전페이지로.    
+			2번 상품 둘러보기.     
+			3번 다음페이지로.      
+			
+			4번 뒤로가기.      
+			5번 검색하기.      
+			6번 마이크로 입력하기.      
+			
+			7번 카테고리 선택 페이지로 이동.      
+			8번 장바구니 페이지로 이동.
+			9번 메인홈페이지로 가기.
+			
+			0번 다시 듣기.      
+			
+	  	</textarea>
+   <script th:inline="javascript">
+   
+	let TTSIsOk = localStorage.getItem('ttsKey');
+	let sessionAuthor;
+	console.log(sessionStorage.loginMember);    		
+	if(sessionStorage.loginMember != null){
+		sessionAuthor = sessionStorage.loginMember.memberAuthor;
+	}
+	    
+  	function ttsInit(){
+	   	if(TTSIsOk == null || sessionAuthor == 3){
+	   		
+			   let audioFileNow = new Audio();
+			   
+				let NewProduct = [[${products}]];
+				console.log(NewProduct);
+			   
+			   
+			   const movePage = function(page) {
+				   const URLSearch = new URLSearchParams(location.search);
+				   URLSearch.set('pageNum', String(page));
+				   const newParam = URLSearch.toString();
+			
+				   window.open(location.pathname + '?' + newParam, '_self');
+				 };
+					 
+					 
+					 
+				let searchBars = document.querySelectorAll('input[type="search"]');
+				//console.log(searchBars);
+				let pSearch = searchBars[0];
+				
+				
+				let productList = document.querySelectorAll('a.card-img');
+				$.each(productList, function(idx,obj){
+					$(obj).on('focus', productTTS)
+				})
+				
+				function productTTS(){
+					let divCardMb = $(this).parent().parent();
+					let divCardBody = $(this).parent().parent().children()[1];
+					let productName = $(divCardBody).children()[1].innerText;
+					let productPrice = $($(divCardBody).children()[2]).children()[1].innerText
+					console.log(productName, productPrice);
+					let productMsg = `상품 이름. :  ${productName}. 상품 가격. : ${productPrice}원`
+					VoiceMenual(productMsg);
+					
+				}
+				
+				// 검색바 포커스 됐을 경우 TTS
+				$(pSearch).on('focus',function(){
+					VoiceMenual('검색창입니다. 마이크를 이용해 입력하시려면 alt 키와 9번을 동시에 입력해주세요. 그리고 말씀하신 후에 엔터키를 눌러주세요.')
+					console.log('go');
+				});
+				
+				//엔터키 입력 시 검색
+				$(pSearch).on('keydown',function(e){
+					if(e.keyCode == 13){
+						let nowURL = new URL(location.href);
+						nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
+						nowURL.searchParams.set('keyword', $(pSearch).val());
+						location.href = nowURL.href;
+					}
+					console.log('go');
+				})
+				
+				
+				$('#filterApplyBtn').on('click',function(){
+					$('#priceGroup').find('input:checked') //가격범위       range 가져오기
+					let orderFilter = $('#seasonGroup').find('input:checked') //new , best  order순서
+					$('#writeRange').find('input') // 적는 칸 가격 range;
+					let ctgs = $('.ps-5').find('input:checked') // 카테고리 선택 Filter
+					let minVal = $('#writeRange').find('input')[1].value;
+					let maxVal = $('#writeRange').find('input')[2].value;
+					
+					let prices = $('input[type="checkbox"][name="pricefilter"]:checked ');
+					
+					let minPrice;
+					let maxPrice;
+					
+					let filterObj = {};
+					
+					if(prices.length>0  ){
+					let id = prices[0].id;
+						if(id == 'priceRange'){
+							if((minVal > 0 && maxVal > 0) && maxVal<minVal){ //최솟값만 입력했을 경우 가능.
+								alert('최소 가격은 최대가격보다 클 수 없습니다.');
+								return;
+							}else{
+								minPrice = minVal;
+								maxPrice = maxVal;
+							}
+						}else if(id == 'priceOne'){
+							minPrice = 0
+							maxPrice = 50000;
+						}else if(id == 'priceTwo'){
+							minPrice = 50000;
+							maxPrice = 100000;
+						}else if(id == 'priceThree'){
+							minPrice = 100000;
+							maxPrice = 200000;
+						}else if(id == 'priceFour'){
+							minPrice = 200000;
+							maxPrice = 99999999;
+						}
+						
+					}
+					//min, max Price 담기 
+					filterObj['minPrice'] = minPrice;
+					filterObj['maxPrice'] = maxPrice;
+					
+					if(orderFilter.length>0){
+						if(orderFilter[0].id == 'seasonOne'){
+							filterObj['order'] = 'new';
+						}else if(orderFilter[0].id == 'seasonTwo'){
+							filterObj['order'] = 'best';
+						}
+					}
+					// filter가 있다면 new, best 담
+					
+					if(ctgs.length>0){
+						filterObj['ctg'] = ctgs[0].id; 
+					}
+					console.log(filterObj);
+					
+				})
+
+				
+				//PriceGroup 단일 체크
+				let pGroup = $('input[type="checkbox"][name="pricefilter"] ');
+				let sGroup = $('#seasonGroup').find('input');
+				let ctgGroup = $('.ps-5').find('input')
+				let chkGroup = [];
+				
+				$.each(ctgGroup, function(ele,obj){
+					$(obj).on('click', checkOnlyOneCtg);
+					$(obj).on('keydown', inputEnter)
+				})
+				$.each(sGroup, function(ele,obj){
+					$(obj).on('click', checkOnlyOneSeason);
+					$(obj).on('keydown', inputEnter)
+				})
+				
+				$.each(pGroup, function(ele,obj){
+					$(obj).on('click', checkOnlyOne);
+					$(obj).on('keydown', inputEnter)
+				})
+				function inputEnter(e){
+					if(e.key == 'Enter'){
+						$(this).trigger('click');
+					}
+				}
+				
+				function checkOnlyOne(e) {
+					console.log($(this).prop('checked'))
+					if($(this).prop('checked')){
+						 
+					     $('input[type="checkbox"][name="pricefilter"]').prop('checked',false);
+					 
+					     $(this).prop('checked',true);
+					 
+					}else{
+						$(this).prop('checked',false);
+					}
+					
+				}
+				function checkOnlyOneSeason(e) {
+					if($(this).prop('checked')){
+						 
+						$('#seasonGroup').find('input').prop('checked',false);
+					 
+					     $(this).prop('checked',true);
+					 
+					}else{
+						$(this).prop('checked',false);
+					}
+				}
+				function checkOnlyOneCtg(e) {
+					console.log($(this).prop('checked'))
+					if($(this).prop('checked')){
+						 
+						$('.ps-5').find('input').prop('checked',false);
+					 
+					     $(this).prop('checked',true);
+					 
+					}else{
+						$(this).prop('checked',false);
+					}
+					
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				//이하 STT 
+				window.SpeechRecognition =
+					  window.SpeechRecognition || window.webkitSpeechRecognition;
+			
+				// 인스턴스 생성
+				const recognition = new SpeechRecognition();
+			
+				// true면 음절을 연속적으로 인식하나 false면 한 음절만 기록함
+				recognition.interimResults = true;
+				// 값이 없으면 HTML의 <html lang="en">을 참고합니다. ko-KR, en-US
+				recognition.lang = "ko-KR";
+				// true means continuous, and false means not continuous (single result each time.)
+				// true면 음성 인식이 안 끝나고 계속 됩니다.
+				recognition.continuous = false;
+				// 숫자가 작을수록 발음대로 적고, 크면 문장의 적합도에 따라 알맞은 단어로 대체합니다.
+				// maxAlternatives가 크면 이상한 단어도 문장에 적합하게 알아서 수정합니다.
+				recognition.maxAlternatives = 10000;
+			
+				function sttToInput(HTMLTag){
+					console.log("sttToInput Start");
+					let speechToText = "";
+					let tagNow = HTMLTag.value;
+					recognition.addEventListener("result", (e) => {
+						console.log(HTMLTag);
+					  let interimTranscript = "";
+					  for (let i = e.resultIndex, len = e.results.length; i < len; i++) {
+					    let transcript = e.results[i][0].transcript;
+					    console.log(transcript);
+					    if (e.results[i].isFinal) { // 마지막이면 Text에 변환스크립트 concat
+					      speechToText += transcript;
+					    } else { //도중의 경우 interim, concat
+					      interimTranscript += transcript;
+					    }
+					  }
+					  let TotalSTT = speechToText + interimTranscript;	
+					  $(HTMLTag).val(TotalSTT);
+					  console.log('한뭉터기 끝')
+					});
+						console.log("sttToInput End");
+				}
+				recognition.addEventListener('end',function(){
+					let sttResultMsg = '입력하신 값 : '+pSearch.value;
+					VoiceMenual(sttResultMsg)
+				})
+				
+				
+				console.log('hello js');
+	
+	var AudioContext;
+	var audioContext;
+	
+	window.onload = function() {
+	    navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
+	        AudioContext = window.AudioContext || window.webkitAudioContext;
+	        audioContext = new AudioContext();
+	    }).catch(e => {
+	        console.error(`Audio permissions denied: ${e}`);
+	    });
+	}
+	// 먼저 읽히는것 
+	$(document).ready(function() {
+		let url =  new URL(location.href);
+		let paramChk = url.search;
+		
+		if(paramChk.length==0){
+			let firstMsg = "상품 목록 페이지입니다. 메뉴얼을 들으신 후 alt 키와 함께 해당 메뉴얼의 번호를 눌러주세요.";
+			let message =  firstMsg + $('#PListMenual').val();
+	    	VoiceMenual(message);
+		}
+		
+	
+	});
+	
+	function VoiceMenual(message) {
+	    var data = {
+	        "voice" : {
+	            "languageCode" : "ko-KR",
+	            "name" : "ko-KR-Neural2-B"
+	        },
+	        "input" : {
+	            "text" : message
+	        },
+	        "audioConfig" : {
+	            "audioEncoding" : "mp3"
+	        }
+	    }
+	    console.log(data);
+	    $.ajax({
+	        type : 'POST',
+	        url : 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
+	        data : JSON.stringify(data),
+	        dataType : 'JSON',
+	        contentType : "application/json; charset=UTF-8",
+	        success : function(res) {
+	            $('#menuText').val(res.audioContent)
+	            var audioFile = new Audio();
+	            let audioBlob = base64ToBlob(res.audioContent,
+	                    "mp3");
+	            audioFile.src = window.URL
+	                    .createObjectURL(audioBlob);
+	            audioFile.playbackRate = 2; //재생속도
+	            if(audioFileNow.paused == false){
+	            	audioFileNow.pause();
+	            }
+	    		audioFileNow = audioFile;
+	            audioFileNow.play();
+	        
+	        },
+	        error : function(request, status, error) {
+	            alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
+	        }
+	    });
+	};
+	function base64ToBlob(base64, fileType) {
+	    let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
+	    let audioSrc = typeHeader + base64;
+	    let arr = audioSrc.split(",");
+	    let array = arr[0].match(/:(.*?);/);
+	    let mime = (array && array.length > 1 ? array[1] : type) || type;
+	    // url헤더 제거하고 btye로 변환
+	    let bytes = window.atob(arr[1]);
+	    // 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
+	    let ab = new ArrayBuffer(bytes.length);
+	    // 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
+	    let ia = new Uint8Array(ab);
+	    for (let i = 0; i < bytes.length; i++) {
+	        ia[i] = bytes.charCodeAt(i);
+	    }
+	    return new Blob([ ab ], {
+	        type : mime
+	    });
+	}
+		window.addEventListener("keyup", function(e){ 
+				if(e.key == 'Tab'){
+					if($(':focus').prop('type') == 'number'){
+						let msg = '가격범위를 입력해주세요. 최소 다음 최대 입니다.'
+						VoiceMenual(msg);
+					}else{
+						if($(':focus')[0].className == 'card-img'){
+							console.log('YES');
+							productTTS;
+							return;
+						};
+						if($($(':focus')[0].labels).length>0){
+							let choiceUp = $(':focus').parent().parent().parent().prev()[0].innerText;
+							let choiceNow = $(':focus')[0].labels[0].innerText;
+							let choiceMsg = `${choiceUp}의 ${choiceNow}`
+							VoiceMenual(choiceMsg);
+						}else{
+							if($(':focus')[0].id == 'priceRange'){
+								let rangeMsg = '탭키를 누르고 가격범위를 직접 입력해주세요.'
+								VoiceMenual(rangeMsg);
+								return;
+							}
+							let choiceNow = $(':focus')[0].innerText;
+							VoiceMenual(choiceNow);
+						}
+					}
+	
+				}
+			})
+	
+	
+		window.addEventListener("keydown", function(e){ 
+	
+				if(e.altKey && e.key == 1){ //이전 페이지로 가기
+					let nowURL = new URL(location.href);
+					let nowNum = nowURL.searchParams.get('pageNum');
+					let num;
+					if(nowNum == 1 || nowNum == undefined){
+						num = 1;
+						VoiceMenual('첫번째 페이지입니다. 이전 페이지가 없습니다.');
+						
+					}else{
+						num = Number(nowNum)-1;
+						movePage(num);
+					}
+				}
+				if(e.altKey && e.key == 2){ // 상품 포커스
+					console.log(2);
+					let product = document.querySelector('a.card-img');
+					product.focus();
+				}
+				
+				if(e.altKey && e.key == 3){ // 다음 페이지로 가기
+					let nowURL = new URL(location.href);
+					let nowNum = nowURL.searchParams.get('pageNum');
+					let num;
+					if(nowNum == undefined){
+						num = 2;
+					}else{
+						num = Number(nowNum)+1;
+					}
+						movePage(num);
+					
+				}
+				if(e.altKey && e.key == 4){ // 뒤로가기
+					location.href = "javascript:window.history.back();"
+				}
+				if(e.altKey && e.key == 5){ // 검색창 가기
+					let searchBars = document.querySelectorAll('input[type="search"]');
+					searchBars[1].focus();;
+				}
+				if(e.altKey && e.key == 9){ // 메인 페이지로 가기
+					location.href = "/";
+				}
+				if(e.altKey && e.key == 7){ // 카테고리 페이지로 이동
+					location.href = "/";
+					var form = document.createElement('form');
+					form.setAttribute('method', 'post'); 
+					form.setAttribute('action', "/category");
+					document.body.appendChild(form);
+					form.submit();
+				}
+				if(e.altKey && e.key == 8){
+					location.href = "/"; // 장바구니로 이동
+				}
+				if(e.altKey && e.key == 6){ // 마이크로 입력하기
+					console.log(9);
+					let activeInput = document.activeElement
+					if(activeInput.tagName=='INPUT'){
+						recognition.addEventListener("start", sttToInput(activeInput))
+						recognition.start();
+					}else{
+						let noActiveMsg = "검색하시려면 alt키와 5번을 누르신 후 입력해주세요.";
+						VoiceMenual(noActiveMsg);
+					}
+				}
+				if(e.altKey && e.key == 0){
+					VoiceMenual($('#PListMenual').val());
+				}
+		})
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+	   		}//ttsInit if 문
+  	} // ttsInit();
+   </script>
 </div>
 </html>
