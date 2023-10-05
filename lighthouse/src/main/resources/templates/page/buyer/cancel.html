@@ -29,43 +29,46 @@
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-12 col-lg-10 col-xl-8" id="cancelForm">
-					<h2>취소 신청 페이지</h2>
+					<h2>취소 신청 </h2>
 					<div class="mb-3">
-						<input type="hidden" th:value="${cancel}" id="hidden"> <label>주문번호</label>
-						<input type="text" class="form-label" id="orderCode"
-							th:value="${cancel.orderCode}" class="" readonly> <label>주문상세번호</label>
-						<input type="text" class="form-label" id="orderDetailCode"
+						<input type="hidden" th:value="${cancel}" id="hidden"> 
+						<label>주문번호</label>
+						<input type="text" class="form-label orderCode" id="orderCode"
+							th:value="${cancel.orderCode}"  readonly> 
+						<label>주문상세번호</label>
+						<input type="text" class="form-label orderDetailCode" id="orderDetailCode"
 							th:value="${cancel.orderDetailCode}" readonly>
 					</div>
 					<div class="mb-3">
-						<label>상품 명</label> <input type="text" class="form-label"
-							id="productName" th:value="${cancel.productName}" readonly>
+						<label>상품 명</label> 
+						<input type="text" class="form-label productName" id="productName" th:value="${cancel.productName}" readonly>
 					</div>
 					<div class="mb-3">
 						<!-- Select -->
 						<select class="form-select form-select-xxs w-auto" id="select">
-							<option value="선택">취소 사유를 선택해주세요</option>
+							<option value="선택" class="select">취소 사유를 선택해주세요</option>
 							<option th:each="codes: ${codeList}" th:value="${codes.codeId}"
-								th:text="${codes.codeName}"></option>
+								th:text="${codes.codeName}" class="codeName" ></option>
 						</select>
 					</div>
 					<div class="mb-3">
-						<textarea class="form-control" id="content" rows="5"
-							placeholder="취소 사유를 입력해주세요"></textarea>
-					</div>
-					<div class="mb-3"></div>
-					<div class="mb-3">
-						<label>입금 계좌번호</label> <input type="text" class="form-label">
+						<textarea class="form-control cancelReason" id="content" rows="5"
+							placeholder="취소 사유를 입력해주세요" ></textarea>
 					</div>
 					<div class="mb-3">
-						<label>예금주</label> <input type="text" class="form-label">
-						<label>은행 명</label> <input type="text" class="form-label">
+						<label>은행 명</label> <input type="text" class="form-label" id="bankName">
+					</div>
+					<div class="mb-3">
+						<label>예금주</label> <input type="text" class="form-label" id="accountOwner">
+					</div>
+					<div class="mb-3">
+						<label>입금 계좌번호</label> <input type="text" class="form-label" id="accountNumber">
 					</div>
 					<div class="col-12 text-center">
 
 						<button class="btn btn-dark" id="cancelBtn">주문취소신청</button>
 						<a class="btn btn-gray-500" type="button"
-							th:href="@{/page/buyer/orderList}">취소</a>
+							th:href="@{/page/buyer/orderList}" id="retract">취소</a>
 					</div>
 				</div>
 			</div>
@@ -74,9 +77,7 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 		$(document).ready(function() {
-
 			let checkBeforeInsert = {};
-
 			console.log(checkBeforeInsert);
 
 			// 반품 신청 버튼 클릭 시 AJAX 요청을 보냅니다.
@@ -122,6 +123,207 @@
 				});
 			});
 		});
+		
+		//tts 시작 
+	     let TTSIsOk = localStorage.getItem('ttsKey');
+	       let sessionAuthor;
+	      console.log(sessionStorage.loginMember);          
+	      if(sessionStorage.loginMember != null){
+	         sessionAuthor = sessionStorage.loginMember.memberAuthor;
+	      }
+	          
+	         function ttsInit(){
+	          if(TTSIsOk == null || sessionAuthor == 3){
+	           let audioFileNow = new Audio();
+	           let firstMsg = "취소 신청 페이지입니다. 상품을 취소할 수 있습니다.";
+	           //let message = firstMsg;
+
+	           VoiceMenual(firstMsg);
+
+	     //tts 이벤트 부여
+	     $('#orderCode').on('focus', orderCode);
+	     $('#orderDetailCode').on('focus', orderDetailCode);
+	     $('#productName').on('focus', productName);
+	     $('#select').on('focus', selected);
+	     $('#content').on('focus', cancelReason)
+		 $('#cancelBtn').on('focus', cancelBtn);
+		 $('#retract').on('focus', retract);
+		 $('#accountNumber').on('focus', number);
+		 $('#accountOwner').on('focus', owner);
+		 $('#bankName').on('focus', bank);
+		 
+		 // 이벤트 안의 전역변수
+		 let code;
+		 let detailCode;
+		 let prodName;
+		 let select;
+		 let codeName;
+		 let reason;
+		 
+		 //tts 이벤트 진행
+	     function orderCode() {
+	    	 code = $('#orderCode').val();
+	    	 VoiceMenual("주문 번호는" + code + "입니다.");
+	     }
+	     function orderDetailCode() { 
+	    	 detailCode = $('#orderDetailCode').val();
+	    	 VoiceMenual("주문 상세 번호는" + detailCode + "입니다.");
+	     }
+		 function productName() { 
+			 prodName = $('#productName').val();   	 
+			 VoiceMenual("상품 명은" + prodName + "입니다.");
+		 }
+		 function selected() { 
+			 select =  $("#select").text();
+			 VoiceMenual(select);
+		 }
+		 function cancelReason() { 
+			 VoiceMenual("자세한 취소 사유를 입력해주세요.");
+		 }
+		 function number() { 
+			 VoiceMenual("입금 계좌번호를 입력해주세요.");
+		 }
+		 function owner() { 
+			 VoiceMenual("예금주를 입력해주세요.");
+		 }
+		 function bank() { 
+			 VoiceMenual("은행 명을 입력해주세요.");
+		 }
+		 function cancelBtn(){
+			 let detailReason = $('#content').val();
+			 let bName = $('#bankName').val();
+			 let aOwner = $('#accountOwner').val();
+			 let aNumber = $('#accountNumber').val();
+			 let check = `주문 취소 신청 버튼입니다. 주문 번호는. ${code}.  주문상세번호는.  ${detailCode}. 상품명은. ${prodName}. 취소 상세 사유는. ${detailReason}.
+			 			  은행명은. ${bName}. 예금주는. ${aOwner}. 입금계좌번호는. ${aNumber}. 신청 사항을 확인하셨다면. 엔터키를 눌러주세요.`;
+			 VoiceMenual(check);
+		 }
+		 function retract(){
+			 VoiceMenual('취소 철회 버튼입니다. 취소 철회를 원하시면. 엔터키를 눌러주세요.');
+		 }
+		 
+			//tts 부분
+			console.log('hello js');
+			
+			var AudioContext;
+			var audioContext;
+			
+			window.onload = function() {
+			    navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
+			        AudioContext = window.AudioContext || window.webkitAudioContext;
+			        audioContext = new AudioContext();
+			    }).catch(e => {
+			        console.error(`Audio permissions denied: ${e}`);
+			    });
+			}
+			
+			
+			function VoiceMenual(message) {
+			    var data = {
+			        "voice" : {
+			            "languageCode" : "ko-KR",
+			            "name" : "ko-KR-Neural2-B"
+			        },
+			        "input" : {
+			            "text" : message
+			        },
+			        "audioConfig" : {
+			            "audioEncoding" : "mp3"
+			        }
+			    }
+			    console.log(data);
+			    $.ajax({
+			        type : 'POST',
+			        url : 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
+			        data : JSON.stringify(data),
+			        dataType : 'JSON',
+			        contentType : "application/json; charset=UTF-8",
+			        success : function(res) {
+			            $('#menuText').val(res.audioContent)
+			            var audioFile = new Audio();
+			            let audioBlob = base64ToBlob(res.audioContent,
+			                    "mp3");
+			            audioFile.src = window.URL
+			                    .createObjectURL(audioBlob);
+			            audioFile.playbackRate = 2; //재생속도
+			            if(audioFileNow.paused == false){
+			               audioFileNow.pause();
+			            }
+			          audioFileNow = audioFile;
+			            audioFileNow.play();
+			        
+			        },
+			        error : function(request, status, error) {
+			            alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
+			        }
+			    });
+			};
+			function base64ToBlob(base64, fileType) {
+			    let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
+			    let audioSrc = typeHeader + base64;
+			    let arr = audioSrc.split(",");
+			    let array = arr[0].match(/:(.*?);/);
+			    let mime = (array && array.length > 1 ? array[1] : type) || type;
+			    // url헤더 제거하고 btye로 변환
+			    let bytes = window.atob(arr[1]);
+			    // 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
+			    let ab = new ArrayBuffer(bytes.length);
+			    // 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
+			    let ia = new Uint8Array(ab);
+			    for (let i = 0; i < bytes.length; i++) {
+			        ia[i] = bytes.charCodeAt(i);
+			    }
+			    return new Blob([ ab ], {
+			        type : mime
+			    });
+			}
+			
+			   window.addEventListener("keydown", function(e){ 
+			         console.log(e);
+			         if(e.altKey && e.key == 1){ //주문목록
+			             $('#orderList').focus();
+			             VoiceMenual('주문목록 페이지 원할 경우. 엔터키 입력');
+			          }
+			         else if(e.altKey && e.key == 2){ //취소내역
+			        	 $(".collapse").addClass("show")
+			             $('#cancel').focus();
+			             VoiceMenual('취소. 페이지 원할 경우. 엔터키 입력');
+			          }
+			         else if(e.altKey && e.key == 3) {//반품내역
+			        	 $(".collapse").addClass("show")
+			             $('#reList').focus();
+			             VoiceMenual('반품. 페이지 원할 경우. 엔터키 입력');
+			          }
+			         else if(e.altKey && e.key == 4){ // 교환내역
+			        	 $(".collapse").addClass("show")
+			             $('#exchange').focus();
+			             VoiceMenual('교환. 페이지 원할 경우. 엔터키 입력');
+			          }
+			         else if(e.altKey && e.key == 5){ // 나의 쿠폰함
+			             $('#coupon').focus();
+			             VoiceMenual('쿠폰함. 페이지 원할 경우. 엔터키 입력');
+			          }
+			         else if(e.altKey && e.key == 6){ // 문의내역
+			             $('#inquiry').focus();
+			             VoiceMenual('문의내역. 페이지 원할 경우. 엔터키 입력');
+			          }
+			         else if(e.altKey && e.key == 7){ // 찜 목록
+			             $('#wish').focus();
+			             VoiceMenual("찜목록. 페이지 원할 경우. 엔터키 입력")
+			          }
+			         else if(e.altKey && e.key == 8){ // 배송 시 요청 선택
+			             $('#myInfo').focus();
+			             VoiceMenual('개인정보 확인,수정 페이지 입니다. 엔터키 입력.');
+			          }
+			         else if(e.altKey && e.key == 9){ // 메인 페이지 이동
+			                 location.href = "/";
+			          }
+			         else if(e.altKey && e.key == 0){ //다시 듣기
+			             VoiceMenual($('#orderMenual').val());
+			          }
+			    })
+			  } //ttsInit()의 if문
+			} // ttsInit() close
 	</script>
 </div>
 </html>

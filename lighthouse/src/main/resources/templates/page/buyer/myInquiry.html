@@ -108,7 +108,7 @@
 			            <tr>
 			              <th style="white-space: nowrap; padding-left: 10px; padding-right: 10px; text-align: center;">문의 번호</th>
 			              <th style="white-space: nowrap; text-align: center;">문의 제목</th>
-			              <th>문의 내용</th>
+			              <th style="white-space: nowrap; text-align: center;">문의 내용</th>
 			              <th style="white-space: nowrap; text-align: center;">작성 날짜</th>
 			              <th style="white-space: nowrap; text-align: center;">답변 여부</th>
 			            </tr>
@@ -118,7 +118,7 @@
 			              <td style="display:none;"></td>
 			              <td th:id="|code${status.index}|" class="inquiryCode" tabindex="0" style="padding-left: 5px; padding-right: 5px; text-align: center;">[[${inqs.customInquiryCode}]]</td>
 			              <td th:id="|title${status.index}|" class="inquiryTitle" data-bs-toggle="modal" th:data-bs-target="|#modalProduct${inqs.customInquiryCode}|" style="text-align: center;">[[${inqs.customInquiryTitle}]]</td>
-			              <td th:id="|content${status.index}|" class="inquiryContent" style="white-space: nowrap;">[[${inqs.customInquiryContent}]]</td>
+			              <td th:id="|content${status.index}|" class="inquiryContent" style="width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:inline-block;">[[${inqs.customInquiryContent}]]</td>
 			              <td th:id="|regdate${status.index}|" class="inquiryRegdate" style="white-space: nowrap;">[[${#dates.format(inqs.customInquiryRegdate, 'yyyy-MM-dd')}]]</td>
 			              <td th:id="|answer${status.index}|" class="inquiryAnswerStatus" style="text-align: center;">[[${inqs.customInquiryAnswerStatus}]] </td>
 			            </tr>
@@ -137,15 +137,19 @@
 					          <div class="container-fluid px-xl-0">
 					            <div class="row align-items-center mx-xl-0">
 					              <div class="col-12 col-lg-6 col-xl-7 py-9 px-md-9">
-					                <label class="h5">문의 제목 :</label>
+					                <label class="h7">문의 제목 :</label>
 					                <h5 class="mb-3" th:text="|${inqs.customInquiryTitle}|"></h5>
-					                <label class="h6">문의 날짜 :</label>
-					                <h6 class="mb-3" th:text="|${#dates.format(inqs.customInquiryRegdate, 'yyyy-MM-dd')}|"></h6>
+					                <label class="h7">문의 날짜 :</label>
+					                <h5 class="mb-3" th:text="|${#dates.format(inqs.customInquiryRegdate, 'yyyy-MM-dd')}|"></h5>
 					                <!-- Form -->
 					                <form>
 					                  <label class="h5">문의 내용 :</label>
 					                  <div class="form-group">
-					    				<textarea rows="10" cols="100" th:text="|${inqs.customInquiryContent}|"></textarea>
+					    				<textarea rows="5" cols="100" th:text="|${inqs.customInquiryContent}|"></textarea>
+					                  </div>
+					                  <label class="h5">답변 내용 :</label>
+					                  <div class="form-group">
+					    				<textarea rows="5" cols="100" th:text="|${inqs.customInquiryAnswer}|"></textarea>
 					                  </div>
 					                  <div class="form-group mb-0">
 					                    <div class="row gx-5">

@@ -84,11 +84,12 @@
                 <div>
                <select class="optionList">
                   <option value="선택">선택</option>
-                  <option value="payment_price">가격</option>
+                  <!-- <option value="payment_price">가격</option> -->
                   <option value="order_date">구매일자</option>
                   <option value="product_name">상품명</option>
                </select>
                <input type="text" class="selectVal" value="" maxlength="50">
+               <button type="button" id="selectOption">검색</button>
                <div>
                   <span>조회기간</span> 
                   <input type="DATE" id="from" name="from" autocomplete="off"> 
@@ -97,7 +98,7 @@
                   <input class="count" readonly></input>
                </div>
             </div>
-            <button type="button" id="selectOption">검색</button>
+            
             <div class="card card-lg mb-5 border">
             <div class="card-body pb-0">
             <!-- 반복문 시작 -->
@@ -121,7 +122,7 @@
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">주문 날짜:</h6>
                         <p class="mb-lg-0 fs-sm fw-bold">
-                           <span class="orderDate" th:text= "|${#dates.format(lists.orderDate, 'yyyy-MM-dd')}|"></span>
+                           <span class="orderDate" th:text= "${#dates.format(lists.orderDate, 'yyyy-MM-dd')}"></span>
                         </p>
                       </div>
                       <!-- 상품 이미지 -->
@@ -299,8 +300,10 @@
 	   $('#selectOption').on('click',function(){
 	      let key = $('.optionList').val();
 	      let value = $('.selectVal').val();
+	      
 	      let fromDate = $('#from').val();
 	      let toDate = $('#to').val();
+	      
 	      var itemCount = document.querySelectorAll(".order").length;
 	      
 	       // document.querySelector(".count").value = itemCount;
@@ -318,7 +321,6 @@
 	         }
 	      })
 	      .done(data => {
-	         
 	         $('#orderOption').html(data);
 	         setTimeout(function(){
 	               $('.orderCode').on('focus',orderDetailInfo);
@@ -352,7 +354,8 @@
 	     //tts 이벤트 부여
 	     $('.orderCode').on('focus',orderDetailInfo);
 	     $('.excBtn').on('focus', exchageBtn);
-	
+	     $('.retBtn').on('focus', retBtn);
+	     $('.cancelBtn').on('focus', cancelBtn);
 	     //tts 이벤트 진행
 	     function orderDetailInfo() {
 	     let orderCode = $(this).closest('.orderRow').find('.orderCode').text();
@@ -378,7 +381,13 @@
 	     }
 	     
 	     function exchageBtn() {
-	    	 VoiceMenual('교환 버튼입니다. 교환을 원하시면. 엔터키를 눌러주세요.');
+	    	 VoiceMenual('교환 신청 버튼입니다. 교환을 원하시면. 엔터키를 눌러주세요.');
+	     }
+	     function retBtn() {
+	    	 VoiceMenual('반품 신청 버튼입니다. 반품을 원하시면. 엔터키를 눌러주세요.');
+	     }
+	     function cancelBtn() {
+	    	 VoiceMenual('주문 취소 신청 버튼입니다. 주문 취소을 원하시면. 엔터키를 눌러주세요.');
 	     }
 	 
 	//tts 부분

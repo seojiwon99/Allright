@@ -139,7 +139,7 @@
 		    	</when>
 		    </choose>
 		    <if test="fromDate != null and toDate != null">
-				AND a.order_date BETWEEN #{fromDate} AND #{toDate}
+				AND a.order_date BETWEEN #{fromDate} AND #{toDate} + 1
 			</if>
 				ORDER BY a.order_date DESC
 		)
@@ -155,7 +155,9 @@
      <select id="selectBuyInfo" resultType="BuyInfoVO" parameterType="String">
         SELECT member_name
               , member_email
+              <if test="">
               , member_pw
+              </if>
               , member_addr
               , member_details_addr
               , member_tel
@@ -260,7 +262,7 @@
            , custom_inquiry_answer_status
       FROM ar_custom_inquiry
       WHERE member_id = #{memberId}
-      Order by custom_inquiry_code asc
+      Order by custom_inquiry_regdate desc
    </select>
    
    <select id="getInqCnt" resultType="int">
