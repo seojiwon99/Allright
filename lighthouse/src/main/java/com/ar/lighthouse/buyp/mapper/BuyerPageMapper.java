@@ -1,6 +1,5 @@
 package com.ar.lighthouse.buyp.mapper;
 
-
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -19,55 +18,61 @@ import com.ar.lighthouse.common.Criteria;
 
 @Mapper
 public interface BuyerPageMapper {
-	
+
 	public List<DetailVO> selectDetailList(String memberId);
-	
+
 	public BuyInfoVO selectBuyInfo(String memberId);
 
 	public List<TradeVO> selectTradeList(String memberId);
-	
+
 	public List<CouponVO> selectCouponList(String memberId);
-	
+
 	public int updateInfo(BuyInfoVO buyInfoVO);
-	
+
 	public List<MyInquiryVO> selectMyInquiryList(String memberId);
-	
+
 	public List<WishVO> selectWishList(String memberId);
 
 	public List<BuyCancelVO> selectCancelList(String memberId);
-	
+
 	public List<BuyReturnVO> selectReturnList(String memberId);
-	
+
 	public List<BuyExchangeVO> selectExchangeList(String memberId);
-	
+
 	public int insertExchange(BuyExchangeVO excVO);
 
 	public List<CodeVO> selectExchangeCode(String memberId);
-	
+
 	public CodeVO exchangeCodePage(CodeVO codeVO);
-	
+
 	public List<CodeVO> selectReturnCode(String memberId);
-	
+
 	public CodeVO returnCodePage(CodeVO codeVO);
-	
+
 	public int insertReturn(BuyReturnVO retVO);
-	
+
 	public List<CodeVO> selectCancelCode();
-	
+
 	public CodeVO cancelCodePage(CodeVO codeVO);
-	
+
 	public int insertCancel(BuyCancelVO canVO);
-	
+
 	public int deleteCancel(BuyCancelVO canVO);
-	
+
 	public int deleteReturn(BuyReturnVO retVO);
-	
+
 	public int deleteExchange(BuyExchangeVO excVO);
-	
+
 	public int deleteWish(int favoriteCode);
 
 	public int getPageCnt(Criteria cri);
-	
+
 	public List<DetailVO> selectOptionList(DetailVO detailVO);
-	
+
+	// 찜insert
+	public int insertWish(WishVO wishVO);
+
+	// 찜 중복체크
+	public int checkWish(WishVO wishVO);
+
 }

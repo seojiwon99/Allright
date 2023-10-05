@@ -465,4 +465,30 @@
 		WHERE favorite_code = #{favoriteCode}
 	</delete>
 	
+	<!-- 찜 목록으로 -->
+	<insert id="insertWish" parameterType="WishVO">
+		<selectKey resultType="int" keyProperty="favoriteCode" order="BEFORE">
+	         SELECT NVL(MAX(favorite_code),0)+1
+	         FROM ar_favorite
+      	</selectKey>
+		      INSERT INTO ar_favorite 
+		      	(
+			      favorite_code
+			      , product_code
+			      , member_id
+		      	)
+		      VALUES
+		      	(
+			        #{favoriteCode}
+			      , #{productCode}
+			      , #{memberId}
+		      	)
+	</insert>
+	
+	<select id="checkWish" resultType="int">
+		select count(*) 
+		from ar_favorite
+		WHERE member_id = #{memberId}
+		AND product_code = #{productCode}
+	</select>
   </mapper>
