@@ -2,6 +2,8 @@ package com.ar.lighthouse.productinquiry.service;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -22,5 +24,13 @@ public class ProductInquiryVO {
 	
 //	 멤버테이블
 	String memberName;
+	
+	//   ajax넘어오는값
+	   String searchValue;
+	   String searchKey;
+	   @DateTimeFormat(pattern="yyyy-MM-dd")
+	   Date fromDate;
+	   @DateTimeFormat(pattern="yyyy-MM-dd")
+	   Date toDate;
 	
 }

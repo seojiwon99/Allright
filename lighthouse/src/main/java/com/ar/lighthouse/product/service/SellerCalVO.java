@@ -15,6 +15,8 @@ public class SellerCalVO {
 	Date settlementDate; // 정산예정일
 	Date completDate; // 정선완료일
 	int permission; // 수수료
+	int yourPrice;
+	int myPrice;
 	// productVO
 	String productName;
 	
