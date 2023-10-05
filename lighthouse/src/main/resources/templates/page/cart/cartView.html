@@ -13,29 +13,30 @@
           <div class="col-12">
 
             <!-- Heading -->
-            <h3 class="mb-10 text-center">장바구니</h3>
-
+            <h3 class="mb-10 text-center" tabindex="1">장바구니</h3>
+			
+			
           </div>
         </div>
         <div class="row">
           <div class="col-12 col-md-7" id="test">
             <div>
               <input type="checkbox" id="allCheckbox">전체선택
-             <button type="button" class="btn btn-sm btn-dark" id="chkDelBtn" style="float:right;">선택삭제</button>
+             <button type="button" class="btn btn-sm btn-dark" id="chkDelBtn" style="float:right;" tabindex="-1">선택삭제</button>
              <hr>
             </div>
 
             <!-- List group -->
             <!-- 반복문 시작 -->
             <div th:if="${list.size != 0}" id="cartItem">
-            <div th:each="lists : ${list}">
+            <div th:each="lists, listStat : ${list}">
             <ul class="list-group list-group-lg list-group-flush-x mb-6">
               <li class="list-group-item">
                 <div class="row align-items-center">
                   <div class="col-3">
 					
 					<!-- checkbox -->
-                    <input type="checkbox" name="price" th:value="${lists.productCost}">
+                    <input type="checkbox" name="price" th:value="${lists.productCost}" class="firstPro">
                     <input type="hidden" name="sale" th:value="${lists.salePrice}">
                     <input type="hidden" name="delivery" th:value="${lists.deliveryCost}">
                     <input type="hidden" name="cartNum" th:value="${lists.cartCode}">
@@ -43,30 +44,30 @@
                     <input type="hidden" name="optionPrice" th:value="${lists.optionPrice}">
 
                     <!-- Image -->
-                    <a href="product.html">
-                     <img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|" alt="..." class="img-fluid">
+                    <a href="product.html" tabindex="-1">
+                     <img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|" alt="..." class="img-fluid" tabindex="-1">
                     </a>
 
                   </div>
-                  <div class="col">
+                  <div class="col checkContent">
                     <!-- Title -->
                     <div class="d-flex mb-2 fw-bold">
-                      <a class="text-body" href="product.html"><span th:text= "|상품명 : ${lists.productName}|"></span></a>
-                      <span class="price ms-auto" style="text-decoration: line-through;" th:text="| 상품금액 : ${lists.productCost}원|"></span>
+                      <a class="text-body" href="product.html" tabindex="-1"><span th:text= "|상품명 : ${lists.productName}|"class="tts1" tabindex="-1"></span></a>
+                      <span class="price ms-auto tts2" style="text-decoration: line-through;" th:text="| 상품금액 : ${lists.productCost}원|"></span>
                     </div>
                     <div class="d-flex mb-2 fw-bold">
-                    	<span class="ms-auto" th:text="|할인금액 : ${lists.salePrice}원|"></span>
+                    	<span class="ms-auto tts3" th:text="|할인된 금액 : ${lists.salePrice}원|"></span>
                     </div>
                     <div class="d-flex mb-2 fw-bold">
-                    	<span class="ms-auto" th:text="|옵션 추가금액 : ${lists.optionPrice}원|"></span>
+                    	<span class="ms-auto tts4" th:text="|옵션 추가금액 : ${lists.optionPrice}원|"></span>
                     </div>
                     <div class="d-flex mb-2 fw-bold">
-                    	<span class="ms-auto" th:text="|배송비 : ${lists.deliveryCost}원|"></span>
+                    	<span class="ms-auto tts5" th:text="|배송비 : ${lists.deliveryCost}원|"></span>
                     </div>
 
                     <!-- Text -->
                     <!--옵션 종류, 옵션 값-->
-                   <p class="mb-7 fs-sm text-muted" th:text="${lists.optionLast}"></p>
+                   <p class="mb-7 fs-sm text-muted tts6" th:text="${lists.optionLast}"></p>
                     
 
                     <!--Footer -->
@@ -74,12 +75,12 @@
 
                       <!-- buy plus mius -->
                       <div class="num">
-                        <span>구매수량 : </span><span th:text="${lists.cartCount}"></span>
+                        <span>구매수량 : </span><span th:text="${lists.cartCount}" class="tts7"></span>
                       </div>
 
                       <!-- Remove -->
                       <a class="fs-xs text-gray-400 ms-auto" th:onclick="delteResult([[${lists.cartCode}]])">
-                        <i class="fe fe-x"></i> 상품삭제
+                        <button class="fe fe-x productDel" tabindex="0"></button> 상품삭제
                       </a>
                     </div>
                   </div>
@@ -116,7 +117,7 @@
                   
                     </div>
                     <div class="col-auto">
-                      <button class="btn btn-sm btn-dark" th:onclick="shopping()">
+                      <button class="btn btn-sm btn-dark" th:onclick="shopping()" id="shoping">
                         쇼핑 계속하기
                        </button>
                       <!-- Button -->
@@ -167,21 +168,64 @@
       
     
     </section>
+    <!--cart 메뉴얼 tts-->
+    <textarea id="cartMenual" style="display: none;">
+      1번 결제버튼 이동 후 엔터키 사용하면 주문페이지 이동.
+      2번 장바구니 상품 전체선택 포커싱.
+      3번 첫번째 상품으로 이동.
+      9번 메인 페이지 이동.
+      0번 메뉴얼 다시 듣기.
+    </textarea>
 
     <script>
+    let TTSIsOk = localStorage.getItem('ttsKey');
+    let sessionAuthor;
+      console.log(sessionStorage.loginMember);          
+      if(sessionStorage.loginMember != null){
+          sessionAuthor = sessionStorage.loginMember.memberAuthor;
+      }
+       
+      function ttsInit(){
+       if(TTSIsOk == null || sessionAuthor == 3){
+
+
+  let audioFileNow = new Audio();
+  let firstMsg = "장바구니 페이지 입니다. 회원이 담은 상품들을 확인하고 결제를 할 수 있습니다." + "탭을 눌러 이동하며, 체크박스에서는 스페이스바로  선택 가능합니다.";
+  let message =  firstMsg + $('#cartMenual').val();
 
 	$(function(){
   		init();
   		checkedCart();
+      VoiceMenual(message);
 	})
 	
 	function init(){
 		
 		//이벤트 지정
-		$('#allCheckbox').on('click',allCheckEvent)
-		$('input[name="price"]').on('change', checkedCart);
-		$('#chkDelBtn').on('click',checkedDel);                    //선택 삭제
-		
+    $('#allCheckbox').on('click',allCheckEvent);  // 전체선택
+    $('#allCheckbox').on('focus',allFocus); // 전체선택 포커스 될 경우 read
+    $('#allCheckbox').on('keydown',allKeydown); // 키 눌렀을 경우 읽어줌
+    $('input[name="price"]').on('change', checkedCart);
+    $('#chkDelBtn').on('click',checkedDel);                    //선택 삭제
+    $('.productDel').on('focus',productDel);  // 상품  삭제 read
+    $('#payMove').on('focus',patMove); // 주문 페이지 안내 - 결제 클릭
+    $('input[name="price"]').on('keydown', proKeydown);
+    $('#shoping').on('focus',shoping);
+
+    $('input[name="price"]').on('focus', function productDetail(){
+       let proName = $(this).parent().parent().find('.tts1').text(); //상품명
+       let proPrice = $(this).parent().parent().find('.tts2').text(); //상품금액
+       let proSalePrice = $(this).parent().parent().find('.tts3').text()//할인금액
+       let optionVal = $(this).parent().parent().find('.tts4').text() //옵션 추가 금액
+       let proDelivery = $(this).parent().parent().find('.tts5').text() //배송비
+       let optionName = $(this).parent().parent().find('.tts6').text() //옵션종류, 옵션 값
+       let buyCnt = $(this).parent().parent().find('.tts7').text() //구매수량
+       let productMsg = `${proName}. ${proPrice}. ${proSalePrice}. ${optionVal}. ${proDelivery}. 선택한 옵션의 종류는 ${optionName}. 구매수량은 ${buyCnt} 입니다.
+                        전체선택을 하지 않고 개별 선택의 경우 스페이스바로 선택해주세요.`;
+      
+        VoiceMenual(productMsg);
+    });
+
     
     document.getElementById('productPrice').innerText ='원';
     document.getElementById('salePrice').innerText = '원';
@@ -191,8 +235,6 @@
 
         //삭제
   function delteResult(code){
-        	//console.log(code);
-        	//e.preventDefault()
           let deleteForm = confirm('삭제를 하시겠습니까?');
           if(deleteForm) {
         	$.ajax('http://localhost:8090/cart/delete',{
@@ -240,8 +282,7 @@
     document.getElementById('salePrice').innerText = saleResult + '원';
     document.getElementById('deliveryPrice').innerText = deliveryResult + '원';
     document.getElementById('totalPrice').innerText = saleResult + deliveryResult + '원';
-  }
-        
+  }   
     
       //전체 선택
       function allCheckEvent(e) {
@@ -250,8 +291,7 @@
           checkTags.forEach(el => {
         	  console.log(el)
             //el.checked = allCheckTag.checked;
-        	  $(el).trigger('click')
-            
+        	  $(el).trigger('click')  
           })
       }
 
@@ -286,6 +326,49 @@
       }
     }
     
+    // tts 정리
+    function allKeydown(e) {
+        if(e.keyCode === 32 && $('#allCheckbox').is(':checked') == false) {
+          VoiceMenual("장바구니 상품 전체 선택 되었습니다.");
+        } else if(e.keyCode === 32 && $('#allCheckbox').is(':checked') == true){
+          VoiceMenual("전체 상품 선택을 취소했습니다."); 
+        }
+      }
+
+      function allFocus(e) {
+        VoiceMenual("장바구니에 담긴 상품을 전체 선택 원할 경우 스페이스바 눌러주세요.");
+      } 
+
+      function productDel(e) {
+        VoiceMenual("현재 상품을 삭제 원할 경우 스페이스바 두번 눌러주세요.");
+      }
+      function patMove(e) {
+    	  
+        if($('#totalPrice').text() == '0원') {
+          VoiceMenual('선택된 상품 금액이 없습니다. 상품 선택 후 진행해주세요.');
+          return;
+        }
+
+        let productPay = $('#productPrice').text();
+        let salePay = $('#salePrice').text();
+        let deliveryPay = $('#deliveryPrice').text();
+        let totalPay = $('#totalPrice').text();
+        VoiceMenual(`상품금액은 ${productPay}. 할인된 금액은 ${salePay}. 배송비는 ${deliveryPay}. 총 결제 금액은 ${totalPay}. 입니다.
+                     상품 선택을 마치셨다면. 엔터키 사용하여. 선택한 상품을 가지고. 주문 페이지로. 이동합니다.`);
+      }
+      function proKeydown(e) {
+        console.log($(this).prop('checked'));
+        if(e.keyCode === 32 && $(this).prop('checked') == false) {
+            VoiceMenual("상품 선택 되었습니다.");
+          } else if(e.keyCode === 32 && $(this).prop('checked') == true){
+            VoiceMenual("상품 선택을 취소했습니다."); 
+          }               
+      }
+      function shoping(e){
+        VoiceMenual("장바구니 상품이 더 이상 없습니다. 쇼핑 계속 원할 경우 엔터 결제 원할 경우. alt, 1를 눌러 결제하기로 이동하세요.");
+      }
+      
+
 
 
 $('#payMove').on('click', function(){
@@ -312,6 +395,7 @@ $('#payMove').on('click', function(){
         }       
 	});
 
+
 	function sendPost(url, parames) {
 		console.log(parames);
           let form = document.createElement('form');
@@ -330,9 +414,103 @@ $('#payMove').on('click', function(){
           // form.appendChild(hiddenField);
           console.log(form);
           form.submit();
-	}
-	
+	  }
+    console.log('hello js');
 
+var AudioContext;
+var audioContext;
+
+window.onload = function() {
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
+        AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioContext = new AudioContext();
+    }).catch(e => {
+        console.error(`Audio permissions denied: ${e}`);
+    });
+}
+
+function VoiceMenual(message) {
+    var data = {
+        "voice" : {
+            "languageCode" : "ko-KR",
+            "name" : "ko-KR-Neural2-B"
+        },
+        "input" : {
+            "text" : message
+        },
+        "audioConfig" : {
+            "audioEncoding" : "mp3"
+        }
+    }
+    console.log(data);
+    $.ajax({
+        type : 'POST',
+        url : 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
+        data : JSON.stringify(data),
+        dataType : 'JSON',
+        contentType : "application/json; charset=UTF-8",
+        success : function(res) {
+            $('#menuText').val(res.audioContent)
+            var audioFile = new Audio();
+            let audioBlob = base64ToBlob(res.audioContent,
+                    "mp3");
+            audioFile.src = window.URL
+                    .createObjectURL(audioBlob);
+            audioFile.playbackRate = 2; //재생속도
+            if(audioFileNow.paused == false){
+            	audioFileNow.pause();
+            }
+    		audioFileNow = audioFile;
+            audioFileNow.play();
+        
+        },
+        error : function(request, status, error) {
+            alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
+        }
+    });
+};
+function base64ToBlob(base64, fileType) {
+    let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
+    let audioSrc = typeHeader + base64;
+    let arr = audioSrc.split(",");
+    let array = arr[0].match(/:(.*?);/);
+    let mime = (array && array.length > 1 ? array[1] : type) || type;
+    // url헤더 제거하고 btye로 변환
+    let bytes = window.atob(arr[1]);
+    // 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
+    let ab = new ArrayBuffer(bytes.length);
+    // 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
+    let ia = new Uint8Array(ab);
+    for (let i = 0; i < bytes.length; i++) {
+        ia[i] = bytes.charCodeAt(i);
+    }
+    return new Blob([ ab ], {
+        type : mime
+    });
+}
+
+
+
+	window.addEventListener("keydown", function(e){ 
+			console.log(e);
+			if(e.altKey && e.key == 1){ //결제하기
+				$('#payMove').focus();
+			}
+			if(e.altKey && e.key == 2){ // 상품 포커스
+				$('#allCheckbox').focus();
+			}
+			if(e.altKey && e.key == 3) { //장바구니 첫번째 상품
+				$('.firstPro').first().focus();
+			}
+			if(e.altKey && e.key == 9){ // 메인 페이지로 가기
+				location.href = "/";
+			}
+			if(e.altKey && e.key == 0){
+				VoiceMenual($('#cartMenual').val());
+			}
+	})
+  }  //ttsInit()의 if문
+} // ttsInit() close
     </script>
 </div>
 </html>

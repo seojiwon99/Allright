@@ -75,7 +75,7 @@
 							<li class="nav-item"><a class="nav-link"
 								href="/sellerMypage">판매자정보</a></li>
 							<li class="nav-item"><a class="nav-link"
-								href="./docs/getting-started.html">고객센터</a></li>
+								href="/sellerInquiry">고객센터</a></li>
 						</ul>
 
 
@@ -107,7 +107,7 @@
 							<span id="onemonth">1개월</span>
 						</button>
 						<button type="button" id="threeMonthBtn"
-							class="btn btn-primary2 active">
+							class="btn btn-primary2">
 							<span id="thmonth">3개월</span>
 						</button>
 
@@ -131,65 +131,89 @@
 				</div>
 
 				<button type="button" id="orderSearch">검색</button>
-				<section class="pb-12" style="border:1px">
+				<section class="pb-12" style="border: 1px">
 					<div class="orderBtn" style="margin: 20px;">
-						<input type="button" id="returnOk" value="반품승인" style="background-color:yellow;">
-						<input type="button" id="returnRejectBtn" value="반품거부" style="background-color:red;">
-						<input type="button" id="exchangeOk" value="교환승인" style="background-color:yellow;">
-						<input type="button" id="exchangeRejectBtn" value="교환거부" style="background-color:red;">
-						
-						<div style="width:100%; height: 300px; overflow:auto; border:1px; ">
-						<table border="1" class="table" id="getProductList">
-							<thead>
-								<tr>
-									<th><input type="checkbox" id="allCheck"></th>
-									<th>주문번호</th>
-									<th>상품명</th>
-									<th>주문상태</th>
-									<th>교환/반품이유</th>
-									<th>요청상태</th>
-									<th>교환/반품요청일</th>
-									<th>구매자</th>
-								</tr>
-							</thead>
-							<tbody id="exReSeaList">
-								<tr th:each="exRe : ${exReList}">
-									<td><input type="checkbox"></td>
-									
-									<td th:text="${exRe.orderDetailCode}"></td>
-									<td th:text="${exRe.productName}"></td>
-									<td th:text="${exRe.orderStatus}"></td>
-									<td>
-									<span
-										th:if="${exRe.exchangeCode != null && exRe.returnCode == null}"
-										th:text="${exRe.exchangeReason}"></span> 
-									<span
-										th:if="${exRe.returnCode != null && exRe.exchangeCode == null}"
-										th:text="${exRe.returnReason}"></span>
-									</td>
-									<td>
-									<span
-										th:if="${exRe.exchangeCode != null && exRe.returnCode == null}"
-										th:text="교환"></span> 
-									<span
-										th:if="${exRe.returnCode != null && exRe.exchangeCode == null}"
-										th:text="반품"></span>
-									</td>
-									<td>
-									<span
-										th:if="${exRe.exchangeCode != null && exRe.returnCode == null}"
-										th:text="${#dates.format(exRe.exchangeRegdate, 'yyyy-MM-dd')}"></span> 
-									<span
-										th:if="${exRe.returnCode != null && exRe.exchangeCode == null}"
-										th:text="${#dates.format(exRe.returnRegdate, 'yyyy-MM-dd')}"></span>
-									</td>
-									
-									<td th:text="${exRe.memberName}"></td>
-								</tr>
+						<input type="button" id="returnOk" value="반품승인"
+							style="background-color: yellow;"> <input type="button"
+							id="returnRejectBtn" value="반품거부" style="background-color: red;">
+						<input type="button" id="exchangeOk" value="교환승인"
+							style="background-color: yellow;"> <input type="button"
+							id="exchangeRejectBtn" value="교환거부"
+							style="background-color: red;">
 
-								<!-- 반복문 종료 -->
-							</tbody>
-						</table>
+						<div
+							style="width: 100%; height: 300px; overflow: auto; border: 1px;">
+							<table border="1" class="table" id="getProductList">
+								<thead>
+									<tr>
+										<th><input type="checkbox" id="allCheck"></th>
+										<th>주문번호</th>
+										<th>상품명</th>
+										<th>주문상태</th>
+										<th>교환/반품이유</th>
+										<th>요청상태</th>
+										<th>교환/반품상태</th>
+										<th>교환/반품요청일</th>
+										<th>구매자</th>
+									</tr>
+								</thead>
+								<tbody id="exReSeaList">
+									<tr th:each="exRe : ${exReList}">
+										<td><input type="checkbox"></td>
+
+										<td th:text="${exRe.orderDetailCode}"></td>
+										<td th:text="${exRe.productName}"></td>
+										<td th:text="${exRe.orderStatus}"></td>
+										<td><span
+											th:if="${exRe.exchangeCode != null && exRe.returnCode == null}"
+											th:text="${exRe.exchangeReason}"></span> <span
+											th:if="${exRe.returnCode != null && exRe.exchangeCode == null}"
+											th:text="${exRe.returnReason}"></span></td>
+										<td><span
+											th:if="${exRe.exchangeCode != null && exRe.returnCode == null}"
+											th:text="교환"></span> <span
+											th:if="${exRe.returnCode != null && exRe.exchangeCode == null}"
+											th:text="반품"></span></td>
+										<td><span
+											th:if="${exRe.exchangeCode != null && exRe.returnCode == null}">
+												<span th:if="${exRe.exchangestatus == 'Y'}">교환승인</span> <span
+												th:if="${exRe.exchangestatus == 'NULL'}">교환대기</span>
+										</span> <span
+											th:if="${exRe.returnCode != null && exRe.exchangeCode == null}"></span>
+											<span th:if="${exRe.returnStatus == 'Y'}">반품승인</span> <span
+											th:if="${exRe.returnStatus == 'NULL'}">반품대기</span></td>
+										<td><span
+											th:if="${exRe.exchangeCode != null && exRe.returnCode == null}"
+											th:text="${#dates.format(exRe.exchangeRegdate, 'yyyy-MM-dd')}"></span>
+											<span
+											th:if="${exRe.returnCode != null && exRe.exchangeCode == null}"
+											th:text="${#dates.format(exRe.returnRegdate, 'yyyy-MM-dd')}"></span>
+										</td>
+										<td th:text="${exRe.memberName}"></td>
+										<td th:text="${exRe.memberId}" class="visually-hidden"></td>
+										<td th:text="${exRe.orderCode}" class="visually-hidden"></td>
+										<td class="visually-hidden">
+										<span th:if="${exRe.returnCode != null && exRe.exchangeCode == null}"
+											th:text="${exRe.returnCode}">
+										</span> 
+										<span th:if="${exRe.exchangeCode != null && exRe.returnCode == null}"
+											th:text="${exRe.exchangeCode}">
+										</span>
+										</td>
+										<td class="visually-hidden">
+										<span th:if="${exRe.returnCode != null && exRe.exchangeCode == null}"
+											th:text="R">
+										</span> 
+										<span th:if="${exRe.exchangeCode != null && exRe.returnCode == null}"
+											th:text="E">
+										</span>
+										</td>
+
+									</tr>
+
+									<!-- 반복문 종료 -->
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</section>
@@ -328,7 +352,55 @@ function displayDate(range) {
 	  $('#from').val('');
 	}
   }
-})  
+	  
+	  
+	  $('#returnOk').on('click',function(){
+		  alert('hk');
+		  let refundListVO=[];
+		  
+		  let checkTags = $('input[type=checkbox]:checked').not(allCheck);
+		  checkTags.each((idx, tag)=>{
+			  let orderDetailCode = $(tag).closest('tr').find('td:eq(1)').text();
+			  let memberId = $(tag).closest('tr').find('td:eq(9)').text();
+			  let orderCode = $(tag).closest('tr').find('td:eq(10)').text();
+			  let refundTypeCode = $(tag).closest('tr').find('td:eq(11)').text().trim();
+			  let refundType =$(tag).closest('tr').find('td:eq(12)').text().trim();
+			  
+			  let OrderChkVO = {
+					   orderDetailCode : orderDetailCode ,
+		    		   orderCode : orderCode,
+		    		   refundTypecode : refundTypeCode,
+		    		   memberId : memberId,
+		    		   refundType : refundType
+			  }
+			  
+			  refundListVO.push(OrderChkVO);
+		  });
+		  
+		  console.log(refundListVO);
+		  
+		  let $form = $('<form>', {
+	          method: 'POST',
+	          action: 'orders/cancel'
+	      });
+
+	      let $input = $('<input>', {
+	          type: 'hidden',
+	          name: 'refundList',
+	          value: JSON.stringify(refundListVO)
+	      });
+
+	      $form.append($input);
+
+	      $form.appendTo('body').submit(); 
+		  
+	  });
+	  
+	  
+	  
+	  
+	  
+});  
 		</script>
 
 

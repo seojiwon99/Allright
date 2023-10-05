@@ -73,6 +73,10 @@ public class DetailVO {
  int returnCnt;
  int cancelCnt;
  int totalPrice;
+ int month;
+ int year;
+ int totalCount;
+ int day_count;
    //취소,반품,교환 
    
   
@@ -93,6 +97,6 @@ public class DetailVO {
    
    // 옵션 VO
    OptionVO option;
-   
+   private String optionLast;
    List<OptionDetailVO> optionDetail;
 }

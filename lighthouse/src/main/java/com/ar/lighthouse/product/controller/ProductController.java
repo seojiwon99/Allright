@@ -12,7 +12,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,8 +29,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -36,10 +41,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ar.lighthouse.admin.service.DeclareVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.cart.service.CartService;
-
 import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.common.ImgsVO;
+import com.ar.lighthouse.common.PageDTO;
+import com.ar.lighthouse.customsvc.service.CustomService;
+import com.ar.lighthouse.customsvc.service.NoticeVO;
 import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.member.service.MemberService;
 import com.ar.lighthouse.member.service.MemberVO;
@@ -71,7 +78,10 @@ public class ProductController {
 
 	@Autowired
 	ReviewService reviewService;
-
+	
+	@Autowired
+	CustomService customService;
+	
 	@Autowired
 	ProductInquiryService custominquiryService;
 
@@ -83,6 +93,9 @@ public class ProductController {
 
 	@Autowired
 	CartService cartService;
+	
+	@Autowired
+	MainPageService service;
 
 //  판매자 메인페이지
 	@GetMapping("sellerMain")
@@ -91,6 +104,29 @@ public class ProductController {
 
 	}
 
+	// 공지사항 화면(페이징)
+	@GetMapping("sellerInquiry")
+	public String noticeList(Model model, Criteria cri) {
+		int totalCnt = customService.getTotalCount(cri);
+		model.addAttribute("noticeList", customService.getNoticeList(cri));
+		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
+		model.addAttribute("categories",service.getCategoryList());
+		model.addAttribute("allCtg", service.getAllCategoryList());
+		return "page/seller/sellerInquiry";
+	}
+	
+	// 공지사항 상세화면
+	@GetMapping("sellerInquiryInfo")
+	public String noticeDetail(@RequestParam(defaultValue = "0") int noticeCode,Model model, @ModelAttribute("cri") Criteria cri) {
+		NoticeVO noticeVO = new NoticeVO();
+		noticeVO.setNoticeCode(noticeCode);
+		model.addAttribute("categories",service.getCategoryList());
+		model.addAttribute("allCtg", service.getAllCategoryList());
+		model.addAttribute("noticeInfo",customService.getNotice(noticeVO));
+		return "page/seller/sellerInquiryInfo"; 
+	}
+	
+	
 //  판매자 상품문의페이지
 	@GetMapping("productInquiry")
 	public String productInquiry(Model model, ProductInquiryVO productInquiryVO, HttpSession session) {
@@ -157,6 +193,33 @@ public class ProductController {
 
 		return "page/seller/orderManagement :: #orderChkList";
 	}
+	
+//	주문상태에 따른 list
+	@GetMapping("statusOrder")
+	public String orderStatusList(Model model, DetailVO detailVO, HttpSession session) {
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
+		
+		detailVO.setMemberId(memberId);
+		System.out.println("@@@" + detailVO.getOrderStatus());
+		model.addAttribute("orderList", productService.getStatusList(detailVO));
+		
+		return "page/seller/orderManagement :: #orderChkList";
+	}
+	
+//	판매자 직접 취소처리
+	@PostMapping("deleteOrderSelf")
+	@ResponseBody
+	public List<String> deleteOrderSelf(@RequestBody List<DetailVO> orderCancelList){
+		List<String> CancelSelf = new ArrayList<String>();
+		for(DetailVO detailVO : orderCancelList ) {
+			int result = productService.deleteOrderSelf(detailVO);
+			if(result >0) {
+				CancelSelf.add(String.valueOf(detailVO.getOrderDetailCode()));
+			}
+		}
+		return CancelSelf;
+	}
 
 //주문배송정보입력
 
@@ -214,6 +277,18 @@ public class ProductController {
 		model.addAttribute("staticList", productService.getStaticList(memberId));
 
 		return "page/seller/statistics";
+	}
+	
+//	월별 주문 금액
+	@GetMapping("monthlyData")
+	@ResponseBody
+	public List<DetailVO> getMonthlyCount(DetailVO detialVO, Model model){
+		System.out.println(detialVO.getMonth());
+		List<DetailVO> list =productService.getMonthlyCount(detialVO);
+		for(DetailVO vo : list) {
+			System.out.println(vo);
+		}
+		return productService.getMonthlyCount(detialVO);
 	}
 
 //  상품 취소관리 페이지
@@ -295,12 +370,17 @@ public class ProductController {
 
 //  조건순 order by
 	@GetMapping("getOptionProduct")
-	public String productDetail(Model model, HttpSession session) {
+	public String productDetail(Model model, HttpSession session, ProductVO productVO) {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-		model.addAttribute("getOrderOptionList", productService.getOptionProduct(memberId));
-
+		
+		productVO.setMemberId(memberId);
+		
+		List<ProductVO> productList = productService.getOptionProduct(productVO);
+		model.addAttribute("productList", productList);
 		return "page/seller/productList :: #sortList";
+		
+		
 	}
 
 	// 등록폼
@@ -455,9 +535,24 @@ public class ProductController {
 
 //	수정폼
 	@GetMapping("modifyForm")
-	public String modifyForm() {
+	public String modifyForm(Model model,ImgsListVO imgsList, ProductVO productVO) {
+		
 		return "page/seller/modifyForm";
 	}
+	
+//	수정할 상품 정보
+	@RequestMapping("modifiedForm")
+	public String productInfo(Model model, ProductVO productVO,ImgsListVO imgsList, RedirectAttributes rttr) {
+		/*
+		 * Map<Object, Object> map = new HashMap<Object, Object>();
+		 * map.put(productService.updateProduct(productVO), map);
+		 */
+	    rttr.addFlashAttribute("rttr", productService.updateProduct(productVO));
+	    return "redirect:/modifyForm";
+	}
+	
+	
+
 
 //	선택전시상태변경
 	@PostMapping("updateExStatus")
@@ -468,7 +563,6 @@ public class ProductController {
 			int result = productService.updateExStatus(productVO);
 			if (result > 0) {
 				delList.add(productVO.getProductCode());
-				delList.add(productVO.getProductExStatus());
 			}
 		}
 

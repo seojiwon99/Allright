@@ -35,6 +35,11 @@ public class ProductServiceImpl implements ProductService{
 
 
 
+	@Override
+	public List<ProductVO> updateProduct(ProductVO productVO) {
+		return productMapper.modifyProduct(productVO);
+	}
+
    @Override
    public int updateExStatus(ProductVO productVO) {
       return productMapper.updateExStatus(productVO);
@@ -43,8 +48,8 @@ public class ProductServiceImpl implements ProductService{
 //  order by list
 
 	@Override
-	public List<ProductVO> getOptionProduct(String memberId) {
-		return productMapper.selectOptionProduct(memberId);
+	public List<ProductVO> getOptionProduct(ProductVO productVO) {
+		return productMapper.selectOptionProduct(productVO);
 	}
 
 //  상품테이블 등록
@@ -254,11 +259,37 @@ public class ProductServiceImpl implements ProductService{
 
 
 
+
+
+//  월별 주문 건수
 	@Override
+	public List<DetailVO> getMonthlyCount(DetailVO detailVO) {
+		return productMapper.selectMonthlyCount(detailVO);
+	}
+	
 	// 석연 - 취소 완료 시 Y로 상태 변경
+    @Override
 	public int editCancelOk(String cancelCode) {
 		return productMapper.updateCancelOk(cancelCode);
+
 	}
+
+
+//  판매자 직접 취소
+	@Override
+	public int deleteOrderSelf(DetailVO detailVO) {
+		return productMapper.deleteOrderSelf(detailVO);
+	}
+
+
+
+	@Override
+	public List<DetailVO> getStatusList(DetailVO detailVO) {
+		return productMapper.selectStatusList(detailVO);
+	}
+
+
+
 
 
 }
