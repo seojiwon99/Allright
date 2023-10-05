@@ -5,10 +5,13 @@
 
   <mapper namespace="com.ar.lighthouse.buyp.mapper.BuyerPageMapper">
 
-     <!-- 주문 목록 -->
-     <select id="selectDetailList" resultType="DetailVO">
-		WITH RankedOrderDetail AS (
-		    SELECT 
+	 <!-- 주문 목록 -->
+	<select id="selectDetailList" resultType="DetailVO" parameterType="Criteria">
+        SELECT *
+		FROM (
+		    SELECT rownum pn, pg.*
+		    FROM (
+            SELECT 
 		        a.order_cnt,
 		        a.order_price,
 		        a.payment_price,
@@ -21,6 +24,7 @@
 		        a.option_detail_code,
 		        a.order_code,
 		        a.order_check,
+		        c.option_last,
 		        d.product_name,
 		        e.img_code,
 		        e.img_order,
@@ -54,13 +58,19 @@
 		    LEFT OUTER JOIN 
 		        ar_exchange h ON a.order_detail_code = h.order_detail_code
 		    WHERE 
-		        b.member_id = #{memberId}
-		)
-		SELECT *
-		FROM 
-		    RankedOrderDetail
-		WHERE 
-		    rn = 1
+		        b.member_id = #{memberId}) pg
+		    <![CDATA[
+        WHERE rownum <= #{cri.pageNum} * #{cri.amount}
+        ]]>
+        ORDER BY pg.order_detail_code DESC
+    )
+    WHERE pn > (#{cri.pageNum} - 1) * #{cri.amount}
+	</select>
+     
+     <select id="selectDetailCnt" resultType="int">
+     SELECT count(*)
+	 FROM ar_order_detail
+	 WHERE order_detail_code > 0
      </select>
      
      <!-- 주문목록 옵션 -->
@@ -79,6 +89,7 @@
 		        a.option_detail_code,
 		        a.order_code,
 		        a.order_check,
+		        c.option_last,
 		        d.product_name,
 		        e.img_code,
 		        e.img_order,
@@ -137,7 +148,6 @@
 		    RankedOrderDetail
 		WHERE 
 		    rn = 1
-
      </select>
 
   
@@ -203,27 +213,42 @@
    </update>
    
    
-   <!-- 쿠폰 -->
-   <select id="selectCouponList" resultType="CouponVO" parameterType="String">
-         SELECT a.coupon_code
-              , a.coupon_name
-              , a.coupon_content
-              , a.coupon_deadline
-              , a.coupon_condition
-              , a.coupon_min_price
-              , a.coupon_max_price
-              , a.coupon_discount_price
-              , a.coupon_discount_rate
-              , b.using_date
-              , b.end_date
-              , b.issue_date
-              , b.coupon_use
-         FROM ar_coupons a
-         JOIN ar_coupon_box b 
-           ON a.coupon_code = b.coupon_code
-         WHERE member_id = #{memberId}
+   <!-- 쿠폰 (페이징) -->
+   <select id="selectCouponList" resultType="CouponVO" parameterType="Criteria">
+       select *
+		from ( select rownum rn, pg.* 
+		from (
+		SELECT a.coupon_code
+		              , a.coupon_name
+		              , a.coupon_content
+		              , a.coupon_deadline
+		              , a.coupon_condition
+		              , a.coupon_min_price
+		              , a.coupon_max_price
+		              , a.coupon_discount_price
+		              , a.coupon_discount_rate
+		              , b.using_date
+		              , b.end_date
+		              , b.issue_date
+		              , b.coupon_use
+		         FROM ar_coupons a
+		         JOIN ar_coupon_box b 
+		           ON a.coupon_code = b.coupon_code
+		         WHERE member_id = #{memberId}) pg
+         <![CDATA[
+        WHERE rownum <= #{cri.pageNum} * #{cri.amount}
+        ]]>
+        ORDER BY pg.coupon_code DESC
+    )
+    WHERE rn > (#{cri.pageNum} - 1) * #{cri.amount}
    </select>
    
+   <!-- 쿠폰 갯수(페이징)-->
+   <select id="getCouponCnt" resultType="int">
+   	SELECT count(*)
+  	FROM ar_coupons
+  	WHERE coupon_code > 0
+   </select>
    
    <!-- 문의 내역 -->
    <select id="selectMyInquiryList" resultType="MyInquiryVO" parameterType="String">
@@ -235,24 +260,48 @@
            , custom_inquiry_answer_status
       FROM ar_custom_inquiry
       WHERE member_id = #{memberId}
+      Order by custom_inquiry_code asc
    </select>
    
+   <select id="getInqCnt" resultType="int">
+   	SELECT count(*)
+	FROM ar_custom_inquiry
+	WHERE custom_inquiry_code > 0
+   </select>
    
-   <!-- 찜 내역 -->
-   <select id="selectWishList" resultType="WishVO" parameterType="String">
-               SELECT a.favorite_code
-                    , a.member_id
-                    , b.product_name
-                    , b.product_cost
-                    , b.product_code
-                    , b.sale_price
-                      , c.upload_name
-                    , c.img_content
-                FROM ar_favorite a
-                left outer JOIN ar_products b ON a.product_code = b.product_code
-                LEFT OUTER JOIN ar_imgs c ON a.product_code = c.product_code
-                WHERE a.member_id = #{memberId}
-                ORDER BY a.favorite_code desc
+   <!-- 찜 내역 (페이징) -->
+   <select id="selectWishList" resultType="WishVO" parameterType="Criteria">
+        SELECT *
+		FROM (
+		    SELECT rownum rn, pg.*
+		    FROM (
+		        SELECT a.favorite_code
+		            , a.member_id
+		            , b.product_name
+		            , b.product_cost
+		            , b.product_code
+		            , b.sale_price
+		            , c.upload_name
+		            , c.img_content
+		        FROM ar_favorite a
+		        LEFT OUTER JOIN ar_products b ON a.product_code = b.product_code
+		        LEFT OUTER JOIN ar_imgs c ON a.product_code = c.product_code
+		        WHERE a.member_id = #{memberId}
+		        ORDER BY a.favorite_code DESC
+		    ) pg
+		    <![CDATA[
+        WHERE rownum <= #{cri.pageNum} * #{cri.amount}
+        ]]>
+        ORDER BY pg.favorite_code DESC
+    )
+    WHERE rn > (#{cri.pageNum} - 1) * #{cri.amount}
+   </select>
+   
+   <!-- 찜 갯수 (페이징) -->
+   <select id="getPageCnt" resultType="int">
+   	SELECT count(*)
+  	FROM ar_favorite
+  	WHERE FAVORITE_CODE > 0
    </select>
    
    <!-- 취소 상세 -->

@@ -17,13 +17,14 @@ public class sellerRegisterMail implements sellerMailServiceInter {
 
     @Autowired
     JavaMailSender emailSender; // MailConfig에서 등록해둔 Bean을 autowired하여 사용하기
+    
+    
 
     private String ePw; // 사용자가 메일로 받을 인증번호
     // 메일 내용 작성 
     @Override
     public MimeMessage creatMessage(String to) throws MessagingException, UnsupportedEncodingException {
         System.out.println("메일받을 사용자" + to);
-        
 
         MimeMessage message = emailSender.createMimeMessage();
 

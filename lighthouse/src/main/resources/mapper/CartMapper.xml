@@ -15,7 +15,7 @@
   			   g.upload_name,
   			   g.upload_path,
                o.option_detail_code,
-               c.option_last,
+               o.option_last,
                o.option_price
 			FROM ar_cart c
 			JOIN ar_option_detail o ON c.option_detail_code = o.option_detail_code

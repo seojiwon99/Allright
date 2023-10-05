@@ -97,6 +97,6 @@ public class DetailVO {
    
    // 옵션 VO
    OptionVO option;
-   
+   private String optionLast;
    List<OptionDetailVO> optionDetail;
 }

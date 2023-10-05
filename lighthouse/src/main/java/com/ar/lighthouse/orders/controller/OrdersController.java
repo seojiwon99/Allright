@@ -112,19 +112,22 @@ public class OrdersController {
 		List<OrdersVO> couponList = (List<OrdersVO>) session.getAttribute("couponList");
 		DeliveryVO deliveryVO = (DeliveryVO) session.getAttribute("deliveryVO");
 		int[] cartCode = (int[]) session.getAttribute("cartCode");
-		
+		OrdersVO orderCoupon = new OrdersVO();
 		
 		//orderPayVO 쿠폰 사용 시 N으로 변경
 		String memberId = memberVO.getMemberId();
 		
 		int mycouponCode = 0;
-		StringBuffer str = new StringBuffer();
-		for(OrderPayVO couponNum : orderPayVO) {		
+		List<Integer> optionCodeList = new ArrayList<Integer>();
+		int idx = 0;
+		for(OrderPayVO couponNum : orderPayVO) {
+			
 			mycouponCode = couponNum.getMycouponCode();
-			str.append(" , " + couponNum.getProductCode());
+			optionCodeList.add(couponNum.getOptionDetailCode());
 			int couponUse = ordersService.editNotCoupon(memberId, mycouponCode);
+			idx++;
 		}
-		
+		System.out.println("test3:"+optionCodeList);
 
 		//주문 데이터 저장 method (배송 등) 총 주문 결제 정보
 		ordersService.addOrderPay(memberId, deliveryVO);
@@ -137,27 +140,25 @@ public class OrdersController {
 		
 		//쿠폰 할인 상품
 		 for (OrderPayVO pay : orderPayVO) {
-			 for(OrdersVO order : orderList) {
-				 if(pay.getProductCode().equals(order.getProductCode())) {
-					 	order.setOrderCode(orderCode);
-						order.setOptionCouponCheck("Y");
-						order.setMycouponCode(mycouponCode);
-						order.setOrderPrice(pay.getProductSalePrice());
-						order.setDiscountPrice(pay.getCouponPrice());
-						order.setPaymentPrice(pay.getProductSalePrice() - pay.getCouponPrice() + order.getDeliveryCost());
-						ordersService.addOrders(order);
+				 if(optionCodeList.contains(pay.getOptionDetailCode())) {
+					 orderCoupon.setOrderCode(orderCode);
+					 orderCoupon.setOptionCouponCheck("Y");
+					 orderCoupon.setMycouponCode(mycouponCode);
+					 orderCoupon.setOrderPrice(pay.getProductSalePrice());
+					 orderCoupon.setDiscountPrice(pay.getCouponPrice());
+					 orderCoupon.setPaymentPrice(pay.getProductSalePrice() - pay.getCouponPrice() + pay.getDeliveryCost());
+						ordersService.addOrders(orderCoupon);
 					 } else {
 						 continue;
 					 }
-			 }
 		}
 		 
 		// 할인 받지 않은 상품
 				for(OrdersVO order : orderList) {
-						if(str.toString().contains(order.getProductCode())) { //쿠폰 할인 받은 상품
+						if(optionCodeList.contains(order.getOptionDetailCode())) { //쿠폰 할인 받은 상품
 							continue;
 						}else {
-							System.out.println(order); // 쿠폰 할인 받지 않은 상품
+							System.out.println("test2:"+order); // 쿠폰 할인 받지 않은 상품
 							order.setOrderCode(orderCode);
 							order.setOptionCouponCheck("N");
 							order.setOrderPrice(order.getCartCount() *(order.getOptionPrice() + order.getSalePrice()));
@@ -232,6 +233,7 @@ public class OrdersController {
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		OrderChkVO[] orderchkList= objectMapper.readValue(refundList, OrderChkVO[].class);
+
 		RefundVO newRefund = new RefundVO();
 		 for(OrderChkVO chk : orderchkList) {
 		 if(chk.getCancelReason() == "") {
