@@ -15,7 +15,7 @@
                <!-- Breadcrumb -->
                <ol class="breadcrumb mb-0 fs-xs text-gray-400">
                   <li class="breadcrumb-item"><a class="text-gray-400"
-                     href="index.html">Home</a></li>
+                     href="/" tabindex="-1">Home</a></li>
                   <li class="breadcrumb-item active">문의하기</li>
                </ol>
 
@@ -28,11 +28,11 @@
    <section class="pt-7 pb-15">
       <div class="container">
          <div class="row justify-content-center">
-            <div class="col-12 col-lg-10 col-xl-8" id="inqForm">
-               <h2>문의하기</h2>
+            <div class="col-12 col-lg-10 col-xl-8" id="inqForm" tabindex="0">
+               <h2 id="inqtitle">문의하기</h2>
                <div class="mb-3">
-                  <label for="title" class="form-label">Title</label> <input
-                     type="text" class="form-control" id="title" placeholder="제목을 입력해주세요">
+                  <label for="title" class="form-label">Title</label> 
+                  <input type="text" class="form-control" id="title" placeholder="제목을 입력해주세요">
                </div>
                <div class="mb-3">
                   <label for="content" class="form-label">content</label>
@@ -52,10 +52,222 @@
          </div>
       </div>
    </section>
-   <script>
-    const speech = new webkitSpeechRecognition;
+   <script>   
+      // const speech = new webkitSpeechRecognition;
+       const speech = new webkitSpeechRecognition;
+      
+      let audioFileNow = new Audio();
+   var AudioContext;
+   var audioContext;
+   
+   window.onload = function() {
+      navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
+         AudioContext = window.AudioContext || window.webkitAudioContext;
+         audioContext = new AudioContext();
+      }).catch(e => {
+         console.error(`Audio permissions denied: ${e}`);
+      });
 
-   $('#addBtn').on('click',function(e){
+   }
+
+   function VoiceReturnRead(text) {
+      var data = {
+         "voice": {
+            "languageCode": "ko-KR",
+            "name": "ko-KR-Neural2-B"
+         },
+         "input": {
+            "text": text,
+
+         },
+         "audioConfig": {
+            "audioEncoding": "mp3"
+         }
+      }
+
+      $.ajax({
+         type: 'POST',
+         url: 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
+         data: JSON.stringify(data),
+         dataType: 'JSON',
+         contentType: "application/json; charset=UTF-8",
+         success: function (res) {
+            var audioFile = new Audio();
+            let audioBlob = base64ToBlob(res.audioContent,
+               "mp3");
+            audioFile.src = window.URL
+               .createObjectURL(audioBlob);
+            audioFile.playbackRate = 1; //재생속도
+            if(audioFileNow.paused == false){
+               audioFileNow.pause();
+            }
+            audioFileNow = audioFile;
+            audioFileNow.play();
+         
+
+         },
+         error: function (request, status, error) {
+            alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
+         }
+      });
+   };
+
+   
+
+   function base64ToBlob(base64, fileType) {
+      let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
+      let audioSrc = typeHeader + base64;
+      let arr = audioSrc.split(",");
+      let array = arr[0].match(/:(.*?);/);
+      let mime = (array && array.length > 1 ? array[1] : type) || type;
+      // url헤더 제거하고 btye로 변환
+      let bytes = window.atob(arr[1]);
+      // 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
+      let ab = new ArrayBuffer(bytes.length);
+      // 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
+      let ia = new Uint8Array(ab);
+      for (let i = 0; i < bytes.length; i++) {
+         ia[i] = bytes.charCodeAt(i);
+      }
+      return new Blob([ ab ], {
+         type : mime
+      });
+   }
+   
+   
+   
+   $(document).ready(function(){
+      startMenu();   
+      
+      
+      
+      $('#title').on('focus', titleBox);
+      $('#content').on('focus', contentBox);
+      
+      $('#addBtn').on('focus', addbtn);
+      
+      $('#cancleBtn').on('focus',canclebtn);
+      
+      $('#inqForm').on('focus',inqForm);
+      // $('#inqForm').on('focus', boxfocus);
+      //$('#').on('focus', titleBox);
+   })
+   
+   function startMenu(){
+      let msg = '1:1문의 화면입니다. 9.홈화면으로 가기 0. 메뉴 다시 듣기';
+      
+      VoiceReturnRead(msg);
+   }
+   
+   $(document).on('keydown',function(e){
+      if(e.keyCode == 48){
+         startMenu();
+      }else if(e.keyCode == 57){
+         location.href="/";
+      }else if(e.keyCode == 13){
+         console.log($(':focus'));
+         speech.start();
+      }   
+      
+   })
+   
+   function titleBox(){
+      let txt = $(this).attr('placeholder');
+      let msg = "enter키를 누르고" + txt;
+      VoiceReturnRead(msg);   
+   }
+   
+   function contentBox(){
+      let txt = $(this).attr('placeholder');
+      let msg = "enter키를 누르고" + txt;
+      VoiceReturnRead(msg);
+   }
+   
+   function canclebtn(){
+      console.log("asd");
+      $('#addBtn').focus();
+   }
+   
+   function inqForm(){
+      $('#title').focus();
+   }
+   
+   speech.addEventListener("result", (event)=>{
+        const { transcript } = event["results"][0][0];
+        resultListView(transcript);
+   });
+   
+   
+   function resultListView(transcript){
+      VoiceReturnRead(transcript);
+      $(':focus').val(transcript);
+   }
+   
+   
+   function addbtn(){
+      let txt = $(this).text();
+      let msg = txt + "버튼입니다. 등록하시려면 enter키를 눌러주세요"
+      VoiceReturnRead(msg);
+   }
+   
+   $('#addBtn').on('click',function(){
+         let title = $('#title').val();
+         let content = $('#content').val();
+         console.log(title);
+         console.log(content);
+         let data  = {
+            customInquiryTitle:title,
+            customInquiryContent:content
+         }
+         
+         if(title == ''){
+           let msg = '제목이 비어있습니다 엔터키를 누르고 제목을 입력해주세요.';
+           VoiceReturnRead(msg);
+           
+           $('#title').focus();
+            return;
+         }
+         if(content == ''){
+            let msg = '내용이 비어있습니다 엔터키를 누르고 제목을 입력해주세요.';
+            VoiceReturnRead(msg);
+            $('#content').focus();
+            return;
+         }
+         ajaxFnc01(data);
+         
+   })
+   
+      function ajaxFnc01(obj){
+      console.log(obj);
+      $.ajax({
+         url:'/custom/inquiryInsert',
+         type:'post',
+         data : JSON.stringify(obj),
+         contentType:'application/json',
+         success : function(result){
+            if(result == 'success'){
+               let txt ="문의 성공";
+               VoiceReturnRead(txt);
+               alert("문의 성공");
+               location.href="/"
+            }else{
+               let txt ="문의 실패";
+               VoiceReturnRead(txt);
+            }
+         },
+         error: function(err){
+            console.log(err);
+         }
+      })
+      
+   }
+   </script>
+   
+   
+   <script>
+   
+
+   /* $('#addBtn').on('click',function(e){
       let title = $('#title').val();
       let content = $('#content').val();
       let data  = {
@@ -73,7 +285,7 @@
       }
       ajaxFnc(data);
       
-   })
+   }) */
    
    function ajaxFnc(obj){
       console.log(obj);
@@ -98,13 +310,13 @@
    }
 
    // 먼저 읽히는것 
-   $(document).ready(function() {
+  /*  $(document).ready(function() {
        let text = "1:1문의 등록 화면입니다. 엔티키를 누르면 다음으로 이동합니다.";
        VoiceTest(text);
    
-   });
+   }); */
    
-   let index = 0;   
+ /*   let index = 0;   
    $(document).on('keyup',function(e){
       
 
@@ -221,9 +433,9 @@
    }) 
    
       function resultListView(transcript,tag){
-      	$(tag).val(transcript);
+         $(tag).val(transcript);
         // console.log(transcript);
-     }
+     } */
    
    
     </script>
