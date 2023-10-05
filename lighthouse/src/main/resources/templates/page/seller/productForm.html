@@ -447,28 +447,7 @@
             })
 
 
-         $('#selectCategory').on('change', function () {
-            let val = $(this).val();
-            $.ajax({
-                  url: 'childCate',
-                  type: 'get',
-                  data: {
-                     'categoryCode': val
-                  }
-               })
-               .done(getCategoryList => {
-                  $('#ChildCate').replaceWith(getCategoryList);
-                  $('#ChildCate').css('display', '');
-
-                  // $('#ChildCate').on('change', createChild());
-                  let selectedOptionText = $(this).find('option:selected').text();
-
-                  $("#firstCategoryCode").text('선택된 카테고리 : ' + selectedOptionText + ' >');
-               })
-               .fail(reject => {
-                  console.log(reject);
-               })
-         })
+      
 
 
          $('#categoryCode').on('change',function(e){
@@ -476,7 +455,7 @@
             // console.log(val);
             let cateBox = [[${getCategoryList}]];
             let option = $('#categoryCode01');
-            $('.optionBox').remove();
+            // $('.optionBox').remove();
             $('.optionBox01').remove();
             $('.categorybox1').css('display', 'block');
             $('.categorybox2').css('display', 'none');
@@ -525,7 +504,7 @@
                   option.append(opt);
                   num++
                }
-               console.log(num);
+               // console.log(num);
             })
             if(num != 0){
                $('.categorybox2').css('display', 'block');
@@ -544,14 +523,14 @@
 
          $(document).on('change', '#categoryCode02',function(){
             let val = $(this).val();
-            console.log(val);
+            // console.log(val);
             let cateBox = [[${getCategoryList}]];
             let option = $('#categoryCode03');
             $('.optionBox02').remove();   
             $('#categoryCode03').val(1);
             let num = 0;
             $(cateBox).each(function(idx,item){
-               console.log(item);
+               // console.log(item);
                if(item.parentCategoryCode == val){
                   let opt = $('<option>'+item.categoryName +'</option>');
                   opt.attr('class','optionBox02');
@@ -599,7 +578,7 @@
 
          $(document).on("change", "#ChildOfChildCate", function () {
             let val = $(this).val();
-            console.log(val);
+            // (val);
             $.ajax({
                   url: 'thirdOfCate',
                   type: 'get',
@@ -608,7 +587,7 @@
                   }
                })
                .done(getCategoryList => {
-                  console.log(getCategoryList);
+                  //console.log(getCategoryList);
                   if (val == null) {
                      $('#thirdOfChildCate').css('display', 'none');
                   }
