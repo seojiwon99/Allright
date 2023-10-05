@@ -51,7 +51,7 @@
    <select id="categoryList" resultType="CategoryVO">
      SELECT *
       FROM ar_category
-     WHERE category_level = 1
+     WHERE CATEGORY_LEVEL = 1
      ORDER BY category_name
    </select>
 

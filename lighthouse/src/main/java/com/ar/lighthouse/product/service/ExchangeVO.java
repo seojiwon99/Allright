@@ -11,7 +11,7 @@ public class ExchangeVO {
 	String exchangeCode;
 	long orderDetailCode;
 	String exchangeReason;
-	
+	int orderCode;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	Date exchangeRegdate;

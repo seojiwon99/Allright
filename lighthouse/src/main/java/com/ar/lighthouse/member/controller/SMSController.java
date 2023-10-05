@@ -1,5 +1,8 @@
 package com.ar.lighthouse.member.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,20 +32,19 @@ public class SMSController {
     }
     @PostMapping("/page/member/send-one")
     @ResponseBody
-    public SingleMessageSentResponse sendOne(String phone) {
+    public String sendOne(String phone) {
         Message message = new Message();
         // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
         message.setFrom("01036095465");
         message.setTo(phone);
         ranNumber ran = new ranNumber();
         String sendRanNum = ran.randomNumber(); // 6자리 숫자 String 저장
-        String sendMsg = "";
+        String sendMsg = "All Right 휴대폰 인증입니다. [" + sendRanNum + "]";
         message.setText(sendMsg);
         
-
         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
         System.out.println(response);
 
-        return response;
+        return sendRanNum;
     }
 }

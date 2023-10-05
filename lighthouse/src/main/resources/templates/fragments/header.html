@@ -313,7 +313,7 @@
          <div class="col-3">
                   <!-- Nav 찜 장바구니 마이페이지 검색-->
                   <ul class="navbar-nav flex-row  justify-content-end">
-                     <li class="nav-item" style="margin-right: 5px;">
+                     <li class="nav-item" style="margin-right: 5px; align-items: end;">
                      <div class="input-group" >
                      <input class="form-control form-control-underline form-control-xxs border-dark "type="text">
                      <!-- 
@@ -350,19 +350,6 @@
       if(getWithExpiry('ttsKey') == null){
          $('#sessionTTS')[0].checked = true;
       }
-      $('#customInq').on('click', function (e) {
-         let member = [[${session.loginMember}]];
-         if (member == null) {
-            alert("로그인 하셔야 서비스를 이용하실 수 있습니다.");
-            location.href="page/member/loginForm";
-            return;
-         }else{
-            location.href="/custom/inquiry";
-
-         }
-      })
-   
-
       $('#cartId').on('click', function (e) {
          let member = [[${session.loginMember}]];
          if (member == null) {
@@ -421,6 +408,9 @@
                   }
                })
             
+
+
+
             },
             error: function(err){
                console.log(err);
