@@ -142,7 +142,7 @@ public class elaController {
         
     	return executeSearch(indexName, searchSourceBuilder);
     }
-    	//어디다 쓸지 모르겠음
+    	//bool 쿼리 여러개 List에 저장 후 filter로 저장
 	    public List<Map<String, Object>> filterWithBoolQuery(String indexName, List<Map<String, Object>> filters, int pageNum) {
 	        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
 	        for (Map<String, Object> filter : filters) {
@@ -280,8 +280,8 @@ public class elaController {
 		System.out.println("전체 수 : =====" + totalCnt);
 		model.addAttribute("products", products);
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
-		model.addAttribute("categories",service.getCategoryList());
-		model.addAttribute("allCtg", service.getAllCategoryList());
+		model.addAttribute("categories",service.getCategoryList());// 카테고리 1레벨
+		model.addAttribute("allCtg", service.getAllCategoryList());// 카테고리 전체
 		return "page/goods/goodsList"; 
 	}
 }

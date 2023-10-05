@@ -422,11 +422,12 @@
 
     <script th:src="@{/js/theme.bundle.js}"></script>
     <script th:inline="javascript">
+   	let member = [[${session.loginMember}]]
     let TTSIsOk = localStorage.getItem('ttsKey');
     let sessionAuthor;
 	console.log(sessionStorage.loginMember);    		
-	if(sessionStorage.loginMember != null){
-		sessionAuthor = sessionStorage.loginMember.memberAuthor;
+	if(member != null){
+		sessionAuthor = member.memberAuthor;
 	}
 	    
    	function ttsInit(){

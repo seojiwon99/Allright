@@ -138,7 +138,7 @@
 																		<!-- Links -->
 																		<ul class="list-styled mb-7 fs-sm" th:each="ctgThd : ${allCtg}" th:if="${ctgThd.categoryLevel} == 4 and ${(ctgThd.parentCategoryCode).equals(ctgSec.categoryCode)}">
 																			<li class="list-styled-item"><a
-																				class="list-styled-link" href="./shop.html" th:text="${ctgThd.categoryName} + ${ctgThd.categoryCode}">상의</a>
+																				class="list-styled-link" th:href="|/PList?ctg=${ctgThd.categoryCode}|" th:text="${ctgThd.categoryName}">상의</a>
 																			</li>
 																		</ul>
 																	</th:block><!-- sec -->
@@ -151,7 +151,7 @@
 																		<!-- Links -->
 																		<ul class="list-styled mb-7 fs-sm"  th:each="ctgThd : ${allCtg}" th:if="${ctgThd.categoryLevel} == 4 and ${(ctgThd.parentCategoryCode).equals(ctgSec.categoryCode)}">
 																			<li class="list-styled-item"><a
-																				class="list-styled-link" href="./shop.html" th:text="${ctgThd.categoryName} + ${ctgThd.categoryCode}" >하의</a>
+																				class="list-styled-link" th:href="|/PList?ctg=${ctgThd.categoryCode}|" th:text="${ctgThd.categoryName}" >하의</a>
 																			</li>
 																		</ul>
 																	</th:block>
@@ -163,7 +163,7 @@
 																			<!-- Links -->
 																		<ul class="list-styled mb-7 fs-sm" th:each="ctgThd : ${allCtg}" th:if="${ctgThd.categoryLevel} == 4 and ${(ctgThd.parentCategoryCode).equals(ctgSec.categoryCode)}">
 																			<li class="list-styled-item"><a
-																				class="list-styled-link" href="./product.html"  th:text="${ctgThd.categoryName} + ${ctgThd.categoryCode}">신발</a>
+																				class="list-styled-link" th:href="|/PList?ctg=${ctgThd.categoryCode}|"  th:text="${ctgThd.categoryName}">신발</a>
 																			</li>
 																		</ul>
 																	</th:block>
@@ -177,22 +177,22 @@
 																	</div>
 																	<ul class="list-styled mb-7 fs-sm">
 																			<li class="list-styled-item"><a
-																				class="list-styled-link" href="./shop.html">돼지</a>
+																				class="list-styled-link" href="/PList?ctg=FMP">돼지</a>
 																			</li>
 																	</ul>
 																	<ul class="list-styled mb-7 fs-sm">
 																			<li class="list-styled-item"><a
-																				class="list-styled-link" href="./shop.html">닭</a>
+																				class="list-styled-link" href="/PList?ctg=FMC">닭</a>
 																			</li>
 																	</ul>
 																	<ul class="list-styled mb-7 fs-sm">
 																			<li class="list-styled-item"><a
-																				class="list-styled-link" href="./shop.html">소</a>
+																				class="list-styled-link" href="/PList?ctg=FMB">소</a>
 																			</li>
 																	</ul>
 																	<ul class="list-styled mb-7 fs-sm">
 																			<li class="list-styled-item"><a
-																				class="list-styled-link" href="./shop.html">기타</a>
+																				class="list-styled-link" href="/PList?ctg=FME">기타</a>
 																			</li>
 																	</ul>
 																	
@@ -202,17 +202,17 @@
 																	</div>
 																	<ul class="list-styled mb-7 fs-sm">
 																			<li class="list-styled-item"><a
-																				class="list-styled-link" href="./shop.html">생선</a>
+																				class="list-styled-link" href="/PList?ctg=FMF">생선</a>
 																			</li>
 																	</ul>
 																	<ul class="list-styled mb-7 fs-sm">
 																			<li class="list-styled-item"><a
-																				class="list-styled-link" href="./shop.html">해산물</a>
+																				class="list-styled-link" href="/PList?ctg=FMS">해산물</a>
 																			</li>
 																	</ul>
 																	<ul class="list-styled mb-7 fs-sm">
 																			<li class="list-styled-item"><a
-																				class="list-styled-link" href="./shop.html">건어물</a>
+																				class="list-styled-link" href="/PList?ctg=FMD">건어물</a>
 																			</li>
 																	</ul>
 																	
@@ -222,7 +222,12 @@
 																	</div>
 																	<ul class="list-styled mb-7 fs-sm">
 																			<li class="list-styled-item"><a
-																				class="list-styled-link" href="./shop.html">과일/채소</a>
+																				class="list-styled-link" href="/PList?ctg=FF">과일</a>
+																			</li>
+																	</ul>
+																	<ul class="list-styled mb-7 fs-sm">
+																			<li class="list-styled-item"><a
+																				class="list-styled-link" href="/PList?ctg=FFV">채소</a>
 																			</li>
 																	</ul>
 																	
@@ -244,7 +249,7 @@
 																		<!-- Links -->
 																		<ul class="list-styled mb-7 fs-sm">
 																			<li class="list-styled-item"><a
-																				class="list-styled-link" href="./shop.html" th:text="${ctgSec.categoryName} + ${ctgSec.categoryCode}">가전</a>
+																				class="list-styled-link" th:href="|/PList?ctg=${ctgSec.categoryCode}|" th:text="${ctgSec.categoryName}">가전</a>
 																			</li>
 																		</ul>
 																	</th:block><!-- sec -->
@@ -254,7 +259,7 @@
 																		<!-- Links -->
 																		<ul class="list-styled mb-7 fs-sm">
 																			<li class="list-styled-item"><a
-																				class="list-styled-link" href="./shop.html" th:text="${ctgSec.categoryName} + ${ctgSec.categoryCode}">가구</a>
+																				class="list-styled-link" th:href="|/PList?ctg=${ctgSec.categoryCode}|" th:text="${ctgSec.categoryName}">가구</a>
 																			</li>
 																		</ul>
 																	</th:block><!-- sec -->
@@ -264,7 +269,7 @@
 																		<!-- Links -->
 																		<ul class="list-styled mb-7 fs-sm">
 																			<li class="list-styled-item"><a
-																				class="list-styled-link" href="./shop.html" th:text="${ctgSec.categoryName} + ${ctgSec.categoryCode}">생활</a>
+																				class="list-styled-link" th:href="|/PList?ctg=${ctgSec.categoryCode}|" th:text="${ctgSec.categoryName}">생활</a>
 																			</li>
 																		</ul>
 																	</th:block><!-- sec -->
@@ -313,7 +318,7 @@
 			<div class="col-3">
 						<!-- Nav 찜 장바구니 마이페이지 검색-->
 						<ul class="navbar-nav flex-row  justify-content-end">
-							<li class="nav-item" style="margin-right: 5px;">
+							<li class="nav-item" style="margin-right: 5px; align-items: end;">
 							<div class="input-group" >
 							<input class="form-control form-control-underline form-control-xxs border-dark "type="text">
 							<!-- 

@@ -150,6 +150,12 @@
      </div>
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 	<script>
+		$('#loginPassword').on('keyup',function(e){
+			if(e.key == 'Enter'){
+				$('#loginBtn').trigger('click');
+			}
+			
+		})
 		//글자 호버 굵기 이벤트
 		$('.fs-sm').hover(function(){
 			$(this).css('font-weight', 'bold')
@@ -177,7 +183,7 @@
 			
 		})
 		$('#buyJoinBtn').on('click',function(){
-			location.href="joinBuyerForm";
+// 			location.href="joinBuyerForm";
 		})
 		$('#sellJoinBtn').on('click',function(){
 			location.href="joinSellerForm";
@@ -316,15 +322,15 @@
 				}) // keydown 이벤트
 				
 				$('#loginId').on('focus', function(){
-				let msg = '아이디 입력란.'
+				let msg = '아이디 입력란입니다..'
 				VoiceMenual(msg);
 				})
 				$('#loginPassword').on('focus',function(){
-					let msg = '비밀번호 입력란.'
+					let msg = '비밀번호 입력란입니다. 엔터키를 눌러 로그인하실 수 있습니다.'
 					VoiceMenual(msg);
 				})
 				$('#loginBtn').on('focus',function(){
-					let msg = '로그인 버튼입니다. 엔터키를 눌러 로그인할 수 있습니다.'
+					let msg = '로그인 버튼입니다. 엔터키를 눌러 로그인하실 수 있습니다.'
 					VoiceMenual(msg);
 				})
 				$('#fMember').on('focus',function(){
