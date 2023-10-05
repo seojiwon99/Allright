@@ -44,11 +44,9 @@
          ckfinder:{
             uploadUrl : '/image/upload'
          }
-         //console.log(ckfinder);
       })
       .then(editor => {
          window.editor = editor;
-         console.log('Editor was initialized');
       })
       .catch(error => {
          console.error(error);
@@ -73,7 +71,6 @@
          let text = src.split('_');
          
          let text01 = src.split('/');
-         console.log(text01);
          let data = {
             imgName : text[1],
             uploadPath : text01[1] + '/' + text01[2] + '/' + text01[3],
@@ -88,8 +85,8 @@
          let divTag = $('<div/>').addClass('inform');
          let obj = srcArr[i];
          for(let item in obj){
-            console.log("key" + item );
-            console.log("value" + obj[item]);
+            // console.log("key" + item );
+            // console.log("value" + obj[item]);
             let str = `
                <input type="text" name="imgsVO[${idx}].${item}" value="${obj[item]}">
             `;
@@ -112,7 +109,7 @@
   
   $(document).ready(function(e){
      let data = localStorage.getItem("detail");
-     console.log(data);
+     // console.log(data);
      if(data != null){
         editor.setData(data);
      }
@@ -123,14 +120,19 @@
       $('textarea[name="productContent"]').remove();
       // e.preventDefault();
       let data = editor.getData();
+      let img = $(data).find('img');
+      // console.log(img);
       if(data == null || data == ''){
          alert("상세정보를 적어주세요");
          e.preventDefault();
          return;
       }
+      if(img.length == 0){
+    	  alert("이미지를 넣어주세요");
+      }
       window.localStorage.setItem("detail",data);      
       let form = $(this).closest('form');
-      console.log(form);
+      // console.log(form);
       // form.attr('method', 'post');
       // form.attr('action', '/insertImg');
       
@@ -148,6 +150,7 @@
 
        let srcArr = [];
        $(formTag).each(function(idx,item){
+    	 // console.log(item);
          if($(item).children('figcaption').text() == null || $(item).children('figcaption').text() == ''){
           alert("이미지 대체텍스트를 입력해주세요")
             e.preventDefault(); 
@@ -158,7 +161,7 @@
           let text = src.split('_');
           
           let text01 = src.split('/');
-          console.log(text01);
+          // console.log(text01);
           let data = {
              imgName : text[1],
              uploadPath : text01[1] + '/' + text01[2] + '/' + text01[3],
@@ -173,8 +176,8 @@
           let divTag = $('<div/>').addClass('inform');
           let obj = srcArr[i];
           for(let item in obj){
-             console.log("key" + item );
-             console.log("value" + obj[item]);
+             // console.log("key" + item );
+             // console.log("value" + obj[item]);
              let str = `
                 <input type="text" style="display:none;" name="imgsVO[${idx}].${item}" value="${obj[item]}">
              `;

@@ -426,10 +426,10 @@ public class ProductController {
 			RedirectAttributes rtt, ImgsListVO imgsVO) {
 		HttpSession session = req.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-
+		System.out.println(imgsVO);
 		productVO.setMemberId(memberVO.getMemberId());
 
-		productVO.setCategoryCode("MSU");
+		// productVO.setCategoryCode("MSU");
 
 		productService.addProduct(productVO);
 
@@ -459,7 +459,7 @@ public class ProductController {
 				uploadFile.transferTo(savePath); // 파일의 핵심
 				// uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
 				productVO.getProductImg().get(i).setProductCode(productVO.getProductCode());
-				productVO.getProductImg().get(i).setImgOrder(i + 1);
+				productVO.getProductImg().get(i).setImgOrder(i);
 				if (files.get(0) == uploadFile) {
 					int idx = originalName.indexOf(".");
 
@@ -481,7 +481,7 @@ public class ProductController {
 			}
 
 		}
-		if (imgsVO != null) {
+		if (imgsVO.getImgsVO() != null) {
 			for (int j = 0; j < imgsVO.getImgsVO().size(); j++) {
 				imgsVO.getImgsVO().get(j).setImgOrder(j + 1);
 				imgsVO.getImgsVO().get(j).setProductCode(productVO.getProductCode());
