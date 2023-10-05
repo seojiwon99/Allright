@@ -73,382 +73,162 @@
 			</div>
 		</div>
 	</section>
-	<!-- <script>
-		let audioFileNow = new Audio();
-		var AudioContext;
-		var audioContext;
-		/* $('#user').on('click',function(e){
-			let type = $(this).val();
-			alert(type);
-			$.ajax({
-				type:"get",
-				url: "/custom/faqList",
-				data :{
-					type: type
-				},
-				success : function(data){
-					
-				},
-				error :function(err){
-					console.log(err);
-				}
-				
-			})
-			
-		}) */
-		var AudioContext;
-		var audioContext;
-
-		window.onload = function () {
-			navigator.mediaDevices.getUserMedia({
-				audio: true
-			}).then(() => {
-				AudioContext = window.AudioContext || window.webkitAudioContext;
-				audioContext = new AudioContext();
-			}).catch(e => {
-				console.error(`Audio permissions denied: ${e}`);
-			});
-
-		}
-		// 먼저 읽히는것 
-		$(document).ready(function () {
-			VoiceMenu();
-
-		});
-
-		$(document).on('keydown', function (e) {
-			let index = $('#index').val();
-			if (e.keyCode == 13) {
-				VoiceRead(index);
-				return;
-			}
-			if (e.keyCode == 9) {
-				if (index != 0) {
-					index = index - 1
-				}
-				VoiceReturnRead(index);
-				return;
-			}
-			if (e.altKey && e.keyCode == 48) {
-				location.href = "/custom/faqList/";
-				return;
-			}
-			if (e.altKey && e.keyCode == 49) {
-				location.href = "/custom/faqList/?faqType=user";
-				return;
-			}
-			if (e.altKey && e.keyCode == 50) {
-				location.href = "/custom/faqList/?faqType=order";
-				return;
-			}
-			if (e.altKey && e.keyCode == 51) {
-				location.href = "/custom/faqList/?faqType=cancle";
-				return;
-			}
-		})
-
-
-		function VoiceReturnRead(idx) {
-			var data = {
-				"voice": {
-					"languageCode": "ko-KR",
-					"name": "ko-KR-Neural2-B"
-				},
-				"input": {
-					"text": $('#faqTitle' + (idx - 1)).text() + $('#faqContent' + idx - 1).text(),
-
-				},
-				"audioConfig": {
-					"audioEncoding": "mp3"
-				}
-			}
-
-			$.ajax({
-				type: 'POST',
-				url: 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
-				data: JSON.stringify(data),
-				dataType: 'JSON',
-				contentType: "application/json; charset=UTF-8",
-				success: function (res) {
-					$('#menuText').val(res.audioContent)
-					var audioFile = new Audio();
-					let audioBlob = base64ToBlob(res.audioContent,
-						"mp3");
-					audioFile.src = window.URL
-						.createObjectURL(audioBlob);
-					if (audioFileNow.paused == false) {
-						audioFileNow.pause();
-					}
-					audioFileNow = audioFile;
-					audioFileNow.play();
-					if (idx != 0) {
-						let num = Number($('#index').val()) - 1;
-						$('#index').val(num);
-
-					}
-
-				},
-				error: function (request, status, error) {
-					alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
-				}
-			});
-		};
-
-		function VoiceRead(idx) {
-			var data = {
-				"voice": {
-					"languageCode": "ko-KR",
-					"name": "ko-KR-Neural2-B"
-				},
-				"input": {
-					"text": $('#faqTitle' + idx).text() + $('#faqContent' + idx).text(),
-
-				},
-				"audioConfig": {
-					"audioEncoding": "mp3"
-				}
-			}
-			$.ajax({
-				type: 'POST',
-				url: 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
-				data: JSON.stringify(data),
-				dataType: 'JSON',
-				contentType: "application/json; charset=UTF-8",
-				success: function (res) {
-					$('#menuText').val(res.audioContent)
-					var audioFile = new Audio();
-					let audioBlob = base64ToBlob(res.audioContent,
-						"mp3");
-					audioFile.src = window.URL
-						.createObjectURL(audioBlob);
-					audioFile.playbackRate = 1; //재생속도
-
-					if (audioFileNow.paused == false) {
-						audioFileNow.pause();
-					}
-					audioFileNow = audioFile;
-					audioFileNow.play();
-
-					let leg = $('#length').val();
-					if (leg != idx) {
-						let num = Number($('#index').val()) + 1;
-						$('#index').val(num);
-
-					}
-
-				},
-				error: function (request, status, error) {
-					alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
-				}
-			});
-		};
-
-
-
-
-
-
-		function VoiceMenu() {
-			var data = {
-				"voice": {
-					"languageCode": "ko-KR",
-					"name": "ko-KR-Neural2-B"
-				},
-				"input": {
-					"text": $('#testInput').val()
-				},
-				"audioConfig": {
-					"audioEncoding": "mp3"
-				}
-			}
-			console.log(data);
-			$.ajax({
-				type: 'POST',
-				url: 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
-				data: JSON.stringify(data),
-				dataType: 'JSON',
-				contentType: "application/json; charset=UTF-8",
-				success: function (res) {
-					$('#menuText').val(res.audioContent)
-					var audioFile = new Audio();
-					let audioBlob = base64ToBlob(res.audioContent,
-						"mp3");
-					audioFile.src = window.URL
-						.createObjectURL(audioBlob);
-					audioFile.playbackRate = 1; //재생속도
-					if (audioFileNow.paused == false) {
-						audioFileNow.pause();
-					}
-					audioFileNow = audioFile;
-					audioFileNow.play();
-
-				},
-				error: function (request, status, error) {
-					alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
-				}
-			});
-		};
-
-		function base64ToBlob(base64, fileType) {
-			let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
-			let audioSrc = typeHeader + base64;
-			let arr = audioSrc.split(",");
-			let array = arr[0].match(/:(.*?);/);
-			let mime = (array && array.length > 1 ? array[1] : type) || type;
-			// url헤더 제거하고 btye로 변환
-			let bytes = window.atob(arr[1]);
-			// 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
-			let ab = new ArrayBuffer(bytes.length);
-			// 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
-			let ia = new Uint8Array(ab);
-			for (let i = 0; i < bytes.length; i++) {
-				ia[i] = bytes.charCodeAt(i);
-			}
-			return new Blob([ab], {
-				type: mime
-			});
-		}
-	</script> -->
 
 	<script>
-		let audioFileNow = new Audio();
-		var AudioContext;
-		var audioContext;
+	let TTSIsOk = localStorage.getItem('ttsKey');
+    let sessionAuthor;
+   console.log(sessionStorage.loginMember);          
+   if(sessionStorage.loginMember != null){
+      sessionAuthor = sessionStorage.loginMember.memberAuthor;
+   }
+       
+      function ttsInit(){
+       if(TTSIsOk == null || sessionAuthor == 3){
+
+
+    		let audioFileNow = new Audio();
+    		var AudioContext;
+    		var audioContext;
 
 
 
-		window.onload = function () {
-			navigator.mediaDevices.getUserMedia({
-				audio: true
-			}).then(() => {
-				AudioContext = window.AudioContext || window.webkitAudioContext;
-				audioContext = new AudioContext();
-			}).catch(e => {
-				console.error(`Audio permissions denied: ${e}`);
-			});
+    		window.onload = function () {
+    			navigator.mediaDevices.getUserMedia({
+    				audio: true
+    			}).then(() => {
+    				AudioContext = window.AudioContext || window.webkitAudioContext;
+    				audioContext = new AudioContext();
+    			}).catch(e => {
+    				console.error(`Audio permissions denied: ${e}`);
+    			});
 
-		}
+    		}
 
-		function VoiceReturnRead(text) {
-			var data = {
-				"voice": {
-					"languageCode": "ko-KR",
-					"name": "ko-KR-Neural2-B"
-				},
-				"input": {
-					"text": text,
+    		function VoiceReturnRead(text) {
+    			var data = {
+    				"voice": {
+    					"languageCode": "ko-KR",
+    					"name": "ko-KR-Neural2-B"
+    				},
+    				"input": {
+    					"text": text,
 
-				},
-				"audioConfig": {
-					"audioEncoding": "mp3"
-				}
-			}
+    				},
+    				"audioConfig": {
+    					"audioEncoding": "mp3"
+    				}
+    			}
 
-			$.ajax({
-				type: 'POST',
-				url: 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
-				data: JSON.stringify(data),
-				dataType: 'JSON',
-				contentType: "application/json; charset=UTF-8",
-				success: function (res) {
-					var audioFile = new Audio();
-					let audioBlob = base64ToBlob(res.audioContent,
-						"mp3");
-					audioFile.src = window.URL
-						.createObjectURL(audioBlob);
-					audioFile.playbackRate = 1; //재생속도
-					if (audioFileNow.paused == false) {
-						audioFileNow.pause();
-					}
-					audioFileNow = audioFile;
-					audioFileNow.play();
+    			$.ajax({
+    				type: 'POST',
+    				url: 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
+    				data: JSON.stringify(data),
+    				dataType: 'JSON',
+    				contentType: "application/json; charset=UTF-8",
+    				success: function (res) {
+    					var audioFile = new Audio();
+    					let audioBlob = base64ToBlob(res.audioContent,
+    						"mp3");
+    					audioFile.src = window.URL
+    						.createObjectURL(audioBlob);
+    					audioFile.playbackRate = 1; //재생속도
+    					if (audioFileNow.paused == false) {
+    						audioFileNow.pause();
+    					}
+    					audioFileNow = audioFile;
+    					audioFileNow.play();
 
 
-				},
-				error: function (request, status, error) {
-					alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
-				}
-			});
-		};
+    				},
+    				error: function (request, status, error) {
+    					alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
+    				}
+    			});
+    		};
 
+    		
+
+    		function base64ToBlob(base64, fileType) {
+    			let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
+    			let audioSrc = typeHeader + base64;
+    			let arr = audioSrc.split(",");
+    			let array = arr[0].match(/:(.*?);/);
+    			let mime = (array && array.length > 1 ? array[1] : type) || type;
+    			// url헤더 제거하고 btye로 변환
+    			let bytes = window.atob(arr[1]);
+    			// 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
+    			let ab = new ArrayBuffer(bytes.length);
+    			// 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
+    			let ia = new Uint8Array(ab);
+    			for (let i = 0; i < bytes.length; i++) {
+    				ia[i] = bytes.charCodeAt(i);
+    			}
+    			return new Blob([ab], {
+    				type: mime
+    			});
+    		}
+
+    		$(document).ready(function () {
+    			startVoice();
+
+    			$('.fqlist').on('focus',listRead);
+    			$('.start').on('focus',startRead);
+    			$('.end').on('focus',endRead);
+    		})
+
+    		function listRead(){
+    			console.log($(this));
+    			let title = $(this).find('.title').text();
+    			let content = $(this).find('.content').text();
+    			let msg = "질문:" + title +  "내용:" + content;
+    			VoiceReturnRead(msg);
+
+    		}
+
+    		function startRead(){
+    			let msg = "이전글이 없습니다.";
+    			VoiceReturnRead(msg);
+    		}
+
+    		function endRead(){
+    			let msg = "다음글이 없습니다.";
+    			VoiceReturnRead(msg);
+    		}
+
+    		function startVoice() {
+    			let voice = $('#detailtext').text();
+    			let msg = "f a q화면 입니다. 1. 전체 2. 회원 3. 주문 / 결제 4. 취소 / 반품 / 교환 번호를 누르면 이동합니다." 
+    			+ "9. 홈화면 0. 메뉴다시듣기 tab를 누르면 f a q를 하나씩 읽어드립니다.";
+    			VoiceReturnRead(msg);
+    		}
+    		$(document).on('keydown',function(e){
+    				if(e.keyCode == 48){
+    					startVoice();
+    				}else if(e.keyCode == 49){
+    					location.href = "/custom/faqList/";
+    				}else if(e.keyCode == 50){
+    					location.href = "/custom/faqList/?faqType=1";
+    				}else if(e.keyCode == 51){
+    					location.href = "/custom/faqList/?faqType=2";
+    				}else if(e.keyCode == 52){
+    					location.href = "/custom/faqList/?faqType=3";	
+    				}else if(e.keyCode == 53){
+    					location.href = "/custom/faqList/?faqType=4";	
+    				}else if(e.keyCode == 54){
+    					location.href = "/custom/faqList/?faqType=5";	
+    				}else if(e.keyCode == 55){
+    					location.href = "/custom/faqList/?faqType=6";	
+    				}else if(e.keyCode == 57){
+    					location.href="/";
+    				}else if(e.keyCode == 9){
+    					$('#faqCollapseParentOne').focus();
+    				}
+    			});
+	
+ } //ttsInit()의 if문
+} // ttsInit() close
 		
-
-		function base64ToBlob(base64, fileType) {
-			let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
-			let audioSrc = typeHeader + base64;
-			let arr = audioSrc.split(",");
-			let array = arr[0].match(/:(.*?);/);
-			let mime = (array && array.length > 1 ? array[1] : type) || type;
-			// url헤더 제거하고 btye로 변환
-			let bytes = window.atob(arr[1]);
-			// 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
-			let ab = new ArrayBuffer(bytes.length);
-			// 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
-			let ia = new Uint8Array(ab);
-			for (let i = 0; i < bytes.length; i++) {
-				ia[i] = bytes.charCodeAt(i);
-			}
-			return new Blob([ab], {
-				type: mime
-			});
-		}
-
-		$(document).ready(function () {
-			startVoice();
-
-			$('.fqlist').on('focus',listRead);
-			$('.start').on('focus',startRead);
-			$('.end').on('focus',endRead);
-		})
-
-		function listRead(){
-			console.log($(this));
-			let title = $(this).find('.title').text();
-			let content = $(this).find('.content').text();
-			let msg = "질문:" + title +  "내용:" + content;
-			VoiceReturnRead(msg);
-
-		}
-
-		function startRead(){
-			let msg = "이전글이 없습니다.";
-			VoiceReturnRead(msg);
-		}
-
-		function endRead(){
-			let msg = "다음글이 없습니다.";
-			VoiceReturnRead(msg);
-		}
-
-		function startVoice() {
-			let voice = $('#detailtext').text();
-			let msg = "f a q화면 입니다. 1. 전체 2. 회원 3. 주문 / 결제 4. 취소 / 반품 / 교환 번호를 누르면 이동합니다." 
-			+ "9. 홈화면 0. 메뉴다시듣기 tab를 누르면 f a q를 하나씩 읽어드립니다.";
-			VoiceReturnRead(msg);
-		}
-		$(document).on('keydown',function(e){
-				if(e.keyCode == 48){
-					startVoice();
-				}else if(e.keyCode == 49){
-					location.href = "/custom/faqList/";
-				}else if(e.keyCode == 50){
-					location.href = "/custom/faqList/?faqType=1";
-				}else if(e.keyCode == 51){
-					location.href = "/custom/faqList/?faqType=2";
-				}else if(e.keyCode == 52){
-					location.href = "/custom/faqList/?faqType=3";	
-				}else if(e.keyCode == 53){
-					location.href = "/custom/faqList/?faqType=4";	
-				}else if(e.keyCode == 54){
-					location.href = "/custom/faqList/?faqType=5";	
-				}else if(e.keyCode == 55){
-					location.href = "/custom/faqList/?faqType=6";	
-				}else if(e.keyCode == 57){
-					location.href="/";
-				}else if(e.keyCode == 9){
-					$('#faqCollapseParentOne').focus();
-				}
-			});
+	
 	</script>
 </div>
 

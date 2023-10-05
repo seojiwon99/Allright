@@ -4,27 +4,28 @@
 <!-- Content -->
 
 <head>
-<style type="text/css">
-.card-img-top {
-	position: relative;
-	width: 540px;
-	height: 480px;
-	margin: 0 auto;
-}
+	<style type="text/css">
+		.card-img-top {
+			position: relative;
+			width: 540px;
+			height: 480px;
+			margin: 0 auto;
+		}
 
-.photo {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: cover;
-	transition: transform .5s ease-out;
-}
-</style>
+		.photo {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: cover;
+			transition: transform .5s ease-out;
+		}
+	</style>
 </head>
+
 <body>
 	<div layout:fragment="content">
 		<!-- 단건 조회 -->
@@ -104,11 +105,10 @@
 										th:text="${goods.productCost}+원"></span>
 									<!-- 할인가격 -->
 									<span class="ms-1 fs-5 fw-bolder text-primary">[[${goods.salePrice}]]원</span>
-									<input type="hidden" id="originPrice"
-										th:value="${goods.salePrice}">
+									<input type="hidden" id="originPrice" th:value="${goods.salePrice}">
 								</div>
 
-								<!-- Form -->					
+								<!-- Form -->
 								<div class="form-group"
 									style="font-size: 15px; border-bottom: 1px solid rgba(0, 0, 0, 0.3)">
 									<div style="padding-bottom: 8px; color: grey">
@@ -145,15 +145,14 @@
 											</div> */-->
 
 											<div>
-												<select th:each="option:${options}"
-													class="selectbox form-select mb-2"
+												<select th:each="option:${options}" class="selectbox form-select mb-2"
 													th:disabled="!${optionStat.first}"
 													th:classappend="${optionStat.last} ? 'last' : '' ">
-													<option class="selectbox1" value="">[[${option.optionName}]]</option>
-													<option class="selectbox1"
-														th:each="detail:${option.detailVO}"
-														th:value="${detail.optionName}"
-														th:text="${detail.optionName}"></option>
+													<option class="selectbox1" value="">[[${option.optionName}]]
+													</option>
+													<option class="selectbox1" th:each="detail:${option.detailVO}"
+														th:value="${detail.optionName}" th:text="${detail.optionName}">
+													</option>
 												</select>
 											</div>
 
@@ -173,8 +172,7 @@
 											</div>
 										</div>
 										<div class="col-12 col-lg-auto">
-											<div
-												style="display: flex; justify-content: space-between; padding: 20px 0px 40px 0px; color: black"
+											<div style="display: flex; justify-content: space-between; padding: 20px 0px 40px 0px; color: black"
 												class="num">
 
 												<div>
@@ -201,8 +199,7 @@
 											</div>
 											<div class="col-12 col-lg-auto">
 												<!-- Wishlist -->
-												<button class="btn btn-outline-dark w-100 mb-2"
-													onclick="checkWish()">
+												<button class="btn btn-outline-dark w-100 mb-2" onclick="checkWish()">
 													찜 <i class="fe fe-heart ms-2"></i>
 												</button>
 
@@ -322,7 +319,7 @@
 	
 	
     <script th:inline="javascript">
-  let reviewTitle = '';
+  		let reviewTitle = '';
 		let reviewPage = '';
 		let reviewEnd ='';
 
@@ -571,13 +568,19 @@
           })
        
     }
-    </script>
-      
-      
-	<!-- voice -->
-	<th:block>
-		<script th:inline="javascript">
-			let audioFileNow = new Audio();
+
+
+	let TTSIsOk = localStorage.getItem('ttsKey');
+    let sessionAuthor;
+   console.log(sessionStorage.loginMember);          
+   if(sessionStorage.loginMember != null){
+      sessionAuthor = sessionStorage.loginMember.memberAuthor;
+   }
+       
+      function ttsInit(){
+       if(TTSIsOk == null || sessionAuthor == 3){
+
+		let audioFileNow = new Audio();
 			var AudioContext;
 			var audioContext;
 
@@ -787,9 +790,14 @@
 				}
 			});
 			
-		</script>
 
-	</th:block>
+
+ } //ttsInit()의 if문
+} // ttsInit() close
+    </script>
+      
+      
+
    </div>
 </body>
 </html>
