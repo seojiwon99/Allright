@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ar.lighthouse.admin.service.DeclareVO;
 import com.ar.lighthouse.common.CodeVO;
+import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.review.mapper.ReviewMapper;
 import com.ar.lighthouse.review.service.ReviewService;
@@ -19,8 +20,8 @@ public class ReviewServiceImpl implements ReviewService {
 	ReviewMapper mapper;
 
 	@Override
-	public List<ReviewVO> getReviewList(ReviewVO reviewVO) {
-		return mapper.selectReviewList(reviewVO);
+	public List<ReviewVO> getReviewList(ReviewVO reviewVO, Criteria cri) {
+		return mapper.selectReviewList(reviewVO, cri);
 	}
 
 	@Override
@@ -35,11 +36,10 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public boolean removeReview(int reviewCode) {
-		//리뷰 이미지 삭제
-		return mapper.deleteReview(reviewCode) == 1;
+		return mapper.deleteReview(reviewCode)==1 ;
 	}
 
-	//리뷰 수
+	// 리뷰 수
 	@Override
 	public int countGetReview(ReviewVO reviewVO) {
 		return mapper.countReview(reviewVO);
@@ -65,11 +65,17 @@ public class ReviewServiceImpl implements ReviewService {
 		mapper.reviewDeclare(declareVO);
 	}
 
-	//리뷰 평균별점
+	// 리뷰 평균별점
 	@Override
 	public int starAvg(ReviewVO reviewVO) {
 		return mapper.reviewStarAvg(reviewVO);
 	}
+
+	@Override
+	public boolean removeReviewImg(ImgsVO imgsVO) {
+		return mapper.reviewImgDelete(imgsVO)==1;
+	}
+
 
 
 }

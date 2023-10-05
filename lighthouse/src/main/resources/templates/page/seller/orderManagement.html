@@ -148,7 +148,12 @@
 									<button type="button" id="cancelModal" data-toggle="modal"
 										data-target="#myModal" style="background-color: red;">판매자
 										직접취소 처리</button>
-
+									<div>
+										<button type="button" id="paymentCom">결제완료건</button>
+										<button type="button" id="orderChecked">주문확인건</button>
+										<button type="button" id="deliveryGo">배송건</button>
+									</div>
+									
 									<!-- 모달 창 -->
 									<div class="modal" id="myModal">
 										<div class="modal-dialog">
@@ -349,11 +354,23 @@
         	 })
         	 .done(data=>{
         		 console.log(data);
+        		 
+        		 $.ajax({
+            		 url : 'deleteOrderSelf',
+            		 type : 'POST',
+            		 contentType : 'application/json',
+            		 data : JSON.stringify(memberInfo)
+            	 })
+            	 .done(data =>{
+            		 console.log(data);
+            		 refreshList();
+            	 })
         	 })
         	 .fail(reject =>{
         		 console.log(reject);
         	 })
         	 
+        	
          })
 
          $('#checkOrderBtn').on('click', function(){
@@ -501,6 +518,60 @@ function displayDate(range) {
 	}
   }
            
+	  
+	  $('#paymentCom').on('click', function(){
+		let orderStatus = 1
+		$.ajax({
+			url:'statusOrder',
+			type : 'get',
+			data : {
+				orderStatus
+			}
+		})
+		.done(orderList=>{
+			console.log(orderList);
+			$('#orderChkList').replaceWith(orderList);
+		})		
+		.fail(reject =>{
+			console.log(reject);
+		})
+	  });
+	  
+	  $('#orderChecked').on('click', function(){
+		  let orderStatus = 2
+		  $.ajax({
+				url:'statusOrder',
+				type : 'get',
+				data : {
+					orderStatus
+				}
+			})
+			.done(orderList=>{
+				console.log(orderList);
+				$('#orderChkList').replaceWith(orderList);
+			})		
+			.fail(reject =>{
+				console.log(reject);
+			})
+	  });
+	  
+	  $('#deliveryGo').on('click', function(){
+		  let orderStatus = 3
+		  $.ajax({
+				url:'statusOrder',
+				type : 'get',
+				data : {
+					orderStatus
+				}
+			})
+			.done(orderList=>{
+				console.log(orderList);
+				$('#orderChkList').replaceWith(orderList);
+			})		
+			.fail(reject =>{
+				console.log(reject);
+			})
+	  });
 })    
          </script>
 		</div>

@@ -2,6 +2,7 @@ package com.ar.lighthouse.product.service;
 
 import java.util.List;
 
+import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.common.ImgsVO;
@@ -15,7 +16,11 @@ public interface ProductService {
 	
 	List<MemberVO> getSellerInfo(String memberId);
 	
-	public List<ProductVO> getOptionProduct(String memberId);
+	public List<ProductVO> updateProduct(ProductVO productVO);
+	
+	public List<ProductVO> getOptionProduct(ProductVO productVO);
+	
+	public List<DetailVO> getStatusList(DetailVO detailVO);
 	
 //	전시상태변경
 	public int updateExStatus(ProductVO productVO);
@@ -71,10 +76,14 @@ public interface ProductService {
 	List<SellerCalVO> getCalList(SellerCalVO sellerCalVO);
 //	취소건 목록
 	List<DetailVO> getStaticList(String memberId);
-	
+
 //	월별 주문 건수
 	List<DetailVO> getMonthlyCount(DetailVO detailVO);
+
+//  주문 판매자 직접 취소
+	int deleteOrderSelf(DetailVO detailVO);
 	
+
 	//  옵션 VO 리스트
 	public List<OptionVO> getOptionList(OptionVO optionVO);
 	
@@ -86,4 +95,5 @@ public interface ProductService {
 	
 	//취소 승인 시 승인 여부 Y로 변경 - 석연
 	public int editCancelOk(String cancelCode);
+	
 }

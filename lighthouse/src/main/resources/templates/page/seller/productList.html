@@ -136,12 +136,14 @@
 					<tbody id="sortList">
 						<tr th:each="product : ${productList}">
 							<td><input type="checkbox"></td>
-							<td><a href="/modifyForm"><button id="modifyForm"
-										type="button">수정</button></a></td>
+							<td> 
+							<a th:href="@{'/modifyForm?productCode=' + ${product.productCode}}">
+                             <button id="modifyForm" type="button">수정</button>
+                         	</a>
+                         	</td>
 							<td th:text="${product.productCode}"></td>
 							<td th:text="${product.productName}"></td>
-							<td th:if="${product.optionDetail != null and product.optionDetail.size() > 0}" th:text="${product.optionDetail[0].optionCount}" />
-							<td th:unless="${product.optionDetail != null and product.optionDetail.size() > 0}" />
+							<td th:text="${product.optionDetail[0].optionCount}" />
 							<td th:text="${product.productCost}"></td>
 							<td th:text="${product.salePrice}"></td>
 							<td th:text="${product.deliveryCost}"></td>
@@ -173,7 +175,7 @@
 			localStorage.removeItem('detail');
 			localStorage.removeItem('product');
 		}
-	})
+
 
 	
 	
@@ -281,6 +283,28 @@
 		location.reload();
 	}
 	
+	$('#modifyForm').on('click', function () {
+	    let productCode = $(this).closest('tr').find('td:eq(2)').text();
+	    console.log(productCode);
+
+	    $.ajax({
+	        url: 'modifyForm',
+	        type: 'get',
+	        data: {
+	            productCode
+	        }
+	    })
+	    .done(data => {
+	        console.log(data);
+	        window.location.href = '/modifyForm?productCode=' + productCode;
+	    })
+	    .fail(reject => {
+	        console.log(reject);
+	    });
+	});
+
+	
+})
 </script>
 
 </div>

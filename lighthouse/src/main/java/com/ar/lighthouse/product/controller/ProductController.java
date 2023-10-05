@@ -12,7 +12,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,20 +32,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ar.lighthouse.admin.service.AdminService;
 import com.ar.lighthouse.admin.service.DeclareVO;
+import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.cart.service.CartService;
 import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.common.Criteria;
 import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.common.PageDTO;
+
 import com.ar.lighthouse.customsvc.service.CustomService;
 import com.ar.lighthouse.customsvc.service.NoticeVO;
+
 import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.member.service.MemberService;
 import com.ar.lighthouse.member.service.MemberVO;
@@ -69,6 +76,9 @@ public class ProductController {
 
 	@Value("${file.upload.path}")
 	private String uploadPath;
+
+	@Autowired
+	AdminService adminService;
 
 	@Autowired
 	ProductService productService;
@@ -189,6 +199,33 @@ public class ProductController {
 		model.addAttribute("orderList", orderList);
 
 		return "page/seller/orderManagement :: #orderChkList";
+	}
+	
+//	주문상태에 따른 list
+	@GetMapping("statusOrder")
+	public String orderStatusList(Model model, DetailVO detailVO, HttpSession session) {
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
+		
+		detailVO.setMemberId(memberId);
+		System.out.println("@@@" + detailVO.getOrderStatus());
+		model.addAttribute("orderList", productService.getStatusList(detailVO));
+		
+		return "page/seller/orderManagement :: #orderChkList";
+	}
+	
+//	판매자 직접 취소처리
+	@PostMapping("deleteOrderSelf")
+	@ResponseBody
+	public List<String> deleteOrderSelf(@RequestBody List<DetailVO> orderCancelList){
+		List<String> CancelSelf = new ArrayList<String>();
+		for(DetailVO detailVO : orderCancelList ) {
+			int result = productService.deleteOrderSelf(detailVO);
+			if(result >0) {
+				CancelSelf.add(String.valueOf(detailVO.getOrderDetailCode()));
+			}
+		}
+		return CancelSelf;
 	}
 
 //주문배송정보입력
@@ -340,13 +377,17 @@ public class ProductController {
 
 //  조건순 order by
 	@GetMapping("getOptionProduct")
-	public String productDetail(Model model, HttpSession session) {
+	public String productDetail(Model model, HttpSession session, ProductVO productVO) {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 		
-		model.addAttribute("productList", productService.getOptionProduct(memberId));
-
+		productVO.setMemberId(memberId);
+		
+		List<ProductVO> productList = productService.getOptionProduct(productVO);
+		model.addAttribute("productList", productList);
 		return "page/seller/productList :: #sortList";
+		
+		
 	}
 
 	// 등록폼
@@ -501,9 +542,24 @@ public class ProductController {
 
 //	수정폼
 	@GetMapping("modifyForm")
-	public String modifyForm() {
+	public String modifyForm(Model model,ImgsListVO imgsList, ProductVO productVO) {
+		
 		return "page/seller/modifyForm";
 	}
+	
+//	수정할 상품 정보
+	@RequestMapping("modifiedForm")
+	public String productInfo(Model model, ProductVO productVO,ImgsListVO imgsList, RedirectAttributes rttr) {
+		/*
+		 * Map<Object, Object> map = new HashMap<Object, Object>();
+		 * map.put(productService.updateProduct(productVO), map);
+		 */
+	    rttr.addFlashAttribute("rttr", productService.updateProduct(productVO));
+	    return "redirect:/modifyForm";
+	}
+	
+	
+
 
 //	선택전시상태변경
 	@PostMapping("updateExStatus")
@@ -514,7 +570,6 @@ public class ProductController {
 			int result = productService.updateExStatus(productVO);
 			if (result > 0) {
 				delList.add(productVO.getProductCode());
-				delList.add(productVO.getProductExStatus());
 			}
 		}
 
@@ -608,19 +663,16 @@ public class ProductController {
 
 	@PostMapping("editReview")
 	@ResponseBody
-	public ReviewVO editReview(MultipartFile[] files, ReviewVO reviewVO, ImgsVO imgsVO) {
+	public ReviewVO editReview(MultipartFile files, ReviewVO reviewVO, ImgsVO imgsVO, int reviewCode) {
 		System.out.println("review" + reviewVO);
 
-		reviewService.editReview(reviewVO);
-		// reviewService.editReviewImg(imgsVO); 삭제처리
+		if (files == null) {
+			reviewService.editReview(reviewVO);
+			System.out.println("reviewaaaaaaaaaaaaaaaaaaaaaaaaaa" + reviewVO);
+			return reviewVO;
+		} else {
 
-		for (MultipartFile uploadFile : files) {
-			if (uploadFile.getContentType().startsWith("image") == false) {
-				System.err.println("this file is not image type");
-				return null;
-			}
-
-			String originalName = uploadFile.getOriginalFilename();
+			String originalName = files.getOriginalFilename();
 			System.out.println("originalName : " + originalName);
 			String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
 			imgsVO.setImgName(fileName);
@@ -649,10 +701,18 @@ public class ProductController {
 			// Paths.get() 메서드는 특정 경로의 파일 정보를 가져옵니다.(경로 정의하기)
 			// System.out.println("path : " + saveName);
 			try {
-				uploadFile.transferTo(savePath); // 파일의 핵심
+				files.transferTo(savePath); // 파일의 핵심
 				// uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
 				imgsVO.setReviewCode(reviewVO.getReviewCode());
+				reviewService.removeReviewImg(imgsVO);
+
 				reviewService.addReviewImg(imgsVO);
+				System.out.println("reviewbbbbbbbba" + reviewVO);
+
+				reviewService.editReviewImg(imgsVO);
+				System.out.println("reviewcccccccccccccc" + reviewVO);
+
+				reviewService.editReview(reviewVO);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -677,6 +737,27 @@ public class ProductController {
 	public String reviewDeclare(@RequestBody DeclareVO declareVO) {
 		reviewService.addReviewDeclare(declareVO);
 		return null;
+	}
+
+	// 리뷰 조회
+	@GetMapping("reviewView")
+	public String reviewView(Model model, String productCode, CodeVO codeVO, Criteria cri) {
+		// 리뷰정보
+		ReviewVO reviewVO = new ReviewVO();
+		reviewVO.setProductCode(productCode);
+		cri.setAmount(1);
+		model.addAttribute("review", reviewService.getReviewList(reviewVO, cri));
+		model.addAttribute("count", reviewService.countGetReview(reviewVO));
+		model.addAttribute("reviewAvg", reviewService.starAvg(reviewVO));
+		model.addAttribute("productCode", productCode);
+		int totalReview = reviewService.countGetReview(reviewVO);
+		model.addAttribute("pageMaker", new PageDTO(cri, totalReview));
+		// 리뷰 신고
+		reviewVO.setProductCode(productCode);
+		model.addAttribute("codes", reviewService.reviewCodeList(codeVO));
+
+		return "page/goods/review";
+
 	}
 
 	// qna 등록
@@ -717,32 +798,41 @@ public class ProductController {
 
 	}
 
+	// qna 조회
+	@GetMapping("inquiryView")
+	public String inquiryView(Criteria cri, Model model, String productCode) {
+
+		ProductInquiryVO productInquiryVO = new ProductInquiryVO();
+		productInquiryVO.setProductCode(productCode);
+		cri.setAmount(10);
+		model.addAttribute("inquiry", custominquiryService.getInquiryList(productInquiryVO, cri));
+		model.addAttribute("inquiryCount", custominquiryService.countGetInquiry(productInquiryVO));
+		int totalInquiry = custominquiryService.countGetInquiry(productInquiryVO);
+		model.addAttribute("pageMaker", new PageDTO(cri, totalInquiry));
+		model.addAttribute("productCode", productCode);
+		return "page/goods/qna";
+	}
+
 	// 상품 단건 조회
 	@GetMapping("goodDetail")
 	public String getGoodDetail(String productCode, Model model, HttpSession session, ProductVO vo, OptionVO optionVO,
 			CodeVO codeVO, Criteria cri) {
 
-		// 페이징
-
 		// 상품정보
 		ProductVO productVO = productService.goodsDetail(vo);
 		model.addAttribute("goods", productVO);
 
-		// 리뷰정보
+		// 리뷰 별점
 		ReviewVO reviewVO = new ReviewVO();
 		reviewVO.setProductCode(productCode);
-		model.addAttribute("review", reviewService.getReviewList(reviewVO));
-		model.addAttribute("count", reviewService.countGetReview(reviewVO));
 		model.addAttribute("reviewAvg", reviewService.starAvg(reviewVO));
+		model.addAttribute("count", reviewService.countGetReview(reviewVO));
 
-		// 리뷰 신고
-		reviewVO.setProductCode(productCode);
-		model.addAttribute("codes", reviewService.reviewCodeList(codeVO));
-
-		// qna 조회
+		// qna 수
 		ProductInquiryVO productInquiryVO = new ProductInquiryVO();
 		productInquiryVO.setProductCode(productCode);
-		model.addAttribute("inquiry", custominquiryService.getInquiryList(productInquiryVO));
+		
+		model.addAttribute("NqnaList", custominquiryService.qnaGetInq(productInquiryVO));
 		model.addAttribute("inquiryCount", custominquiryService.countGetInquiry(productInquiryVO));
 
 		// 옵션 조회
@@ -750,8 +840,8 @@ public class ProductController {
 		model.addAttribute("options", productService.getOptionList(optionVO));
 		model.addAttribute("optionDetail", productService.getOptionDetail(optionVO));
 		System.out.println(model);
-
 		// 장바구니
+		
 
 		return "page/goods/goodDetail";
 	}
