@@ -58,9 +58,19 @@ public interface ProductMapper {
 //		사진등록
 	public int insertImages(ImgsVO imgsVO);
 
-//		수정
+//		수정폼
 	public List<ProductVO> modifyProduct(ProductVO productVO);
-
+//  상품업데이트
+	public int updateProduct(ProductVO productVO);
+//	옵션 수정
+	public int updateOption(OptionVO optionVO);
+	
+//	옵션상세 수정
+	public int updateOptionDetail(OptionDetailVO optionDetailVO);
+	
+//	상품 이미지 수정
+	public void updateProductImg(ImgsVO imgsVO);
+	
 //		전시상태 수정
 	public int updateExStatus(ProductVO productVO);
 
