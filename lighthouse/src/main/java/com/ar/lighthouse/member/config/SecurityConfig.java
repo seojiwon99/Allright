@@ -16,31 +16,44 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 public class SecurityConfig{
 	@Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-        		.authorizeHttpRequests((requests) -> requests	
-        		.antMatchers("/", "/login/**","/common/**","/font/**","/startbootstrap/**").permitAll()
-        		//.anyRequest().authenticated()
-        		.antMatchers("/admin/**").hasAuthority("ROLE_4")
-        		)
-        		.formLogin((form) -> form
-        				.loginPage("/page/member/loginForm")
-        				.loginProcessingUrl("/")
-        				.successHandler(customLoginSuccessHandler())
-        				.permitAll()
-    			)
-        		.logout(logout -> logout
-                        // 로그아웃 요청을 처리할 URL 설정
-                        .logoutUrl("/")
-                        // 로그아웃 성공 시 리다이렉트할 URL 설정
-                        .logoutSuccessUrl("/logout")
-                        // 로그아웃 성공 핸들러 추가 (리다이렉션 처리)
-                        .logoutSuccessHandler((request, response, authentication) ->{
-                        		request.getSession().invalidate();
-                                response.sendRedirect("/");
-                                })
-                )
-    			.csrf().disable()
-    			.userDetailsService(userService());
+        http
+        /*
+    		.authorizeHttpRequests((requests) -> requests	
+//    		.antMatchers("/", "/login/**","/common/**","/font/**","/startbootstrap/**").permitAll()
+//    		//.anyRequest().authenticated()
+//    		.antMatchers("/admin/**").hasAuthority("ROLE_4")
+    		.antMatchers("/page/buyer/orderList").authenticated()
+            .antMatchers("/wishList").authenticated()
+            // /admin 요청에 대해서는 ROLE_ADMIN 역할을 가지고 있어야 함
+            .antMatchers("/admin/**").hasAuthority("ROLE_4")
+            // 나머지 요청에 대해서는 로그인을 요구하지 않음
+            .anyRequest().permitAll()
+    		)
+    		.formLogin((form) -> form
+    				.loginPage("/page/member/loginForm")
+    				.loginProcessingUrl("/")
+    				.successHandler(customLoginSuccessHandler())
+    				.permitAll()
+			)
+    		.logout(logout -> logout
+                    // 로그아웃 요청을 처리할 URL 설정
+                    .logoutUrl("/logout")
+                    // 로그아웃 성공 시 리다이렉트할 URL 설정
+                    .logoutSuccessUrl("/")
+                    // 로그아웃 성공 핸들러 추가 (리다이렉션 처리)
+                    .logoutSuccessHandler((request, response, authentication) ->{
+                    		request.getSession().invalidate();
+                            response.sendRedirect("/");
+                            })
+            )
+            */
+			.csrf().disable();
+			
+			
+			//.userDetailsService(userService());
+        
+        
+        
         /*
         // /about 요청에 대해서는 로그인을 요구함
         .authorizeRequests()

@@ -425,6 +425,7 @@
     <script th:src="@{/js/theme.bundle.js}"></script>
     <script th:inline="javascript">
    	let member = [[${session.loginMember}]]
+   	console.log([[${session}]]);
     let TTSIsOk = localStorage.getItem('ttsKey');
     let sessionAuthor;
 	console.log(sessionStorage.loginMember);    		
