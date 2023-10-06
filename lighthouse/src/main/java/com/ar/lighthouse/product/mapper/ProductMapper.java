@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.member.service.MemberVO;
@@ -43,6 +44,8 @@ public interface ProductMapper {
 
 	List<ExchangeVO> returnSeaList(ExchangeVO exchangeVO);
 
+//	판매자 문의 내역
+	List<MyInquiryVO> selectSellerInquriy(String memberId);
 	// 옵션 등록
 	public int insertOption(OptionVO optionVO);
 

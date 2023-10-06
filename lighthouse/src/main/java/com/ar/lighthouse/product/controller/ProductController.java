@@ -42,6 +42,7 @@ import com.ar.lighthouse.admin.service.AdminService;
 import com.ar.lighthouse.admin.service.DeclareVO;
 import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.cart.service.CartService;
 import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.common.Criteria;
@@ -113,12 +114,11 @@ public class ProductController {
 
    // 공지사항 화면(페이징)
    @GetMapping("sellerInquiry")
-   public String noticeList(Model model, Criteria cri) {
-      int totalCnt = customService.getTotalCount(cri);
-      model.addAttribute("noticeList", customService.getNoticeList(cri));
-      model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
-      model.addAttribute("categories",service.getCategoryList());
-      model.addAttribute("allCtg", service.getAllCategoryList());
+   public String noticeList(Model model, MyInquiryVO myInquiryVO, HttpSession session) {
+	      MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+	      String memberId = memberVO.getMemberId();
+	      
+      model.addAttribute("myInquiry", productService.getSellerInquiry(memberId));
       return "page/seller/sellerInquiry";
    }
    
@@ -468,7 +468,7 @@ public class ProductController {
 			RedirectAttributes rtt, ImgsListVO imgsVO) {
 		HttpSession session = req.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-		System.out.println(imgsVO);
+		System.out.println(productVO);
 		productVO.setMemberId(memberVO.getMemberId());
 
 		// productVO.setCategoryCode("MSU");
@@ -1016,7 +1016,8 @@ public class ProductController {
    @PostMapping("insertImg")
    public String productdetailImg(Model model, ProductVO productVO, ImgsListVO imgsList, RedirectAttributes rttr) {
 //      model.addAttribute("product", productVO);
-      rttr.addFlashAttribute("product", productVO);
+      rttr.addFlashAttribute("productContent", productVO.getProductContent());
+      System.out.println("@@@@@@@@@@@@@@@@@@" + productVO);
       rttr.addFlashAttribute("detailImg", imgsList);
 
       return "redirect:/insertProduct";
