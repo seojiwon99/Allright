@@ -411,7 +411,7 @@
                         let div = $('<div/>').addClass("optionDiv col-md-6");
                         let labelN = $("<label> /").text("옵션이름");
                         let optionN = $('<input name="option[' + i +
-                           '].optionName1" class="optionN" type="text" id="optionName' + i +
+                           '].optionName" class="optionN" type="text" id="optionName' + i +
                            '"/ value="' + userData.option[i].optionName1 + '">');
                         div.append(labelN);
                         div.append(optionN);
@@ -420,7 +420,7 @@
 
                         let labelV = $("<label/>").text("옵션");
                         let optionV = $('<input name="option[' + i +
-                           '].optionValue1" class="optionV" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' +
+                           '].optionValue" class="optionV" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' +
                            i + '"   value="' + userData.option[i].optionValue1 + '" />');
                         div.append(labelV);
                         div.append(optionV);
