@@ -964,31 +964,34 @@ WHERE product_code = #{productCode}
 
 	<!-- 김무준의 상세페이지~~ -->
 	<select id="selectInfo" resultType="ProductVO">
-		select m.member_id
-			, p.product_code
-			, p.category_code
-			, p.product_name
-			, p.product_content
-			, p.product_location
-			, p.product_cost
-			, p.product_regdate
-			, p.sale_price
-			, p.product_brand
-			, p.product_origin
-			, p.product_makeorigin
-			, p.delivery_cost
-			, p.return_cost
-			, p.exchange_cost
-			, p.delivery_service
-			, p.product_status
-			, i.upload_name
-			, i.img_content
-			 , m.business_number
-			from ar_products p ,
-			ar_imgs i, ar_member m
-			where p.product_code = i.product_code 
-			and p.member_id = m.member_id
-			and p.product_code = #{productCode}
+		 select  
+            m.member_id
+         , p.product_code
+         , p.category_code
+         , p.product_name
+         , p.product_content
+         , p.product_location
+         , p.product_cost
+         , p.product_regdate
+         , p.sale_price
+         , p.product_brand
+         , p.product_origin
+         , p.product_makeorigin
+         , p.delivery_cost
+         , p.return_cost
+         , p.exchange_cost
+         , p.delivery_service
+         , p.product_status
+         , i.upload_name
+         , i.img_content
+          , m.business_number
+         from ar_products p ,ar_imgs i, ar_member m
+         where p.product_code = i.product_code 
+         <![CDATA[
+            and rownum < 2
+            ]]>
+         and p.member_id = m.member_id
+         and p.product_code = #{productCode}
 	</select>
 	
 

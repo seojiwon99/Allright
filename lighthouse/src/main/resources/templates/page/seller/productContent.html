@@ -36,8 +36,8 @@
 
    <!-- CKEditor -->
          <script src="https://cdn.ckeditor.com/ckeditor5/12.4.0/classic/ckeditor.js"></script>
-   
-      <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
+      
+         <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
       <script>      
       ClassicEditor
       .create(document.querySelector('#editor'),{
@@ -109,11 +109,12 @@
   }) */
   
   $(document).ready(function(e){
-     let data = localStorage.getItem("detail");
+     let data = JSON.parse(localStorage.getItem("detail"));
      // console.log(data);
-     if(data != null){
-        editor.setData(data);
-     }
+   if(data.content != null || data.content ==''){
+      editor.setData(data.content);
+   }
+
         
   })
   $('#submit').on('click',function(e){
@@ -133,21 +134,21 @@
     	  e.preventDefault();
     	  return;
       }
-      window.localStorage.setItem("detail",data);      
+           
       let form = $(this).closest('form');
-      // console.log(form);
-      // form.attr('method', 'post');
-      // form.attr('action', '/insertImg');
+
+      // let textarea = $('<textarea />');
+      // textarea.css("display", "none");
+      // textarea.attr('name','productContent');
       
-      let textarea = $('<textarea />');
-      textarea.css("display", "none");
-      textarea.attr('name','productContent');
+      // $(textarea).text(data);
       
-      $(textarea).text(data);
-      
-      $(textarea).append(data);
-      $(form).append(textarea);
-      
+      // $(textarea).append(data);
+      // $(form).append(textarea);
+      let detailobj ={
+         content : data,
+         img :[]
+      }
 
       let formTag = $('.ck .image');
 
@@ -160,7 +161,7 @@
             return;
          }
           let src = $(item).children('img').attr('src');
-    
+            
           let text = src.split('_');
           
           let text01 = src.split('/');
@@ -178,19 +179,25 @@
        for(let i =0; i < srcArr.length; i++){
           let divTag = $('<div/>').addClass('inform');
           let obj = srcArr[i];
+          let imgobj ={};
           for(let item in obj){
              // console.log("key" + item );
              // console.log("value" + obj[item]);
              let str = `
-                <input type="text" style="display:none;" name="imgsVO[${idx}].${item}" value="${obj[item]}">
+                <input type="text" style="display:none;" name="imgsVO[${idx}].${item}" value="${obj[item]}" class="${item}">
              `;
-             
+             imgobj[item] = obj[item];
              divTag.append(str);
-          }
+            }
+            detailobj.img.push(imgobj)
           idx++;
           form.append(divTag);
        }
       
+      window.localStorage.setItem("detail",JSON.stringify(detailobj)); 
+
+
+
       // form.submit();
   })
    </script>

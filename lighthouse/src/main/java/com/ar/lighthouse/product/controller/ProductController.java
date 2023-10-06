@@ -472,11 +472,12 @@ public class ProductController {
 		productVO.setMemberId(memberVO.getMemberId());
 
 		// productVO.setCategoryCode("MSU");
-
+		System.out.println(productVO);
 		productService.addProduct(productVO);
 
 		int i = 0;
 		for (MultipartFile uploadFile : files) {
+			System.out.println("@@@@@@@@@@");
 			if (uploadFile.getContentType().startsWith("image") == false) {
 				System.err.println("this file is not image type");
 				return null;
