@@ -463,79 +463,79 @@ public class ProductController {
       }
 
    // 상품 등록
-   @PostMapping("insertProduct")
-   public String addProduct(List<MultipartFile> files, ProductVO productVO, HttpServletRequest req,
-         RedirectAttributes rtt, ImgsListVO imgsVO) {
-      HttpSession session = req.getSession();
-      MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+	@PostMapping("insertProduct")
+	public String addProduct(List<MultipartFile> files, ProductVO productVO, HttpServletRequest req,
+			RedirectAttributes rtt, ImgsListVO imgsVO) {
+		HttpSession session = req.getSession();
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		System.out.println(imgsVO);
+		productVO.setMemberId(memberVO.getMemberId());
 
-      productVO.setMemberId(memberVO.getMemberId());
+		// productVO.setCategoryCode("MSU");
 
-      productVO.setCategoryCode("FMC");
-//      패션/남성/신발 여자/신발
+		productService.addProduct(productVO);
 
-      productService.addProduct(productVO);
+		int i = 0;
+		for (MultipartFile uploadFile : files) {
+			if (uploadFile.getContentType().startsWith("image") == false) {
+				System.err.println("this file is not image type");
+				return null;
+			}
+			String originalName = uploadFile.getOriginalFilename();
+			String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
+			productVO.getProductImg().get(i).setImgName(fileName);
 
-      int i = 0;
-      for (MultipartFile uploadFile : files) {
-         if (uploadFile.getContentType().startsWith("image") == false) {
-            System.err.println("this file is not image type");
-            return null;
-         }
-         String originalName = uploadFile.getOriginalFilename();
-         String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
-         productVO.getProductImg().get(i).setImgName(fileName);
+			// 날짜 폴더 생성
+			String folderPath = makeFolder();
+			String uuid = UUID.randomUUID().toString(); // 유니크한 이름 때문에
+			productVO.getProductImg().get(i).setUploadName(uuid + "_" + fileName);
 
-         // 날짜 폴더 생성
-         String folderPath = makeFolder();
-         String uuid = UUID.randomUUID().toString(); // 유니크한 이름 때문에
-         productVO.getProductImg().get(i).setUploadName(uuid + "_" + fileName);
+			String uploadFileName = folderPath + "/" + uuid + "_" + fileName;
+			// System.out.println("uploadFileName" + uploadFileName);
+			productVO.getProductImg().get(i).setUploadPath(folderPath);
 
-         String uploadFileName = folderPath + "/" + uuid + "_" + fileName;
-         // System.out.println("uploadFileName" + uploadFileName);
-         productVO.getProductImg().get(i).setUploadPath(folderPath);
+			String saveName = uploadPath + "/" + uploadFileName;
 
-         String saveName = uploadPath + "/" + uploadFileName;
+			Path savePath = Paths.get(saveName);
+			try {
+				uploadFile.transferTo(savePath); // 파일의 핵심
+				// uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
+				productVO.getProductImg().get(i).setProductCode(productVO.getProductCode());
+				productVO.getProductImg().get(i).setImgOrder(i);
+				if (files.get(0) == uploadFile) {
+					int idx = originalName.indexOf(".");
 
-         Path savePath = Paths.get(saveName);
-         try {
-            uploadFile.transferTo(savePath); // 파일의 핵심
-            // uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
-            productVO.getProductImg().get(i).setProductCode(productVO.getProductCode());
-            productVO.getProductImg().get(i).setImgOrder(i + 1);
-            if (files.get(0) == uploadFile) {
-               int idx = originalName.indexOf(".");
+					FileOutputStream thumbnail = new FileOutputStream(
+							new File(uploadPath + "\\" + folderPath, "s_" + uuid + "_" + originalName));
+					FileInputStream input = new FileInputStream(
+							new File(uploadPath + "\\" + folderPath, uuid + "_" + originalName));
+					Thumbnailator.createThumbnail(input, thumbnail, 100, 100);
 
-               FileOutputStream thumbnail = new FileOutputStream(
-                     new File(uploadPath + "\\" + folderPath, "s_" + uuid + "_" + originalName));
-               FileInputStream input = new FileInputStream(
-                     new File(uploadPath + "\\" + folderPath, uuid + "_" + originalName));
-               Thumbnailator.createThumbnail(input, thumbnail, 100, 100);
+					thumbnail.close();
 
-               thumbnail.close();
+				}
+				// System.out.println(productVO.getProductImg().get(i));
+				productService.addProductImg(productVO.getProductImg().get(i));
+				i++;
 
-            }
-            // System.out.println(productVO.getProductImg().get(i));
-            productService.addProductImg(productVO.getProductImg().get(i));
-            i++;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
-         } catch (IOException e) {
-            e.printStackTrace();
-         }
+		}
+		if (imgsVO.getImgsVO() != null) {
+			for (int j = 0; j < imgsVO.getImgsVO().size(); j++) {
+				imgsVO.getImgsVO().get(j).setImgOrder(j + 1);
+				imgsVO.getImgsVO().get(j).setProductCode(productVO.getProductCode());
+				productService.addProductImg(imgsVO.getImgsVO().get(j));
+			}
+		}
 
-      }
-      if (imgsVO != null) {
-         for (int j = 0; j < imgsVO.getImgsVO().size(); j++) {
-            imgsVO.getImgsVO().get(j).setImgOrder(j + 1);
-            imgsVO.getImgsVO().get(j).setProductCode(productVO.getProductCode());
-            productService.addProductImg(imgsVO.getImgsVO().get(j));
-         }
-      }
+		rtt.addFlashAttribute("msg", "등륵성공");
 
-      rtt.addFlashAttribute("msg", "등륵성공");
+		return "redirect:productList";
+	}
 
-      return "redirect:productList";
-   }
 //   상품수정
    @PostMapping("updateProduct")
    public String updateProduct(List<MultipartFile> files, ProductVO productVO, HttpServletRequest req,
@@ -609,50 +609,50 @@ public class ProductController {
    }
 
    // 상품 상세보기 사진 정보 보내기
-   @PostMapping("insertDetailImg")
-   public String addDetailImg(Model model, MultipartFile[] uploadFile, ImgsListVO imgVO) {
-      System.out.println(uploadFile);
-      for (var i = 0; i < imgVO.getImgsVO().size(); i++) {
-         System.out.println(imgVO.getImgsVO().get(i));
-      }
+	@PostMapping("insertDetailImg")
+	public String addDetailImg(Model model, MultipartFile[] uploadFile, ImgsListVO imgVO) {
+		System.out.println(uploadFile);
+		for (var i = 0; i < imgVO.getImgsVO().size(); i++) {
+			System.out.println(imgVO.getImgsVO().get(i));
+		}
 
-      int idx = 0;
-      List<ImgsVO> imgsInfo = new ArrayList<ImgsVO>();
+		int idx = 0;
+		List<ImgsVO> imgsInfo = new ArrayList<ImgsVO>();
 
-      for (MultipartFile files : uploadFile) {
-         if (files.getContentType().startsWith("image") == false) {
-            System.err.println("this file is not image type");
-            return null;
-         }
+		for (MultipartFile files : uploadFile) {
+			if (files.getContentType().startsWith("image") == false) {
+				System.err.println("this file is not image type");
+				return null;
+			}
 
-         String originalName = files.getOriginalFilename();
+			String originalName = files.getOriginalFilename();
 
-         String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
-         imgVO.getImgsVO().get(idx).setImgName(fileName);
+			String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
+			imgVO.getImgsVO().get(idx).setImgName(fileName);
 
-         String folderPath = makeFolder();
-         String uuid = UUID.randomUUID().toString();
-         imgVO.getImgsVO().get(idx).setUploadName(uuid + "_" + fileName);
+			String folderPath = makeFolder();
+			String uuid = UUID.randomUUID().toString();
+			imgVO.getImgsVO().get(idx).setUploadName(uuid + "_" + fileName);
 
-         String uploadFileName = folderPath + '/' + uuid + "_" + fileName;
-         imgVO.getImgsVO().get(idx).setUploadPath(folderPath);
+			String uploadFileName = folderPath + '/' + uuid + "_" + fileName;
+			imgVO.getImgsVO().get(idx).setUploadPath(folderPath);
 
-         String saveName = uploadPath + "/" + uploadFileName;
+			String saveName = uploadPath + "/" + uploadFileName;
 
-         Path savePath = Paths.get(saveName);
+			Path savePath = Paths.get(saveName);
 
-         try {
-            files.transferTo(savePath);
-         } catch (IOException e) {
-            e.printStackTrace();
-         }
+			try {
+				files.transferTo(savePath);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
-      }
-      model.addAttribute("img", imgVO);
-      model.addAttribute("uploadFile", uploadFile);
-      System.out.println(model);
-      return "redirect:insertProductForm";
-   }
+		}
+		model.addAttribute("img", imgVO);
+		model.addAttribute("uploadFile", uploadFile);
+		System.out.println(model);
+		return "redirect:insertProductForm";
+	}
    
    // 상품 상세보기 사진 정보 보내기
       @PostMapping("updateDetailImg")
