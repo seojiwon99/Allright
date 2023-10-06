@@ -835,7 +835,7 @@ ORDER BY EXTRACT(MONTH FROM order_date)
 	<insert id="insertProductImg" parameterType="ImgsVO">
 		<selectKey resultType="int" keyProperty="imgCode"
 			order="BEFORE">
-			SELECT NVL(0, MAX(img_code))+1 FROM ar_imgs
+			SELECT NVL(MAX(img_code),0)+1 FROM ar_imgs
 		</selectKey>
 		insert into ar_imgs
 		(img_code
