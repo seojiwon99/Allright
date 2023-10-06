@@ -59,7 +59,8 @@
     
 
   $('.addImgBtn').on('click',function(e){
-      e.preventDefault();
+	  location.href="/insertProduct";
+      /* e.preventDefault();
       let form = $(this).closest('form');
      $('.inform').remove();
       let formTag = $('.ck .image');
@@ -100,7 +101,7 @@
       form.attr('method', 'post');
       form.attr('action', '/insertImg');
       form.submit();
-      console.log(srcArr);
+      console.log(srcArr); */
   })
   
 /*   $('#textForm').sumbit(function(e){
@@ -129,6 +130,8 @@
       }
       if(img.length == 0){
     	  alert("이미지를 넣어주세요");
+    	  e.preventDefault();
+    	  return;
       }
       window.localStorage.setItem("detail",data);      
       let form = $(this).closest('form');

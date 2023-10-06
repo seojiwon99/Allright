@@ -92,7 +92,7 @@
 
 
          <div class="container">
-            <form id="insertForm" class="form-horizontal" action="insertProduct" method="post"
+            <form id="insertForm" class="form-horizontal" action="insertProduct" method="post" onsubmit="return false;"
                enctype="multipart/form-data">
                <div id="categoryId">
                   <div class="form-group row">
@@ -100,24 +100,24 @@
                         <label class="col-sm-2">카테고리</label>
                         <div class="categorybox">
                            <select id="categoryCode">
-                              <option value="" class="disabledsel" disabled selected>카테고리선택</option>
+                              <option value="1" class="disabledsel" disabled selected>카테고리선택</option>
                               <option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}"
                                  th:text="${category.categoryName}" th:if="${category.categoryLevel == 1}"></option>
                            </select>
                         </div>
                         <div class="categorybox1" style="display: none;">
                            <select id="categoryCode01" class="disabledsel">
-                              <option value="1" disabled selected>카테고리선택</option>
+                              <!-- <option value="1" disabled selected>카테고리선택</option> -->
                            </select>
                         </div>
                         <div class="categorybox2" style="display: none;">
                            <select id="categoryCode02" class="disabledsel">
-                              <option value="1" disabled selected>카테고리선택</option>
+                              <!-- <option value="1" disabled selected>카테고리선택</option> -->
                            </select>
                         </div>
                         <div class="categorybox3" style="display: none;">
                            <select id="categoryCode03" class="disabledsel">
-                              <option value="1" disabled selected>카테고리선택</option>
+                              <!-- <option value="1" disabled selected>카테고리선택</option> -->
                            </select>
                         </div>
 
@@ -318,6 +318,7 @@
                <div class="form-group row">
                   <div class="col-sm-offset-2 col-sm-10">
                      <button type="submit" class="submit btn btn-primary">등록</button>
+                     <button type="button" class="storage btn btn-primary">저장</button>
                      <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#exampleModal">
                         미리보기
@@ -436,7 +437,7 @@
                      }
                   }
 
-                  if (userData.imgInform != "") {
+                  if (userData.imgInfo !== "") {
                      
                      console.log("asd");
                      let div = $("div#image_container");
@@ -458,6 +459,119 @@
                      divTag.append(inputTag);
 
                      div.append(divTag);
+                  }
+
+                  if(Object.keys(userData.catemenu[0]).length != 0){
+                     let obj = userData.catemenu[0];
+                     let keyword ='';
+                     let seloption 
+                     let select = $('#categoryCode');
+                     for(var key in obj){
+                        if(key.charAt(0) == 0){
+                           keyword = key.substr(1);
+                           keyval = obj[key];
+                        }
+                     }
+
+                     $('#categoryCode01').attr("name","categoryCode");
+                     // console.log(keyword);
+                     // console.log(keyval);
+                     $(select).val(keyval);
+                     // console.log(obj);
+                     // console.log(select);
+                  }
+
+                  if(Object.keys(userData.catemenu[1]).length != 0){
+                     // console.log("asdafff");
+                     $('.categorybox1').css('display','block');
+
+                     let obj = userData.catemenu[1];
+                     let keyword ='';
+                     let select = $('#categoryCode01');
+                     for(var key in obj){
+                        //console.log(key);
+                        if(key.charAt(0) == 0){
+                           keyword = key.substr(1);
+                           keyval = obj[key];
+                           let opt = $('<option>' + keyword + '</option>');
+                           opt.attr('value', keyval);
+                           opt.attr('class', 'optionBox');
+                           opt.prop("selected",true);
+                           select.append(opt);
+                        }else{
+                           let opt = $('<option>' + key + '</option>');
+                           opt.attr('value', obj[key]);
+                           opt.attr('class', 'optionBox');
+                           select.append(opt);
+                        }
+                     }
+
+                     if(Object.keys(userData.catemenu[2]).length != 0){
+                        $('#categoryCode').removeAttr("name");
+                        $('#categoryCode01').removeAttr("name");
+                        $('#categoryCode02').attr("name","categoryCode");
+                        $('#categoryCode03').removeAttr("name");
+                     }
+                  }
+
+                  //console.log(Object.keys(userData.catemenu[2]).length);
+                  if(Object.keys(userData.catemenu[2]).length != 0){
+                     //console.log("a333333333333");
+                     $('.categorybox2').css('display','block');
+
+                     let obj = userData.catemenu[2];
+                     let keyword ='';
+                     let select = $('#categoryCode02');
+                     for(var key in obj){
+                        //console.log(key);
+                        if(key.charAt(0) == 0){
+                           keyword = key.substr(1);
+                           keyval = obj[key];
+                           let opt = $('<option>' + keyword + '</option>');
+                           opt.attr('value', keyval);
+                           opt.attr('class', 'optionBox');
+                           opt.prop("selected",true);
+                           select.append(opt);
+                        }else{
+                           let opt = $('<option>' + key + '</option>');
+                           opt.attr('value', obj[key]);
+                           opt.attr('class', 'optionBox');
+                           select.append(opt);
+                        }
+                     }
+                     if(Object.keys(userData.catemenu[3]).length != 0){
+                        
+                        $('#categoryCode').removeAttr("name");
+                        $('#categoryCode01').removeAttr("name");
+                        $('#categoryCode02').removeAttr("name");
+                        $('#categoryCode03').attr("name","categoryCode");
+                     }
+                  }
+
+                  if(Object.keys(userData.catemenu[3]).length != 0){
+                     //console.log("444444444444444");
+                     $('.categorybox3').css('display','block');
+
+                     let obj = userData.catemenu[3];
+                     let keyword ='';
+                     let select = $('#categoryCode03');
+                     for(var key in obj){
+                        //console.log(key);
+                        if(key.charAt(0) == 0){
+                           keyword = key.substr(1);
+                           keyval = obj[key];
+                           let opt = $('<option>' + keyword + '</option>');
+                           opt.attr('value', keyval);
+                           opt.attr('class', 'optionBox');
+                           opt.prop("selected",true);
+                           select.append(opt);
+                        }else{
+                           let opt = $('<option>' + key + '</option>');
+                           opt.attr('value', obj[key]);
+                           opt.attr('class', 'optionBox');
+                           select.append(opt);
+                        }
+                     }
                   }
 
                }
@@ -501,13 +615,13 @@
 
 
 
-         $('#categoryCode').on('change', function (e) {
+         $(document).on('change','#categoryCode', function (e) {
             let val = $(this).val();
-            // console.log(val);
             let cateBox = [[${getCategoryList}]];
             let option = $('#categoryCode01');
             $('.optionBox').remove();
             $('.optionBox01').remove();
+            $('.optionBox02').remove();
             $('.categorybox1').css('display', 'block');
             $('.categorybox2').css('display', 'none');
             $('.categorybox3').css('display', 'none');
@@ -518,9 +632,19 @@
             $('#categoryCode02').removeAttr('name');
             $('#categoryCode03').removeAttr('name');
 
-            $('.disabledsel:eq(0)').attr("selected", "selected");
+            $('#categoryCode01').attr("name","categoryCode");
+
+            // $('.disabledsel:eq(0)').attr("selected", "selected");
             // console.log(option);
             // console.log(cateBox);
+            let firoption = $('<option>' + "카테고리선택" + '</option>');
+            firoption.attr('value', 1);
+            firoption.addClass("optionBox");
+            firoption.prop("selected", true);
+
+            firoption.prop("disabled", true);
+            // firoption.attr("disabled");
+            option.append(firoption);
             $(cateBox).each(function (idx, item) {
                // console.log(item);
                if (item.parentCategoryCode == val) {
@@ -543,7 +667,9 @@
             let cateBox = [[${getCategoryList}]];
             let option = $('#categoryCode02');
             $('.optionBox01').remove();
-
+            $('.optionBox02').remove();
+            
+            
             let num = 0;
             $(cateBox).each(function (idx, item) {
 
@@ -562,10 +688,20 @@
                $('.categorybox3').css('display', 'none');
                $('#categoryCode01').removeAttr('name');
                $('#categoryCode02').attr('name', 'categoryCode');
+               let firoption = $('<option>' + "카테고리선택" + '</option>');
+               firoption.attr('value', 1);
+               firoption.prop("selected", true);
+               firoption.prop("disabled", true);
+
+               firoption.addClass("optionBox01");
+               
+               option.prepend(firoption);
             } else {
+               console.log("Asdasdaffff");
+
                $('#categoryCode01').attr('name', 'categoryCode');
                $('#categoryCode02').removeAttr('name');
-
+               $('#categoryCode03').children().remove();
 
                $('.categorybox2').css('display', 'none');
 
@@ -580,6 +716,7 @@
             $('.optionBox02').remove();
             $('#categoryCode03').val(1);
             let num = 0;
+           
             $(cateBox).each(function (idx, item) {
                // console.log(item);
                if (item.parentCategoryCode == val) {
@@ -592,6 +729,12 @@
                }
             })
             if (num != 0) {
+               let firoption = $('<option>' + "카테고리선택" + '</option>');
+               firoption.attr('value', 1);
+               firoption.prop("selected", true);
+               firoption.prop("disabled", true);
+               firoption.addClass("optionBox02");
+               option.prepend(firoption);
                $('.categorybox3').css('display', 'block');
                $('#categoryCode02').removeAttr('name');
                $('#categoryCode03').attr('name', 'categoryCode');
@@ -625,42 +768,7 @@
          //       .fail(reject => {
          //          console.log(reject);
          //       })
-         // })
-
-         $(document).on("change", "#ChildOfChildCate", function () {
-            let val = $(this).val();
-            // (val);
-            $.ajax({
-                  url: 'thirdOfCate',
-                  type: 'get',
-                  data: {
-                     'categoryCode': val
-                  }
-               })
-               .done(getCategoryList => {
-                  // console.log(getCategoryList);
-                  if (val == null) {
-                     $('#thirdOfChildCate').css('display', 'none');
-                  }
-                  $('#thirdOfChildCate').replaceWith(getCategoryList);
-                  $('#thirdOfChildCate').css('display', '');
-
-                  let selectedOptionText = $(this).find('option:selected').text();
-
-                  $("#thirdCategoryCode").text(selectedOptionText + ' >');
-
-                  $('#thirdOfChildCate').change(function () {
-                     let selectedOptionText = $(this).find('option:selected').text();
-                     $("#quadCategoryCode").text(selectedOptionText);
-                  });
-
-
-
-               })
-               .fail(reject => {
-                  console.log(reject);
-               })
-         })
+        
 
 
          // document.querySelector('form[name="insertForm"]')
@@ -681,33 +789,49 @@
          //       }
          //    )
 
-         $(document).on('click', '.submit', function (e) {
-            let option = $("input[name='optionName']").val();
-            console.log(option);
-            e.preventDefault();
-            // if($('#selectCategory').val() == null || $('#selectCategory').val() == '' ){
-            //    alert("카테고리를 선택해주세요");   
-            //    return;
-            // }
-            let form = $('#insertForm');
-            let data = $(form).find('input[type != hidden]');
-            /* $(data).each(function(idx,item){
-               if($(item).val() == null || $(item).val() == ''){
-                  let id = $(item).attr("id");
+         // $(document).on('click', '.submit', function (e) {
+         //    let option = $("input[name='optionName']").val();
+         //    console.log(option);
+         //    e.preventDefault();
+         //    // if($('#selectCategory').val() == null || $('#selectCategory').val() == '' ){
+         //    //    alert("카테고리를 선택해주세요");   
+         //    //    return;
+         //    // }
+         //    let form = $('#insertForm');
+         //    let data = $(form).find('input[type != hidden]');
+         //    /* $(data).each(function(idx,item){
+         //       if($(item).val() == null || $(item).val() == ''){
+         //          let id = $(item).attr("id");
 
-                  // console.log($(item).attr("id"));
-                  alert( $('label[for="'+ id+'"]').text()  + "를 입력해주세요");
-                  item.focus();
-                  return false;
-               }
-            })
+         //          // console.log($(item).attr("id"));
+         //          alert( $('label[for="'+ id+'"]').text()  + "를 입력해주세요");
+         //          item.focus();
+         //          return false;
+         //       }
+         //    })
 
-            if($('#selectdelivery').val() == null || $('#selectdelivery').val() ==''){
-               alert("택배사를 선택 해주세요");
+         //    if($('#selectdelivery').val() == null || $('#selectdelivery').val() ==''){
+         //       alert("택배사를 선택 해주세요");
+         //       return;
+         //    } */
+         //    localStorage.removeItem('product')
+         //    form.submit();
+
+         // })
+
+         $('.submit').on('click',function(e){
+            alert("asd");
+            let select = $('select[name="categoryCode"]');
+            console.log(select.length);
+            if($(select).val() == null || $(select).val() == ""){
+               alert("카테고리를 넣어주세요");
                return;
-            } */
-            localStorage.removeItem('product')
-            form.submit();
+            }
+            
+            if($("#productName").val() == ""){
+               idchk($("#productName").val());
+               alert("상품명을 입력해주세요");
+            }
 
          })
 
@@ -969,7 +1093,13 @@
 
          // localstorage에 담고 보내기
          $('.detailPro').on('click', function (e) {
-            console.log($('input[id="optionName0"]').val());
+
+            
+
+
+            localStorage.removeItem('product');
+
+            // console.log($('input[id="optionName0"]').val());
             e.preventDefault();
             let obj = {
                productName: $('input[name="productName"]').val(),
@@ -989,6 +1119,7 @@
                exchangeCost: $('input[name="exchangeCost"]').val(),
                returnCost: $('input[name="returnCost"]').val(),
                deliveryService: $('select[name="deliveryService"]').val(),
+               imgInfo: $('#Imginform').val(),
                option: [{
                      optionName1: $('input[id="optionName0"]').val(),
                      optionValue1: $('input[id="optionVal0"]').val(),
@@ -1005,8 +1136,12 @@
                optionDetail: [
 
                ],
-               imgInform: $('#Imginform').val(),
-               expire: Date.now() + 7200000
+               expire: Date.now() + 7200000,
+               catemenu : [
+
+               ]
+
+               
             }
             //let optionDetail = [];
             let leng = $('#optiontab').find('tr').length;
@@ -1021,11 +1156,61 @@
                obj.optionDetail.push(box);
             }
 
-            let cateobj = {};
+            let catemenu1 = {};
+            $('#categoryCode').find('option').map(function(){
+               if($('#categoryCode option:selected').val() == $(this).val()){
+                  catemenu1["0"+$(this).text()] = $(this).val();
+               }else{
+                  catemenu1[$(this).text()] = $(this).val();
+               }
+               //console.log($(this):selected);
 
+            });
+            obj.catemenu.push(catemenu1);
+
+            let catemenu2 = {};
+            $('#categoryCode01').find('option').map(function(){
+               if($('#categoryCode01 option:selected').val() == $(this).val()){
+                  catemenu2["0"+$(this).text()] = $(this).val();
+               }else{
+                  catemenu2[$(this).text()] = $(this).val();
+               }
+
+            });
+
+            obj.catemenu.push(catemenu2);
+
+            let catemenu3 = {};
+            $('#categoryCode02').find('option').map(function(){
+               if($('#categoryCode02 option:selected').val() == $(this).val()){
+                  catemenu3["0"+$(this).text()] = $(this).val();
+               }else{
+                  catemenu3[$(this).text()] = $(this).val();
+               }
+            });
+
+            obj.catemenu.push(catemenu3);
+
+            let catemenu4 = {};
+            $('#categoryCode03').find('option').map(function(){
+               if($('#categoryCode03 option:selected').val() == $(this).val()){
+                  catemenu4["0"+$(this).text()] = $(this).val();
+               }else{
+                  catemenu4[$(this).text()] = $(this).val();
+               }
+            });
+
+            obj.catemenu.push(catemenu4);
+            
             //obj.push(optionDetail);
             window.localStorage.setItem("product", JSON.stringify(obj));
-            location.href = '/productContent';
+            // location.href = '/productContent';
+         })
+
+
+         // 임시저장
+         $('.storage').on('click',function(e){
+
          })
       </script>
 
