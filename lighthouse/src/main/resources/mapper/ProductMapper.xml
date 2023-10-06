@@ -849,6 +849,8 @@ ORDER BY EXTRACT(MONTH FROM order_date)
          , option_sell_status
          , option_exstatus
          , option_count
+         , min_order
+         , max_order
       )
       VALUES (
            #{optionDetailCode}
@@ -858,6 +860,8 @@ ORDER BY EXTRACT(MONTH FROM order_date)
          , 'Y'
          , 'Y'
          , #{optionCount}
+         , #{minOrder}
+         , #{maxOrder}
       )
    </insert>
 
