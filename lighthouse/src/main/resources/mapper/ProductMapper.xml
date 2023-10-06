@@ -880,8 +880,10 @@ ORDER BY EXTRACT(MONTH FROM order_date)
 			, p.exchange_cost
 			, p.delivery_service
 			, p.product_status
+  			, i.img_order
 			, i.upload_name
 			, i.img_content
+            , i.upload_path
 			 , m.business_number
 			from ar_products p ,ar_imgs i, ar_member m
 			where p.product_code = i.product_code 

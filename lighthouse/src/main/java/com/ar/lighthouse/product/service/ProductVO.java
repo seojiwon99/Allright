@@ -51,5 +51,7 @@ public class ProductVO {
 	List<OptionDetailVO> optionDetail;
 	private String businessNumber;
 	
+	private String uploadPath;
+	private String uploadName;
 
 }

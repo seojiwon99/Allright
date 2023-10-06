@@ -814,11 +814,13 @@ public class ProductController {
 	@GetMapping("goodDetail")
 	public String getGoodDetail(String productCode, Model model, HttpSession session, ProductVO vo, OptionVO optionVO,
 			CodeVO codeVO, Criteria cri, OptionDetailVO optionDetailVO) {
-
+		
+		ProductVO vo2 = productService.goodsDetail(vo);
+		System.out.println("aaaa@@@@@@@@@@@a"+vo2);
 		// 상품정보
-		ProductVO productVO = productService.goodsDetail(vo);
-		model.addAttribute("goods", productVO);
+		model.addAttribute("goods", vo2);
 
+		
 		// 리뷰 별점
 		ReviewVO reviewVO = new ReviewVO();
 		reviewVO.setProductCode(productCode);

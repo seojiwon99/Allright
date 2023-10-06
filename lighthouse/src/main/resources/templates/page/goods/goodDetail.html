@@ -7,6 +7,9 @@
 
 <head>
 <style type="text/css">
+#productContent figcaption{
+	display: none;
+}
 .card-img-top {
 	position: relative;
 	width: 540px;
@@ -40,35 +43,27 @@
 								<div class="card">
 									<!-- Slider -->
 									<div class="mb-4"
-										data-flickity='{"draggable": false, "fade": true}'
-										th:each="img:${goods.productImg}" id="productSlider">
-										<!-- Item-->
-										<a href="#" th:each="img:${goods.productImg}"
-											th:data-bigpicture='|{ "imgSrc": "/upload/${img.uploadPath}/${img.uploadName}"}|'>
-
-										<!-- <div class="card-img-top" data-scale="2" width="540"
+										data-flickity='{"draggable": false, "fade": true}'>
+										<!-- <img th:src="|upload/${goods.uploadPath}/${goods.uploadName}|" /> -->
+										<div class="card-img-top" data-scale="2" width="540"
 											height="480"
-											style="background-image: url('/upload/${img.uploadPath}/${img.uploadName}')">
-										</div> -->
+											th:style="|background-image: url(upload/${goods.uploadPath}/${goods.uploadName})|">
+										</div>
 										</a>
 									</div>
 								</div>
 
-								<!-- Slider -->
+								<!-- Slider 
 								<div class="flickity-nav mx-n2 mb-10 mb-md-0"
 									data-flickity='{"asNavFor": "#productSlider", "contain": true, "wrapAround": false}'>
-									<!-- Item -->
 
 									<div class="col-12 px-2" style="max-width: 113px"
 										th:each="img:${goods.productImg}">
-										<!-- Image -->
 										<div class="ratio ratio-1x1 bg-cover"
 											th:style="|background-image: url(/upload/${img.uploadPath}/${img.uploadName});|">
 										</div>
 									</div>
-
-
-								</div>
+								</div>-->
 							</div>
 
 							<div class="col-12 col-md-6 ps-lg-10">
@@ -316,7 +311,7 @@
 
 								<!-- 상세내용 -->
 								<div style="padding: 48px 0px; margin: auto 0">
-									<div th:utext="${goods.productContent}"></div>
+									<div th:utext="${goods.productContent}" id="productContent"></div>
 								</div>
 							</div>
 
@@ -509,7 +504,7 @@
    -------------------------*/
    $('.card-img-top')
     .append('<div class="photo"></div>')
-    .children('.photo').css({"background-image": "url(../img/products/product-142.jpg)"});
+    .children('.photo').css({"background-image": "url(upload/${goods.uploadPath}/${goods.uploadName})"});
     
     $('.card-img-top')    
     .on('mouseover', function () {
