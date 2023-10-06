@@ -24,7 +24,7 @@
    </resultMap>
 
    <select id="selProductList" resultMap="productMap">
-      select p.product_code, product_name, upload_name, img_content, product_cost
+      select p.product_code, product_name, upload_name, img_content, product_cost, upload_path
       from ar_products
       p join ar_imgs i
       on p.product_code = i.product_code
@@ -37,7 +37,7 @@
    </select>
 
    <select id="randomSelProduct" resultType="ProductVO">
-   select p.product_code, product_name, upload_name, img_content, product_cost
+   select p.product_code, product_name, upload_name, img_content, product_cost, upload_path
       from ar_products
       p join ar_imgs i
       on p.product_code = i.product_code

@@ -42,16 +42,15 @@
 									<div class="mb-4"
 										data-flickity='{"draggable": false, "fade": true}'
 										th:each="img:${goods.productImg}" id="productSlider">
-										<!-- Item 
-                           <a href="#" th:each="img:${goods.productImg}"
-                              th:data-bigpicture='|{ "imgSrc": "/upload/${img.uploadPath}/${img.uploadName}"}|'>
-                              
-                              <img th:src="|/upload/${img.uploadPath}/${img.uploadName}|"
-                              alt="..." width="540" height="480" class="card-img-top"
-                              id="imgTarget" data-zoom="3" />-->
-										<div class="card-img-top" data-scale="2" width="540"
+										<!-- Item-->
+										<a href="#" th:each="img:${goods.productImg}"
+											th:data-bigpicture='|{ "imgSrc": "/upload/${img.uploadPath}/${img.uploadName}"}|'>
+
+										<!-- <div class="card-img-top" data-scale="2" width="540"
 											height="480"
-											style="background-image: url('/upload/${img.uploadPath}/${img.uploadName}')"></div>
+											style="background-image: url('/upload/${img.uploadPath}/${img.uploadName}')">
+										</div> -->
+										</a>
 									</div>
 								</div>
 
@@ -157,13 +156,36 @@
 												<select th:each="option:${options}"
 													class="selectbox form-select mb-2"
 													th:disabled="!${optionStat.first}"
-													th:classappend="${optionStat.last} ? 'last' : '' ">
+													th:classappend="${optionStat.last} ? 'last' : '' "
+													th:if="${!(option.optionName).equals('없음')}">
 													<option class="selectbox1" value="">[[${option.optionName}]]</option>
 													<option class="selectbox1"
 														th:each="detail:${option.detailVO}"
 														th:value="${detail.optionName}"
 														th:text="${detail.optionName}"></option>
 												</select>
+												
+												<div style="font-size: 15px; color: rgba(0, 0, 0, 0.7);">
+													<div id="optionBox" >
+														<ul id="optionView" class="col-12 col-lg-auto"
+															style="list-style: none; padding-left: 0px"
+															th:if="${options[0].optionName=='없음'}"
+															>
+															<li 
+																style="border: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; margin-bottom: 10px;">
+																<div style="padding-bottom: 6px" class="optionDetailCodeName">
+																	<input type="hidden" name="optionLast" class="optLast" value="없음">
+																	개수 : 
+																	<input type="number" class="pCnt" name="cartCount"
+																		min="1" value="1" />
+																</div>
+																<div style="padding-bottom: 6px">
+																	총 가격 : <span class="noOptionPriceShow"><strong>[[${goods.salePrice}]]</strong></span>원
+																</div> 
+															</li>
+														</ul>
+													</div>
+												</div>
 											</div>
 
 											<!-- 선택된박스 -->
@@ -171,12 +193,7 @@
 												<div id="optionBox">
 													<ul id="optionView" class="col-12 col-lg-auto"
 														style="list-style: none; padding-left: 0px">
-														<!-- <li>
-																<div><span class="optionDetailCodeName">블랙L</span> </div>
-																<div> <button class="optionCloseBtn btn btn-success">X</button> </div>
-																<div> <input type="text" name="optionDetailCode"> <input type="text" name="optionPrice"> <input type="number" class="orderCnt" /> </div>
-																<div> 가격: <span class="orderPrice">00</span>원 </div>
-															</li>-->
+														
 													</ul>
 												</div>
 											</div>
@@ -189,8 +206,7 @@
 												<div>
 													<input class="changePrice" type="hidden"
 														th:value="${goods.salePrice}" /> <span
-														style="font-size: 22px; color: grey" id="realPrice">합계
-														:</span>
+														style="font-size: 22px; color: grey" id="realPrice">합계:</span>
 												</div>
 											</div>
 
@@ -299,8 +315,8 @@
 								</div>
 
 								<!-- 상세내용 -->
-								<div style="padding: 48px 0px">
-									<div th:text="${goods.productContent}"></div>
+								<div style="padding: 48px 0px; margin: auto 0">
+									<div th:utext="${goods.productContent}"></div>
 								</div>
 							</div>
 
@@ -315,7 +331,6 @@
 						</div>
 
 						<!-- qna -->
-						<div id="focusdiv" tabindex="0">test</div>
 						<div id="qnaTap"></div>
 					</div>
 				</div>
@@ -389,8 +404,12 @@
    function changeOptionHandler(){
   
       if(!$(this).hasClass("last")){            
-         $(this).next().attr("disabled",false);         
-      }else{
+         $(this).next().attr("disabled",false);   
+          console.log($(this));
+    	  //$(".selectbox").attr("disabled",false);
+      }else if($(this).hasClass("first")){
+      }
+      else{
          //선택 값            
          let optionVal = '';
          
@@ -427,21 +446,21 @@
                
                let optionView =$("#optionView");
                let liTag =`<li style="border: 1px solid rgba(0,0,0,0.2); padding:10px; margin-bottom:10px;">
-                  <div style="display:flex; justify-content:space-between">
-                     <span class="optionDetailCodeName">${optionVal}</span>
-                     <button class="optionCloseBtn" type="button" style="all: unset">X</button>
+                  <div style="display:flex; justify-content:space-between; padding-bottom:6px">
+                     <span class="optionDetailCodeName" style="font-weight:600;">${optionVal}</span>
+                     <button class="optionCloseBtn" type="button" style="all: unset; cursor:pointer">X</button>
                   </div>
                   
-                  <div> 
+                  <div style="padding-bottom:6px"> 
                      <input type="hidden" name="optionDetailCode" value="${code}"> 
                      개수 : <input type="hidden" value="${price}" name="optionPrice"> 
                      <input type="number" class="orderCnt" name="cartCount" min="1" value="1" /> 
                   </div>
                   
-                  <div> 가격 : <span><strong>${originPrice}</strong> (현재 할인가)</span> 
+                  <div style="padding-bottom:6px"> 가격 : <span><strong>${originPrice}</strong> (현재 할인가)</span> 
                   + <span class="orderPrice"><strong>${price}</strong> (옵션가격)</span>
                   </div>
-                  <div> 
+                  <div style="padding-bottom:6px"> 
                   <strong style="display:none;" id="orPrice">${sum}</strong>
                   총 가격 : <span class="changePriceShow"><strong>${sum}</strong></span>원
                   </div>
@@ -453,8 +472,7 @@
       }//end of else
    }//end of function
    
-   //optionCloseBtn 지우기
-   
+   //optionCloseBtn 지우기   
    $(document).on("click",".optionCloseBtn",function(e){
       $(this).parent().parent().remove();
    })
@@ -471,6 +489,7 @@
       console.log(count);
       
       let sum = parseInt(price) * count;
+      
       
       sum = sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       let strongStr = $('<strong/>').append(sum);
@@ -535,29 +554,37 @@
 	       }else{
 	    	   
 	    	   let cartOptionList = [];
+	    	   
 	       	   	$(".optionDetailCodeName").each((idx,tag) => {
+	       	   		console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@");
+		    	   let optCount=0;
+		    	   if($(".pCnt").val()){
+		    		   optCount = $(".pCnt").val();
+		    		   
+		    	   }else{
+		    		   optCount= $(tag).parent().next().children()[2].value;
+		    	   }
+		    	   
+		    	   let opLast ='';
+		    	   
+		    	   if($(".optLast").val()){
+		    		   opLast = $(".optLast").val();
+		    		   
+		    	   }else{
+		    		   opLast=$(tag).text();
+		    	   }
+		    	   
 	   				let cartObj = {
 	   						memberId : $("#member").val(),
 	   						productCode : $("#productCode").val(),
-	   						optionLast : $(tag).text(),
-	   						optionCount : $(tag).parent().next().children()[2].value
+	   						optionLast : opLast,
+	   						optionCount : optCount
 	   						}
 	      			cartOptionList.push(cartObj);
 	      		})
+	   				cart(cartOptionList);
 	      			
-	      		$.ajax({
-	    	         url:"cart/cartCheck",
-	    	         type:"get",
-	    	         data:cartOptionList,
-	    	         success:function(result){
-	    	            if(result>0){
-	    	               alert("같은 옵션이 장바구니에 있습니다");
-	    	            }else{
-	    	            	console.log("등록");
-	    	            	cart(cartOptionList);         
-	    	            }
-	    	         }
-	    	       })
+	      		
 	      		}
    	}
     function cart(arr){
@@ -570,11 +597,13 @@
 	   				contentType:"application/json",
 	   				success:function(result){
 	   					console.log(result);
-	   					if(result == 'sucs'){
-	   						if(!confirm("장바구니로 이동하시겠습니까?")){
-	   							console.log("이동x");
+	   					if(result > 0){
+							alert("이미 장바구니에 존재하는 옵션이있습니다.");
 	   						}else{
-	   							location.href="cart/cartView"; 
+	   							if(!confirm("장바구니로 이동하시겠습니까?")){
+		   							console.log("이동x");
+		   						}else{
+		   							location.href="cart/cartView"; 
 	   						};
 	   					}
 	   				},

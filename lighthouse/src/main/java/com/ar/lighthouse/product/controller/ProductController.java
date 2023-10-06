@@ -742,7 +742,7 @@ public class ProductController {
 		// 리뷰정보
 		ReviewVO reviewVO = new ReviewVO();
 		reviewVO.setProductCode(productCode);
-		cri.setAmount(1);
+		cri.setAmount(5);
 		model.addAttribute("review", reviewService.getReviewList(reviewVO, cri));
 		model.addAttribute("count", reviewService.countGetReview(reviewVO));
 		model.addAttribute("reviewAvg", reviewService.starAvg(reviewVO));
@@ -836,8 +836,8 @@ public class ProductController {
 		optionVO.setProductCode(productCode);
 		model.addAttribute("options", productService.getOptionList(optionVO));
 		model.addAttribute("optionDetail", productService.getOptionDetail(optionVO));
-		System.out.println(model);
 		// 장바구니
+		System.out.println("aaaaa"+productService.getOptionDetail(optionVO));
 
 		return "page/goods/goodDetail";
 	}

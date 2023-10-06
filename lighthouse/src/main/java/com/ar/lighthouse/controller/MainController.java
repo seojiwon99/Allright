@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.product.service.CategoryVO;
+import com.ar.lighthouse.product.service.ProductVO;
 
 
 /*
@@ -34,7 +35,7 @@ public class MainController {
 
 	
 	@GetMapping("/")
-	public String Body(Model model) {
+	public String Body(Model model, ProductVO productVO) {
 	
 		model.addAttribute("categories",service.getCategoryList());
 		model.addAttribute("allCtg", service.getAllCategoryList());
@@ -43,7 +44,7 @@ public class MainController {
 		
 		model.addAttribute("productbanner",service.showEventBanner());
 	
-		model.addAttribute("productRand", service.randomGetProduct());
+		model.addAttribute("productRand", service.randomGetProduct(productVO));
 	
 		return "page/body";
 		

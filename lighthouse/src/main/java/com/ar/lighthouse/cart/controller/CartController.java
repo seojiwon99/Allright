@@ -70,7 +70,7 @@ public class CartController {
 
 	@PostMapping("cart/addCart")
 	@ResponseBody
-	public String addCart(CartVO cartVO, @RequestBody List<OptionDetailVO> optionDetailVO, HttpSession session) {
+	public List<Long> addCart(CartVO cartVO, @RequestBody List<OptionDetailVO> optionDetailVO, HttpSession session) {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 
@@ -96,9 +96,10 @@ public class CartController {
 			}
 			
 		}
+		System.out.println(lastODC);
 		// cartService.addCart(cartVO);
 		//lastODC <-- 받아서 값이 없다? 다 들어감. 값이 있다? optionDetailCode 가 안들어간거
-		return "sucs";
+		return lastODC;
 	}
 	
 	@GetMapping("/cart/cartCheck")

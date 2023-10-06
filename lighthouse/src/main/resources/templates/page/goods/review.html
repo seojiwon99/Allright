@@ -12,6 +12,7 @@
 			<div class="container">
 				<!-- review -->
 				<div class="row" id="reviews">
+
 					<div class="col-12" id="sizeTab">
 						<!-- Heading -->
 						<h5 class="mb-10 text-center">리뷰</h5>
@@ -53,16 +54,18 @@
 								<!-- Button -->
 
 								<a class="btn btn-sm btn-dark collapsed"
-									data-bs-toggle="collapse" href="#reviewForm" 
+									data-bs-toggle="collapse" href="#reviewForm"
 									aria-expanded="false" th:if="${session.loginMember != null}">
 									리뷰 작성 </a> <a class="btn btn-sm btn-dark"
 									th:if="${session.loginMember == null}"
-									href="javascript:parent.location.href='page/member/loginForm'" tabindex="-1">
-									로그인 </a>
+									href="javascript:parent.location.href='page/member/loginForm'"
+									tabindex="-1"> 로그인 </a>
 							</div>
 						</div>
 
-
+						<div th:if="${count} == 0" style="text-align: center; padding-top: 150px">
+							<p style="font-size: 26px">등록된 리뷰가 없습니다</p>
+						</div>
 
 						<!-- New Review -->
 						<form method="post" id="reviewForm2" enctype="multipart/form-data">
@@ -205,9 +208,9 @@
 												<div th:if="${review.reviewImg} != null">
 													<img id="showReviewImg"
 														th:src="|upload/${review.reviewImg.uploadPath}/${review.reviewImg.uploadName}|"
-														width="180px" height="180px">
-													<input type="hidden" th:value="${review.reviewImg.imgContent}" id="imgContent">
-													
+														width="180px" height="180px"> <input type="hidden"
+														th:value="${review.reviewImg.imgContent}" id="imgContent">
+
 												</div>
 											</div>
 										</div>
@@ -247,17 +250,20 @@
 											</div>
 
 											<!-- Text -->
-											<p class="text-gray-500" th:text="${review.reviewContent}" id="reviewContent"></p>
+											<p class="text-gray-500" th:text="${review.reviewContent}"
+												id="reviewContent"></p>
 
 											<!-- Footer -->
 											<div class="row align-items-center">
 												<div class="col-auto me-auto">
 													<!-- 좋아요 -->
 													<div class="rate">
-														<a class="rate-item" data-toggle="vote" data-count="0" tabindex="-1"
-															href="#" role="button"> <i class="fe fe-thumbs-up"></i>
-														</a> <a class="rate-item" data-toggle="vote" data-count="0" tabindex="-1"
-															href="#" role="button"> <i class="fe fe-thumbs-down"></i>
+														<a class="rate-item" data-toggle="vote" data-count="0"
+															tabindex="-1" href="#" role="button"> <i
+															class="fe fe-thumbs-up"></i>
+														</a> <a class="rate-item" data-toggle="vote" data-count="0"
+															tabindex="-1" href="#" role="button"> <i
+															class="fe fe-thumbs-down"></i>
 														</a>
 													</div>
 												</div>
@@ -432,8 +438,9 @@
 						</div>
 
 
-						<input type="hidden" th:value="${pageMaker.cri.pageNum}" id="reviewpageNum" tabindex="-1">
-						<input type="hidden" th:value="${pageMaker.endPage}" id="reviewpageEnd" tabindex="-1">
+						<input type="hidden" th:value="${pageMaker.cri.pageNum}"
+							id="reviewpageNum" tabindex="-1"> <input type="hidden"
+							th:value="${pageMaker.endPage}" id="reviewpageEnd" tabindex="-1">
 						<!-- Pagination -->
 						<nav class="d-flex justify-content-center mt-9" id="inquiryBox"
 							style="padding-bottom: 40px">

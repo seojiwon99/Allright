@@ -614,8 +614,6 @@ WHERE order_detail_code = #{orderDetailCode}
 	<select id="selectOptionDetail" resultType="OptionDetailVO">
 		select * from ar_option_detail where product_code = #{productCode}
 	</select>
-	
-	
 
 	<!-- option 리스트 -->
 	<select id="getOptionList" resultType="OptionDetailVO">
@@ -864,7 +862,8 @@ ORDER BY EXTRACT(MONTH FROM order_date)
 
 	<!-- 김무준의 상세페이지~~ -->
 	<select id="selectInfo" resultType="ProductVO">
-		select m.member_id
+		    select  
+            m.member_id
 			, p.product_code
 			, p.category_code
 			, p.product_name
@@ -884,9 +883,11 @@ ORDER BY EXTRACT(MONTH FROM order_date)
 			, i.upload_name
 			, i.img_content
 			 , m.business_number
-			from ar_products p ,
-			ar_imgs i, ar_member m
+			from ar_products p ,ar_imgs i, ar_member m
 			where p.product_code = i.product_code 
+			<![CDATA[
+            and rownum < 2
+            ]]>
 			and p.member_id = m.member_id
 			and p.product_code = #{productCode}
 	</select>
