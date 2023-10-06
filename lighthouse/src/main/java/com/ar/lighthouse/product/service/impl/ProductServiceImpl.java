@@ -55,6 +55,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public int addProduct(ProductVO productVO) {
 		int result = productMapper.insertProduct(productVO);
+		int insert = 0;
 		List<OptionVO> optionVO = new ArrayList();
 		if (result > 0) {
 			String code = productVO.getProductCode();
@@ -65,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
 				noptionVO.setOptionName("없음");
 				noptionVO.setOptionValue("없음");
 
-				productMapper.insertOption(noptionVO);
+				insert = productMapper.insertOption(noptionVO);
 			} else {
 				for (int i = 0; i < productVO.getOption().size(); i++) {
 
@@ -97,6 +98,7 @@ public class ProductServiceImpl implements ProductService {
 					for (int i = 0; i < productVO.getOptionDetail().size(); i++) {
 						productVO.getOptionDetail().get(i).setProductCode(code);
 						productMapper.insertOptionDetail(productVO.getOptionDetail().get(i));
+						insert++;
 					}
 				} else {
 					OptionDetailVO detailVO = new OptionDetailVO();
@@ -104,14 +106,15 @@ public class ProductServiceImpl implements ProductService {
 					detailVO.setOptionLast("없음");
 					detailVO.setOptionPrice(0);
 					detailVO.setOptionCount(productVO.getProductCount());
-					productMapper.insertOptionDetail(detailVO);
+					insert = productMapper.insertOptionDetail(detailVO);
 
 				}
 
 			}
 			// productMapper.insertOption(productVO.getOption());
+			System.out.println(insert);
 		}
-		return 1;
+		return insert;
 	}
 
 	// 상품이미지 등록
