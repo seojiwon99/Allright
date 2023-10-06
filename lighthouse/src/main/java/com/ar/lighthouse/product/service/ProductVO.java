@@ -29,7 +29,6 @@ public class ProductVO {
 	private String productBrand;
 	private String productStatus;
 	private String productExStatus;
-
 	private Integer productCount;
 	private List<ImgsVO> productImg;
 
@@ -50,6 +49,9 @@ public class ProductVO {
 
 	List<OptionDetailVO> optionDetail;
 	private String businessNumber;
+	
+	
+	List<CategoryVO> category;
 	
 
 }

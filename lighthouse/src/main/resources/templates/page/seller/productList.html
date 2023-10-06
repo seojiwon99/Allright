@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/sellerHtml}">
+   xmlns:th="http://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{layouts/sellerHtml}">
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <!-- Content -->
 
@@ -12,298 +12,303 @@
 <div layout:fragment="sellerContent">
 
 
-	<div class="row gx-0">
-		<div class="col-12 col-lg-auto">
+   <div class="row gx-0">
+      <div class="col-12 col-lg-auto">
 
-			<!-- NAVBAR -->
-			<nav
-				class="navbar navbar-expand-lg navbar-vertical navbar-light sticky-start px-lg-7 ">
-				<div class="container-fluid">
+         <!-- NAVBAR -->
+         <nav
+            class="navbar navbar-expand-lg navbar-vertical navbar-light sticky-start px-lg-7 ">
+            <div class="container-fluid">
 
-					<!-- Brand -->
-					<a class="navbar-brand" href="/sellerMain"> 판매자센터 </a>
+               <!-- Brand -->
+               <a class="navbar-brand" href="/sellerMain"> 판매자센터 </a>
 
-					<!-- Toggler -->
-					<button class="navbar-toggler" type="button"
-						data-bs-toggle="collapse"
-						data-bs-target="#navbarSidenavLeftCollapse"
-						aria-controls="navbarSidenavLeftCollapse" aria-expanded="false"
-						aria-label="Toggle navigation">
-						<span class="navbar-toggler-icon"></span>
-					</button>
+               <!-- Toggler -->
+               <button class="navbar-toggler" type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarSidenavLeftCollapse"
+                  aria-controls="navbarSidenavLeftCollapse" aria-expanded="false"
+                  aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+               </button>
 
-					<!-- Collapse -->
-					<div class="collapse navbar-collapse"
-						id="navbarSidenavLeftCollapse">
+               <!-- Collapse -->
+               <div class="collapse navbar-collapse"
+                  id="navbarSidenavLeftCollapse">
 
-						<!-- Nav -->
-						<ul class="navbar-nav fs-lg mb-6 my-lg-12" id="sidenavParent">
-							<li class="nav-item">
-								<!-- Toggle --> <a class="nav-link dropdown-toggle"
-								data-bs-toggle="collapse" href="#sidenavHome"> 상품관리 </a> <!-- Collapse -->
-								<div class="collapse" id="sidenavHome"
-									data-bs-parent="#sidenavParent">
-									<ul class="list-styled fs-base fw-normal py-3 mb-0">
-										<li class="list-styled-item"><a class="list-styled-link"
-											href="/productList">상품 조회/수정</a></li>
-										<li class="list-styled-item"><a class="list-styled-link"
-											href="/insertProduct">상품등록</a></li>
+                  <!-- Nav -->
+                  <ul class="navbar-nav fs-lg mb-6 my-lg-12" id="sidenavParent">
+                     <li class="nav-item">
+                        <!-- Toggle --> <a class="nav-link dropdown-toggle"
+                        data-bs-toggle="collapse" href="#sidenavHome"> 상품관리 </a> <!-- Collapse -->
+                        <div class="collapse" id="sidenavHome"
+                           data-bs-parent="#sidenavParent">
+                           <ul class="list-styled fs-base fw-normal py-3 mb-0">
+                              <li class="list-styled-item"><a class="list-styled-link"
+                                 href="/productList">상품 조회/수정</a></li>
+                              <li class="list-styled-item"><a class="list-styled-link"
+                                 href="/insertProduct">상품등록</a></li>
 
-									</ul>
-								</div>
+                           </ul>
+                        </div>
 
-							</li>
-							<li class="nav-item">
-								<!-- Toggle --> <a class="nav-link dropdown-toggle"
-								data-bs-toggle="collapse" href="#sidenavCatalog"> 판매관리 </a> <!-- Collapse -->
-								<div class="collapse" id="sidenavCatalog"
-									data-bs-parent="#sidenavParent">
-									<div class="row">
-										<div class="col-12 py-3">
-											<!-- Links -->
-											<ul class="list-styled fs-base">
-												<li class="list-styled-item"><a
-													class="list-styled-link" href="/orderManagement">주문확인/발송관리</a></li>
-												<li class="list-styled-item"><a
-													class="list-styled-link" href="/cancelProduct">취소관리</a></li>
-												<li class="list-styled-item"><a
-													class="list-styled-link" href="/exchangeList">교환반품관리</a></li>
+                     </li>
+                     <li class="nav-item">
+                        <!-- Toggle --> <a class="nav-link dropdown-toggle"
+                        data-bs-toggle="collapse" href="#sidenavCatalog"> 판매관리 </a> <!-- Collapse -->
+                        <div class="collapse" id="sidenavCatalog"
+                           data-bs-parent="#sidenavParent">
+                           <div class="row">
+                              <div class="col-12 py-3">
+                                 <!-- Links -->
+                                 <ul class="list-styled fs-base">
+                                    <li class="list-styled-item"><a
+                                       class="list-styled-link" href="/orderManagement">주문확인/발송관리</a></li>
+                                    <li class="list-styled-item"><a
+                                       class="list-styled-link" href="/cancelProduct">취소관리</a></li>
+                                    <li class="list-styled-item"><a
+                                       class="list-styled-link" href="/exchangeList">교환반품관리</a></li>
 
-											</ul>
+                                 </ul>
 
-										</div>
+                              </div>
 
-										<li class="nav-item"><a class="nav-link"
-											href="/settlementManagement">정산/통계관리</a></li>
-										<li class="nav-item"><a class="nav-link"
-											href="/productInquiry">문의관리</a></li>
-										<li class="nav-item"><a class="nav-link"
-											href="/sellerMypage">판매자정보</a></li>
-										<li class="nav-item"><a class="nav-link"
-											href="/sellerInquiry">고객센터</a></li>
-						</ul>
+                              <li class="nav-item"><a class="nav-link"
+                                 href="/settlementManagement">정산/통계관리</a></li>
+                              <li class="nav-item"><a class="nav-link"
+                                 href="/productInquiry">문의관리</a></li>
+                              <li class="nav-item"><a class="nav-link"
+                                 href="/sellerMypage">판매자정보</a></li>
+                              <li class="nav-item"><a class="nav-link"
+                                 href="/sellerInquiry">고객센터</a></li>
+                  </ul>
 
-						
-						
-						
+                  
+                  
+                  
 
-					</div>
+               </div>
 
-				</div>
-			</nav>
+            </div>
+         </nav>
 
-		</div>
-		<div class="col-12 col-lg">
+      </div>
+      <div class="col-12 col-lg">
 
-			
-			<h3>상품조회/수정</h3>
-
-
-			<div>
-				<button type="button" id="chkDelBtn">전시중지</button>
-				<button type="button" id="chkY">전시중</button>
-			</div>
-			<div>
-				<select id="optionList">
-					<option></option>
-					<option value="상품등록일순">상품등록일순</option>
-					<option value="상품명순">상품명순</option>
-					<option value="누적판매건수">누적판매건수</option>
-					<option value="전시중">전시중</option>
-					<option value="전시중지">전시중지</option>
-				</select>
-			</div>
+         
+         <h3>상품조회/수정</h3>
 
 
-			<!-- CARDS -->
-			<section class="pb-12">
-
-				<table border="1" class="table" id="getProductList">
-					<thead>
-						<tr>
-							<th><input type="checkbox" id="allCheck"></th>
-							<th>수정</th>
-							<th>상품코드</th>
-							<th>상품명</th>
-							<th>재고수량</th>
-							<th>판매가</th>
-							<th>할인가</th>
-							<th>배송비</th>
-							<th>상품등록일</th>
-							<th>전시상태</th>
-						</tr>
-					</thead>
-					<tbody id="sortList">
-						<tr th:each="product : ${productList}">
-							<td><input type="checkbox"></td>
-							<td> 
-							<a th:href="@{'/modifyForm?productCode=' + ${product.productCode}}">
-                             <button id="modifyForm" type="button">수정</button>
-                         	</a>
-                         	</td>
-							<td th:text="${product.productCode}"></td>
-							<td th:text="${product.productName}"></td>
-							<td th:text="${product.optionDetail[0].optionCount}" />
-							<td th:text="${product.productCost}"></td>
-							<td th:text="${product.salePrice}"></td>
-							<td th:text="${product.deliveryCost}"></td>
-							<td
-								th:text="${#dates.format(product.productRegdate,'yyyy-MM-dd')}">상품등록일</td>
-							<td th:text="${product.productExStatus}">전시상
-							
-							태</td>
-						</tr>
-						<!-- 반복문 종료 -->
-					</tbody>
-				</table>
-			</section>
+         <div>
+            <button type="button" id="chkDelBtn">전시중지</button>
+            <button type="button" id="chkY">전시중</button>
+         </div>
+         <div>
+            <select id="optionList">
+               <option></option>
+               <option value="상품등록일순">상품등록일순</option>
+               <option value="상품명순">상품명순</option>
+               <option value="누적판매건수">누적판매건수</option>
+               <option value="전시중">전시중</option>
+               <option value="전시중지">전시중지</option>
+            </select>
+         </div>
 
 
+         <!-- CARDS -->
+         <section class="pb-12">
 
-		</div>
-	</div>
+            <table border="1" class="table" id="getProductList">
+               <thead>
+                  <tr>
+                     <th><input type="checkbox" id="allCheck"></th>
+                     <th>수정</th>
+                     <th>상품코드</th>
+                     <th>상품명</th>
+                     <th>재고수량</th>
+                     <th>판매가</th>
+                     <th>할인가</th>
+                     <th>배송비</th>
+                     <th>상품등록일</th>
+                     <th>전시상태</th>
+                  </tr>
+               </thead>
+               <tbody id="sortList">
+                  <tr th:each="product : ${productList}">
+                     <td><input type="checkbox"></td>
+                     <td> 
+                     <a th:href="@{'/updateProduct?productCode=' + ${product.productCode}}">
+                             <button id="modifyForm" class="modifyForm" type="button">수정</button>
+                            </a>
+                            </td>
+                     <td th:text="${product.productCode}"></td>
+                     <td th:text="${product.productName}"></td>
+                     <!-- <td th:text="${product.optionDetail[0].optionCount}"/> -->
+                     <td th:text="${product.productCost}"></td>
+                     <td th:text="${product.salePrice}"></td>
+                     <td th:text="${product.deliveryCost}"></td>
+                     <td
+                        th:text="${#dates.format(product.productRegdate,'yyyy-MM-dd')}">상품등록일</td>
+                     <td th:text="${product.productExStatus}">전시상
+                     
+                     태</td>
+                  </tr>
+                  <!-- 반복문 종료 -->
+               </tbody>
+            </table>
+         </section>
 
 
-	<script th:inline="javascript">
-	
-	
-	
-	$(document).ready(function(){
-		let data = [[${msg}]];
-		if(data != null){
-			alert(data);
-			localStorage.removeItem('detail');
-			localStorage.removeItem('product');
-		}
+
+      </div>
+   </div>
 
 
-	
-	
-	$('#optionList').on('change',function(){
-		
-		let val = $(this).val();
-		console.log(val);
-		$.ajax({
-			url : 'getOptionProduct',
-			type :'get',
-			data : {
-				"optionVal" : val
-			}
-			})
-		.done(productList => {
-			console.log(productList);			
-	        //let newTbody = $('<tr><td><input type="checkbox"></td></tr>');
-	        // newTbody.append(data);
+   <script th:inline="javascript">
+   
+   
+   
+   $(document).ready(function(){
+      let data = [[${msg}]];
+      if(data != null){
+         alert(data);
+         localStorage.removeItem('detail');
+         localStorage.removeItem('product');
+      }
 
-	      $("#sortList").replaceWith(productList);
-		})
-		.fail(reject =>{
-			
-		})
-	})
 
-	
-	
-	
-	document.getElementById('allCheck')
-	.addEventListener('click', allCheckEvent);
+   
+   
+   $('#optionList').on('change',function(){
+      
+      let val = $(this).val();
+      console.log(val);
+      $.ajax({
+         url : 'getOptionProduct',
+         type :'get',
+         data : {
+            "optionVal" : val
+         }
+         })
+      .done(productList => {
+         console.log(productList);         
+           //let newTbody = $('<tr><td><input type="checkbox"></td></tr>');
+           // newTbody.append(data);
 
-	function allCheckEvent(e) {
-	    let allCheckTag = document.getElementById('allCheck');
-	    let checkTags = document.querySelectorAll('[type="checkbox"]');
-	    checkTags.forEach(el => {
-	        el.checked = allCheckTag.checked;
-	    })
-	}
-	
+         $("#sortList").replaceWith(productList);
+      })
+      .fail(reject =>{
+         
+      })
+   })
 
-	$('#chkDelBtn').on('click',function(){
-		let proList = [];
-		let checkTags = $('input[type="checkbox"]:checked').not('#allcheck');
-		
-		console.log(checkTags);
-		
-		checkTags.each((idx, tag) => {
-			let productCode = $(tag).parent().next().next().text();
-			let obj = {'productCode' : productCode};
-			proList.push(obj);
-		})
-	
-		
-		
-		$.ajax({
-			/* let val = $(this).val();
-			console.log(val); */
-			url : 'updateExStatus',
-			type: 'post',
-			contentType : 'application/json',
-			data : JSON.stringify(proList)
-		})
-		.done(data => {
-			
-			refreshList();
-			
-		})
-		.fail(reject => console.log(reject));
-	
-	});
-	
-	  $('#chkY').on('click',function(){
-		let proList = [];
-		let checkTags = $('input[type="checkbox"]:checked').not('#allcheck');
-		
-		console.log(checkTags);
-		
-		checkTags.each((idx, tag) => {
-			let productCode = $(tag).parent().next().next().text();
-			let obj = {'productCode' : productCode};
-			proList.push(obj);
-		})
-	
-		
-		
-		$.ajax({
-			
-			url : 'updateExStatus',
-			type: 'post',
-			contentType : 'application/json',
-			data : JSON.stringify(proList)
-		})
-		.done(data => {
-			
-			refreshList();
-			
-		})
-		.fail(reject => console.log(reject));
-	
-	});  
+   
+   
+   
+   document.getElementById('allCheck')
+   .addEventListener('click', allCheckEvent);
 
-	
-	function refreshList(){
-		location.reload();
-	}
-	
-	$('#modifyForm').on('click', function () {
-	    let productCode = $(this).closest('tr').find('td:eq(2)').text();
-	    console.log(productCode);
+   function allCheckEvent(e) {
+       let allCheckTag = document.getElementById('allCheck');
+       let checkTags = document.querySelectorAll('[type="checkbox"]');
+       checkTags.forEach(el => {
+           el.checked = allCheckTag.checked;
+       })
+   }
+   
 
-	    $.ajax({
-	        url: 'modifyForm',
-	        type: 'get',
-	        data: {
-	            productCode
-	        }
-	    })
-	    .done(data => {
-	        console.log(data);
-	        window.location.href = '/modifyForm?productCode=' + productCode;
-	    })
-	    .fail(reject => {
-	        console.log(reject);
-	    });
-	});
+   $('#chkDelBtn').on('click',function(){
+      let proList = [];
+      let checkTags = $('input[type="checkbox"]:checked').not('#allcheck');
+      
+      console.log(checkTags);
+      
+      checkTags.each((idx, tag) => {
+         let productCode = $(tag).parent().next().next().text();
+         let obj = {'productCode' : productCode};
+         proList.push(obj);
+      })
+   
+      
+      
+      $.ajax({
+         /* let val = $(this).val();
+         console.log(val); */
+         url : 'updateExStatus',
+         type: 'post',
+         contentType : 'application/json',
+         data : JSON.stringify(proList)
+      })
+      .done(data => {
+         
+         refreshList();
+         
+      })
+      .fail(reject => console.log(reject));
+   
+   });
+   
+     $('#chkY').on('click',function(){
+      let proList = [];
+      let checkTags = $('input[type="checkbox"]:checked').not('#allcheck');
+      
+      console.log(checkTags);
+      
+      checkTags.each((idx, tag) => {
+         let productCode = $(tag).parent().next().next().text();
+         let obj = {'productCode' : productCode};
+         proList.push(obj);
+      })
+   
+      
+      
+      $.ajax({
+         
+         url : 'updateExStatus',
+         type: 'post',
+         contentType : 'application/json',
+         data : JSON.stringify(proList)
+      })
+      .done(data => {
+         
+         refreshList();
+         
+      })
+      .fail(reject => console.log(reject));
+   
+   });  
 
-	
+   
+   function refreshList(){
+      location.reload();
+   }
+   
+   $('.modifyForm').on('click', function () {
+       let productCode = $(this).closest('tr').find('td:eq(2)').text();
+       alert('hk');
+       console.log(productCode);
+
+       $.ajax({
+           url: 'updateProduct',
+           type: 'get',
+           data: {
+               productCode
+           }
+       })
+       .done(data => {
+           console.log(data);
+           localStorage.setItem('productCode', productCode);
+           location.href = '/updateProduct?productCode=' + productCode ;
+           
+
+        console.log('productCode 값:', productCode);
+       })
+       .fail(reject => {
+           console.log(reject);
+       });
+   });
+
+   
 })
 </script>
 
