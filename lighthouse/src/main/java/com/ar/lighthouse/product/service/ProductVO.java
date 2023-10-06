@@ -51,5 +51,8 @@ public class ProductVO {
 	List<OptionDetailVO> optionDetail;
 	private String businessNumber;
 	
+	
+	List<CategoryVO> category;
+	
 
 }

@@ -16,6 +16,7 @@ public interface ProductService {
 	
 	List<MemberVO> getSellerInfo(String memberId);
 	
+//	수정폼
 	public List<ProductVO> updateProduct(ProductVO productVO);
 	
 	public List<ProductVO> getOptionProduct(ProductVO productVO);
@@ -30,8 +31,14 @@ public interface ProductService {
 	
 	public int addOption(OptionVO optionVO);
 	
+
 	// 상품 이미지 등록
 	public void addProductImg(ImgsVO imgVO);
+	
+//	상품수정
+	public int updateProductP(ProductVO productVO);
+//	상품 이미지 수정
+	public void updateProductImg(ImgsVO imgVO);
 	
 //	orderManagement
 	List<DetailVO> getOrderOptionList(DetailVO detailVO);

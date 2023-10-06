@@ -90,8 +90,9 @@
 
 
          <div class="container">
-            <form id="insertForm" class="form-horizontal" action="insertProduct" method="post"
+            <form id="updateForm" class="form-horizontal" action="updateProduct" method="post"
                enctype="multipart/form-data">
+                <input type="hidden" name="productCode" id="productCode" th:value="${productCode}" />
                <div id="categoryId">
                   <div class="form-group row">
                      <div>
@@ -99,18 +100,18 @@
                         <div class="categorybox">
                            <select id="categoryCode">
                               <option value="" class="disabledsel" disabled selected>카테고리선택</option>
-                              <option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}"
+                              <option th:each="category : ${getCategoryList}" 
                                  th:text="${category.categoryName}" th:if="${category.categoryLevel == 1}"></option>
                            </select>  
                         </div>
                         <div class="categorybox1" style="display: none;">
-                           <select id="categoryCode01" class="disabledsel" >
+                           <select id="categoryCode01" class="disabledsel">
                               <option value="1" disabled selected>카테고리선택</option>
                            </select>  
                         </div>
                         <div class="categorybox2" style="display: none;">
                            <select id="categoryCode02"  class="disabledsel" >
-                              <option value="1" disabled selected>카테고리선택</option>
+                              <option value="1" disabled selected >카테고리선택</option>
                            </select>  
                         </div>
                         <div class="categorybox3" style="display: none;">
@@ -145,29 +146,29 @@
                </div>
 
 
-
-               <div class="form-group row">
+            
+                <div class="form-group row">
                   <label class="col-sm-2" for="productName">상품명</label>
                   <div class="col-sm-3">
-                     <input type="text" id="productName" name="productName" class="form-control" th:value="${productInfo[0].productName}">
+                     <input type="text" id="productName" name="productName" class="form-control" th:value="${product[0].productName}">
                   </div>
                </div>
 
                <div class="form-group row">
                   <label class="col-sm-2" for="productCost">판매가</label>
                   <div class="col-sm-3">
-                     <input type="number" id="productCost" name="productCost" class="form-control"th:value="${productInfo[0].productCost}">
+                     <input type="number" id="productCost" name="productCost" class="form-control" th:value="${product[0].productCost}"/>
                   </div>
                   <label class="col-sm-2" for="salePrice">할인가</label>
                   <div class="col-sm-3">
-                     <input type="number" id="salePrice" name="salePrice" class="form-control"th:value="${productInfo[0].salePrice}">
+                     <input type="number" id="salePrice" name="salePrice" class="form-control" th:value="${product[0].salePrice}">
                   </div>
                </div>
 
                <div class="countdiv form-group row">
                   <label class="col-sm-2" for="optionCount">재고수량</label>
                   <div class="col-sm-3">
-                     <input type="number" id="optionCount" name="productCount" class="form-control">
+                     <input type="number" id="optionCount" name="productCount" class="form-control" th:value="${product[0].productCount}">
                   </div>
                </div>
                <!-- <div class="form-group row">
@@ -236,7 +237,7 @@
                <div class="form-group row">
                   <label class="col-sm-2" for="productBrand">브랜드</label>
                   <div class="col-sm-3">
-                     <input type="text" id="productBrand" name="productBrand" class="form-control" th:value="${productInfo[0].productBrand}">
+                     <input type="text" id="productBrand" name="productBrand" class="form-control" th:value="${product[0].productBrand}"/>
                   </div>
                </div>
                <div class="form-group row">
@@ -248,51 +249,51 @@
                <div class="form-group row">
                   <label class="col-sm-2" for="productOrigin">원산지</label>
                   <div class="col-sm-3">
-                     <input type="text" id="productOrigin" name="productOrigin" class="form-control" th:value="${productInfo[0].productOrigin}">
+                     <input type="text" id="productOrigin" name="productOrigin" class="form-control" th:value="${product[0].productOrigin}">
                   </div>
                </div>
 
                <div class="form-group row">
                   <label class="col-sm-2" for="productMakeorigin">제조국</label>
                   <div class="col-sm-3">
-                     <input type="text" id="productMakeorigin" name="productMakeorigin" class="form-control" th:value="${productInfo[0].productMakeorigin}">
+                     <input type="text" id="productMakeorigin" name="productMakeorigin" class="form-control" th:value="${product[0].productMakeorigin}">
                   </div>
                </div>
                <div class="form-group row">
                   <label class="col-sm-2" for="minOrder">최소구매수량</label>
                   <div class="col-sm-3">
-                     <input type="number" id="minOrder" name="minOrder" class="form-control" th:value="${productInfo[0].optionDetail[0].minOrder}">
+                     <input type="number" id="minOrder" name="minOrder" class="form-control" th:value="${product[0].optionDetail[0].minOrder}">
                   </div>
                </div>
                <div class="form-group row">
                   <label class="col-sm-2" for="maxOrder">최대구매수량</label>
                   <div class="col-sm-3">
-                     <input type="number" id="maxOrder" name="maxOrder" class="form-control" th:value="${productInfo[0].optionDetail[0].maxOrder}" >
+                     <input type="number" id="maxOrder" name="maxOrder" class="form-control" th:value="${product[0].optionDetail[0].maxOrder}">
                   </div>
                </div>
                <div class="form-group row">
                   <label class="col-sm-2" for="productLocation">출고지</label>
                   <div class="col-sm-3">
-                     <input type="text" id="productLocation" name="productLocation" class="form-control" th:value="${productInfo[0].productLocation}">
+                     <input type="text" id="productLocation" name="productLocation" class="form-control" th:value="${product[0].productLocation}">
                   </div>
                </div>
 
                <div class="form-group row">
                   <label class="col-sm-2" for="deliveryCost">기본배송비</label>
                   <div class="col-sm-3">
-                     <input type="number" id="deliveryCost" name="deliveryCost" class="form-control" th:value="${productInfo[0].deliveryCost}">
+                     <input type="number" id="deliveryCost" name="deliveryCost" class="form-control" th:value="${product[0].deliveryCost}">
                   </div>
                </div>
                <div class="form-group row">
                   <label class="col-sm-2" for="exchangeCost">교환배송비</label>
                   <div class="col-sm-3">
-                     <input type="number" id="exchangeCost" name="exchangeCost" class="form-control" th:value="${productInfo[0].exchangeCost}">
+                     <input type="number" id="exchangeCost" name="exchangeCost" class="form-control" th:value="${product[0].exchangeCost}">
                   </div>
                </div>
                <div class="form-group row">
                   <label class="col-sm-2" for="returnCost">반품배송비</label>
                   <div class="col-sm-3">
-                     <input type="number" id="returnCost" name="returnCost" class="form-control" th:value="${productInfo[0].returnCost}">
+                     <input type="number" id="returnCost" name="returnCost" class="form-control" th:value="${product[0].returnCost}">
                   </div>
                </div>
                <div class="form-group row">
@@ -306,7 +307,7 @@
                </div>
                <div class="form-group row" th:if="${product != null}">
                   <textarea rows="" cols="" name="productContent"
-                     style="display: none;">${product.productContent}</textarea>
+                     style="display: none;">[[${product[0].productContent}]]</textarea>
                   <th:block th:each="img, status :${detailImg.imgsVO}">
                      <input type="hidden" th:value="${img.imgName}" th:name="|imgsVO[${status.index}].imgName|">
                      <input type="hidden" th:value="${img.uploadName}" th:name="|imgsVO[${status.index}].uploadName|">
@@ -316,7 +317,7 @@
                </div>
                <div class="form-group row">
                   <div class="col-sm-offset-2 col-sm-10">
-                     <button type="submit" class="submit btn btn-primary">등록</button>
+                     <button type="submit" class="submit btn btn-primary">수정</button>
                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Launch demo modal
                       </button>
@@ -356,8 +357,8 @@
                      localStorage.removeItem("detail");
                      return;
                   }
-                  let inputTag = $("#insertForm").find("input").not("[type='button']");
-                  let selectTag = $("#insertForm").find("select");
+                  let inputTag = $("#updateForm").find("input").not("[type='button']");
+                  let selectTag = $("#updateForm").find("select");
                   for (let i = 0; i < selectTag.length; i++) {
                      inputTag.push(selectTag[i]);
                   }
@@ -448,7 +449,7 @@
          $('#selectCategory').on('change', function () {
             let val = $(this).val();
             $.ajax({
-                  url: 'childCate',
+                  url: 'mochildCate',
                   type: 'get',
                   data: {
                      'categoryCode': val
@@ -599,7 +600,7 @@
             let val = $(this).val();
             console.log(val);
             $.ajax({
-                  url: 'thirdOfCate',
+                  url: 'mothirdOfCate',
                   type: 'get',
                   data: {
                      'categoryCode': val
@@ -657,7 +658,7 @@
             //    alert("카테고리를 선택해주세요");   
             //    return;
             // }
-            let form = $('#insertForm');
+            let form = $('#updateForm');
             let data = $(form).find('input[type != hidden]');
             /* $(data).each(function(idx,item){
                if($(item).val() == null || $(item).val() == ''){
@@ -675,6 +676,8 @@
                return;
             } */
             localStorage.removeItem('product')
+            localStorage.removeItem('productCode')
+            localStorage.removeItem('detail')
             form.submit();
 
          })
@@ -937,9 +940,13 @@
 
          })
 
+             
 
          // localstorage에 담고 보내기
          $('.detailPro').on('click', function (e) {
+            var productCode = window.localStorage.getItem('productCode');
+            console.log("productCode 값: " + productCode);
+           alert('hk');
             console.log($('input[id="optionName0"]').val());
             e.preventDefault();
             let obj = {
@@ -982,11 +989,8 @@
                expire: Date.now() + 7200000
             }
             window.localStorage.setItem("product", JSON.stringify(obj));
-            location.href = '/productContent';
+            window.location.href = '/modifyProductContent?productCode=' + productCode;
          })
-         
-         let products = [[${rttr}]];
-         console.log(products)
       </script>
 
 
