@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.member.service.MemberVO;
@@ -337,6 +338,12 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void updateProductImg(ImgsVO imgVO) {
 		productMapper.updateProductImg(imgVO);
+	}
+	
+//	판매자 문의 내역
+	@Override
+	public List<MyInquiryVO> getSellerInquiry(String memberId) {
+		return productMapper.selectSellerInquriy(memberId);
 	}
 
 }

@@ -28,7 +28,7 @@
       SELECT *
       FROM
               ar_products p
-      INNER JOIN ( SELECT product_code,
+      left OUTER JOIN ( SELECT product_code,
                     SUM(option_count) AS
                     option_count
                     FROM ar_option_detail
@@ -59,7 +59,7 @@
   <select id="selectOptionProduct" resultMap="selectOptionProduct">
     SELECT *
     FROM ar_products p
-    INNER JOIN (
+    left OUTER JOIN (
         SELECT product_code, SUM(option_count) AS option_count
         FROM ar_option_detail
         GROUP BY product_code
@@ -1006,5 +1006,10 @@ WHERE product_code = #{productCode}
 		FROM ar_imgs
 	</select>
 
+<!-- 판매자 문의 -->
+<select id="selectSellerInquriy" resultType="com.ar.lighthouse.buyp.service.MyInquiryVO">
+select * from ar_custom_inquiry
+where member_id = #{memberId}
+</select>
 
 </mapper>
