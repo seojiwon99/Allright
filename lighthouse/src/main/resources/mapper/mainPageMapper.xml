@@ -90,10 +90,13 @@
 
 	
 	<select id="bestProductByFassion">
-		select t.product_code, t.product_name, sum(t.order_cnt) as order_cnt, i.img_content, i.upload_path, i.upload_name
+		select t.product_code, t.product_name, t.product_cost, t.sale_price , GET_PARENT_CODE(t.category_code), sum(t.order_cnt) as order_cnt, i.img_content, i.upload_path, i.upload_name
 		from(
 		            select p.product_code
 		                , p.product_name
+                        , p.product_cost
+                        , p.sale_price
+                        , p.category_code
 		                , COALESCE(sum(od.order_cnt),0) as order_cnt
 		            from ar_products p
 		            LEFT OUTER JOIN ar_option_detail o
@@ -101,20 +104,25 @@
 		            LEFT OUTER JOIN ar_order_detail od
 		                   ON o.option_detail_code = od.option_detail_code
 		            WHERE  GET_PARENT_CODE(p.category_code) = 'Fassion'
-		            group by p.product_code, p.product_name, od.order_cnt
+		            group by p.product_code, p.product_name, od.order_cnt, p.product_cost
+                        , p.sale_price
+                        , p.category_code
 		            order by SUM(od.order_cnt), p.product_code
 		      ) t
 		LEFT OUTER JOIN ar_imgs i ON t.product_code = i.product_code
 		WHERE i.img_order = '0'
-		group by t.product_code, t.product_name,  i.img_content, i.upload_path, i.upload_name
+		group by t.product_code, t.product_name, t.product_cost, t.sale_price , t.category_code,  i.img_content, i.upload_path, i.upload_name
 		order by order_cnt desc
 	</select>
 	
 	<select id="bestProductByFOOD">
-		select t.product_code, t.product_name, sum(t.order_cnt) as order_cnt, i.img_content, i.upload_path, i.upload_name
+		select t.product_code, t.product_name, t.product_cost, t.sale_price , GET_PARENT_CODE(t.category_code), sum(t.order_cnt) as order_cnt, i.img_content, i.upload_path, i.upload_name
 		from(
 		            select p.product_code
 		                , p.product_name
+                        , p.product_cost
+                        , p.sale_price
+                        , p.category_code
 		                , COALESCE(sum(od.order_cnt),0) as order_cnt
 		            from ar_products p
 		            LEFT OUTER JOIN ar_option_detail o
@@ -122,20 +130,25 @@
 		            LEFT OUTER JOIN ar_order_detail od
 		                   ON o.option_detail_code = od.option_detail_code
 		            WHERE  GET_PARENT_CODE(p.category_code) = 'FOOD'
-		            group by p.product_code, p.product_name, od.order_cnt
+		            group by p.product_code, p.product_name, od.order_cnt, p.product_cost
+                        , p.sale_price
+                        , p.category_code
 		            order by SUM(od.order_cnt), p.product_code
 		      ) t
 		LEFT OUTER JOIN ar_imgs i ON t.product_code = i.product_code
 		WHERE i.img_order = '0'
-		group by t.product_code, t.product_name,  i.img_content, i.upload_path, i.upload_name
+		group by t.product_code, t.product_name, t.product_cost, t.sale_price , t.category_code,  i.img_content, i.upload_path, i.upload_name
 		order by order_cnt desc
 	</select>
 	
 	<select id="bestProductByLife">
-		select t.product_code, t.product_name, sum(t.order_cnt) as order_cnt, i.img_content, i.upload_path, i.upload_name
+		select t.product_code, t.product_name, t.product_cost, t.sale_price , GET_PARENT_CODE(t.category_code), sum(t.order_cnt) as order_cnt, i.img_content, i.upload_path, i.upload_name
 		from(
 		            select p.product_code
 		                , p.product_name
+                        , p.product_cost
+                        , p.sale_price
+                        , p.category_code
 		                , COALESCE(sum(od.order_cnt),0) as order_cnt
 		            from ar_products p
 		            LEFT OUTER JOIN ar_option_detail o
@@ -143,12 +156,14 @@
 		            LEFT OUTER JOIN ar_order_detail od
 		                   ON o.option_detail_code = od.option_detail_code
 		            WHERE  GET_PARENT_CODE(p.category_code) = 'Life'
-		            group by p.product_code, p.product_name, od.order_cnt
+		            group by p.product_code, p.product_name, od.order_cnt, p.product_cost
+                        , p.sale_price
+                        , p.category_code
 		            order by SUM(od.order_cnt), p.product_code
 		      ) t
 		LEFT OUTER JOIN ar_imgs i ON t.product_code = i.product_code
 		WHERE i.img_order = '0'
-		group by t.product_code, t.product_name,  i.img_content, i.upload_path, i.upload_name
+		group by t.product_code, t.product_name, t.product_cost, t.sale_price , t.category_code,  i.img_content, i.upload_path, i.upload_name
 		order by order_cnt desc
 	</select>
 	
