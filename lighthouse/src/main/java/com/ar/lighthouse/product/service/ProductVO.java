@@ -21,6 +21,7 @@ public class ProductVO {
 	private String productContent;
 	private String productLocation;
 	private String productOrigin;
+	private String productExstatus;
 	private String productMakeorigin;
 	private int deliveryCost;
 	private int returnCost;

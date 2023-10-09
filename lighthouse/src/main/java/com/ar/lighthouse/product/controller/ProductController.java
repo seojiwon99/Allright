@@ -426,61 +426,58 @@ public class ProductController {
 			RedirectAttributes rtt, ImgsListVO imgsVO) {
 		HttpSession session = req.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-		System.out.println(imgsVO);
 		productVO.setMemberId(memberVO.getMemberId());
-
+		//productVO.setMemberId("hong1234");
 		// productVO.setCategoryCode("MSU");
 		System.out.println(productVO);
 		productService.addProduct(productVO);
-
+		
+		System.out.println(files);
 		int i = 0;
-		for (MultipartFile uploadFile : files) {
-			System.out.println("@@@@@@@@@@");
-			if (uploadFile.getContentType().startsWith("image") == false) {
-				System.err.println("this file is not image type");
-				return null;
-			}
-			String originalName = uploadFile.getOriginalFilename();
-			String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
-			productVO.getProductImg().get(i).setImgName(fileName);
-
-			// 날짜 폴더 생성
-			String folderPath = makeFolder();
-			String uuid = UUID.randomUUID().toString(); // 유니크한 이름 때문에
-			productVO.getProductImg().get(i).setUploadName(uuid + "_" + fileName);
-
-			String uploadFileName = folderPath + "/" + uuid + "_" + fileName;
-			// System.out.println("uploadFileName" + uploadFileName);
-			productVO.getProductImg().get(i).setUploadPath(folderPath);
-
-			String saveName = uploadPath + "/" + uploadFileName;
-
-			Path savePath = Paths.get(saveName);
-			try {
-				uploadFile.transferTo(savePath); // 파일의 핵심
-				// uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
-				productVO.getProductImg().get(i).setProductCode(productVO.getProductCode());
-				productVO.getProductImg().get(i).setImgOrder(i);
-				if (files.get(0) == uploadFile) {
-					int idx = originalName.indexOf(".");
-
-					FileOutputStream thumbnail = new FileOutputStream(
-							new File(uploadPath + "\\" + folderPath, "s_" + uuid + "_" + originalName));
-					FileInputStream input = new FileInputStream(
-							new File(uploadPath + "\\" + folderPath, uuid + "_" + originalName));
-					Thumbnailator.createThumbnail(input, thumbnail, 100, 100);
-
-					thumbnail.close();
-
+			for (MultipartFile uploadFile : files) {
+				if(!uploadFile.isEmpty()) {
+				String originalName = uploadFile.getOriginalFilename();
+				String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
+				productVO.getProductImg().get(i).setImgName(fileName);
+				
+				// 날짜 폴더 생성
+				String folderPath = makeFolder();
+				String uuid = UUID.randomUUID().toString(); // 유니크한 이름 때문에
+				productVO.getProductImg().get(i).setUploadName(uuid + "_" + fileName);
+				
+				String uploadFileName = folderPath + "/" + uuid + "_" + fileName;
+				// System.out.println("uploadFileName" + uploadFileName);
+				productVO.getProductImg().get(i).setUploadPath(folderPath);
+				
+				String saveName = uploadPath + "/" + uploadFileName;
+				
+				Path savePath = Paths.get(saveName);
+				try {
+					uploadFile.transferTo(savePath); // 파일의 핵심
+					// uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
+					productVO.getProductImg().get(i).setProductCode(productVO.getProductCode());
+					productVO.getProductImg().get(i).setImgOrder(i);
+					if (files.get(0) == uploadFile) {
+						int idx = originalName.indexOf(".");
+						
+						FileOutputStream thumbnail = new FileOutputStream(
+								new File(uploadPath + "\\" + folderPath, "s_" + uuid + "_" + originalName));
+						FileInputStream input = new FileInputStream(
+								new File(uploadPath + "\\" + folderPath, uuid + "_" + originalName));
+						Thumbnailator.createThumbnail(input, thumbnail, 100, 100);
+						
+						thumbnail.close();
+						
+					}
+					// System.out.println(productVO.getProductImg().get(i));
+					productService.addProductImg(productVO.getProductImg().get(i));
+					i++;
+					
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-				// System.out.println(productVO.getProductImg().get(i));
-				productService.addProductImg(productVO.getProductImg().get(i));
-				i++;
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
+				
+				}
 		}
 		if (imgsVO.getImgsVO() != null) {
 			for (int j = 0; j < imgsVO.getImgsVO().size(); j++) {
