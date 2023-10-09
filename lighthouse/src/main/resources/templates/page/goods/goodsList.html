@@ -22,7 +22,7 @@
                            <div class="form-group">
                               <ul class="list-styled mb-0" id="productsNav">
                                  <li class="list-styled-item"><a class="list-styled-link"
-                                    href="#"> 전체 상품 </a></li>
+                                    href="/PList"> 전체 상품 </a></li>
                                   
                                   
                                   <li class="list-styled-item" th:each="ctg : ${categories}">
@@ -205,21 +205,22 @@
                <div class="card mb-7">
                   <div class="card-img">
                   <a class="card-img"  tabindex="0" th:href="|/goodsDetail/?productCode=${product.product_code}|">
-                  <img th:src="@{/img/products/}+${#strings.replace(product.upload_path,'\','/')}+@{/}+${product.upload_name}">
+                  <img th:src="|/upload/${product.upload_path}/${product.upload_name}|" style="height:100px; width:100px">
                   </a><!-- ${product.upload_path}+${product.upload_name} -->
                   </div>
                   <div class="card-body px-0">
                      <div class="fs-xs">[[${product.category_code}]]</div>
                      <div class="fw-bold">[[${product.product_name}]]</div>
                      <div class="fw-bold text-muted">
-                     <span class="fs-xs text-gray-350 text-decoration-line-through">[[${product.product_cost}]]</span>
-                     <span class="text-primary">[[${product.product_cost}-${product.sale_price}]]</span>
+                     <span class="fs-xs text-gray-350 text-decoration-line-through">[[${#numbers.formatInteger(product.product_cost,3,'COMMA')}]]</span>
+                     <span class="text-primary" th:text="|${#numbers.formatInteger(product.sale_price,3,'COMMA')}|">[[${product.sale_price}]]</span>
+                     <span class="text">원</span>
                      </div>
                   </div>
                   <!-- 별점 -->
                            <div class="col-auto">
                               <!-- Rating -->
-                              <div class="rating fs-xs text-dark" data-value="4">
+                              <div class="rating fs-xs text-dark"  th:if="${product.product_star} == 0" th:data-value="${product.product_star}+1">
                                  <div class="rating-item">
                                     <i class="fas fa-star"></i>
                                  </div>
@@ -236,7 +237,7 @@
                                     <i class="fas fa-star"></i>
                                  </div>
                               </div>
-                              <span class="fw-bold text-muted">(6)</span>
+                              <span class="fw-bold text-muted" th:text="|(${product.review_count})|">(6)</span>
                              </div>
                   <!-- 별점 END -->
                   <!-- 리뷰 수 -->

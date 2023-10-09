@@ -120,12 +120,12 @@
                                     <!-- Toggle --> 
                                     <a class="nav-link" data-bs-toggle="dropdown" th:text="${category.categoryCode}"></a> 
                                     <!-- Menu -->
-                                    <div class="dropdown-menu" style="min-width: 650px">
-                                       <div class="card card-lg">
+                                    <div class="dropdown-menu" style="min-width: 500px">
+                                       <div class="card">
                                           <div class="card-body">
-                                             <div class="row">
+                                             <div class="row justify-content-center">
                                                 <!-- 카테고리 하위 -->
-                                                <div class="col" th:each="ctgFirst : ${allCtg}" th:if="${ctgFirst.categoryLevel} == 2 and ${(ctgFirst.parentCategoryCode).equals('Fassion')} and ${(category.categoryCode).equals('Fassion')}" >
+                                                <div class="col-3" th:each="ctgFirst : ${allCtg}" th:if="${ctgFirst.categoryLevel} == 2 and ${(ctgFirst.parentCategoryCode).equals('Fassion')} and ${(category.categoryCode).equals('Fassion')}" >
                                                    <!-- Heading -->
                                                    
                                                    <th:block  th:each="ctgSec : ${allCtg}" th:if="${ctgSec.categoryLevel} == 3 and
@@ -172,7 +172,7 @@
                                                 </div><!--  fassion col end -->
                                                 
                                                 <!-- Food 카테고리 -->
-                                                <div class="col" th:if="${(category.categoryCode).equals('FOOD')}">
+                                                <div class="col-3" th:if="${(category.categoryCode).equals('FOOD')}">
                                                    <div class="mb-5 fw-bolder">축산
                                                    </div>
                                                    <ul class="list-styled mb-7 fs-sm">
@@ -197,7 +197,7 @@
                                                    </ul>
                                                    
                                                 </div>
-                                                <div class="col" th:if="${(category.categoryCode).equals('FOOD')}">
+                                                <div class="col-3" th:if="${(category.categoryCode).equals('FOOD')}">
                                                    <div class="mb-5 fw-bolder">수산물
                                                    </div>
                                                    <ul class="list-styled mb-7 fs-sm">
@@ -217,7 +217,7 @@
                                                    </ul>
                                                    
                                                 </div>
-                                                <div class="col" th:if="${(category.categoryCode).equals('FOOD')}">
+                                                <div class="col-3" th:if="${(category.categoryCode).equals('FOOD')}">
                                                    <div class="mb-5 fw-bolder">과일/채소
                                                    </div>
                                                    <ul class="list-styled mb-7 fs-sm">
@@ -237,7 +237,7 @@
                                                 
                                                 
                                                 <!-- Life 카테고리 -->
-                                                <div class="col" th:each="ctgFirst : ${allCtg}" th:if="${ctgFirst.categoryLevel} == 2 and ${(ctgFirst.parentCategoryCode).equals('Life')} and ${(category.categoryCode).equals('Life')}" >
+                                                <div class="col-3" th:each="ctgFirst : ${allCtg}" th:if="${ctgFirst.categoryLevel} == 2 and ${(ctgFirst.parentCategoryCode).equals('Life')} and ${(category.categoryCode).equals('Life')}" >
                                                    <!-- Heading -->
                                                    
                                                    <div class="mb-5 fw-bolder" th:text="${ctgFirst.categoryName}">
