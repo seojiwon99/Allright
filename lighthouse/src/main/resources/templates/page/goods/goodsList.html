@@ -357,17 +357,21 @@
 	<script th:inline="javascript">
 	
 	let ctgs = [[${allCtg}]]
-	let wildCtg = [[${param.wildCtg}]][0]
-	let inText;
-	console.log(wildCtg);
-	for(let ctg of ctgs){
-		if(ctg.categoryCode == wildCtg){
-			inText = ctg.categoryName;	
-			console.log(ctg.categoryName);
+	let urlwild = [[${param.wildCtg}]];
+	if(urlwild != null){
+		let wildCtg = urlwild[0]
+		let inText;
+		console.log(wildCtg);
+		for(let ctg of ctgs){
+			if(ctg.categoryCode == wildCtg){
+				inText = ctg.categoryName;	
+				console.log(ctg.categoryName);
+			}
 		}
+		let inspan = $('#wildCard').prev();
+		console.log(inspan)
+		inspan.before(inText);
 	}
-	let inspan = $('#wildCard').prev();
-	console.log(inspan)
    
 	let searchBars = document.querySelectorAll('input[type="search"]');
 	//console.log(searchBars);
@@ -468,6 +472,7 @@
 	$('.delCtg').on('click',function(){
 		let nowURL = new URL(location.href);
 		let urlTag = $(this).next().val();
+		console.log(urlTag);
 		if(urlTag == 'order'){
 			nowURL.searchParams.delete('order');
 		}
