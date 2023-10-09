@@ -23,25 +23,24 @@ public class ProductVO {
 	private String productOrigin;
 	private String productExstatus;
 	private String productMakeorigin;
-	private int deliveryCost;
-	private int returnCost;
-	private int exchangeCost;
+	private Integer deliveryCost;
+	private Integer returnCost;
+	private Integer exchangeCost;
 	private String deliveryService;
 	private String productBrand;
 	private String productStatus;
-	private String productExStatus;
 
 	private Integer productCount;
 	private List<ImgsVO> productImg;
-
+	private Integer salePrice;
+	private String productExStatus;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date productRegdate;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date productUpdatedate;
 
-	private int productCost;
-	private int salePrice;
+	private Integer productCost;
 	String optionVal;
 //	 	통계에 필요한
 	private int total_cnt;
