@@ -7,9 +7,10 @@
 
 <head>
 <style type="text/css">
-#productContent figcaption{
+#productContent figcaption {
 	display: none;
 }
+
 .card-img-top {
 	position: relative;
 	width: 540px;
@@ -27,6 +28,52 @@
 	background-position: center;
 	background-size: cover;
 	transition: transform .5s ease-out;
+}
+
+#test_obj {
+	position: absolute;
+	width: 100px;
+	height: 280px;
+	right: 50px;
+	border-radius: 10px;
+	top: 250px;
+	border: 1px solid #8a8a8a;
+	z-index: 2;
+	background-color: rgba(0,0,0,0.6);
+	
+}
+
+#buttons {
+	margin-left: 0;
+	padding-left: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	
+}
+
+#buttons li {
+	list-style: none;
+	padding: 20px;
+}
+
+#buttons li a {
+	text-decoration: none;
+	color: white;
+	
+}
+
+#buttons button {
+	background: inherit;
+	border: none;
+	box-shadow: none;
+	border-radius: 0;
+	padding: 0;
+	overflow: visible;
+	cursor: pointer;
+	font-size: 16px;
+	color:#ff6f61;
 }
 </style>
 </head>
@@ -159,24 +206,23 @@
 														th:value="${detail.optionName}"
 														th:text="${detail.optionName}"></option>
 												</select>
-												
+
 												<div style="font-size: 15px; color: rgba(0, 0, 0, 0.7);">
-													<div id="optionBox" >
+													<div id="optionBox">
 														<ul id="optionView" class="col-12 col-lg-auto"
 															style="list-style: none; padding-left: 0px"
-															th:if="${options[0].optionName=='없음'}"
-															>
-															<li 
+															th:if="${options[0].optionName=='없음'}">
+															<li
 																style="border: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; margin-bottom: 10px;">
-																<div style="padding-bottom: 6px" class="optionDetailCodeName">
-																	<input type="hidden" name="optionLast" class="optLast" value="없음">
-																	개수 : 
-																	<input type="number" class="pCnt" name="cartCount"
-																		min="1" value="1" />
+																<div style="padding-bottom: 6px"
+																	class="optionDetailCodeName">
+																	<input type="hidden" name="optionLast" class="optLast"
+																		value="없음"> 개수 : <input type="number"
+																		class="pCnt" name="cartCount" min="1" value="1" />
 																</div>
 																<div style="padding-bottom: 6px">
 																	총 가격 : <span class="noOptionPriceShow"><strong>[[${goods.salePrice}]]</strong></span>원
-																</div> 
+																</div>
 															</li>
 														</ul>
 													</div>
@@ -188,7 +234,7 @@
 												<div id="optionBox">
 													<ul id="optionView" class="col-12 col-lg-auto"
 														style="list-style: none; padding-left: 0px">
-														
+
 													</ul>
 												</div>
 											</div>
@@ -327,6 +373,22 @@
 
 						<!-- qna -->
 						<div id="qnaTap"></div>
+
+						<!-- js  -->
+						<div id="test_obj">
+							<ul id="buttons">
+								<li><a href="javascript:zoomIn()"><i class="fas fa-plus-circle"></i>확대</a></li>
+								<li><a href="javascript:zoomOut()"><i class="fas fa-minus-circle"></i>축소</a></li>
+								<li><a href="javascript:zoomReset()"><i
+										class="bi bi-plus-circle"></i>초기화</a></li>
+
+								<li>
+									<button type="button" class="topBtn">
+										<i class="fas fa-caret-up"></i>TOP
+									</button>
+								</li>
+							</ul>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -667,6 +729,61 @@
           })
        
     }
+   
+   /*--------------
+   네브바 스크립트 영역
+   --------------*/
+   $(document).ready(function () {
+     var tmp = parseInt($("#test_obj").css("top"));
+
+     $(window).scroll(function () {
+       var scrollTop = $(window).scrollTop();
+       var obj_position = scrollTop + tmp + "px";
+
+       $("#test_obj").stop().animate(
+         {
+           top: obj_position,
+         },
+         500
+       );
+     });
+   });
+   /*--------------
+   확대
+   --------------*/
+   let nowZoom = 100;
+   function zoomOut() {
+     nowZoom = nowZoom - 10;
+     if (nowZoom <= 70) nowZoom = 70;
+     $("#test_obj").css("width", "initial");
+     zooms();
+   }
+   function zoomIn() {
+     nowZoom = nowZoom + 10;
+     if (nowZoom >= 120) nowZoom = 120;
+     zooms();
+   }
+   function zoomReset() {
+     nowZoom = 100;
+     zooms();
+   }
+
+   function zooms() {
+     document.body.style.zoom = nowZoom + "%";
+     if (nowZoom == 70) {
+       alert("더 이상 축소할 수 없습니다");
+     }
+     if (nowZoom == 120) {
+       alert("더 이상 확대할 수 없습니다");
+     }
+   }
+
+   /*--------------
+   맨위로
+   --------------*/
+   $(".topBtn").on("click", function () {
+     window.scrollTo(0, 0);
+   });
     </script>
 
 
