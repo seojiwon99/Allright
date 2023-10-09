@@ -83,11 +83,6 @@
                      <li class="nav-item"><a class="nav-link" href="/sellerMypage">판매자정보</a></li>
                      <li class="nav-item"><a class="nav-link" href="/sellerInquiry">고객센터</a></li>
                   </ul>
-
-
-
-
-
                </div>
 
             </div>
@@ -95,12 +90,12 @@
 
       </div>
       <div class="col-12 col-lg" style="background-color: #E7E9EB;">
-         <div class="row">
+         <!-- <div class="row">
             <div class="col-12 text-center">
-              <!-- Heading -->
+              Heading
               <h3 class="mb-10">상품 등록</h3>
             </div>
-          </div>
+          </div> -->
          <div class="row">
             <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
               <!-- Form -->
@@ -149,7 +144,6 @@
                      </div>
                   </div>
                   <!-- 여기! -->
-
                   <div class="col-12">
                      <!-- 상품명 -->
                      <div class="form-group">
@@ -230,91 +224,96 @@
                            </tbody>
                          </table>
                      </div>
-   
                    </div>
-                   
-                  <div class="col-12 col-md-6">
-  
-                    <!-- Password -->
-                    <div class="form-group">
-                      <label class="form-label" for="AccountNewPassword">
-                        New Password *
-                      </label>
-                      <input class="form-control form-control-sm" id="AccountNewPassword" type="password" placeholder="New Password *" required="">
-                    </div>
-  
-                  </div>
-                  <div class="col-12 col-lg-6">
-                    <!-- Birthday -->
-                    <div class="form-group">
-                      <!-- Label -->
-                      <label class="form-label">Date of Birth</label>
-                      <!-- Inputs -->
-                      <div class="row gx-5">
-                        <div class="col-auto">
-                          <!-- Date -->
-                          <label class="visually-hidden" for="accountDate">
-                            Date
-                          </label>
-                          <select class="form-select form-select-sm" id="accountDate">
-                            <option>10</option>
-                            <option>11</option>
-                            <option selected="">12</option>
-                          </select>
-                        </div>
-                        <div class="col">
-                          <!-- Date -->
-                          <label class="visually-hidden" for="accountMonth">
-                            Month
-                          </label>
-                          <select class="form-select form-select-sm" id="accountMonth">
-                            <option>January</option>
-                            <option selected="">February</option>
-                            <option>March</option>
-                          </select>
-                        </div>
-                        <div class="col-auto">
-                          <!-- Date -->
-                          <label class="visually-hidden" for="accountYear">
-                            Year
-                          </label>
-                          <select class="form-select form-select-sm" id="accountYear">
-                            <option>1990</option>
-                            <option selected="">1991</option>
-                            <option>1992</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12 col-lg-6">
-  
-                    <!-- Gender -->
-                    <div class="form-group mb-8">
-  
-                      <!-- Label -->
-                      <label class="form-label">Gender</label>
-  
-                      <!-- Inputs -->
-                      <div>
-  
-                        <!-- Male -->
-                        <input class="btn-check" type="radio" name="gender" id="male" checked="">
-                        <label class="btn btn-sm btn-outline-border" for="male">Male</label>
-  
-                        <!-- Female -->
-                        <input class="btn-check" type="radio" name="gender" id="female">
-                        <label class="btn btn-sm btn-outline-border" for="female">Female</label>
-  
-                      </div>
-  
-                    </div>
-  
+                   <div class="col-12 col-lg-12">
+                     <div class="form-group mb-8">
+                        <div class="input-group mb-3">
+                           <label class="input-group-text" for="imgName">메인이미지</label>
+                           <input type="file" class="form-control" id="imgName" name="files" accept="image/*" onchange="setThumbnail(event);">
+                         </div>
+                           <div id="image_container" 
+                              >
+
+
+                           </div>
+                     </div>
+                   </div>
+                  
+                   <div class="col-12 col-lg-6">
+                     <div class="form-group mb-8">
+                       <label class="form-label">상세설명</label>
+                       <div>
+                         <input class="btn-check" type="button" name="detailBox" id="male" checked="">
+                         <label class="detailPro btn btn-sm btn-outline-border" for="detailBox">작성하러가기</label>
+                       </div>
+                     </div>
+                   </div>
+                   <div class="col-12">
+                     <!-- 상품명 -->
+                     <div class="form-group">
+                        <label class="form-label" for="productBrand">
+                           브랜드 *
+                        </label>
+                        <input class="form-control form-control-sm" id="productBrand" type="text" placeholder="브랜드을 입력해주세요" name="productBrand" maxlength="30">
+                     </div>
                   </div>
                   <div class="col-12">
-  
+                     <!-- 상품명 -->
+                     <div class="form-group">
+                        <label class="form-label" for="productOrigin">
+                           원산지 *
+                        </label>
+                        <input class="form-control form-control-sm" id="productOrigin" type="text" placeholder="원산지을 입력해주세요" name="productOrigin" maxlength="15">
+                     </div>
+                  </div>
+                  <div class="col-12">
+                     <!-- 상품명 -->
+                     <div class="form-group">
+                        <label class="form-label" for="productMakeorigin">
+                           제조국 *
+                        </label>
+                        <input class="form-control form-control-sm" id="productMakeorigin" type="text" placeholder="제조국을 입력해주세요" name="productMakeorigin" maxlength="15">
+                     </div>
+                  </div>
+                  <div class="col-12 col-md-4">
+                     <!-- 판매가 -->
+                     <div class="form-group">
+                       <label class="form-label" for="deliveryCost">
+                        기본배송비 *
+                       </label>
+                       <input class="form-control form-control-sm" type="number" id="deliveryCost" name="deliveryCost" maxlength="12" value="0">
+                     </div>
+   
+                   </div>
+                   <div class="col-12 col-md-4">
+                     <!-- 할인가 -->
+                     <div class="form-group">
+                       <label class="form-label" for="exchangeCost">
+                        교환배송비 *
+                       </label>
+                       <input type="number" id="exchangeCost" name="exchangeCost" class="form-control form-control-sm" maxlength="12" value="0">
+                     </div>
+   
+                   </div>
+                   <div class="col-12 col-md-4">
+                     <!-- 수량 -->
+                     <div class="countdiv form-group">
+                       <label class="form-label" for="returnCost">
+                         반품배송비 *
+                       </label>
+                       <input type="number" id="returnCost" name="returnCost" class="form-control form-control-sm" maxlength="12" value="0">
+                     </div>
+   
+                   </div>
+               
+                  <div class="col-12">
                     <!-- Button -->
-                    <button class="btn btn-dark" type="submit">Save Changes</button>
+                    <button type="button" class="submit btn btn-dark">등록</button>
+                     <button type="button" class="storage btn btn-secondary">저장</button>
+                     <button type="button" class="modalBtn btn btn-info" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                        미리보기
+                     </button>
   
                   </div>
                 </div>
@@ -503,7 +502,7 @@
                </div>
             </form>
 
-         </div> -->
+         </div>  -->
 
       </div>
       <!-- Modal -->
@@ -826,6 +825,7 @@
                      $(img).css("width", "300px");
                      $(img).css("height", "300px");
                      let divTag = $("<div />");
+                     divTag.css("display","flex")
 
                      divTag.append(img);
                      let inputTag = $('<input/>');
@@ -837,6 +837,7 @@
                      $(textarea).val(userData.productImgCon);
                      $(textarea).attr("id", "productImgCon")
                      $(textarea).attr("name", "productImg[0].imgContent");
+                     $(textarea).addClass("form-control");
 
                      divTag.append(textarea);
                      divTag.append(inputTag);
@@ -1027,6 +1028,7 @@
 
 
                for (let i = 0; i < val; i++) {
+                  let divBox = $('<div/>');
                   let div = $('<div/>').addClass("optionDiv col input-group mb-3");
                   let span = $('<span/>');
                   span.text("옵션명");
@@ -1053,7 +1055,8 @@
                      '" />');
 
                   div.append(optionV);
-                  $('.optionB').append(div);
+                  divBox.append(div);
+                  $('.optionB').append(divBox);
 
                }
             })
@@ -1179,6 +1182,7 @@
                var div = document.querySelector("div#image_container");
                div.innerHTML = "";
                var divTag = document.createElement("div");
+               divTag.style.display = "flex";
                var img = document.createElement("img");
                img.setAttribute("src", event.target.result);
                img.style.width = "300px";
@@ -1191,6 +1195,7 @@
                var input = document.createElement('input');
                var textarea = document.createElement("textarea");
                textarea.setAttribute("name", "productImg[0].imgContent");
+               textarea.setAttribute("class","form-control");
                textarea.setAttribute("id", "productImgCon");
 
                divTag.append(textarea);
@@ -1248,6 +1253,7 @@
 
                      td = $('<td/>');
                      input = $('<input />').attr('value', box0[i]);
+                     input.addClass("form-control");
                      input.attr('name', 'optionDetail[' + i + '].optionLast');
                      input.attr('id', 'optionLast' + idx);
                      input.attr('readonly', 'true');
@@ -1256,6 +1262,7 @@
 
                      td = $('<td/>');
                      let inputN = $('<input />').attr('type', 'number');
+                     inputN.addClass("form-control");
                      inputN.attr('name', 'optionDetail[' + i + '].optionPrice');
                      inputN.attr('id', 'optionPrice' + idx);
                      inputN.css("width", "100px");
@@ -1265,6 +1272,7 @@
 
                      td = $('<td/>');
                      inputN = $('<input />').attr('type', 'number');
+                     inputN.addClass("form-control");
                      inputN.attr('name', 'optionDetail[' + i + '].optionCount');
                      inputN.attr('id', 'optionCount' + idx);
                      inputN.css("width", "100px");
@@ -1274,6 +1282,7 @@
 
                      td = $('<td/>');
                      inputN = $('<input />').attr('type', 'number');
+                     inputN.addClass("form-control");
                      inputN.attr('name', 'optionDetail[' + i + '].minOrder');
                      inputN.attr('id', 'minOrder' + idx);
                      inputN.css("width", "100px");
@@ -1283,6 +1292,7 @@
 
                      td = $('<td/>');
                      inputN = $('<input />').attr('type', 'number');
+                     inputN.addClass("form-control");
                      inputN.attr('name', 'optionDetail[' + i + '].maxOrder');
                      inputN.attr('id', 'maxOrder' + idx);
                      inputN.css("width", "100px");
@@ -1300,6 +1310,7 @@
 
                         td = $('<td/>');
                         input = $('<input />').attr('value', box0[i] + box1[j]);
+                        input.addClass("form-control form-control-sm");
                         input.attr('name', 'optionDetail[' + idx + '].optionLast');
                         input.attr('id', 'optionLast' + idx);
                         input.attr('readonly', 'true');
@@ -1309,6 +1320,7 @@
                         td = $('<td/>');
                         let inputN = $('<input />').attr('type', 'number');
                         inputN.attr('name', 'optionDetail[' + idx + '].optionPrice');
+                        inputN.addClass("form-control form-control-sm");
                         inputN.attr('id', 'optionPrice' + idx);
                         inputN.css("width", "100px");
                         inputN.attr('value', 0);
@@ -1318,6 +1330,7 @@
                         td = $('<td/>');
                         inputN = $('<input />').attr('type', 'number');
                         inputN.attr('name', 'optionDetail[' + idx + '].optionCount');
+                        inputN.addClass("form-control form-control-sm");
                         inputN.attr('id', 'optionCount' + idx);
                         inputN.css("width", "100px");
                         inputN.attr('value', 0);
@@ -1327,6 +1340,7 @@
                         td = $('<td/>');
                         inputN = $('<input />').attr('type', 'number');
                         inputN.attr('name', 'optionDetail[' + idx + '].minOrder');
+                        inputN.addClass("form-control form-control-sm");
                         inputN.attr('id', 'minOrder' + idx);
                         inputN.css("width", "100px");
                         inputN.attr('value', 0);
@@ -1336,6 +1350,7 @@
                         td = $('<td/>');
                         inputN = $('<input />').attr('type', 'number');
                         inputN.attr('name', 'optionDetail[' + idx + '].maxOrder');
+                        inputN.addClass("form-control form-control-sm");
                         inputN.attr('id', 'maxOrder' + idx);
                         inputN.css("width", "100px");
                         inputN.attr('value', 0);
@@ -1355,6 +1370,7 @@
 
                            td = $('<td/>');
                            input = $('<input />').attr('value', box0[i] + box1[j] + box0[x]);
+                           input.addClass("form-control form-control-sm");
                            input.attr('name', 'optionDetail[' + idx + '].optionLast');
                            input.attr('id', 'optionLast' + idx);
                            input.attr('readonly', 'true');
@@ -1364,6 +1380,7 @@
                            td = $('<td/>');
                            let inputN = $('<input />').attr('type', 'number');
                            inputN.attr('name', 'optionDetail[' + idx + '].optionPrice');
+                           inputN.addClass("form-control form-control-sm");
                            inputN.attr('id', 'optionPrice' + idx);
                            inputN.css("width", "100px");
                            inputN.attr('value', 0);
@@ -1373,6 +1390,7 @@
                            td = $('<td/>');
                            inputN = $('<input />').attr('type', 'number');
                            inputN.attr('name', 'optionDetail[' + idx + '].optionCount');
+                           inputN.addClass("form-control form-control-sm");
                            inputN.attr('id', 'optionCount' + idx);
                            inputN.css("width", "100px");
                            inputN.attr('value', 0);
@@ -1382,6 +1400,7 @@
                            td = $('<td/>');
                            inputN = $('<input />').attr('type', 'number');
                            inputN.attr('name', 'optionDetail[' + idx + '].minOrder');
+                           inputN.addClass("form-control form-control-sm");
                            inputN.attr('id', 'minOrder' + idx);
                            inputN.css("width", "100px");
                            inputN.attr('value', 0);
@@ -1391,6 +1410,7 @@
                            td = $('<td/>');
                            inputN = $('<input />').attr('type', 'number');
                            inputN.attr('name', 'optionDetail[' + idx + '].MaxOrder');
+                           inputN.addClass("form-control form-control-sm");
                            inputN.attr('id', 'maxOrder' + idx);
                            inputN.css("width", "100px");
                            inputN.attr('value', 0);
@@ -1536,7 +1556,15 @@
             // localStorage저장
             window.localStorage.setItem("product", JSON.stringify(obj));
             //location.href = '/productContent';
-            let child = window.open('/productContent', 'productcontent', 'width=700,height=700');
+            
+            var _width = '700';
+		    var _height = '700';
+		 
+		    // 팝업을 가운데 위치시키기 위해 아래와 같이 값 구하기
+		    var _left = Math.ceil(( window.screen.width - _width )/2);
+		    var _top = Math.ceil(( window.screen.height - _height )/2); 
+		            
+            let child = window.open('/productContent', 'productcontent', 'width='+ _width +', height='+ _height +', left=' + _left + ', top='+ _top);
          })
 
 
