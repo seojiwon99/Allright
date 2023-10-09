@@ -134,7 +134,7 @@
 										<!-- Title -->
 										<a class="d-block fw-bold text-body"
 											th:onclick="|location.href = '@{/goodDetail(productCode=${product.productCode})}'|"
-											th:text="${product.productName}"> </a>
+											th:text="${product.productName}"></a>
 
 										<!-- Category -->
 										<a class="fs-xs text-muted" th:href="|/PList?ctg=${product.categoryCode}|"> [[${product.categoryCode}]] </a>
@@ -329,29 +329,25 @@
 
 					<!-- Nav -->
 					<div class="nav justify-content-center mb-10">
-						<a class="nav-link active" href="#topSellersTab"
-							data-bs-toggle="tab">Fassion</a> <a class="nav-link"
-							href="#topSellersTab" data-bs-toggle="tab">Food</a> <a
-							class="nav-link" href="#topSellersTab" data-bs-toggle="tab">Life</a>
+						<a class="nav-link active" href="#topSellersFassionTab" data-bs-toggle="tab">Fassion</a>
+						<a class="nav-link" href="#topSellersFOODTab" data-bs-toggle="tab">Food</a>
+					 	<a class="nav-link" href="#topSellersLifeTab" data-bs-toggle="tab">Life</a>
 					</div>
 				</div>
 			</div>
 			<div class="tab-content">
-				<div class="tab-pane fade show active" id="topSellersTab">
+				<div class="tab-pane fade show active" id="topSellersFassionTab">
 					<div class="row">
-						<div class="col-6 col-md-4 col-lg-3">
+						<div class="col-6 col-md-4 col-lg-3"  th:each="product, idx :${bestFassion}" >
 							<!-- Card -->
+							<th:block th:if="${idx.index} < 8">
 							<div class="card mb-7">
-
-
 								<!-- Image -->
 								<div class="card-img">
 									<!-- Image -->
-									<a class="card-img-hover" href="product.html"> <img
-										class="card-img-top card-img-back"
-										src="assets/img/products/product-120.jpg" alt="..." /> <img
-										class="card-img-top card-img-front"
-										src="assets/img/products/product-5.jpg" alt="..." />
+									<a class="card-img-hover" href="product.html">
+										<img class="card-img-top card-img"
+										th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." />
 									</a>
 
 									<!-- Actions -->
@@ -374,24 +370,21 @@
 										</span>
 									</div>
 								</div>
-
 								<!-- Body -->
 								<div class="card-body px-0">
 									<!-- Category -->
 									<div class="fs-xs">
-										<a class="text-muted" href="shop.html">Shoes</a>
+										<a class="text-muted" th:text="${product.categoryCode}" th:href="|/PList?ctg=${product.categoryCode}|">카테고리</a>
 									</div>
-
 									<!-- Title -->
 									<div class="fw-bold">
-										<a class="text-body" href="product.html"> Leather mid-heel
-											Sandals </a>
+										<a class="text-body" th:text="${product.productName}" th:href="|/goodsDetail?productCode=${product.productCode}|">이름</a>
 									</div>
-
 									<!-- Price -->
 									<div class="fw-bold text-muted">$129.00</div>
 								</div>
 							</div>
+							</th:block>
 						</div>
 
 						<div class="row">
@@ -403,7 +396,129 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div><!-- tab content 단락 -->
+								<div class="tab-pane fade show" id="topSellersFOODTab">
+					<div class="row">
+						<div class="col-6 col-md-4 col-lg-3"  th:each="product, idx :${bestFOOD}" >
+							<!-- Card -->
+							<th:block th:if="${idx.index} < 8">
+							<div class="card mb-7">
+								<!-- Image -->
+								<div class="card-img">
+									<!-- Image -->
+									<a class="card-img-hover" href="product.html">
+										<img class="card-img-top card-img"
+										th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." />
+									</a>
+
+									<!-- Actions -->
+									<div class="card-actions">
+										<span class="card-action">
+											<button class="btn btn-xs btn-circle btn-white-primary"
+												data-bs-toggle="modal" data-bs-target="#modalProduct">
+												<i class="fe fe-eye"></i>
+											</button>
+										</span> <span class="card-action">
+											<button class="btn btn-xs btn-circle btn-white-primary"
+												data-toggle="button">
+												<i class="fe fe-shopping-cart"></i>
+											</button>
+										</span> <span class="card-action">
+											<button class="btn btn-xs btn-circle btn-white-primary"
+												data-toggle="button">
+												<i class="fe fe-heart"></i>
+											</button>
+										</span>
+									</div>
+								</div>
+								<!-- Body -->
+								<div class="card-body px-0">
+									<!-- Category -->
+									<div class="fs-xs">
+										<a class="text-muted" th:text="${product.categoryCode}" th:href="|/PList?ctg=${product.categoryCode}|">카테고리</a>
+									</div>
+									<!-- Title -->
+									<div class="fw-bold">
+										<a class="text-body" th:text="${product.productName}" th:href="|/goodsDetail?productCode=${product.productCode}|">이름</a>
+									</div>
+									<!-- Price -->
+									<div class="fw-bold text-muted">$129.00</div>
+								</div>
+							</div>
+							</th:block>
+						</div>
+
+						<div class="row">
+							<div class="col-12">
+								<!-- Link  -->
+								<div class="mt-7 text-center">
+									<a class="link-underline" href="/PList">더 보기</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div><!-- tab content 단락 -->
+								<div class="tab-pane fade show" id="topSellersLifeTab">
+					<div class="row">
+						<div class="col-6 col-md-4 col-lg-3"  th:each="product, idx :${bestLife}" >
+							<!-- Card -->
+							<th:block th:if="${idx.index} < 8">
+							<div class="card mb-7">
+								<!-- Image -->
+								<div class="card-img">
+									<!-- Image -->
+									<a class="card-img-hover" href="product.html">
+										<img class="card-img-top card-img"
+										th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." />
+									</a>
+
+									<!-- Actions -->
+									<div class="card-actions">
+										<span class="card-action">
+											<button class="btn btn-xs btn-circle btn-white-primary"
+												data-bs-toggle="modal" data-bs-target="#modalProduct">
+												<i class="fe fe-eye"></i>
+											</button>
+										</span> <span class="card-action">
+											<button class="btn btn-xs btn-circle btn-white-primary"
+												data-toggle="button">
+												<i class="fe fe-shopping-cart"></i>
+											</button>
+										</span> <span class="card-action">
+											<button class="btn btn-xs btn-circle btn-white-primary"
+												data-toggle="button">
+												<i class="fe fe-heart"></i>
+											</button>
+										</span>
+									</div>
+								</div>
+								<!-- Body -->
+								<div class="card-body px-0">
+									<!-- Category -->
+									<div class="fs-xs">
+										<a class="text-muted" th:text="${product.categoryCode}" th:href="|/PList?ctg=${product.categoryCode}|">카테고리</a>
+									</div>
+									<!-- Title -->
+									<div class="fw-bold">
+										<a class="text-body" th:text="${product.productName}" th:href="|/goodsDetail?productCode=${product.productCode}|">이름</a>
+									</div>
+									<!-- Price -->
+									<div class="fw-bold text-muted">$129.00</div>
+								</div>
+							</div>
+							</th:block>
+						</div>
+
+						<div class="row">
+							<div class="col-12">
+								<!-- Link  -->
+								<div class="mt-7 text-center">
+									<a class="link-underline" href="/PList">더 보기</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div><!-- tab content 단락 -->
 			</div>
 		</div>
 	</section>

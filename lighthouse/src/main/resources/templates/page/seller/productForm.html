@@ -162,14 +162,14 @@
                   </div>
                   <label class="col-sm-2" for="salePrice">할인가</label>
                   <div class="col-sm-3">
-                     <input type="number" id="salePrice" name="salePrice" class="form-control">
+                     <input type="number" id="salePrice" name="salePrice" class="form-control" maxlength="12">
                   </div>
                </div>
 
                <div class="countdiv form-group row">
                   <label class="col-sm-2" for="optionCount">재고수량</label>
                   <div class="col-sm-3">
-                     <input type="number" id="productCount" name="productCount" class="form-control">
+                     <input type="number" id="productCount" name="productCount" class="form-control" maxlength="9">
                   </div>
                </div>
                <!-- <div class="form-group row">
@@ -305,16 +305,6 @@
                      </select>
                   </div>
                </div>
-               <div class="form-group row" th:if="${product != null}">
-                  <textarea rows="" cols="" name="productContent"
-                     style="display: none;">[[${product.productContent}]]</textarea>
-                  <th:block th:each="img, status :${detailImg.imgsVO}">
-                     <input type="hidden" th:value="${img.imgName}" th:name="|imgsVO[${status.index}].imgName|">
-                     <input type="hidden" th:value="${img.uploadName}" th:name="|imgsVO[${status.index}].uploadName|">
-                     <input type="hidden" th:value="${img.uploadPath}" th:name="|imgsVO[${status.index}].uploadPath|">
-                     <input type="hidden" th:value="${img.imgContent}" th:name="|imgsVO[${status.index}].imgContent|">
-                  </th:block>
-               </div>
                <div class="form-group row">
                   <div class="col-sm-offset-2 col-sm-10">
                      <button type="submit" class="submit btn btn-primary">등록</button>
@@ -352,6 +342,8 @@
       <script th:inline="javascript">
          $(document).ready(function () {
                let userData = JSON.parse(localStorage.getItem("product"));
+               let detailData = JSON.parse(localStorage.getItem("detail"));
+               
                if (userData != null) {
                   if (Date.now() > userData.expire) {
                      localStorage.removeItem("product");
@@ -365,7 +357,7 @@
                   // }
 
                   $.each(userData, function (key, value) {
-                     // console.log(key);
+
                      for (let data of inputTag) {
                         let dataName = $(data).attr('name');
                         if (dataName == key) {
@@ -414,12 +406,14 @@
                   }
                   if (userData.optCnt != 0) {
                      $('.optionText').show();
+                     $('.countdiv').css("display", "none");
+                     $('#productCount').val('');
                      $('#optCnt').val(userData.optCnt);
                      for (let i = 0; i < userData.optCnt; i++) {
                         let div = $('<div/>').addClass("optionDiv col-md-6");
                         let labelN = $("<label> /").text("옵션이름");
                         let optionN = $('<input name="option[' + i +
-                           '].optionName1" class="optionN" type="text" id="optionName' + i +
+                           '].optionName" class="optionN" type="text" id="optionName' + i +
                            '"/ value="' + userData.option[i].optionName1 + '">');
                         div.append(labelN);
                         div.append(optionN);
@@ -428,7 +422,7 @@
 
                         let labelV = $("<label/>").text("옵션");
                         let optionV = $('<input name="option[' + i +
-                           '].optionValue1" class="optionV" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' +
+                           '].optionValue" class="optionV" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' +
                            i + '"   value="' + userData.option[i].optionValue1 + '" />');
                         div.append(labelV);
                         div.append(optionV);
@@ -474,22 +468,16 @@
                      }
 
                      $('#categoryCode01').attr("name","categoryCode");
-                     // console.log(keyword);
-                     // console.log(keyval);
                      $(select).val(keyval);
-                     // console.log(obj);
-                     // console.log(select);
+                
                   }
 
                   if(Object.keys(userData.catemenu[1]).length != 0){
-                     // console.log("asdafff");
                      $('.categorybox1').css('display','block');
-
                      let obj = userData.catemenu[1];
                      let keyword ='';
                      let select = $('#categoryCode01');
                      for(var key in obj){
-                        //console.log(key);
                         if(key.charAt(0) == 0){
                            keyword = key.substr(1);
                            keyval = obj[key];
@@ -574,13 +562,72 @@
                      }
                   }
 
+                  if(userData.optionDetail.length > 0){
+                     for(let i =0; i<userData.optionDetail.length; i++){
+                        let trtag = $("<tr/>");
+                        let obj = userData.optionDetail[i];
+                        for(var key in obj){
+                           let tdTag = $("<td/>");
+                           let inputTag = $('<input/>');
+                           if(key == "optionLast"){
+                              inputTag.attr("name", "optionDetail["+i+"]."+key);
+                              inputTag.attr("id",key+i);
+                              inputTag.attr("type","text");
+                              inputTag.css("width","100px");
+                              inputTag.prop("readonly",true);
+                              $(inputTag).val(obj[key]);
+                           }else{
+                              inputTag.attr("name", "optionDetail["+i+"]."+key);
+                              inputTag.attr("id",key+i);
+                              inputTag.attr("type","number");
+                              inputTag.css("width","100px");
+                              $(inputTag).val(obj[key]);
+                           }
+                           tdTag.append(inputTag);
+                           trtag.append(tdTag);
+                        }
+                        $('#optiontab').append(trtag);
+                     }
+                  }
+
                }
+               if(detailData != null){
+                  let formT = $('#insertForm');
+                  console.log(formT);
+                  if(detailData.content != null || detailData.content != ''){
+                     let textarea = $('<textarea>'+ detailData.content +'</textarea>');
+                     textarea.css("display","none");
+                     textarea.attr("name","productContent");
+                     $(formT).prepend(textarea);
+                  }
+
+                  if(detailData.img.length != 0){
+                     for(let i = 0; i<detailData.img.length; i++){
+                        let divTab = $('<div/>');
+                        let obj = detailData.img[i];
+                        console.log(obj);
+                        for(var key in obj){
+                           let input = $('<input/>');
+                           $(input).val(obj[key]);
+                           input.attr("type", "hidden");
+                           input.attr("name","imgsVO["+i+"]."+key);
+                           divTab.append(input);
+                        }
+                        $(divTab).appendTo(formT);
+                        
+                     }
+                  }
+               }
+
+         
             })
             // 옵션 input 창   
             -
             $('.optionsel').on('change', function (e) {
                let val = $(this).val();
                $('.optionB').children().remove();
+               console.log("sadsad");
+               $('#optiontab').children().remove();
                // console.log(val);
                if (val != 0) {
                   $('.optionText').show();
@@ -697,7 +744,7 @@
                
                option.prepend(firoption);
             } else {
-               console.log("Asdasdaffff");
+           
 
                $('#categoryCode01').attr('name', 'categoryCode');
                $('#categoryCode02').removeAttr('name');
@@ -855,143 +902,106 @@
          }
 
          $('#addOption').on('click', function (e) {
-            $('#optiontab').empty();
-            let optionD = $('.optionDiv');
-            let optionN = $('.optionN');
-            let optionV = $('.optionV');
-            let tbody = $('#optiontab');
+            if($('#optCnt').val() == 0){
+               alert("등록하실 옵션이 없습니다.")
+            }else{
+               
 
-            let arr = [];
+               $('#optiontab').empty();
+               let optionD = $('.optionDiv');
+               let optionN = $('.optionN');
+               let optionV = $('.optionV');
+               let tbody = $('#optiontab');
+               console.log(optionN);
+           /*     for(let x = 0; x<optionN.length; x++){
+                  console.log(optionN);
+                  let optName = $(optionN[x]).val();
+                  if(!optionNChk(optName,x)){
+                     return;
+                  }
+                  let optVal = $(optionV[x]).val();
+                  if(!optionVChk(optionV,x)){
+                     return;
+                  }
 
-            for (let i = 0; i < optionV.length; i++) {
-               let optionLength = $(optionV[i]).val();
-               let optionVal = optionLength.split(',');
-               arr.push(optionVal);
-            }
-            let box0 = arr[0];
-            let box1 = arr[1];
-            let box2 = arr[2];
-
-            if (optionV.length == 1) {
-               let idx = 0;
-               for (let i = 0; i < box0.length; i++) {
-                  let tr = $('<tr/>');
-
-                  td = $('<td/>');
-                  input = $('<input />').attr('value', box0[i]);
-                  input.attr('name', 'optionDetail[' + i + '].optionLast');
-                  input.attr('id', 'optionLast' + idx);
-                  input.attr('readonly', 'true');
-                  td.append(input);
-                  tr.append(td);
-
-                  td = $('<td/>');
-                  let inputN = $('<input />').attr('type', 'number');
-                  inputN.attr('name', 'optionDetail[' + i + '].optionPrice');
-                  inputN.attr('id', 'optionPrice' + idx);
-                  inputN.css("width", "100px");
-                  inputN.attr('value', 0);
-                  td.append(inputN);
-                  tr.append(td);
-
-                  td = $('<td/>');
-                  inputN = $('<input />').attr('type', 'number');
-                  inputN.attr('name', 'optionDetail[' + i + '].optionCount');
-                  inputN.attr('id', 'optionCount' + idx);
-                  inputN.css("width", "100px");
-                  inputN.attr('value', 0);
-                  td.append(inputN);
-                  tr.append(td);
-
-                  td = $('<td/>');
-                  inputN = $('<input />').attr('type', 'number');
-                  inputN.attr('name', 'optionDetail[' + i + '].minOrder');
-                  inputN.attr('id', 'minOrder' + idx);
-                  inputN.css("width", "100px");
-                  inputN.attr('value', 0);
-                  td.append(inputN);
-                  tr.append(td);
-
-                  td = $('<td/>');
-                  inputN = $('<input />').attr('type', 'number');
-                  inputN.attr('name', 'optionDetail[' + i + '].maxOrder');
-                  inputN.attr('id', 'maxOrder' + idx);
-                  inputN.css("width", "100px");
-                  inputN.attr('value', 0);
-                  td.append(inputN);
-                  tr.append(td);
-                  tbody.append(tr);
-                  idx++;
+               } */
+   
+               let arr = [];
+   
+               for (let i = 0; i < optionV.length; i++) {
+                  let optionLength = $(optionV[i]).val();
+                  let optionVal = optionLength.split(',');
+                  arr.push(optionVal);
                }
-            } else if (optionV.length == 2) {
-               let idx = 0;
-               for (let i = 0; i < box0.length; i++) {
-                  for (let j = 0; j < box1.length; j++) {
+               let box0 = arr[0];
+               let box1 = arr[1];
+               let box2 = arr[2];
+   
+               if (optionV.length == 1) {
+                  let idx = 0;
+                  for (let i = 0; i < box0.length; i++) {
                      let tr = $('<tr/>');
-
+   
                      td = $('<td/>');
-                     input = $('<input />').attr('value', box0[i] + box1[j]);
-                     input.attr('name', 'optionDetail[' + idx + '].optionLast');
+                     input = $('<input />').attr('value', box0[i]);
+                     input.attr('name', 'optionDetail[' + i + '].optionLast');
                      input.attr('id', 'optionLast' + idx);
                      input.attr('readonly', 'true');
                      td.append(input);
                      tr.append(td);
-
+   
                      td = $('<td/>');
                      let inputN = $('<input />').attr('type', 'number');
-                     inputN.attr('name', 'optionDetail[' + idx + '].optionPrice');
+                     inputN.attr('name', 'optionDetail[' + i + '].optionPrice');
                      inputN.attr('id', 'optionPrice' + idx);
                      inputN.css("width", "100px");
                      inputN.attr('value', 0);
                      td.append(inputN);
                      tr.append(td);
-
+   
                      td = $('<td/>');
                      inputN = $('<input />').attr('type', 'number');
-                     inputN.attr('name', 'optionDetail[' + idx + '].optionCount');
+                     inputN.attr('name', 'optionDetail[' + i + '].optionCount');
                      inputN.attr('id', 'optionCount' + idx);
                      inputN.css("width", "100px");
                      inputN.attr('value', 0);
                      td.append(inputN);
                      tr.append(td);
-
+   
                      td = $('<td/>');
                      inputN = $('<input />').attr('type', 'number');
-                     inputN.attr('name', 'optionDetail[' + idx + '].minOrder');
+                     inputN.attr('name', 'optionDetail[' + i + '].minOrder');
                      inputN.attr('id', 'minOrder' + idx);
                      inputN.css("width", "100px");
                      inputN.attr('value', 0);
                      td.append(inputN);
                      tr.append(td);
-
+   
                      td = $('<td/>');
                      inputN = $('<input />').attr('type', 'number');
-                     inputN.attr('name', 'optionDetail[' + idx + '].maxOrder');
+                     inputN.attr('name', 'optionDetail[' + i + '].maxOrder');
                      inputN.attr('id', 'maxOrder' + idx);
                      inputN.css("width", "100px");
                      inputN.attr('value', 0);
                      td.append(inputN);
                      tr.append(td);
                      tbody.append(tr);
-
                      idx++;
                   }
-               }
-            } else if (optionV.length == 3) {
-               let idx = 0;
-               for (let i = 0; i < box0.length; i++) {
-                  for (let j = 0; j < box1.length; j++) {
-                     for (let x = 0; x < box2.length; x++) {
+               } else if (optionV.length == 2) {
+                  let idx = 0;
+                  for (let i = 0; i < box0.length; i++) {
+                     for (let j = 0; j < box1.length; j++) {
                         let tr = $('<tr/>');
-
+   
                         td = $('<td/>');
-                        input = $('<input />').attr('value', box0[i] + box1[j] + box0[x]);
+                        input = $('<input />').attr('value', box0[i] + box1[j]);
                         input.attr('name', 'optionDetail[' + idx + '].optionLast');
                         input.attr('id', 'optionLast' + idx);
                         input.attr('readonly', 'true');
                         td.append(input);
                         tr.append(td);
-
+   
                         td = $('<td/>');
                         let inputN = $('<input />').attr('type', 'number');
                         inputN.attr('name', 'optionDetail[' + idx + '].optionPrice');
@@ -1000,7 +1010,7 @@
                         inputN.attr('value', 0);
                         td.append(inputN);
                         tr.append(td);
-
+   
                         td = $('<td/>');
                         inputN = $('<input />').attr('type', 'number');
                         inputN.attr('name', 'optionDetail[' + idx + '].optionCount');
@@ -1009,7 +1019,7 @@
                         inputN.attr('value', 0);
                         td.append(inputN);
                         tr.append(td);
-
+   
                         td = $('<td/>');
                         inputN = $('<input />').attr('type', 'number');
                         inputN.attr('name', 'optionDetail[' + idx + '].minOrder');
@@ -1018,61 +1028,117 @@
                         inputN.attr('value', 0);
                         td.append(inputN);
                         tr.append(td);
-
+   
                         td = $('<td/>');
                         inputN = $('<input />').attr('type', 'number');
-                        inputN.attr('name', 'optionDetail[' + idx + '].MaxOrder');
+                        inputN.attr('name', 'optionDetail[' + idx + '].maxOrder');
                         inputN.attr('id', 'maxOrder' + idx);
                         inputN.css("width", "100px");
                         inputN.attr('value', 0);
                         td.append(inputN);
                         tr.append(td);
                         tbody.append(tr);
+   
+                        idx++;
+                     }
+                  }
+               } else if (optionV.length == 3) {
+                  let idx = 0;
+                  for (let i = 0; i < box0.length; i++) {
+                     for (let j = 0; j < box1.length; j++) {
+                        for (let x = 0; x < box2.length; x++) {
+                           let tr = $('<tr/>');
+   
+                           td = $('<td/>');
+                           input = $('<input />').attr('value', box0[i] + box1[j] + box0[x]);
+                           input.attr('name', 'optionDetail[' + idx + '].optionLast');
+                           input.attr('id', 'optionLast' + idx);
+                           input.attr('readonly', 'true');
+                           td.append(input);
+                           tr.append(td);
+   
+                           td = $('<td/>');
+                           let inputN = $('<input />').attr('type', 'number');
+                           inputN.attr('name', 'optionDetail[' + idx + '].optionPrice');
+                           inputN.attr('id', 'optionPrice' + idx);
+                           inputN.css("width", "100px");
+                           inputN.attr('value', 0);
+                           td.append(inputN);
+                           tr.append(td);
+   
+                           td = $('<td/>');
+                           inputN = $('<input />').attr('type', 'number');
+                           inputN.attr('name', 'optionDetail[' + idx + '].optionCount');
+                           inputN.attr('id', 'optionCount' + idx);
+                           inputN.css("width", "100px");
+                           inputN.attr('value', 0);
+                           td.append(inputN);
+                           tr.append(td);
+   
+                           td = $('<td/>');
+                           inputN = $('<input />').attr('type', 'number');
+                           inputN.attr('name', 'optionDetail[' + idx + '].minOrder');
+                           inputN.attr('id', 'minOrder' + idx);
+                           inputN.css("width", "100px");
+                           inputN.attr('value', 0);
+                           td.append(inputN);
+                           tr.append(td);
+   
+                           td = $('<td/>');
+                           inputN = $('<input />').attr('type', 'number');
+                           inputN.attr('name', 'optionDetail[' + idx + '].MaxOrder');
+                           inputN.attr('id', 'maxOrder' + idx);
+                           inputN.css("width", "100px");
+                           inputN.attr('value', 0);
+                           td.append(inputN);
+                           tr.append(td);
+                           tbody.append(tr);
+                        }
                      }
                   }
                }
+   
+               // for(let i = 0; i < optionD.length; i++){
+               //    let optionN = $(optionD[i]).children('.optionN').val();
+               //    let optionV = $(optionD[i]).children('.optionV').val();
+               //    let optionVal = optionV.split(',');
+   
+               //    for(let j = 0; j < optionVal.length; j++){
+   
+               //       let tr = $('<tr/>');
+               //       td = $('<td />');
+               //       let input = $('<input />').attr('value', optionN);
+               //       input.attr('name','option['+idx+'].optionName');
+               //       input.attr('readonly','true');
+               //       td.append(input);
+               //       tr.append(td);
+   
+               //       td = $('<td/>');
+               //       input = $('<input />').attr('value', optionVal[j]);
+               //       input.attr('name','option['+idx+'].optionValue');
+               //       input.attr('readonly','true');
+               //       td.append(input);
+               //       tr.append(td);
+   
+               //       // td = $('<td/>');
+               //       // let inputN = $('<input />').attr('type','number');
+               //       // inputN.attr('name','option['+idx+'].optionCount');
+               //       // inputN.attr('id','option['+idx+'].optionCount'+j);
+               //       // td.append(inputN);
+               //       // tr.append(td);
+   
+               //       // td = $('<td/>');
+               //       // inputN = $('<input />').attr('type','number');
+               //       // inputN.attr('name','option['+idx+'].optionPrice');
+               //       // inputN.attr('id','option['+idx+'].optionPrice'+j);
+               //       // td.append(inputN);
+               //       // tr.append(td);
+   
+               //       idx++;
+               //       tbody.append(tr);
+               //    }
+               // }
             }
-
-            // for(let i = 0; i < optionD.length; i++){
-            //    let optionN = $(optionD[i]).children('.optionN').val();
-            //    let optionV = $(optionD[i]).children('.optionV').val();
-            //    let optionVal = optionV.split(',');
-
-            //    for(let j = 0; j < optionVal.length; j++){
-
-            //       let tr = $('<tr/>');
-            //       td = $('<td />');
-            //       let input = $('<input />').attr('value', optionN);
-            //       input.attr('name','option['+idx+'].optionName');
-            //       input.attr('readonly','true');
-            //       td.append(input);
-            //       tr.append(td);
-
-            //       td = $('<td/>');
-            //       input = $('<input />').attr('value', optionVal[j]);
-            //       input.attr('name','option['+idx+'].optionValue');
-            //       input.attr('readonly','true');
-            //       td.append(input);
-            //       tr.append(td);
-
-            //       // td = $('<td/>');
-            //       // let inputN = $('<input />').attr('type','number');
-            //       // inputN.attr('name','option['+idx+'].optionCount');
-            //       // inputN.attr('id','option['+idx+'].optionCount'+j);
-            //       // td.append(inputN);
-            //       // tr.append(td);
-
-            //       // td = $('<td/>');
-            //       // inputN = $('<input />').attr('type','number');
-            //       // inputN.attr('name','option['+idx+'].optionPrice');
-            //       // inputN.attr('id','option['+idx+'].optionPrice'+j);
-            //       // td.append(inputN);
-            //       // tr.append(td);
-
-            //       idx++;
-            //       tbody.append(tr);
-            //    }
-            // }
 
          })
 
@@ -1130,11 +1196,11 @@
             let leng = $('#optiontab').find('tr').length;
             for (let i = 0; i < leng; i++) {
                let box = {
-                  optionLast0: $('input[id="optionLast' + i + '"]').val(),
-                  optionPrice0: $('input[id="optionPrice' + i + '"]').val(),
-                  optionCount0: $('input[id="optionCount' + i + '"]').val(),
-                  minOrder0: $('input[id="minOrder' + i + '"]').val(),
-                  maxOrder0: $('input[id="maxOrder' + i + '"]').val()
+                  optionLast: $('input[id="optionLast' + i + '"]').val(),
+                  optionPrice: $('input[id="optionPrice' + i + '"]').val(),
+                  optionCount: $('input[id="optionCount' + i + '"]').val(),
+                  minOrder: $('input[id="minOrder' + i + '"]').val(),
+                  maxOrder: $('input[id="maxOrder' + i + '"]').val()
                };
                obj.optionDetail.push(box);
             }
@@ -1198,67 +1264,169 @@
          });
 
          // 등록 이벤트
-//          $('.submit').on('click',function(e){
-//             let select = $('select[name="categoryCode"]');
-//             console.log(select.length);
-//             if($(select).val() == null || $(select).val() == ""){
-//                alert("카테고리를 넣어주세요");
-//                return;
-//             }
+         $('.submit').on('click',function(e){
+            let select = $('select[name="categoryCode"]');
+            console.log(select.length);
+            if($(select).val() == null || $(select).val() == ""){
+               alert("카테고리를 넣어주세요");
+               return;
+            }
             
-//             if(!idChk($("#productName").val())){
-//                return;
-//             }
+            if(!idChk($("#productName").val())){
+               return;
+            }
 
-//             if(!productCostChk($('#productCost').val())){
-//                return;
-//             }
+            if(!productCostChk($('#productCost').val())){
+               return;
+            }
 
-//          })
+            if(!salePriceChk($('#salePrice').val())){
+               return;
+            }
 
-//          // 상품명 유효성 검사
-//          function idChk(id){
-//             if(id == ''){
-//                alert("상품명을 입력해주세요");
-//                $("#productName").focus();
-//                $("#productName").select();
-//                return false;
-//             }
-//             if(id.length > 10){
-//                alert("상품명은 1~10자 이하로 입력해주세요");
-//                $("#productName").focus();
-//                $("#productName").select();
-//                return false;
-//             }
+            if($('#optCnt').val() == 0){
+               if(!productCountChk($('#productCount').val())){
+                  return;
+               }
+            }
 
-//             return true;
-//          }
+            if($('#optCnt').val() != 0){
+               if(!optionChk()){
+                  return;
+               }
+            }
 
-//          function productCostChk(cost){
-//             console.log(cost);
-//             let check = /^[0-9]+$/; 
-//             if(cost == ''){
-//                alert("판매가를 입력해주세요.");
-//                $('#productCost').focus();
-//                return false;
-//             }
-//             if(check.test(cost)){
-//                alert("숫자만 입력가능합니다.");
-//                $('#productCost').focus();
-//                return false;
-//             }
-//             if(cost < 1){
-//                alert("최소 금액은 0원 이상이여야합니다.");
-//                $('#productCost').focus();
-//                return false;
-//             }
-//             if(cost > 999999999999){
-//                alert("1000억 이상은 입력하실수 없습니다.");
-//                $('#productCost').focus();
-//                return false;
-//             }
-//             return true;
-//          }
+         })
+
+         // 상품명 유효성 검사
+         function idChk(id){
+            if(id == ''){
+               alert("상품명을 입력해주세요");
+               $("#productName").focus();
+               $("#productName").select();
+               return false;
+            }
+            if(id.length > 10){
+               alert("상품명은 1~10자 이하로 입력해주세요");
+               $("#productName").focus();
+               $("#productName").select();
+               return false;
+            }
+
+            return true;
+         }
+
+         // 판매가 체크
+         function productCostChk(cost){
+            let check = /^[0-9]+$/; 
+            if(cost == ''){
+               alert("판매가를 입력해주세요.");
+               $('#productCost').focus();
+               return false;
+            }
+            if(!check.test(cost)){
+               alert("숫자만 입력가능합니다.");
+               $('#productCost').focus();
+               return false;
+            }
+            if(cost <= 1){
+               alert("최소 금액은 1원 이상이여야합니다.");
+               $('#productCost').focus();
+               return false;
+            }
+            if(cost > 999999999999){
+               alert("1000억 이상은 입력하실수 없습니다.");
+               $('#productCost').focus();
+               return false;
+            }
+            return true;
+         }
+
+         // 할인가 체크
+         function salePriceChk(cost){
+            let check = /^[0-9]+$/; 
+            if(cost == ''){
+               alert("할인가를 입력해주세요.");
+               $('#salePrice').focus();
+               return false;
+            }
+            if(!check.test(cost)){
+               alert("숫자만 입력가능합니다.");
+               $('#salePrice').focus();
+               return false;
+            }
+            if(cost <= 1){
+               alert("최소 금액은 1원 이상이여야합니다.");
+               $('#salePrice').focus();
+               return false;
+            }
+            if(cost > 999999999999){
+               alert("1000억 이상은 입력하실수 없습니다.");
+               $('#salePrice').focus();
+               return false;
+            }
+            if(cost > $('#productCost').val()){
+               alert("할인가가 판매가보다 높을수 없습니다.");
+               $('#salePrice').focus();
+               return false;
+            }
+            return true;
+         }
+
+         // 상품 갯수 체크
+         function productCountChk(cost){
+            let check = /^[0-9]+$/; 
+            if(cost == ''){
+               alert("수량를 입력해주세요.");
+               $('#productCount').focus();
+               return false;
+            }
+            if(!check.test(cost)){
+               alert("숫자만 입력가능합니다.");
+               $('#productCount').focus();
+               return false;
+            }
+            if(cost < 1){
+               alert("수량은 0보다 커야합니다.");
+               $('#productCount').focus();
+               return false;
+            }
+            if(cost > 99999999){
+               alert("수량은 1억개보다 작아야합니다.");
+               $('#productCount').focus();
+               return false;
+            }
+            return true;
+         }
+
+         // option chk
+         function optionChk(){
+            let optionName = $('.optionN');
+            let optionVal = $('.optionV');
+            
+
+         
+         }
+
+         function optionNChk(name,idx){
+            console.log(name);
+            if(name == ""){
+               alert((idx+1)+ "번째 옵션명을 적어주세요");
+               $('#optionName'+idx).focus();
+               return false;
+            }
+            if(name.length > 15){
+               alert("옵션명 길이는 15자 입니다.");
+               $('#optionName'+idx).focus();
+               return false;
+            }
+
+            return true;
+         }
+
+         function optionVChk(val,idx){
+            console.log(val);
+         }
       </script>
 
 

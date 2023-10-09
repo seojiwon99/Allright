@@ -45,7 +45,9 @@ public class MainController {
 //		model.addAttribute("productbanner",service.showEventBanner());
 		model.addAttribute("productbanner",adminService.getEventBannerList());
 		model.addAttribute("productRand", service.randomGetProduct());
-	
+		model.addAttribute("bestFassion", service.getBestProductByFassion());
+		model.addAttribute("bestFOOD", service.getBestProductByFOOD());
+		model.addAttribute("bestLife", service.getBestProductByLife());
 		return "page/body";
 		
 	}

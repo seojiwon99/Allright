@@ -29,7 +29,6 @@ public class ProductVO {
 	private String productBrand;
 	private String productStatus;
 	private String productExStatus;
-
 	private Integer productCount;
 	private List<ImgsVO> productImg;
 
@@ -54,6 +53,9 @@ public class ProductVO {
 	private String imgContent;
 	private String uploadPath;
 	private String uploadName;
+	private int orderCnt;
+	
+	List<CategoryVO> category;
 	
 
 }

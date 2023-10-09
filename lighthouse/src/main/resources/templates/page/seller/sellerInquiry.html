@@ -97,51 +97,19 @@
 							<tr>
 								<th>번호</th>
 								<th>제목</th>
-								<th>작성자</th>
-								<th>작성날짜</th>
+								<th>답변상태</th>
+								<th>등록상태</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="notice,status : ${noticeList}" th:onclick="|location.href='@{/custom/noticeInfo/(noticeCode=${notice.noticeCode},pageNum=${pageMaker.cri.pageNum},keyword=${pageMaker.cri.keyword})}'|">
-								<td style="display:none;"><input type="hidden" th:value="${notice.noticeCode}" th:id="|code${status.index}|"></td>
-								<td th:id="|type${status.index}|">[[${notice.noticeType} == 'Y' ? '공지' : ${pageMaker.total} - (((${pageMaker.cri.pageNum}-1)* ${pageMaker.cri.amount}) + ${status.index})]]</td>
-								<td th:id="|title${status.index}|" th:onclick="|location.href='@{/custom/noticeInfo/(noticeCode=${notice.noticeCode},pageNum=${pageMaker.cri.pageNum})}'|">[[${notice.noticeTitle}]]</td>
-								<td th:id="|writer${status.index}|">[[${notice.noticeWriter}]]</td>
-								<td th:id="|date${status.index}|">[[${#dates.format(notice.noticeRegdate,'yyyy-MM-dd')}]]</td>
+							<tr th:each="inquiry : ${myInquiry}"> 
+								<td>1</td>
+								<td th:text="${inquiry.customInquiryTitle}"/>
+								<td th:text="${inquiry.customInquiryAnswerStatus}"/>
+								<td th:text="${#dates.format(inquiry.customInquiryRegdate,'yyyy-MM-dd')}"/>
 							</tr>
 						</tbody>
 					</table>
-
-					<!-- Pagination -->
-					<nav
-						class="d-flex justify-content-center justify-content-md-end mt-10">
-						<ul class="pagination pagination-sm text-gray-400">
-							<li class="page-item" th:if="${pageMaker.prev}"><a
-								class="page-link page-link-arrow"
-								th:href="@{/custom/notice/(pageNum = ${pageMaker.startPage - 1})}">
-									<i class="fa fa-caret-left"></i>
-							</a></li>
-							<th:block
-								th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
-								<li th:if="${pageMaker.endPage} ne 0"
-									th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
-									th:each="pageButtom : ${#numbers.sequence(start,end)}"
-									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
-									<a class="page-link" href="#"
-									th:href="@{/custom/notice/(pageNum= ${pageButtom} )}"
-									th:text="${pageButtom}"></a>
-								</li>
-							</th:block>
-
-							<li class="page-item" th:if="${pageMaker.next}"><a
-								class="page-link page-link-arrow"
-								th:href="@{/custom/notice/(pageNum = ${pageMaker.endPage + 1})}">
-									<i class="fa fa-caret-right"></i>
-							</a></li>
-						</ul>
-					</nav>
-		
-		
 		</div>
 
 
