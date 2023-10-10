@@ -40,6 +40,6 @@ public class CartVO {
 
 	// 상품을 장바구니로 보낼때 필요한 값
 	private long optionDetailCode;
-	List<ProductVO> productCode;
+	List<ProductVO> pCode;
 
 }
