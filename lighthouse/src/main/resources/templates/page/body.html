@@ -435,7 +435,7 @@
     <script th:src="@{/js/theme.bundle.js}"></script>
     <script th:inline="javascript">
 
-    $('.fe-heart').on('click',function(){
+  $('.fe-heart').on('click',function(){
     	console.log($(this).parent().parent().next().val());	
     	let pCode = $(this).parent().parent().next().val();
     	console.log([[${session}]])
@@ -445,9 +445,9 @@
 	    	if([[${session.loginMember}]] == null){
 	    		alert('로그인이 필요한 기능입니다.')	
 	    	}else{
-				let memId = [[${session.loginMember.memberId}]]
+				let memId = [[${session.loginMember}]]
 				let obj = {
-					'memberId' : memId,
+					'memberId' : memId.memberId,
 					'productCode' : pCode
 				};
 	    		$.ajax({
@@ -466,12 +466,7 @@
 	    			}
 	    		
 	    		})
-	    		
-	    		
-	    		
-	    		
-	    		
-	    		
+		
 	    	
 	    	}
 	    }
@@ -510,6 +505,7 @@
 	    		let firstMsg = "반갑습니다. 생활용품 종합쇼핑몰 All Right 입니다. 저희는 TTS를 통해 음성자료를 제공하고 있습니다.  메뉴얼을 들으신 후 alt 키와 함께 해당 메뉴얼의 번호를 눌러주세요."
 	    		+ "TTS 듣기를 원치 않으시는 경우 상단의 버튼을 눌러 7일간 해제하실 수 있습니다.";
 	    		let message =  firstMsg + $('#mainMenual').val();
+	    		console.log([[${session.loginMember}]])
 	        	VoiceMenual(message);
 	    });
 	
@@ -642,9 +638,9 @@
 	    	})
 	    	
 	    }// TTS if문
-    }
+    } 
     </script>
-   	</th:block>
+
 </div>
 
 
