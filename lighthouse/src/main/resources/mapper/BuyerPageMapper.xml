@@ -131,6 +131,12 @@
 		    	<when test="searchKey == 'order_date'">
 		    		AND a.order_date like '%'||#{searchValue}||'%'
 		    	</when>
+		    	<when test="searchKey == 'order_code'">
+		    		AND a.order_code like '%'||#{searchValue}||'%'
+		    	</when>
+		    	<when test="searchKey == 'order_detail_code'">
+		    		AND a.order_detail_code like '%'||#{searchValue}||'%'
+		    	</when>
 		    	<when test="searchKey == 'product_name'">
 		    		AND d.product_name like '%'||#{searchValue}||'%'
 		    	</when>
@@ -155,9 +161,7 @@
      <select id="selectBuyInfo" resultType="BuyInfoVO" parameterType="String">
         SELECT member_name
               , member_email
-              <if test="">
               , member_pw
-              </if>
               , member_addr
               , member_details_addr
               , member_tel
@@ -205,9 +209,9 @@
       UPDATE ar_member 
       SET 
       <if test="memberPw != null and memberPw !=''">
-            member_pw = #{memberPw}
+            member_pw = #{memberPw},
       </if>
-          , member_addr = #{memberAddr}
+           member_addr = #{memberAddr}
           , member_details_addr = #{memberDetailsAddr}
           , member_email = #{memberEmail}
           , member_tel = #{memberTel}
@@ -219,8 +223,8 @@
    <select id="selectCouponList" resultType="CouponVO" parameterType="Criteria">
        select *
 		from ( select rownum rn, pg.* 
-		from (
-		SELECT a.coupon_code
+			from (
+				SELECT a.coupon_code
 		              , a.coupon_name
 		              , a.coupon_content
 		              , a.coupon_deadline
@@ -262,7 +266,7 @@
            , custom_inquiry_answer_status
       FROM ar_custom_inquiry
       WHERE member_id = #{memberId}
-      Order by custom_inquiry_regdate desc
+      Order by custom_inquiry_code desc
    </select>
    
    <select id="getInqCnt" resultType="int">

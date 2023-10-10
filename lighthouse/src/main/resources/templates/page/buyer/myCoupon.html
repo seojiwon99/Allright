@@ -106,7 +106,6 @@
                 <!-- Info -->
 
                 <div class="card card-sm">
-                
                 <div th:each="coupons : ${myCoupon}" th:if= "${coupons.couponUse} == 'Y'">
                   <div class="card-body bg-light">
                     <div class="row couponRow">
@@ -140,6 +139,7 @@
                           <span th:text="|${#dates.format(coupons.issueDate, 'yyyy-MM-dd')}|" class="issueDate"></span>
                         </p>
                       </div>
+                      <!-- 
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">사용기한:</h6>
                         <p class="mb-0 fs-sm fw-bold">
@@ -152,8 +152,9 @@
                          <span th:text="|${#dates.format(coupons.usingDate, 'yyyy-MM-dd')}|" class="usingDate"></span>
                         </p>
                       </div>
+                       -->
                       <div class="col-6 col-lg-3">
-                        <h6 class="heading-xxxs text-muted">사용 종료 일자:</h6>
+                        <h6 class="heading-xxxs text-muted">기한 종료 일자:</h6>
                         <p class="mb-0 fs-sm fw-bold">
                           <span th:text="|${#dates.format(coupons.endDate, 'yyyy-MM-dd')}|" class="endDate"></span>
                         </p>

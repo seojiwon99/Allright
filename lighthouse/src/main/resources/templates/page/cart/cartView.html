@@ -42,6 +42,7 @@
                     <input type="hidden" name="cartNum" th:value="${lists.cartCode}">
                     <input type="hidden" name="cartCnt" th:value="${lists.cartCount}">
                     <input type="hidden" name="optionPrice" th:value="${lists.optionPrice}">
+                    <input type="hidden" name="productCode" th:value="${lists.productCode}">
 
                     <!-- Image -->
                     <a href="product.html" tabindex="-1">
@@ -149,7 +150,7 @@
                     <span>배송비</span> <span class="ms-auto fs-sm" id="deliveryPrice">원</span>
                   </li>
                   <li class="list-group-item d-flex fs-lg fw-bold">
-                    <span>결제금액</span> <span class="ms-auto fs-sm" id="totalPrice">원</span>
+                    <span>결제금액</span> <span class="ms-auto fs-sm" id="totalPrice" style="color: red;">원</span>
                   </li>
           
                 </ul>
@@ -177,56 +178,19 @@
       0번 메뉴얼 다시 듣기.
     </textarea>
 
-    <script>
-    let TTSIsOk = localStorage.getItem('ttsKey');
-    let sessionAuthor;
-      console.log(sessionStorage.loginMember);          
-      if(sessionStorage.loginMember != null){
-          sessionAuthor = sessionStorage.loginMember.memberAuthor;
-      }
-       
-      function ttsInit(){
-       if(TTSIsOk == null || sessionAuthor == 3){
-
-
-  let audioFileNow = new Audio();
-  let firstMsg = "장바구니 페이지 입니다. 회원이 담은 상품들을 확인하고 결제를 할 수 있습니다." + "탭을 눌러 이동하며, 체크박스에서는 스페이스바로  선택 가능합니다.";
-  let message =  firstMsg + $('#cartMenual').val();
+    <script>     
 
 	$(function(){
   		init();
   		checkedCart();
-      VoiceMenual(message);
 	})
 	
 	function init(){
 		
-		//이벤트 지정
     $('#allCheckbox').on('click',allCheckEvent);  // 전체선택
-    $('#allCheckbox').on('focus',allFocus); // 전체선택 포커스 될 경우 read
-    $('#allCheckbox').on('keydown',allKeydown); // 키 눌렀을 경우 읽어줌
     $('input[name="price"]').on('change', checkedCart);
-    $('#chkDelBtn').on('click',checkedDel);                    //선택 삭제
-    $('.productDel').on('focus',productDel);  // 상품  삭제 read
-    $('#payMove').on('focus',patMove); // 주문 페이지 안내 - 결제 클릭
-    $('input[name="price"]').on('keydown', proKeydown);
-    $('#shoping').on('focus',shoping);
+    $('#chkDelBtn').on('click',checkedDel);     //선택 삭제
 
-    $('input[name="price"]').on('focus', function productDetail(){
-       let proName = $(this).parent().parent().find('.tts1').text(); //상품명
-       let proPrice = $(this).parent().parent().find('.tts2').text(); //상품금액
-       let proSalePrice = $(this).parent().parent().find('.tts3').text()//할인금액
-       let optionVal = $(this).parent().parent().find('.tts4').text() //옵션 추가 금액
-       let proDelivery = $(this).parent().parent().find('.tts5').text() //배송비
-       let optionName = $(this).parent().parent().find('.tts6').text() //옵션종류, 옵션 값
-       let buyCnt = $(this).parent().parent().find('.tts7').text() //구매수량
-       let productMsg = `${proName}. ${proPrice}. ${proSalePrice}. ${optionVal}. ${proDelivery}. 선택한 옵션의 종류는 ${optionName}. 구매수량은 ${buyCnt} 입니다.
-                        전체선택을 하지 않고 개별 선택의 경우 스페이스바로 선택해주세요.`;
-      
-        VoiceMenual(productMsg);
-    });
-
-    
     document.getElementById('productPrice').innerText ='원';
     document.getElementById('salePrice').innerText = '원';
     document.getElementById('deliveryPrice').innerText = '원';
@@ -254,9 +218,7 @@
         }
   };
       
-
-      
-      
+   
   function checkedCart(){
     // 상품 가격, 할인가격, 결제가격     
     let result = 0;
@@ -264,16 +226,27 @@
     let deliveryResult = 0;
     let totalResult = 0;
 
+    let chkPList = [];
     let checkboxes = $('#cartItem input[type="checkbox"]:checked');
     checkboxes.each((idx, tag) => {
-
+       
         let prices = $(tag).val();
         let salcePrices = Number($(tag).next().val());
+        let productNum = $(tag).next().next().next().next().next().next().val();
+        console.log(productNum)
+        console.log("P",chkPList)
         let deliveryPrices = $(tag).next().next().val();
+        
         let cartCnts = $(tag).next().next().next().next().val();
         let optionPrice= Number($(tag).next().next().next().next().next().val());
+        
+        if(!(chkPList.includes(productNum))){
+          chkPList.push(productNum);
+          deliveryResult+=Number(deliveryPrices);
+        }
 
-        deliveryResult+=Number(deliveryPrices);
+
+
         saleResult+=Number((salcePrices + optionPrice) * cartCnts);
         result+=Number(prices * cartCnts);
     })
@@ -326,73 +299,28 @@
       }
     }
     
-    // tts 정리
-    function allKeydown(e) {
-        if(e.keyCode === 32 && $('#allCheckbox').is(':checked') == false) {
-          VoiceMenual("장바구니 상품 전체 선택 되었습니다.");
-        } else if(e.keyCode === 32 && $('#allCheckbox').is(':checked') == true){
-          VoiceMenual("전체 상품 선택을 취소했습니다."); 
-        }
-      }
-
-      function allFocus(e) {
-        VoiceMenual("장바구니에 담긴 상품을 전체 선택 원할 경우 스페이스바 눌러주세요.");
-      } 
-
-      function productDel(e) {
-        VoiceMenual("현재 상품을 삭제 원할 경우 스페이스바 두번 눌러주세요.");
-      }
-      function patMove(e) {
-    	  
-        if($('#totalPrice').text() == '0원') {
-          VoiceMenual('선택된 상품 금액이 없습니다. 상품 선택 후 진행해주세요.');
-          return;
-        }
-
-        let productPay = $('#productPrice').text();
-        let salePay = $('#salePrice').text();
-        let deliveryPay = $('#deliveryPrice').text();
-        let totalPay = $('#totalPrice').text();
-        VoiceMenual(`상품금액은 ${productPay}. 할인된 금액은 ${salePay}. 배송비는 ${deliveryPay}. 총 결제 금액은 ${totalPay}. 입니다.
-                     상품 선택을 마치셨다면. 엔터키 사용하여. 선택한 상품을 가지고. 주문 페이지로. 이동합니다.`);
-      }
-      function proKeydown(e) {
-        console.log($(this).prop('checked'));
-        if(e.keyCode === 32 && $(this).prop('checked') == false) {
-            VoiceMenual("상품 선택 되었습니다.");
-          } else if(e.keyCode === 32 && $(this).prop('checked') == true){
-            VoiceMenual("상품 선택을 취소했습니다."); 
-          }               
-      }
-      function shoping(e){
-        VoiceMenual("장바구니 상품이 더 이상 없습니다. 쇼핑 계속 원할 경우 엔터 결제 원할 경우. alt, 1를 눌러 결제하기로 이동하세요.");
-      }
-      
-
-
-
+  
 $('#payMove').on('click', function(){
   let obj;
   let cartId;
   let cartCodeList = [];
   let checkboxes = $('input[name="price"]:checked');
-        checkboxes.each((idx, tag) => {
-          console.log($(tag).next().next().next());
-          cartId = $(tag).next().next().next().val();
-          obj = {'cartCode' : cartId};
-          cartCodeList.push(cartId);
-          console.log(cartCodeList);
-        })
 
-        if(cartId == null) {
-          alert('결제할 상품이 없습니다.');
-          location.href = location.href;
-          return;
-        } else {
-          let params = cartCodeList;
-          console.log(params);
-          sendPost('/orders/pay',params);
-        }       
+  //장바구니 코드 - 체크된 상품 push
+  checkboxes.each((idx, tag) => {
+    console.log($(tag).next().next().next());
+    cartId = $(tag).next().next().next().val();
+    obj = {'cartCode' : cartId};
+    cartCodeList.push(cartId);
+  })
+  console.log(cartCodeList);
+
+  if(cartId == null) {
+    alert('결제할 상품이 없습니다.');
+    //location.reload();
+  } else {
+    sendPost('/orders/pay',cartCodeList);
+  }       
 	});
 
 
@@ -415,6 +343,48 @@ $('#payMove').on('click', function(){
           console.log(form);
           form.submit();
 	  }
+
+    let TTSIsOk = localStorage.getItem('ttsKey');
+    let sessionAuthor;
+      console.log(sessionStorage.loginMember);          
+      if(sessionStorage.loginMember != null){
+          sessionAuthor = sessionStorage.loginMember.memberAuthor;
+      }
+
+    function ttsInit(){
+       if(TTSIsOk == null || sessionAuthor == 3){
+        
+
+      let audioFileNow = new Audio();
+      let firstMsg = "장바구니 페이지 입니다. 회원이 담은 상품들을 확인하고 결제를 할 수 있습니다." + "탭을 눌러 이동하며, 체크박스에서는 스페이스바로  선택 가능합니다.";
+      let message =  firstMsg + $('#cartMenual').val();
+      VoiceMenual(message);
+
+//이벤트 지정
+
+    $('#allCheckbox').on('focus',allFocus); // 전체선택 포커스 될 경우 read
+    $('#allCheckbox').on('keydown',allKeydown); // 키 눌렀을 경우 읽어줌
+    
+    $('.productDel').on('focus',productDel);  // 상품  삭제 read
+    $('#payMove').on('focus',patMove); // 주문 페이지 안내 - 결제 클릭
+    $('input[name="price"]').on('keydown', proKeydown);
+    $('#shoping').on('focus',shoping);
+
+    $('input[name="price"]').on('focus', function productDetail(){
+       let proName = $(this).parent().parent().find('.tts1').text(); //상품명
+       let proPrice = $(this).parent().parent().find('.tts2').text(); //상품금액
+       let proSalePrice = $(this).parent().parent().find('.tts3').text()//할인금액
+       let optionVal = $(this).parent().parent().find('.tts4').text() //옵션 추가 금액
+       let proDelivery = $(this).parent().parent().find('.tts5').text() //배송비
+       let optionName = $(this).parent().parent().find('.tts6').text() //옵션종류, 옵션 값
+       let buyCnt = $(this).parent().parent().find('.tts7').text() //구매수량
+       let productMsg = `${proName}. ${proPrice}. ${proSalePrice}. ${optionVal}. ${proDelivery}. 선택한 옵션의 종류는 ${optionName}. 구매수량은 ${buyCnt} 입니다.
+                        전체선택을 하지 않고 개별 선택의 경우 스페이스바로 선택해주세요.`;
+      
+        VoiceMenual(productMsg);
+    });
+
+
     console.log('hello js');
 
 var AudioContext;
@@ -469,6 +439,49 @@ function VoiceMenual(message) {
         }
     });
 };
+
+// tts 정리
+function allKeydown(e) {
+        if(e.keyCode === 32 && $('#allCheckbox').is(':checked') == false) {
+          VoiceMenual("장바구니 상품 전체 선택 되었습니다.");
+        } else if(e.keyCode === 32 && $('#allCheckbox').is(':checked') == true){
+          VoiceMenual("전체 상품 선택을 취소했습니다."); 
+        }
+      }
+
+      function allFocus(e) {
+        VoiceMenual("장바구니에 담긴 상품을 전체 선택 원할 경우 스페이스바 눌러주세요.");
+      } 
+
+      function productDel(e) {
+        VoiceMenual("현재 상품을 삭제 원할 경우 스페이스바 두번 눌러주세요.");
+      }
+      function patMove(e) {
+    	  
+        if($('#totalPrice').text() == '0원') {
+          VoiceMenual('선택된 상품 금액이 없습니다. 상품 선택 후 진행해주세요.');
+          return;
+        }
+
+        let productPay = $('#productPrice').text();
+        let salePay = $('#salePrice').text();
+        let deliveryPay = $('#deliveryPrice').text();
+        let totalPay = $('#totalPrice').text();
+        VoiceMenual(`상품금액은 ${productPay}. 할인된 금액은 ${salePay}. 배송비는 ${deliveryPay}. 총 결제 금액은 ${totalPay}. 입니다.
+                     상품 선택을 마치셨다면. 엔터키 사용하여. 선택한 상품을 가지고. 주문 페이지로. 이동합니다.`);
+      }
+      function proKeydown(e) {
+        console.log($(this).prop('checked'));
+        if(e.keyCode === 32 && $(this).prop('checked') == false) {
+            VoiceMenual("상품 선택 되었습니다.");
+          } else if(e.keyCode === 32 && $(this).prop('checked') == true){
+            VoiceMenual("상품 선택을 취소했습니다."); 
+          }               
+      }
+      function shoping(e){
+        VoiceMenual("장바구니 상품이 더 이상 없습니다. 쇼핑 계속 원할 경우 엔터 결제 원할 경우. alt, 1를 눌러 결제하기로 이동하세요.");
+      }
+
 function base64ToBlob(base64, fileType) {
     let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
     let audioSrc = typeHeader + base64;
