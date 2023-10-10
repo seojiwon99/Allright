@@ -34,7 +34,7 @@
 						<input type="hidden" th:value="${cancel}" id="hidden"> 
 						<label>주문번호</label>
 						<input type="text" class="form-label orderCode" id="orderCode"
-							th:value="${cancel.orderCode}"  readonly> 
+							th:value="${cancel.orderCode}" tabindex="0" readonly> 
 						<label>주문상세번호</label>
 						<input type="text" class="form-label orderDetailCode" id="orderDetailCode"
 							th:value="${cancel.orderDetailCode}" readonly>
@@ -48,7 +48,7 @@
 						<select class="form-select form-select-xxs w-auto" id="select">
 							<option value="선택" class="select">취소 사유를 선택해주세요</option>
 							<option th:each="codes: ${codeList}" th:value="${codes.codeId}"
-								th:text="${codes.codeName}" class="codeName" ></option>
+								th:text="${codes.codeName}"></option>
 						</select>
 					</div>
 					<div class="mb-3">
@@ -114,7 +114,7 @@
 					data : JSON.stringify(cancelData),
 					success : function(response) {
 						alert('취소 신청이 성공적으로 처리되었습니다.');
-						
+						location.href="/page/buyer/orderList";
 					},
 					error : function(error) {
 						console.error('취소 실패.');
@@ -145,6 +145,7 @@
 	     $('#orderDetailCode').on('focus', orderDetailCode);
 	     $('#productName').on('focus', productName);
 	     $('#select').on('focus', selected);
+	     $('#select').on('change', selectOption);
 	     $('#content').on('focus', cancelReason)
 		 $('#cancelBtn').on('focus', cancelBtn);
 		 $('#retract').on('focus', retract);
@@ -157,8 +158,7 @@
 		 let detailCode;
 		 let prodName;
 		 let select;
-		 let codeName;
-		 let reason;
+		 let selectOp;
 		 
 		 //tts 이벤트 진행
 	     function orderCode() {
@@ -177,6 +177,10 @@
 			 select =  $("#select").text();
 			 VoiceMenual(select);
 		 }
+		 function selectOption() {
+			 selectOp = $("#select option:selected").text();
+			 VoiceMenual(selectOp);
+		 }
 		 function cancelReason() { 
 			 VoiceMenual("자세한 취소 사유를 입력해주세요.");
 		 }
@@ -190,11 +194,16 @@
 			 VoiceMenual("은행 명을 입력해주세요.");
 		 }
 		 function cancelBtn(){
+			 code = $('#orderCode').val();
+			 detailCode = $('#orderDetailCode').val();
+			 prodName = $('#productName').val();
+			 select =  $("#select").text();
+			 selectOp = $("#select option:selected").text();
 			 let detailReason = $('#content').val();
 			 let bName = $('#bankName').val();
 			 let aOwner = $('#accountOwner').val();
 			 let aNumber = $('#accountNumber').val();
-			 let check = `주문 취소 신청 버튼입니다. 주문 번호는. ${code}.  주문상세번호는.  ${detailCode}. 상품명은. ${prodName}. 취소 상세 사유는. ${detailReason}.
+			 let check = `주문 취소 신청 버튼입니다. 주문 번호는. ${code}.  주문상세번호는.  ${detailCode}. 상품명은. ${prodName}. 취소 사유는. ${selectOp}. 취소 상세 사유는. ${detailReason}.
 			 			  은행명은. ${bName}. 예금주는. ${aOwner}. 입금계좌번호는. ${aNumber}. 신청 사항을 확인하셨다면. 엔터키를 눌러주세요.`;
 			 VoiceMenual(check);
 		 }

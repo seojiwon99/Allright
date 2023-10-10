@@ -131,7 +131,7 @@
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">상품 이미지:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                          <img th:src="@{/img/products/product-1.jpg}" style="max-width: 100%; height: auto" th:alt="${lists.imgContent}">
+                          <img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|" style="max-width: 100%; height: auto" th:alt="${lists.imgContent}">
                         </p>
                       </div>
                     <!-- 상품명 -->

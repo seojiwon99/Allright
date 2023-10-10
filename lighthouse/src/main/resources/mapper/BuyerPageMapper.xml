@@ -31,6 +31,7 @@
 		        e.img_name,
 		        e.upload_name,
 		        e.img_content,
+		        e.upload_path,
 		        cancel_status,
 		        order_status_name(f.cancel_status) AS cancel_status_nm,
 		        f.cancel_regdate,
@@ -50,7 +51,7 @@
 		    LEFT OUTER JOIN 
 		        ar_products d ON c.product_code = d.product_code
 		    LEFT OUTER JOIN 
-		        ar_imgs e ON e.parent_code = d.product_code
+		        ar_imgs e ON e.product_code = d.product_code
 		    LEFT OUTER JOIN 
 		        ar_cancel f ON a.order_detail_code = f.order_detail_code 
 		    LEFT OUTER JOIN 
@@ -58,7 +59,8 @@
 		    LEFT OUTER JOIN 
 		        ar_exchange h ON a.order_detail_code = h.order_detail_code
 		    WHERE 
-		        b.member_id = #{memberId}) pg
+		        b.member_id = #{memberId}
+		        and e.img_order = '0') pg
 		    <![CDATA[
         WHERE rownum <= #{cri.pageNum} * #{cri.amount}
         ]]>
@@ -105,6 +107,7 @@
 		        exchange_status,
 		        order_status_name(h.exchange_status) AS exchange_status_nm,
 		        h.exchange_regdate,
+		        e.upload_path,
 		        ROW_NUMBER() OVER (PARTITION BY a.order_detail_code ORDER BY a.order_date DESC) AS rn
 		    FROM 
 		        ar_order_detail a
@@ -115,7 +118,7 @@
 		    LEFT OUTER JOIN 
 		        ar_products d ON c.product_code = d.product_code
 		    LEFT OUTER JOIN 
-		        ar_imgs e ON e.parent_code = d.product_code
+		        ar_imgs e ON e.product_code = d.product_code
 		    LEFT OUTER JOIN 
 		        ar_cancel f ON a.order_detail_code = f.order_detail_code 
 		    LEFT OUTER JOIN 
@@ -123,7 +126,8 @@
 		    LEFT OUTER JOIN 
 		        ar_exchange h ON a.order_detail_code = h.order_detail_code
 		    WHERE 
-		        b.member_id = #{memberId}
+		        b.member_id = #{memberId
+		        and e.img_order = '0'}
 		    <choose>
 		    	<when test="searchKey == 'payment_price'">
 		    		AND a.payment_price like '%'||#{searchValue}||'%'
@@ -221,25 +225,23 @@
    
    <!-- 쿠폰 (페이징) -->
    <select id="selectCouponList" resultType="CouponVO" parameterType="Criteria">
-       select *
-		from ( select rownum rn, pg.* 
-			from (
-				SELECT a.coupon_code
-		              , a.coupon_name
-		              , a.coupon_content
-		              , a.coupon_deadline
-		              , a.coupon_condition
-		              , a.coupon_min_price
-		              , a.coupon_max_price
-		              , a.coupon_discount_price
-		              , a.coupon_discount_rate
-		              , b.using_date
-		              , b.end_date
-		              , b.issue_date
-		              , b.coupon_use
-		         FROM ar_coupons a
-		         JOIN ar_coupon_box b 
-		           ON a.coupon_code = b.coupon_code
+       SELECT *
+		FROM ( select rownum rn, pg.* 
+			FROM (
+				SELECT coupon_code
+		              , coupon_name
+		              , coupon_content
+		              , coupon_deadline
+		              , coupon_condition
+		              , coupon_min_price
+		              , coupon_max_price
+		              , coupon_discount_price
+		              , coupon_discount_rate
+		              , using_date
+		              , end_date
+		              , issue_date
+		              , coupon_use
+		         FROM ar_my_coupon
 		         WHERE member_id = #{memberId}) pg
          <![CDATA[
         WHERE rownum <= #{cri.pageNum} * #{cri.amount}
@@ -288,11 +290,13 @@
 		            , b.product_code
 		            , b.sale_price
 		            , c.upload_name
+		            , c.upload_path
 		            , c.img_content
 		        FROM ar_favorite a
 		        LEFT OUTER JOIN ar_products b ON a.product_code = b.product_code
 		        LEFT OUTER JOIN ar_imgs c ON a.product_code = c.product_code
 		        WHERE a.member_id = #{memberId}
+		        AND c.img_order = '0'
 		        ORDER BY a.favorite_code DESC
 		    ) pg
 		    <![CDATA[
@@ -325,16 +329,22 @@
            , c.order_detail_code
            , d.option_detail_code
            , e.product_name
-             , f.member_id
-             , f.order_code
+           , f.member_id
+           , f.order_code
+           , g.upload_name
+           , g.img_content
+           , g.upload_path
+           , g.img_order
       FROM ar_cancel a
       LEFT JOIN ar_cancel_reject b ON a.CANCEL_REJECTION_REASON = b.CANCEL_REJECTION_REASON
       LEFT JOIN ar_order_detail c ON c.order_detail_code = a.order_detail_code
       LEFT JOIN ar_option_detail d ON d.option_detail_code = c.option_detail_code
       LEFT JOIN ar_products e ON e.product_code = d.product_code
-        LEFT JOIN ar_orders f ON c.order_code = f.order_code
-        WHERE f.member_id = #{memberId}
-        ORDER BY a.cancel_regdate DESC
+      LEFT JOIN ar_orders f ON c.order_code = f.order_code
+      LEFT JOIN ar_imgs g ON g.product_code = e.product_code
+      WHERE f.member_id = #{memberId}
+      and g.img_order = '0'
+      ORDER BY a.cancel_regdate DESC
    </select>
    
    <!-- 반품 상세 -->
@@ -343,6 +353,7 @@
            , a.return_reason
            , a.return_regdate
            , a.return_retractdate
+           , a.return_processdate
            , order_status_name(a.return_status) return_status
            , b.order_detail_code
            , b.order_code
@@ -350,13 +361,19 @@
            , b.payment_price
            , c.option_detail_code
            , d.product_name 
-             , e.member_id
+           , e.member_id
+           , f.upload_name
+           , f.img_content
+           , f.upload_path
+           , f.img_order
       FROM ar_return a
       LEFT JOIN ar_order_detail b ON a.order_detail_code = b.order_detail_code
       LEFT JOIN ar_option_detail c ON b.option_detail_code = c.option_detail_code
       LEFT JOIN ar_products d ON d.product_code = c.product_code
-        LEFT JOIN ar_orders e ON e.order_code = b.order_code
+      LEFT JOIN ar_orders e ON e.order_code = b.order_code
+      LEFT JOIN ar_imgs f ON f.product_code = d.product_code
       WHERE e.member_id = #{memberId}
+      AND f.img_order = '0'
       ORDER BY a.return_regdate DESC
    </select>
    
@@ -460,12 +477,10 @@
 		INSERT INTO ar_cancel 
 				(CANCEL_CODE
 				, ORDER_DETAIL_CODE
-				, CANCEL_REASON
-				, cancel_status)
+				, CANCEL_REASON)
 		VALUES (ca_code
 				, #{orderDetailCode}
-				, #{cancelReason}
-				, 'n')
+				, #{cancelReason})
 	</insert>
 	
 	<!--반품 신청  -->
@@ -473,12 +488,10 @@
 		INSERT INTO ar_return 
 				(RETURN_CODE
 			   , ORDER_DETAIL_CODE
-			   , RETURN_REASON
-			   , RETURN_STATUS)
+			   , RETURN_REASON)
 		VALUES (re_code
 			   , #{orderDetailCode}
-			   , #{returnReason}
-			   , 'n')
+			   , #{returnReason})
 	</insert>
 	
 	<!-- 교환 신청 -->
@@ -487,13 +500,11 @@
 				(EXCHANGE_CODE
 				, ORDER_DETAIL_CODE
 				, EXCHANGE_REASON
-				, EXCHANGE_ADDR
-				, EXCHANGE_STATUS)
+				, EXCHANGE_ADDR)
 		VALUES (ex_code
 				, #{orderDetailCode}
 				, #{exchangeReason}
-				, #{exchangeAddr}
-				, 'n')
+				, #{exchangeAddr})
 	</insert>
 	
 	<!-- 주문 취소 -->
@@ -519,6 +530,7 @@
 		DELETE ar_favorite
 		WHERE favorite_code = #{favoriteCode}
 	</delete>
+	
 	
 	<!-- 찜 목록으로 -->
 	<insert id="insertWish" parameterType="WishVO">

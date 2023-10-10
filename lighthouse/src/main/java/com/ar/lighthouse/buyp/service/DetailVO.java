@@ -56,6 +56,7 @@ public class DetailVO {
    private String imgContent;
    private String imgName;
    private String uploadName;
+   private String uploadPath;
    private int imgOrder;
    
    
