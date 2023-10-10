@@ -1,16 +1,19 @@
 package com.ar.lighthouse.member.service;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.Data;
 
 
 @Data
-public class MemberVO {
+public class MemberVO{
 	private String memberId;
 	private String memberPw;
 	private String memberName;
@@ -25,6 +28,7 @@ public class MemberVO {
 	private String businessNumber;
 	private int memberAuthor;
 	private String memberTel;
+	private List<String> authorities;
 	
 	
 	public MemberVO hashPassword(PasswordEncoder passwordEncoder) {
@@ -32,4 +36,6 @@ public class MemberVO {
 		    return this;
 	}
 	List<MemberVO> memberList;
+	
+
 }

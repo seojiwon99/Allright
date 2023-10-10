@@ -62,8 +62,8 @@ public class OrdersVO {
 	private int couponCode;
 	private String couponName;
 	private String couponContent;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date couponDeadline;
+	
+	private int couponDeadline;
 	private String couponBase;
 	private int couponMinPrice;
 	private int couponMaxPrice;

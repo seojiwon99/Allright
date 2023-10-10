@@ -41,7 +41,7 @@
             <!-- Nav -->
             <nav class="mb-10 mb-md-0">
               <div class="list-group list-group-sm list-group-strong list-group-flush-x">
-                <a class="list-group-item list-group-item-action dropend-toggle active" th:href="@{/page/buyer/orderList}">
+                <a class="list-group-item list-group-item-action dropend-toggle active" id="orderList" th:href="@{/page/buyer/orderList}">
                   주문 목록
                 </a>
 				<ul class="list-styled mb-0">
@@ -55,17 +55,17 @@
                   <div class="collapse" id="Collapse" data-simplebar-collapse="#seasonGroup">
                     <div class="form-group form-group-overflow mb-6" id="seasonGroup">
                       <div class="form-check mb-3">
-                        <a class="form-check-label" for="seasonOne" href="cancelList">
+                        <a class="form-check-label" id="cancel" href="cancelList">
                           취소
                         </a>
                       </div>
                       <div class="form-check mb-3">
-                        <a class="form-check-label" for="seasonTwo" href="returnList">
+                        <a class="form-check-label" id="reList" href="returnList">
                           반품
                         </a>
                       </div>
                       <div class="form-check">
-                        <a class="form-check-label" for="seasonThree" href="exchangeList">
+                        <a class="form-check-label" id="exchange" href="exchangeList">
                           교환
                         </a>
                       </div>
@@ -73,22 +73,22 @@
                   </div>
                  </li>
                 <li class="nav-item">
-                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/myCoupon}">
+                <a class="list-group-item list-group-item-action dropend-toggle" id="coupon" th:href="@{/page/buyer/myCoupon}">
                   나의 쿠폰함
                 </a>
                 </li>
                 <li class="nav-item">
-                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/myInquiry}">
+                <a class="list-group-item list-group-item-action dropend-toggle" id="inquiry" th:href="@{/page/buyer/myInquiry}">
                   문의내역
                 </a>
                 </li>
                  <li class="nav-item">
-                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/wishList}">
+                <a class="list-group-item list-group-item-action dropend-toggle" id="wish" th:href="@{/page/buyer/wishList}">
                   찜 목록
                 </a>
                 </li>
                  <li class="nav-item">
-                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/personalInfo}">
+                <a class="list-group-item list-group-item-action dropend-toggle" id="myInfo" th:href="@{/page/buyer/personalInfo}">
                   개인정보 확인/수정
                 </a>
                 </li>
@@ -106,89 +106,67 @@
                 <!-- Info -->
 
                 <div class="card card-sm">
-                
                 <div th:each="coupons : ${myCoupon}" th:if= "${coupons.couponUse} == 'Y'">
                   <div class="card-body bg-light">
-                    <div class="row">
+                    <div class="row couponRow">
                       <div class="col-6 col-lg-3">
-    					
-                        <!-- Heading -->
                         <h6 class="heading-xxxs text-muted">쿠폰 번호:</h6>
-
-                        <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
-                          <span th:text= "|${coupons.couponCode}|"></span>
+                          <span th:text= "|${coupons.couponCode}|" class="couponCode" tabindex="0"></span>
                         </p>
-
                       </div>
                       <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
                         <h6 class="heading-xxxs text-muted">쿠폰 명:</h6>
-
-                        <!-- Text -->
                         <p class="mb-lg-0 fs-sm fw-bold">
-                           <span th:text= "|${coupons.couponName}|"></span>
+                           <span th:text= "|${coupons.couponName}|" class="couponName"></span>
                         </p>
-
                       </div>
                       <div class="col-6 col-lg-3">
-
-                        <!-- Heading -->
                         <h6 class="heading-xxxs text-muted">쿠폰 설명:</h6>
-
-                        <!-- Text -->
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${coupons.couponContent}|"></span>
+                          <span th:text="|${coupons.couponContent}|" class="couponContent"></span>
                         </p>
-
                       </div>
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">사용조건:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${coupons.couponCondition}|"></span>
+                          <span th:text="|${coupons.couponCondition}|"class="couponCondition"></span>
                         </p>
-
                       </div>
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">발급일자:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${#dates.format(coupons.issueDate, 'yyyy-MM-dd')}|"></span>
+                          <span th:text="|${#dates.format(coupons.issueDate, 'yyyy-MM-dd')}|" class="issueDate"></span>
                         </p>
-
                       </div>
+                      <!-- 
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">사용기한:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${#dates.format(coupons.couponDeadline, 'yyyy-MM-dd')}|"></span>
+                          <span th:text="|${#dates.format(coupons.couponDeadline, 'yyyy-MM-dd')}|" class="couponDeadline"></span>
                         </p>
-
                       </div>
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">사용 시작 일자:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                         <span th:text="|${#dates.format(coupons.usingDate, 'yyyy-MM-dd')}|"></span>
+                         <span th:text="|${#dates.format(coupons.usingDate, 'yyyy-MM-dd')}|" class="usingDate"></span>
                         </p>
-
                       </div>
+                       -->
                       <div class="col-6 col-lg-3">
-                        <h6 class="heading-xxxs text-muted">사용 종료 일자:</h6>
+                        <h6 class="heading-xxxs text-muted">기한 종료 일자:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                          <span th:text="|${#dates.format(coupons.endDate, 'yyyy-MM-dd')}|"></span>
+                          <span th:text="|${#dates.format(coupons.endDate, 'yyyy-MM-dd')}|" class="endDate"></span>
                         </p>
-
                       </div>
                     </div>
                   </div>
                 </div>
 				</div>
-              
-
             </div>	
           </div>
-          <!-- Pagination -->
-					<nav
-						class="d-flex justify-content-center justify-content-md-end mt-10">
+          		<!-- Pagination -->
+					<nav class="d-flex justify-content-center justify-content-md-end mt-10">
 						<ul class="pagination pagination-sm text-gray-400">
 							<li class="page-item" th:if="${pageMaker.prev}"><a
 								class="page-link page-link-arrow"
@@ -214,14 +192,187 @@
 							</a></li>
 						</ul>
 					</nav>
-        </div>
-			</div>
+        		</div>
+				</div>
 			</div>
 			<form action="/buyer/wishList" method="get">
 				<input type="hidden" name="pageNum" th:value="${pageMaker.cri.pageNum}">
 				<input type="hidden" name="amount" th:value="${pageMaker.cri.amount}">
 				<input type="hidden" name="keyword" th:value="${pageMaker.cri.keyword}">
-		</form>
-			</section>
+			</form>
+	</section>
+	<textarea id="orderMenual" style="display: none;">
+      1번 주문목록.
+      2번 취소목록.
+      3번 반품목록.
+      4번 교환목록.
+      5번 나의 쿠폰함.
+      6번 문의내역.
+      7번 찜 목록.
+      8번 개인정보 확인/수정.
+      9번 메인페이지 이동.
+      0번 다시듣기.
+    </textarea>
+   <script>
+    //tts 시작 
+     let TTSIsOk = localStorage.getItem('ttsKey');
+       let sessionAuthor;
+      console.log(sessionStorage.loginMember);          
+      if(sessionStorage.loginMember != null){
+         sessionAuthor = sessionStorage.loginMember.memberAuthor;
+      }
+          
+         function ttsInit(){
+          if(TTSIsOk == null || sessionAuthor == 3){
+           let audioFileNow = new Audio();
+           let firstMsg = "나의 쿠폰 페이지입니다. 나의 쿠폰에 대해서 확인할 수 있습니다.";
+           let message = firstMsg + $('#orderMenual').val();
+
+           VoiceMenual(message);
+
+     //tts 이벤트 부여
+     $('.couponCode').on('focus',couponInfo);
+
+     //tts 이벤트 진행
+     function couponInfo() {
+    	 let couponCode = $(this).closest('.couponRow').find('.couponCode').text();
+	     let couponName = $(this).closest('.couponRow').find('.couponName').text();
+	     let couponContent =  $(this).closest('.couponRow').find('.couponContent').text();
+	     let couponCondition =  $(this).closest('.couponRow').find('.couponCondition').text();
+	     let issueDate = $(this).closest('.couponRow').find('.issueDate').text();
+	     let couponDeadline = $(this).closest('.couponRow').find('.couponDeadline').text();
+	     let usingDate = $(this).closest('.couponRow').find('.usingDate').text();
+	     let endDate = $(this).closest('.couponRow').find('.endDate').text();
+    	 
+	     let message= `쿠폰 번호는 ${couponCode}. 쿠폰 명은 ${couponName}. 쿠폰 설명은 ${couponContent}.
+			           쿠폰 사용 조건은 ${couponCondition}. 발급일자는 ${issueDate}. 사용 기한은 ${couponDeadline}. 사용 시작 날짜는 ${usingDate}.
+			           사용 종료 날짜는 ${endDate}. 입니다.`;
+    	 
+    	 VoiceMenual(message);
+     }
+
+		//tts 부분
+		console.log('hello js');
+		
+		var AudioContext;
+		var audioContext;
+		
+		window.onload = function() {
+		    navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
+		        AudioContext = window.AudioContext || window.webkitAudioContext;
+		        audioContext = new AudioContext();
+		    }).catch(e => {
+		        console.error(`Audio permissions denied: ${e}`);
+		    });
+		}
+		
+		
+		function VoiceMenual(message) {
+		    var data = {
+		        "voice" : {
+		            "languageCode" : "ko-KR",
+		            "name" : "ko-KR-Neural2-B"
+		        },
+		        "input" : {
+		            "text" : message
+		        },
+		        "audioConfig" : {
+		            "audioEncoding" : "mp3"
+		        }
+		    }
+		    console.log(data);
+		    $.ajax({
+		        type : 'POST',
+		        url : 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
+		        data : JSON.stringify(data),
+		        dataType : 'JSON',
+		        contentType : "application/json; charset=UTF-8",
+		        success : function(res) {
+		            $('#menuText').val(res.audioContent)
+		            var audioFile = new Audio();
+		            let audioBlob = base64ToBlob(res.audioContent,
+		                    "mp3");
+		            audioFile.src = window.URL
+		                    .createObjectURL(audioBlob);
+		            audioFile.playbackRate = 2; //재생속도
+		            if(audioFileNow.paused == false){
+		               audioFileNow.pause();
+		            }
+		          audioFileNow = audioFile;
+		            audioFileNow.play();
+		        
+		        },
+		        error : function(request, status, error) {
+		            alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
+		        }
+		    });
+		};
+		function base64ToBlob(base64, fileType) {
+		    let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
+		    let audioSrc = typeHeader + base64;
+		    let arr = audioSrc.split(",");
+		    let array = arr[0].match(/:(.*?);/);
+		    let mime = (array && array.length > 1 ? array[1] : type) || type;
+		    // url헤더 제거하고 btye로 변환
+		    let bytes = window.atob(arr[1]);
+		    // 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
+		    let ab = new ArrayBuffer(bytes.length);
+		    // 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
+		    let ia = new Uint8Array(ab);
+		    for (let i = 0; i < bytes.length; i++) {
+		        ia[i] = bytes.charCodeAt(i);
+		    }
+		    return new Blob([ ab ], {
+		        type : mime
+		    });
+		}
+		
+		   window.addEventListener("keydown", function(e){ 
+		         console.log(e);
+		         if(e.altKey && e.key == 1){ //주문목록
+		             $('#orderList').focus();
+		             VoiceMenual('주문목록 페이지 원할 경우. 엔터키 입력');
+		          }
+		         else if(e.altKey && e.key == 2){ //취소내역
+		        	 $(".collapse").addClass("show")
+		             $('#cancel').focus();
+		             VoiceMenual('취소. 페이지 원할 경우. 엔터키 입력');
+		          }
+		         else if(e.altKey && e.key == 3) {//반품내역
+		        	 $(".collapse").addClass("show")
+		             $('#reList').focus();
+		             VoiceMenual('반품. 페이지 원할 경우. 엔터키 입력');
+		          }
+		         else if(e.altKey && e.key == 4){ // 교환내역
+		        	 $(".collapse").addClass("show")
+		             $('#exchange').focus();
+		             VoiceMenual('교환. 페이지 원할 경우. 엔터키 입력');
+		          }
+		         else if(e.altKey && e.key == 5){ // 나의 쿠폰함
+		             $('#coupon').focus();
+		             VoiceMenual('쿠폰함. 페이지 원할 경우. 엔터키 입력');
+		          }
+		         else if(e.altKey && e.key == 6){ // 문의내역
+		             $('#inquiry').focus();
+		             VoiceMenual('문의내역. 페이지 원할 경우. 엔터키 입력');
+		          }
+		         else if(e.altKey && e.key == 7){ // 찜 목록
+		             $('#wish').focus();
+		             VoiceMenual("찜목록. 페이지 원할 경우. 엔터키 입력")
+		          }
+		         else if(e.altKey && e.key == 8){ // 배송 시 요청 선택
+		             $('#myInfo').focus();
+		             VoiceMenual('개인정보 확인,수정 페이지 입니다. 엔터키 입력.');
+		          }
+		         else if(e.altKey && e.key == 9){ // 메인 페이지 이동
+		                 location.href = "/";
+		          }
+		         else if(e.altKey && e.key == 0){ //다시 듣기
+		             VoiceMenual($('#orderMenual').val());
+		          }
+		    })
+		  } //ttsInit()의 if문
+		} // ttsInit() close
+	</script>
 </div>
 </html>

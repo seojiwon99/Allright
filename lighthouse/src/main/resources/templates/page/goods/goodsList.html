@@ -1,290 +1,349 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-   xmlns:th="http://www.thymeleaf.org"
-   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-   layout:decorate="~{layouts/default_layout}">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default_layout}">
 <!-- Content -->
 <div layout:fragment="content">
-   <section class="py-11">
-      <div class="container">
-         <div class="row">
-            <div class="col-12 col-md-4 col-lg-3">
+	<section class="py-11">
+		<div class="container">
+			<div class="row">
+				<div class="col-12 col-md-4 col-lg-3">
 
-               <!-- Filters -->
-               <form class="mb-10 mb-md-0">
-                  <ul class="nav nav-vertical" id="filterNav">
-                     <li class="nav-item">
-                        <!-- Toggle --> <a
-                        class="nav-link dropdown-toggle fs-lg text-reset border-bottom mb-6" tabindex=-1
-                        data-bs-toggle="collapse" href="#categoryCollapse" style="font-weight: 600; font-size: 18px"> 카테고리
-                     </a> <!-- Collapse -->
-                        <div class="collapse show" id="categoryCollapse">
-                           <div class="form-group">
-                              <ul class="list-styled mb-0" id="productsNav">
-                                 <li class="list-styled-item"><a class="list-styled-link"
-                                    href="#"> 전체 상품 </a></li>
-                                  
-                                  
-                                  <li class="list-styled-item" th:each="ctg : ${categories}">
-                                    <!-- Toggle --> <a class="list-styled-link"
-                                    data-bs-toggle="collapse" th:href="|#${ctg.categoryCode}|" th:text="${ctg.categoryCode}" >
-                                       레벨2 </a> <!-- Collapse -->
-
-                                    <div class="collapse" th:id="${ctg.categoryCode}"
-                                       data-bs-parent="#productsNav">
-                                       <div class="py-4 ps-5">
-                                       
-                                          <th:block th:each="middle : ${allCtg}" th:if="${middle.categoryLevel} == 2 and ${(middle.parentCategoryCode).equals('Fassion')} and ${(ctg.categoryCode).equals('Fassion')}">
-                                          <div class="form-check mb-3" >
-                                             <input class="form-check-input" th:id="${middle.categoryCode}" tabindex=0 
-                                                type="checkbox"> <label class="form-check-label" 
-                                                th:for="${middle.categoryCode}" >[[${middle.categoryName}]] </label>
-                                          </div>
-                                        </th:block>
-                                        
-                                        <th:block th:each="middle : ${allCtg}" th:if="${middle.categoryLevel} == 2 and ${(middle.parentCategoryCode).equals('FOOD')} and ${(ctg.categoryCode).equals('FOOD')}">
-                                          <div class="form-check mb-3" >
-                                             <!-- <a th:id="${middle.categoryCode}" th:href="|/PList?ctg=${middle.categoryCode}|"> -->
-                                                <input class="form-check-input" th:id="${middle.categoryCode}" tabindex=0
-                                                type="checkbox"> <label class="form-check-label" 
-                                                th:for="${middle.categoryCode}" > [[${middle.categoryName}]] </label>
-                                             <!-- </a>  -->
-                                          </div>
-                                        </th:block>
-                                        
-                                        <th:block th:each="middle : ${allCtg}" th:if="${middle.categoryLevel} == 2 and ${(middle.parentCategoryCode).equals('Life')} and ${(ctg.categoryCode).equals('Life')}">
-                                          <div class="form-check mb-3" >
-                                             <input class="form-check-input" th:id="${middle.categoryCode}" tabindex=0
-                                                type="checkbox"> <label class="form-check-label"
-                                                th:for="${middle.categoryCode}" > [[${middle.categoryName}]] </label>
-                                          </div>
-                                        </th:block>
-                                        
-                                       </div> <!-- py-4 ps-5 -->
-                                    </div> <!--  collapse -->
-
-                                 </li>  
-
-                              </ul>
-                           </div>
-                        </div>
-
-                     </li>
+					<!-- Filters -->
+					<form class="mb-10 mb-md-0">
+						<ul class="nav nav-vertical" id="filterNav">
+							<li class="nav-item">
+								<!-- Toggle --> <a
+								class="nav-link dropdown-toggle fs-lg text-reset border-bottom mb-6"
+								tabindex=-1 data-bs-toggle="collapse" href="#categoryCollapse"
+								style="font-weight: 600; font-size: 18px"> 카테고리 </a> <!-- Collapse -->
+								<div class="collapse show" id="categoryCollapse">
+									<div class="form-group">
+										<ul class="list-styled mb-0" id="productsNav">
+											<li class="list-styled-item"><a class="list-styled-link"
+												href="/PList"> 전체 상품 </a></li>
 
 
+											<li class="list-styled-item" th:each="ctg : ${categories}">
+												<!-- Toggle --> <a class="list-styled-link"
+												data-bs-toggle="collapse" th:href="|#${ctg.categoryCode}|"
+												th:text="${ctg.categoryCode}"> 레벨2 </a> <!-- Collapse -->
 
-                     <li class="nav-item">
-                        <!-- Toggle --> <a tabindex=-1
-                        class="nav-link dropdown-toggle fs-lg text-reset border-bottom mb-6"
-                        data-bs-toggle="collapse" href="#seasonCollapse" style="font-weight: 600; font-size: 18px"> 순서 </a> <!-- Collapse -->
-                        <div class="collapse show" id="seasonCollapse"
-                           data-simplebar-collapse="#seasonGroup">
-                           <div class="form-group form-group-overflow mb-6"
-                              id="seasonGroup">
-                              <div class="form-check mb-3">
-                                 <input class="form-check-input" id="seasonOne"
-                                    type="checkbox"> <label class="form-check-label"
-                                    for="seasonOne"> New </label>
-                              </div>
-                              <div class="form-check mb-3">
-                                 <input class="form-check-input" id="seasonTwo"
-                                    type="checkbox"> <label class="form-check-label"
-                                    for="seasonTwo"> Best </label>
-                              </div>
+												<div class="collapse" th:id="${ctg.categoryCode}"
+													data-bs-parent="#productsNav">
+													<div class="py-4 ps-5">
 
-                           </div>
-                        </div>
+														<th:block th:each="middle : ${allCtg}"
+															th:if="${middle.categoryLevel} == 2 and ${(middle.parentCategoryCode).equals('Fassion')} and ${(ctg.categoryCode).equals('Fassion')}">
+															<div class="form-check mb-3">
+																<input class="form-check-input"
+																	th:id="${middle.categoryCode}" tabindex=0
+																	type="checkbox"> <label
+																	class="form-check-label"
+																	th:for="${middle.categoryCode}">[[${middle.categoryName}]]
+																</label>
+															</div>
+														</th:block>
 
-                     </li>
-                     <li class="nav-item">
-                        <!-- Toggle --> <a tabindex=-1
-                        class="nav-link dropdown-toggle fs-lg text-reset border-bottom mb-6"
-                        data-bs-toggle="collapse" href="#priceCollapse" style="font-weight: 600; font-size: 18px"> 가격 </a> <!-- Collapse -->
-                        <div class="collapse show" id="priceCollapse"
-                           data-simplebar-collapse="#priceGroup">
+														<th:block th:each="middle : ${allCtg}"
+															th:if="${middle.categoryLevel} == 2 and ${(middle.parentCategoryCode).equals('FOOD')} and ${(ctg.categoryCode).equals('FOOD')}">
+															<div class="form-check mb-3">
+																<!-- <a th:id="${middle.categoryCode}" th:href="|/PList?ctg=${middle.categoryCode}|"> -->
+																<input class="form-check-input"
+																	th:id="${middle.categoryCode}" tabindex=0
+																	type="checkbox"> <label
+																	class="form-check-label"
+																	th:for="${middle.categoryCode}">
+																	[[${middle.categoryName}]] </label>
+																<!-- </a>  -->
+															</div>
+														</th:block>
 
-                           <!-- Form group-->
-                           <div class="form-group form-group-overflow mb-6"
-                              id="priceGroup">
-                              <div class="form-check mb-3">
-                                 <input class="form-check-input" id="priceOne" type="checkbox" name="pricefilter">
-                                 <label class="form-check-label" for="priceOne"> 0원 -
-                                    50,000원 </label>
-                              </div>
-                              <div class="form-check mb-3">
-                                 <input class="form-check-input" id="priceTwo" type="checkbox" name="pricefilter">
-                                 <label class="form-check-label" for="priceTwo">
-                                    50,000원 - 100,000원 </label>
-                              </div>
-                              <div class="form-check mb-3">
-                                 <input class="form-check-input" id="priceThree" name="pricefilter"
-                                    type="checkbox"> <label class="form-check-label"
-                                    for="priceThree"> 100,000원 - 200,000원 </label>
-                              </div>
-                              <div class="form-check">
-                                 <input class="form-check-input" id="priceFour" name="pricefilter"
-                                    type="checkbox"> <label class="form-check-label"
-                                    for="priceFour"> 200,000 이상 </label>
-                              </div>
-                           </div>
-                          
+														<th:block th:each="middle : ${allCtg}"
+															th:if="${middle.categoryLevel} == 2 and ${(middle.parentCategoryCode).equals('Life')} and ${(ctg.categoryCode).equals('Life')}">
+															<div class="form-check mb-3">
+																<input class="form-check-input"
+																	th:id="${middle.categoryCode}" tabindex=0
+																	type="checkbox"> <label
+																	class="form-check-label"
+																	th:for="${middle.categoryCode}">
+																	[[${middle.categoryName}]] </label>
+															</div>
+														</th:block>
 
-                           <!-- Range -->
-                           <div class="d-flex align-items-center" id="writeRange">
-								<div class="form-check" style="margin-right: 14px">
-	                                 <input class="form-check-input" id="priceRange" type="checkbox" name="pricefilter">
-                              	</div>
-                              <!-- Input -->
-                              <input type="number" class="form-control form-control-xs"
-                                 placeholder="10,000원" min="10">
+													</div>
+													<!-- py-4 ps-5 -->
+												</div> <!--  collapse -->
 
-                              <!-- Divider -->
-                              <div class="text-gray-350 mx-2">‒</div>
+											</li>
 
-                              <!-- Input -->
-                              <input type="number" class="form-control form-control-xs"
-                                 placeholder="100,000원" max="9999999">
+										</ul>
+									</div>
+								</div>
 
-                           </div>
-                            <div style="margin-top : 10px">
-                           		<button type="button" class="form-control form-control-xs" id="filterApplyBtn">적용하기</button>
-                           </div>
-
-                        </div>
-
-                     </li>
-
-                  </ul>
-               </form>
-
-            </div>
+							</li>
 
 
 
+							<li class="nav-item">
+								<!-- Toggle --> <a tabindex=-1
+								class="nav-link dropdown-toggle fs-lg text-reset border-bottom mb-6"
+								data-bs-toggle="collapse" href="#seasonCollapse"
+								style="font-weight: 600; font-size: 18px"> 순서 </a> <!-- Collapse -->
+								<div class="collapse show" id="seasonCollapse"
+									data-simplebar-collapse="#seasonGroup">
+									<div class="form-group form-group-overflow mb-6"
+										id="seasonGroup">
+										<div class="form-check mb-3">
+											<input class="form-check-input" id="seasonOne"
+												type="checkbox"> <label class="form-check-label"
+												for="seasonOne"> New </label>
+										</div>
+										<div class="form-check mb-3">
+											<input class="form-check-input" id="seasonTwo"
+												type="checkbox"> <label class="form-check-label"
+												for="seasonTwo"> Best </label>
+										</div>
 
-            <div class="col-12 col-md-8 col-lg-9">
+									</div>
+								</div>
+
+							</li>
+							<li class="nav-item">
+								<!-- Toggle --> <a tabindex=-1
+								class="nav-link dropdown-toggle fs-lg text-reset border-bottom mb-6"
+								data-bs-toggle="collapse" href="#priceCollapse"
+								style="font-weight: 600; font-size: 18px"> 가격 </a> <!-- Collapse -->
+								<div class="collapse show" id="priceCollapse"
+									data-simplebar-collapse="#priceGroup">
+
+									<!-- Form group-->
+									<div class="form-group form-group-overflow mb-6"
+										id="priceGroup">
+										<div class="form-check mb-3">
+											<input class="form-check-input" id="priceOne" type="checkbox"
+												name="pricefilter"> <label class="form-check-label"
+												for="priceOne"> 0원 - 50,000원 </label>
+										</div>
+										<div class="form-check mb-3">
+											<input class="form-check-input" id="priceTwo" type="checkbox"
+												name="pricefilter"> <label class="form-check-label"
+												for="priceTwo"> 50,000원 - 100,000원 </label>
+										</div>
+										<div class="form-check mb-3">
+											<input class="form-check-input" id="priceThree"
+												name="pricefilter" type="checkbox"> <label
+												class="form-check-label" for="priceThree"> 100,000원
+												- 200,000원 </label>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" id="priceFour"
+												name="pricefilter" type="checkbox"> <label
+												class="form-check-label" for="priceFour"> 200,000 이상
+											</label>
+										</div>
+									</div>
+
+
+									<!-- Range -->
+									<div class="d-flex align-items-center" id="writeRange">
+										<div class="form-check" style="margin-right: 14px">
+											<input class="form-check-input" id="priceRange"
+												type="checkbox" name="pricefilter">
+										</div>
+										<!-- Input -->
+										<input type="number" class="form-control form-control-xs"
+											placeholder="10,000원" min="10">
+
+										<!-- Divider -->
+										<div class="text-gray-350 mx-2">‒</div>
+
+										<!-- Input -->
+										<input type="number" class="form-control form-control-xs"
+											placeholder="100,000원" max="9999999">
+
+									</div>
+									<div style="margin-top: 10px">
+										<button type="button" class="form-control form-control-xs"
+											id="filterApplyBtn">적용하기</button>
+									</div>
+
+								</div>
+
+							</li>
+
+						</ul>
+					</form>
+
+				</div>
 
 
 
-               <!-- Header -->
-               <div class="row align-items-center mb-7"
-                  style="border-bottom: 1px solid rgba(0, 0, 0, 0.4); padding-bottom: 26px">
-                  <div class="col-12 col-md">
 
-                     <!-- Heading -->
-                     <h3 class="mb-1" th:if="${#strings.isEmpty(param.ctg)}">전체보기</h3>
-                     <h3 class="mb-1" th:if="${!(#strings.isEmpty(param.ctg))}">[[${param.ctg}]]</h3>
-                     
-                     
-                     
+				<div class="col-12 col-md-8 col-lg-9">
 
-                     <!-- Breadcrumb -->
-                     <ol class="breadcrumb mb-md-0 fs-xs text-gray-400">
-                        <li class="breadcrumb-item"><a class="text-gray-400"
-                           href="/">Home</a></li>
-                        <li class="breadcrumb-item active" th:if="${param.ctg != null}">[[${param.ctg}]]</li>
-                     </ol>
 
-                  </div>
-                  <div class="input-group" style="width: 400px;">
-                     <input class="form-control" type="search"
-                        placeholder="키워드를 검색해 주세요">
-                     <div class="input-group-append">
-                        <button class="btn btn-outline-border" type="submit">
-                           <i class="fe fe-search"></i>
-                        </button>
-                     </div>
-                  </div>
-               </div>
-         
 
-      <div class="row" style="padding-top: 30px">
-               <!-- Products -->
-         <th:block th:each="product : ${products}">
-            <div class="col-6 col-md-4">
-               <div class="card mb-7">
-                  <div class="card-img">
-                  <a class="card-img"  tabindex="0" th:href="|/goodsDetail/?productCode=${product.product_code}|">
-                  <img th:src="@{/img/products/}+${#strings.replace(product.upload_path,'\','/')}+@{/}+${product.upload_name}">
-                  </a><!-- ${product.upload_path}+${product.upload_name} -->
-                  </div>
-                  <div class="card-body px-0">
-                     <div class="fs-xs">[[${product.category_code}]]</div>
-                     <div class="fw-bold">[[${product.product_name}]]</div>
-                     <div class="fw-bold text-muted">
-                     <span class="fs-xs text-gray-350 text-decoration-line-through">[[${product.product_cost}]]</span>
-                     <span class="text-primary">[[${product.product_cost}-${product.sale_price}]]</span>
-                     </div>
-                  </div>
-                  <!-- 별점 -->
-                           <div class="col-auto">
-                              <!-- Rating -->
-                              <div class="rating fs-xs text-dark" data-value="4">
-                                 <div class="rating-item">
-                                    <i class="fas fa-star"></i>
-                                 </div>
-                                 <div class="rating-item">
-                                    <i class="fas fa-star"></i>
-                                 </div>
-                                 <div class="rating-item">
-                                    <i class="fas fa-star"></i>
-                                 </div>
-                                 <div class="rating-item">
-                                    <i class="fas fa-star"></i>
-                                 </div>
-                                 <div class="rating-item">
-                                    <i class="fas fa-star"></i>
-                                 </div>
-                              </div>
-                              <span class="fw-bold text-muted">(6)</span>
-                             </div>
-                  <!-- 별점 END -->
-                  <!-- 리뷰 수 -->
-                  <!-- 리뷰수 -->
-                  
-               </div>
-            </div>
-         </th:block>
-      </div>   
-   <!-- Pagination -->
-               <nav class="d-flex justify-content-center justify-content-md-center mt-10">
-                  <ul class="pagination pagination-sm text-gray-400">
-                     <li class="page-item" th:if="${pageMaker.prev}"><a
-                        class="page-link page-link-arrow"
-                        th:href="@{/PList/(pageNum = ${pageMaker.startPage - 1},keyword=${param.keyword}, ctg=${param.ctg})}">
-                           <i class="fa fa-caret-left"></i>
-                     </a></li>
-                     <th:block
-                        th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
-                        <li th:if="${pageMaker.endPage} ne 0"
-                           th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
-                           th:each="pageButtom : ${#numbers.sequence(start,end)}"
-                           th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
-                           <a class="page-link" href="#"
-                           th:href="@{/PList/(pageNum= ${pageButtom},keyword=${param.keyword}, ctg=${param.ctg})}"
-                           th:text="${pageButtom}" style="font-size : x-large;"></a>
-                        </li>
-                     </th:block>
+					<!-- Header -->
+					<div class="row align-items-center mb-7"
+						style="border-bottom: 1px solid rgba(0, 0, 0, 0.4); padding-bottom: 26px">
+						<div class="col-12 col-md">
 
-                     <li class="page-item" th:if="${pageMaker.next}"><a
-                        class="page-link page-link-arrow"
-                        th:href="@{/PList/(pageNum = ${pageMaker.endPage + 1},keyword=${param.keyword}, ctg=${param.ctg})}">
-                           <i class="fa fa-caret-right"></i>
-                     </a></li>
-                  </ul>
-               </nav>
-   <!-- pagi end -->
+							<!-- Heading -->
+							<h3 class="mb-1" th:if="${#strings.isEmpty(param.ctg)}">전체보기</h3>
+							<h3 class="mb-1" th:if="${!(#strings.isEmpty(param.ctg))}">[[${param.ctg}]]</h3>
 
-            </div>
-         </div>
-      </div>
-   </section><!-- [[${#strings.isEmpty(param.ctg)}]] ? '전체' : '카테고리' -->
-   		<textarea id="PListMenual" style="display:none;"> 
+
+
+
+							<!-- Breadcrumb -->
+							<ol class="breadcrumb mb-md-0 fs-xs text-gray-400">
+								<li class="breadcrumb-item"><a class="text-gray-400"
+									href="/">Home</a></li>
+								<li class="breadcrumb-item active" th:if="${param.ctg != null
+								and not #strings.isEmpty(param.ctg)
+								}">[[${param.ctg}]]</li>
+							</ol>
+							
+							<span class="btn btn-xs btn-light fw-normal text-muted me-3 mb-3" th:if="${param.order != null
+							and not #strings.isEmpty(param.order)}">[[${param.order}]]
+							<a class="text-reset ms-2 delCtg" href="#!" role="button"><i class="fe fe-x"></i></a>
+							<input type="hidden" value="order">
+							</span>
+							
+							<span class="btn btn-xs btn-light fw-normal text-muted me-3 mb-3"
+							 th:if="${param.minPrice != null and param.maxPrice != null
+							 and not #strings.isEmpty(param.minPrice) and not #strings.isEmpty(param.maxPrice)
+							  }">[[${param.minPrice}]]원 ~ [[${param.maxPrice}]]원
+							 <a class="text-reset ms-2 delCtg" href="#!" role="button"><i class="fe fe-x"></i></a>
+							 <input type="hidden" value="price">
+							 </span>
+							 
+							 <span class="btn btn-xs btn-light fw-normal text-muted me-3 mb-3"
+							 th:if="${param.wildCtg != null and not #strings.isEmpty(param.wildCtg)}">
+							 <a class="text-reset ms-2 delCtg" href="#!" role="button"><i class="fe fe-x"></i></a>
+							 <input type="hidden" value="wildCtg" id="wildCard">
+							 </span>
+
+						</div>
+						<div class="input-group" style="width: 400px;">
+							<input class="form-control" type="search"
+								placeholder="키워드를 검색해 주세요">
+							<div class="input-group-append">
+								<button class="btn btn-outline-border" type="submit">
+									<i class="fe fe-search"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="row" style="padding-top: 30px">
+						<!-- Products -->
+						<th:block th:each="product : ${products}">
+							<div class="col-6 col-md-4">
+								<div class="card mb-7">
+									<div class="card-img">
+										<a class="card-img" tabindex="0"
+											th:href="|/goodsDetail/?productCode=${product.product_code}|">
+											<img
+											th:src="|/upload/${product.upload_path}/${product.upload_name}|"
+											style="height: 250px; width: 250px">
+										</a>
+										<!-- ${product.upload_path}+${product.upload_name} -->
+									</div>
+									<div class="card-body">
+										<!--                      <div class="fs-xs">[[${product.category_code}]]</div> -->
+										<div class="fw-bold" style="height: 48px">[[${product.product_name}]]</div>
+										<div class="fw-bold text-muted">
+											<span
+												class="fs-xs text-gray-350 text-decoration-line-through">[[${#numbers.formatInteger(product.product_cost,3,'COMMA')}]]</span>
+											<span class="text-primary"
+												th:text="|${#numbers.formatInteger(product.sale_price,3,'COMMA')}|">[[${product.sale_price}]]</span>
+											<span class="text">원</span>
+										</div>
+										<!-- 별점 -->
+										<div class="col-auto">
+											<!-- Rating -->
+											<div class="rating fs-xs text-dark"
+												th:if="${product.product_star} == 0"
+												th:data-value="${product.product_star}+1">
+												<div class="rating-item">
+													<i class="fas fa-star"></i>
+												</div>
+												<div class="rating-item">
+													<i class="fas fa-star"></i>
+												</div>
+												<div class="rating-item">
+													<i class="fas fa-star"></i>
+												</div>
+												<div class="rating-item">
+													<i class="fas fa-star"></i>
+												</div>
+												<div class="rating-item">
+													<i class="fas fa-star"></i>
+												</div>
+											</div>
+											<span class="fw-bold text-muted"
+												th:text="|(${product.review_count})|">(6)</span>
+										</div>
+										<!-- 별점 END -->
+									</div>
+									<!-- 리뷰 수 -->
+									<!-- 리뷰수 -->
+
+								</div>
+							</div>
+						</th:block>
+					</div>
+					<!-- Pagination -->
+					<nav
+						class="d-flex justify-content-center justify-content-md-center mt-10">
+						<ul class="pagination pagination-sm text-gray-400">
+							<li class="page-item" th:if="${pageMaker.prev}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/PList/(pageNum = ${pageMaker.startPage - 1},keyword=${param.keyword}, ctg=${param.ctg}
+								,wildCtg=${param.wildCtg} , minPrice=${param.minPrice}, maxPrice=${param.maxPrice}, order=${param.order}
+								)}">
+									<i class="fa fa-caret-left"></i>
+							</a></li>
+							<th:block
+								th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+								<li th:if="${pageMaker.endPage} ne 0"
+									th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+									th:each="pageButtom : ${#numbers.sequence(start,end)}"
+									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
+									<a class="page-link" href="#"
+									th:href="@{/PList/(pageNum= ${pageButtom},keyword=${param.keyword}, ctg=${param.ctg}
+									,wildCtg=${param.wildCtg} , minPrice=${param.minPrice}, maxPrice=${param.maxPrice}, order=${param.order}
+									)}"
+									th:text="${pageButtom}" style="font-size: x-large;"></a>
+								</li>
+							</th:block>
+
+							<li class="page-item" th:if="${pageMaker.next}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/PList/(pageNum = ${pageMaker.endPage + 1},keyword=${param.keyword}, ctg=${param.ctg}
+								,wildCtg=${param.wildCtg} , minPrice=${param.minPrice}, maxPrice=${param.maxPrice}, order=${param.order}
+								)}">
+									<i class="fa fa-caret-right"></i>
+							</a></li>
+						</ul>
+					</nav>
+					<!-- pagi end -->
+
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- [[${#strings.isEmpty(param.ctg)}]] ? '전체' : '카테고리' -->
+	<textarea id="PListMenual" style="display: none;"> 
 			1번 이전페이지로.    
 			2번 상품 둘러보기.     
 			3번 다음페이지로.      
 			
-			4번 뒤로가기.      
+			4번 검색조건 선택하기.      
 			5번 검색하기.      
 			6번 마이크로 입력하기.      
 			
@@ -295,7 +354,206 @@
 			0번 다시 듣기.      
 			
 	  	</textarea>
-   <script th:inline="javascript">
+	<script th:inline="javascript">
+	
+	let ctgs = [[${allCtg}]]
+	let urlwild = [[${param.wildCtg}]];
+	if(urlwild != null){
+		let wildCtg = urlwild[0]
+		let inText;
+		console.log(wildCtg);
+		for(let ctg of ctgs){
+			if(ctg.categoryCode == wildCtg){
+				inText = ctg.categoryName;	
+				console.log(ctg.categoryName);
+			}
+		}
+		let inspan = $('#wildCard').prev();
+		console.log(inspan)
+		inspan.before(inText);
+	}
+   
+	let searchBars = document.querySelectorAll('input[type="search"]');
+	//console.log(searchBars);
+	let pSearch = searchBars[0];
+ //엔터키 입력 시 검색
+	$(pSearch).on('keydown',function(e){
+		if(e.keyCode == 13){
+			let nowURL = new URL(location.href);
+			nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
+			nowURL.searchParams.set('keyword', $(pSearch).val());
+			location.href = nowURL.href;
+		}
+		console.log('go');
+	})
+	
+	
+	$('#filterApplyBtn').on('click',function(){
+		$('#priceGroup').find('input:checked') //가격범위       range 가져오기
+		let orderFilter = $('#seasonGroup').find('input:checked') //new , best  order순서
+		$('#writeRange').find('input') // 적는 칸 가격 range;
+		let ctgs = $('.ps-5').find('input:checked') // 카테고리 선택 Filter
+		let minVal = $('#writeRange').find('input')[1].value;
+		let maxVal = $('#writeRange').find('input')[2].value;
+		
+		let prices = $('input[type="checkbox"][name="pricefilter"]:checked ');
+		
+		let minPrice;
+		let maxPrice;
+		
+		let filterObj = {};
+		
+		if(prices.length>0  ){
+		let id = prices[0].id;
+			if(id == 'priceRange'){
+				if((minVal > 0 && maxVal > 0) && Number(maxVal) < Number(minVal)){ //최솟값만 입력했을 경우 가능.
+					alert('최소 가격은 최대가격보다 클 수 없습니다.');
+					return;
+				}else{
+					minPrice = minVal;
+					maxPrice = maxVal;
+				}
+			}else if(id == 'priceOne'){
+				minPrice = 0
+				maxPrice = 50000;
+			}else if(id == 'priceTwo'){
+				minPrice = 50000;
+				maxPrice = 100000;
+			}else if(id == 'priceThree'){
+				minPrice = 100000;
+				maxPrice = 200000;
+			}else if(id == 'priceFour'){
+				minPrice = 200000;
+				maxPrice = 99999999;
+			}
+			
+		}
+		//min, max Price 담기 
+		filterObj['minPrice'] = minPrice;
+		filterObj['maxPrice'] = maxPrice;
+		
+		if(orderFilter.length>0){
+			if(orderFilter[0].id == 'seasonOne'){
+				filterObj['order'] = 'new';
+			}else if(orderFilter[0].id == 'seasonTwo'){
+				filterObj['order'] = 'best';
+			}
+		}
+		// filter가 있다면 new, best 담
+		
+		if(ctgs.length>0){
+			filterObj['ctg'] = ctgs[0].id; 
+		}
+		console.log(filterObj);
+		if(ctgs.length == 0 && orderFilter.length == 0 && prices.length == 0 ){
+			 alert('조건을 선택해주세요.')
+			 return;
+		}
+		// 실행코드
+		let nowURL = new URL(location.origin+"/PList");
+		nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
+		if(filterObj['order'] != null){
+			nowURL.searchParams.set('order', filterObj['order']);
+		}
+		if(filterObj['maxPrice'] != undefined){
+			nowURL.searchParams.set('maxPrice', filterObj['maxPrice'] );
+		}
+		if(filterObj['minPrice'] != undefined){
+			nowURL.searchParams.set('minPrice', filterObj['minPrice']);
+		}
+		if(filterObj['ctg'] != null){
+			nowURL.searchParams.set('wildCtg', filterObj['ctg']);
+		}
+		location.href = nowURL.href;
+		
+	})
+
+	//카테고리 선택 삭제
+	$('.delCtg').on('click',function(){
+		let nowURL = new URL(location.href);
+		let urlTag = $(this).next().val();
+		console.log(urlTag);
+		if(urlTag == 'order'){
+			nowURL.searchParams.delete('order');
+		}
+		if(urlTag == 'price'){
+			nowURL.searchParams.delete('maxPrice');
+			nowURL.searchParams.delete('minPrice');
+		}
+		if(urlTag == 'wildCtg'){
+			nowURL.searchParams.delete('wildCtg');
+		}
+		nowURL.searchParams.set('pageNum', 1);
+		location.href= nowURL.href;
+	})
+	
+	//PriceGroup 단일 체크
+	let pGroup = $('input[type="checkbox"][name="pricefilter"] ');
+	let sGroup = $('#seasonGroup').find('input');
+	let ctgGroup = $('.ps-5').find('input')
+	let chkGroup = [];
+	
+	$.each(ctgGroup, function(ele,obj){
+		$(obj).on('click', checkOnlyOneCtg);
+		$(obj).on('keydown', inputEnter)
+	})
+	$.each(sGroup, function(ele,obj){
+		$(obj).on('click', checkOnlyOneSeason);
+		$(obj).on('keydown', inputEnter)
+	})
+	
+	$.each(pGroup, function(ele,obj){
+		$(obj).on('click', checkOnlyOne);
+		$(obj).on('keydown', inputEnter)
+	})
+	function inputEnter(e){
+		if(e.key == 'Enter'){
+			$(this).trigger('click');
+		}
+	}
+	
+	function checkOnlyOne(e) {
+		console.log($(this).prop('checked'))
+		if($(this).prop('checked')){
+			 
+		     $('input[type="checkbox"][name="pricefilter"]').prop('checked',false);
+		 
+		     $(this).prop('checked',true);
+		 
+		}else{
+			$(this).prop('checked',false);
+		}
+		
+	}
+	function checkOnlyOneSeason(e) {
+		if($(this).prop('checked')){
+			 
+			$('#seasonGroup').find('input').prop('checked',false);
+		 
+		     $(this).prop('checked',true);
+		 
+		}else{
+			$(this).prop('checked',false);
+		}
+	}
+	function checkOnlyOneCtg(e) {
+		console.log($(this).prop('checked'))
+		if($(this).prop('checked')){
+			 
+			$('.ps-5').find('input').prop('checked',false);
+		 
+		     $(this).prop('checked',true);
+		 
+		}else{
+			$(this).prop('checked',false);
+		}
+		
+	}
+	
+	
+	
+   
+   //==============================
    
 	let TTSIsOk = localStorage.getItem('ttsKey');
 	let sessionAuthor;
@@ -323,9 +581,7 @@
 					 
 					 
 					 
-				let searchBars = document.querySelectorAll('input[type="search"]');
-				//console.log(searchBars);
-				let pSearch = searchBars[0];
+
 				
 				
 				let productList = document.querySelectorAll('a.card-img');
@@ -336,8 +592,8 @@
 				function productTTS(){
 					let divCardMb = $(this).parent().parent();
 					let divCardBody = $(this).parent().parent().children()[1];
-					let productName = $(divCardBody).children()[1].innerText;
-					let productPrice = $($(divCardBody).children()[2]).children()[1].innerText
+					let productName = $(divCardBody).children()[0].innerText;
+					let productPrice = $($(divCardBody).children()[1]).children()[1].innerText
 					console.log(productName, productPrice);
 					let productMsg = `상품 이름. :  ${productName}. 상품 가격. : ${productPrice}원`
 					VoiceMenual(productMsg);
@@ -346,146 +602,9 @@
 				
 				// 검색바 포커스 됐을 경우 TTS
 				$(pSearch).on('focus',function(){
-					VoiceMenual('검색창입니다. 마이크를 이용해 입력하시려면 alt 키와 9번을 동시에 입력해주세요. 그리고 말씀하신 후에 엔터키를 눌러주세요.')
+					VoiceMenual('검색창입니다. 마이크를 이용해 입력하시려면 alt 키와 6번을 동시에 입력해주세요. 그리고 말씀하신 후에 엔터키를 눌러주세요.')
 					console.log('go');
 				});
-				
-				//엔터키 입력 시 검색
-				$(pSearch).on('keydown',function(e){
-					if(e.keyCode == 13){
-						let nowURL = new URL(location.href);
-						nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
-						nowURL.searchParams.set('keyword', $(pSearch).val());
-						location.href = nowURL.href;
-					}
-					console.log('go');
-				})
-				
-				
-				$('#filterApplyBtn').on('click',function(){
-					$('#priceGroup').find('input:checked') //가격범위       range 가져오기
-					let orderFilter = $('#seasonGroup').find('input:checked') //new , best  order순서
-					$('#writeRange').find('input') // 적는 칸 가격 range;
-					let ctgs = $('.ps-5').find('input:checked') // 카테고리 선택 Filter
-					let minVal = $('#writeRange').find('input')[1].value;
-					let maxVal = $('#writeRange').find('input')[2].value;
-					
-					let prices = $('input[type="checkbox"][name="pricefilter"]:checked ');
-					
-					let minPrice;
-					let maxPrice;
-					
-					let filterObj = {};
-					
-					if(prices.length>0  ){
-					let id = prices[0].id;
-						if(id == 'priceRange'){
-							if((minVal > 0 && maxVal > 0) && maxVal<minVal){ //최솟값만 입력했을 경우 가능.
-								alert('최소 가격은 최대가격보다 클 수 없습니다.');
-								return;
-							}else{
-								minPrice = minVal;
-								maxPrice = maxVal;
-							}
-						}else if(id == 'priceOne'){
-							minPrice = 0
-							maxPrice = 50000;
-						}else if(id == 'priceTwo'){
-							minPrice = 50000;
-							maxPrice = 100000;
-						}else if(id == 'priceThree'){
-							minPrice = 100000;
-							maxPrice = 200000;
-						}else if(id == 'priceFour'){
-							minPrice = 200000;
-							maxPrice = 99999999;
-						}
-						
-					}
-					//min, max Price 담기 
-					filterObj['minPrice'] = minPrice;
-					filterObj['maxPrice'] = maxPrice;
-					
-					if(orderFilter.length>0){
-						if(orderFilter[0].id == 'seasonOne'){
-							filterObj['order'] = 'new';
-						}else if(orderFilter[0].id == 'seasonTwo'){
-							filterObj['order'] = 'best';
-						}
-					}
-					// filter가 있다면 new, best 담
-					
-					if(ctgs.length>0){
-						filterObj['ctg'] = ctgs[0].id; 
-					}
-					console.log(filterObj);
-					
-				})
-
-				
-				//PriceGroup 단일 체크
-				let pGroup = $('input[type="checkbox"][name="pricefilter"] ');
-				let sGroup = $('#seasonGroup').find('input');
-				let ctgGroup = $('.ps-5').find('input')
-				let chkGroup = [];
-				
-				$.each(ctgGroup, function(ele,obj){
-					$(obj).on('click', checkOnlyOneCtg);
-					$(obj).on('keydown', inputEnter)
-				})
-				$.each(sGroup, function(ele,obj){
-					$(obj).on('click', checkOnlyOneSeason);
-					$(obj).on('keydown', inputEnter)
-				})
-				
-				$.each(pGroup, function(ele,obj){
-					$(obj).on('click', checkOnlyOne);
-					$(obj).on('keydown', inputEnter)
-				})
-				function inputEnter(e){
-					if(e.key == 'Enter'){
-						$(this).trigger('click');
-					}
-				}
-				
-				function checkOnlyOne(e) {
-					console.log($(this).prop('checked'))
-					if($(this).prop('checked')){
-						 
-					     $('input[type="checkbox"][name="pricefilter"]').prop('checked',false);
-					 
-					     $(this).prop('checked',true);
-					 
-					}else{
-						$(this).prop('checked',false);
-					}
-					
-				}
-				function checkOnlyOneSeason(e) {
-					if($(this).prop('checked')){
-						 
-						$('#seasonGroup').find('input').prop('checked',false);
-					 
-					     $(this).prop('checked',true);
-					 
-					}else{
-						$(this).prop('checked',false);
-					}
-				}
-				function checkOnlyOneCtg(e) {
-					console.log($(this).prop('checked'))
-					if($(this).prop('checked')){
-						 
-						$('.ps-5').find('input').prop('checked',false);
-					 
-					     $(this).prop('checked',true);
-					 
-					}else{
-						$(this).prop('checked',false);
-					}
-					
-				}
-				
 				
 				
 				
@@ -655,6 +774,11 @@
 								VoiceMenual(rangeMsg);
 								return;
 							}
+							if($(':focus')[0].className == 'page-link'){
+								let choiceNow = $(':focus')[0].innerText;
+								VoiceMenual(choiceNow+' 페이지.')
+								return;
+							}
 							let choiceNow = $(':focus')[0].innerText;
 							VoiceMenual(choiceNow);
 						}
@@ -697,12 +821,13 @@
 						movePage(num);
 					
 				}
-				if(e.altKey && e.key == 4){ // 뒤로가기
-					location.href = "javascript:window.history.back();"
+				if(e.altKey && e.key == 4){ // 필터 선택하기
+					let filterList = document.querySelectorAll('.list-styled-link')[48];
+					$(filterList).focus(); 
 				}
 				if(e.altKey && e.key == 5){ // 검색창 가기
 					let searchBars = document.querySelectorAll('input[type="search"]');
-					searchBars[1].focus();;
+					searchBars[0].focus();;
 				}
 				if(e.altKey && e.key == 9){ // 메인 페이지로 가기
 					location.href = "/";
@@ -733,26 +858,93 @@
 					VoiceMenual($('#PListMenual').val());
 				}
 		})
+		let filterAll = document.querySelectorAll('.list-styled-link')[48];
+		$(filterAll).on('focus',function(){
+			let msg = '전체상품입니다. 엔터를 누르시면 전체상품 페이지로 이동합니다. 이 다음부터는 탭 키를 눌러 이동가능하며. 음성을 들으시고 엔터를 눌러 체크하신 후. 다음중 적용하기 버튼에서 전체적으로  적용할 수 있습니다.'
+			VoiceMenual(msg);
+		})
+		
+		$('#filterApplyBtn').on('keydown',function(e){
+			if(e.key == 'Enter'){
+			e.preventDefault();
+				$('#priceGroup').find('input:checked') //가격범위       range 가져오기
+				let orderFilter = $('#seasonGroup').find('input:checked') //new , best  order순서
+				$('#writeRange').find('input') // 적는 칸 가격 range;
+				let ctgs = $('.ps-5').find('input:checked') // 카테고리 선택 Filter
+				let minVal = $('#writeRange').find('input')[1].value;
+				let maxVal = $('#writeRange').find('input')[2].value;
 				
+				let prices = $('input[type="checkbox"][name="pricefilter"]:checked ');
 				
+				let minPrice;
+				let maxPrice;
 				
+				let filterObj = {};
 				
+				if(prices.length>0  ){
+				let id = prices[0].id;
+					if(id == 'priceRange'){
+						if((minVal > 0 && maxVal > 0) &&  Number(maxVal) < Number(minVal)){ //최솟값만 입력했을 경우 가능.
+							VoiceMenual('최소 가격은 최대가격보다 클 수 없습니다.');
+							return false;
+						}else{
+							minPrice = minVal;
+							maxPrice = maxVal;
+						}
+					}else if(id == 'priceOne'){
+						minPrice = 0
+						maxPrice = 50000;
+					}else if(id == 'priceTwo'){
+						minPrice = 50000;
+						maxPrice = 100000;
+					}else if(id == 'priceThree'){
+						minPrice = 100000;
+						maxPrice = 200000;
+					}else if(id == 'priceFour'){
+						minPrice = 200000;
+						maxPrice = 99999999;
+					}
+					
+				}
+				//min, max Price 담기 
+				filterObj['minPrice'] = minPrice;
+				filterObj['maxPrice'] = maxPrice;
 				
+				if(orderFilter.length>0){
+					if(orderFilter[0].id == 'seasonOne'){
+						filterObj['order'] = 'new';
+					}else if(orderFilter[0].id == 'seasonTwo'){
+						filterObj['order'] = 'best';
+					}
+				}
+				// filter가 있다면 new, best 담
 				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
+				if(ctgs.length>0){
+					filterObj['ctg'] = ctgs[0].id; 
+				}
+				if(ctgs.length == 0 && orderFilter.length == 0 && prices.length == 0 ){
+					 VoiceMenual('조건을 선택해주세요.')
+					 return;
+				}
+				console.log(filterObj);
+				// 실행코드
+				let nowURL = new URL(location.origin+"/PList");
+				nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
+				if(filterObj['order'] != null){
+					nowURL.searchParams.set('order', filterObj['order']);
+				}
+				if(filterObj['maxPrice'] != undefined){
+					nowURL.searchParams.set('maxPrice', filterObj['maxPrice'] );
+				}
+				if(filterObj['minPrice'] != undefined){
+					nowURL.searchParams.set('minPrice', filterObj['minPrice']);
+				}
+				if(filterObj['ctg'] != null){
+					nowURL.searchParams.set('wildCtg', filterObj['ctg']);
+				}
+				location.href = nowURL.href;
+			}
+		})
 				
 				
 	   		}//ttsInit if 문

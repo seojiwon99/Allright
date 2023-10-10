@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
+import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.common.ImgsVO;
 import com.ar.lighthouse.member.service.MemberVO;
@@ -272,6 +273,91 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<DetailVO> getStatusList(DetailVO detailVO) {
 		return productMapper.selectStatusList(detailVO);
+	}
+
+//	상품수정
+	@Override
+	public int updateProductP(ProductVO productVO) {
+		int result = productMapper.updateProduct(productVO);
+		List<OptionVO> optionVO = new ArrayList();
+		if (result > 0) {
+			String code = productVO.getProductCode();
+			if (productVO.getOption() == null || productVO.getOption().size() == 0) {
+				System.out.println("@@@@@@@@@@@@@@@@");
+				OptionVO noptionVO = new OptionVO();
+				noptionVO.setProductCode(code);
+				noptionVO.setOptionName("없음");
+				noptionVO.setOptionValue("없음");
+
+				productMapper.updateOption(noptionVO);
+			} else {
+				for (int i = 0; i < productVO.getOption().size(); i++) {
+
+//               if(productVO.getOption().get(i).getOptionCount() == 0) {
+//                  productVO.getOption().get(i).setOptionSellStatus("N");
+//               }
+					// value 짜르기
+//            String value = productVO.getOption().get(i).getOptionValue();
+//            String[] optVal = value.split(",");
+//            for(int j =0; j<optVal.length; j++) {
+//               
+//               OptionVO test = new OptionVO();
+//               test.setProductCode(code);
+//               test.setOptionOrder(length + 1);
+//               test.setOptionName(productVO.getOption().get(i).getOptionName());
+//               test.setOptionValue(optVal[j]);
+//               test.setOptionCount(1);
+//               length++;
+//               productMapper.insertOption(test);
+//            }
+					// System.out.println(productVO.getOption().get(i));
+					productVO.getOption().get(i).setProductCode(code);
+					System.out.println(productVO.getOption().get(i));
+					productMapper.insertOption(productVO.getOption().get(i));
+
+					// System.out.println(productVO.getOption().get(i));
+				}
+				if (productVO.getOptionDetail() != null || productVO.getOptionDetail().size() != 0) {
+					for (int i = 0; i < productVO.getOptionDetail().size(); i++) {
+						productVO.getOptionDetail().get(i).setProductCode(code);
+						productMapper.updateOptionDetail(productVO.getOptionDetail().get(i));
+					}
+				} else {
+					OptionDetailVO detailVO = new OptionDetailVO();
+					detailVO.setProductCode(code);
+					detailVO.setOptionLast("없음");
+					detailVO.setOptionPrice(0);
+					detailVO.setOptionCount(productVO.getProductCount());
+					productMapper.updateOptionDetail(detailVO);
+
+				}
+
+			}
+			// productMapper.insertOption(productVO.getOption());
+		}
+		return 1;
+	}
+	@Override
+	public void updateProductImg(ImgsVO imgVO) {
+		productMapper.updateProductImg(imgVO);
+	}
+	
+//	판매자 문의 내역
+	@Override
+	public List<MyInquiryVO> getSellerInquiry(String memberId) {
+		return productMapper.selectSellerInquriy(memberId);
+	}
+	
+//	상품 문의 검색
+	@Override
+	public List<ProductInquiryVO> getSeaInquiry(ProductInquiryVO productInquiryVO) {
+		return productMapper.selectSeaInquiry(productInquiryVO);
+	}
+	
+//	판매자 문의 검색
+	@Override
+	public List<MyInquiryVO> getSeaSellerInqu(MyInquiryVO myInquiryVO) {
+		return productMapper.selectSeaSellerInq(myInquiryVO);
 	}
 
 }

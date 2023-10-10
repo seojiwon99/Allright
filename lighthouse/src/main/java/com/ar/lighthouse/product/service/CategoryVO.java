@@ -8,4 +8,7 @@ public class CategoryVO {
 	String parentCategoryCode;
 	String categoryName;
 	int categoryLevel;
+	String parentCategoryName;
+	String grandparentCategoryName;
+	String mostCategoryName;
 }

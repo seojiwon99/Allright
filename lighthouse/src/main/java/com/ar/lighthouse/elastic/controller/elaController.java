@@ -56,7 +56,7 @@ public class elaController {
     int port = 9200;
     String scheme = "http";
     HttpHost host = new HttpHost(hostname, port, scheme);
-    HttpHost hos = new HttpHost("e6c0-111-118-98-16.ngrok-free.app");
+    HttpHost hos = new HttpHost("6773-58-238-119-6.ngrok-free.app");
     //RestClientBuilder restClientBuilder = RestClient.builder(host);
     RestClientBuilder restClientBuilder = RestClient.builder(hos);
     
@@ -77,6 +77,8 @@ public class elaController {
 		 }
 		 else if(order.equalsIgnoreCase("new")) { // 신상품 순 정렬
 			 searchSourceBuilder.sort(SortBuilders.fieldSort("product_regdate").order(SortOrder.DESC));
+		 }else if(order.equalsIgnoreCase("best")) {
+			 searchSourceBuilder.sort(SortBuilders.fieldSort("product_point").order(SortOrder.DESC));
 		 }else if(order.equalsIgnoreCase("review")) {
 			 searchSourceBuilder.sort(SortBuilders.fieldSort("review_count").order(SortOrder.DESC));
 			 //DB에 넣을 때부터 아마 review Count * review Star 평균을 한 score 필드를 하나 선언해줘야 할 듯.
@@ -113,14 +115,13 @@ public class elaController {
 	 * 실제로 사용할 쿼리들 목록 ================================================================
 	*/
     
-    public List<Map<String, Object>> FinalMatchQuery(String indexName, int pageNum, String keyword, String ctg, String order, Double minPrice, Double maxPrice){
+    public List<Map<String, Object>> FinalMatchQuery(String indexName, int pageNum, String keyword, String ctg, String order, Double minPrice, Double maxPrice, String wildCtg){
     	SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
     	BoolQueryBuilder boolQuery = QueryBuilders.boolQuery(); // 실행되야할 boolQuery builder
-    	
     	if(minPrice != null && maxPrice != null) {
     		minPrice = (double)minPrice;
 	    	maxPrice = (double)maxPrice;
-	    	RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery("product_cost")
+	    	RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery("sale_price")
 	                .gte(minPrice)  // Greater than equal
 	                .lte(maxPrice); // Less than equal 
 	    	boolQuery.must(rangeQuery); // 범위 추가
@@ -128,12 +129,15 @@ public class elaController {
 
 	    if (ctg != null && !ctg.isEmpty()) { //카테고리가 있을 경우 boolQuery에 추가 
 	        boolQuery.must(QueryBuilders.matchQuery("category_code", ctg)); 
-	        QueryBuilders.wildcardQuery(indexName, order);
 	    }
 
 	    if (keyword != null && !keyword.isEmpty()) { // 키워드가 있을 경우 boolQuery에 추가 
-	        boolQuery.should(QueryBuilders.matchQuery("product_name", keyword));
+	        boolQuery.must(QueryBuilders.matchQuery("product_name", keyword));
 	    }
+	    if (wildCtg != null && !wildCtg.isEmpty()) {
+	    	boolQuery.must(QueryBuilders.wildcardQuery("category_code", wildCtg.toLowerCase()+"*"));
+	    }
+
         
         searchSourceBuilder.query(boolQuery); // 설정
     	
@@ -142,7 +146,7 @@ public class elaController {
         
     	return executeSearch(indexName, searchSourceBuilder);
     }
-    	//어디다 쓸지 모르겠음
+    	//bool 쿼리 여러개 List에 저장 후 filter로 저장
 	    public List<Map<String, Object>> filterWithBoolQuery(String indexName, List<Map<String, Object>> filters, int pageNum) {
 	        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
 	        for (Map<String, Object> filter : filters) {
@@ -175,7 +179,7 @@ public class elaController {
 		    }
 		}
 		//들어온 카테고리, 키워드에 따라 쿼리 변동
-		public int queryCount(String indexName, String keyword, String ctg, Double minPrice, Double maxPrice) {
+		public int queryCount(String indexName, String keyword, String ctg, Double minPrice, Double maxPrice, String wildCtg) {
 		    BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 		   
 
@@ -184,12 +188,15 @@ public class elaController {
 		    }
 
 		    if (keyword != null && !keyword.isEmpty()) { // 키워드가 있을 경우
-		        boolQuery.should(QueryBuilders.matchQuery("product_name", keyword));
+		        boolQuery.must(QueryBuilders.matchQuery("product_name", keyword));
 		    }
 		    if (minPrice != null && maxPrice != null) { //가격범위가 있을 경우
 		    	minPrice = (double)minPrice;
 		    	maxPrice = (double)maxPrice;
-		    	boolQuery.must(QueryBuilders.rangeQuery("product_cost").gte(minPrice).lte(maxPrice));
+		    	boolQuery.must(QueryBuilders.rangeQuery("sale_price").gte(minPrice).lte(maxPrice));
+		    }
+		    if (wildCtg != null && !wildCtg.isEmpty()) { //wildcard로 넘어올 경우
+		    	boolQuery.must(QueryBuilders.wildcardQuery("category_code", wildCtg.toLowerCase()+"*"));
 		    }
 
 		    return countWithQuery(indexName, boolQuery);
@@ -259,29 +266,24 @@ public class elaController {
 	
 	
 	@GetMapping("PList")
-	public String elaTestCategory(Criteria cri, Model model, String keyword, String ctg, String order, Double minPrice, Double maxPrice) {
+	public String elaTestCategory(Criteria cri, Model model, String keyword, String ctg, String order, Double minPrice, Double maxPrice, String wildCtg) {
 		System.out.println(keyword + "  /  " + ctg);
 		System.out.println("order : ====" + order);
+		System.out.println("==========================WILD=================="+ wildCtg);
 		
 		int totalCnt = -1;
 		List<Map<String, Object>> products = new ArrayList<Map<String,Object>>();
 		
 		
 		//필요한 조건들이 있다면 bool쿼리에 축적하여 쌓는방식
-		totalCnt = queryCount("ar_products",keyword,ctg, minPrice, maxPrice);
-		products = FinalMatchQuery("ar_products", cri.getPageNum(), keyword, ctg, order, minPrice, maxPrice);
-		
-//		products = HighLevelClientFilterPriceQuery("ar_products", cri.getPageNum());
-		
-//		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-//		boolQueryBuilder.must(QueryBuilders.wildcardQuery("message", "ANG*"));
-//		나중에 카테고리 선택시 Filter 추가할 예정
+		totalCnt = queryCount("ar_products",keyword,ctg, minPrice, maxPrice, wildCtg);
+		products = FinalMatchQuery("ar_products", cri.getPageNum(), keyword, ctg, order, minPrice, maxPrice, wildCtg);
 		
 		System.out.println("전체 수 : =====" + totalCnt);
 		model.addAttribute("products", products);
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
-		model.addAttribute("categories",service.getCategoryList());
-		model.addAttribute("allCtg", service.getAllCategoryList());
+		model.addAttribute("categories",service.getCategoryList());// 카테고리 1레벨
+		model.addAttribute("allCtg", service.getAllCategoryList());// 카테고리 전체
 		return "page/goods/goodsList"; 
 	}
 }

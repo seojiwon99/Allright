@@ -25,4 +25,11 @@ public interface mainPageMapper {
 	public List<CategoryVO> childCateList(CategoryVO cate);
 	
 	public List<CategoryVO> selectAllCategory();
+	
+	//상품 상위카테고리 별 best
+	public List<ProductVO> bestProductByFassion();
+	
+	public List<ProductVO> bestProductByFOOD();
+	
+	public List<ProductVO> bestProductByLife();
 }
