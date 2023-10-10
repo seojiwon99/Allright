@@ -51,6 +51,21 @@ public class MainServiceImpl implements MainPageService{
 	public List<CategoryVO> getAllCategoryList() {
 		return mapper.selectAllCategory();
 	}
+
+	@Override
+	public List<ProductVO> getBestProductByFassion() {
+		return mapper.bestProductByFassion();
+	}
+
+	@Override
+	public List<ProductVO> getBestProductByFOOD() {
+		return mapper.bestProductByFOOD();
+	}
+
+	@Override
+	public List<ProductVO> getBestProductByLife() {
+		return mapper.bestProductByLife();
+	}
 	
 	
 	
