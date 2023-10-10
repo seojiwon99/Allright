@@ -26,6 +26,7 @@ public class CartVO {
 	private String productName; 
 	private int productCost;
 	private int deliveryCost;
+	private String productCode;
 	
 	//상품 이미지 조인해서 받은 값
 	private String imgName;
