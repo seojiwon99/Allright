@@ -20,7 +20,7 @@
         <div class="row">
           <div class="col-12 col-md-7" id="test">
             <div>
-              <input type="checkbox" id="allCheckbox">전체선택
+              <input type="checkbox" id="allCheckbox" autocomplete="off">전체선택
              <button type="button" class="btn btn-sm btn-dark" id="chkDelBtn" style="float:right;" tabindex="-1">선택삭제</button>
              <hr>
             </div>
@@ -35,7 +35,7 @@
                   <div class="col-3">
 					
 					<!-- checkbox -->
-                    <input type="checkbox" name="price" th:value="${lists.productCost}" class="firstPro">
+                    <input type="checkbox" name="price" th:value="${lists.productCost}" class="firstPro" autocomplete="off">
                     <input type="hidden" name="sale" th:value="${lists.salePrice}">
                     <input type="hidden" name="delivery" th:value="${lists.deliveryCost}">
                     <input type="hidden" name="cartNum" th:value="${lists.cartCode}">
@@ -182,10 +182,13 @@
 	$(function(){
   		init();
   		checkedCart();
+  		
 	})
 	
+	
+	
 	function init(){
-		
+	
     $('#allCheckbox').on('click',allCheckEvent);  // 전체선택
     $('input[name="price"]').on('change', checkedCart);
     $('#chkDelBtn').on('click',checkedDel);     //선택 삭제
@@ -462,7 +465,8 @@ function allKeydown(e) {
       function patMove(e) {
     	  
         if($('#totalPrice').text() == '0원') {
-          VoiceMenual('선택된 상품 금액이 없습니다. 상품 선택 후 진행해주세요.');
+          VoiceMenual('선택된 상품 금액이 없습니다. 전체상품으로 이동합니다. 상품 선택 후 진행해주세요.');
+          $('#allCheckbox').focus();
           return;
         }
 

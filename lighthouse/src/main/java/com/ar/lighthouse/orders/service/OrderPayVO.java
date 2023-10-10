@@ -15,7 +15,7 @@ public class OrderPayVO implements Serializable{
 	
 	//쿠폰 사용 여부 확인 위한 번호, 할인상품확인
 	private List<OrderPayVO> orderList = new ArrayList<OrderPayVO>();
-	private int mycouponCode;
+	private int couponCode;
 	private String productCode;
 	private int productSalePrice;
 	private int couponPrice;

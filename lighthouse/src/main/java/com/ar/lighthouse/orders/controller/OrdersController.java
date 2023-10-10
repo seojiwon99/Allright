@@ -117,14 +117,14 @@ public class OrdersController {
 		//orderPayVO 쿠폰 사용 시 N으로 변경
 		String memberId = memberVO.getMemberId();
 		
-		int mycouponCode = 0;
+		int couponCode = 0;
 		List<Integer> optionCodeList = new ArrayList<Integer>();
 		int idx = 0;
 		for(OrderPayVO couponNum : orderPayVO) {
 			
-			mycouponCode = couponNum.getMycouponCode();
+			couponCode = couponNum.getCouponCode();
 			optionCodeList.add(couponNum.getOptionDetailCode());
-			int couponUse = ordersService.editNotCoupon(memberId, mycouponCode);
+			int couponUse = ordersService.editNotCoupon(memberId, couponCode);
 			idx++;
 		}
 		System.out.println("test3:"+optionCodeList);
@@ -163,7 +163,7 @@ public class OrdersController {
 					 orderCoupon.setOptionDetailCode(pay.getOptionDetailCode());
 					 orderCoupon.setOrderCode(orderCode);
 					 orderCoupon.setOptionCouponCheck("Y");
-					 orderCoupon.setMycouponCode(mycouponCode);
+					 orderCoupon.setCouponCode(couponCode);
 					 orderCoupon.setOrderPrice(pay.getProductSalePrice());
 					 orderCoupon.setDiscountPrice(pay.getCouponPrice());			 
 					 orderCoupon.setPaymentPrice(pay.getProductSalePrice() - pay.getCouponPrice() + pay.getDeliveryCost());
@@ -251,29 +251,29 @@ public class OrdersController {
 		//토스페이먼츠 환불  규연
 		@PostMapping(value = "/orders/cancel")
 		public String orderCancel(String refundList, HttpSession session) throws IOException, InterruptedException {
-		
+		System.out.println("확인" + refundList);
 		ObjectMapper objectMapper = new ObjectMapper();
 		OrderChkVO[] orderchkList= objectMapper.readValue(refundList, OrderChkVO[].class);
-
+		System.out.println("확인" + orderchkList);
 		RefundVO newRefund = new RefundVO();
 		 for(OrderChkVO chk : orderchkList) {
 		 if(chk.getCancelReason() == "") {
 			 chk.setCancelReason("판매자 자체 취소");
+			 chk.setRefundType("C");
 		 }
 		 RefundVO refund = ordersService.getRefund(chk.getOrderCode(), chk.getOrderDetailCode(), chk.getMemberId());
 		 
 		 //상품 취소 중 쿠폰 사용한 경우 쿠폰 반환
-		 System.out.println(refund.getMycouponCode());
-			  if(refund.getMycouponCode() != 0) 
-			  { 
-				  ordersService.editRefundCoupon(chk.getMemberId(),refund.getMycouponCode()); 
+		 System.out.println(refund.getCouponCode());
+			  if(refund.getCouponCode() != 0) { 
+				  ordersService.editRefundCoupon(chk.getMemberId(),refund.getCouponCode()); 
 			  }
 			 
 		 
 		 //페이먼츠 키 찾을 때 필요한 데이터/ 환불 신청 시 필요한 데이터 = cancelReason, cancelAmount, paymentKey 
 		 String paymentKey = refund.getPaymentKey(); // 페이먼츠 키 넣기.
 		 String cancelReason = chk.getCancelReason();
-		 int cancelAmount = (refund.getPaymentPrice() + refund.getDiscountPrice() - refund.getDeliveryCost()); //부분 취소할 금액. select 해서 삼풍에서 가져오기. select에서 가져와야함.
+		 int cancelAmount = (refund.getPaymentPrice()); //부분 취소할 금액. select 해서 삼풍에서 가져오기. select에서 가져와야함.
 		 
 		 //refund 들어갈 데이터
 
@@ -314,7 +314,11 @@ public class OrdersController {
 			ordersService.addRefund(newRefund);
 		
 			//refundBalanceAmount 값 rders테이블,credit테이블 결제액 업데이트 
-			productService.editCancelOk(newRefund.getRefundTypecode());
+			if(newRefund.getRefundTypecode().equals("C")) {
+				productService.editCancelOk(newRefund.getRefundTypecode());				
+			} else {
+				productService.editReturnOk(newRefund.getRefundTypecode());
+			}
 			ordersService.editTossRefundAmount(paymentKey, refundAbleAmount);
 			ordersService.editOrderRefundAmount(chk.getOrderCode(), refundAbleAmount); 
 		}

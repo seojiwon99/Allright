@@ -79,6 +79,10 @@
 		
 		$('.saveBtn').on('click', function(e){
 			e.preventDefault();
+
+			if(confirm('저장하시겠습니까?')){
+
+			
 			
 			let eventImgCode = this.value; //ar_event_img (pk)
 			let uploadFile = $(this).prev()[0].files[0]; //업로드 파일
@@ -109,6 +113,7 @@
 		            processData: false,
 					success : function(rs){
 						console.log(rs);
+						alert('저장되었습니다.');
 					},
 					error : function(err){
 						console.log(err);
@@ -131,16 +136,23 @@
 		            processData: false,
 					success : function(rs){
 						console.log(rs);
+						alert('등록되었습니다.');
 					},
 					error : function(err){
 						console.log(err);
 					}
 				})
 			} 
-
+			} else {
+				return false;
+			}
 		})
 		$('.delBtn').on('click', function(e){
 			e.preventDefault();
+
+			if(confirm('삭제하시겠습니까?')) {
+
+			
 			let eventImgCode = $(this).prev().val();
 			if(eventImgCode == ""){
 				$(this).parent().parent().remove();
@@ -155,6 +167,7 @@
 					},
 					success : function(rs){
 						console.log(rs);
+						alert('삭제되었습니다.');
 					},
 					error : function(err){
 						console.log(err);
@@ -162,6 +175,9 @@
 				})
 				$(this).parent().parent().remove();
 			};
+		} else {
+			return false;
+		}
 		})
 		
 		

@@ -108,13 +108,11 @@
               
                 <li class="list-group-item" th:each="gets : ${orderGet}">
                   <div class="row align-items-center">
-                    <div class="col-4">
-                      
+                    <div class="col-3" style="width:200px; height:200px;">                   
                       <!-- Image -->
                       <a href="product.html" class="img-fluid">
-                        <img th:src="|/upload/${gets.uploadPath}/${gets.uploadName}|" alt="..." >
+                        <img th:src="|/upload/${gets.uploadPath}/${gets.uploadName}|" alt="..." width="200px"; height="200px">
                       </a>
-
                     </div>
                     <div class="col couponProduct">
 
@@ -326,7 +324,7 @@
                   <tbody>
               
                     <tr class="clickable-row" th:each="couponRest : ${couponList}">
-                      <td class="cpCode" th:text="${couponRest.mycouponCode}" th:data-max="${couponRest.couponMaxPrice}" th:data-min="${couponRest.couponMinPrice}" tabindex="0"></td>
+                      <td class="cpCode" th:text="${couponRest.couponCode}" th:data-max="${couponRest.couponMaxPrice}" th:data-min="${couponRest.couponMinPrice}" tabindex="0"></td>
                       <td class="cpName" th:text="${couponRest.couponName}"></td>
                       <td class="cpContent" th:text="${couponRest.couponContent}"></td>
                       <td class="cpDiscount" th:text="${couponRest.couponDiscountPrice} == '0' ? |${couponRest.couponDiscountRate}%| : |${#numbers.formatInteger(couponRest.couponDiscountPrice,0,'COMMA')}원|"></td>
@@ -596,7 +594,7 @@
      $('.couponProduct').each(function(idx,el){
      let orderList ={};
             if($(el).find('.myCouponCode').val() != '') {
-              orderList.mycouponCode = $(el).find('.myCouponCode').val();
+              orderList.couponCode = $(el).find('.myCouponCode').val();
               orderList.optionDetailCode = $(el).find('.optionDetailCode').val();
               orderList.productSalePrice = $(el).find('.selectValue').val();
               let couponValue = $(el).find('.couponSalePrice').val().replace(",","");
