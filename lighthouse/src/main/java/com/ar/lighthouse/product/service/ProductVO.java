@@ -60,5 +60,7 @@ public class ProductVO {
 	
 	List<CategoryVO> category;
 	
+	private String uploadPath;
+	private String uploadName;
 
 }

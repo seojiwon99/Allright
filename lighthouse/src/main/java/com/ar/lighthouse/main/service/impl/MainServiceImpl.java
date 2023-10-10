@@ -28,8 +28,8 @@ public class MainServiceImpl implements MainPageService{
 	}
 
 	@Override
-	public List<EventImgVO> randomGetProduct() {
-		return mapper.randomSelProduct();
+	public List<EventImgVO> randomGetProduct(ProductVO productVO) {
+		return mapper.randomSelProduct(productVO);
 	}
 
 	@Override

@@ -26,6 +26,7 @@
    </resultMap>
  -->
 
+
    <select id="selProductList" resultType="ProductVO">
 		select  *
 		FROM     (
@@ -44,6 +45,7 @@
    </select>
 
    <select id="randomSelProduct" resultType="ProductVO">
+
 		select  *
 		FROM     (
 	                select p.product_code, p.product_name, p.product_cost, p.sale_price
@@ -57,6 +59,7 @@
 	                )
 		WHERE ROWNUM <=8
             ]]>
+
    </select>
 
    <select id="categoryList" resultType="CategoryVO">
