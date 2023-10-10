@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class JasyptConfig {
 	
 	// 암호화키
-	@Value("${jasypt_encryptor_password}")
+	@Value("${jasypt.encryptor.password}")
 	private String password;
 	
 	// 암호화를 제어한 빈에 대한 설정

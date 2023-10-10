@@ -202,7 +202,6 @@
                         <thead>
                            <tr>
                               <th>옵션명</th>
-                              <th>옵션</th>
                               <th>옵션가격</th>
                               <th>옵션수량</th>
                               <th>최소구매수량</th>
@@ -210,10 +209,19 @@
                            </tr>
                         </thead>
                         <tbody id="optiontab">
-
+							<tr th:each="pro : ${product[0].optionDetail}">
+								<td><input type="text" th:value="${pro.optionLast}"></td>
+								<td><input type="text" th:value="${pro.optionPrice}"></td>
+								<td><input type="text" th:value="${pro.optionCount}"></td>
+								<td><input type="text" th:value="${pro.minOrder}"></td>
+								<td><input type="text" th:value="${pro.maxOrder}"></td>
+							</tr> 
                         </tbody>
                      </table>
                   </div>
+               </div>
+               <div>
+               		[[${product[0].optionDetail}]]
                </div>
 
                <div class="form-group row">
@@ -223,7 +231,7 @@
                   </div>
                   <div id="image_container" contenteditable="true"
                      style="outline: none; margin: 0 auto; border: 1px solid black; margin-top: 30px">
-                     <img th:src="${fullImagePath}" th:alt="${detailImg.imgContent}">
+                     <img th:src="|/upload/${detailImg.uploadPath}/${detailImg.uploadName}|" th:alt="${detailImg.imgContent}">
 
 
                   </div>
@@ -352,6 +360,89 @@
   	   		    }
   	   		  });
 	 
+        	 var val = [[${product[0].option.size}]];
+
+             $('#optCnt').val(val);
+             console.log(val);
+                   // 옵션 input 창   
+             if (val != 0) {
+                  $('.optionText').show();
+                  $('#optionCount').val('');
+                  $('.countdiv').hide();
+               } else {
+                  $('.optionText').hide();
+                  $('.countdiv').show();
+               }
+               for (let i = 0; i < val; i++) {
+                  let div = $('<div/>').addClass("optionDiv col-md-6");
+                 let labelN = $("<label> /").text("옵션이름");
+                 let optionN = $('<input name="option[' + i + '].optionName" class="optionN" type="text" id="optionName' + i + '"/>');
+
+                 optionN.val('[[${product[0].option[0].optionName}]]');
+
+	              
+                  div.append(labelN);
+                  div.append(optionN);
+                  $('.optionB').append(div);
+
+                  let labelV = $("<label/>").text("옵션");
+                  let optionV = $('<input name="option[' + i +
+                     '].optionValue" class="optionV" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' + i +
+                     '" />');
+         
+                  optionV.val('[[${product[0].option[0].optionValue}]]');
+                  div.append(labelV);
+                  div.append(optionV);
+                  $('.optionB').append(div);
+               }
+               
+    
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+           // 옵션 input 창   
+           -
+           $('.optionsel').on('change', function (e) {
+               let val = $(this).val();
+               console.log(val);
+               $('.optionB').children().remove();
+               // console.log(val);
+               if (val != 0) {
+                  $('.optionText').show();
+                  $('#optionCount').val('');
+                  $('.countdiv').hide();
+               } else {
+                  $('.optionText').hide();
+                  $('.countdiv').show();
+               }
+               for (let i = 0; i < val; i++) {
+                  let div = $('<div/>').addClass("optionDiv col-md-6");
+                 let labelN = $("<label> /").text("옵션이름");
+                  let optionN = $('<input name="option[' + i +
+                     '].optionName" class="optionN" type="text" id="optionName' + i + '"/>');
+                  div.append(labelN);
+                  div.append(optionN);
+                  $('.optionB').append(div);
+
+                  let labelV = $("<label/>").text("옵션");
+                  let optionV = $('<input name="option[' + i +
+                     '].optionValue" class="optionV" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' + i +
+                     '" />');
+                  div.append(labelV);
+                  div.append(optionV);
+                  $('.optionB').append(div);
+               }
+            })
+         
+
+
         	 let userData = JSON.parse(localStorage.getItem("product"));
              let detailData = JSON.parse(localStorage.getItem("detail"));
              console.log(detailData);
@@ -610,38 +701,38 @@
            })
           // 옵션 input 창   
           -
-          $('.optionsel').on('change', function (e) {
-              let val = $(this).val();
-              $('.optionB').children().remove();
-              // console.log(val);
-              if (val != 0) {
-                 $('.optionText').show();
-                 $('#optionCount').val('');
-                 $('.countdiv').hide();
-              } else {
-                 $('.optionText').hide();
-                 $('.countdiv').show();
-              }
-              for (let i = 0; i < val; i++) {
-                 let div = $('<div/>').addClass("optionDiv col-md-6");
-                 let labelN = $("<label> /").text("옵션이름");
-                 let optionN = $('<input name="option[' + i +
-                    '].optionName" class="optionN" type="text" id="optionName' + i + '"/>');
-                 div.append(labelN);
-                 div.append(optionN);
-                 $('.optionB').append(div);
+      //     $('.optionsel').on('change', function (e) {
+      //         let val = $(this).val();
+      //         $('.optionB').children().remove();
+      //         // console.log(val);
+      //         if (val != 0) {
+      //            $('.optionText').show();
+      //            $('#optionCount').val('');
+      //            $('.countdiv').hide();
+      //         } else {
+      //            $('.optionText').hide();
+      //            $('.countdiv').show();
+      //         }
+      //         for (let i = 0; i < val; i++) {
+      //            let div = $('<div/>').addClass("optionDiv col-md-6");
+      //            let labelN = $("<label> /").text("옵션이름");
+      //            let optionN = $('<input name="option[' + i +
+      //               '].optionName" class="optionN" type="text" id="optionName' + i + '"/>');
+      //            div.append(labelN);
+      //            div.append(optionN);
+      //            $('.optionB').append(div);
 
 
-                 let labelV = $("<label/>").text("옵션");
-                 let optionV = $('<input name="option[' + i +
-                    '].optionValue" class="optionV" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' + i +
-                    '" />');
-                 div.append(labelV);
-                 div.append(optionV);
-                 $('.optionB').append(div);
+      //            let labelV = $("<label/>").text("옵션");
+      //            let optionV = $('<input name="option[' + i +
+      //               '].optionValue" class="optionV" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' + i +
+      //               '" />');
+      //            div.append(labelV);
+      //            div.append(optionV);
+      //            $('.optionB').append(div);
 
-              }
-           })
+      //         }
+      //      })
 
 
 
@@ -776,81 +867,7 @@
            }
         })
 
-       // $(document).on("change", "#ChildCate", function () {
-       //    let val = $(this).val();
-       //    $.ajax({
-       //          url: 'childOfCate',
-       //          type: 'get',
-       //          data: {
-       //             'categoryCode': val
-       //          }
-       //       })
-       //       .done(getCategoryList => {
-       //          console.log(getCategoryList);
-       //          if (val == null) {
-       //             $('#ChildOfChildCate').css('display', 'none');
-       //          }
-       //          $('#ChildOfChildCate').replaceWith(getCategoryList);
-       //          $('#ChildOfChildCate').css('display', '');
-
-       //          let selectedOptionText = $(this).find('option:selected').text();
-
-       //          $("#secondCategoryCode").text(selectedOptionText + ' >');
-
-       //       })
-       //       .fail(reject => {
-       //          console.log(reject);
-       //       })
-      
-
-
-       // document.querySelector('form[name="insertForm"]')
-       //    .addEventListener(
-       //       'submit',
-       //       function (e) {
-       //          e.preventDefault();
-
-       //          let productCode = document.getElementsByName('productCode')[0];
-
-       //          if (productCode.value == '') {
-       //             alert('상품코드를 입력하세요');
-       //             productCode.focus();
-       //             return;
-       //          }
-       //          alert('상품등록이 완료되었습니다.')
-       //          insertForm.submit();
-       //       }
-       //    )
-
-       // $(document).on('click', '.submit', function (e) {
-       //    let option = $("input[name='optionName']").val();
-       //    console.log(option);
-       //    e.preventDefault();
-       //    // if($('#selectCategory').val() == null || $('#selectCategory').val() == '' ){
-       //    //    alert("카테고리를 선택해주세요");   
-       //    //    return;
-       //    // }
-       //    let form = $('#insertForm');
-       //    let data = $(form).find('input[type != hidden]');
-       //    /* $(data).each(function(idx,item){
-       //       if($(item).val() == null || $(item).val() == ''){
-       //          let id = $(item).attr("id");
-
-       //          // console.log($(item).attr("id"));
-       //          alert( $('label[for="'+ id+'"]').text()  + "를 입력해주세요");
-       //          item.focus();
-       //          return false;
-       //       }
-       //    })
-
-       //    if($('#selectdelivery').val() == null || $('#selectdelivery').val() ==''){
-       //       alert("택배사를 선택 해주세요");
-       //       return;
-       //    } */
-       //    localStorage.removeItem('product')
-       //    form.submit();
-
-       // })
+ 
 
        
 

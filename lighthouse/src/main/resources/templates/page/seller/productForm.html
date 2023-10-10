@@ -187,8 +187,14 @@
                      <label class="form-label" for="accountPassword">
                         옵션 *
                      </label>
-                     <div class="form-group input-group input-group-merge">
+                     <div class="form-group input-group input-group-merge" id="optionPlz">
                         <select class="optionsel form-select form-select-sm" id="optCnt" name="optCnt">
+                        <th:block th:each="option, iterStat : ${product}">
+				            <option th:text="${option.optionName1}"></option>
+				            <th:block th:each="value : ${option.optionValue1.split(',')}">
+				                <option th:text="${value}"></option>
+				            </th:block>
+				        </th:block>
                            <option value="0" selected>----</option>
                            <option value="1">1</option>
                            <option value="2">2</option>
@@ -753,6 +759,50 @@
                //    }
 
                // });
+               
+ /*               // 예제로 userData 객체와 option 배열을 만들어 보겠습니다.
+let userData = {
+  option: [
+    {
+      optionName1: "Option 1",
+      optionValue1: "Value 1,Value 2,Value 3"
+    },
+    {
+      optionName1: "Option 2",
+      optionValue1: "Value 4,Value 5,Value 6"
+    },
+    {
+      optionName1: "Option 3",
+      optionValue1: "Value 7,Value 8,Value 9"
+    }
+  ]
+};
+
+               
+let sel = $("#optionPlz"); 
+
+for (let i = 0; i < userData.option.length; i++) {
+  if (Object.keys(userData.option[i]).length !== 0) {
+    let select = $("<select/>");
+    select.addClass("form-select mb-2");
+    let optbox = $("<option>" + userData.option[i].optionName1 + "</option>");
+    optbox.prop("disabled", "true");
+    select.append(optbox);
+
+    let value = userData.option[i].optionValue1.split(",");
+    for (let x = 0; x < value.length; x++) {
+      let option = $("<option>" + value[x] + "</option>");
+      select.append(option);
+    }
+
+    // 미리 설정하고 싶은 값을 선택합니다.
+    // 예를 들어, 미리 2번째 옵션을 선택하려면 다음과 같이 합니다.
+    select.val(value[1]);
+
+    sel.append(select);
+  }
+} */
+
                $('.detailPro').on("click", function (e) {
 
                })
