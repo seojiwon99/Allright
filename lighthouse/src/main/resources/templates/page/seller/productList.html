@@ -99,12 +99,11 @@
          <h3>상품조회/수정</h3>
 
 
-         <div>
-            <button type="button" id="chkDelBtn">전시중지</button>
-            <button type="button" id="chkY">전시중</button>
+         <div style="float:left;">
+            <button type="button" id="chkDelBtn">전시중/전시중지</button>
          </div>
          <div>
-            <select id="optionList">
+            <select id="optionList" style="float:right; margin-right:500px">
                <option></option>
                <option value="상품등록일순">상품등록일순</option>
                <option value="상품명순">상품명순</option>
@@ -117,7 +116,7 @@
 
          <!-- CARDS -->
          <section class="pb-12">
-
+			<div style="width:100%; height: 500px; overflow:auto; border:1px; ">
             <table border="1" class="table" id="getProductList">
                <thead>
                   <tr>
@@ -143,7 +142,7 @@
                             </td>
                      <td th:text="${product.productCode}"></td>
                      <td th:text="${product.productName}"></td>
-                     <!-- <td th:text="${product.optionDetail[0].optionCount}"/> -->
+                     <td th:text="${product.optionDetail[0].optionCount}"/>
                      <td th:text="${product.productCost}"></td>
                      <td th:text="${product.salePrice}"></td>
                      <td th:text="${product.deliveryCost}"></td>
@@ -156,6 +155,7 @@
                   <!-- 반복문 종료 -->
                </tbody>
             </table>
+            </div>
          </section>
 
 

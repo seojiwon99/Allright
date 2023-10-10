@@ -5,6 +5,30 @@
 	height: 14px
 }
 
+.prod-inquiry-item__label {
+    left: 1em;
+    background-color: #777;
+}
+
+
+.prod-inquiry-item__reply__label {
+    left: 2.2em;
+    background-color: #346aff;
+    
+}
+
+.prod-inquiry-item__label, .prod-inquiry-item__reply__label {
+    top: 20px;
+    display: inline-block;
+    padding: 4px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #fff;
+}
+.prod-inquiry-item__wrap {
+    padding: 20px 10px 20px 4em;
+}
+
 .input-daterange input:first-child, .input-daterange input:last-child {
 	border-radius: 0
 }
@@ -3507,6 +3531,18 @@ pre code {
 		url(images/kr/sprites/sp_notice-alert.svg?2f0867426b20c896ac5f6b404bc35f6b)
 		50% 100% no-repeat
 }
+#inquiryAdd, #orderSearch {
+    border-radius: 10px; /* 테두리를 둥글게 만듭니다. */
+    background-color: #3498db; /* 배경색을 예쁜 색상으로 지정합니다. */
+    color: #ffffff; /* 텍스트 색상을 흰색으로 지정합니다. */
+    padding: 10px 20px; /* 내용 주변의 여백을 조절합니다. */
+    border: none; /* 테두리를 없앱니다. */
+}
+
+#inquiryAdd:hover, #orderSearch:hover {
+    background-color: #2980b9; /* 마우스 오버시 배경색을 변경합니다. */
+}
+
 
 .sp-notice-alert-smartstore-dims {
 	width: 34px;
@@ -3531,7 +3567,7 @@ html {
 }
 
 body {
-	margin: 0
+	margin: 0 auto;
 }
 
 article, aside, details, figcaption, figure, footer, header, hgroup,

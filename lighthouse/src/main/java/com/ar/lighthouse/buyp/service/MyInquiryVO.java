@@ -17,4 +17,7 @@ public class MyInquiryVO {
 	private Date customInquiryRegdate;
 	private String customInquiryAnswer;
 	private String customInquiryAnswerStatus;
+	
+//	member
+	String memberId;
 }

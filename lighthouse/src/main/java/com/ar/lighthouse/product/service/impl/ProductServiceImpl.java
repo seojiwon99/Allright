@@ -348,5 +348,17 @@ public class ProductServiceImpl implements ProductService {
 	public List<MyInquiryVO> getSellerInquiry(String memberId) {
 		return productMapper.selectSellerInquriy(memberId);
 	}
+	
+//	상품 문의 검색
+	@Override
+	public List<ProductInquiryVO> getSeaInquiry(ProductInquiryVO productInquiryVO) {
+		return productMapper.selectSeaInquiry(productInquiryVO);
+	}
+	
+//	판매자 문의 검색
+	@Override
+	public List<MyInquiryVO> getSeaSellerInqu(MyInquiryVO myInquiryVO) {
+		return productMapper.selectSeaSellerInq(myInquiryVO);
+	}
 
 }

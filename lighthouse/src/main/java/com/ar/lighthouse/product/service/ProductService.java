@@ -46,12 +46,16 @@ public interface ProductService {
 	
 //	상품 문의건
 	List<ProductInquiryVO> getProductInquiry(String memberId);
+//	문의 검색
+	List<ProductInquiryVO> getSeaInquiry(ProductInquiryVO productInquiryVO);
 	
 //  상품 문의 답변해주기
 	int updateSellerInquiry(ProductInquiryVO productInquiryVO);
 	
 //	판매자 문의 내역
 	List<MyInquiryVO> getSellerInquiry(String memberId);
+//	판매자 문의 검색
+	public List<MyInquiryVO> getSeaSellerInqu(MyInquiryVO myInquiryVO);
 	
 	//상품 단건 상세페이지
 	public ProductVO goodsDetail(ProductVO productVO);

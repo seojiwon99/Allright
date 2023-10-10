@@ -36,6 +36,7 @@
                     ) d
       ON p.product_code = d.product_code
       WHERE p.member_id = #{memberId}
+      ORDER BY product_regdate DESC
    </select>
 
 
@@ -80,6 +81,7 @@
     <if test="optionVal == '전시중지'">
         AND product_exstatus = 'N'
     </if>
+    ORDER BY product_regdate DESC
 </select>
 
 
@@ -571,7 +573,7 @@ WHERE p.product_code = #{productCode}
    <select id="selectSellerInquiry" resultType="ProductInquiryVO">
       select
       p.product_code,p.product_name,
-      i.que_content,m.member_id,i.que_regdate,i.que_ans,i.que_code
+      i.que_content,m.member_id,i.que_regdate,i.que_ans,i.que_code,i.member_id
       from
       ar_products p
       JOIN ar_inquiry i ON p.product_code = i.product_code
@@ -580,6 +582,34 @@ WHERE p.product_code = #{productCode}
       WHERE p.member_id= #{memberId}
    </select>
 
+<!-- 상품 문의 검색 -->
+   <select id="selectSeaInquiry" resultType="ProductInquiryVO">
+      select
+      p.product_code,p.product_name,
+      i.que_content,m.member_id,i.que_regdate,i.que_ans,i.que_code,i.member_id
+      from
+      ar_products p
+      JOIN ar_inquiry i ON p.product_code = i.product_code
+      JOIN
+      ar_member m ON m.member_id = i.member_id
+      WHERE p.member_id= #{memberId}
+      <choose>
+         <when test="searchKey == 'member_name'">
+            AND m.member_name like '%'||#{searchValue}||'%'
+         </when>
+         <when test="searchKey == 'member_id'">
+            AND m.member_id like '%'||#{searchValue}||'%'
+         </when>
+         <when test="searchKey == 'product_code'">
+            AND p.product_code like '%'||#{searchValue}||'%'
+         </when>
+      </choose>
+      <if test="fromDate != null">
+         AND i.que_regdate BETWEEN #{fromDate} AND #{toDate}
+      </if>
+   </select>
+
+	
    <!-- 판매자 상품문의 답해주기 -->
    <update id="updateInquiryAns">
       update ar_inquiry
@@ -791,6 +821,7 @@ ORDER BY EXTRACT(MONTH FROM order_date)
 			, exchange_cost
 			, delivery_service
 			, product_exstatus
+			
 		)
 		VALUES ( #{productCode}
 			, #{memberId}
@@ -808,6 +839,7 @@ ORDER BY EXTRACT(MONTH FROM order_date)
 			, #{exchangeCost}
 			, #{deliveryService}
 			, 'Y'
+			
 		)
 
 	</insert>
@@ -849,6 +881,8 @@ ORDER BY EXTRACT(MONTH FROM order_date)
          , option_sell_status
          , option_exstatus
          , option_count
+         , min_order
+		 , max_order
       )
       VALUES (
            #{optionDetailCode}
@@ -858,6 +892,8 @@ ORDER BY EXTRACT(MONTH FROM order_date)
          , 'Y'
          , 'Y'
          , #{optionCount}
+         , #{minOrder}
+		 , #{maxOrder}
       )
    </insert>
 
@@ -1013,6 +1049,15 @@ WHERE product_code = #{productCode}
 <select id="selectSellerInquriy" resultType="com.ar.lighthouse.buyp.service.MyInquiryVO">
 select * from ar_custom_inquiry
 where member_id = #{memberId}
+</select>
+
+<!-- 판매자 문의 검색 -->
+<select id="selectSeaSellerInq" resultType="com.ar.lighthouse.buyp.service.MyInquiryVO">
+select * from ar_custom_inquiry
+where member_id = #{memberId}
+<if test="fromDate != null">
+         AND custom_inquiry_regdate BETWEEN #{fromDate} AND #{toDate}
+      </if>
 </select>
 
 </mapper>

@@ -10,7 +10,7 @@
 
 <div layout:fragment="sellerContent">
 
-<div class="row gx-0">
+	<div class="row gx-0">
 		<div class="col-12 col-lg-auto">
 
 			<!-- NAVBAR -->
@@ -81,9 +81,9 @@
 											href="/sellerInquiry">고객센터</a></li>
 						</ul>
 
-						
-						
-						
+
+
+
 
 					</div>
 
@@ -92,27 +92,240 @@
 
 		</div>
 		<div class="col-12 col-lg">
-		<table class="table">
-						<thead>
-							<tr>
-								<th>번호</th>
-								<th>제목</th>
-								<th>답변상태</th>
-								<th>등록상태</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="inquiry : ${myInquiry}"> 
-								<td>1</td>
-								<td th:text="${inquiry.customInquiryTitle}"/>
-								<td th:text="${inquiry.customInquiryAnswerStatus}"/>
-								<td th:text="${#dates.format(inquiry.customInquiryRegdate,'yyyy-MM-dd')}"/>
-							</tr>
-						</tbody>
-					</table>
+			<div class="panel-body">
+
+				<div class="_1Vof48UxmD_oVRNwPvxck">
+
+					<div class="_KqV0-1BSnB">
+						<button type="button" id="todayBtn" class="btn btn-primary2">
+							<span id="today">오늘</span>
+						</button>
+						<button type="button" id="weekBtn" class="btn btn-primary2">
+							<span id="week">1주일</span>
+						</button>
+						<button type="button" id="oneMonthBtn" class="btn btn-primary2">
+							<span id="onemonth">1개월</span>
+						</button>
+						<button type="button" id="threeMonthBtn" class="btn btn-primary2">
+							<span id="thmonth">3개월</span>
+						</button>
+
+						<div id="dateDisplay"></div>
+						<div>
+							<span>조회기간</span> <input type="DATE" id="from" name="from"
+								autocomplete="off"> <label for="to">~</label> <input
+								type="DATE" id="to" name="to" autocomplete="off">
+						</div>
+					</div>
+
+					<button type="button" id="orderSearch">검색</button>
+				</div>
+				<section class="pb-12">
+					<div
+						style="width: 100%; height: 300px; overflow: auto; border: 1px;">
+						<table border="1" class="table" id="getProductList">
+							<thead>
+								<tr>
+									<th>번호</th>
+									<th>제목</th>
+									<th>답변상태</th>
+									<th>등록날짜</th>
+								</tr>
+							</thead>
+							<tbody id="sellerSeaInquiry">
+								<tr th:each="inquiry,index : ${myInquiry}"
+									data-bs-toggle="collapse" th:href="@{#inquiryForm}">
+									<td th:text="${index.count}"></td>
+									<td th:text="${inquiry.customInquiryTitle}" />
+									<td th:text="${inquiry.customInquiryAnswerStatus}" />
+									<td
+										th:text="${#dates.format(inquiry.customInquiryRegdate,'yyyy-MM-dd')}" />
+									<td th:text="${inquiry.customInquiryContent}"
+										id="customInquiryContent" class="visually-hidden">
+									<td th:text="${inquiry.customInquiryAnswer}"
+										id="customInquiryAnswer" class="visually-hidden">
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+
+					<div class="collapse" id="inquiryForm">
+						<!-- Divider -->
+						<hr class="my-8" />
+					</div>
+					<!-- Form -->
+
+					<div class="row" id="inquiryForm">
+						<div class="prod-inquiry-list__container">
+							<div class="row">
+								<div class="col-12">
+									<div class="col-6">
+										<em class="prod-inquiry-item__label">질문</em> <span
+											class="prod-inquiry-item__wrap" id="inquiryContent" required></span>
+									</div>
+									<div class="col-6">
+										<em class="prod-inquiry-item__reply__label">답변</em> <input
+											class="prod-inquiry-item__wrap"
+											style="width: 80%; border-radius: 2px; margin-top: 50px; margin-bottom: 50px;"
+											id="inquiryAnswer" name="inquiryAnswer" required
+											placeholder="내용을 입력하세요">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</section>
+			</div>
 		</div>
+		<script th:inline="javascript">
+			$(document)
+					.ready(
+							function() {
+								$(
+										'#getProductList tbody tr[data-bs-toggle="collapse"]')
+										.click(
+												function() {
+													// Find the clicked row
+													let row = $(this);
+													let customInquiryAnswer = row
+															.find(
+																	'#customInquiryAnswer')
+															.text();
+													let customInquiryContent = row
+															.find(
+																	'#customInquiryContent')
+															.text();
+
+													console
+															.log(customInquiryContent);
+
+													$('#inquiryAnswer')
+															.val(
+																	customInquiryAnswer);
+													$('#inquiryContent')
+															.text(
+																	customInquiryContent);
+
+												});
+								
+								
+								
+								
+								$('#orderSearch').on('click',function(){
+									let fromDate = $('#from').val();
+									let toDate = $('#to').val()
+									
+
+									$.ajax({
+										url : 'sellerSeaInquiry',
+										type : 'get',
+										data : {
+									 		fromDate,
+									 		toDate
+										}
+									})
+									 		
+									
+									.done(myInquiry=>{
+										console.log(myInquiry);
+										 $('#sellerSeaInquiry').replaceWith(myInquiry); 
+										 
+
+									})
+									.fail(reject=>{
+										console.log(reject);
+									})
+									
+								})
+
+								const currentDate = new Date();
+								const koreanTime = new Date(currentDate).toLocaleString('en-US', {timeZone : 'Asia/Seoul'});
+								const formattedDate = koreanTime.split('T')[0];
+								$('#to').val(formattedDate);
+
+								console.log(formattedDate); // 대한민국 시간의 날짜 부분 출력
+
+								$('#todayBtn').click(function() {
+									displayDate('today');
+								});
+								$('#weekBtn').click(function() {
+									displayDate('week');
+								});
+								$('#oneMonthBtn').click(function() {
+									displayDate('oneMonth');
+								});
+								$('#threeMonthBtn').click(function() {
+									displayDate('threeMonth');
+								});
+
+								// 날짜 표시 함수
+								function displayDate(range) {
+									const currentDate = new Date();
+									let startDate, endDate;
+
+									switch (range) {
+									case 'today':
+										startDate = new Date(currentDate);
+										endDate = new Date(currentDate);
+										break;
+									case 'week':
+										startDate = new Date(currentDate);
+										endDate = new Date(currentDate);
+										startDate
+												.setDate(endDate.getDate() - 7);
+										break;
+									case 'oneMonth':
+										startDate = new Date(currentDate);
+										endDate = new Date(currentDate);
+										startDate
+												.setMonth(endDate.getMonth() - 1);
+										break;
+									case 'threeMonth':
+										startDate = new Date(currentDate);
+										endDate = new Date(currentDate);
+										startDate
+												.setMonth(endDate.getMonth() - 3);
+										break;
+									default:
+										startDate = null;
+										endDate = null;
+									}
+
+									// endDate 값을 input 요소에 설정
+									if (startDate) {
+										endDate.setDate(endDate.getDate() + 1); // 일자를 +1 하기
+										const formattedEndDate = endDate
+												.toISOString().split('T')[0];
+										console.log(formattedEndDate);
+
+										//   formattedYear = formattedEndDate.
+
+										// input 요소 선택 후 value 설정
+										$('#to').val(formattedEndDate);
+									} else {
+										// endDate가 null이면 input 요소 값을 비움
+										$('#to').val('');
+									}
+
+									// startDate 값을 input 요소에 설정
+									if (endDate) {
+										// startDate를 yyyy-mm-dd 형식의 문자열로 변환
+										const formattedStartDate = startDate
+												.toISOString().split('T')[0];
+
+										// input 요소 선택 후 value 설정
+										$('#from').val(formattedStartDate);
+									} else {
+										// startDate가 null이면 input 요소 값을 비움
+										$('#from').val('');
+									}
+								}
+
+							});
+		</script>
 
 
-
-</div>
+	</div>
 </html>
