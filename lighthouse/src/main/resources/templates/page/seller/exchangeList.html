@@ -122,7 +122,7 @@
 							<option value="product_code">주문번호</option>
 							<option value="delivery_number">송장번호</option>
 						</select> <input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
-						<div>
+						<div class="searchDate">
 							<span>조회기간</span> <input type="DATE" id="from" name="from"
 								autocomplete="off"> <label for="to">~</label> <input
 								type="DATE" id="to" name="to" autocomplete="off">
@@ -366,13 +366,15 @@ function displayDate(range) {
 			  let orderCode = $(tag).closest('tr').find('td:eq(10)').text();
 			  let refundTypeCode = $(tag).closest('tr').find('td:eq(11)').text().trim();
 			  let refundType =$(tag).closest('tr').find('td:eq(12)').text().trim();
+			  let cancelReason = $(tag).closest('tr').find('td:eq(4)').text().trim();
 			  
 			  let OrderChkVO = {
 					   orderDetailCode : orderDetailCode ,
 		    		   orderCode : orderCode,
 		    		   refundTypecode : refundTypeCode,
 		    		   memberId : memberId,
-		    		   refundType : refundType
+		    		   refundType : refundType,
+		    		   cancelReason : cancelReason
 			  }
 			  
 			  refundListVO.push(OrderChkVO);

@@ -114,7 +114,7 @@
 									</button>
 
 									<div id="dateDisplay"></div>
-									<div>
+									<div class="searchDate">
 										<span>조회기간</span> <input type="DATE" id="from" name="from"
 											autocomplete="off"> <label for="to">~</label> <input
 											type="DATE" id="to" name="to" autocomplete="off">
@@ -245,6 +245,7 @@
 												th:text="${#dates.format(order.deliveryStart,'yyyy-MM-dd')}" />
 											<td th:text="${order.memberId}" class="visually-hidden"></td>
 											<td th:text="${order.memberEmail}" class="visually-hidden"></td>
+											<td th:text="${order.orderCode}" class="visually-hidden"></td>
 										</tr>
 										<!-- 반복문 종료 -->
 									</tbody>
@@ -314,11 +315,15 @@
                let orderCnt = $(tag).closest('tr').find('td:eq(4)').text();
                let memberId = $(tag).closest('tr').find('td:eq(11)').text();
                let memberEmail = $(tag).closest('tr').find('td:eq(12)').text();
+               let orderCode = $(tag).closest('tr').find('td:eq(13)').text();
+               let refundType = "C";
                let obj = {'orderDetailCode' : orderDetailCode
                         ,'productName' : productName
                         ,'orderCnt' : orderCnt
                         ,'memberId' : memberId
                         ,'memberEmail' : memberEmail
+                        ,'orderCode' : orderCode
+                        ,'refundType' : refundType
                         };
                orderList.push(obj);
             })
@@ -346,7 +351,6 @@
         	        return member.memberEmail;
         	    });
         	  console.log(email);
-        	 alert("주문취소가 완료되었습니다.");
         	 $.ajax({
         		 url : 'sellerMailConfirm',
         		 type : 'POST',
@@ -364,6 +368,21 @@
             	 })
             	 .done(data =>{
             		 console.log(data);
+            		 let $form = $('<form>', {
+            	          method: 'POST',
+            	          action: 'orders/cancel'
+            	      });
+
+            	      let $input = $('<input>', {
+            	          type: 'hidden',
+            	          name: 'refundList',
+            	          value: JSON.stringify(memberInfo)
+            	      });
+
+            	      $form.append($input);
+
+            	      $form.appendTo('body').submit();
+            	      alert("주문취소가 완료되었습니다.");
             		 refreshList();
             	 })
         	 })
