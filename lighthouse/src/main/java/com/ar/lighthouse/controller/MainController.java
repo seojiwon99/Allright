@@ -42,7 +42,7 @@ public class MainController {
 		model.addAttribute("productList",service.selProductList());
 		System.out.println(model);
 		
-//		model.addAttribute("productbanner",service.showEventBanner());
+//		model.addAttribute("productbanner",service.showEventBanner());  
 		model.addAttribute("productbanner",adminService.getEventBannerList());
 		model.addAttribute("productRand", service.randomGetProduct());
 		model.addAttribute("bestFassion", service.getBestProductByFassion());
