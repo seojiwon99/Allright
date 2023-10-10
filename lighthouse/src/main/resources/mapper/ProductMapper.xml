@@ -838,10 +838,15 @@ ORDER BY EXTRACT(MONTH FROM order_date)
 			, #{returnCost}
 			, #{exchangeCost}
 			, #{deliveryService}
-			, 'Y'
-			
+			<choose>
+				<when test="productExstatus != null">
+					,#{productExstatus}
+				</when>
+				<otherwise>
+					,"Y"
+				</otherwise>
+			</choose>
 		)
-
 	</insert>
 
 

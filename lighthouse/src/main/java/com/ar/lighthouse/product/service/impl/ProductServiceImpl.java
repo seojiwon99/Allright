@@ -69,7 +69,6 @@ public class ProductServiceImpl implements ProductService {
 				productMapper.insertOption(noptionVO);
 				
 				
-				System.out.println("asdsadsadadad@@@@@@@@@@@@@@@@");
 				OptionDetailVO detailVO = new OptionDetailVO();
 				detailVO.setProductCode(code);
 				detailVO.setOptionLast("없음");
