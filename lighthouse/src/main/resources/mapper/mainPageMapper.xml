@@ -10,11 +10,13 @@
       FROM AR_EVENT_IMG
    </select>
 
-
+<!-- 
    <resultMap type="ProductVO" id="productMap">
       <result column="product_name" property="productName" />
       <result column="product_code" property="productCode" />
       <result column="product_cost" property="productCost" />
+      <result column="sale_price" property="salePrice" />
+      <result column="category_code" property="categoryCode" />
       <collection property="productImg" resultMap="productImg" />
    </resultMap>
 
@@ -22,29 +24,41 @@
       <result property="uploadName" column="upload_name" />
       <result property="imgContent" column="img_content" />
    </resultMap>
+ -->
 
-   <select id="selProductList" resultMap="productMap">
-      select p.product_code, product_name, upload_name, img_content, product_cost
-      from ar_products
-      p join ar_imgs i
-      on p.product_code = i.product_code
-      <![CDATA[
-      where rownum < 12
-      ]]>
-      order by product_regdate DESC
 
+   <select id="selProductList" resultType="ProductVO">
+		select  *
+		FROM     (
+	                select p.product_code, p.product_name, p.product_cost, p.sale_price
+	                ,  GET_PARENT_CODE(p.category_code) category_code, p.product_status, i.img_content, i.upload_path, i.upload_name
+	                from ar_products p
+	                JOIN ar_imgs i ON p.product_code = i.product_code
+	                    <![CDATA[
+	                WHERE i.img_order = '0'
+	                AND product_exstatus = 'Y'
+	                order by product_regdate DESC
+	                )
+		WHERE ROWNUM <=12
+		           ]]>
 
    </select>
 
    <select id="randomSelProduct" resultType="ProductVO">
-   select p.product_code, product_name, upload_name, img_content, product_cost
-      from ar_products
-      p join ar_imgs i
-      on p.product_code = i.product_code
-      <![CDATA[
-      where rownum < 8
-      ]]>
-      order by product_regdate DESC
+
+		select  *
+		FROM     (
+	                select p.product_code, p.product_name, p.product_cost, p.sale_price
+	                ,  GET_PARENT_CODE(p.category_code) category_code, p.product_status, i.img_content, i.upload_path, i.upload_name
+	                from ar_products p
+	                JOIN ar_imgs i ON p.product_code = i.product_code
+	                    <![CDATA[
+	                WHERE i.img_order = '0'
+	                AND product_exstatus = 'Y'
+	                order by dbms_random.value
+	                )
+		WHERE ROWNUM <=8
+            ]]>
 
    </select>
 
@@ -77,5 +91,88 @@
 		ORDER BY category_level, category_name
 	</select>
 
-
+	
+	<select id="bestProductByFassion">
+		select t.product_code, t.product_name, t.product_cost, t.sale_price , GET_PARENT_CODE(t.category_code), sum(t.order_cnt) as order_cnt, i.img_content, i.upload_path, i.upload_name
+		from(
+		            select p.product_code
+		                , p.product_name
+                        , p.product_cost
+                        , p.sale_price
+                        , p.category_code
+		                , COALESCE(sum(od.order_cnt),0) as order_cnt
+		            from ar_products p
+		            LEFT OUTER JOIN ar_option_detail o
+		                      ON p.product_code = o.product_code
+		            LEFT OUTER JOIN ar_order_detail od
+		                   ON o.option_detail_code = od.option_detail_code
+		            WHERE  GET_PARENT_CODE(p.category_code) = 'Fassion'
+		            group by p.product_code, p.product_name, od.order_cnt, p.product_cost
+                        , p.sale_price
+                        , p.category_code
+		            order by SUM(od.order_cnt), p.product_code
+		      ) t
+		LEFT OUTER JOIN ar_imgs i ON t.product_code = i.product_code
+		WHERE i.img_order = '0'
+		group by t.product_code, t.product_name, t.product_cost, t.sale_price , t.category_code,  i.img_content, i.upload_path, i.upload_name
+		order by order_cnt desc
+	</select>
+	
+	<select id="bestProductByFOOD">
+		select t.product_code, t.product_name, t.product_cost, t.sale_price , GET_PARENT_CODE(t.category_code), sum(t.order_cnt) as order_cnt, i.img_content, i.upload_path, i.upload_name
+		from(
+		            select p.product_code
+		                , p.product_name
+                        , p.product_cost
+                        , p.sale_price
+                        , p.category_code
+		                , COALESCE(sum(od.order_cnt),0) as order_cnt
+		            from ar_products p
+		            LEFT OUTER JOIN ar_option_detail o
+		                      ON p.product_code = o.product_code
+		            LEFT OUTER JOIN ar_order_detail od
+		                   ON o.option_detail_code = od.option_detail_code
+		            WHERE  GET_PARENT_CODE(p.category_code) = 'FOOD'
+		            group by p.product_code, p.product_name, od.order_cnt, p.product_cost
+                        , p.sale_price
+                        , p.category_code
+		            order by SUM(od.order_cnt), p.product_code
+		      ) t
+		LEFT OUTER JOIN ar_imgs i ON t.product_code = i.product_code
+		WHERE i.img_order = '0'
+		group by t.product_code, t.product_name, t.product_cost, t.sale_price , t.category_code,  i.img_content, i.upload_path, i.upload_name
+		order by order_cnt desc
+	</select>
+	
+	<select id="bestProductByLife">
+		select t.product_code, t.product_name, t.product_cost, t.sale_price , GET_PARENT_CODE(t.category_code), sum(t.order_cnt) as order_cnt, i.img_content, i.upload_path, i.upload_name
+		from(
+		            select p.product_code
+		                , p.product_name
+                        , p.product_cost
+                        , p.sale_price
+                        , p.category_code
+		                , COALESCE(sum(od.order_cnt),0) as order_cnt
+		            from ar_products p
+		            LEFT OUTER JOIN ar_option_detail o
+		                      ON p.product_code = o.product_code
+		            LEFT OUTER JOIN ar_order_detail od
+		                   ON o.option_detail_code = od.option_detail_code
+		            WHERE  GET_PARENT_CODE(p.category_code) = 'Life'
+		            group by p.product_code, p.product_name, od.order_cnt, p.product_cost
+                        , p.sale_price
+                        , p.category_code
+		            order by SUM(od.order_cnt), p.product_code
+		      ) t
+		LEFT OUTER JOIN ar_imgs i ON t.product_code = i.product_code
+		WHERE i.img_order = '0'
+		group by t.product_code, t.product_name, t.product_cost, t.sale_price , t.category_code,  i.img_content, i.upload_path, i.upload_name
+		order by order_cnt desc
+	</select>
+	
+	
+	
+	
+	
+	
 </mapper>

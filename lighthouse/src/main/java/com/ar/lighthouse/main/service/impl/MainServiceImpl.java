@@ -28,8 +28,8 @@ public class MainServiceImpl implements MainPageService{
 	}
 
 	@Override
-	public List<EventImgVO> randomGetProduct() {
-		return mapper.randomSelProduct();
+	public List<EventImgVO> randomGetProduct(ProductVO productVO) {
+		return mapper.randomSelProduct(productVO);
 	}
 
 	@Override
@@ -50,6 +50,21 @@ public class MainServiceImpl implements MainPageService{
 	@Override
 	public List<CategoryVO> getAllCategoryList() {
 		return mapper.selectAllCategory();
+	}
+
+	@Override
+	public List<ProductVO> getBestProductByFassion() {
+		return mapper.bestProductByFassion();
+	}
+
+	@Override
+	public List<ProductVO> getBestProductByFOOD() {
+		return mapper.bestProductByFOOD();
+	}
+
+	@Override
+	public List<ProductVO> getBestProductByLife() {
+		return mapper.bestProductByLife();
 	}
 	
 	

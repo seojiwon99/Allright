@@ -24,7 +24,7 @@
             <!-- Nav -->
             <nav class="mb-10 mb-md-0">
               <div class="list-group list-group-sm list-group-strong list-group-flush-x">
-                <a class="list-group-item list-group-item-action dropend-toggle active" th:href="@{/page/buyer/orderList}">
+                <a class="list-group-item list-group-item-action dropend-toggle active" id="orderList" th:href="@{/page/buyer/orderList}">
                   주문 목록
                 </a>
 				<ul class="list-styled mb-0">
@@ -38,17 +38,17 @@
                   <div class="collapse" id="Collapse" data-simplebar-collapse="#seasonGroup">
                     <div class="form-group form-group-overflow mb-6" id="seasonGroup">
                       <div class="form-check mb-3">
-                        <a class="form-check-label" for="seasonOne" href="cancelList">
+                        <a class="form-check-label" id="cancel" href="cancelList">
                           취소
                         </a>
                       </div>
                       <div class="form-check mb-3">
-                        <a class="form-check-label" for="seasonTwo" href="returnList">
+                        <a class="form-check-label" id="return" href="returnList">
                           반품
                         </a>
                       </div>
                       <div class="form-check">
-                        <a class="form-check-label" for="seasonThree" href="exchangeList">
+                        <a class="form-check-label" id="exchange" href="exchangeList">
                           교환
                         </a>
                       </div>
@@ -56,22 +56,22 @@
                   </div>
                  </li>
                 <li class="nav-item">
-                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/myCoupon}">
+                <a class="list-group-item list-group-item-action dropend-toggle" id="coupon" th:href="@{/page/buyer/myCoupon}">
                   나의 쿠폰함
                 </a>
                 </li>
                 <li class="nav-item">
-                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/myInquiry}">
+                <a class="list-group-item list-group-item-action dropend-toggle" id="inquiry" th:href="@{/page/buyer/myInquiry}">
                   문의내역
                 </a>
                 </li>
                  <li class="nav-item">
-                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/wishList}">
+                <a class="list-group-item list-group-item-action dropend-toggle" id="wish" th:href="@{/page/buyer/wishList}">
                   찜 목록
                 </a>
                 </li>
                  <li class="nav-item">
-                <a class="list-group-item list-group-item-action dropend-toggle " th:href="@{/page/buyer/personalInfo}">
+                <a class="list-group-item list-group-item-action dropend-toggle" id="myInfo" th:href="@{/page/buyer/personalInfo}">
                   개인정보 확인/수정
                 </a>
                 </li>
@@ -202,8 +202,41 @@
         </div>
     </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <textarea id="orderMenual" style="display: none;">
+      1번 주문목록.
+      2번 취소목록.
+      3번 반품목록.
+      4번 교환목록.
+      5번 나의 쿠폰함.
+      6번 문의내역.
+      7번 찜 목록.
+      8번 개인정보 확인/수정.
+      9번 메인페이지 이동.
+      0번 다시듣기.
+    </textarea>
 	<script>
-	let TTSIsOk = localStorage.getItem('ttsKey');
+		function deleteExchange(code){
+			let exchangeDel = confirm('삭제하시겠습니까?');
+			let exchangeData = {
+					'orderDetailCode' : $('#orderDetailCode').text(),
+				}
+			$.ajax({
+				url : '/buyer/deleteExchange',
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(exchangeData),
+				success : function(response){
+					alert("수정 완료");
+					$('#test').replaceWith(response);
+				},
+				fail : function(errer){
+					console.error('수정 중 오류')
+					console.log(error);
+				}
+			})
+		};
+	
+		let TTSIsOk = localStorage.getItem('ttsKey');
 		let sessionAuthor;
 		console.log(sessionStorage.loginMember);          
 		if(sessionStorage.loginMember != null){
@@ -214,9 +247,9 @@
 		if(TTSIsOk == null || sessionAuthor == 3){
 		let audioFileNow = new Audio();
 		let firstMsg = "교환 목록 페이지입니다. 교환 신청한 내역에 대해서 확인할 수 있습니다.";
-		let message = firstMsg;
+		let message = firstMsg + $('#orderMenual').val();
 		
-		VoiceMenual(firstMsg);
+		VoiceMenual(message);
 		
 		//tts 이벤트 부여
 		$('.exchangeCode').on('focus', returnListInfo);
@@ -245,26 +278,6 @@
 				VoiceMenual('교환 철회 버튼입니다. 교환 철회를 원하시면. 엔터키를 눌러주세요.');
 			}
 			
-		function deleteExchange(code){
-			let exchangeDel = confirm('삭제하시겠습니까?');
-			let exchangeData = {
-					'orderDetailCode' : $('#orderDetailCode').text(),
-				}
-			$.ajax({
-				url : '/buyer/deleteExchange',
-				type : 'POST',
-				contentType : 'application/json',
-				data : JSON.stringify(exchangeData),
-				success : function(response){
-					alert("수정 완료");
-					$('#test').replaceWith(response);
-				},
-				fail : function(errer){
-					console.error('수정 중 오류')
-					console.log(error);
-				}
-			})
-		};
 		
 		//tts 부분
 		console.log('hello js');
@@ -322,6 +335,7 @@
 		        }
 		    });
 		};
+		
 		function base64ToBlob(base64, fileType) {
 		    let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
 		    let audioSrc = typeHeader + base64;
@@ -344,28 +358,47 @@
 		
 		   window.addEventListener("keydown", function(e){ 
 		         console.log(e);
-		         if(e.altKey && e.key == 1){ //결제하기
-		            $('#payment-button').focus();
-		         }
-		         if(e.altKey && e.key == 2){ // 가입한 배송지 주소로 배송지 등록
-		            $('#deliveryInfo').focus();
-		         }
-		         if(e.altKey && e.key == 3) {//첫번째 주문상품 이동
-		         console.log($('.img-fluid'));
-		            $('a.img-fluid')[0].focus();
-		         }
-		            if(e.altKey && e.key == 4){ // 배송지 정보 조회
-		            $('#deliveryContent').focus();
-		         }
-		            if(e.altKey && e.key == 5){ // 배송 시 요청 선택
-		            $('#selbox').focus();
-		         }
-		            if(e.altKey && e.key == 9){ // 메인 페이지 이동
-		                location.href = "/";
-		         }
-		         if(e.altKey && e.key == 0){ //다시 듣기
-		            VoiceMenual($('#orderInfo').val());
-		         }
+		         if(e.altKey && e.key == 1){ //주문목록
+		             $('#orderList').focus();
+		             VoiceMenual('주문목록 페이지 원할 경우. 엔터키 입력');
+		          }
+		         else if(e.altKey && e.key == 2){ //취소내역
+		        	 $(".collapse").addClass("show")
+		             $('#cancel').focus();
+		             VoiceMenual('취소. 페이지 원할 경우. 엔터키 입력');
+		          }
+		         else if(e.altKey && e.key == 3) {//반품내역
+		        	 $(".collapse").addClass("show")
+		             $('#reList').focus();
+		             VoiceMenual('반품. 페이지 원할 경우. 엔터키 입력');
+		          }
+		         else if(e.altKey && e.key == 4){ // 교환내역
+		        	 $(".collapse").addClass("show")
+		             $('#exchange').focus();
+		             VoiceMenual('교환. 페이지 원할 경우. 엔터키 입력');
+		          }
+		         else if(e.altKey && e.key == 5){ // 나의 쿠폰함
+		             $('#coupon').focus();
+		             VoiceMenual('쿠폰함. 페이지 원할 경우. 엔터키 입력');
+		          }
+		         else if(e.altKey && e.key == 6){ // 문의내역
+		             $('#inquiry').focus();
+		             VoiceMenual('문의내역. 페이지 원할 경우. 엔터키 입력');
+		          }
+		         else if(e.altKey && e.key == 7){ // 찜 목록
+		             $('#wish').focus();
+		             VoiceMenual("찜목록. 페이지 원할 경우. 엔터키 입력")
+		          }
+		         else if(e.altKey && e.key == 8){ // 배송 시 요청 선택
+		             $('#myInfo').focus();
+		             VoiceMenual('개인정보 확인,수정 페이지 입니다. 엔터키 입력.');
+		          }
+		         else if(e.altKey && e.key == 9){ // 메인 페이지 이동
+		                 location.href = "/";
+		          }
+		         else if(e.altKey && e.key == 0){ //다시 듣기
+		             VoiceMenual($('#orderMenual').val());
+		          }
 		   })
 		  } //ttsInit()의 if문
 		} // ttsInit() close

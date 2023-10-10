@@ -4,17 +4,17 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/default_layout}">
 <!-- Content -->
+
 <div layout:fragment="content">
 
-	<div data-flickity='{"prevNextButtons": true, "fade": true}'>
+	<div data-flickity='{"prevNextButtons": true, "fade": true, "autoPlay" : true, "wrapAround": true }'>
 
 		<!-- Item -->
 		<div class="w-100 bg-cover" th:each="banner:${productbanner}">
 			<div class="container d-flex flex-column">
 				<div class="row align-items-center py-12" style="min-height: 550px">
 					<!-- productbanner -->
-					<!-- <a href="#"><img alt="..."
-						th:src="@{/img/products/}+${banner.uploadName}"></a> -->
+					<a href="#"><img class="w-100" alt="..." th:src="|/upload/${banner.uploadPath}/${banner.uploadName}|" style="height:400px"></a>
 
 					<div style="display: none" th:text="${banner.imgContent}"></div>
 				</div>
@@ -25,7 +25,10 @@
 	</div>
 	<!-- slider -->
 
-	<div class="container">
+
+	<!-- new arrival -->
+	<section class="py-12" style="background-color: #f8f8f8">
+		<div class="container">
 		<div class="row">
 			<div class="col-12">
 				<!-- Heading -->
@@ -34,24 +37,17 @@
 				</h2>
 			</div>
 		</div>
-	</div>
-	<!-- new arrival -->
-	<section class="py-12">
-		<div class="container">
-
 		<div class="flickity-page-dots-progress"
 			data-flickity='{"pageDots": true}'>
 			<!-- Item -->
-			<div class="col px-4" style="max-width: 300px"
+			<div class="col px-4" style="max-width: 200px; max-height: 300px;"
 				th:each="product : ${productList}">
-				<div class="card">
+				<div class="card" style="border: 1px solid grey; border-radius: 6px">
+					
 					<!-- Image -->
 					<div class="card-img">
 					<!-- Badge -->
-						<div
-							class="badge bg-white text-body card-badge card-badge-start text-uppercase">
-							New</div>
-					
+						<div class="card-badge card-badge-start badge bg-dark text-uppercase" style="top:0px">New!</div>
 						<!-- 상품 찜 하기 -->
 						<button
 							class="btn btn-xs btn-circle btn-white-primary card-action card-action-end"
@@ -68,22 +64,33 @@
 						</button>
 
 						<!-- Image -->
-						<!-- <img th:src="|@upload/${}|" class="card-img-top"
-							alt="..."> -->
-
-						<div style="display: none"
-							th:text="${product.productImg[0].imgContent}"></div>
+						<img th:src="|/upload/${product.uploadPath}/${product.uploadName}|" class="card-img-top w-100"
+							alt="..." style="width: 160px; height:160px"> 
 					</div>
 					<!-- <img class="card-img-top" th:src="@{/img/products/${product.uploadName}" alt="..."/> -->
 					<!-- 대체 콘텐트 -->
 
 
 					<!-- Body -->
-					<div class="card-body fw-bold text-center">
+					<div class="card-body fw-bold text-center" style="border-top: 1px solid grey">
 						<a class="text-body"
 							th:onclick="|location.href = '@{/goodDetail(productCode=${product.productCode})}'|">
-							<div th:text="${product.productName}">상품이름</div>
-							<div th:text="${product.productCost} + 원"></div>
+							<div class="w-100" th:text="${product.productName}" style="
+								display: inline-block;
+								white-space : nowrap;
+								overflow : hidden;
+								text-overflow : ellipsis;">상품이름</div>
+							<div class="fw-bold text-muted fs-xxs">
+								<th:block th:if="${(product.salePrice).equals(product.productCost)}">
+									<span class="text-primary" th:text="|${#numbers.formatInteger(product.salePrice,3,'COMMA')}|"></span>
+		                     		<span class="text">원</span>
+								</th:block>
+								<th:block th:if="${!(product.salePrice).equals(product.productCost)}">
+									<span class="fs-xxxs text-gray-350 text-decoration-line-through">[[${#numbers.formatInteger(product.productCost,3,'COMMA')}]]</span>
+		                     		<span class="text-primary" th:text="|${#numbers.formatInteger(product.salePrice,3,'COMMA')}|"></span>
+		                     		<span class="text">원</span>
+	                     		</th:block>
+							</div>
 						</a>
 					</div>
 
@@ -93,7 +100,7 @@
 		</div>
 	</section>
 
-	<section class="py-12">
+	<section class="py-12" style="background-color: aliceblue;">
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-12 col-md-10 col-lg-8 col-xl-6">
@@ -106,213 +113,73 @@
 			</div>
 
 			<!-- product -->
-			<div class="row">
+			<div class="row justify-content-around">
 				<div class="col-6 col-sm-6 col-md-4 col-lg-3"
-					th:each="product:${productRand}">
+					th:each="product:${productRand}" style="width:250px; height:350px; margin-bottom: 40px">
 
 					<!-- Card -->
-					<div class="card mb-7" data-toggle="card-collapse">
+					<div class="card mb-7" style="border: 1px solid grey; border-radius: 6px">
 
 						<!-- Image -->
-						<div class="card-img" data-flickity='{"draggable": false}'
+						<div class="card-img" 
 							id="productOneImg">
-							<a class="d-block w-100"> <img class="card-img-top"
-								src="../img/products/product-5.jpg" alt="..." />
-							</a> <a class="d-block w-100" href="product.html"> <img
-								class="card-img-top" src="../img/products/product-142.jpg"
-								alt="..." />
+							<a class="d-block w-100 card-img-hover"> <img class="card-img-top card-img w-100"
+								th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px;" />
 							</a>
-						</div>
-
-						<!-- Collapse -->
-						<div class="card-collapse-parent">
-
-							<!-- Body -->
-							<div class="card-body px-0 pb-0 bg-white">
-								<div class="row gx-0">
-									<div class="col">
-
-										<!-- Title -->
-										<a class="d-block fw-bold text-body"
-											th:onclick="|location.href = '@{/goodDetail(productCode=${product.productCode})}'|"
-											th:text="${product.productName}"> </a>
-
-										<!-- Category -->
-										<a class="fs-xs text-muted" href="shop.html"> Shoes </a>
-
-									</div>
-									<div class="col-auto">
-
-										<!-- Price -->
-										<div class="fs-sm fw-bold text-muted"
-											th:text="${product.productCost}+원"></div>
-
-									</div>
-								</div>
+							<!-- Actions -->
+							<div class="card-actions">
+								<span class="card-action">
+									<button class="btn btn-xs btn-circle btn-white-primary"
+										data-toggle="button">
+										<i class="fe fe-heart"></i>
+									</button>
+								</span>
+								<input type="hidden" class="visually-hidden" th:value="${product.productCode}">
 							</div>
-
-							<!-- Footer -->
-							<!-- 다른이미지도 볼수있게 -->
-							<div class="card-collapse collapse">
-								<div class="card-footer px-0 bg-white">
-									<form>
-										<div class="mb-1">
-											<div class="form-check form-check-inline form-check-color">
-												<input class="form-check-input" type="radio"
-													id="productOneColorOne" name="productOneColor"
-													data-toggle="flickity" data-target="#productOneImg"
-													data-slide="0"
-													style="background-color: grey; width: 15px; height: 15px"
-													checked />
-
-											</div>
-											<div
-												class="form-check form-check-inline form-check-color ms-n2">
-												<input class="form-check-input" type="radio"
-													id="productOneColorTwo" name="productOneColor"
-													data-toggle="flickity" data-target="#productOneImg"
-													data-slide="1"
-													style="background-color: grey; width: 15px; height: 15px" />
-											</div>
-											<div
-												class="form-check form-check-inline form-check-color ms-n2">
-												<input class="form-check-input" type="radio"
-													id="productOneColorTwo" name="productOneColor"
-													data-toggle="flickity" data-target="#productOneImg"
-													data-slide="1"
-													style="background-color: grey; width: 15px; height: 15px" />
-											</div>
-										</div>
-
-
-										<!-- 옵션 -->
-										<div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productOneSizeOne" name="sizeRadio" /> <label
-													class="form-check-label" for="productOneSizeOne">6</label>
-											</div>
-
-										</div>
-									</form>
-								</div>
-							</div>
-
 						</div>
-
+						
+						<!-- Body -->
+						<div class="card-body" style="border-top: 1px solid black">
+							<!-- Category -->
+							<div class="fs-xs">
+								<a class="text-muted" th:text="${product.categoryCode}" th:href="|/PList?ctg=${product.categoryCode}|">카테고리</a>
+							</div>
+							<!-- Title -->
+							<div class="fw-bold">
+								<a class="text-body w-100" th:text="${product.productName}" th:href="|/goodsDetail?productCode=${product.productCode}|"
+								style="
+								display: inline-block;
+								white-space : nowrap;
+								overflow : hidden;
+								text-overflow : ellipsis;"
+								>이름</a>
+							</div>
+							<!-- Price -->
+							
+							<div class="fw-bold text-muted">
+							<th:block th:if="${(product.salePrice).equals(product.productCost)}">
+							<span class="text-primary" th:text="|${#numbers.formatInteger(product.salePrice,3,'COMMA')}|"></span>
+                     		<span class="text">원</span>
+							</th:block>
+							<th:block th:if="${!(product.salePrice).equals(product.productCost)}">
+							<span class="fs-xs text-gray-350 text-decoration-line-through">[[${#numbers.formatInteger(product.productCost,3,'COMMA')}]]</span>
+                     		<span class="text-primary" th:text="|${#numbers.formatInteger(product.salePrice,3,'COMMA')}|"></span>
+                     		<span class="text">원</span>
+                     		</th:block>
+							</div>
+							
+						</div>
 					</div>
 
 				</div>
-				<div class="col-6 col-sm-6 col-md-4 col-lg-3">
 
-					<!-- Card -->
-					<div class="card mb-7" data-toggle="card-collapse">
-
-						<!-- Image -->
-						<div class="card-img" data-flickity='{"draggable": false}'
-							id="productEightImg">
-							<a class="d-block w-100" href="product.html"> <img
-								class="card-img-top" src="../img/products/product-12.jpg"
-								alt="..." />
-							</a> <a class="d-block w-100" href="product.html"> <img
-								class="card-img-top" src="../img/products/product-145.jpg"
-								alt="..." />
-							</a>
-						</div>
-
-						<!-- Collapse -->
-						<div class="card-collapse-parent">
-
-							<!-- Body -->
-							<div class="card-body px-0 pb-0 bg-white">
-								<div class="row gx-0">
-									<div class="col">
-
-										<!-- Title -->
-										<a class="d-block fw-bold text-body" href="product.html">
-											Heel strappy Sandals </a>
-
-										<!-- Category -->
-										<a class="fs-xs text-muted" href="shop.html"> Shoes </a>
-
-									</div>
-									<div class="col-auto">
-
-										<!-- Price -->
-										<div class="fs-sm fw-bold text-muted">$90.00</div>
-
-									</div>
-								</div>
-							</div>
-
-							<!-- Footer -->
-							<div class="card-collapse collapse">
-								<div class="card-footer px-0 bg-white">
-									<form>
-										<div class="mb-1">
-											<div class="form-check form-check-inline form-check-color">
-												<input class="form-check-input" type="radio"
-													id="productEightColorOne" name="productEightColor"
-													data-toggle="flickity" data-target="#productEightImg"
-													data-slide="0" style="background-color: black;" checked />
-											</div>
-											<div
-												class="form-check form-check-inline form-check-color ms-n2">
-												<input class="form-check-input" type="radio"
-													id="productEightColorTwo" name="productEightColor"
-													data-toggle="flickity" data-target="#productEightImg"
-													data-slide="1" style="background-color: red;" />
-											</div>
-										</div>
-										<div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productEightSizeOne" name="sizeRadio" /> <label
-													class="form-check-label" for="productEightSizeOne">6</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productEightSizeTwo" name="sizeRadio" /> <label
-													class="form-check-label" for="productEightSizeTwo">6.5</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productEightSizeThree" name="sizeRadio" /> <label
-													class="form-check-label" for="productEightSizeThree">7</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productEightSizeFour" name="sizeRadio" /> <label
-													class="form-check-label" for="productEightSizeFour">7.5</label>
-											</div>
-											<div
-												class="form-check form-check-inline form-check-text fs-xs">
-												<input class="form-check-input" type="radio"
-													id="productEightSizeFive" name="sizeRadio" /> <label
-													class="form-check-label" for="productEightSizeFive">8.5</label>
-											</div>
-										</div>
-									</form>
-								</div>
-							</div>
-
-						</div>
-
-					</div>
-
-				</div>
 			</div>
 			<div class="row">
 				<div class="col-12">
 
 					<!-- Link  -->
 					<div class="mt-7 text-center">
-						<a class="link-underline" href="/goodsList">더 보기</a>
+						<a class="link-underline" href="/PList">더 보기</a>
 					</div>
 
 				</div>
@@ -321,7 +188,7 @@
 	</section>
 
 	<!-- seller -->
-	<section class="py-12">
+	<section class="py-12" style="background-color: #f8f8f8">
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-12 col-md-10 col-lg-8 col-xl-6">
@@ -330,80 +197,225 @@
 
 					<!-- Nav -->
 					<div class="nav justify-content-center mb-10">
-						<a class="nav-link active" href="#topSellersTab"
-							data-bs-toggle="tab">Fassion</a> <a class="nav-link"
-							href="#topSellersTab" data-bs-toggle="tab">Food</a> <a
-							class="nav-link" href="#topSellersTab" data-bs-toggle="tab">Life</a>
+						<a class="nav-link active" href="#topSellersFassionTab" data-bs-toggle="tab">Fassion</a>
+						<a class="nav-link" href="#topSellersFOODTab" data-bs-toggle="tab">Food</a>
+					 	<a class="nav-link" href="#topSellersLifeTab" data-bs-toggle="tab">Life</a>
 					</div>
 				</div>
 			</div>
 			<div class="tab-content">
-				<div class="tab-pane fade show active" id="topSellersTab">
-					<div class="row">
-						<div class="col-6 col-md-4 col-lg-3">
+				<div class="tab-pane fade show active" id="topSellersFassionTab">
+					<div class="row justify-content-around">
+						<div class="col-6 col-md-4 col-lg-3"  th:each="product, idx :${bestFassion}"  th:if="${idx.index} < 8" style="width:250px; height:350px; margin-bottom: 40px">
 							<!-- Card -->
-							<div class="card mb-7">
-
-
+							<th:block >
+							<div class="card mb-7" style="border: 1px solid grey; border-radius: 6px">
 								<!-- Image -->
 								<div class="card-img">
 									<!-- Image -->
-									<a class="card-img-hover" href="product.html"> <img
-										class="card-img-top card-img-back"
-										src="assets/img/products/product-120.jpg" alt="..." /> <img
-										class="card-img-top card-img-front"
-										src="assets/img/products/product-5.jpg" alt="..." />
+									<a class="card-img-hover" href="product.html">
+										<img class="card-img-top card-img w-100"
+										th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px"/>
 									</a>
 
 									<!-- Actions -->
 									<div class="card-actions">
 										<span class="card-action">
 											<button class="btn btn-xs btn-circle btn-white-primary"
-												data-bs-toggle="modal" data-bs-target="#modalProduct">
-												<i class="fe fe-eye"></i>
-											</button>
-										</span> <span class="card-action">
-											<button class="btn btn-xs btn-circle btn-white-primary"
-												data-toggle="button">
-												<i class="fe fe-shopping-cart"></i>
-											</button>
-										</span> <span class="card-action">
-											<button class="btn btn-xs btn-circle btn-white-primary"
 												data-toggle="button">
 												<i class="fe fe-heart"></i>
 											</button>
 										</span>
+										<input type="hidden" class="visually-hidden" th:value="${product.productCode}">
 									</div>
 								</div>
-
 								<!-- Body -->
-								<div class="card-body px-0">
+								<div class="card-body" style="border-top: 1px solid grey;">
 									<!-- Category -->
 									<div class="fs-xs">
-										<a class="text-muted" href="shop.html">Shoes</a>
+										<a class="text-muted" th:text="${product.categoryCode}" th:href="|/PList?ctg=${product.categoryCode}|">카테고리</a>
 									</div>
-
 									<!-- Title -->
 									<div class="fw-bold">
-										<a class="text-body" href="product.html"> Leather mid-heel
-											Sandals </a>
+										<a class="text-body w-100" th:text="${product.productName}" th:href="|/goodsDetail?productCode=${product.productCode}|"
+										style="
+										display: inline-block;
+										white-space : nowrap;
+										overflow : hidden;
+										text-overflow : ellipsis;"
+										>이름</a>
 									</div>
-
 									<!-- Price -->
-									<div class="fw-bold text-muted">$129.00</div>
+									
+									<div class="fw-bold text-muted">
+										<th:block th:if="${(product.salePrice).equals(product.productCost)}">
+											<span class="text-primary" th:text="|${#numbers.formatInteger(product.salePrice,3,'COMMA')}|"></span>
+				                     		<span class="text">원</span>
+										</th:block>
+										<th:block th:if="${!(product.salePrice).equals(product.productCost)}">
+											<span class="fs-xs text-gray-350 text-decoration-line-through">[[${#numbers.formatInteger(product.productCost,3,'COMMA')}]]</span>
+				                     		<span class="text-primary" th:text="|${#numbers.formatInteger(product.salePrice,3,'COMMA')}|"></span>
+				                     		<span class="text">원</span>
+			                     		</th:block>
+									</div>
+									
 								</div>
 							</div>
+							</th:block>
 						</div>
 
 						<div class="row">
 							<div class="col-12">
 								<!-- Link  -->
 								<div class="mt-7 text-center">
-									<a class="link-underline" href="/PList">더 보기</a>
+									<a class="link-underline" href="/PList?ctg=Fassion">더 보기</a>
 								</div>
 							</div>
 						</div>
 					</div>
+				</div>
+				<!-- tab content 단락 -->
+				<div class="tab-pane fade show" id="topSellersFOODTab">
+					<div class="row justify-content-around">
+						<div class="col-6 col-md-4 col-lg-3"  th:each="product, idx :${bestFOOD}"  th:if="${idx.index} < 8" style="width:250px; height:350px; margin-bottom: 40px">
+							<!-- Card -->
+							<th:block th:if="${idx.index} < 8">
+							<div class="card mb-7" style="border: 1px solid grey; border-radius: 6px">
+								<!-- Image -->
+								<div class="card-img">
+									<!-- Image -->
+									<a class="card-img-hover" href="product.html">
+										<img class="card-img-top card-img w-100"
+										th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px"/>
+									</a>
+
+									<!-- Actions -->
+									<div class="card-actions">
+										<span class="card-action">
+											<button class="btn btn-xs btn-circle btn-white-primary"
+												data-toggle="button">
+												<i class="fe fe-heart"></i>
+											</button>
+										</span>
+										<input type="hidden" class="visually-hidden" th:value="${product.productCode}">
+									</div>
+								</div>
+								<!-- Body -->
+								<div class="card-body" style="border-top: 1px solid grey;">
+									<!-- Category -->
+									<div class="fs-xs">
+										<a class="text-muted" th:text="${product.categoryCode}" th:href="|/PList?ctg=${product.categoryCode}|">카테고리</a>
+									</div>
+									<!-- Title -->
+									<div class="fw-bold">
+										<a class="text-body w-100" th:text="${product.productName}" th:href="|/goodsDetail?productCode=${product.productCode}|"
+										style="
+										display: inline-block;
+										white-space : nowrap;
+										overflow : hidden;
+										text-overflow : ellipsis;"
+										>이름</a>
+									</div>
+									<!-- Price -->
+									<div class="fw-bold text-muted">
+										<th:block th:if="${(product.salePrice).equals(product.productCost)}">
+											<span class="text-primary" th:text="|${#numbers.formatInteger(product.salePrice,3,'COMMA')}|"></span>
+				                     		<span class="text">원</span>
+										</th:block>
+										<th:block th:if="${!(product.salePrice).equals(product.productCost)}">
+											<span class="fs-xs text-gray-350 text-decoration-line-through">[[${#numbers.formatInteger(product.productCost,3,'COMMA')}]]</span>
+				                     		<span class="text-primary" th:text="|${#numbers.formatInteger(product.salePrice,3,'COMMA')}|"></span>
+				                     		<span class="text">원</span>
+			                     		</th:block>
+									</div>
+									
+								</div>
+							</div>
+							</th:block>
+						</div>
+
+						<div class="row">
+							<div class="col-12">
+								<!-- Link  -->
+								<div class="mt-7 text-center">
+									<a class="link-underline" href="/PList?ctg=FOOD">더 보기</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- tab content 단락 -->
+				<div class="tab-pane fade show" id="topSellersLifeTab">
+					<div class="row justify-content-around">
+						<div class="col-6 col-md-4 col-lg-3"  th:each="product, idx :${bestLife}" th:if="${idx.index} < 8" style="width:250px; height:350px; margin-bottom: 40px">
+							<!-- Card -->
+							<th:block th:if="${idx.index} < 8">
+							<div class="card mb-7" style="border: 1px solid grey; border-radius: 6px">
+								<!-- Image -->
+								<div class="card-img">
+									<!-- Image -->
+									<a class="card-img-hover" href="product.html">
+										<img class="card-img-top card-img w-100"
+										th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px" />
+									</a>
+
+									<!-- Actions -->
+									<div class="card-actions">
+										<span class="card-action">
+											<button class="btn btn-xs btn-circle btn-white-primary"
+												data-toggle="button">
+												<i class="fe fe-heart"></i>
+											</button>
+										</span>
+										<input type="hidden" class="visually-hidden" th:value="${product.productCode}">
+									</div>
+								</div>
+								<!-- Body -->
+								<div class="card-body" style="border-top: 1px solid grey;">
+									<!-- Category -->
+									<div class="fs-xs">
+										<a class="text-muted" th:text="${product.categoryCode}" th:href="|/PList?ctg=${product.categoryCode}|">카테고리</a>
+									</div>
+									<!-- Title -->
+									<div class="fw-bold">
+										<a class="text-body w-100" th:text="${product.productName}" th:href="|/goodsDetail?productCode=${product.productCode}|"
+										style="
+										display: inline-block;
+										white-space : nowrap;
+										overflow : hidden;
+										text-overflow : ellipsis;"
+										>이름</a>
+									</div>
+									<!-- Price -->
+									<div class="fw-bold text-muted">
+										<th:block th:if="${(product.salePrice).equals(product.productCost)}">
+											<span class="text-primary" th:text="|${#numbers.formatInteger(product.salePrice,3,'COMMA')}|"></span>
+				                     		<span class="text">원</span>
+										</th:block>
+										<th:block th:if="${!(product.salePrice).equals(product.productCost)}">
+											<span class="fs-xs text-gray-350 text-decoration-line-through">[[${#numbers.formatInteger(product.productCost,3,'COMMA')}]]</span>
+				                     		<span class="text-primary" th:text="|${#numbers.formatInteger(product.salePrice,3,'COMMA')}|"></span>
+				                     		<span class="text">원</span>
+			                     		</th:block>
+									</div>
+									
+								</div>
+							</div>
+							</th:block>
+						</div>
+
+						<div class="row">
+							<div class="col-12">
+								<!-- Link  -->
+								<div class="mt-7 text-center">
+									<a class="link-underline" href="/PList?ctg=Life">더 보기</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div><!-- tab content 단락 -->
+			</div>
+		</div>
 	</section>
 	<textarea id="mainMenual" style="display:none;">
 		1번 회원가입.
@@ -422,20 +434,66 @@
 
     <script th:src="@{/js/theme.bundle.js}"></script>
     <script th:inline="javascript">
+
+    $('.fe-heart').on('click',function(){
+    	console.log($(this).parent().parent().next().val());	
+    	let pCode = $(this).parent().parent().next().val();
+    	console.log([[${session}]])
+	    if([[${session}]] == null){
+	    	alert('로그인이 필요한 기능입니다.')	
+	    }else{
+	    	if([[${session.loginMember}]] == null){
+	    		alert('로그인이 필요한 기능입니다.')	
+	    	}else{
+				let memId = [[${session.loginMember.memberId}]]
+				let obj = {
+					'memberId' : memId,
+					'productCode' : pCode
+				};
+	    		$.ajax({
+	    			url: "/buyer/addWish",
+	    			type: 'POST',
+	    			data: JSON.stringify(obj),
+	    			contentType : 'application/json',
+	    			success : function(rs){
+	    				console.log(rs)
+	    				if(confirm('찜 등록하였습니다. 찜 목록 페이지로 이동하시겠습니까?')){
+	 						location.href="/page/buyer/wishList";   				
+	    				}
+	    			},
+	    			error : function(err){
+	    				console.log(err);
+	    			}
+	    		
+	    		})
+	    		
+	    		
+	    		
+	    		
+	    		
+	    		
+	    	
+	    	}
+	    }
+    })
+    
+   	let member = [[${session.loginMember}]]
+   	console.log([[${session}]]);
     let TTSIsOk = localStorage.getItem('ttsKey');
     let sessionAuthor;
 	console.log(sessionStorage.loginMember);    		
-	if(sessionStorage.loginMember != null){
-		sessionAuthor = sessionStorage.loginMember.memberAuthor;
+	if(member != null){
+		sessionAuthor = member.memberAuthor;
 	}
-	    
+	console.log(TTSIsOk);    
    	function ttsInit(){
+
     	if(TTSIsOk == null || sessionAuthor == 3){
 		
 		console.log(TTSIsOk);// OR ${SESSION.LOGINMEMBER.MEMBERAUTHOR == 3}
 	    let audioFileNow = new Audio();
-	    let memberId = [[${session.loginMember}]]
-	    console.log('memberId :: ', memberId)
+	    //let memberId = [[${session.loginMember}]]
+	    //console.log('memberId :: ', memberId)
 	    var AudioContext;
 	    var audioContext;
 	

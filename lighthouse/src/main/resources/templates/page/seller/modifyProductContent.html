@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/sellerHtml}">
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<!-- Content -->
+<div layout:fragment="sellerContent">
+   <style>
+      .ck.ck-editor {
+         width: 80%;
+         max-width: 800px;
+         margin: 0 auto;
+      }
+      
+      .ck-editor__editable {
+         height: 80vh;
+      }
+      
+      form {
+         text-align: center;
+      }
+   </style>
+   <!-- ckeditor cdn -->
+    <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
+   
+   <div class="row gx-0" style="margin-bottom:20px;">
+   <form action="/updateImg" method="post" id="textForm">
+   <input type="hidden" name="productCode" th:value="${productCode}" />
+      <div id="editor" th:utext="${product[0].productContent}"></div>
+      <div>
+        <p th:text="${list}"></p>[[${list}]]
+     </div>
+      <input type="button" class="addImgBtn btn btn-secondary mt-3 mx-2" value="작성취소" />
+      <input type="submit" id="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" />
+   </form>
+
+
+
+   <!-- CKEditor -->
+         <script src="https://cdn.ckeditor.com/ckeditor5/12.4.0/classic/ckeditor.js"></script>
+      
+         <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
+      <script>      
+      ClassicEditor
+      .create(document.querySelector('#editor'),{
+         ckfinder:{
+            uploadUrl : '/image/upload'
+         }
+      })
+      .then(editor => {
+         window.editor = editor;
+      })
+      .catch(error => {
+         console.error(error);
+      });
+      </script>
+    
+      
+   </div>
+   <script text="text/javascript">
+   var productCode = document.querySelector('input[name="productCode"]').value;
+   console.log('productCode 값: ' + productCode);    
+
+   
+   
+  $('.addImgBtn').on('click',function(e){
+	  locacion.href='/modifyProductContent?productCode='+ productCode
+      /* e.preventDefault();
+      let form = $(this).closest('form');
+     $('.inform').remove();
+      let formTag = $('.ck .image');
+
+      let srcArr = [];
+      $(formTag).each(function(idx,item){
+         let src = $(item).children('img').attr('src');
+   
+         let text = src.split('_');
+         
+         let text01 = src.split('/');
+         console.log(text01);
+         let data = {
+            imgName : text[1],
+            uploadPath : text01[1] + '/' + text01[2] + '/' + text01[3],
+            uploadName : text01[4],
+            imgContent : $(item).children('figcaption').text()
+         };
+         srcArr.push(data);
+      })
+      
+      let idx = 0;
+      for(let i =0; i < srcArr.length; i++){
+         let divTag = $('<div/>').addClass('inform');
+         let obj = srcArr[i];
+         for(let item in obj){
+            console.log("key" + item );
+            console.log("value" + obj[item]);
+            let str = `
+               <input type="text" name="imgsVO[${idx}].${item}" value="${obj[item]}">
+            `;
+            
+            divTag.append(str);
+         }
+         idx++;
+         form.append(divTag);
+      }
+      
+      form.attr('method', 'post');
+      form.attr('action', '/updateImg');
+      form.submit();
+      console.log(srcArr);*/
+  }) 
+  
+/*   $('#textForm').sumbit(function(e){
+     e.preventDefaul();
+  }) */
+  
+  $(document).ready(function(e){
+	  let data = JSON.parse(localStorage.getItem("detail"));
+	   if(data.content != null || data.content ==''){
+	      editor.setData(data.content);
+	   }
+        
+  })
+ $('#submit').on('click',function(e){
+      $('.inform').remove();
+      $('textarea[name="productContent"]').remove();
+      // e.preventDefault();
+      let data = editor.getData();
+      let img = $(data).find('img');
+      // console.log(img);
+      if(data == null || data == ''){
+         alert("상세정보를 적어주세요");
+         e.preventDefault();
+         return;
+      }
+      if(img.length == 0){
+    	  alert("이미지를 넣어주세요");
+    	  e.preventDefault();
+    	  return;
+      }
+           
+      let form = $(this).closest('form');
+
+      // let textarea = $('<textarea />');
+      // textarea.css("display", "none");
+      // textarea.attr('name','productContent');
+      
+      // $(textarea).text(data);
+      
+      // $(textarea).append(data);
+      // $(form).append(textarea);
+      let detailobj ={
+         content : data,
+         img :[]
+      }
+
+      let formTag = $('.ck .image');
+
+       let srcArr = [];
+       $(formTag).each(function(idx,item){
+    	 // console.log(item);
+         if($(item).children('figcaption').text() == null || $(item).children('figcaption').text() == ''){
+          alert("이미지 대체텍스트를 입력해주세요")
+            e.preventDefault(); 
+            return;
+         }
+          let src = $(item).children('img').attr('src');
+            
+          let text = src.split('_');
+          
+          let text01 = src.split('/');
+          // console.log(text01);
+          let data = {
+             imgName : text[1],
+             uploadPath : text01[1] + '/' + text01[2] + '/' + text01[3],
+             uploadName : text01[4],
+             imgContent : $(item).children('figcaption').text()
+          };
+          srcArr.push(data);
+       })
+       
+       let idx = 0;
+       for(let i =0; i < srcArr.length; i++){
+          let divTag = $('<div/>').addClass('inform');
+          let obj = srcArr[i];
+          let imgobj ={};
+          for(let item in obj){
+             // console.log("key" + item );
+             // console.log("value" + obj[item]);
+             let str = `
+                <input type="text" style="display:none;" name="imgsVO[${idx}].${item}" value="${obj[item]}" class="${item}">
+             `;
+             imgobj[item] = obj[item];
+             divTag.append(str);
+            }
+            detailobj.img.push(imgobj)
+          idx++;
+          form.append(divTag);
+       }
+      
+      window.localStorage.setItem("detail",JSON.stringify(detailobj)); 
+
+      // form.submit();
+  })
+   </script>
+</div>
+</html>

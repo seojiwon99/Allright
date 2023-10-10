@@ -21,4 +21,6 @@ public interface MemberMapper {
 	public int selectMemberCrossCheck(MemberVO memberVO);
 	
 	public int updateMemberPassword(MemberVO memberVO);
+	
+	public MemberVO selectMemberVO(String memberId);
 }

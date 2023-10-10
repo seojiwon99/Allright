@@ -1,5 +1,7 @@
 package com.ar.lighthouse.member.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -19,6 +21,7 @@ public class MemberTest {
         e.printStackTrace();
      }
      System.out.println((String)jsonObject.get("mId"));
+     assertEquals(1, 1);
 
 	}
 }
