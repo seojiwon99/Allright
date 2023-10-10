@@ -140,8 +140,10 @@
                           <button class="btn btn-outline-secondary couponResult" type="button">사용하기</button>
                         </p>         
                       <!-- Text -->
+
                       <div class="fs-sm text-muted oName" th:text="|옵션 :${gets.optionLast}|" style="font-weight: bold;"></div>
                       <div class="fs-sm text-muted pCnt" th:text="|구매수량 : ${gets.cartCount}|"  style="font-weight: bold;"></div>
+
                       <input type="hidden" th:value="${gets.cartCount}" class="cartCnt">
                     </div>
                   </div>
@@ -727,7 +729,9 @@
 
       let otName = $(this).parent().parent().find('.oName').text(); 
       let prCnt = $(this).parent().parent().find('.pCnt').text(); 
+
       let productDetailInfo = `선택된 상품의 이름은. ${prName}. 선택한. ${otName}. 할인 받지 않은 가격은. ${prPay}원. ${saPay}원.
+
                               ${otPay}원. 선택한 쿠폰은. ${coSelect}. 쿠폰 할인 금액은. ${couponSalePay}원. 구매 ${prCnt}. 입니다. 쿠폰 선택 원할 경우 탭으로 이동 부탑드립니다.`;
       VoiceMenual(productDetailInfo);
     }

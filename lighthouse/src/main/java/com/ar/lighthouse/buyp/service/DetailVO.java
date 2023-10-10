@@ -13,8 +13,6 @@ import lombok.Data;
 @Data
 public class DetailVO {
 
-
-
 	   private int orderDetailCode;
 	   private int orderCode;
 	   private int optionCode;
@@ -70,6 +68,7 @@ public class DetailVO {
  
  @DateTimeFormat(pattern="yyyy-MM-dd")
  Date toDate;
+ 
  int returnCnt;
  int cancelCnt;
  int totalPrice;
@@ -77,9 +76,8 @@ public class DetailVO {
  int year;
  int totalCount;
  int day_count;
+ 
    //취소,반품,교환 
-   
-  
    List<BuyCancelVO> BuyCancel;
    private String cancelStatus;
    private String cancelStatusNm;
