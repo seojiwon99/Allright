@@ -92,9 +92,26 @@
 					<!-- pagi end -->
 	</div><!-- container -->
 	<script>
+
+	
 	$('#inquirySearchBtn').on('click', function(){
-		let url = "?customInquiryTitle=" + $('#inquirySearchBar').val()
-		location.href =  url;
+		console.log(location.href);
+		//let url = "?declareContent=" + $('#declareSearchBar').val()
+		//location.href =  url;
+		
+		let nowURL = new URL(location.href);
+		nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
+		nowURL.searchParams.set('customInquiryTitle', $('#inquirySearchBar').val());
+		location.href = nowURL.href;
+	})
+	$('#inquirySearchBar').on('keydown',function(e){
+		if(e.key == 'Enter'){
+			e.preventDefault();
+			let nowURL = new URL(location.href);
+			nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
+			nowURL.searchParams.set('customInquiryTitle', $('#inquirySearchBar').val());
+			location.href = nowURL.href;
+		}
 	})
 	</script>
 </div>

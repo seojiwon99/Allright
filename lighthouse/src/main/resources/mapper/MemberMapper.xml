@@ -4,6 +4,22 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.ar.lighthouse.member.mapper.MemberMapper">
   
+  <!-- 사원id 단건조회 -->
+   <select id="selectMemberVO" parameterType="MemberVO">
+      SELECT 	member_id
+      			,member_pw
+            	,member_name
+            	,member_birth
+            	,member_addr
+            	,member_details_addr
+            	,member_email
+            	,business_number
+            	,'ROLE_'||member_author authorities
+      FROM   ar_member
+      WHERE member_id = #{memberId}
+   </select>
+  
+  
      <select id="selectMemberCheck" resultType="int" parameterType="String">
         select count(*)
       from ar_member

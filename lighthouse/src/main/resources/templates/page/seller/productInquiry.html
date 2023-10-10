@@ -94,44 +94,50 @@
 		</div>
 		<div class="col-12 col-lg">
 			<div class="panel-body">
-				<div class="_1Vof48UxmD _oVRNwPvxck">
+			
+			
+				<div class="_1Vof48UxmD_oVRNwPvxck">
+							
+								<div class="_KqV0-1BSnB">
+									<button type="button" id="todayBtn" class="btn btn-primary2">
+										<span id="today">오늘</span>
+									</button>
+									<button type="button" id="weekBtn" class="btn btn-primary2">
+										<span id="week">1주일</span>
+									</button>
+									<button type="button" id="oneMonthBtn" class="btn btn-primary2">
+										<span id="onemonth">1개월</span>
+									</button>
+									<button type="button" id="threeMonthBtn"
+										class="btn btn-primary2">
+										<span id="thmonth">3개월</span>
+									</button>
 
-					<div class="_KqV0-1BSnB">
-						<button type="button" id="todayBtn" class="btn btn-primary2">
-							<span id="today">오늘</span>
-						</button>
-						<button type="button" id="weekBtn" class="btn btn-primary2">
-							<span id="week">1주일</span>
-						</button>
-						<button type="button" id="oneMonthBtn" class="btn btn-primary2">
-							<span id="onemonth">1개월</span>
-						</button>
-						<button type="button" id="threeMonthBtn"
-							class="btn btn-primary2">
-							<span id="thmonth">3개월</span>
-						</button>
+									<div id="dateDisplay"></div>
+									<div>
+										<span>조회기간</span> <input type="DATE" id="from" name="from"
+											autocomplete="off"> <label for="to">~</label> <input
+											type="DATE" id="to" name="to" autocomplete="off">
+									</div>
+								</div>
+							
 
-						<div id="dateDisplay"></div>
 
-						<label class="_MN8nIh0X4y">상세조건</label> <select
-							class="_4LshyCrDpi" title="리스트 보기">
-							<option selected value="">전체</option>
-							<option value="member_name">구매자명</option>
-							<option value="member_tel">구매자연락처</option>
-							<option value="member_id">구매자ID</option>
-							<option value="product_code">주문번호</option>
-							<option value="delivery_number">송장번호</option>
-						</select> <input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
-						<div>
-							<span>조회기간</span> <input type="DATE" id="from" name="from"
-								autocomplete="off"> <label for="to">~</label> <input
-								type="DATE" id="to" name="to" autocomplete="off">
-						</div>
-					</div>
-				</div>
-
-				<button type="button" id="orderSearch">검색</button>
-			</div>
+							<div class="detailSea">
+									<label class="_MN8nIh0X4y">상세조건</label> <select
+										class="_4LshyCrDpi" title="리스트 보기">
+										<option selected value="">전체</option>
+										<option value="member_name">문의자명</option>
+										<option value="member_id">문의자ID</option>
+										<option value="product_code">상품코드</option>
+									</select> 
+									<input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
+							</div>
+									
+									
+							<button type="button" id="orderSearch">검색</button>
+							</div>
+							
 			<section class="pb-12">
 				<div
 					style="width: 100%; height: 300px; overflow: auto; border: 1px;">
@@ -152,12 +158,14 @@
 								<td th:text="${index.count}"></td>
 								<td th:text="${inquiry.productCode}"></td>
 								<td th:text="${inquiry.productName}"></td>
-								<td th:text="${inquiry.queContent}"></td>
+								<td th:text="${inquiry.queContent.length() > 10 ? inquiry.queContent.substring(0, 10) + '...' : inquiry.queContent}"></td>
 								<td th:text="${#dates.format(inquiry.queRegdate, 'yyyy-MM-dd')}"></td>
 								<td th:if="${inquiry.queAns == null}">X</td>
 								<td th:unless="${inquiry.queAns == null}">O</td>
 								<td th:text="${inquiry.queCode}" id="queCode" class="visually-hidden">
 								<td th:text="${inquiry.queAns}" id="queAns" class="visually-hidden">
+								<td th:text="${inquiry.memberId}" id="memberId" class="visually-hidden">
+								<td th:text="${inquiry.queContent}" id="queContent" class="visually-hidden">
 								</td>
 							</tr>
 
@@ -169,37 +177,27 @@
 				<div class="collapse" id="inquiryForm">
 					<!-- Divider -->
 					<hr class="my-8" />
-
+				</div>
 					<!-- Form -->
 
 					<div class="row" id="inquiryForm">
-						<div class="col-12 mb-6 text-center">
-							<table class="table">
-								<thead>
-									<tr>
-										<th scope="col">문의 답변<input type="hidden" /></th>
-										<th scope="col"><textarea class="form-control" rows="5"
-												readonly id="queContent" name="queContent" required></textarea>
-										</th>
-										<th scope="col-12"><input type="text"
-											class="form-control" id="memberId" name="memberId" readonly />
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<th scope="col"><textarea class="form-control" rows="5"
-												id="addContent" name="addContent" required placeholder="내용을 입력하세요"></textarea></th>
-										<th scope="col-md-6">
-											<button id="inquiryAdd" class="btn btn-dark btn-sm"
-												type="button">등록하기</button>
-										</th>
-									</tr>
-								</tbody>
-							</table>
+						<div class="prod-inquiry-list__container">
+							    <div class="row">
+							    	 <div class="col-12">
+								    <div class="col-6">
+								        <em class="prod-inquiry-item__label">질문</em>
+								        <span class="prod-inquiry-item__wrap" id="inquiryQueCon" required></span>
+								    </div>
+								    <div class="col-6">
+								        <em class="prod-inquiry-item__reply__label">답변</em>
+								        <input class="prod-inquiry-item__wrap" style="width:80%; border-radius: 2px; margin-top: 50px; margin-bottom: 50px;" id="addContent" name="addContent" required placeholder="내용을 입력하세요">
+								    </div>
+								</div>
 						</div>
-					</div>
-				</div>
+							<button id="inquiryAdd" class="btn btn-dark btn-sm"
+												type="button">등록하기</button>
+							</div>
+						</div>
 
 			</section>
 
@@ -211,25 +209,30 @@
 				
 					$('#getProductList tbody tr[data-bs-toggle="collapse"]').click(function() {
 					    let row = $(this);
+					    let indexNu =row.find('td:nth-child(1)').text();
 					    let productCode = row.find('td:nth-child(2)').text();
 					    let productName = row.find('td:nth-child(3)').text();
 					    let queContent = row.find('td:nth-child(4)').text();
 					    let queAns = row.find('td:nth-child(8)').text();
 					    let queCodeValue = row.find('td:nth-child(7)').text();
-
+					    let memberId = row.find('td:nth-child(9)').text();
+					    let queContent2 = row.find('td:nth-child(10)').text();
+						console.log(indexNu);
+					    
+					    $('#indexNu').val(indexNu);
 					    $('#queContent').val(queContent);
 					    $('#productCode').val(productCode);
 					    $('#productName').val(productName);
 						$('#addContent').val(queAns);
-						
-						
+						$('#inquiryMemberId').val(memberId);
+						$('#inquiryQueCon').text(queContent2);
 						
 					    $('#inquiryAdd').data('queCodeValue', queCodeValue);
 					});
 
 					$('#inquiryAdd').click(function() {
 					    let queAns = $('#addContent').val();
-					    let queCodeValue = $('#inquiryAdd').data('queCodeValue'); 
+					    let queCodeValue = $('#inquiryAdd').data('queContent2'); 
 					    console.log(queAns);
 					    console.log(queCodeValue);
 
@@ -322,57 +325,62 @@
 					  
 						  // 날짜 표시 함수
 					function displayDate(range) {
-						const currentDate = new Date();
-						let startDate, endDate;
-					  
-						switch (range) {
-						  case 'today':
-							startDate = new Date(currentDate);
-							endDate = new Date(currentDate);
-							break;
-						  case 'week':
-							startDate = new Date(currentDate);
-							endDate = new Date(currentDate);
-							startDate.setDate(endDate.getDate() - 7);
-							break;
-						  case 'oneMonth':
-							startDate = new Date(currentDate);
-							endDate = new Date(currentDate);
-							startDate.setMonth(endDate.getMonth() - 1);
-							break;
-						  case 'threeMonth':
-							startDate = new Date(currentDate);
-							endDate = new Date(currentDate);
-							startDate.setMonth(endDate.getMonth() - 3);
-							break;
-						  default:
-							startDate = null;
-							endDate = null;
-						}
-					  
-						// endDate 값을 input 요소에 설정
-						if (startDate) {
-						const formattedEndDate = endDate.toISOString().split('T')[0];
+	const currentDate = new Date();
+	let startDate, endDate;
+  
+	switch (range) {
+	  case 'today':
+		startDate = new Date(currentDate);
+		endDate = new Date(currentDate);
+		break;
+	  case 'week':
+		startDate = new Date(currentDate);
+		endDate = new Date(currentDate);
+		startDate.setDate(endDate.getDate() - 7);
+		break;
+	  case 'oneMonth':
+		startDate = new Date(currentDate);
+		endDate = new Date(currentDate);
+		startDate.setMonth(endDate.getMonth() - 1);
+		break;
+	  case 'threeMonth':
+		startDate = new Date(currentDate);
+		endDate = new Date(currentDate);
+		startDate.setMonth(endDate.getMonth() - 3);
+		break;
+	  default:
+		startDate = null;
+		endDate = null;
+	}
+  
+	// endDate 값을 input 요소에 설정
+	if (startDate) {
+	endDate.setDate(endDate.getDate() + 1); // 일자를 +1 하기
+	const formattedEndDate = endDate.toISOString().split('T')[0];
+	console.log(formattedEndDate); 
 
+	//   formattedYear = formattedEndDate.
 
-						  
-						  $('#to').val(formattedEndDate);
-						} else {
-						  $('#to').val('');
-						}
-					  
-						// startDate 값을 input 요소에 설정
-						if (endDate) {
-						  // startDate를 yyyy-mm-dd 형식의 문자열로 변환
-						  const formattedStartDate = startDate.toISOString().split('T')[0];
-						  
-						  // input 요소 선택 후 value 설정
-						  $('#from').val(formattedStartDate);
-						} else {
-						  // startDate가 null이면 input 요소 값을 비움
-						  $('#from').val('');
-						}
-					  }
+	  
+	  // input 요소 선택 후 value 설정
+	  $('#to').val(formattedEndDate);
+	} else {
+	  // endDate가 null이면 input 요소 값을 비움
+	  $('#to').val('');
+	}
+  
+	// startDate 값을 input 요소에 설정
+	if (endDate) {
+	  // startDate를 yyyy-mm-dd 형식의 문자열로 변환
+	  const formattedStartDate = startDate.toISOString().split('T')[0];
+	  
+	  // input 요소 선택 후 value 설정
+	  $('#from').val(formattedStartDate);
+	} else {
+	  // startDate가 null이면 input 요소 값을 비움
+	  $('#from').val('');
+	}
+  }
 		
 		
 		

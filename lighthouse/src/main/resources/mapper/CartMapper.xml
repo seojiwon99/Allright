@@ -7,7 +7,8 @@
   	<!-- 장바구니 상세정보 -->
   	<select id="selectCartList" resultType="com.ar.lighthouse.cart.service.CartVO" parameterType="String">
   		SELECT c.cart_count, 
-  			   c.cart_code, 
+  			   c.cart_code,
+  			   p.product_code, 
   			   p.product_name, 
   			   p.delivery_cost, 
   			   p.sale_price, 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ar.lighthouse.admin.service.AdminService;
 import com.ar.lighthouse.main.service.MainPageService;
 import com.ar.lighthouse.product.service.CategoryVO;
 import com.ar.lighthouse.product.service.ProductVO;
@@ -31,8 +32,8 @@ public class MainController {
 	public String Test() {
 		return "page/test";
 	}
-
-
+	@Autowired
+	AdminService adminService;
 	
 	@GetMapping("/")
 	public String Body(Model model, ProductVO productVO) {
@@ -42,10 +43,12 @@ public class MainController {
 		model.addAttribute("productList",service.selProductList());
 		System.out.println(model);
 		
-		model.addAttribute("productbanner",service.showEventBanner());
-	
-		model.addAttribute("productRand", service.randomGetProduct(productVO));
-	
+//		model.addAttribute("productbanner",service.showEventBanner());
+		model.addAttribute("productbanner",adminService.getEventBannerList());
+		model.addAttribute("productRand", service.randomGetProduct());
+		model.addAttribute("bestFassion", service.getBestProductByFassion());
+		model.addAttribute("bestFOOD", service.getBestProductByFOOD());
+		model.addAttribute("bestLife", service.getBestProductByLife());
 		return "page/body";
 		
 	}

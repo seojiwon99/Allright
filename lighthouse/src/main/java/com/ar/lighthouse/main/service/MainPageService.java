@@ -19,4 +19,10 @@ public interface MainPageService {
 	public List<CategoryVO> getChildCateList(CategoryVO cate);
 	
 	public List<CategoryVO> getAllCategoryList();
+	
+	public List<ProductVO> getBestProductByFassion();
+
+	public List<ProductVO> getBestProductByFOOD();
+	
+	public List<ProductVO> getBestProductByLife();
 }

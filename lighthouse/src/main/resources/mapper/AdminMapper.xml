@@ -461,6 +461,7 @@
   		SELECT *
 		FROM AR_EVENT_IMG
 		WHERE banner_delete = 'N'
+		ORDER BY img_order
   	</select>
   	
   	<insert id="insertBanner">

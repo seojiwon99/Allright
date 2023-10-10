@@ -6,6 +6,7 @@
 <!-- Content -->
 
 <head>
+
 <style type="text/css">
 #productContent figcaption {
 	display: none;
@@ -73,7 +74,9 @@
 	color:#ff6f61;
 }
 </style>
+
 </head>
+
 <body>
 	<div layout:fragment="content">
 		<!-- 단건 조회 -->
@@ -151,8 +154,7 @@
 										th:text="${goods.productCost}+원"></span>
 									<!-- 할인가격 -->
 									<span class="ms-1 fs-5 fw-bolder text-primary">[[${goods.salePrice}]]원</span>
-									<input type="hidden" id="originPrice"
-										th:value="${goods.salePrice}">
+									<input type="hidden" id="originPrice" th:value="${goods.salePrice}">
 								</div>
 
 								<!-- Form -->
@@ -192,8 +194,7 @@
 											</div> */-->
 
 											<div>
-												<select th:each="option:${options}"
-													class="selectbox form-select mb-2"
+												<select th:each="option:${options}" class="selectbox form-select mb-2"
 													th:disabled="!${optionStat.first}"
 													th:classappend="${optionStat.last} ? 'last' : '' "
 													th:if="${!(option.optionName).equals('없음')}">
@@ -237,8 +238,7 @@
 											</div>
 										</div>
 										<div class="col-12 col-lg-auto">
-											<div
-												style="display: flex; justify-content: space-between; padding: 20px 0px 40px 0px; color: black"
+											<div style="display: flex; justify-content: space-between; padding: 20px 0px 40px 0px; color: black"
 												class="num">
 
 												<div>
@@ -264,8 +264,7 @@
 											</div>
 											<div class="col-12 col-lg-auto">
 												<!-- Wishlist -->
-												<button class="btn btn-outline-dark w-100 mb-2"
-													onclick="checkWish()">
+												<button class="btn btn-outline-dark w-100 mb-2" onclick="checkWish()">
 													찜 <i class="fe fe-heart ms-2"></i>
 												</button>
 
@@ -334,6 +333,7 @@
 											</tr>
 											<tr>
 												<td scope="row" style="font-weight: 600">등록날짜</td>
+
 												<td scope="row"
 													th:text="${#dates.format(goods.productRegdate,'yyyy년 MM월 dd일')}"></td>
 											</tr>
@@ -343,7 +343,6 @@
 												<td scope="row" style="font-weight: 600">배송비</td>
 												<td scope="row" th:text="${goods.deliveryCost}+원"></td>
 											</tr>
-
 											<tr>
 												<td scope="row" style="font-weight: 600">생산지</td>
 												<td scope="row" th:text="${goods.productOrigin}"></td>
@@ -398,10 +397,10 @@
 		<!-- REVIEWS -->
 
 
-
-
-		<script th:inline="javascript">
-  let reviewTitle = '';
+	
+	
+    <script th:inline="javascript">
+  		let reviewTitle = '';
 		let reviewPage = '';
 		let reviewEnd ='';
 
@@ -739,8 +738,7 @@
           })
        
     }
-   
-   
+
    /*--------------
    확대
    --------------*/
@@ -780,13 +778,18 @@
    
    
 
-    </script>
+	let TTSIsOk = localStorage.getItem('ttsKey');
+    let sessionAuthor;
+   console.log(sessionStorage.loginMember);          
+   if(sessionStorage.loginMember != null){
+      sessionAuthor = sessionStorage.loginMember.memberAuthor;
+   }
+       
+      function ttsInit(){
+       if(TTSIsOk == null || sessionAuthor == 3){
 
+		let audioFileNow = new Audio();
 
-		<!-- voice -->
-		<th:block>
-			<script th:inline="javascript">
-			let audioFileNow = new Audio();
 			var AudioContext;
 			var audioContext;
 
@@ -995,10 +998,15 @@
 					VoiceReturnRead(msg);
 				}
 			});
-			
-		</script>
+		
 
-		</th:block>
-	</div>
+ } //ttsInit()의 if문
+} // ttsInit() close
+    </script>
+      
+      
+
+   </div>
+
 </body>
 </html>

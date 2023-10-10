@@ -176,8 +176,8 @@
 											th:text="반품"></span></td>
 										<td><span
 											th:if="${exRe.exchangeCode != null && exRe.returnCode == null}">
-												<span th:if="${exRe.exchangestatus == 'Y'}">교환승인</span> <span
-												th:if="${exRe.exchangestatus == 'NULL'}">교환대기</span>
+												<span th:if="${exRe.exchangeStatus == 'Y'}">교환승인</span> <span
+												th:if="${exRe.exchangeStatus == 'NULL'}">교환대기</span>
 										</span> <span
 											th:if="${exRe.returnCode != null && exRe.exchangeCode == null}"></span>
 											<span th:if="${exRe.returnStatus == 'Y'}">반품승인</span> <span
@@ -276,7 +276,8 @@
 		
 		
 		const currentDate = new Date();
-	  const formattedDate = currentDate.toISOString().split('T')[0];
+			const koreanTime = new Date(currentDate).toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
+			const formattedDate = koreanTime.split('T')[0];
 	  $('#to').val(formattedDate);
  
   

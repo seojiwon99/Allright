@@ -25,8 +25,7 @@ public class CouponVO {
    
    private String couponName;
    private String couponContent;
-   @DateTimeFormat(pattern="yyyy-MM-dd")
-   private Date couponDeadline;
+   private int couponDeadline;
    private String couponCondition;
    private int couponMinPrice;
    private int couponMaxPrice;

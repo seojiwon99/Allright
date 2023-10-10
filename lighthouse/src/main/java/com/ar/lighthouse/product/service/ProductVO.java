@@ -21,17 +21,20 @@ public class ProductVO {
 	private String productContent;
 	private String productLocation;
 	private String productOrigin;
+	private String productExstatus;
 	private String productMakeorigin;
-	private int deliveryCost;
-	private int returnCost;
-	private int exchangeCost;
+	private Integer deliveryCost;
+	private Integer returnCost;
+	private Integer exchangeCost;
 	private String deliveryService;
 	private String productBrand;
 	private String productStatus;
+
 	private String productExStatus;
 
 	private Integer productCount;
 	private List<ImgsVO> productImg;
+	private Integer salePrice;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date productRegdate;
@@ -39,8 +42,7 @@ public class ProductVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date productUpdatedate;
 
-	private int productCost;
-	private int salePrice;
+	private Integer productCost;
 	String optionVal;
 //	 	통계에 필요한
 	private int total_cnt;
@@ -50,6 +52,13 @@ public class ProductVO {
 
 	List<OptionDetailVO> optionDetail;
 	private String businessNumber;
+	//메인 썸네일 뿌릴 때 필요
+	private String imgContent;
+	private String uploadPath;
+	private String uploadName;
+	private int orderCnt;
+	
+	List<CategoryVO> category;
 	
 	private String uploadPath;
 	private String uploadName;
