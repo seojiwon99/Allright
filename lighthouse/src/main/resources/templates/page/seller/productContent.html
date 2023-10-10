@@ -23,7 +23,7 @@
     <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 
    <div class="row gx-0" style="margin-bottom:20px;">
-   <form action="/insertImg" method="post" id="textForm">
+   <form action="/insertImg" method="post" id="textForm" enctype="multipart/form-data">
       <div id="editor"></div>
       <div>
         <p th:text="${list}"></p>[[${list}]]
@@ -121,7 +121,7 @@
   $('#submit').on('click',function(e){
       $('.inform').remove();
       $('textarea[name="productContent"]').remove();
-      // e.preventDefault();
+  
       let data = editor.getData();
       let img = $(data).find('img');
       // console.log(img);
@@ -137,7 +137,7 @@
       }
            
       let form = $(this).closest('form');
-
+	 console.log(form);
       // let textarea = $('<textarea />');
       // textarea.css("display", "none");
       // textarea.attr('name','productContent');
@@ -152,15 +152,19 @@
       }
 
       let formTag = $('.ck .image');
+      let idx2 = 0;
 
        let srcArr = [];
        $(formTag).each(function(idx,item){
     	 // console.log(item);
          if($(item).children('figcaption').text() == null || $(item).children('figcaption').text() == ''){
           alert("이미지 대체텍스트를 입력해주세요")
-            e.preventDefault(); 
-            return;
+   
+            return false;
          }
+
+         
+         
           let src = $(item).children('img').attr('src');
             
           let text = src.split('_');
@@ -174,8 +178,12 @@
              imgContent : $(item).children('figcaption').text()
           };
           srcArr.push(data);
+          idx2++;
        })
        
+       if(idx2 != formTag.length){
+         return;
+       }
        let idx = 0;
        for(let i =0; i < srcArr.length; i++){
           let divTag = $('<div/>').addClass('inform');
@@ -194,12 +202,11 @@
           idx++;
           form.append(divTag);
        }
-      
+      console.log("여기@@@@@@@@@@@@@@@@@@@@@@@@@@");
       window.localStorage.setItem("detail",JSON.stringify(detailobj)); 
+      window.close();
 
-
-
-      // form.submit();
+      $(form).submit();
   })
    </script>
 </div>
