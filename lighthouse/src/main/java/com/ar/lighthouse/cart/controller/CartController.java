@@ -28,6 +28,7 @@ public class CartController {
 		 MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		 String memberId = memberVO.getMemberId();
 		List<CartVO> list = cartService.cartGetList(memberId);
+		
 		model.addAttribute("list", list);
 		
 		return "/page/cart/cartView";

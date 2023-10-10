@@ -49,7 +49,11 @@ public class ProductVO {
 
 	List<OptionDetailVO> optionDetail;
 	private String businessNumber;
-	
+	//메인 썸네일 뿌릴 때 필요
+	private String imgContent;
+	private String uploadPath;
+	private String uploadName;
+	private int orderCnt;
 	
 	List<CategoryVO> category;
 	

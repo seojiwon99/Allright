@@ -230,7 +230,7 @@
                <div class="form-group row">
                   <label class="col-sm-2" for="">상세설명</label>
                   <div class="col-sm-3">
-                     <a target="_blank" class="detailPro"><strong class="form-control"
+                     <a target="_blank" class="detailPro"><strong name="productContent" class="form-control"
                            style="background-color: #00C73C;">작성하러가기</strong></a>
                   </div>
                </div>
@@ -343,7 +343,7 @@
          $(document).ready(function () {
                let userData = JSON.parse(localStorage.getItem("product"));
                let detailData = JSON.parse(localStorage.getItem("detail"));
-               console.log(detailData);
+               
                if (userData != null) {
                   if (Date.now() > userData.expire) {
                      localStorage.removeItem("product");
@@ -357,7 +357,7 @@
                   // }
 
                   $.each(userData, function (key, value) {
-                     // console.log(key);
+
                      for (let data of inputTag) {
                         let dataName = $(data).attr('name');
                         if (dataName == key) {
@@ -406,6 +406,8 @@
                   }
                   if (userData.optCnt != 0) {
                      $('.optionText').show();
+                     $('.countdiv').css("display", "none");
+                     $('#productCount').val('');
                      $('#optCnt').val(userData.optCnt);
                      for (let i = 0; i < userData.optCnt; i++) {
                         let div = $('<div/>').addClass("optionDiv col-md-6");
@@ -466,22 +468,16 @@
                      }
 
                      $('#categoryCode01').attr("name","categoryCode");
-                     // console.log(keyword);
-                     // console.log(keyval);
                      $(select).val(keyval);
-                     // console.log(obj);
-                     // console.log(select);
+                
                   }
 
                   if(Object.keys(userData.catemenu[1]).length != 0){
-                     // console.log("asdafff");
                      $('.categorybox1').css('display','block');
-
                      let obj = userData.catemenu[1];
                      let keyword ='';
                      let select = $('#categoryCode01');
                      for(var key in obj){
-                        //console.log(key);
                         if(key.charAt(0) == 0){
                            keyword = key.substr(1);
                            keyval = obj[key];
@@ -566,6 +562,34 @@
                      }
                   }
 
+                  if(userData.optionDetail.length > 0){
+                     for(let i =0; i<userData.optionDetail.length; i++){
+                        let trtag = $("<tr/>");
+                        let obj = userData.optionDetail[i];
+                        for(var key in obj){
+                           let tdTag = $("<td/>");
+                           let inputTag = $('<input/>');
+                           if(key == "optionLast"){
+                              inputTag.attr("name", "optionDetail["+i+"]."+key);
+                              inputTag.attr("id",key+i);
+                              inputTag.attr("type","text");
+                              inputTag.css("width","100px");
+                              inputTag.prop("readonly",true);
+                              $(inputTag).val(obj[key]);
+                           }else{
+                              inputTag.attr("name", "optionDetail["+i+"]."+key);
+                              inputTag.attr("id",key+i);
+                              inputTag.attr("type","number");
+                              inputTag.css("width","100px");
+                              $(inputTag).val(obj[key]);
+                           }
+                           tdTag.append(inputTag);
+                           trtag.append(tdTag);
+                        }
+                        $('#optiontab').append(trtag);
+                     }
+                  }
+
                }
                if(detailData != null){
                   let formT = $('#insertForm');
@@ -602,6 +626,8 @@
             $('.optionsel').on('change', function (e) {
                let val = $(this).val();
                $('.optionB').children().remove();
+               console.log("sadsad");
+               $('#optiontab').children().remove();
                // console.log(val);
                if (val != 0) {
                   $('.optionText').show();
@@ -718,7 +744,7 @@
                
                option.prepend(firoption);
             } else {
-               console.log("Asdasdaffff");
+           
 
                $('#categoryCode01').attr('name', 'categoryCode');
                $('#categoryCode02').removeAttr('name');
@@ -879,12 +905,26 @@
             if($('#optCnt').val() == 0){
                alert("등록하실 옵션이 없습니다.")
             }else{
+               
 
                $('#optiontab').empty();
                let optionD = $('.optionDiv');
                let optionN = $('.optionN');
                let optionV = $('.optionV');
                let tbody = $('#optiontab');
+               console.log(optionN);
+           /*     for(let x = 0; x<optionN.length; x++){
+                  console.log(optionN);
+                  let optName = $(optionN[x]).val();
+                  if(!optionNChk(optName,x)){
+                     return;
+                  }
+                  let optVal = $(optionV[x]).val();
+                  if(!optionVChk(optionV,x)){
+                     return;
+                  }
+
+               } */
    
                let arr = [];
    
@@ -1156,11 +1196,11 @@
             let leng = $('#optiontab').find('tr').length;
             for (let i = 0; i < leng; i++) {
                let box = {
-                  optionLast0: $('input[id="optionLast' + i + '"]').val(),
-                  optionPrice0: $('input[id="optionPrice' + i + '"]').val(),
-                  optionCount0: $('input[id="optionCount' + i + '"]').val(),
-                  minOrder0: $('input[id="minOrder' + i + '"]').val(),
-                  maxOrder0: $('input[id="maxOrder' + i + '"]').val()
+                  optionLast: $('input[id="optionLast' + i + '"]').val(),
+                  optionPrice: $('input[id="optionPrice' + i + '"]').val(),
+                  optionCount: $('input[id="optionCount' + i + '"]').val(),
+                  minOrder: $('input[id="minOrder' + i + '"]').val(),
+                  maxOrder: $('input[id="maxOrder' + i + '"]').val()
                };
                obj.optionDetail.push(box);
             }
@@ -1225,34 +1265,36 @@
 
          // 등록 이벤트
          $('.submit').on('click',function(e){
-            // let select = $('select[name="categoryCode"]');
-            // console.log(select.length);
-            // if($(select).val() == null || $(select).val() == ""){
-            //    alert("카테고리를 넣어주세요");
-            //    return;
-            // }
+            let select = $('select[name="categoryCode"]');
+            console.log(select.length);
+            if($(select).val() == null || $(select).val() == ""){
+               alert("카테고리를 넣어주세요");
+               return;
+            }
             
-            // if(!idChk($("#productName").val())){
-            //    return;
-            // }
+            if(!idChk($("#productName").val())){
+               return;
+            }
 
-            // if(!productCostChk($('#productCost').val())){
-            //    return;
-            // }
+            if(!productCostChk($('#productCost').val())){
+               return;
+            }
 
-            // if(!salePriceChk($('#salePrice').val())){
-            //    return;
-            // }
+            if(!salePriceChk($('#salePrice').val())){
+               return;
+            }
 
-            // if(!productCountChk($('#productCount').val())){
-            //    return;
-            // }
+            if($('#optCnt').val() == 0){
+               if(!productCountChk($('#productCount').val())){
+                  return;
+               }
+            }
 
-            // if($('#optCnt').val() != 0){
-            //    if(!optionChk()){
-            //       return;
-            //    }
-            // }
+            if($('#optCnt').val() != 0){
+               if(!optionChk()){
+                  return;
+               }
+            }
 
          })
 
@@ -1363,8 +1405,27 @@
             let optionVal = $('.optionV');
             
 
-            console.log(optionName);
-            console.log(optionVal);
+         
+         }
+
+         function optionNChk(name,idx){
+            console.log(name);
+            if(name == ""){
+               alert((idx+1)+ "번째 옵션명을 적어주세요");
+               $('#optionName'+idx).focus();
+               return false;
+            }
+            if(name.length > 15){
+               alert("옵션명 길이는 15자 입니다.");
+               $('#optionName'+idx).focus();
+               return false;
+            }
+
+            return true;
+         }
+
+         function optionVChk(val,idx){
+            console.log(val);
          }
       </script>
 
