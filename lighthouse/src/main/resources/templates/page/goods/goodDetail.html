@@ -8,14 +8,23 @@
 <head>
 
 <style type="text/css">
+#productContent{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
 #productContent figcaption {
 	display: none;
 }
+
 
 .card-img-top {
 	position: relative;
 	width: 540px;
 	height: 480px;
+	background-repeat: no-repeat;
+	background-size: cover;
 	margin: 0 auto;
 }
 
@@ -38,8 +47,7 @@
 	right: 50px;
 	top: 400px;
 	z-index: 2;
-	border:1px solid rgba(0,0,0,0.2);
-	
+	border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 #buttons {
@@ -49,7 +57,7 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	background-color: rgba(255,255,255,0.7);
+	background-color: rgba(255, 255, 255, 0.7);
 }
 
 #buttons li {
@@ -59,7 +67,7 @@
 
 #buttons li a {
 	text-decoration: none;
-	color: rgba(0,0,0,1);
+	color: rgba(0, 0, 0, 1);
 }
 
 #buttons button {
@@ -71,7 +79,7 @@
 	overflow: visible;
 	cursor: pointer;
 	font-size: 16px;
-	color:#ff6f61;
+	color: #ff6f61;
 }
 </style>
 
@@ -92,25 +100,12 @@
 									<div class="mb-4"
 										data-flickity='{"draggable": false, "fade": true}'>
 										<!-- <img th:src="|upload/${goods.uploadPath}/${goods.uploadName}|" /> -->
-										<div class="card-img-top" data-scale="2" width="540"
-											height="480"
+										<div class="card-img-top" data-scale="2"
 											th:style="|background-image: url(upload/${goods.uploadPath}/${goods.uploadName})|">
 										</div>
 										</a>
 									</div>
 								</div>
-
-								<!-- Slider 
-								<div class="flickity-nav mx-n2 mb-10 mb-md-0"
-									data-flickity='{"asNavFor": "#productSlider", "contain": true, "wrapAround": false}'>
-
-									<div class="col-12 px-2" style="max-width: 113px"
-										th:each="img:${goods.productImg}">
-										<div class="ratio ratio-1x1 bg-cover"
-											th:style="|background-image: url(/upload/${img.uploadPath}/${img.uploadName});|">
-										</div>
-									</div>
-								</div>-->
 							</div>
 
 							<div class="col-12 col-md-6 ps-lg-10">
@@ -154,7 +149,8 @@
 										th:text="${goods.productCost}+원"></span>
 									<!-- 할인가격 -->
 									<span class="ms-1 fs-5 fw-bolder text-primary">[[${goods.salePrice}]]원</span>
-									<input type="hidden" id="originPrice" th:value="${goods.salePrice}">
+									<input type="hidden" id="originPrice"
+										th:value="${goods.salePrice}">
 								</div>
 
 								<!-- Form -->
@@ -178,23 +174,11 @@
 									<div class="mb-2" style="padding-bottom: 24px">
 										<!-- option -->
 										<div class="col-12 col-lg-auto">
-
-
-											<!--/* <div th:each="option,status : ${options}">
-												<div
-													th:with="isDuplicated = ${status.index > 0 && options[status.index-1].optionName == options[status.index].optionName}">
-													<div th:if="${isDuplicated} == false">
-														[[${option.optionName}]] <select class="form-select mb-2">
-															<option value="1" th:each="option1,status:${options}"
-																th:if="${option.optionName} == ${option1.optionName}">
-																[[${option1.optionValue}]]</option>
-														</select>
-													</div>
-												</div>
-											</div> */-->
-
+										
 											<div>
-												<select th:each="option:${options}" class="selectbox form-select mb-2"
+												<select th:each="option:${options}"
+													class="selectbox form-select mb-2"
+													id="sel"
 													th:disabled="!${optionStat.first}"
 													th:classappend="${optionStat.last} ? 'last' : '' "
 													th:if="${!(option.optionName).equals('없음')}">
@@ -202,8 +186,10 @@
 													<option class="selectbox1"
 														th:each="detail:${option.detailVO}"
 														th:value="${detail.optionName}"
-														th:text="${detail.optionName}"></option>
+														>[[${detail.optionName}]]</option>
 												</select>
+												
+												
 
 												<div style="font-size: 15px; color: rgba(0, 0, 0, 0.7);">
 													<div id="optionBox">
@@ -216,10 +202,11 @@
 																	class="optionDetailCodeName">
 																	<input type="hidden" name="optionLast" class="optLast"
 																		value="없음"> 개수 : <input type="number"
-																		class="pCnt" name="cartCount" min="1" value="1" />
+																		class="noOptionOrderCnt" name="cartCount" min="1" value="1" />
 																</div>
 																<div style="padding-bottom: 6px">
-																	총 가격 : <span class="noOptionPriceShow"><strong>[[${goods.salePrice}]]</strong></span>원
+																	총 가격 : <span class="noOpitonPriceShow"><strong class="noOptionP">[[${goods.salePrice}]]</strong></span>원
+																	<input type="hidden" th:value="${goods.salePrice}" id="hiddenNoOptionP">
 																</div>
 															</li>
 														</ul>
@@ -238,15 +225,20 @@
 											</div>
 										</div>
 										<div class="col-12 col-lg-auto">
-											<div style="display: flex; justify-content: space-between; padding: 20px 0px 40px 0px; color: black"
+											<div 
+												style="display: flex; justify-content: space-between; padding: 20px 0px 40px 0px; color: black"
 												class="num">
-
+												
 												<div>
-													<input class="changePrice" type="hidden" th:value="${goods.salePrice}" />
-														 합계:<span style="font-size: 22px; color: grey" id="realPrice">[[${goods.salePrice}]]</span>
-														 <span>원</span>
+													<input class="changePrice" type="hidden" /> 합계:
+													<span style="font-size: 22px; color: #ff6f61; font-weight: 600" id="realPrice">
+													<input type="hidden" th:value="${goods.salePrice}" id="pri" />
+													</span>
+													<span>원</span>
 												</div>
 											</div>
+
+											
 
 										</div>
 
@@ -264,7 +256,8 @@
 											</div>
 											<div class="col-12 col-lg-auto">
 												<!-- Wishlist -->
-												<button class="btn btn-outline-dark w-100 mb-2" onclick="checkWish()">
+												<button class="btn btn-outline-dark w-100 mb-2"
+													onclick="checkWish()">
 													찜 <i class="fe fe-heart ms-2"></i>
 												</button>
 
@@ -373,8 +366,10 @@
 						<!-- js  -->
 						<div id="test_obj">
 							<ul id="buttons">
-								<li><a href="javascript:zoomIn()"><i class="fas fa-plus-circle"></i>확대</a></li>
-								<li><a href="javascript:zoomOut()"><i class="fas fa-minus-circle"></i>축소</a></li>
+								<li><a href="javascript:zoomIn()"><i
+										class="fas fa-plus-circle"></i>확대</a></li>
+								<li><a href="javascript:zoomOut()"><i
+										class="fas fa-minus-circle"></i>축소</a></li>
 								<li><a href="javascript:zoomReset()"><i
 										class="bi bi-plus-circle"></i>초기화</a></li>
 
@@ -397,9 +392,9 @@
 		<!-- REVIEWS -->
 
 
-	
-	
-    <script th:inline="javascript">
+
+
+		<script th:inline="javascript">
   		let reviewTitle = '';
 		let reviewPage = '';
 		let reviewEnd ='';
@@ -416,7 +411,7 @@
       reviewPageLoad(1);
       inquiryPageLoad(1);      
       changeOptionHandler();
-      
+      imgGlasses();
       
       //이벤트 지정      
       $('.selectbox').on("change",changeOptionHandler)
@@ -493,62 +488,121 @@
                let code = optionDetail[i].optionDetailCode;
                let originPrice = $("#originPrice").val();
                let price = optionDetail[i].optionPrice;
+               console.log(optionDetail);
+               let minOrder = optionDetail[i].minOrder; 
+               let maxOrder = optionDetail[i].maxOrder;
+               let optionCount = optionDetail[i].optionCount;
+               console.log(minOrder);
                
                let sum = parseInt(originPrice) + parseInt(price);
                console.log(sum);
                
+               
+               
                let optionView =$("#optionView");
-               let liTag =`<li style="border: 1px solid rgba(0,0,0,0.2); padding:10px; margin-bottom:10px;">
+               let liTag =`<li style="border: 1px solid #ff6f61; padding:10px; margin-bottom:10px;">
                   <div style="display:flex; justify-content:space-between; padding-bottom:6px">
-                     <span class="optionDetailCodeName" style="font-weight:600;">${optionVal}</span>
-                     <button class="optionCloseBtn" type="button" style="all: unset; cursor:pointer">X</button>
+                     <span class="optionDetailCodeName" style="font-weight:600; color:#ff6f61">${optionVal}</span>
+                     <button class="optionCloseBtn" type="button" style="all: unset; cursor:pointer; color:#ff6f61">X</button>
                   </div>
                   
-                  <div style="padding-bottom:6px"> 
+                  <div style="padding-bottom:6px "> 
                      <input type="hidden" name="optionDetailCode" value="${code}"> 
                      개수 : <input type="hidden" value="${price}" name="optionPrice"> 
-                     <input type="number" class="orderCnt" name="cartCount" min="1" value="1" /> 
+                     <input type="number" class="orderCnt" name="cartCount" min="${minOrder}" max="${maxOrder}" value="${minOrder}" /> 
+                     <span>남은 수량은 ${optionCount}개 입니다</span>
                   </div>
                   
                   <div style="padding-bottom:6px"> 가격 : <span><strong class="pp">${originPrice}</strong> (현재 할인가)</span> 
-                  + <span class="orderPrice"><strong>${price}</strong> (옵션가격)</span>
+                  + <span class="orderPrice"><strong class="salePrice">${price}</strong> (옵션가격)</span>
                   </div>
                   <div style="padding-bottom:6px"> 
-                  <strong style="display:none;" id="orPrice">${sum}</strong>
+                  <strong style="display:none; " id="orPrice">${sum}</strong>
                   총 가격 : <span class="changePriceShow"><strong>${sum}</strong></span>원
                   </div>
                </li>`;
                $("#optionView").append(liTag);
+               
                break;
+               
                } //end of if
             }//end of for
-            
        	// 전체 합계
         calTotal();
-            
    }//end of function
+   
+   /*-------------------------
+   옵션 없을 경우 가격
+   -------------------------*/
+   
+   let pri = $("#pri").val();
+   console.log(pri);
+   $("#realPrice").append(replaceComma(pri));
+   $('.noOptionOrderCnt').on("change",function(){
+	   
+	   let noOptionOrderCnt = $('.noOptionOrderCnt').val();
+	   let hiddenNoOptionP = $('#hiddenNoOptionP').val();
+	   
+	   let noOptionPtext = $('.noOptionP').text();
+	   
+	   let noOptionP = $('.noOptionP');
+	   
+	   let noOptionPrice = noOptionOrderCnt * hiddenNoOptionP;
+	   
+	   noOptionP.html(noOptionPrice);
+	   
+	   
+	   let noRealPrice = $("#realPrice").text(replaceComma(noOptionPrice));
+   })
+   
+   function maxCount(tag){
+	   let max = $('.orderCnt').attr("max"); 
+	   console.log(typeof max, max);
+	   let tagNum = Number(tag.value);
+	   let maxNum = Number(max);
+	   
+       if(tagNum > maxNum){
+    	   alert("최대 수량을 선택하셨습니다.");
+    	   tag.value=max;
+    	   calTotal();
+       }else{
+       };
+   }
    
    //optionCloseBtn 지우기   
    $(document).on("click",".optionCloseBtn",function(e){
       $(this).parent().parent().remove();
+      calTotal();
    })
 
+	   
    //옵션 가격 올리기
    $(document).on('change','.orderCnt',function(e){
       //개별 합계
       let choose = $(this).parent().parent().find('strong')[2];    
-      
       let price =choose.innerText;      
       let count = $(this).val();  
+      let max = $('.orderCnt').attr("max");
+      console.log("max=" + max);
+      console.log("count=" + count);
+      console.log("price=" + price);
       
-      let sum = price * count;
-      
-      let strongStr = $('<strong/>').append(replaceComma(sum));
-      $($(this).parent().next().next().children()[1]).html(strongStr);
+      console.log(price * count);
+      if(Number(count) > Number(max)){
+    	  let sum = price * max;
+    	  console.log(sum);
+    	  let strongStr = $('<strong/>').append(replaceComma(sum));
+	      $($(this).parent().next().next().children()[1]).html(strongStr);
+      }else{    	  
+	      let sum = price * count;
+	  	  console.log(sum); 
+	      let strongStr = $('<strong/>').append(replaceComma(sum));
+	      $($(this).parent().next().next().children()[1]).html(strongStr);
+      }
 	
 		// 전체 합계
-      calTotal();
-
+	  calTotal();
+      maxCount(this);
    })
    
    function calTotal(){
@@ -558,8 +612,12 @@
 	    	  
 		      let cnt = $(item).find('.orderCnt').val();
 		      let pr = $(item).find('.pp').text();
+		      let salePrice = $(item).find('.salePrice').text();
+		      
+		      pr = parseInt(pr);
+		      salePrice = parseInt(salePrice);
 
-		      total += cnt * pr;
+		      total += cnt * (pr + salePrice);
 
 		
 	      })
@@ -573,31 +631,36 @@
    /*------------------------
    돋보기기능
    -------------------------*/
-   $('.card-img-top')
-    .append('<div class="photo"></div>')
-    .children('.photo').css({"background-image": "url(upload/${goods.uploadPath}/${goods.uploadName})"});
-    
-    $('.card-img-top')    
-    .on('mouseover', function () {
-        $(this).children('.photo').css({
-            'transform': 'scale(' + $(this).attr('data-scale') + ')'
-        });
-        //$(this).children('.photo').css("z-index","1");
-    })
+   function imgGlasses(){
+	   
+	   let imgs = [[${goods.uploadPath}]];
+	   let uploadN =[[${goods.uploadName}]];
+	   $('.card-img-top')
+	    .append('<div class="photo"></div>')
+	    .children('.photo').css({"background-image" : `url(upload/${imgs}/${uploadN})`});
+	    
+	    $('.card-img-top')    
+	    .on('mouseover', function () {
+	        $(this).children('.photo').css({
+	            'transform': 'scale(' + $(this).attr('data-scale') + ')'
+	        });
+	        //$(this).children('.photo').css("z-index","1");
+	    })
+	
+	    $('.card-img-top')
+	    .on('mouseout', function () {
+	        $(this).children('.photo').css({
+	            'transform': 'scale(1)'
+	        });
+	    })
+	    $('.card-img-top')
+	    .on('mousemove', function (e) {
+	        $(this).children('.photo').css({
+	            'transform-origin': ((e.pageX - $(this).offset().left) / $(this).width()) * 100 + '% ' + ((e.pageY - $(this).offset().top) / $(this).height()) * 100 + '%'
+	        });
+	   })
 
-    $('.card-img-top')
-    .on('mouseout', function () {
-        $(this).children('.photo').css({
-            'transform': 'scale(1)'
-        });
-    })
-    $('.card-img-top')
-    .on('mousemove', function (e) {
-        $(this).children('.photo').css({
-            'transform-origin': ((e.pageX - $(this).offset().left) / $(this).width()) * 100 + '% ' + ((e.pageY - $(this).offset().top) / $(this).height()) * 100 + '%'
-        });
-   })
-
+   }
    /*------------------------
    회원가입창으로
    -------------------------*/ 
@@ -622,15 +685,16 @@
 	    	   let cartOptionList = [];
 	    	   
 	       	   	$(".optionDetailCodeName").each((idx,tag) => {
-	       	   		console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@");
 		    	   let optCount=0;
 		    	   if($(".pCnt").val()){
 		    		   optCount = $(".pCnt").val();
 		    		   
-		    	   }else{
+		    	   }else if($('.noOptionOrderCnt').val()){
+		    		   optCount = $('.noOptionOrderCnt').val(); 
+		    	   }
+		    	   else{
 		    		   optCount= $(tag).parent().next().children()[2].value;
 		    	   }
-		    	   
 		    	   let opLast ='';
 		    	   
 		    	   if($(".optLast").val()){
@@ -1003,10 +1067,10 @@
  } //ttsInit()의 if문
 } // ttsInit() close
     </script>
-      
-      
 
-   </div>
+
+
+	</div>
 
 </body>
 </html>

@@ -72,6 +72,7 @@ public class CartController {
 	@PostMapping("cart/addCart")
 	@ResponseBody
 	public List<Long> addCart(CartVO cartVO, @RequestBody List<OptionDetailVO> optionDetailVO, HttpSession session) {
+		System.out.println("asdfasdfasdf"+optionDetailVO);
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 

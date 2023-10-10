@@ -989,7 +989,7 @@ public class ProductController {
 		model.addAttribute("options", productService.getOptionList(optionVO));
 		model.addAttribute("optionDetail", productService.getOptionDetail(optionVO));
 		// 장바구니
-		System.out.println("aaaaa" + productService.getOptionDetail(optionVO));
+		System.out.println("aaaaa111111" + productService.getOptionDetail(optionVO));
 
 		return "page/goods/goodDetail";
 	}
