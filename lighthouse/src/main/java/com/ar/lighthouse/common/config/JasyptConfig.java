@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class JasyptConfig {
 	
 	// 암호화키
-	@Value("${jasypt.encryptor.password}")
+	@Value("${jasypt_encryptor_password}")
 	private String password;
 	
 	// 암호화를 제어한 빈에 대한 설정
@@ -20,7 +20,7 @@ public class JasyptConfig {
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
         
         SimpleStringPBEConfig config = new SimpleStringPBEConfig();
-        config.setPassword("password");
+        config.setPassword(password);
         config.setAlgorithm("PBEWITHHMACSHA512ANDAES_256");
         config.setKeyObtentionIterations("1000");
         config.setPoolSize("1");
