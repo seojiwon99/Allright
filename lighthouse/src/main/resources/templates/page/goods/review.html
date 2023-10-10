@@ -286,7 +286,7 @@
 													<button class="btn btn-xs btn-outline-border" tabindex="-1"
 														th:if=" ${session.loginMember == null} or ${session.loginMember.memberId != review.memberId}"
 														data-bs-toggle="modal" data-bs-target="#declareModal"
-														id="revieDeclareBtn">신고하기</button>
+														>신고하기</button>
 												</div>
 											</div>
 										</div>
@@ -693,7 +693,7 @@ function editReview(data){
            success:function(result){
               console.log(result);
               alert("정상적으로 접수 되었습니다");
-              reviewPageLoad(1);
+              location.reload();
               document.querySelector('#reviews').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
            },
            error:function(reject){

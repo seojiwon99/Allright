@@ -658,14 +658,14 @@ public class ProductController {
 		return uploadFileName.replace(File.separator, "/");
 	}
 
+	// 리뷰 수정
 	@PostMapping("editReview")
 	@ResponseBody
 	public ReviewVO editReview(MultipartFile files, ReviewVO reviewVO, ImgsVO imgsVO, int reviewCode) {
 		System.out.println("review" + reviewVO);
 
-		if (files == null) {
+		if (files.isEmpty()) {
 			reviewService.editReview(reviewVO);
-			System.out.println("reviewaaaaaaaaaaaaaaaaaaaaaaaaaa" + reviewVO);
 			return reviewVO;
 		} else {
 
@@ -704,10 +704,8 @@ public class ProductController {
 				reviewService.removeReviewImg(imgsVO);
 
 				reviewService.addReviewImg(imgsVO);
-				System.out.println("reviewbbbbbbbba" + reviewVO);
 
 				reviewService.editReviewImg(imgsVO);
-				System.out.println("reviewcccccccccccccc" + reviewVO);
 
 				reviewService.editReview(reviewVO);
 			} catch (IOException e) {
@@ -814,13 +812,12 @@ public class ProductController {
 	@GetMapping("goodDetail")
 	public String getGoodDetail(String productCode, Model model, HttpSession session, ProductVO vo, OptionVO optionVO,
 			CodeVO codeVO, Criteria cri, OptionDetailVO optionDetailVO) {
-		
+
 		ProductVO vo2 = productService.goodsDetail(vo);
-		System.out.println("aaaa@@@@@@@@@@@a"+vo2);
+		System.out.println("aaaa@@@@@@@@@@@a" + vo2);
 		// 상품정보
 		model.addAttribute("goods", vo2);
 
-		
 		// 리뷰 별점
 		ReviewVO reviewVO = new ReviewVO();
 		reviewVO.setProductCode(productCode);
@@ -839,7 +836,7 @@ public class ProductController {
 		model.addAttribute("options", productService.getOptionList(optionVO));
 		model.addAttribute("optionDetail", productService.getOptionDetail(optionVO));
 		// 장바구니
-		System.out.println("aaaaa"+productService.getOptionDetail(optionVO));
+		System.out.println("aaaaa" + productService.getOptionDetail(optionVO));
 
 		return "page/goods/goodDetail";
 	}
