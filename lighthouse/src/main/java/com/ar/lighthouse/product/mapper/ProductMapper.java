@@ -46,6 +46,9 @@ public interface ProductMapper {
 
 //	판매자 문의 내역
 	List<MyInquiryVO> selectSellerInquriy(String memberId);
+	
+//  판매자 문의 검색
+	List<MyInquiryVO> selectSeaSellerInq(MyInquiryVO myInquiryVO);
 	// 옵션 등록
 	public int insertOption(OptionVO optionVO);
 
@@ -88,6 +91,9 @@ public interface ProductMapper {
 
 //		나의 상품에 온 문의	
 	List<ProductInquiryVO> selectSellerInquiry(String memberId);
+	
+//	문의 검색
+	List<ProductInquiryVO> selectSeaInquiry(ProductInquiryVO productInquiryVO);
 
 //		문의 답변 주기
 	int updateInquiryAns(ProductInquiryVO productInquiryVO);
