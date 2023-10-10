@@ -54,6 +54,7 @@
 
 								<a class="btn btn-sm btn-dark collapsed"
 									data-bs-toggle="collapse" href="#reviewForm" 
+									role="button"
 									aria-expanded="false" th:if="${session.loginMember != null}">
 									리뷰 작성 </a> <a class="btn btn-sm btn-dark"
 									th:if="${session.loginMember == null}"
@@ -63,10 +64,10 @@
 						</div>
 
 
-
+					
 						<!-- New Review -->
-						<form method="post" id="reviewForm2" enctype="multipart/form-data">
 							<div class="collapse" id="reviewForm">
+						<form method="post" id="reviewForm2" enctype="multipart/form-data">
 								<!-- Divider -->
 								<hr class="my-8" />
 
@@ -129,8 +130,7 @@
 											<div class="col-12" style="padding-top: 20px">
 												<textarea type="text" name="imgContent" id="imgContent"
 													class="form-control" placeholder="다른사람을 위한 대체 텍스트를 입력해주세요"
-													style="width: 600px; height: 200px">
-                                                      </textarea>
+													style="width: 600px; height: 200px; resize:none;"></textarea>
 											</div>
 										</div>
 									</div>
@@ -170,7 +170,7 @@
 											<label class="visually-hidden" for="reviewContent">Review:</label>
 											<textarea class="form-control form-control-sm" rows="5"
 												placeholder="내용을 입력해주세요" id="reviewContent"
-												name="reviewContent" required></textarea>
+												name="reviewContent" required style="resize:none;"></textarea>
 										</div>
 									</div>
 									<div class="col-12 text-center">
@@ -179,8 +179,8 @@
 											id="insertBtn">리뷰 등록</button>
 									</div>
 								</div>
-							</div>
 						</form>
+							</div>
 
 
 
@@ -494,12 +494,7 @@
 
 		<script type="text/javascript">
 		
-	//리뷰 토글
-	$("#reviewForm").on("click",function(){
-		
-		$('#reviewForm').toggle("#reviewForm");
-		
-	})
+
 	
 	function checkExtension(fileName, fileSize) {
 		//이미지 세부사항

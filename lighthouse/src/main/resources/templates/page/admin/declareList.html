@@ -107,9 +107,25 @@
 	
 	
 	<script>
+	
 	$('#declareSearchBtn').on('click', function(){
-		let url = "?declareContent=" + $('#declareSearchBar').val()
-		location.href =  url;
+		console.log(location.href);
+		//let url = "?declareContent=" + $('#declareSearchBar').val()
+		//location.href =  url;
+		
+		let nowURL = new URL(location.href);
+		nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
+		nowURL.searchParams.set('declareContent', $('#declareSearchBar').val());
+		location.href = nowURL.href;
+	})
+	$('#declareSearchBar').on('keydown',function(e){
+		if(e.key == 'Enter'){
+			e.preventDefault();
+			let nowURL = new URL(location.href);
+			nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
+			nowURL.searchParams.set('declareContent', $('#declareSearchBar').val());
+			location.href = nowURL.href;
+		}
 	})
 	</script>
 </div>
