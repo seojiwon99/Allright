@@ -25,7 +25,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler{
 		System.out.println("=============================="+user.getMemberVo());
 		session.setAttribute("loginMember", user.getMemberVo()); 
 		
-		response.sendRedirect("/main");
+		response.sendRedirect("/");
 	}
 	
 	@Bean

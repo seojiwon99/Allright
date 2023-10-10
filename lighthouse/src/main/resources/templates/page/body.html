@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/default_layout}">
+	layout:decorate="~{layouts/default_layout}"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <!-- Content -->
 
 <div layout:fragment="content">
@@ -52,8 +53,9 @@
 						<button
 							class="btn btn-xs btn-circle btn-white-primary card-action card-action-end"
 							data-toggle="button">
-							<i class="fe fe-heart"></i>
+							<i class="fe fe-heart heart-new"></i>
 						</button>
+						<input type="hidden" class="visually-hidden" th:value="${product.productCode}">
 
 						<!-- 상품 페이지로 이동 -->
 						<button class="test btn btn-xs w-100 btn-dark card-btn"
@@ -123,7 +125,7 @@
 						<!-- Image -->
 						<div class="card-img" 
 							id="productOneImg">
-							<a class="d-block w-100 card-img-hover"> <img class="card-img-top card-img w-100"
+							<a class="d-block w-100 card-img-hover" th:href="|/goodDetail?productCode=${product.productCode}|"> <img class="card-img-top card-img w-100"
 								th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px;" />
 							</a>
 							<!-- Actions -->
@@ -131,7 +133,7 @@
 								<span class="card-action">
 									<button class="btn btn-xs btn-circle btn-white-primary"
 										data-toggle="button">
-										<i class="fe fe-heart"></i>
+										<i class="fe fe-heart heart-icon"></i>
 									</button>
 								</span>
 								<input type="hidden" class="visually-hidden" th:value="${product.productCode}">
@@ -146,7 +148,7 @@
 							</div>
 							<!-- Title -->
 							<div class="fw-bold">
-								<a class="text-body w-100" th:text="${product.productName}" th:href="|/goodsDetail?productCode=${product.productCode}|"
+								<a class="text-body w-100" th:text="${product.productName}" th:href="|/goodDetail?productCode=${product.productCode}|"
 								style="
 								display: inline-block;
 								white-space : nowrap;
@@ -193,6 +195,7 @@
 			<div class="row justify-content-center">
 				<div class="col-12 col-md-10 col-lg-8 col-xl-6">
 					<!-- Heading -->
+					
 					<h2 class="mb-4 text-center">Top Sellers</h2>
 
 					<!-- Nav -->
@@ -213,7 +216,7 @@
 								<!-- Image -->
 								<div class="card-img">
 									<!-- Image -->
-									<a class="card-img-hover" href="product.html">
+									<a class="card-img-hover" th:href="|/goodDetail?productCode=${product.productCode}|">
 										<img class="card-img-top card-img w-100"
 										th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px"/>
 									</a>
@@ -223,7 +226,7 @@
 										<span class="card-action">
 											<button class="btn btn-xs btn-circle btn-white-primary"
 												data-toggle="button">
-												<i class="fe fe-heart"></i>
+												<i class="fe fe-heart heart-icon"></i>
 											</button>
 										</span>
 										<input type="hidden" class="visually-hidden" th:value="${product.productCode}">
@@ -237,7 +240,7 @@
 									</div>
 									<!-- Title -->
 									<div class="fw-bold">
-										<a class="text-body w-100" th:text="${product.productName}" th:href="|/goodsDetail?productCode=${product.productCode}|"
+										<a class="text-body w-100" th:text="${product.productName}" th:href="|/goodDetail?productCode=${product.productCode}|"
 										style="
 										display: inline-block;
 										white-space : nowrap;
@@ -284,7 +287,7 @@
 								<!-- Image -->
 								<div class="card-img">
 									<!-- Image -->
-									<a class="card-img-hover" href="product.html">
+									<a class="card-img-hover" th:href="|/goodDetail?productCode=${product.productCode}|">
 										<img class="card-img-top card-img w-100"
 										th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px"/>
 									</a>
@@ -294,7 +297,7 @@
 										<span class="card-action">
 											<button class="btn btn-xs btn-circle btn-white-primary"
 												data-toggle="button">
-												<i class="fe fe-heart"></i>
+												<i class="fe fe-heart heart-icon"></i>
 											</button>
 										</span>
 										<input type="hidden" class="visually-hidden" th:value="${product.productCode}">
@@ -308,7 +311,7 @@
 									</div>
 									<!-- Title -->
 									<div class="fw-bold">
-										<a class="text-body w-100" th:text="${product.productName}" th:href="|/goodsDetail?productCode=${product.productCode}|"
+										<a class="text-body w-100" th:text="${product.productName}" th:href="|/goodDetail?productCode=${product.productCode}|"
 										style="
 										display: inline-block;
 										white-space : nowrap;
@@ -354,7 +357,7 @@
 								<!-- Image -->
 								<div class="card-img">
 									<!-- Image -->
-									<a class="card-img-hover" href="product.html">
+									<a class="card-img-hover" th:href="|/goodDetail?productCode=${product.productCode}|">
 										<img class="card-img-top card-img w-100"
 										th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px" />
 									</a>
@@ -364,7 +367,7 @@
 										<span class="card-action">
 											<button class="btn btn-xs btn-circle btn-white-primary"
 												data-toggle="button">
-												<i class="fe fe-heart"></i>
+												<i class="fe fe-heart heart-icon"></i>
 											</button>
 										</span>
 										<input type="hidden" class="visually-hidden" th:value="${product.productCode}">
@@ -378,7 +381,7 @@
 									</div>
 									<!-- Title -->
 									<div class="fw-bold">
-										<a class="text-body w-100" th:text="${product.productName}" th:href="|/goodsDetail?productCode=${product.productCode}|"
+										<a class="text-body w-100" th:text="${product.productName}" th:href="|/goodDetail?productCode=${product.productCode}|"
 										style="
 										display: inline-block;
 										white-space : nowrap;
@@ -434,11 +437,10 @@
 
     <script th:src="@{/js/theme.bundle.js}"></script>
     <script th:inline="javascript">
-
-  $('.fe-heart').on('click',function(){
-    	console.log($(this).parent().parent().next().val());	
-    	let pCode = $(this).parent().parent().next().val();
-    	console.log([[${session}]])
+    $($('.heart-new').parent()).on('click',function(){
+    	console.log($(this).next());	
+    	let pCode = $(this).next().val();
+    	console.log(pCode);
 	    if([[${session}]] == null){
 	    	alert('로그인이 필요한 기능입니다.')	
 	    }else{
@@ -450,27 +452,87 @@
 					'memberId' : memId.memberId,
 					'productCode' : pCode
 				};
-	    		$.ajax({
-	    			url: "/buyer/addWish",
-	    			type: 'POST',
-	    			data: JSON.stringify(obj),
-	    			contentType : 'application/json',
-	    			success : function(rs){
-	    				console.log(rs)
-	    				if(confirm('찜 등록하였습니다. 찜 목록 페이지로 이동하시겠습니까?')){
-	 						location.href="/page/buyer/wishList";   				
-	    				}
-	    			},
-	    			error : function(err){
-	    				console.log(err);
-	    			}
-	    		
-	    		})
+		    	$.ajax({
+					url: "/buyer/checkWish",
+					type: 'GET',
+					data: obj,
+					success : function(rs){
+						console.log(rs);					
+						if(rs == 0){
+							addWishInMain(obj)
+						}else if(rs > 0){
+							alert('이미 찜 등록된 상품입니다.');
+						}
+					},
+					error : function(err){
+						console.log(err);
+					}
+				
+				})
 		
 	    	
 	    	}
 	    }
     })
+    
+  $($('.heart-icon').parent()).on('click',function(){
+    	console.log($(this).parent().next());	
+    	let pCode = $(this).parent().next().val();
+    	console.log(pCode);
+
+	    if([[${session}]] == null){
+	    	alert('로그인이 필요한 기능입니다.')	
+	    }else{
+	    	if([[${session.loginMember}]] == null){
+	    		alert('로그인이 필요한 기능입니다.')	
+	    	}else{
+				let memId = [[${session.loginMember}]]
+				let obj = {
+					'memberId' : memId.memberId,
+					'productCode' : pCode
+				};
+		    	$.ajax({
+					url: "/buyer/checkWish",
+					type: 'GET',
+					data: obj,
+					success : function(rs){
+						console.log(rs);					
+						if(rs == 0){
+							addWishInMain(obj)
+						}else if(rs > 0 ){
+							alert('이미 찜 등록된 상품입니다.');
+						}
+					},
+					error : function(err){
+						console.log(err);
+					}
+				
+				})
+	    	}
+	    }
+    })
+    
+    function addWishInMain(obj){
+    	$.ajax({
+			url: "/buyer/addWish",
+			type: 'POST',
+			data: JSON.stringify(obj),
+			contentType : 'application/json',
+			success : function(rs){
+				console.log(rs)
+				if(confirm('찜 등록하였습니다. 찜 목록 페이지로 이동하시겠습니까?')){
+						location.href="/page/buyer/wishList";   				
+				}
+			},
+			error : function(err){
+				console.log(err);
+			}
+		
+		})
+    }
+    
+    
+    
     
    	let member = [[${session.loginMember}]]
    	console.log([[${session}]]);
@@ -487,8 +549,8 @@
 		
 		console.log(TTSIsOk);// OR ${SESSION.LOGINMEMBER.MEMBERAUTHOR == 3}
 	    let audioFileNow = new Audio();
-	    //let memberId = [[${session.loginMember}]]
-	    //console.log('memberId :: ', memberId)
+	    let memberId = [[${session.loginMember}]]
+	    console.log('memberId :: ', memberId)
 	    var AudioContext;
 	    var audioContext;
 	
