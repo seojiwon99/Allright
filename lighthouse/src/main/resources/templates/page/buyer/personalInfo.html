@@ -302,13 +302,15 @@
 	   }
 	       
 	      function ttsInit(){
-			$('#myInfo').focus();
+			$('#buyerName').focus();
 	       if(TTSIsOk == null || sessionAuthor == 3){
 	        let audioFileNow = new Audio();
-	        let firstMsg = "개인정보 확인,수정 페이지입니다. 비밀번호, 이메일, 주소, 연락처 수정할 수 있습니다.";
+	        let myName = $('#buyerName').val();
+	        let firstMsg = `개인정보 확인,수정 페이지입니다. 비밀번호, 이메일, 주소, 연락처 수정할 수 있습니다.`;
 	        let message = firstMsg + $('#orderMenual').val();
+	        let message2 = `이름은. ${myName} 입니다. 탭키를 눌러. 다음으로 이동해주세요.`
 
-	        VoiceMenual(message);
+	        VoiceMenual(message + message2);
 
 			//tts 이벤트 부터
 			$('#buyerName').on('focus',buyerName); //이름 포커스 안내
@@ -322,12 +324,13 @@
 			$('#updateBtn').on('focus', updateBtn); // 수정 버튼
 
 			//이벤트 안에 사용할 전역 변수
-			let myName;
+			
 			let myEmail;
 			let myAddr;
 			let myDetailAddr;
 			let myTel;
 			let myBirth;
+			
 			//tts 이벤트 실행
 			function buyerName() { //이름 포커스 안내
 				myName = $('#buyerName').val();
