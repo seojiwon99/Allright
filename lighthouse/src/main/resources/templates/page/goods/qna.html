@@ -5,21 +5,33 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+.inButtons a {
+	font-size: 15px;
+}
+
+.inButtons a:hover {
+	cursor: pointer;
+}
+
+</style>
 </head>
 <body>
 	<div layout:fragment="content">
 		<div class="col-12" id="qnaTap">
 			<div style="padding-top: 48px">
-				<div style="padding-bottom: 30px">
-
 					<h5 class="mb-5 text-center">
 						Q&A <strong class="fs-sm" name="inquiryCont">([[${inquiryCount}]])</strong>
 					</h5>
+				<div style="padding-bottom: 30px; display: flex; justify-content: end" >
+
 
 
 					<a class="btn btn-sm btn-dark"
 						th:if="${session.loginMember != null}" data-bs-toggle="collapse"
-						href="#inquiryForm"> 1:1 문의하기 </a> <a class="btn btn-sm btn-dark"
+						href="#inquiryForm"> 1:1 문의하기 </a> 
+						
+					<a class="btn btn-sm btn-dark"
 						th:if="${session.loginMember == null}"
 						href="javascript:parent.location.href='page/member/loginForm'">
 						로그인 </a>
@@ -98,69 +110,74 @@
 								HH:mm')}]]</td>
 						</tr>
 
-						<!-- 답변 보기 -->
+						<!-- 답변 보기1 -->
 						<tr th:class="|inquiryGet${inquiry.queCode}|"
 							th:data-code="${inquiry.queCode}" id="ansQueCode"
 							th:if="${session.loginMember == null and inquiry.queSecret == 'N'} or ${session.loginMember != null and session.loginMember.memberId == inquiry.memberId} "
-							style="display: none; background-color: rgba(0, 0, 0, 0.1)">
+							style="display: none; background-color: #f8f8f8">
 							<td class="inquiryGetAns" style="font-size: 18px">
 								<p style="font-size: 14px">Q&A 답변</p>
 							</td>
 
 							<td class="inquiryGetAns" id="answerForm">
 								<div class="hideInquiry"
-									style="font-size: 16px; width: 380px; word-break:break-all; border-bottom: 1px solid rgba(0, 0, 0, 0.3);">Q:
-									[[${inquiry.queContent}]]</div> <textarea
-									class="form-control form-control-sm" rows="5"
+									style="font-size: 16px; width: 380px; word-break: break-all; border-bottom: 1px solid rgba(0, 0, 0, 0.3);">
+									Q:
+									<p>[[${inquiry.queContent}]]</p>
+								</div> <textarea class="form-control form-control-sm" rows="5"
 									style="display: none;" id="que" readonly>[[${inquiry.queContent}]]</textarea>
-								<div
-									style="font-size: 15px; border: none; border-bottom: 1px solid rgba(0, 0, 0, 0.3); width: 200px; padding-top: 20px">A:
-									[[${inquiry.queAns}]]</div>
-							</td>
-							<td class="inquiryGetAns">
+								<div th:if="${inquiry.queAns != null}"
+									style="font-size: 16px; width: 380px; word-break: break-all; border-bottom: 1px solid rgba(0, 0, 0, 0.3); padding-top: 20px">
+									A:
+									<p>[[${inquiry.queAns}]]</p>
+								</div>
 
-								<div th:if="${session.loginMember != null} ">
-									<div style="padding: 30px 10px 10px 10px" class="inquiryBtn">
+								<div th:if="${session.loginMember != null}" class="inButtons"
+									style="display: flex; justify-content: space-around; padding-top: 20px; font-size: 16px;">
+									<div class="inquiryBtn">
 										<a id="modify" th:if="${inquiry.queAns == null}"
 											style="color: black" class="testBtn">수정</a>
 									</div>
 
-									<div style="padding: 30px 10px 10px 10px; display: none"
-										id="modifyBtn">
+									<div style="display: none" id="modifyBtn">
 										<a style="color: grey;" class="edit"> 저장</a>
 									</div>
 
-									<div style="padding: 10px" class="inquiryBtn">
+									<div class="inquiryBtn">
 										<a class="inquiryBtn"
 											th:onclick="remove([[${inquiry.queCode}]])">삭제</a>
 									</div>
 								</div>
 							</td>
 							<td></td>
+							<td></td>
 						</tr>
-						<!-- 답변 보기 -->
+
+
+						<!-- 답변 보기2 -->
 						<tr th:class="|inquiryGet${inquiry.queCode}|"
 							th:data-code="${inquiry.queCode}" id="ansQueCode"
 							th:if="${session.loginMember != null and session.loginMember.memberId != inquiry.memberId and inquiry.queSecret == 'N'}"
-							style="display: none; background-color: rgba(0, 0, 0, 0.1)">
+							style="display: none; background-color: #f8f8f8">
 							<td class="inquiryGetAns" style="font-size: 18px">
 								<p style="font-size: 14px">Q&A 답변</p>
 							</td>
 
 							<td class="inquiryGetAns" id="answerForm">
 								<div class="hideInquiry"
-									style="font-size: 16px; width: 200px; border: none; border-bottom: 1px solid rgba(0, 0, 0, 0.3);">Q:
-									[[${inquiry.queContent}]]</div> <textarea
-									class="form-control form-control-sm" rows="5"
+									style="font-size: 16px; width: 380px; word-break: break-all; border-bottom: 1px solid rgba(0, 0, 0, 0.3);">
+									Q:
+									<p>[[${inquiry.queContent}]]</p>
+								</div> <textarea class="form-control form-control-sm" rows="5"
 									style="display: none;" id="que" readonly>[[${inquiry.queContent}]]</textarea>
+								<div th:if="${inquiry.queAns != null}"
+									style="font-size: 15px; border: none; border-bottom: 1px solid rgba(0, 0, 0, 0.3); width: 380px; padding-top: 20px">
+									A:
+									<p>[[${inquiry.queAns}]]</p>
+								</div>
 								<div
-									style="font-size: 15px; border: none; border-bottom: 1px solid rgba(0, 0, 0, 0.3); width: 200px; padding-top: 20px">A:
-									[[${inquiry.queAns}]]</div>
-							</td>
-							<td class="inquiryGetAns">
-
-								<div th:if="${session.loginMember != null and session.loginMember.memberId == inquiry.memberId}">
-									<div style="padding: 30px 10px 10px 10px" class="inquiryBtn">
+									th:if="${session.loginMember != null and session.loginMember.memberId == inquiry.memberId}">
+									<div class="inquiryBtn">
 										<a id="modify" th:if="${inquiry.queAns == null}"
 											style="color: black" class="testBtn">수정</a>
 									</div>
@@ -170,12 +187,13 @@
 										<a style="color: grey;" class="edit"> 저장</a>
 									</div>
 
-									<div style="padding: 10px" class="inquiryBtn">
+									<div class="inquiryBtn">
 										<a class="inquiryBtn"
 											th:onclick="remove([[${inquiry.queCode}]])">삭제</a>
 									</div>
 								</div>
 							</td>
+							<td></td>
 							<td></td>
 						</tr>
 					</tbody>

@@ -15,18 +15,17 @@
 
 					<div class="col-12" id="sizeTab">
 						<!-- Heading -->
-						<h5 class="mb-10 text-center">리뷰</h5>
+						<div>
+							<h5 class="mb-6 text-center" style="font-weight: 600">
+								고객리뷰
+							</h5>
+							<div class="mb-6 text-center">※ 리뷰 등록은 [마이페이지 > 주문 목록]에서 확인하실 수 있습니다.</div>
+						</div>
 
 						<!-- Header -->
-						<div class="row align-items-center">
-							<div class="col-12 col-md-auto">
-								<!-- Dropdown -->
-								<div class="dropdown mb-4 mb-md-0">
-									<span style="font-weight: 600" tabindex="0" id="Reviewtitle">Reviews</span>
-									<strong class="fs-sm ms-2" name="reviewCount">([[${count}]])</strong>
-								</div>
-							</div>
-							<div class="col-12 col-md text-md-center">
+						<div class="row align-items-center"
+							style="border: 1px solid rgba(0, 0, 0, 0.1); padding: 30px">
+							<div class="col-12 col-md text-md-center" style="display: flex">
 								<!-- Rating -->
 								<div class="rating text-dark h6 mb-4 mb-md-0"
 									th:data-value="${reviewAvg}">
@@ -46,7 +45,8 @@
 										<i class="fas fa-star"></i>
 									</div>
 								</div>
-
+								<div style="font-weight: 600" tabindex="0" id="Reviewtitle">
+									([[${count}]])</div>
 								<!-- Count -->
 
 							</div>
@@ -54,9 +54,7 @@
 								<!-- Button -->
 
 								<a class="btn btn-sm btn-dark collapsed"
-
 									data-bs-toggle="collapse" href="#reviewForm"
-
 									aria-expanded="false" th:if="${session.loginMember != null}">
 									리뷰 작성 </a> <a class="btn btn-sm btn-dark"
 									th:if="${session.loginMember == null}"
@@ -65,14 +63,17 @@
 							</div>
 						</div>
 
-						<div th:if="${count} == 0" style="text-align: center; padding-top: 150px">
+
+						<div th:if="${count} == 0"
+							style="text-align: center; padding-top: 150px">
 							<p style="font-size: 26px">등록된 리뷰가 없습니다</p>
 						</div>
 
 
 						<!-- New Review -->
-							<div class="collapse" id="reviewForm">
-						<form method="post" id="reviewForm2" enctype="multipart/form-data">
+						<div class="collapse" id="reviewForm">
+							<form method="post" id="reviewForm2"
+								enctype="multipart/form-data">
 								<!-- Divider -->
 								<hr class="my-8" />
 
@@ -135,7 +136,7 @@
 											<div class="col-12" style="padding-top: 20px">
 												<textarea type="text" name="imgContent" id="imgContent"
 													class="form-control" placeholder="다른사람을 위한 대체 텍스트를 입력해주세요"
-													style="width: 600px; height: 200px; resize:none;"></textarea>
+													style="width: 600px; height: 200px; resize: none;"></textarea>
 											</div>
 										</div>
 									</div>
@@ -175,7 +176,7 @@
 											<label class="visually-hidden" for="reviewContent">Review:</label>
 											<textarea class="form-control form-control-sm" rows="5"
 												placeholder="내용을 입력해주세요" id="reviewContent"
-												name="reviewContent" required style="resize:none;"></textarea>
+												name="reviewContent" required style="resize: none;"></textarea>
 										</div>
 									</div>
 									<div class="col-12 text-center">
@@ -184,8 +185,8 @@
 											id="insertBtn">리뷰 등록</button>
 									</div>
 								</div>
-						</form>
-							</div>
+							</form>
+						</div>
 
 
 
@@ -218,11 +219,20 @@
 										</div>
 										<div class="col-12 col-md">
 											<!-- Header -->
+
 											<div class="row mb-6">
 												<div class="col-12">
+													<div class="col-12"
+														style="display: flex; justify-content: space-between;">
+														<!-- Time -->
+														<span class="fs-xm text"
+															th:text="${review.memberId.length} > 3 ? ${#strings.substring(review.memberId,0,5)}+'***' : ${inquiry.memberId}"></span>
+														<span class="fs-xs text-muted"
+															th:text="${#dates.format(review.reviewRegdate,'yyyy-MM-dd HH:mm')}"></span>
+													</div>
 													<!-- Rating -->
 													<div class="rating fs-sm text-dark" data-value="5"
-														style="padding: 0"
+														style="padding: 0; padding-top: 4px"
 														th:with="start=1, end=(${review.reviewStar})">
 														<div class="rating-item"
 															th:each="p : ${#numbers.sequence(start, end)}">
@@ -241,33 +251,23 @@
 															</div>
 														</div>
 													</div>
-												</div>
-												<div class="col-12">
-													<!-- Time -->
-													<span class="fs-xs text"
-														th:text="${review.memberId.length} > 3 ? ${#strings.substring(review.memberId,0,5)}+'***' : ${inquiry.memberId}"></span>
-													<span class="fs-xs text-muted"
-														th:text="${#dates.format(review.reviewRegdate,'yyyy-MM-dd HH:mm')}"></span>
+													<div>
+														<span style="font-size: 14px; color: grey">옵션</span>
+														<span style="font-size: 14px; color: grey">수량</span>
+													</div>
 												</div>
 											</div>
 
 											<!-- Text -->
-											<p class="text-gray-500" th:text="${review.reviewContent}"
-												id="reviewContent"></p>
+											<div class="text-gray-500"
+												style="word-break: break-all; width: 580px"
+												th:text="${review.reviewContent}" id="reviewContent"></div>
 
 											<!-- Footer -->
 											<div class="row align-items-center">
 												<div class="col-auto me-auto">
 													<!-- 좋아요 -->
-													<div class="rate">
-														<a class="rate-item" data-toggle="vote" data-count="0"
-															tabindex="-1" href="#" role="button"> <i
-															class="fe fe-thumbs-up"></i>
-														</a> <a class="rate-item" data-toggle="vote" data-count="0"
-															tabindex="-1" href="#" role="button"> <i
-															class="fe fe-thumbs-down"></i>
-														</a>
-													</div>
+													
 												</div>
 
 												<div class="col-auto">
@@ -287,8 +287,7 @@
 													</div>
 													<button class="btn btn-xs btn-outline-border" tabindex="-1"
 														th:if=" ${session.loginMember == null} or ${session.loginMember.memberId != review.memberId}"
-														data-bs-toggle="modal" data-bs-target="#declareModal"
-														>신고하기</button>
+														data-bs-toggle="modal" data-bs-target="#declareModal">신고하기</button>
 												</div>
 											</div>
 										</div>
@@ -562,8 +561,13 @@ function editReview(data){
       console.log(data);
       let reviewCode = $("#reviewNum").val(data.reviewCode);
       let reviewContent = $("#message-text").html(data.reviewContent);
-      let imgContent = $("#reviewImgContent").val(data.reviewImg.imgContent);
-      let img = $("#reviewModifyImg").attr("src", "upload/" + data.reviewImg.uploadPath + "/"+ data.reviewImg.uploadName);
+      if(data.reviewImg != null){
+	      let imgContent = $("#reviewImgContent").val(data.reviewImg.imgContent);
+	      let img = $("#reviewModifyImg").attr("src", "upload/" + data.reviewImg.uploadPath + "/"+ data.reviewImg.uploadName);
+      }else{
+    	  let img = $("#reviewModifyImg").attr("src", "");
+    	  let imgContent = $("#reviewImgContent").val("");
+      }
       let reviewStars = $("#editStar").attr("data-value",data.reviewStar);
       
       let form = $("#editForm")[0];
@@ -706,4 +710,3 @@ function editReview(data){
 	</div>
 </body>
 </html>
-

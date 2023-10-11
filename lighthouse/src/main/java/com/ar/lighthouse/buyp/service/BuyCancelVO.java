@@ -32,4 +32,9 @@ public class BuyCancelVO {
 	
 	private String productName;
 	private String memberId;
+	
+	private String uploadPath;
+	private String uploadName;
+	private String imgContent;
+	private String imgOrder;
 }
