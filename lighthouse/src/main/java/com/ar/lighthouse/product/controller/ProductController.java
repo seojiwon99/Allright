@@ -382,7 +382,7 @@ public class ProductController {
    }
 
 //  상품상세설명등록 페이지
-   @GetMapping("productContent")
+   @GetMapping("seller/productContent")
    public String productContent() {
       return "page/seller/productContent";
    }
@@ -422,7 +422,7 @@ public class ProductController {
    }
 
    // 등록폼
-   @GetMapping("insertProduct")
+   @GetMapping("seller/insertProduct")
    public String productForm(Model model, CategoryVO categoryVO, CodeVO codeVO) {
       model.addAttribute("getCategoryList", mainPageService.getAllCategoryList());
       model.addAttribute("delivery", productService.getDeliveryList());
@@ -490,7 +490,7 @@ public class ProductController {
 	 */
 
    // 상품 등록
-	@PostMapping("insertProduct")
+	@PostMapping("/insertProduct")
 	public String addProduct(List<MultipartFile> files, ProductVO productVO, HttpServletRequest req,
 			RedirectAttributes rtt, ImgsListVO imgsVO) {
 		HttpSession session = req.getSession();
@@ -557,7 +557,7 @@ public class ProductController {
 		}
 		rtt.addFlashAttribute("msg", "등륵성공");
 
-		return "redirect:productList";
+		return "redirect:/seller/productList";
 	}
 
 //   상품수정
