@@ -13,7 +13,7 @@ public class EventImgVO {
 	String uploadName;
 	String imgContent;
 	Date imgRegdate;
-	int eventCode;
+	String eventCode;
 	int bannerOrder;
 	String bannerType;
 	String bannerDelete;
