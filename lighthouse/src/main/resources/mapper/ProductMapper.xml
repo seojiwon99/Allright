@@ -856,7 +856,7 @@ ORDER BY EXTRACT(MONTH FROM order_date)
 					,#{productExstatus}
 				</when>
 				<otherwise>
-					,"Y"
+					,'Y'
 				</otherwise>
 			</choose>
 		)
