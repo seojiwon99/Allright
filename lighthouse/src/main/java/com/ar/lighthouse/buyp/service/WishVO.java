@@ -1,6 +1,5 @@
 package com.ar.lighthouse.buyp.service;
 
-import java.util.List;
 
 import lombok.Data;
 
@@ -18,6 +17,7 @@ public class WishVO {
 	
 	private String imgName;
 	private String uploadName;
+	private String uploadPath;
 	private String imgContent;
 	
 }

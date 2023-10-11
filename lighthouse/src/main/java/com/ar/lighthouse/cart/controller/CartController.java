@@ -32,7 +32,7 @@ public class CartController {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 		List<CartVO> list = cartService.cartGetList(memberId);
-		
+
 		model.addAttribute("list", list);
 
 		return "/page/cart/cartView";
@@ -72,47 +72,46 @@ public class CartController {
 	@PostMapping("cart/addCart")
 	@ResponseBody
 	public List<Long> addCart(CartVO cartVO, @RequestBody List<OptionDetailVO> optionDetailVO, HttpSession session) {
+		System.out.println("asdfasdfasdf" + optionDetailVO);
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-
+	
 		List<OptionDetailVO> optionList = new ArrayList<OptionDetailVO>();
 		for (OptionDetailVO odv : optionDetailVO) {
 			OptionDetailVO vo = cartService.getOptionCode(odv);
 			vo.setOptionOrder(odv.getOptionCount());
 			optionList.add(vo);
-			System.out.println("hihihihi1"+optionList);
 		}
 		List<Long> lastODC = new ArrayList<Long>();
 		for (OptionDetailVO otc : optionList) {
 			CartVO cart = new CartVO();
-
 			cart.setCartCount(otc.getOptionOrder());
 			cart.setOptionDetailCode(otc.getOptionDetailCode());
 
 			cart.setMemberId(memberId);
-			if(cartService.checkCart(cart)>0) {
+			if (cartService.checkCart(cart) > 0) {
 				lastODC.add(cart.getOptionDetailCode());
-			}else{
-			cartService.addCart(cart);
+			} else {
+				cartService.addCart(cart);
 			}
-			
+
 		}
 		System.out.println(lastODC);
 		// cartService.addCart(cartVO);
-		//lastODC <-- 받아서 값이 없다? 다 들어감. 값이 있다? optionDetailCode 가 안들어간거
+		// lastODC <-- 받아서 값이 없다? 다 들어감. 값이 있다? optionDetailCode 가 안들어간거
 		return lastODC;
 	}
-	
+
 	@GetMapping("/cart/cartCheck")
 	@ResponseBody
 	public int cartCheck(CartVO vo, HttpSession session) {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-		
+
 		vo.setMemberId(memberId);
-		
-		System.out.println("aaaaaaaaaaaa"+cartService.checkCart(vo));
+
+		System.out.println("aaaaaaaaaaaa" + cartService.checkCart(vo));
 		return cartService.checkCart(vo);
 	}
-	
+
 }

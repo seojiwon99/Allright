@@ -82,7 +82,7 @@
           <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
             <!-- Order -->
                 <div>
-               <select class="optionList">
+               <select id="optionList">
                   <!-- <option value="선택">선택</option> -->
                   <!-- <option value="payment_price">가격</option> -->
                   <!-- <option value="order_date">구매일자</option>-->
@@ -90,14 +90,14 @@
                   <option value="order_detail_code">주문상세번호</option>
                   <option value="product_name">상품명</option>
                </select>
-               <input type="text" class="selectVal" value="" maxlength="50">
+               <input type="text" class="selectVal" id="search" value="" maxlength="50">
                <button type="button" id="selectOption">검색</button>
                <div>
                   <span>조회기간</span> 
                   <input type="DATE" id="from" name="from" autocomplete="off"> 
                   <label for="to">~</label> 
                   <input type="DATE" id="to" name="to" autocomplete="off">
-                  <input class="count" readonly></input>
+                  <input class="count" tabindex="-1" readonly></input>
                </div>
             </div>
             
@@ -131,7 +131,7 @@
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">상품 이미지:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                          <img th:src="@{/img/products/product-1.jpg}" style="max-width: 100%; height: auto" th:alt="${lists.imgContent}">
+                          <img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|" style="max-width: 100%; height: auto" th:alt="${lists.imgContent}">
                         </p>
                       </div>
                     <!-- 상품명 -->
@@ -177,7 +177,7 @@
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">취소 여부:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                         <span class="cancelStatusNm" th:text="|${lists.cancelStatusNm}|"></span>
+                         <span class="cancelStatusNm" th:text="|${lists.cancelStatusNm}|"> </span>
                         </p>
                       </div>
                     <!-- 반품 여부 -->
@@ -204,13 +204,13 @@
                     </div>
                   </div>
                 <div class="card-footer">
-                <div class="row align-items-center" th:if="(${lists.returnStatus} == null or ${lists.returnStatus} == 'u') and (${lists.cancelStatus} == null or ${lists.cancelStatus} == 'u') and (${lists.exchangeStatus} == null or ${lists.exchangeStatus} == 'u')">
-                     <!-- <div class="col-6">
-                        <a class="btn btn-sm w-100 btn-outline-dark" href="account-order.html" >
-                          주문 상세
+                <div class="row align-items-center" th:if="(${lists.returnStatus} == 'NULL' or ${lists.returnStatus} == 'u') and (${lists.cancelStatus} == 'NULL' or ${lists.cancelStatus} == 'u') and (${lists.exchangeStatus} == 'NULL' or ${lists.exchangeStatus} == 'u')">
+                    <!-- 리뷰  button -->
+                      <div class="col-6" th:if="${lists.orderStatus} == '4'">
+                        <a class="btn btn-sm w-100 btn-outline-dark reviwBtn" href="#" >
+                          리뷰 쓰기
                         </a>
                       </div>
-                    -->
                     <!-- 교환 Button -->
                       <div class="col-6">
                         <a class="btn btn-sm w-100 btn-outline-dark excBtn" th:href="@{/exchange}" >
@@ -299,8 +299,8 @@
 	      }
 	    });
 	   
-	   $('#selectOption').on('click',function(){
-	      let key = $('.optionList').val();
+	   $('#selectOption').on('click', function(){
+	      let key = $('#optionList').val();
 	      let value = $('.selectVal').val();
 	      
 	      let fromDate = $('#from').val();
@@ -324,9 +324,7 @@
 	      })
 	      .done(data => {
 	         $('#orderOption').html(data);
-	         setTimeout(function(){
-	               $('.orderCode').on('focus',orderDetailInfo);
-	            }, 1000);
+
 	         itemCount = document.querySelectorAll(".order").length;
 	         console.log(itemCount);
 	         document.querySelector(".count").value = itemCount;
@@ -354,11 +352,31 @@
 	           VoiceMenual(message);
 	
 	     //tts 이벤트 부여
-	     $('.orderCode').on('focus',orderDetailInfo);
+	     $('#optionList').on('focus', optionList);
+	     $('#optionList').on('change', optionSelect);
+	     $('#search').on('focus', search);
+	     $('#selectOption').on('focus', searchOption);
+	     $('.orderCode').on('focus', orderDetailInfo);
 	     $('.excBtn').on('focus', exchageBtn);
 	     $('.retBtn').on('focus', retBtn);
 	     $('.cancelBtn').on('focus', cancelBtn);
 	     //tts 이벤트 진행
+	     function optionList(){
+	    	 let optionSel = $('#optionList').text();
+	    	 VoiceMenual("검색 기준입니다." + optionSel);
+	     }
+	     function optionSelect() {
+			 let selectOp = $('#optionList option:selected').text();
+			 VoiceMenual(selectOp);
+		 }
+	     function search(){
+	    	 let search = $('#search').text();
+	    	 VoiceMenual("검색 창입니다. 검색 기준에 맞게 입력해주세요.");
+	     }
+	     function searchOption(){
+	    	 let searchOpt = $('#selectOption').text();
+	    	 VoiceMenual("검색을 원하시면 엔터키를 입력해주세요." + searchOpt);
+	     } 
 	     function orderDetailInfo() {
 	     let orderCode = $(this).closest('.orderRow').find('.orderCode').text();
 	     let orderDetailCode = $(this).closest('.orderRow').find('.orderDetailCode').text();

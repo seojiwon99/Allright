@@ -1,12 +1,16 @@
 package com.ar.lighthouse.product.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ar.lighthouse.admin.service.DeclareVO;
 import com.ar.lighthouse.admin.service.MemberDetailVO;
+import com.ar.lighthouse.admin.service.SuspendVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.common.CodeVO;
@@ -243,8 +247,8 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<OptionDetailVO> getOptionDetail(OptionVO optionVO) {
-		return productMapper.selectOptionDetail(optionVO);
+	public List<OptionDetailVO> getOptionDetail(OptionDetailVO optionDetailVO) {
+		return productMapper.selectOptionDetail(optionDetailVO);
 	}
 
 
@@ -261,6 +265,12 @@ public class ProductServiceImpl implements ProductService {
 		return productMapper.updateCancelOk(cancelCode);
 
 	}
+    // 석연 - 반품 완료 시 Y로 상태 변경
+    @Override
+   	public int editReturnOk(String returnCode) {
+   		return productMapper.updateReturn(returnCode);
+
+   	}
 
 //  판매자 직접 취소
 	@Override
@@ -350,6 +360,14 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<MyInquiryVO> getSeaSellerInqu(MyInquiryVO myInquiryVO) {
 		return productMapper.selectSeaSellerInq(myInquiryVO);
+	}
+	@Override
+	public Map<String, Object> sellerChk(String memberId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		SuspendVO vo = productMapper.sellChk(memberId);
+		map.put("정지 날짜", vo.getSuspEnddate());
+		return map;
 	}
 
 }

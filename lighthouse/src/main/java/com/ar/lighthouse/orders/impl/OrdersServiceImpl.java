@@ -47,8 +47,8 @@ public class OrdersServiceImpl implements OrdersService{
 				 // 날짜 비교 기준 날짜 보다 endDateStr이 현재보다 같거나 이전날짜 		 
 			 } else {
 				 // endDateStr이 현재보다 지난 날짜 -- 기간 지날 날짜는 안보이게함.
-				 int mycouponCode = endDate.get(i).getMycouponCode();
-				 ordersMapper.updatetNotCoupon(memberId, mycouponCode);
+				 int couponCode = endDate.get(i).getCouponCode();
+				 ordersMapper.updatetNotCoupon(memberId, couponCode);
 				
 			 }
 		}
@@ -57,14 +57,14 @@ public class OrdersServiceImpl implements OrdersService{
 	
 	@Override
 	// 사용한 쿠폰 N 데이터 변경
-	public int editNotCoupon(String memberId, int mycouponCode) {
-		return ordersMapper.updatetNotCoupon(memberId, mycouponCode);
+	public int editNotCoupon(String memberId, int couponCode) {
+		return ordersMapper.updatetNotCoupon(memberId, couponCode);
 	}
 	
 	@Override
 	//환불 상품 사용 쿠폰 Y 사용가능으로 변경
-	public int editRefundCoupon(String memberId, int mycouponCode) {
-		return ordersMapper.updateRefundCoupon(memberId, mycouponCode);
+	public int editRefundCoupon(String memberId, int couponCode) {
+		return ordersMapper.updateRefundCoupon(memberId, couponCode);
 	}
 		
 	@Override

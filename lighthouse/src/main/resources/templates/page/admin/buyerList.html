@@ -65,25 +65,25 @@
 			  <input type="hidden" id="modalValue">
 			    <tr th:each="mem : ${memList}" th:onclick="testFunc([[${mem.memberId}]])">
 					
-						<td scope="row" th:text="${mem.memberId}"></td>
-						<td th:text="${mem.declareCount}"></td>
-						<td th:text="${mem.memberName}"></td>
-						<td th:text="${mem.memberTel}"></td>
-						<td th:text="${mem.memberEmail}"></td>
-						<td th:text="${mem.suspStatus}"></td>
-						<td>
+						<td scope="row" th:text="${mem.memberId}" style="cursor : pointer"></td>
+						<td th:text="${mem.declareCount}" style="cursor : pointer"></td>
+						<td th:text="${mem.memberName}" style="cursor : pointer"></td>
+						<td th:text="${mem.memberTel}" style="cursor : pointer"></td>
+						<td th:text="${mem.memberEmail}" style="cursor : pointer"></td>
+						<td th:text="${mem.suspStatus}" style="cursor : pointer"></td>
+						<td onclick="javascript: event.stopPropagation();">
 						<input type="radio" name="suspDay" value="101">/	
 						<input type="radio" name="suspDay" value="102">/
 						<input type="radio" name="suspDay" value="103">/
 						<input type="radio" name="suspDay" value="0">
 						</td>
-						<td>
+						<td onclick="javascript: event.stopPropagation();">
 						<select id="suspReasonSelect" style="width:55px">
 							<option th:each="reason : ${suspReason}" th:value="${reason.codeId}">[[${reason.codeName}]]</option>
 						</select>
 						
 						</td>
-						<td>
+						<td onclick="javascript: event.stopPropagation();">
 						<button class="btn btn-xxs btn-primary saveBtn" type="button" name="saveBtn">저장</button>
 						</td>
 				</tr>

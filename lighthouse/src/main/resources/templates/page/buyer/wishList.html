@@ -90,18 +90,17 @@
 										<div class="card-img">
 											<!-- Action -->
 											<a
-												class="btn btn-xs btn-circle btn-white-primary card-action card-action-end" th:onclick="deleteWish([[${wishes.favoriteCode}]])">
+												class="btn btn-xs btn-circle btn-white-primary card-action card-action-end" href="#" th:onclick="deleteWish([[${wishes.favoriteCode}]])">
 												<i class="fe fe-x"></i>
 											</a>
-											<!-- Button 
+											<!-- Button -->
 											<button class="btn btn-xs w-100 btn-dark card-btn"
 												data-bs-toggle="modal" data-bs-target="#modalProduct">
 												<i class="fe fe-eye me-2 mb-1"></i> Quick View
 											</button>
-											-->
 											<!-- Image -->
 											<img class="card-img-top"
-												src="/img/products/product-6.jpg"
+												th:src="|/upload/${wishes.uploadPath}/${wishes.uploadName}|"
 												th:alt="${wishes.imgContent}" th:value="${wishes.favoriteCode}" id="favoriteCode" tabindex="0">
 										</div>
 										<!-- Body -->

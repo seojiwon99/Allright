@@ -477,6 +477,7 @@
   									, IMG_CONTENT
   									, BANNER_TYPE
   									, UPLOAD_PATH
+  									, EVENT_CODE
   									)
   		VALUES (					#{eventImgCode}
   									, #{imgOrder}
@@ -485,6 +486,7 @@
   									, #{imgContent}
   									, #{bannerType}
   									, #{uploadPath}
+  									, #{eventCode}
   									)
   	</insert>
   	
@@ -498,6 +500,7 @@
   			IMG_ORDER = #{imgOrder}
   			, IMG_CONTENT = #{imgContent}
   			, BANNER_TYPE = #{bannerType}
+  			, EVENT_CODE = #{eventCode}
   			</if>
   			<if test="uploadName != null">
   			, IMG_NAME = #{imgName}
