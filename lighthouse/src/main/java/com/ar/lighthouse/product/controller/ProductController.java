@@ -570,10 +570,10 @@ public class ProductController {
 		productVO.setMemberId(memberVO.getMemberId());
 
 		// productVO.setCategoryCode("MSU");
-		System.out.println(productVO);
+		System.out.println("왜" + productVO);
 		productService.updateProductP(productVO);
-
 		int i = 0;
+		System.out.println("files@@@" + files);
 		for (MultipartFile uploadFile : files) {
 			System.out.println("@@@@@@@@@@");
 			if (uploadFile.getContentType().startsWith("image") == false) {
