@@ -18,4 +18,6 @@ public interface CartService {
 	
 	//cart 수
 	public int checkCart(CartVO vo);
+	
+	int editCartCnt(CartUpdateVO cartUpdate);
 }

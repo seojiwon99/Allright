@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ar.lighthouse.cart.mapper.CartMapper;
 import com.ar.lighthouse.cart.service.CartService;
+import com.ar.lighthouse.cart.service.CartUpdateVO;
 import com.ar.lighthouse.cart.service.CartVO;
 import com.ar.lighthouse.product.service.OptionDetailVO;
 
@@ -41,6 +42,11 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public int checkCart(CartVO vo) {
 		return cartMapper.checkCart(vo);
+	}
+
+	@Override
+	public int editCartCnt(CartUpdateVO cartUpdate) {
+		return cartMapper.updateCartCnt(cartUpdate);
 	}
 
 }

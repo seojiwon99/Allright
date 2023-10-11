@@ -65,4 +65,9 @@
 			AND OPTION_DETAIL_CODE = #{optionDetailCode}
   	</select>
   	
+  	<!-- 장바구니 수량 업데이트 -->
+  	<update id="updateCartCnt">
+  		UPDATE AR_CART SET CART_COUNT = #{cartUpdate.cartCount} WHERE CART_CODE = #{cartUpdate.cartCode}
+  	</update>
+  	
   </mapper>
