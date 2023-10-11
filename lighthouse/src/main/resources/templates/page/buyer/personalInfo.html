@@ -334,7 +334,7 @@
 				VoiceMenual("이름은 : ." + myName + "입니다.탭키를 눌러. 다음으로 이동해주세요.");
 			}
 			function buyerEmail() { // 이메일 안내
-				myEmail = $('#buyerEmail').val()
+				myEmail = $('#buyerEmail').val();
 				VoiceMenual("현재 이메일은 : " + myEmail + "입니다. 수정 원할 경우. Backspace 후 새로운 이메일 작성하시면 됩니다. 이후 탭키를 눌러 다음으로 이동해주세요.");
 			}
 			function buyerPassword() {
@@ -364,6 +364,12 @@
 				VoiceMenual(myBirthMessage);
 			}
 			function updateBtn() {
+				myName = $('#buyerName').val();
+				myEmail = $('#buyerEmail').val();
+				myAddr = $('#buyerAddr').val();
+				myDetailAddr = $('#buyerDetailsAddr').val();
+				myTel = $('#buyerTel').val();
+				myBirth = $('#buyerBirth').val();
 				let updateChk = `이름은. ${myName}. 이메일은. ${myEmail}. 주소는 ${myAddr}. ${myDetailAddr}. 연락처는. ${myTel}. 생년월일은 ${myBirth}. 입니다.
 								수정 사항 확인 하셨다면. 엔터 입력합니다.`;
 				VoiceMenual(updateChk);
