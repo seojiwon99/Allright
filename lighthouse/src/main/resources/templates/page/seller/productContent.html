@@ -126,8 +126,6 @@
           idx2++;
        })
        
-       console.log("asdadsadsad" + idx2);
-       console.log("@@@@@@@@@@@@@@@@@@" + formTag.length);
        if(idx2 != formTag.length){
     	   e.preventDefault();
          return;
@@ -149,8 +147,10 @@
           form.append(divTag);
        }
       window.localStorage.setItem("detail",JSON.stringify(detailobj)); 
+	  alert("상세 설명이 등록 되었습니다.");
       window.close();
 
+      
       // $(form).submit();
   })
    </script>
