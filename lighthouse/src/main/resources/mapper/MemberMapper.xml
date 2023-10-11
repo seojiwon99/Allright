@@ -14,7 +14,7 @@
             	,member_details_addr
             	,member_email
             	,business_number
-            	,'ROLE_'||member_author authorities
+            	,member_author
       FROM   ar_member
       WHERE member_id = #{memberId}
    </select>

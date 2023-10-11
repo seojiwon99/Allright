@@ -1,7 +1,9 @@
 package com.ar.lighthouse.product.service;
 
 import java.util.List;
+import java.util.Map;
 
+import com.ar.lighthouse.admin.service.DeclareVO;
 import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.buyp.service.MyInquiryVO;
@@ -110,5 +112,8 @@ public interface ProductService {
 	
 	//취소 승인 시 승인 여부 Y로 변경 - 석연
 	public int editCancelOk(String cancelCode);
+	
+	// 신고 체크
+	public Map<String, Object> sellerChk(String memberId);
 	
 }
