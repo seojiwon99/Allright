@@ -60,7 +60,7 @@ public class DetailVO {
    private int imgOrder;
    
    
-// ajax넘어오는값
+// ajax 넘어오는값
  String searchValue;
  String searchKey;
  

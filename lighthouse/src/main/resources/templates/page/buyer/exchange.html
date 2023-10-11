@@ -297,9 +297,9 @@
 		 }
 		 function exchangeBtn(){
 			 
-			 if($('#select option:selected').val() == '선택'){
+			 if($('#content').val() == '' ) {
 				 VoiceMenual("교환 사유를 선택해주세요");
-				 $('#select').focus();
+				 $('#content').focus();
 				 return;
 			 }
 			 

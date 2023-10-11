@@ -260,11 +260,11 @@
     	let cancelRegdate = $(this).closest('.cancelRow').find('.cancelRegdate').text();
     	let cancelStatus = $(this).closest('.cancelRow').find('.cancelStatus').text();
     	let cancelRejectionCode = $(this).closest('.cancelRow').find('.cancelRejectionCode').text();
-    	let cancelRejectionReason = $(this).closest('.cancelRow').find('.cancelRejectionReason').text();
+    	
     	
     	let message = `취소번호는 ${cancelCode}. 주문번호는 ${orderCode}. 주문상세번호는 ${orderDetailCode}. 상품명은 ${productName}.
     					상품 수량은 ${orderCnt}.  결제 금액은 ${paymentPrice}. 취소 접수날짜는 ${cancelRegdate}. 취소 상태는 ${cancelStatus}.
-    					취소 거절 여부는 ${cancelRejectionCode}. 취소 거절 사유는 ${cancelRejectionReason}. 입니다.`;
+    					취소 거절 여부는 ${cancelRejectionCode}. 입니다.`;
     	
     	VoiceMenual(message);
     }

@@ -41,7 +41,7 @@ public class FileCheckTask {
 	
 	
 	// 스케줄러
-	@Scheduled(cron = "* * 2 * * *")
+	@Scheduled(cron = "0 0 2 * * *")
 	public void checkFiles() throws Exception{
 		// file list in database
 		System.out.println("asd");

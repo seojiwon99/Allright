@@ -7,6 +7,7 @@
 
 	 <!-- 주문 목록 -->
 	<select id="selectDetailList" resultType="DetailVO" parameterType="Criteria">
+     WITH RankedOrderDetail AS (
         SELECT *
 		FROM (
 		    SELECT rownum pn, pg.*
@@ -60,13 +61,19 @@
 		        ar_exchange h ON a.order_detail_code = h.order_detail_code
 		    WHERE 
 		        b.member_id = #{memberId}
-		        and e.img_order = '0') pg
+		        and e.img_order = 0) pg
 		    <![CDATA[
         WHERE rownum <= #{cri.pageNum} * #{cri.amount}
         ]]>
         ORDER BY pg.order_detail_code DESC
     )
     WHERE pn > (#{cri.pageNum} - 1) * #{cri.amount}
+    )
+    SELECT *
+		FROM 
+		    RankedOrderDetail
+		WHERE 
+		    rn = 1
 	</select>
      
      <select id="selectDetailCnt" resultType="int">
@@ -126,8 +133,8 @@
 		    LEFT OUTER JOIN 
 		        ar_exchange h ON a.order_detail_code = h.order_detail_code
 		    WHERE 
-		        b.member_id = #{memberId
-		        and e.img_order = '0'}
+		        b.member_id = #{memberId}
+		        and e.img_order = 0
 		    <choose>
 		    	<when test="searchKey == 'payment_price'">
 		    		AND a.payment_price like '%'||#{searchValue}||'%'
@@ -477,10 +484,12 @@
 		INSERT INTO ar_cancel 
 				(CANCEL_CODE
 				, ORDER_DETAIL_CODE
-				, CANCEL_REASON)
+				, CANCEL_REASON
+				, CANCEL_STATUS)
 		VALUES (ca_code
 				, #{orderDetailCode}
-				, #{cancelReason})
+				, #{cancelReason}
+				)
 	</insert>
 	
 	<!--반품 신청  -->
@@ -488,7 +497,8 @@
 		INSERT INTO ar_return 
 				(RETURN_CODE
 			   , ORDER_DETAIL_CODE
-			   , RETURN_REASON)
+			   , RETURN_REASON
+			   )
 		VALUES (re_code
 			   , #{orderDetailCode}
 			   , #{returnReason})
