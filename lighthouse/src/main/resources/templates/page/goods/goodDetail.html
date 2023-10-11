@@ -148,7 +148,8 @@
 										class="fs-lg fw-bold text-gray-350 text-decoration-line-through"
 										th:text="${goods.productCost}+원"></span>
 									<!-- 할인가격 -->
-									<span class="ms-1 fs-5 fw-bolder text-primary">[[${goods.salePrice}]]원</span>
+									<span class="ms-1 fs-5 fw-bolder text-primary" id="pprr">[[${goods.salePrice}]]</span>
+									<span>원</span>
 									<input type="hidden" id="originPrice"
 										th:value="${goods.salePrice}">
 								</div>
@@ -408,6 +409,7 @@
    
    window.addEventListener("DOMContentLoaded", (event) => {
       //리뷰 로드
+      replacePrice();
       reviewPageLoad(1);
       inquiryPageLoad(1);      
       changeOptionHandler();
@@ -495,8 +497,8 @@
                console.log(minOrder);
                
                let sum = parseInt(originPrice) + parseInt(price);
-               console.log(sum);
                
+               sum = replaceComma(sum);
                
                
                let optionView =$("#optionView");
@@ -522,8 +524,9 @@
                   </div>
                </li>`;
                $("#optionView").append(liTag);
-               
+
                break;
+              
                
                } //end of if
             }//end of for
@@ -731,7 +734,7 @@
 	   					console.log(result);
 	   					if(result > 0){
 							alert("이미 장바구니에 존재하는 옵션이있습니다.");
-	   						}else{
+	   					}else{
 	   							if(!confirm("장바구니로 이동하시겠습니까?")){
 		   							console.log("이동x");
 		   						}else{
@@ -842,8 +845,21 @@
      window.scrollTo(0, 0);
    });
    
-   
-
+   /*--------------
+   가격 점
+   --------------*/
+   function replacePrice(){
+	   
+	   let pprr = $("#pprr").text();
+	   console.log(pprr);
+	   let re = replaceComma(pprr);
+	   
+	   $("#pprr").html(re);
+	   
+   }
+   /*--------------
+   TTS
+   --------------*/
 	let TTSIsOk = localStorage.getItem('ttsKey');
     let sessionAuthor;
    console.log(sessionStorage.loginMember);          
