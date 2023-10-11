@@ -987,9 +987,9 @@ public class ProductController {
 		// 옵션 조회
 		optionVO.setProductCode(productCode);
 		model.addAttribute("options", productService.getOptionList(optionVO));
-		model.addAttribute("optionDetail", productService.getOptionDetail(optionVO));
+		model.addAttribute("optionDetail", productService.getOptionDetail(optionDetailVO));
 		// 장바구니
-		System.out.println("aaaaa111111" + productService.getOptionDetail(optionVO));
+		System.out.println("aaaaa111111" + productService.getOptionDetail(optionDetailVO));
 
 		return "page/goods/goodDetail";
 	}

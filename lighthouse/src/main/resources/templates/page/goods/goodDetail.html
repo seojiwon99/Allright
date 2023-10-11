@@ -500,7 +500,7 @@
                
                
                let optionView =$("#optionView");
-               let liTag =`<li style="border: 1px solid #ff6f61; padding:10px; margin-bottom:10px;">
+               let liTag =`<li style=" padding:10px; margin-bottom:10px; background-color:#f8f8f8">
                   <div style="display:flex; justify-content:space-between; padding-bottom:6px">
                      <span class="optionDetailCodeName" style="font-weight:600; color:#ff6f61">${optionVal}</span>
                      <button class="optionCloseBtn" type="button" style="all: unset; cursor:pointer; color:#ff6f61">X</button>
@@ -510,7 +510,7 @@
                      <input type="hidden" name="optionDetailCode" value="${code}"> 
                      개수 : <input type="hidden" value="${price}" name="optionPrice"> 
                      <input type="number" class="orderCnt" name="cartCount" min="${minOrder}" max="${maxOrder}" value="${minOrder}" /> 
-                     <span>남은 수량은 ${optionCount}개 입니다</span>
+                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>남은 수량은 ${optionCount}개 입니다</span>
                   </div>
                   
                   <div style="padding-bottom:6px"> 가격 : <span><strong class="pp">${originPrice}</strong> (현재 할인가)</span> 
@@ -685,6 +685,9 @@
 	    	   let cartOptionList = [];
 	    	   
 	       	   	$(".optionDetailCodeName").each((idx,tag) => {
+	       	   		console.log("aaaaaaaaaaa"+idx);
+	       	   	console.log("bbbbbbbb"+tag);
+	       	   	   //optionCount
 		    	   let optCount=0;
 		    	   if($(".pCnt").val()){
 		    		   optCount = $(".pCnt").val();
@@ -695,6 +698,7 @@
 		    	   else{
 		    		   optCount= $(tag).parent().next().children()[2].value;
 		    	   }
+		    	   //optionLast
 		    	   let opLast ='';
 		    	   
 		    	   if($(".optLast").val()){
@@ -713,16 +717,14 @@
 	      			cartOptionList.push(cartObj);
 	      		})
 	   				cart(cartOptionList);
-	      			
-	      		
 	      		}
    	}
     function cart(arr){
-    		console.log(arr);
 	    	   
+    		console.log(arr);
 	   			$.ajax({
 	   				url:"cart/addCart",
-	   				type:"post",
+	   				type:"post",  
 	   				data:JSON.stringify(arr),
 	   				contentType:"application/json",
 	   				success:function(result){
