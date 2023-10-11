@@ -44,7 +44,11 @@
             <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
               <!-- Form -->
             <form id="updateForm" action="updateProduct" method="post">
-               <div class="row">
+            <input type="text" name="productCode" id="productCode" th:value="${product[0].productCode}" class="visually-hidden"/>
+            <!-- <div th:each="code : ${product[0].option}">
+            <input type="text" name="optionCode" id="optionCode" th:value="${code.optionCode}" class="visually-hidden"/>
+            </div> -->
+            <div class="row">
                <div class="col-12">
                   <!-- 카테고리 들어갈곳 -->
                   	<span>현재 카테고리 : </span><span th:text="${product[0].category[0].CategoryName}"></span>
@@ -145,7 +149,8 @@
                </div>
                <div class="optionText form-group row" style="display: none;">
                   <label class="col-sm-2">옵션</label>
-                  <div class="optionB row g-3"></div>
+                  <div class="optionB row g-3">
+                  </div>
                </div>	
 
 
@@ -162,13 +167,15 @@
                            </tr>
                         </thead>
                         <tbody id="optiontab">
-							<tr th:each="pro : ${product[0].optionDetail}">
-								<td><input type="text" th:value="${pro.optionLast}"></td>
-								<td><input type="text" th:value="${pro.optionPrice}"></td>
-								<td><input type="text" th:value="${pro.optionCount}"></td>
-								<td><input type="text" th:value="${pro.minOrder}"></td>
-								<td><input type="text" th:value="${pro.maxOrder}"></td>
-							</tr> 
+							<tr th:each="pro, index : ${product[0].optionDetail}">
+							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].optionLast'" th:id="'optionLast' + ${index.index} + ''" th:value="${pro.optionLast}"></td>
+							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].optionPrice'" th:id="'optionPrice' + ${index.index} + ''" th:value="${pro.optionPrice}"></td>
+							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].optionCount'" th:id="'optionCount' + ${index.index} + ''" th:value="${pro.optionCount}"></td>
+							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].minOrder'" th:id="'minOrder' + ${index.index} + ''" th:value="${pro.minOrder}"></td>
+							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].maxOrder'" th:id="'maxOrder' + ${index.index} + ''" th:value="${pro.maxOrder}"></td>
+							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].optionDetailCode'" th:id="'optionDetailCode' + ${index.index} + ''" th:value="${pro.optionDetailCode}" class="visually-hidden"></td>
+							</tr>
+
                         </tbody>
                      </table>
                   </div>
@@ -471,10 +478,8 @@
 
 
 
-
-
-
-
+</div>
+				</div>
 
                </div>
                <div class="modal-footer">
@@ -485,6 +490,7 @@
       <script th:inline="javascript">
       let productCode = window.localStorage.getItem('productCode');
          let test22="";
+         console.log(productCode);
          $(document).ready(function () {
         	 
         	 $(window).on('beforeunload', (event) => {
@@ -494,7 +500,7 @@
          			
          		     localStorage.clear();
   	   		    }
-  	   		  });
+  	   		  }); 
 	 
         	 var val = [[${product[0].option.size}]];
 
@@ -521,6 +527,8 @@
                      span.addClass("input-group-text");
 
                      div.append(span);
+                     
+                     
                      let optionN = $('<input name="option[' + i +
                         '].optionName" class="optionN form-control" type="text" id="optionName' + i + '"/>');
 
@@ -530,10 +538,7 @@
 
 	                  var desiredPart = splitArray[1];
                      optionN.val(desiredPart);
-                     // let div = $('<div/>').addClass("optionDiv col-md-6");
-                     // let labelN = $("<label> /").text("옵션이름");
-                     // let optionN = $('<input name="option[' + i +
-                     //    '].optionName" class="optionN form-control" type="text" id="optionName' + i + '"/>');
+                     
                      div.append(optionN);
                      $('.optionB').append(div);
 
@@ -553,6 +558,15 @@
 	                  var desiredPart = splitArray[1];
                      optionV.val(desiredPart);
                      div.append(optionV);
+                     
+                     let optionCode = '[[${product[0].option[0].optionCode}]]';
+                     let optionCodeInput =$('<input name="option[' + i +
+                    	        '].optionCode" class="optionCode visually-hidden form-control" type="text" id="optionCode' + i + '" />');
+                     
+                     optionCodeInput.val(optionCode);
+					console.log(optionCode);
+                     div.append(optionCodeInput);
+                     
                      divBox.append(div);
                      $('.optionB').append(divBox);
 
@@ -1454,8 +1468,8 @@
 
           obj.catemenu.push(catemenu4);
             window.localStorage.setItem("product", JSON.stringify(obj));
-            /* window.location.href = '/modifyProductContent?productCode=' + productCode;
-             */
+             /* window.location.href = '/modifyProductContent?productCode=' + productCode; */
+             
             var _width = '700';
 		    var _height = '700';
 		 

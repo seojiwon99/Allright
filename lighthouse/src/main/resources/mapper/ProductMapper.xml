@@ -952,10 +952,16 @@ ORDER BY EXTRACT(MONTH FROM order_date)
 <update id="updateProduct" parameterType="ProductVO">      
 UPDATE ar_products
 SET
+	<if test="categoryCode != null">
     category_code = #{categoryCode},
+    </if>
     product_name = #{productName},
+    <if test="productContent != null">
     product_content = #{productContent},
+    </if>
+    <if test="productLocation != null">
     product_location = #{productLocation},
+    </if>
     product_cost = #{productCost},
     sale_price = #{salePrice},
     product_brand = #{productBrand},
@@ -981,6 +987,7 @@ SET
     option_name = #{optionName},
     option_value = #{optionValue}
 WHERE product_code = #{productCode}
+and option_code = #{optionCode}
 </update>
     
     
@@ -999,6 +1006,7 @@ SET
     option_sell_status = 'Y',
     option_exstatus = 'Y'
 WHERE product_code = #{productCode}
+and option_detail_code =#{optionDetailCode}
 </update>
     
     
@@ -1007,11 +1015,21 @@ WHERE product_code = #{productCode}
 <update id="updateProductImg" parameterType="ImgsVO">
 UPDATE ar_imgs
 SET
+	<if test="imgOrder != null">
     img_order = #{imgOrder},
+    </if>
+    <if test="imgName != null">
     img_name = #{imgName},
+    </if>
+    <if test="uploadName != null">
     upload_name = #{uploadName},
+    </if>
+    <if test="imgContent != null">
     img_content = #{imgContent},
+    </if>
+    <if test="uploadPath != null">
     upload_path = #{uploadPath}
+    </if>
 WHERE product_code = #{productCode}
 </update>
 
