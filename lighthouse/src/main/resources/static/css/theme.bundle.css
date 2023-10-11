@@ -42585,6 +42585,91 @@ a.text-decoration-underline:hover {
 .simplebar-scrollbar {
     background-color: #1f1f1f
 }
+.prod-inquiry-item__label {
+    left: 1em;
+    background-color: #777;
+}
+
+.searchDate{
+	margin-top:20px;
+}
+
+
+.prod-inquiry-item__reply__label {
+    left: 2.2em;
+    background-color: #346aff;
+    
+}
+
+.prod-inquiry-item__label, .prod-inquiry-item__reply__label {
+    top: 20px;
+    display: inline-block;
+    padding: 4px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #fff;
+}
+.prod-inquiry-item__wrap {
+    padding: 20px 10px 20px 4em;
+}
+
+._1Vof48UxmD_oVRNwPvxck {
+	background-color: rgb(248, 249, 250);
+	padding : 20px;
+}
+.pb-12{
+	background-color: rgb(248, 249, 250);
+	padding : 20px;
+	margin-top : 20px;
+}
+.scroller {
+	height: 100%
+}
+
+.scroller, .scroller-x {
+	white-space: pre-line;
+	overflow: auto;
+	position: relative
+}
+
+.scroller-x {
+	width: 80%
+}
+
+
+._KqV0-1BSnB {
+	float:left;
+}
+
+.detailSea {
+	display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right : 300px;
+    
+}
+._4LshyCrDpi, ._3y2h2mGnkI, ._MN8nIh0X4y {
+    margin-left: 10px; /* 왼쪽 여백 추가 (선택적으로 조절) */
+    margin-top: 50px;
+    
+}
+#orderSearch {
+ 	display: block; /* 블록 요소로 표시합니다. */
+    margin: 0 auto; /* 가로 중앙 정렬을 위해 margin을 자동으로 설정합니다. */
+    margin-top: 20px; /* 위쪽 여백을 추가합니다. */
+    line-height: 36px;
+    font-size: 14px !important;
+    box-sizing: border-box;
+    cursor: pointer;
+    width : 100px;
+    background-color: skyblue;
+}
+button, input{
+	display: inline-block;
+    border: 1px solid;
+    background-color: #fff;
+    margin : 10px;
+}
 
 /*# sourceMappingURL=theme.bundle.css.map*/
 
