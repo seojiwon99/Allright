@@ -2269,6 +2269,23 @@
                $(".Mdetail").append(detailData.content);
             }
          })
+         
+         // 정지여부체크
+         $.ajax({
+        	 url:"",
+        	 type:"",
+        	 success : function(result){
+        		if(result == 1){
+        			
+        		}else{
+        			alert("정지된 계정입니다.");
+        		}
+        	 },
+        	 error : function(err){
+        		 
+        	 }
+        	 
+         })
       </script>
 
 
