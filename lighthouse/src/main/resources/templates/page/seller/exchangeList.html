@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
    xmlns:th="http://www.thymeleaf.org"
    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-   layout:decorate="~{layouts/insertModifyPro}">
+   layout:decorate="~{layouts/sellerHtml}">
 
 <!-- Content -->
 
@@ -11,51 +11,55 @@
 
 
 
-            <div class="_1Vof48UxmD _oVRNwPvxck">
-               <div class="_KqV0-1BSnB">
-                  <button type="button" id="todayBtn" class="btn btn-primary2">
-                     <span id="today">오늘</span>
-                  </button>
-                  <button type="button" id="weekBtn" class="btn btn-primary2">
-                     <span id="week">1주일</span>
-                  </button>
-                  <button type="button" id="oneMonthBtn" class="btn btn-primary2">
-                     <span id="onemonth">1개월</span>
-                  </button>
-                  <button type="button" id="threeMonthBtn"
-                     class="btn btn-primary2">
-                     <span id="thmonth">3개월</span>
-                  </button>
+            <div class="_1Vof48UxmD_oVRNwPvxck">
+							
+								<div class="_KqV0-1BSnB">
+									<button type="button" id="todayBtn" class="btn btn-primary2">
+										<span id="today">오늘</span>
+									</button>
+									<button type="button" id="weekBtn" class="btn btn-primary2">
+										<span id="week">1주일</span>
+									</button>
+									<button type="button" id="oneMonthBtn" class="btn btn-primary2">
+										<span id="onemonth">1개월</span>
+									</button>
+									<button type="button" id="threeMonthBtn"
+										class="btn btn-primary2">
+										<span id="thmonth">3개월</span>
+									</button>
 
-                  <div id="dateDisplay"></div>
+									<div id="dateDisplay"></div>
+									<div class="searchDate">
+										<span>조회기간</span> <input type="DATE" id="from" name="from"
+											autocomplete="off"> <label for="to">~</label> <input
+											type="DATE" id="to" name="to" autocomplete="off">
+									</div>
+								</div>
+							
 
-                  <label class="_MN8nIh0X4y">상세조건</label> <select
-                     class="_4LshyCrDpi" title="리스트 보기">
-                     <option selected value="">전체</option>
-                     <option value="member_name">구매자명</option>
-                     <option value="member_tel">구매자연락처</option>
-                     <option value="member_id">구매자ID</option>
-                     <option value="product_code">주문번호</option>
-                     <option value="delivery_number">송장번호</option>
-                  </select> <input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
-                  <div class="searchDate">
-                     <span>조회기간</span> <input type="DATE" id="from" name="from"
-                        autocomplete="off"> <label for="to">~</label> <input
-                        type="DATE" id="to" name="to" autocomplete="off">
-                  </div>
-               </div>
-            </div>
 
-            <button type="button" id="orderSearch">검색</button>
-            <section class="pb-12" style="border: 1px">
-               <div class="orderBtn" style="margin: 20px;">
-                  <input type="button" id="returnOk" value="반품승인"
-                     style="background-color: yellow;"> <input type="button"
-                     id="returnRejectBtn" value="반품거부" style="background-color: red;">
-                  <input type="button" id="exchangeOk" value="교환승인"
-                     style="background-color: yellow;"> <input type="button"
-                     id="exchangeRejectBtn" value="교환거부"
-                     style="background-color: red;">
+							<div class="detailSea">
+									<label class="_MN8nIh0X4y">상세조건</label> <select
+										class="_4LshyCrDpi" title="리스트 보기">
+										<option selected value="">전체</option>
+										<option value="member_name">구매자명</option>
+										<option value="member_tel">구매자연락처</option>
+										<option value="member_id">구매자ID</option>
+										<option value="product_code">상품코드</option>
+										<option value="delivery_number">송장번호</option>
+									</select> 
+									<input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
+							</div>
+									
+									
+							<button type="button" id="orderSearch">검색</button>
+							</div>
+							
+            <section class="pb-12">
+                  <button type="button" id="returnOk" value="반품승인"
+                     style="background-color: yellow;">반품승인</button>
+                  <button type="button" id="exchangeOk" value="교환승인"
+                     style="background-color: yellow;">교환승인</button>
 
                   <div
                      style="width: 100%; height: 300px; overflow: auto; border: 1px;">
@@ -131,11 +135,8 @@
                         </tbody>
                      </table>
                   </div>
-               </div>
             </section>
          </div>
-      </div>
-   </div>
 
 
    <script>

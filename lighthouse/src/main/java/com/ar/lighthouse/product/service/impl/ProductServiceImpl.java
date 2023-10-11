@@ -314,15 +314,20 @@ public class ProductServiceImpl implements ProductService {
 				for (int i = 0; i < productVO.getOption().size(); i++) {
 
 //               
-					// System.out.println(productVO.getOption().get(i));
-					//if(productVO.getOption().get(i).getOptionCode() == null) {
+					 System.out.println(productVO.getOption().get(i));
+					if(productVO.getOption().get(i).getOptionCode() == null) {
 					//	insert
-					//}else {
+						productVO.getOption().get(i).setProductCode(code);
+						System.out.println(productVO.getOption().get(i));
+						productMapper.insertOption(productVO.getOption().get(i));
+						
+					}else {
 					//  update
-					//}
-					productVO.getOption().get(i).setProductCode(code);
-					System.out.println(productVO.getOption().get(i));
-					productMapper.updateOption(productVO.getOption().get(i));
+						productVO.getOption().get(i).setProductCode(code);
+						System.out.println(productVO.getOption().get(i));
+						productMapper.updateOption(productVO.getOption().get(i));
+					}
+					
 
 					// System.out.println(productVO.getOption().get(i));
 				}

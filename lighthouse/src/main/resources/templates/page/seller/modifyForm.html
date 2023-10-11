@@ -537,14 +537,15 @@
                      
                      
                      let optionN = $('<input name="option[' + i +
-                        '].optionName" class="optionN form-control" type="text" id="optionName' + i + '"/>');
+                    		    '].optionName" class="optionN form-control" type="text" id="optionName' + i + '"/>');
+                              optionN.val('${product[0].option[' + i + '].optionName}');
 
-                     var originalString = '[[${product[0].option[0].optionName}]]';
+                    /*  var originalString = '[[${product[0].option[0].optionName}]]';
 
 	                  var splitArray = originalString.split('"');
 
 	                  var desiredPart = splitArray[1];
-                     optionN.val(desiredPart);
+                     optionN.val(desiredPart); */
                      
                      div.append(optionN);
                      $('.optionB').append(div);
@@ -555,20 +556,22 @@
                      span.addClass("input-group-text");
                      div.append(span);
                      let optionV = $('<input name="option[' + i +
-                        '].optionValue" class="optionV form-control" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' + i +
-                        '" />');
+                     '].optionValue" class="optionV form-control" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' + i + '" />');
+                      optionV.val('${product[0].option[' + i + '].optionValue}');
 
-                     var originalString = '[[${product[0].option[0].optionValue}]]';
+                     /* var originalString = '[[${product[0].option[0].optionValue}]]';
 
 	                  var splitArray = originalString.split('"');
 
 	                  var desiredPart = splitArray[1];
-                     optionV.val(desiredPart);
+                     optionV.val(desiredPart); */
+                     
                      div.append(optionV);
                      
                      let optionCode = '[[${product[0].option[0].optionCode}]]';
                      let optionCodeInput =$('<input name="option[' + i +
                     	        '].optionCode" class="optionCode visually-hidden form-control" type="text" id="optionCode' + i + '" />');
+                    
                      
                      optionCodeInput.val(optionCode);
 					console.log(optionCode);
@@ -595,11 +598,18 @@
                $('.optionsel').on('change', function (e) {
             	   
                   let val = $(this).val();
-                  
-                  let optionNlass =$('.optionN').val();
-                  let optionVlass =$('.optionV').val();
-                  console.log(optionNlass);
-                  console.log(optionVlass);
+                  var optionNames = [];
+                  var optionValues = [];
+                  for (var i = 0; i < val; i++) {
+                     var inputName = $('input[name="option[' + i + '].optionName"]').val();
+                     var inputValue =$('input[name="option[' + i + '].optionValue"]').val();
+                     optionNames.push(inputName);
+                     optionValues.push(inputValue);
+                  }
+                  console.log(optionValues);
+                  console.log(optionNames);
+                  //let optionNlass =$('.optionN').val();
+                  //let optionVlass =$('.optionV').val();
                   $('.optionB').children().remove();
                   $('#optiontab').children().remove();
                   if (val != 0) {
@@ -623,6 +633,7 @@
                      div.append(span);
                      let optionN = $('<input name="option[' + i +
                         '].optionName" class="optionN form-control" type="text" id="optionName' + i + '"/>');
+                        optionN.val(optionNames[i]);
 
                      // let div = $('<div/>').addClass("optionDiv col-md-6");
                      // let labelN = $("<label> /").text("옵션이름");
@@ -639,6 +650,7 @@
                      let optionV = $('<input name="option[' + i +
                         '].optionValue" class="optionV form-control" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' + i +
                         '" />');
+                        optionV.val(optionValues[i]);
 
                      div.append(optionV);
                      divBox.append(div);
