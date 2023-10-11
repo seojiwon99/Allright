@@ -247,8 +247,8 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<OptionDetailVO> getOptionDetail(OptionVO optionVO) {
-		return productMapper.selectOptionDetail(optionVO);
+	public List<OptionDetailVO> getOptionDetail(OptionDetailVO optionDetailVO) {
+		return productMapper.selectOptionDetail(optionDetailVO);
 	}
 
 

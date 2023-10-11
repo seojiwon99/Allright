@@ -105,7 +105,7 @@ public interface ProductService {
 	public List<OptionVO> getOptionList(OptionVO optionVO);
 	
 	// 옵션 디테일
-	public List<OptionDetailVO> getOptionDetail(OptionVO optionVO);
+	public List<OptionDetailVO> getOptionDetail(OptionDetailVO optionDetailVO);
 	
 	// 택배사 코드 가져오기
 	List<CodeVO> getDeliveryList();

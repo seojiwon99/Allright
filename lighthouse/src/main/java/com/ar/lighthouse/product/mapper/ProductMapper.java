@@ -132,7 +132,7 @@ public interface ProductMapper {
 	// 옵션리스트
 	public List<OptionVO> selectOptionList(OptionVO optionVO);
 
-	public List<OptionDetailVO> selectOptionDetail(OptionVO optionVO);
+	public List<OptionDetailVO> selectOptionDetail(OptionDetailVO optionDetailVO);
 	
 	public int deleteOrderSelf(DetailVO detailVO);
 	
