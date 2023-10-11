@@ -293,7 +293,7 @@ public class ProductServiceImpl implements ProductService {
 
 		if (result > 0) {
 			String code = productVO.getProductCode();
-			if (productVO.getOption() == null || productVO.getOption().size() == 0) {
+			if (productVO.getOption() == null || productVO.getOption().size() == 0 ||productVO.getOptionDetail() ==null || productVO.getOptionDetail().size() == 0) {
 				System.out.println("@@@@@@@@@@@@@@@@");
 				OptionVO noptionVO = new OptionVO();
 				noptionVO.setProductCode(code);

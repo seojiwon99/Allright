@@ -576,10 +576,10 @@ public class ProductController {
 		System.out.println("files@@@" + files);
 		for (MultipartFile uploadFile : files) {
 			System.out.println("@@@@@@@@@@");
-			if (uploadFile.getContentType().startsWith("image") == false) {
-				System.err.println("this file is not image type");
-				return null;
-			}
+			/*
+			 * if (uploadFile.getContentType().startsWith("image") == false) {
+			 * System.err.println("this file is not image type"); return null; }
+			 */
 			String originalName = uploadFile.getOriginalFilename();
 			String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
 			productVO.getProductImg().get(i).setImgName(fileName);
