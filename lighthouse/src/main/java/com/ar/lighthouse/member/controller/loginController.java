@@ -82,31 +82,31 @@ public class loginController {
 	
 	
 	//로그인
-	@PostMapping("page/member/login")
-	@ResponseBody
-	public String login(@RequestBody MemberVO memberVO, HttpServletRequest request) {
-		//
-		
-		System.out.println(memberVO);
-		MemberVO loginVO = memberService.memberLogin(memberVO);
-		System.out.println("loginVO = " + loginVO);
-		if(loginVO.getMemberId() == null) {
-			return "fail";
-		}
-		if(passwordEncoder.matches(memberVO.getMemberPw(), loginVO.getMemberPw())) {
-			HttpSession session = request.getSession();
-			session.setAttribute("loginMember", loginVO);
-			return "success";
-		}else{
-			return "fail";
-		}
-	}
-	//로그아웃
-	@PostMapping("logout")
-	@ResponseBody
-	public void logout(HttpSession session) {
-		session.invalidate();
-	}
+//	@PostMapping("page/member/login")
+//	@ResponseBody
+//	public String login(@RequestBody MemberVO memberVO, HttpServletRequest request) {
+//		//
+//		
+//		System.out.println(memberVO);
+//		MemberVO loginVO = memberService.memberLogin(memberVO);
+//		System.out.println("loginVO = " + loginVO);
+//		if(loginVO.getMemberId() == null) {
+//			return "fail";
+//		}
+//		if(passwordEncoder.matches(memberVO.getMemberPw(), loginVO.getMemberPw())) {
+//			HttpSession session = request.getSession();
+//			session.setAttribute("loginMember", loginVO);
+//			return "success";
+//		}else{
+//			return "fail";
+//		}
+//	}
+//	//로그아웃
+//	@PostMapping("logout")
+//	@ResponseBody
+//	public void logout(HttpSession session) {
+//		session.invalidate();
+//	}
 	
 	//비밀번호 수정 폼
 	@PostMapping("page/member/editPasswordForm")
