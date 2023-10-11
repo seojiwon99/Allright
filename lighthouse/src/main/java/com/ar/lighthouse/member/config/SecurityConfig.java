@@ -19,7 +19,7 @@ public class SecurityConfig{
         http
 			.csrf().disable()
     		.authorizeHttpRequests((requests) -> requests	
-    		.antMatchers("/", "/login/**","/common/**","/fonts/**","/startbootstrap/**", "/css/**", "/js/**", "/img/**").permitAll()
+    		.antMatchers("/", "/login/**","/common/**","/fonts/**","/startbootstrap/**", "/css/**", "/js/**", "/img/**", "/upload/**").permitAll()
 //    		//
 //    		.antMatchers("/admin/**").hasAuthority("ROLE_4")
 //    		.antMatchers("/page/buyer/orderList").authenticated()
