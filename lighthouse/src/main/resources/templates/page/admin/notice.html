@@ -51,7 +51,7 @@
 					</tr>
 					</thead>
 					<tbody>
-					<tr th:each="notice : ${noticeList}" th:onclick="|location.href='@{/admin/noticeDetail(noticeCode=${notice.noticeCode})}'|">
+					<tr th:each="notice : ${noticeList}" th:onclick="|location.href='@{/admin/noticeDetail(noticeCode=${notice.noticeCode})}'|" style="cursor : pointer">
 					
 						<td scope="row" th:switch="${notice.noticeType}">
 						  <span  th:case="'Y'">[공지]</span>
@@ -107,6 +107,15 @@
 	$('#noticeSearchBtn').on('click', function(){
 		let url = "?noticeTitle=" + $('#noticeSearchBar').val()
 		location.href =  url;
+	})
+	$('#noticeSearchBar').on('keydown', function(e){
+		if(e.key == 'Enter') {
+			e.preventDefault();
+			let nowURL = new URL(location.href);
+			nowURL.searchParams.set('pageNum',1);
+			nowURL.searchParams.set('noticeTitle',$('#noticeSearchBar').val());
+			location.href = nowURL.href;
+		}
 	})
 </script>      
 </div>

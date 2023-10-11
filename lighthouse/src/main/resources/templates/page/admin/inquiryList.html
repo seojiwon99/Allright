@@ -52,7 +52,7 @@
 			    </tr>
 			  </thead>
 			  <tbody>
-			    <tr th:each="inq : ${inqList}"  th:onclick="|location.href='@{/admin/inquiryDetail(customInquiryCode=${inq.customInquiryCode})}'|" >
+			    <tr th:each="inq : ${inqList}"  th:onclick="|location.href='@{/admin/inquiryDetail(customInquiryCode=${inq.customInquiryCode})}'|" style="cursor : pointer">
 					
 						<td scope="row" th:text="${inq.customInquiryCode}"></td>
 						<td th:text="${inq.customInquiryTitle}"></td>

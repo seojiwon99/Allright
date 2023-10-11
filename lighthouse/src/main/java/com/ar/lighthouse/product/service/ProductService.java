@@ -113,7 +113,11 @@ public interface ProductService {
 	//취소 승인 시 승인 여부 Y로 변경 - 석연
 	public int editCancelOk(String cancelCode);
 	
+
+	public int editReturnOk(String returnCode);
+
 	// 신고 체크
 	public Map<String, Object> sellerChk(String memberId);
+
 	
 }

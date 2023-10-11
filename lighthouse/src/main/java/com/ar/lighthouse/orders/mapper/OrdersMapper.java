@@ -25,10 +25,10 @@ public interface OrdersMapper {
 	public List<CodeVO> selectCode();
 	
 	//사용기한 지난 쿠폰 사용N으로 변경 사용불가 구현, 결제 시 사용한 쿠폰 N으로 변경
-	public int updatetNotCoupon(String memberId, int mycouponCode); 
+	public int updatetNotCoupon(String memberId, int couponCode); 
 	 
 	//환불 받은 상품의 쿠폰 Y로 사용 가능 변경
-	public int updateRefundCoupon(String memberId, int mycouponCode);
+	public int updateRefundCoupon(String memberId, int couponCode);
 	
 	//토스페이먼츠 결제 DB 데이터 저장
 	public int insertCredit(CreditVO creditVO);
