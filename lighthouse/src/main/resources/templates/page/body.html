@@ -43,7 +43,7 @@
 			<!-- Item -->
 			<div class="col px-4" style="max-width: 200px; max-height: 300px;"
 				th:each="product : ${productList}">
-				<div class="card" style="border: 1px solid grey; border-radius: 6px" tabindex="0" id="slideCard">
+				<div class="card slideCard" style="border: 1px solid grey; border-radius: 6px" tabindex="0" id="slideCard">
 					
 					<!-- Image -->
 					<div class="card-img">
@@ -83,7 +83,8 @@
 								display: inline-block;
 								white-space : nowrap;
 								overflow : hidden;
-								text-overflow : ellipsis;">상품이름</div>
+								text-overflow : ellipsis;
+								cursor : pointer">상품이름</div>
 							<div class="fw-bold text-muted fs-xxs">
 								<th:block th:if="${(product.salePrice).equals(product.productCost)}">
 									<span class="text-primary" th:text="|${#numbers.formatInteger(product.salePrice,3,'COMMA')}|"></span>
@@ -127,7 +128,7 @@
 						<!-- Image -->
 						<div class="card-img" 
 							id="productOneImg">
-							<a class="d-block w-100 card-img-hover" th:href="|/goodDetail?productCode=${product.productCode}|"> <img class="card-img-top card-img w-100"
+							<a class="d-block w-100 card-img-hover" id="sellerCard"th:href="|/goodDetail?productCode=${product.productCode}|"> <img class="card-img-top card-img w-100"
 								th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px;" />
 							</a>
 							<!-- Actions -->
@@ -203,9 +204,9 @@
 
 					<!-- Nav -->
 					<div class="nav justify-content-center mb-10">
-						<a class="nav-link active" href="#topSellersFassionTab" data-bs-toggle="tab">Fassion</a>
-						<a class="nav-link" href="#topSellersFOODTab" data-bs-toggle="tab">Food</a>
-					 	<a class="nav-link" href="#topSellersLifeTab" data-bs-toggle="tab">Life</a>
+						<a class="nav-link active" id="topFassion" href="#topSellersFassionTab" data-bs-toggle="tab">Fassion</a>
+						<a class="nav-link" id="topFOOD" href="#topSellersFOODTab" data-bs-toggle="tab">Food</a>
+					 	<a class="nav-link" id="topLife" href="#topSellersLifeTab" data-bs-toggle="tab">Life</a>
 					</div>
 				</div>
 			</div>
@@ -219,7 +220,7 @@
 								<!-- Image -->
 								<div class="card-img">
 									<!-- Image -->
-									<a class="card-img-hover" th:href="|/goodDetail?productCode=${product.productCode}|">
+									<a class="card-img-hover" id="bestCard" th:href="|/goodDetail?productCode=${product.productCode}|">
 										<img class="card-img-top card-img w-100"
 										th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px"/>
 									</a>
@@ -291,7 +292,7 @@
 								<!-- Image -->
 								<div class="card-img">
 									<!-- Image -->
-									<a class="card-img-hover" th:href="|/goodDetail?productCode=${product.productCode}|">
+									<a class="card-img-hover" id="bestCard" th:href="|/goodDetail?productCode=${product.productCode}|">
 										<img class="card-img-top card-img w-100"
 										th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px"/>
 									</a>
@@ -362,7 +363,7 @@
 								<!-- Image -->
 								<div class="card-img">
 									<!-- Image -->
-									<a class="card-img-hover" th:href="|/goodDetail?productCode=${product.productCode}|">
+									<a class="card-img-hover" id="bestCard" th:href="|/goodDetail?productCode=${product.productCode}|">
 										<img class="card-img-top card-img w-100"
 										th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px" />
 									</a>
@@ -729,17 +730,52 @@
     					VoiceMenual('전체 상품 목록 페이지로 이동');
     				}
     				if(focusNow.id == 'FassionHyper'){
-    					VoiceMenual('의류 카테고리의 상품 목록 페이지로 이동');
+    					VoiceMenual('의류 카테고리의 상품 목록 페이지로 이동. 현재 페이지의 마지막 부분입니다.');
     				}
     				if(focusNow.id == 'FoodHyper'){
-    					VoiceMenual('음식 카테고리의 상품 목록 페이지로 이동');
+    					VoiceMenual('음식 카테고리의 상품 목록 페이지로 이동. 현재 페이지의 마지막 부분입니다.');
     				}
     				if(focusNow.id == 'LifeHyper'){
-    					VoiceMenual('생활용품 카테고리의 상품 목록 페이지로 이동');
+    					VoiceMenual('생활용품 카테고리의 상품 목록 페이지로 이동. 현재 페이지의 마지막 부분입니다.');
     				}
     				if(focusNow.id == 'slideCard'){
-    					VoiceMenual('hi');
+    					let textbox = $(':focus').children()[1]
+    					let texts = $(textbox).children().children();
+    					let title = texts[0].innerText;
+    					let price = $(texts[1]).children()[1].innerText;
+    					let msg = `상품이름. ${title}. 가격.${price}원 `;
+    					VoiceMenual(msg);
     				}
+    				if(focusNow.id == 'sellerCard'){
+    					let titlebox = $(':focus').parent().next().children()[1];
+    					let pricebox = $(':focus').parent().next().children()[2];
+    					let title = $(titlebox).children()[0].innerText;
+    					let priceSize = $(pricebox).children().length-2;
+    					let price = $(pricebox).children()[priceSize].innerText;
+    					let msg = `상품이름. ${title}. 가격.${price}원 `;
+    					VoiceMenual(msg);
+    				}
+    				if(focusNow.id == 'bestCard'){
+    					let titlebox = $(':focus').parent().next().children()[1];
+    					let pricebox = $(':focus').parent().next().children()[2];
+    					let title = $(titlebox).children()[0].innerText;
+    					let priceSize = $(pricebox).children().length-2;
+    					let price = $(pricebox).children()[priceSize].innerText;
+    					let msg = `상품이름. ${title}. 가격.${price}원 `;
+    					VoiceMenual(msg);
+    				}
+    				if(focusNow.id == 'topFassion'){
+    					let msg ='Fassion 베스트 셀러 입니다. 엔터키를 누르면 하단에 표기됩니다.'
+    					VoiceMenual(msg);
+    				}
+					if(focusNow.id == 'topFOOD'){
+						let msg ='음식 베스트 셀러 입니다. 엔터키를 누르면 하단에 표기됩니다.'
+    					VoiceMenual(msg);					
+    				}
+					if(focusNow.id == 'topLife'){
+						let msg ='생활용품 베스트 셀러 입니다. 엔터키를 누르면 하단에 표기됩니다.'
+    					VoiceMenual(msg);
+					}
     			}
 	    	})
 	    	
@@ -749,6 +785,13 @@
 	    	$('.flickity-prev-next-button').attr('tabindex', -1);
 	    	$('.flickity-page-dot').attr('tabindex', -1);
 	    	$('.flickity-page-dots-progress').attr('tabindex', -1);
+	    	
+	    	$('.slideCard').on('keyup', function(e){
+				if(e.key == 'Enter'){
+					console.log($(this).find('a'))
+					$(this).find('a').trigger('click');
+				}	    		
+    		})
 	    }// TTS if문
     } 
     </script>
