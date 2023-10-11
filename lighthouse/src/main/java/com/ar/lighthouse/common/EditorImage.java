@@ -85,7 +85,7 @@ public class EditorImage {
             	// uploaded, url 값을 modelandview를 통해 보냄
             	// mav.setViewName("productContent");
             	mav.addObject("uploaded", true); // 업로드 완료
-            	mav.addObject("url", "upload/" +save); // 업로드 파일의 경로
+            	mav.addObject("url", "/upload/" +save); // 업로드 파일의 경로
             	
             	list.add(imgVO);
             }

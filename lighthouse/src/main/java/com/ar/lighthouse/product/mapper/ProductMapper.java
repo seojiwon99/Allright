@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ar.lighthouse.admin.service.MemberDetailVO;
+import com.ar.lighthouse.admin.service.SuspendVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.common.CodeVO;
@@ -131,14 +132,18 @@ public interface ProductMapper {
 	// 옵션리스트
 	public List<OptionVO> selectOptionList(OptionVO optionVO);
 
-	public List<OptionDetailVO> selectOptionDetail(OptionVO optionVO);
+	public List<OptionDetailVO> selectOptionDetail(OptionDetailVO optionDetailVO);
 	
 	public int deleteOrderSelf(DetailVO detailVO);
 	
 	//취소 승인 시 Y로 승인 상태 변경 - 석연
 	public int updateCancelOk(String cancelCode);
-	
+
 	//반품 승인 시 Y로 승인 상태 변경 - 석연
 	public int updateReturn(String returnCode);
+
+	// 정지 체크
+	public SuspendVO sellChk(String memberId);
+
 
 }

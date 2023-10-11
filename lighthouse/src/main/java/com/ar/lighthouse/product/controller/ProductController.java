@@ -382,7 +382,7 @@ public class ProductController {
    }
 
 //  상품상세설명등록 페이지
-   @GetMapping("productContent")
+   @GetMapping("seller/productContent")
    public String productContent() {
       return "page/seller/productContent";
    }
@@ -422,7 +422,7 @@ public class ProductController {
    }
 
    // 등록폼
-   @GetMapping("insertProduct")
+   @GetMapping("seller/insertProduct")
    public String productForm(Model model, CategoryVO categoryVO, CodeVO codeVO) {
       model.addAttribute("getCategoryList", mainPageService.getAllCategoryList());
       model.addAttribute("delivery", productService.getDeliveryList());
@@ -490,7 +490,7 @@ public class ProductController {
 	 */
 
    // 상품 등록
-	@PostMapping("insertProduct")
+	@PostMapping("/insertProduct")
 	public String addProduct(List<MultipartFile> files, ProductVO productVO, HttpServletRequest req,
 			RedirectAttributes rtt, ImgsListVO imgsVO) {
 		HttpSession session = req.getSession();
@@ -557,7 +557,7 @@ public class ProductController {
 		}
 		rtt.addFlashAttribute("msg", "등륵성공");
 
-		return "redirect:productList";
+		return "redirect:/seller/productList";
 	}
 
 //   상품수정
@@ -570,10 +570,10 @@ public class ProductController {
 		productVO.setMemberId(memberVO.getMemberId());
 
 		// productVO.setCategoryCode("MSU");
-		System.out.println(productVO);
+		System.out.println("왜" + productVO);
 		productService.updateProductP(productVO);
-
 		int i = 0;
+		System.out.println("files@@@" + files);
 		for (MultipartFile uploadFile : files) {
 			System.out.println("@@@@@@@@@@");
 			if (uploadFile.getContentType().startsWith("image") == false) {
@@ -987,9 +987,9 @@ public class ProductController {
 		// 옵션 조회
 		optionVO.setProductCode(productCode);
 		model.addAttribute("options", productService.getOptionList(optionVO));
-		model.addAttribute("optionDetail", productService.getOptionDetail(optionVO));
+		model.addAttribute("optionDetail", productService.getOptionDetail(optionDetailVO));
 		// 장바구니
-		System.out.println("aaaaa" + productService.getOptionDetail(optionVO));
+		System.out.println("aaaaa111111" + productService.getOptionDetail(optionDetailVO));
 
 		return "page/goods/goodDetail";
 	}
@@ -1050,5 +1050,17 @@ public class ProductController {
       rttr.addFlashAttribute("productCode", productVO.getProductCode());
       System.out.println("@@@@@@@@@@@@@" + productVO);
       return "redirect:/updateProduct?productCode=" + productVO.getProductCode();
+   }
+   
+   // 정지여부
+   @PostMapping("sellerChk")
+   @ResponseBody
+   public Map<String,Object> sellerChk(HttpServletRequest req){
+	 
+	   HttpSession session = req.getSession();
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		Map<String,Object> map = productService.sellerChk(memberVO.getMemberId());
+		
+		return map;
    }
 }

@@ -113,7 +113,7 @@
    <select id="selectOrderDetail" resultMap="selectOrderDetail">
       SELECT
       o.order_detail_code,
-      o.order_code
+      o.order_code,
       delivery_code_name(o.order_status) AS
       order_status,
       p.product_name,
@@ -813,66 +813,63 @@ ORDER BY EXTRACT(MONTH FROM order_date)
       WHERE order_detail_code =
       #{orderDetailCode}
    </update>
+     
+	<!-- 상품등록 OptionVO,ProductVO -->
+	<insert id="insertProduct"
+		parameterType="com.ar.lighthouse.product.service.ProductVO">
+		<selectKey order="BEFORE" keyProperty="productCode"
+			resultType="String">
+			SELECT 'P' ||
+			to_char(LPAD(NVL(max(to_number(substr(product_code,-5))),0)+1,5,'0'))
+			FROM ar_products
+		</selectKey>
+		INSERT INTO ar_products (
+			product_code
+			, member_id
+			, category_code
+			, product_name
+			, product_content
+			, product_location
+			, product_cost
+			, sale_price
+			, product_brand
+			, product_origin
+			, product_makeorigin
+			, delivery_cost
+			, return_cost
+			, exchange_cost
+			, delivery_service
+			, product_exstatus
+			
+		)
+		VALUES ( #{productCode}
+			, #{memberId}
+			, #{categoryCode}
+			, #{productName}
+			, #{productContent}
+			, #{productLocation}
+			, #{productCost}
+			, #{salePrice}
+			, #{productBrand}
+			, #{productOrigin}
+			, #{productMakeorigin}
+			, #{deliveryCost}
+			, #{returnCost}
+			, #{exchangeCost}
+			, #{deliveryService}
+			<choose>
+				<when test="productExstatus != null">
+					,#{productExstatus}
+				</when>
+				<otherwise>
+					,'Y'
+				</otherwise>
+			</choose>
+		)
+	</insert>
 
 
-
-
-   <!-- 상품등록 OptionVO,ProductVO -->
-   <insert id="insertProduct"
-      parameterType="com.ar.lighthouse.product.service.ProductVO">
-      <selectKey order="BEFORE" keyProperty="productCode"
-         resultType="String">
-         SELECT 'P' ||
-         to_char(LPAD(NVL(max(to_number(substr(product_code,-5))),0)+1,5,'0'))
-         FROM ar_products
-      </selectKey>
-      INSERT INTO ar_products (
-         product_code
-         , member_id
-         , category_code
-         , product_name
-         , product_content
-         , product_location
-         , product_cost
-         , sale_price
-         , product_brand
-         , product_origin
-         , product_makeorigin
-         , delivery_cost
-         , return_cost
-         , exchange_cost
-         , delivery_service
-         , product_exstatus
-         
-      )
-      VALUES ( #{productCode}
-         , #{memberId}
-         , #{categoryCode}
-         , #{productName}
-         , #{productContent}
-         , #{productLocation}
-         , #{productCost}
-         , #{salePrice}
-         , #{productBrand}
-         , #{productOrigin}
-         , #{productMakeorigin}
-         , #{deliveryCost}
-         , #{returnCost}
-         , #{exchangeCost}
-         , #{deliveryService}
-         <choose>
-            <when test="productExstatus != null">
-               ,#{productExstatus}
-            </when>
-            <otherwise>
-               ,"Y"
-            </otherwise>
-         </choose>
-      )
-   </insert>
-
-
-   <!-- 상품 옵션 등록 -->
+	<!-- 상품 옵션 등록 -->
    <insert id="insertOption" parameterType="OptionVO">
       <selectKey resultType="long" keyProperty="optionCode" order="BEFORE">
          SELECT NVL(MAX(option_code),0)+1
@@ -961,12 +958,16 @@ ORDER BY EXTRACT(MONTH FROM order_date)
 <update id="updateProduct" parameterType="ProductVO">      
 UPDATE ar_products
 SET
-    product_code = #{productCode},
-    member_id = #{memberId},
+	<if test="categoryCode != null">
     category_code = #{categoryCode},
+    </if>
     product_name = #{productName},
+    <if test="productContent != null">
     product_content = #{productContent},
+    </if>
+    <if test="productLocation != null">
     product_location = #{productLocation},
+    </if>
     product_cost = #{productCost},
     sale_price = #{salePrice},
     product_brand = #{productBrand},
@@ -992,6 +993,7 @@ SET
     option_name = #{optionName},
     option_value = #{optionValue}
 WHERE product_code = #{productCode}
+and option_code = #{optionCode}
 </update>
     
     
@@ -1010,6 +1012,7 @@ SET
     option_sell_status = 'Y',
     option_exstatus = 'Y'
 WHERE product_code = #{productCode}
+and option_detail_code =#{optionDetailCode}
 </update>
     
     
@@ -1018,11 +1021,21 @@ WHERE product_code = #{productCode}
 <update id="updateProductImg" parameterType="ImgsVO">
 UPDATE ar_imgs
 SET
+	<if test="imgOrder != null">
     img_order = #{imgOrder},
+    </if>
+    <if test="imgName != null">
     img_name = #{imgName},
+    </if>
+    <if test="uploadName != null">
     upload_name = #{uploadName},
+    </if>
+    <if test="imgContent != null">
     img_content = #{imgContent},
+    </if>
+    <if test="uploadPath != null">
     upload_path = #{uploadPath}
+    </if>
 WHERE product_code = #{productCode}
 </update>
 
@@ -1090,4 +1103,16 @@ where member_id = #{memberId}
       </if>
 </select>
 
+
+<!-- 정지 사유 체크 -->
+<select id="sellChk" resultType="SuspendVO">
+	SELECT * 
+	  FROM ar_suspend 
+	  <![CDATA[
+	 WHERE trunc(sysdate) < susp_enddate 
+	   AND member_id = #{memberId};
+	 ]]>
+</select>
+
 </mapper>
+
