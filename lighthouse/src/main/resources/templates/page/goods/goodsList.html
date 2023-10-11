@@ -192,7 +192,7 @@
 
 							<!-- Heading -->
 							<h3 class="mb-1" th:if="${#strings.isEmpty(param.ctg)}">전체보기</h3>
-							<h3 class="mb-1" th:if="${!(#strings.isEmpty(param.ctg))}">[[${param.ctg}]]</h3>
+							<h3 class="mb-1" th:if="${!(#strings.isEmpty(param.ctg))}">카테고리</h3>
 
 
 
@@ -245,13 +245,22 @@
 							<div class="col-6 col-md-4">
 								<div class="card mb-7">
 									<div class="card-img">
-										<a class="card-img" tabindex="0"
-											th:href="|/goodsDetail/?productCode=${product.product_code}|">
+										<a class="card-img card-img-hover" tabindex="0"
+											th:href="|/goodDetail/?productCode=${product.product_code}|">
 											<img
 											th:src="|/upload/${product.upload_path}/${product.upload_name}|"
 											style="height: 250px; width: 250px">
 										</a>
-										<!-- ${product.upload_path}+${product.upload_name} -->
+										<!-- Actions -->
+										<div class="card-actions" tabindex=-1>
+											<span class="card-action" tabindex=-1>
+												<button class="btn btn-xs btn-circle btn-white-primary"
+													data-toggle="button" tabindex=-1>
+													<i class="fe fe-heart heart-icon" tabindex=-1></i>
+												</button>
+											</span>
+											<input tabindex=-1 type="hidden" class="visually-hidden" th:value="${product.product_code}">
+										</div>
 									</div>
 									<div class="card-body">
 										<!--                      <div class="fs-xs">[[${product.category_code}]]</div> -->
@@ -372,6 +381,119 @@
 		console.log(inspan)
 		inspan.before(inText);
 	}
+	
+	let urlParamCtg = [[${param.wildCtg}]]
+	let urlParamOrder = [[${param.order}]]
+	let urlParamMaxPrice = [[${param.maxPrice}]]
+	let urlParamMinPrice = [[${param.minPrice}]]
+	
+	let orderFilters = $('#seasonGroup').find('input');
+	let ctgFilters = $('.ps-5').find('input');
+	let priceFilters = $('input[type="checkbox"][name="pricefilter"]');
+	
+	//Order 저장
+	if(urlParamOrder != null){
+		$(orderFilters).each(function(idx,tag){
+			let seasons;
+			if(urlParamOrder[0] == 'new'){
+				seasons = 'seasonOne';
+			}else if(urlParamOrder[0] == 'best'){
+				seasons = 'seasonTwo';
+			}
+			if(tag.id == seasons){
+				tag.checked = true;
+			}
+		})
+	}
+	//wildCtg 저장
+	if(urlParamCtg != null){
+		$(ctgFilters).each(function(idx,tag){
+			if(tag.id == urlParamCtg[0]){
+				tag.checked = true;
+			}
+		})
+	}
+	//가격 범위 저장
+	if(urlParamMaxPrice != null && urlParamMinPrice != null){
+		let priceSize;
+		let max = urlParamMaxPrice[0];
+		let min = urlParamMinPrice[0];
+		if(min == 0 && max == 50000){
+			priceSize = 'priceOne';
+		}else if(min == 50000 && max == 100000){
+			priceSize = 'priceTwe';
+		}else if(min == 100000 && max == 200000){
+			priceSize = 'priceThree';
+		}else if(min == 200000 && max == 99999999){
+			priceSize = 'priceFour';
+		}else {
+			priceSize = 'priceRange';
+		}
+		$(priceFilters).each(function(idx,tag){
+			if(tag.id == priceSize){
+				tag.checked = true;
+			}
+		})
+	}
+	//찜 등록
+	$($('.heart-icon').parent()).on('click',function(){
+    	console.log($(this).parent().next());	
+    	let pCode = $(this).parent().next().val();
+    	console.log(pCode);
+
+	    if([[${session}]] == null){
+	    	alert('로그인이 필요한 기능입니다.')	
+	    }else{
+	    	if([[${session.loginMember}]] == null){
+	    		alert('로그인이 필요한 기능입니다.')	
+	    	}else{
+				let memId = [[${session.loginMember}]]
+				let obj = {
+					'memberId' : memId.memberId,
+					'productCode' : pCode
+				};
+		    	$.ajax({
+					url: "/buyer/checkWish",
+					type: 'GET',
+					data: obj,
+					success : function(rs){
+						console.log(rs);					
+						if(rs == 0){
+							addWishInMain(obj)
+						}else if(rs > 0 ){
+							alert('이미 찜 등록된 상품입니다.');
+						}
+					},
+					error : function(err){
+						console.log(err);
+					}
+				
+				})
+	    	}
+	    }
+    })
+    
+    function addWishInMain(obj){
+    	$.ajax({
+			url: "/buyer/addWish",
+			type: 'POST',
+			data: JSON.stringify(obj),
+			contentType : 'application/json',
+			success : function(rs){
+				console.log(rs)
+				if(confirm('찜 등록하였습니다. 찜 목록 페이지로 이동하시겠습니까?')){
+						location.href="/page/buyer/wishList";   				
+				}
+			},
+			error : function(err){
+				console.log(err);
+			}
+		
+		})
+    }
+	
+	
+	
    
 	let searchBars = document.querySelectorAll('input[type="search"]');
 	//console.log(searchBars);
@@ -406,9 +528,17 @@
 		if(prices.length>0  ){
 		let id = prices[0].id;
 			if(id == 'priceRange'){
-				if((minVal > 0 && maxVal > 0) && Number(maxVal) < Number(minVal)){ //최솟값만 입력했을 경우 가능.
-					alert('최소 가격은 최대가격보다 클 수 없습니다.');
-					return;
+				if(minVal == '' || maxVal == ''){
+					alert('값을 정확히 입력해주세요.')
+					return false;
+				}
+				if(Number(minVal) < 0 || Number(maxVal) <= 0){
+					alert('값을 정확히 입력해주세요.')
+					return false;
+				}
+				if(Number(maxVal) <= Number(minVal)){ //최솟값만 입력했을 경우 가능.
+					alert('값을 정확히 입력해주세요.');
+					return false;
 				}else{
 					minPrice = minVal;
 					maxPrice = maxVal;
@@ -557,11 +687,13 @@
    
 	let TTSIsOk = localStorage.getItem('ttsKey');
 	let sessionAuthor;
-	console.log(sessionStorage.loginMember);    		
-	if(sessionStorage.loginMember != null){
-		sessionAuthor = sessionStorage.loginMember.memberAuthor;
+	let sessionId = [[${session.loginMember}]]
+	console.log(sessionId);    		
+	if(sessionId != null){
+		sessionAuthor = sessionId.memberAuthor;
 	}
-	    
+	console.log(sessionAuthor);    
+	console.log(TTSIsOk);
   	function ttsInit(){
 	   	if(TTSIsOk == null || sessionAuthor == 3){
 	   		
@@ -688,6 +820,9 @@
 			let firstMsg = "상품 목록 페이지입니다. 메뉴얼을 들으신 후 alt 키와 함께 해당 메뉴얼의 번호를 눌러주세요.";
 			let message =  firstMsg + $('#PListMenual').val();
 	    	VoiceMenual(message);
+		}else{
+			let message =  $('#PListMenual').val();
+	    	VoiceMenual(message);
 		}
 		
 	
@@ -759,14 +894,14 @@
 						VoiceMenual(msg);
 					}else{
 						if($(':focus')[0].className == 'card-img'){
-							console.log('YES');
-							productTTS;
+							console.log('no...');
 							return;
 						};
 						if($($(':focus')[0].labels).length>0){
 							let choiceUp = $(':focus').parent().parent().parent().prev()[0].innerText;
 							let choiceNow = $(':focus')[0].labels[0].innerText;
 							let choiceMsg = `${choiceUp}의 ${choiceNow}`
+							console.log('label');
 							VoiceMenual(choiceMsg);
 						}else{
 							if($(':focus')[0].id == 'priceRange'){
@@ -779,8 +914,6 @@
 								VoiceMenual(choiceNow+' 페이지.')
 								return;
 							}
-							let choiceNow = $(':focus')[0].innerText;
-							VoiceMenual(choiceNow);
 						}
 					}
 	
@@ -884,8 +1017,16 @@
 				if(prices.length>0  ){
 				let id = prices[0].id;
 					if(id == 'priceRange'){
-						if((minVal > 0 && maxVal > 0) &&  Number(maxVal) < Number(minVal)){ //최솟값만 입력했을 경우 가능.
-							VoiceMenual('최소 가격은 최대가격보다 클 수 없습니다.');
+						if(minVal == '' || maxVal == ''){
+							VoiceMenual('  값을 정확히 입력해주세요.')
+							return false;
+						}
+						if(Number(minVal) < 0 || Number(maxVal) <= 0){
+							VoiceMenual('  값을 정확히 입력해주세요.')
+							return false;
+						}
+						if(Number(maxVal) <= Number(minVal)){ //최솟값만 입력했을 경우 가능.
+							VoiceMenual('  값을 정확히 입력해주세요.');
 							return false;
 						}else{
 							minPrice = minVal;

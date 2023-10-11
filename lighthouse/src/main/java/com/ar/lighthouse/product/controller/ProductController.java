@@ -1051,4 +1051,16 @@ public class ProductController {
       System.out.println("@@@@@@@@@@@@@" + productVO);
       return "redirect:/updateProduct?productCode=" + productVO.getProductCode();
    }
+   
+   // 정지여부
+   @PostMapping("sellerChk")
+   @ResponseBody
+   public Map<String,Object> sellerChk(HttpServletRequest req){
+	 
+	   HttpSession session = req.getSession();
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		Map<String,Object> map = productService.sellerChk(memberVO.getMemberId());
+		
+		return map;
+   }
 }

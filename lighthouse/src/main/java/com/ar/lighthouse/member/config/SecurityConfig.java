@@ -17,24 +17,26 @@ public class SecurityConfig{
 	@Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-        /*
+			.csrf().disable()
     		.authorizeHttpRequests((requests) -> requests	
-//    		.antMatchers("/", "/login/**","/common/**","/font/**","/startbootstrap/**").permitAll()
-//    		//.anyRequest().authenticated()
+    		.antMatchers("/", "/login/**","/common/**","/fonts/**","/startbootstrap/**", "/css/**", "/js/**", "/img/**").permitAll()
+//    		//
 //    		.antMatchers("/admin/**").hasAuthority("ROLE_4")
-    		.antMatchers("/page/buyer/orderList").authenticated()
-            .antMatchers("/wishList").authenticated()
+//    		.antMatchers("/page/buyer/orderList").authenticated()
+//            .antMatchers("/wishList").authenticated()
             // /admin 요청에 대해서는 ROLE_ADMIN 역할을 가지고 있어야 함
+    		.antMatchers("/seller/**").hasAuthority("ROLE_2")
             .antMatchers("/admin/**").hasAuthority("ROLE_4")
+            .antMatchers("/page/buyer/**").hasAnyAuthority("ROLE_1", "ROLE_3")
             // 나머지 요청에 대해서는 로그인을 요구하지 않음
             .anyRequest().permitAll()
     		)
     		.formLogin((form) -> form
     				.loginPage("/page/member/loginForm")
-    				.loginProcessingUrl("/")
+    				.loginProcessingUrl("/login")
     				.successHandler(customLoginSuccessHandler())
     				.permitAll()
-			)
+			)	
     		.logout(logout -> logout
                     // 로그아웃 요청을 처리할 URL 설정
                     .logoutUrl("/logout")
@@ -45,9 +47,7 @@ public class SecurityConfig{
                     		request.getSession().invalidate();
                             response.sendRedirect("/");
                             })
-            )
-            */
-			.csrf().disable();
+            );
 			
 			
 			//.userDetailsService(userService());

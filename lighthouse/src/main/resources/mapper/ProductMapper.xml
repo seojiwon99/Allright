@@ -1079,4 +1079,14 @@ where member_id = #{memberId}
       </if>
 </select>
 
+<!-- 정지 사유 체크 -->
+<select id="sellChk" resultType="SuspendVO">
+	SELECT * 
+	  FROM ar_suspend 
+	  <![CDATA[
+	 WHERE trunc(sysdate) < susp_enddate 
+	   AND member_id = #{memberId};
+	 ]]>
+</select>
+
 </mapper>
