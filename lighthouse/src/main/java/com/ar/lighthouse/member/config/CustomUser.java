@@ -1,6 +1,7 @@
 package com.ar.lighthouse.member.config;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -21,7 +22,7 @@ public class CustomUser extends User{
 	}
 
 	public CustomUser(MemberVO memberVO) {
-		super(memberVO.getMemberId(),memberVO.getMemberPw(), true, true, true, true, memberVO.getAuthorities().stream().map(auth -> new SimpleGrantedAuthority(auth)).collect(Collectors.toList()));
+		super(memberVO.getMemberId(),memberVO.getMemberPw(), true, true, true, true, memberVO.getAuthorities());
 		this.memberVO = memberVO;
 	}
 
@@ -29,8 +30,8 @@ public class CustomUser extends User{
 		return memberVO;
 	}
 
-	public void setMemberVo(MemberVO empvo) {
-		this.memberVO = empvo;
+	public void setMemberVo(MemberVO memberVO) {
+		this.memberVO = memberVO;
 	}
     
 	
