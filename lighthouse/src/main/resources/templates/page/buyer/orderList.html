@@ -204,7 +204,7 @@
                     </div>
                   </div>
                 <div class="card-footer">
-                <div class="row align-items-center" th:if="|${lists.returnStatusNm} != '신청' or ${lists.cancelStatusNm} != '신청' or ${lists.exchangeStatusNm} != '신청'|">
+                <div class="row align-items-center" th:if="(${lists.cancelStatus} == '0' and ${lists.returnStatus} == '0' and ${lists.exchangeStatus} == '0')">
                     <!-- 리뷰  button -->
                       <div class="col-6" th:if="${lists.orderStatus} == '4'">
                         <a class="btn btn-sm w-100 btn-outline-dark reviewBtn" href="#">
