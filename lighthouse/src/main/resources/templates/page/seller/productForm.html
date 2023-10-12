@@ -22,7 +22,6 @@
       background-size: cover;
       transition: transform .5s ease-out;
    }
-
    .modal {
       --bs-modal-width: 900px;
    }
@@ -261,7 +260,7 @@
                      <label class="form-label" for="deliveryService">
                         택배사 *
                       </label>
-                     <select class="form-select form-select-sm" id="deliveryService">
+                     <select class="form-select form-select-sm" id="deliveryService" name="deliveryService">
                         <option value="" disabled="disabled" selected>택배사 선택</option>
                         <option th:each="del : ${delivery}" th:value="${del.codeId}" th:text="${del.codeName}"></option>
                      </select>
@@ -356,7 +355,7 @@
                                           <span>배송비 : </span> <span class="Mdelprice"></span>
                                        </div>
                                        <div style="padding-bottom: 8px; color: grey">
-                                          <span>생산지 : </span> <span class="Mmaker"></span>
+                                          <span>원산지 : </span> <span class="Mmaker"></span>
                                        </div>
                                     </div>
 
@@ -474,8 +473,8 @@
                                              </tr>
 
                                              <tr>
-                                                <td scope="row" style="font-weight: 600">생산지</td>
-                                                <td scope="row" class="Mmaker">생산지</td>
+                                                <td scope="row" style="font-weight: 600">원산지</td>
+                                                <td scope="row" class="Mmaker">원산지</td>
                                              </tr>
                                           </tbody>
                                        </table>
@@ -492,14 +491,6 @@
                         </div>
                      </div>
                   </section>
-
-
-
-
-
-
-
-
                </div>
                <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -1216,25 +1207,31 @@
             $(inputTag).val("N");
 
             let detailData = JSON.parse(localStorage.getItem("detail"));
-            let textarea = $('<textarea>' + detailData.content + '</textarea>');
-            textarea.css("display", "none");
-            textarea.attr("name", "productContent");
-            
-            $("#insertForm").prepend(textarea);
+            if (detailData != null) {
+                let formT = $('#insertForm');
+                if (detailData.content != null || detailData.content != '') {
+                   let textarea = $('<textarea>' + detailData.content + '</textarea>');
+                   textarea.css("display", "none");
+                   textarea.attr("name", "productContent");
+                   $(formT).prepend(textarea);
+                }
 
-            for(let i = 0; i<detailData.img.length; i++){
-               let divTab = $('<div/>');
-               let obj = detailData.img[i];
-               for(var key in obj){
-                  let input = $('<input/>');
-                  $(input).val(obj[key]);
-                  input.attr("type", "hidden");
-                  input.attr("name","imgsVO["+i+"]."+key);
-                  divTab.append(input);
-               }
-               $(divTab).appendTo($("#insertForm"));
-               
-            }
+                if (detailData.img.length != 0) {
+                   for (let i = 0; i < detailData.img.length; i++) {
+                      let divTab = $('<div/>');
+                      let obj = detailData.img[i];
+                      for (var key in obj) {
+                         let input = $('<input/>');
+                         $(input).val(obj[key]);
+                         input.attr("type", "hidden");
+                         input.attr("name", "imgsVO[" + i + "]." + key);
+                         input.addClass(key);
+                         divTab.append(input);
+                      }
+                      $(divTab).appendTo(formT);
+                   }
+                }
+             }
 
             test22 = "/insertProduct"
             $("#insertForm").append(inputTag);
@@ -2126,7 +2123,7 @@
                exchangeCost: $('input[name="exchangeCost"]').val() == "" ? 0 : $('input[name="exchangeCost"]')
                   .val(),
                returnCost: $('input[name="returnCost"]').val() == "" ? 0 : $('input[name="returnCost"]').val(),
-               deliveryService: $('select[name="deliveryService"]').val(),
+               delService: $('select[name="deliveryService"] option:selected').text(),
                productImgCon: $('#productImgCon').val(),
                imgInfo: $('#Imginform').val(),
                option: [{
@@ -2153,6 +2150,8 @@
 
 
             }
+
+
             //let optionDetail = [];
             // 옵션 저장
             let leng = $('#optiontab').find('tr').length;
@@ -2262,11 +2261,17 @@
             }
 
             $(".MproName").text(userData.productName);
-            $(".Mprice").text(userData.productCost);
-            $(".MSale").text(userData.salePrice);
-            $(".Mdelivery").text(userData.deliveryService);
-            $(".Mdelprice").text(userData.deliveryCost);
-            $(".Mmaker").text(userData.productMakeorigin);
+            let Cost = replaceComma(userData.productCost);
+            console.log(Cost);
+            $(".Mprice").text(Cost);
+            let  Sale = replaceComma(userData.salePrice);
+            console.log(Sale);
+            $(".MSale").text(Sale);
+            $(".Mdelivery").text(userData.delService);
+            
+            let delCost = replaceComma(userData.deliveryCost);
+            $(".Mdelprice").text(delCost);
+            $(".Mmaker").text(userData.productOrigin);
 
             let sel = $(".selectbox");
 
@@ -2343,6 +2348,10 @@
             }
          })
          
+         // 숫자 ,로 변경
+         function replaceComma(num){
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); 
+         }  
 
 
 

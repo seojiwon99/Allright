@@ -293,7 +293,7 @@ public class ProductServiceImpl implements ProductService {
 
 		if (result > 0) {
 			String code = productVO.getProductCode();
-			if (productVO.getOption() == null || productVO.getOption().size() == 0) {
+			if (productVO.getOption() == null || productVO.getOption().size() == 0 ||productVO.getOptionDetail() ==null || productVO.getOptionDetail().size() == 0) {
 				System.out.println("@@@@@@@@@@@@@@@@");
 				OptionVO noptionVO = new OptionVO();
 				noptionVO.setProductCode(code);
@@ -314,15 +314,25 @@ public class ProductServiceImpl implements ProductService {
 				for (int i = 0; i < productVO.getOption().size(); i++) {
 
 //               
-					// System.out.println(productVO.getOption().get(i));
-					//if(productVO.getOption().get(i).getOptionCode() == null) {
+					String opCode = productVO.getOption().get(i).getProductCode();
+					System.out.println("optionCode : " +opCode);
+					if(productVO.getOption().get(i).getOptionCode() == null) {
 					//	insert
-					//}else {
+						productVO.getOption().get(i).setProductCode(code);
+						productVO.getOptionDetail().get(i).setProductCode(code);
+						System.out.println("OPTION좀"+productVO.getOption().get(i));
+						productMapper.insertOption(productVO.getOption().get(i));
+						productMapper.insertOptionDetail(productVO.getOptionDetail().get(i));
+						
+					}else {
 					//  update
-					//}
-					productVO.getOption().get(i).setProductCode(code);
-					System.out.println(productVO.getOption().get(i));
-					productMapper.updateOption(productVO.getOption().get(i));
+						productVO.getOption().get(i).setProductCode(code);
+						System.out.println("detail" + productVO.getOption().get(i));
+						productVO.getOptionDetail().get(i).setProductCode(code);
+						productMapper.updateOption(productVO.getOption().get(i));
+						productMapper.updateOptionDetail(productVO.getOptionDetail().get(i));
+					}
+					
 
 					// System.out.println(productVO.getOption().get(i));
 				}

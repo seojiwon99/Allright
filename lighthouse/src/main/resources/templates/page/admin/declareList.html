@@ -36,16 +36,16 @@
 							    justify-content: space-between;
 							    margin-top: 30px;">
 				<div>
-				<a href="/admin/declareList"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">전체</button></a>
-				<a href="/admin/declareList/?declareReason=10" ><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">욕설/비방</button><input class="aList" type="hidden" value="10"></a>
-				<a href="/admin/declareList/?declareReason=20" ><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">부적절한 내용/상품</button><input class="aList" type="hidden" value="20"></a>
-				<a href="/admin/declareList/?declareReason=30" ><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">광고</button><input class="aList" type="hidden" value="30"></a>
-				<a href="/admin/declareList/?declareReason=40" ><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">음란</button><input class="aList" type="hidden" value="40"></a>
-				<a href="/admin/declareList/?declareReason=50" ><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">도배</button><input class="aList" type="hidden" value="50"></a>
-				<a href="/admin/declareList/?declareReason=70" ><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">기타</button><input class="aList" type="hidden" value="70"></a>
+				<a href="/admin/declareList"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button"  id="noticeBtn">전체</button></a>
+				<a href="/admin/declareList/?declareReason=10" ><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" >욕설/비방</button><input class="aList" type="hidden" value="10"></a>
+				<a href="/admin/declareList/?declareReason=20" ><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" >부적절한 내용/상품</button><input class="aList" type="hidden" value="20"></a>
+				<a href="/admin/declareList/?declareReason=30" ><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" >광고</button><input class="aList" type="hidden" value="30"></a>
+				<a href="/admin/declareList/?declareReason=40" ><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" >음란</button><input class="aList" type="hidden" value="40"></a>
+				<a href="/admin/declareList/?declareReason=50" ><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" >도배</button><input class="aList" type="hidden" value="50"></a>
+				<a href="/admin/declareList/?declareReason=70" ><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" >기타</button><input class="aList" type="hidden" value="70"></a>
 				</div>
 				<div>				
-				<button class="btn btn-xs btn-outline-secondary btn-underline mb-1" type="button" id="noticeBtn">오래된 순</button>
+				<button class="btn btn-xs btn-outline-secondary btn-underline mb-1" type="button" >오래된 순</button>
 				</div>
 				</div>
 		</div>
@@ -110,8 +110,8 @@
 	$(document).ready(function(){
 		let pReason = [[${param.declareReason}]];
 
-		if(pReason != null){
-			console.log(pReason[0]);
+		if(pReason == null){
+			$('#noticeBtn').addClass('active');
 		}
 
 		$('.aList').each(function(idx,el){

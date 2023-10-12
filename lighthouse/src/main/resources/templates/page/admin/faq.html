@@ -69,7 +69,33 @@
 				</tr>
 			  </tbody>
 			</table>
-				
+			<!-- Pagination -->
+					<nav class="d-flex justify-content-center justify-content-md-center mt-10">
+						<ul class="pagination pagination-sm text-gray-400">
+							<li class="page-item" th:if="${pageMaker.prev}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/admin/faq/(pageNum = ${pageMaker.startPage - 1},questionTitle=${param.questionTitle}, faqType=${param.faqType})}">
+									<i class="fa fa-caret-left"></i>
+							</a></li>
+							<th:block
+								th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+								<li th:if="${pageMaker.endPage} ne 0"
+									th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+									th:each="pageButtom : ${#numbers.sequence(start,end)}"
+									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
+									<a class="page-link" href="#"
+									th:href="@{/admin/faq/(pageNum= ${pageButtom},questionTitle=${param.questionTitle}, faqType=${param.faqType} )}"
+									th:text="${pageButtom}" style="font-size : x-large;"></a>
+								</li>
+							</th:block>
+
+							<li class="page-item" th:if="${pageMaker.next}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/admin/faq/(pageNum = ${pageMaker.endPage + 1},questionTitle=${param.questionTitle}, faqType=${param.faqType})}">
+									<i class="fa fa-caret-right"></i>
+							</a></li>
+						</ul>
+					</nav>
 					<!-- pagi end -->
 	</div><!-- container -->
 
@@ -78,8 +104,8 @@
 
 		let faqListChk = [[${param.faqType}]];
 
-		if(faqListChk != null) {
-			console.log(faqListChk[0])
+		if(faqListChk == null){
+			$('#noticeBtn').addClass('active');
 		}
 		
 		$('.aList').each(function(idx,el){
@@ -91,8 +117,19 @@
 	})
 
 $('#faqSearchBtn').on('click', function(){
-	let url = "?customInquiryTitle=" + $('#faqSearchBar').val()
-	location.href =  url;
+	let nowURL = new URL(location.href);
+	nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
+	nowURL.searchParams.set('questionTitle', $('#faqSearchBar').val());
+	location.href = nowURL.href;
+})
+$('#faqSearchBar').on('keydown',function(e){
+	if(e.key == 'Enter'){
+		e.preventDefault();
+		let nowURL = new URL(location.href);
+		nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
+		nowURL.searchParams.set('questionTitle', $('#faqSearchBar').val());
+		location.href = nowURL.href;
+	}
 })
 
 $('#faqAddBtn').on('click',function(){

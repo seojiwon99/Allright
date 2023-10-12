@@ -68,7 +68,7 @@
 						<td th:text="${pro.memberId}"></td>
 						<td th:text="${pro.memberTel}"></td>
 						<td th:text="${pro.businessNumber}"></td>
-						<td><a class="nav-link active" href="#!">Link</a></td>
+						<td><a class="nav-link active" target=_blank th:href="|/goodDetail?productCode=${pro.productCode}|">Link</a></td>
 						<td style="margin: 0 auto">
 						<select id="suspReasonSelect" style="width:70px;">
 							<option th:each="reason : ${suspReason}" th:value="${reason.codeId}" th:if="${#strings.contains(reason.codeId,'2')}">[[${reason.codeName}]]</option>

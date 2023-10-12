@@ -104,7 +104,8 @@
 							    	 <div class="col-12">
 								    <div class="col-6">
 								        <em class="prod-inquiry-item__label">질문</em>
-								        <span class="prod-inquiry-item__wrap" id="inquiryQueCon" required></span>
+								        <h3>작성자 : </h3>
+								        <p class="prod-inquiry-item__wrap" id="inquiryQueCon" required style="width:500px;"></p>
 								    </div>
 								    <div class="col-6">
 								        <em class="prod-inquiry-item__reply__label">답변</em>
@@ -119,8 +120,6 @@
 
 			</section>
 
-		</div>
-	</div>
 	<script th:inline="javascript">
 		$(document).ready(
 				function() {
@@ -135,7 +134,7 @@
 					    let queCodeValue = row.find('td:nth-child(7)').text();
 					    let memberId = row.find('td:nth-child(9)').text();
 					    let queContent2 = row.find('td:nth-child(10)').text();
-						console.log(indexNu);
+						console.log(memberId);
 					    
 					    $('#indexNu').val(indexNu);
 					    $('#queContent').val(queContent);
