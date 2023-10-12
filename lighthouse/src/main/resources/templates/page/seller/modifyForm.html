@@ -180,6 +180,8 @@
 							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].minOrder'" th:id="'minOrder' + ${index.index} + ''" th:value="${pro.minOrder}"></td>
 							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].maxOrder'" th:id="'maxOrder' + ${index.index} + ''" th:value="${pro.maxOrder}"></td>
 							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].optionDetailCode'" th:id="'optionDetailCode' + ${index.index} + ''" th:value="${pro.optionDetailCode}" style="display:none;"></td>
+							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].optionSellStatus'" th:id="'optionSellStatus' + ${index.index} + ''" th:value="${pro.optionSellStatus}" style="display:none;"></td>
+							
 							</tr>
                         </tbody>
                      </table>
@@ -507,8 +509,9 @@
         	 var val = [[${product[0].option.size}]];
 			 let optionz = [[${product[0].option[0].optionName}]]
 			 let optionc = [[${product[0].optionDetail[0].optionCount}]]
+			 let optionSta = [[${product[0].optionDetail[0].optionSellStatus}]]
 			 let tq = $('#optionValues1').val();
-			 console.log(tq);
+			// console.log(optionSta);
 			 let optionNames = [];
              let optionValues = [];
              let optionCodes=[];
@@ -524,9 +527,10 @@
 			 console.log(optionNames);
 			 console.log(optionCodes);
 			 console.log(optionc);
-			 if(optionz == '없음'){
+			 if(optionz == '없음' ){
 				$('#optCnt').val(0); 
-			 }else{
+			 } 
+			 else{
 	            $('#optCnt').val(val);
 			 }
              console.log(val);
@@ -627,8 +631,9 @@
                      div.append(span);
                      let optionN = $('<input name="option[' + i +
                         '].optionName" class="optionN form-control" type="text" id="optionName' + i + '"/>');
+                     if (optionz != '없음') {
                      optionN.val(optionNames[i]);
-
+                     }
                      // let div = $('<div/>').addClass("optionDiv col-md-6");
                      // let labelN = $("<label> /").text("옵션이름");
                      // let optionN = $('<input name="option[' + i +
@@ -644,8 +649,9 @@
                      let optionV = $('<input name="option[' + i +
                         '].optionValue" class="optionV form-control" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' + i +
                         '" />');
+                     if (optionz != '없음') {
                      optionV.val(optionValues[i]);
-
+                     }
                      div.append(optionV);
                      divBox.append(div);
                      $('.optionB').append(divBox);
@@ -1150,7 +1156,7 @@
              alert("등록하실 옵션이 없습니다.")
           }else{
 
-             $('#optiontab').empty();
+             /* $('#optiontab').empty(); */
              let optionD = $('.optionDiv');
              let optionN = $('.optionN');
              let optionV = $('.optionV');
