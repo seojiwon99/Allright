@@ -221,6 +221,7 @@ WHERE order_detail_code = #{orderDetailCode}
       <result column="max_order" property="MaxOrder" />
       <result column="option_count" property="optionCount" />
       <result column="option_price" property="optionPrice" />
+      <result column="option_sell_status" property="optionSellStatus"/>
    </resultMap>
    <resultMap type="OptionVO" id="midifiOption">
         <result column="option_code" property="optionCode" />
