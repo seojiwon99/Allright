@@ -166,12 +166,13 @@
             })
 
             function startMenu() {
-               let msg = '1:1문의 화면입니다. 9.홈화면으로 가기 0. 메뉴 다시 듣기';
+               let msg = '1:1문의 화면입니다. 6.faq화면가기  7.공지사항가기 8. 1:1문의하기 9.홈화면으로 가기 0. 메뉴 다시 듣기';
 
                VoiceReturnRead(msg);
             }
 
             $(document).on('keydown', function (e) {
+               speech.stop();
                if (e.keyCode == 48) {
                   startMenu();
                } else if (e.keyCode == 57) {

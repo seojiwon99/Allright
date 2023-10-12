@@ -23,7 +23,7 @@
               <input type="checkbox" id="allCheckbox" autocomplete="off">전체선택
              <button type="button" class="btn btn-sm btn-dark" id="chkDelBtn" style="float:right;" tabindex="-1">선택삭제</button>
              <hr>
-            </div>
+            </div> 
 
             <!-- List group -->
             <!-- 반복문 시작 -->
@@ -44,7 +44,7 @@
                     <input type="hidden" name="productCode" th:value="${lists.productCode}">
 
                     <!-- Image -->
-                    <a href="product.html" tabindex="-1">
+                    <a th:href="|http://localhost:8090/goodDetail?productCode=${lists.productCode}|" tabindex="-1">
                      <img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|" alt="..." class="img-fluid" tabindex="-1">
                     </a>
 
@@ -269,8 +269,9 @@
           let checkTags = document.querySelectorAll('input[name="price"]');
           checkTags.forEach(el => {
         	  console.log(el)
-            //el.checked = allCheckTag.checked;
+
         	  $(el).trigger('click')  
+            el.checked = allCheckTag.checked;
           })
       }
 
