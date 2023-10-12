@@ -29,6 +29,10 @@ public interface AdminMapper {
 	public NoticeAdminVO selectNoticeDetail(NoticeAdminVO noticeAdminVO);
 	//FAQ 상세
 	public FaqVO selectFaqDetail(FaqVO faqVO);
+	//FAQ 개수
+	public int selectTotalFaq(FaqVO faqVO);
+	//FAQ 리스트
+	public List<FaqVO> selectFaqList(@Param("cri") Criteria cri, @Param("faqVO") FaqVO faqVO);
 	//공지 수정
 	public int updateNotice(NoticeAdminVO noticeAdminVO);
 	//FAQ 수정

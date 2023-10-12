@@ -111,6 +111,10 @@
 	<script th:inline="javascript">
 		$(document).ready(function(){
 			let clearChk = [[${param.declareReason}]];
+			
+			if(clearChk == null){
+				$('#noticeBtn').addClass('active');
+			}
 
 			$('.aList').each(function(idx, el){
 				if(el.value == clearChk[0]){
