@@ -67,7 +67,7 @@
   	
   	<!-- 장바구니 수량 업데이트 -->
   	<update id="updateCartCnt">
-  		UPDATE AR_CART SET CART_COUNT = #{cartUpdate.cartCount} WHERE CART_CODE = #{cartUpdate.cartCode}
+  		UPDATE AR_CART SET CART_COUNT = #{cartCount} WHERE CART_CODE = #{cartCode}
   	</update>
   	
   </mapper>

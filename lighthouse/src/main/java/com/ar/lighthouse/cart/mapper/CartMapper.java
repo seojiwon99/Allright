@@ -20,5 +20,5 @@ public interface CartMapper {
 	
 	public int checkCart(CartVO vo);
 	
-	int updateCartCnt(CartUpdateVO cartUpdate);
+	int updateCartCnt(CartUpdateVO cartUpdate); 
 }
