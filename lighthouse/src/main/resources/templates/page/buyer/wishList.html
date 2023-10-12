@@ -99,15 +99,16 @@
 												<i class="fe fe-eye me-2 mb-1"></i> Quick View
 											</button>
 											<!-- Image -->
-											<img class="card-img-top"
+											<img class="card-img-top favoriteCode"
 												th:src="|/upload/${wishes.uploadPath}/${wishes.uploadName}|"
-												th:alt="${wishes.imgContent}" th:value="${wishes.favoriteCode}" id="favoriteCode" tabindex="0">
+												th:alt="${wishes.imgContent}" th:value="${wishes.favoriteCode}" tabindex="0">
 										</div>
 										<!-- Body -->
 										<div class="card-body fw-bold text-center">
-											<a class="text-body" href="product.html"><span
-												th:text="${wishes.productName}" class="productName"></span></a> <br> 
-												<span class="text-muted"><span th:text="|${wishes.productCost}원|" class="productCost"></span></span>
+											<a class="text-body" href="product.html">
+											<span th:text="${wishes.productName}" class="productName"></span>
+											</a> <br> 
+											<span class="text-muted"><span th:text="|${wishes.productCost}원|" class="productCost"></span></span>
 										</div>
 									</div>
 								</div>
@@ -200,14 +201,16 @@
 		           VoiceMenual(message);
 
 		     //tts 이벤트 부여
-		     $('#favoriteCode').on('focus', wishInfo);
+		     $('.favoriteCode').on('focus', wishInfo);
 
 		     //tts 이벤트 진행
 		     function wishInfo() {
-		    	 let favoriteCode = $(this).parent().find('#favoriteCode').val();
-			     let productName = $(this).parent().find('.productName').text();
-			     let productCost =  $(this).parent().find('.productCost').text();
-			     
+		    	 let favoriteCode = $(this.favoriteCode).closest().find('.favoriteCode').val();
+			     let productName = $(this).closest().find('.productName').text();
+			     let productCost =  $(this).closest().find('.productCost').text();
+			     console.log(favoriteCode)
+				 console.log(productName)
+				 console.log(productCost)
 		    	 
 			     let message= `찜 번호는 ${favoriteCode}. 상품 명은 ${productName}. 상품 가격은 ${productCost}. 입니다.`;
 		    	 
