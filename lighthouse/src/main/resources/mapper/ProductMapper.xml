@@ -747,7 +747,10 @@ WHERE p.product_code = #{productCode}
                ON o.option_detail_code = od.option_detail_code
       FULL OUTER join ar_return r
                ON od.order_detail_code = r.order_detail_code
-      where member_id = 'hky03017'
+      where member_id = #{memberId}
+      <if test="preBetw != null and !preBetw.equals('')">
+      AND  TO_DATE(od.order_date, 'yy/MM/dd') BETWEEN TO_DATE(#{preBetw}) AND TO_DATE(#{suBetw})
+      </if>
       group by od.option_detail_code, o.option_last, o.option_price,
             p.product_name,
             o.option_detail_code, (p.sale_price + o.option_price), p.sale_price + o.option_price,

@@ -8,46 +8,144 @@ google.charts.load('current', {'packages':['corechart']});
 </script>
 </head>
 <body>
-<h3>통계여</h3>
-<label for="yearSelect">년도를 고르세요</label>
-    <select id="yearSelect">
-    </select>
- <div id="chart_div" style="width: 900px; height: 500px">
+	<div class="container">
+		<div class="row justify-content-start">
+			
+			<div class="col">
+			<span style="font-weight:600; font-size:large">[통계]</span>
+				<label for="yearSelect">년도를 고르세요</label>
+				<select id="yearSelect">
+				</select>
+			</div>
+		</div>
+		<!--그래프 -->
+		<div id="chart_div" style="width: 900px; height: 500px">
+		</div>
+	</div>
+		 
+		<hr style="height:2px">
+ 
+ 
+ <!-- padding으로 안쪽 구성 -->
+ <div class="container" style="margin: 0 50px 0 50px;">
+		 <div>
+		 	<h3>통계 자료</h3>
+		 </div>
+		 <div>
+		 	<button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button">전체</button>
+			<button th:each="num : ${#numbers.sequence(1,12)}" class="btn btn-xs btn-outline-info btn-underline mb-1" type="button">[[${num}]]월</button>
+		 </div>    
+		 
+	<!--  ---------------------------------------- -->
+	
+	<div style="width:100%; max-height: 600px; overflow:auto; border:1px; ">
+	<table border="1" class="table" id="getProductList" style="border: 1px solid #444444; margin-top: 20px;">
+	  <thead>
+	     <tr>
+	        <th></th>
+	        <th>상품코드</th>
+	        <th>상품명</th>
+	        <th>옵션종류</th>
+	        <th>상품금액</th>
+	        <th>주문수량</th>
+	        <th>취소수량</th>
+	        <th>반품수량</th>
+	        <th>총결제금액</th>
+	     </tr>
+	  </thead>
+	  <tbody id="cancelList">
+	  	 <tr th:if="${staticList} == null"><td>데이터가 없습니다.</td></tr>
+	     <tr th:each="static, index : ${staticList}">
+	        <td th:text="${index.count}"></td>
+	        <td th:text="${static.productCode}"></td>
+	        <td th:text="${static.productName}"></td>
+	        <td th:text="${static.optionDetail[0].optionLast}"></td>
+	        <td th:text="${static.salePrice}"></td>
+	        <td th:text="${static.orderCnt}"></td>
+	        <td th:text="${static.cancelCnt}"></td>
+	        <td th:text="${static.returnCnt}"></td>
+	      	<td data-th-text="${#numbers.formatInteger(static.totalPrice, 1, 'COMMA')+ '원'}"></td>
+	     </tr>
+	     <!-- 반복문 종료 -->
+	   </tbody>
+	</table>
+</div> 
  </div>
- 
- 
- <div style="width:100%; height: 300px; overflow:auto; border:1px; ">
-                  <table border="1" class="table" id="getProductList" style="border: 1px solid #444444; margin-top: 20px;">
-                     <thead>
-                        <tr>
-                           <th></th>
-                           <th>상품코드</th>
-                           <th>상품명</th>
-                           <th>옵션종류</th>
-                           <th>상품금액</th>
-                           <th>주문수량</th>
-                           <th>취소수량</th>
-                           <th>반품수량</th>
-                           <th>총결제금액</th>
-                        </tr>
-                     </thead>
-                     <tbody id="cancelList">
-                        <tr th:each="static, index : ${staticList}">
-                           <td th:text="${index.count}"></td>
-                           <td th:text="${static.productCode}"></td>
-                           <td th:text="${static.productName}"></td>
-                           <td th:text="${static.optionDetail[0].optionLast}"></td>
-                           <td th:text="${static.salePrice}"></td>
-                           <td th:text="${static.orderCnt}"></td>
-                           <td th:text="${static.cancelCnt}"></td>
-                           <td th:text="${static.returnCnt}"></td>
-                         	<td data-th-text="${#numbers.formatInteger(static.totalPrice, 1, 'COMMA')+ '원'}"></td>
-                        </tr>
-                        <!-- 반복문 종료 -->
-                     </tbody>
-                  </table>
-                  </div>
-<script type="text/javascript">
+
+<script th:inline="javascript">
+
+//선택 월 active
+$(document).ready(function(){
+	initYear();//옵션 그리기
+	
+	let nowDay = [[${prev}]]
+	console.log(nowDay);
+	if(nowDay != ""){
+		//월 변경
+		let prevMonth = Number(nowDay.split('/')[1]) + '월';
+		$.each($('.btn-underline'),function(idx,tag){
+			console.log(tag.innerText,prevMonth);
+			if(tag.innerText == prevMonth){
+				$(tag).addClass('active');
+			}
+		})
+		//연도 변경
+		let prevYear = '20'+(nowDay.split('/')[0]);
+		$('#yearSelect').val(prevYear).trigger('change');
+		
+	}
+	google.charts.setOnLoadCallback(drawVisualization);
+   	drawVisualization()
+})
+
+//값 찾고 변환후 함수 실행
+$('.btn-underline').on('click',function(){
+	
+	let MM = $(this).text()
+	if(MM == '전체'){
+		changeByDate("","");
+		return;
+	}
+	let nextmonth = (Number(MM.substr(0, MM.length-1))+1)
+	let yy = ($('#yearSelect').val()).slice(-2);
+	let nextYY = yy;
+	if(nextmonth > 12){ // 12월이면 내년 1월
+		nextmonth = 1;
+		nextYY = Number(yy)+1;
+	}
+	
+	let nextMM = ('0'+ nextmonth).slice(-2);
+	MM = ('0' + MM.substr(0, MM.length-1)).slice(-2);	
+	
+	let dd = '01';
+	let preBetw = yy+'-'+MM+'-'+dd;
+	let suBetw = nextYY+'-'+nextMM+'-'+dd;
+	
+	changeByDate(preBetw, suBetw)
+})
+//안의 값 변경
+function changeByDate(preBetw, suBetw){
+    $.ajax({
+        url: "statisticsPage", 
+        method: "GET",
+        data : {
+        	'preBetw' : preBetw,
+        	'suBetw' : suBetw
+        },
+        success: function (data) {
+        	$("#contentArea").empty();
+            $("#contentArea").html(data); 
+        },
+        error: function () {
+        }
+    });
+
+}
+
+
+
+
+
 $('#yearSelect').change(function() {
     drawVisualization(); // Year 선택 값이 변경될 때마다 그래프를 다시 그림
 });
@@ -118,22 +216,24 @@ function drawVisualization() {
    google.charts.setOnLoadCallback(drawVisualization);
    drawVisualization();
    
-   
-   var currentYear = new Date().getFullYear();
-
-   // 선택할 수 있는 연도 범위 설정 (현재 년도부터 10년 전까지)
-   var startYear = currentYear - 10;
-
-   // select 요소 가져오기
-   var selectElement = $('#yearSelect');
-
-   // 연도 옵션을 동적으로 생성하여 select 요소에 추가
-   for (var year = currentYear; year >= startYear; year--) {
-       var option = $('<option>');
-       option.val(year);
-       option.text(year);
-       selectElement.append(option);
-   }
+function initYear(){
+		var currentYear = new Date().getFullYear();
+		
+		// 선택할 수 있는 연도 범위 설정 (현재 년도부터 10년 전까지)
+		var startYear = currentYear - 10;
+		
+		// select 요소 가져오기
+		var selectElement = $('#yearSelect');
+		
+		// 연도 옵션을 동적으로 생성하여 select 요소에 추가
+		for (var year = currentYear; year >= startYear; year--) {
+		    var option = $('<option>');
+		    option.val(year);
+		    option.text(year);
+		    selectElement.append(option);
+		}
+}   
+  
    
 </script>
 </body>
