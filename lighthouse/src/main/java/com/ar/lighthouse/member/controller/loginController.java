@@ -39,8 +39,10 @@ public class loginController {
 	
 	//로그인화면으로
 	@GetMapping("page/member/loginForm")
-	public void loginForm() {
-		
+	public void loginForm(HttpServletRequest request) {
+		String referrer = request.getHeader("referer");
+	    request.getSession().setAttribute("prevPage", referrer);
+	    System.out.println("controller==========="+referrer);
 	}
 	//회원가입 화면으로
 	@GetMapping("page/member/joinSellerForm")
