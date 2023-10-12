@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ar.lighthouse.cart.service.CartService;
+import com.ar.lighthouse.cart.service.CartUpdateVO;
 import com.ar.lighthouse.cart.service.CartVO;
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.service.OptionDetailVO;
@@ -112,6 +113,14 @@ public class CartController {
 
 		System.out.println("aaaaaaaaaaaa" + cartService.checkCart(vo));
 		return cartService.checkCart(vo);
+	}
+	
+	@PostMapping("/cart/update")
+	@ResponseBody
+	public int cartCountUpdate(@RequestBody CartUpdateVO cartUpdateVO) {
+		cartService.editCartCnt(cartUpdateVO);
+		
+		return 0;
 	}
 
 }
