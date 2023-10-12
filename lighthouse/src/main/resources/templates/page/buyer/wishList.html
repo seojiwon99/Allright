@@ -105,10 +105,10 @@
 										</div>
 										<!-- Body -->
 										<div class="card-body fw-bold text-center">
-											<a class="text-body" href="product.html">
-											<span th:text="${wishes.productName}" class="productName"></span>
+											<a class="text-body" href="product.html" tabindex="-1"></a>>
+											<span th:text="${wishes.productName}" class="productName" tabindex="-1"></span>
 											</a> <br> 
-											<span class="text-muted"><span th:text="|${wishes.productCost}원|" class="productCost"></span></span>
+											<span class="text-muted"><span th:text="|${wishes.productCost}원|" tabindex="-1" class="productCost"></span></span>
 										</div>
 									</div>
 								</div>
@@ -205,9 +205,9 @@
 
 		     //tts 이벤트 진행
 		     function wishInfo() {
-		    	 let favoriteCode = $(this.favoriteCode).closest().find('.favoriteCode').val();
-			     let productName = $(this).closest().find('.productName').text();
-			     let productCost =  $(this).closest().find('.productCost').text();
+		    	 let favoriteCode = $(this).parent().val();
+			     let productName = $(this).parent().parent().find('.productName').text();
+			     let productCost =  $(this).parent().parent().parent().find('.productCost').text();
 			     console.log(favoriteCode)
 				 console.log(productName)
 				 console.log(productCost)
