@@ -23,7 +23,14 @@
 			</div>
 		</div>
 	</nav>
-
+	<style>
+	input::-webkit-inner-spin-button,
+	input::-webkit-outer-spin-button {
+	  appearance: none;
+	  -moz-appearance: none;
+	  -webkit-appearance: none;
+	}
+	</style>
 	<!-- CONTENT -->
 	<section class="pt-7 pb-12">
 		<div class="container">
@@ -123,7 +130,7 @@
 										새 비밀번호
 									</label> 
 									<input class="form-control form-control-sm"
-										id="buyerPassword" type="password"  placeholder="새 비밀번호 입력">
+										id="buyerPassword" type="password"  placeholder="비밀번호 수정을 원할 경우 입력해주세요">
 								</div>
 							</div>
 							<div class="col-12 col-md-6">
@@ -159,8 +166,8 @@
 								<!-- tel -->
 								<div class="form-group">
 									<label class="form-label" for="buyerTel"> 전화번호 </label> <input class="form-control form-control-sm"
-										id="buyerTel" type="text"
-										placeholder="*" th:value="${personalInfo.memberTel}" required>
+										id="buyerTel" type="number" 
+										placeholder="숫자만 입력해주세요" th:value="${personalInfo.memberTel}" required>
 								</div>
 							</div>							
 							<div class="col-12 col-lg-6">
@@ -267,32 +274,43 @@
 	function chkPW(){
 			let password = $('#buyerPassword').val();
 			let pwCheck = $('#buyerPasswordCheck').val();
-			
-			if(pwCheck != password){
-				alert("비밀번호가 일치하지 않습니다.");
-				return;
-			}
-			//let pw = $("#buyerPassword").val();
-			//let id = $("#id").val();
-		    let checkNumber = pwCheck.search(/[0-9]/g);
-		    let checkEnglish = pwCheck.search(/[a-z]/ig);
-		 
-		    if(!/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/.test(pwCheck)){            
-		        alert('숫자+영문자+특수문자 조합으로 8자리 이상 사용해야 합니다.');
-		        return false;
-		    }else if(checkNumber <0 || checkEnglish <0){
-		        alert("숫자와 영문자를 혼용하여야 합니다.");
-		        return false;
-		    }else if(/(\w)\1\1\1/.test(pwCheck)){
-		        alert('같은 문자를 4번 이상 사용하실 수 없습니다.');
-		        return false;
-		    } else {
-
-				console.log("통과");
+			if(password != ''){
 				
+				if(pwCheck != password){
+					alert("비밀번호가 일치하지 않습니다.");
+					return;
 				}
-	};
+				//let pw = $("#buyerPassword").val();
+				//let id = $("#id").val();
+			    let checkNumber = pwCheck.search(/[0-9]/g);
+			    let checkEnglish = pwCheck.search(/[a-z]/ig);
+			 
+			    if(!/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/.test(pwCheck)){            
+			        alert('숫자+영문자+특수문자 조합으로 8자리 이상 사용해야 합니다.');
+			        return false;
+			    }else if(checkNumber <0 || checkEnglish <0){
+			        alert("숫자와 영문자를 혼용하여야 합니다.");
+			        return false;
+			    }else if(/(\w)\1\1\1/.test(pwCheck)){
+			        alert('같은 문자를 4번 이상 사용하실 수 없습니다.');
+			        return false;
+			    } else {
 	
+					console.log("통과");
+					
+					}
+		}
+	};
+	$('#buyerTel').on('focusout', function(){
+		let buyerTel = document.getElementById("buyerTel").value;
+		if (/^010[0-9]{4}[0-9]{4}$/.test(buyerTel)){
+			alert("ok");
+		}else{
+			alert("no");
+		}
+	});
+	
+	console.log(test);
 		//tts 시작 
 		let TTSIsOk = localStorage.getItem('ttsKey');
 	    let sessionAuthor;
@@ -302,13 +320,15 @@
 	   }
 	       
 	      function ttsInit(){
-			$('#myInfo').focus();
+			$('#buyerName').focus();
 	       if(TTSIsOk == null || sessionAuthor == 3){
 	        let audioFileNow = new Audio();
-	        let firstMsg = "개인정보 확인,수정 페이지입니다. 비밀번호, 이메일, 주소, 연락처 수정할 수 있습니다.";
+	        let myName = $('#buyerName').val();
+	        let firstMsg = `개인정보 확인,수정 페이지입니다. 비밀번호, 이메일, 주소, 연락처 수정할 수 있습니다.`;
 	        let message = firstMsg + $('#orderMenual').val();
+	        let message2 = `이름은. ${myName} 입니다. 탭키를 눌러. 다음으로 이동해주세요.`
 
-	        VoiceMenual(message);
+	        VoiceMenual(message + message2);
 
 			//tts 이벤트 부터
 			$('#buyerName').on('focus',buyerName); //이름 포커스 안내
@@ -322,12 +342,13 @@
 			$('#updateBtn').on('focus', updateBtn); // 수정 버튼
 
 			//이벤트 안에 사용할 전역 변수
-			let myName;
+			
 			let myEmail;
 			let myAddr;
 			let myDetailAddr;
 			let myTel;
 			let myBirth;
+			
 			//tts 이벤트 실행
 			function buyerName() { //이름 포커스 안내
 				myName = $('#buyerName').val();
@@ -338,10 +359,10 @@
 				VoiceMenual("현재 이메일은 : " + myEmail + "입니다. 수정 원할 경우. Backspace 후 새로운 이메일 작성하시면 됩니다. 이후 탭키를 눌러 다음으로 이동해주세요.");
 			}
 			function buyerPassword() {
-				VoiceMenual('새 비밀번호를 입력해주세요. 이후 탭 키로 이동하여 방금 전 작성한 비밀번호 다시 한번 작성 필요합니다.');
+				VoiceMenual('비밀번호 수정을 원할 경우만 입력해주세요. 수정을 원하면 이후 탭 키로 이동하여 방금 작성한 새 비밀번호 다시 한번 작성 필요합니다.');
 			}
 			function buyerPasswordCheck() {
-				VoiceMenual('다시한번 비밀번호 작성 후. 탭으로 이동 필요합니다.');
+				VoiceMenual('수정을 원하지 않으면 탭키를 눌러 다음으로 이동해주세요. 수정을 원하면 새 비밀번호를 다시 한번 비밀번호 작성 후. 탭으로 이동 필요합니다.');
 			}
 			function buyerAddr(){
 				myAddr = $('#buyerAddr').val();

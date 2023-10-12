@@ -67,21 +67,20 @@
     ) d
     ON p.product_code = d.product_code
     WHERE p.member_id = #{memberId}
-    <choose>
-        <when test="optionVal == '상품명순'">
-            ORDER BY product_name
-        </when>
-        <when test="optionVal == '상품등록일순'">
-            ORDER BY product_regdate
-        </when>
-    </choose>
     <if test="optionVal == '전시중'">
         AND product_exstatus = 'Y'
     </if>
     <if test="optionVal == '전시중지'">
         AND product_exstatus = 'N'
     </if>
-    ORDER BY product_regdate DESC
+    <choose>
+        <when test="optionVal == '상품명순'">
+            ORDER BY product_name
+        </when>
+        <when test="optionVal == '상품등록일순'">
+            ORDER BY product_regdate DESC
+        </when>
+    </choose>
 </select>
 
 
@@ -1006,9 +1005,15 @@ and option_code = #{optionCode}
 <update id="updateOptionDetail" parameterType="ProductVO">
 UPDATE ar_option_detail
 SET
+	<if test="optionLast != null">
     option_last = #{optionLast},
+    </if>
+    <if test="optionPrice != null">
     option_price = #{optionPrice},
+    </if>
+    <if test="optionCount != null">
     option_count = #{optionCount},
+    </if>
     option_sell_status = 'Y',
     option_exstatus = 'Y'
 WHERE product_code = #{productCode}

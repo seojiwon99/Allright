@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.ar.lighthouse.cart.service.CartUpdateVO;
 import com.ar.lighthouse.cart.service.CartVO;
 import com.ar.lighthouse.product.service.OptionDetailVO;
 @Mapper
@@ -18,4 +19,6 @@ public interface CartMapper {
 	OptionDetailVO selectOptionCode(OptionDetailVO optionDetailVO);
 	
 	public int checkCart(CartVO vo);
+	
+	int updateCartCnt(CartUpdateVO cartUpdate); 
 }

@@ -23,7 +23,7 @@
               <input type="checkbox" id="allCheckbox" autocomplete="off">전체선택
              <button type="button" class="btn btn-sm btn-dark" id="chkDelBtn" style="float:right;" tabindex="-1">선택삭제</button>
              <hr>
-            </div>
+            </div> 
 
             <!-- List group -->
             <!-- 반복문 시작 -->
@@ -44,7 +44,7 @@
                     <input type="hidden" name="productCode" th:value="${lists.productCode}">
 
                     <!-- Image -->
-                    <a href="product.html" tabindex="-1">
+                    <a th:href="|http://localhost:8090/goodDetail?productCode=${lists.productCode}|" tabindex="-1">
                      <img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|" alt="..." class="img-fluid" tabindex="-1">
                     </a>
 
@@ -75,7 +75,9 @@
 
                       <!-- buy plus mius -->
                       <div class="num">
-                        <span>구매수량 : </span><span th:text="${lists.cartCount}" class="tts7"></span>
+                        <input type="hidden" th:value="${lists.cartCode}">
+                        구매수량: <input type="number" th:value="${lists.cartCount}" style="width: 70px;" class="tts7">
+                          <input class="cartCountUpdate" type="button" value="변경" style="border-radius: 5px; background-color: #0a0a23; color: #fff;">
                       </div>
 
                       <!-- Remove -->
@@ -117,7 +119,7 @@
                   
                     </div>
                     <div class="col-auto">
-                      <button class="btn btn-sm btn-dark" th:onclick="shopping()" id="shoping">
+                      <button class="btn btn-sm btn-dark" type="button" onclick="location.href='http://localhost:8090/'" id="shoping">
                         쇼핑 계속하기
                        </button>
                       <!-- Button -->
@@ -178,7 +180,6 @@
     </textarea>
 
     <script>     
-
 	$(function(){
   		init();
   		checkedCart();
@@ -192,11 +193,32 @@
     $('#allCheckbox').on('click',allCheckEvent);  // 전체선택
     $('input[name="price"]').on('change', checkedCart);
     $('#chkDelBtn').on('click',checkedDel);     //선택 삭제
+    $('.cartCountUpdate').on('click',cartCountUpdate); // 장바구니 수령 변경
 
     document.getElementById('productPrice').innerText ='원';
     document.getElementById('salePrice').innerText = '원';
     document.getElementById('deliveryPrice').innerText = '원';
     document.getElementById('totalPrice').innerText ='원';
+  }
+  //장바구니 수량 변경 적용
+  function cartCountUpdate(e) {
+    let cartNumber = Number($(this).prev().prev().val()); 
+    let cartModify = Number($(this).prev().val());
+      console.log(cartNumber);
+      console.log(cartModify);
+    let CartUpdateVO={};
+    CartUpdateVO.cartCount = cartModify;
+    CartUpdateVO.cartCode = cartNumber;
+      $.ajax('/cart/update',{
+        type:'post',
+        data : JSON.stringify(CartUpdateVO),
+        contentType : 'application/json'
+      })
+      .done(data => {
+        alert('변경되었습니다.');
+        location.reload();
+      })
+      .fail(reject=> console.log(reject));
   }
 
         //삭제
@@ -244,6 +266,7 @@
         let deliveryPrices = $(tag).next().next().val();
         
         let cartCnts = $(tag).next().next().next().next().val();
+        console.log(cartCnts);
         let optionPrice= Number($(tag).next().next().next().next().next().val());
         
         if(!(chkPList.includes(productNum))){
@@ -269,8 +292,9 @@
           let checkTags = document.querySelectorAll('input[name="price"]');
           checkTags.forEach(el => {
         	  console.log(el)
-            //el.checked = allCheckTag.checked;
+
         	  $(el).trigger('click')  
+            el.checked = allCheckTag.checked;
           })
       }
 
@@ -383,7 +407,7 @@ $('#payMove').on('click', function(){
        let optionVal = $(this).parent().parent().find('.tts4').text() //옵션 추가 금액
        let proDelivery = $(this).parent().parent().find('.tts5').text() //배송비
        let optionName = $(this).parent().parent().find('.tts6').text() //옵션종류, 옵션 값
-       let buyCnt = $(this).parent().parent().find('.tts7').text() //구매수량
+       let buyCnt = $(this).parent().parent().find('.tts7').val() //구매수량
        let productMsg = `${proName}. ${proPrice}. ${proSalePrice}. ${optionVal}. ${proDelivery}. 선택한. ${optionName}. 구매수량은 ${buyCnt} 입니다.
                         전체선택을 하지 않고 개별 선택의 경우 스페이스바로 선택해주세요.`;
       
