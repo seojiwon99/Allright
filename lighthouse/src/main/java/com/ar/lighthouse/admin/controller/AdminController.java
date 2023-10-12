@@ -71,8 +71,10 @@ public class AdminController {
 	}
 	
 	@GetMapping("admin/faq")
-	public String faqList(@RequestParam(required = false, defaultValue = "", value="faqType") String faqType, Model model) {
-		model.addAttribute("faqList", customService.getFaqList(faqType));
+	public String faqList(Criteria cri,Model model, FaqVO faqVO) {
+		int totalCnt = adminService.getTotalFaqCount(faqVO);		
+		model.addAttribute("faqList", adminService.getAdminFaqList(cri , faqVO));
+		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		return "page/admin/faq";
 	}
 	

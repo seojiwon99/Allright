@@ -75,12 +75,13 @@ table {
 					</div><!-- container -->
 					
 <script th:inline="javascript">
+	$('#cancel').on('click', function(){
+		location.href = "javascript:window.history.back();";
+	})
 	$('#noticeBtn').on('click', function(){
 		location.href = "/admin/noticeForm";
 	})
-	$('#calcel').on('click', function(){
-		location.href = "/admin/inquiryList";
-	})
+
 	$('#inqBtn').on('click', function(){
 		let customInquiryAnswer = $('#inqAnswer').val();
 		let customInquiryCode = [[${inquiryDetail.customInquiryCode}]];

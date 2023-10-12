@@ -76,70 +76,132 @@
 	</section>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-		$(document).ready(function() {
-			let checkBeforeInsert = {};
-			console.log(checkBeforeInsert);
+	
+	//일반사용자
+		$('#cancelBtn').on('click', function(e) {
+					console.log('click')
+					// 사용자가 입력한 반품 사유와 주소 정보 가져오기
+					let selOption = $('#select option:selected').val();
+					if (selOption != "선택") {
+					} else {
+						alert('취소 사유를 선택해주세요.');
+						$('#select').focus();
+						return;
+					}
+					if ($('#content').val() != "") {
+					} else {
+						alert("자세한 취소 사유를 입력해주세요.")
+						$('#content').focus();
+						return;
+					}
+					let reasonName = $('#select option:selected').text().trim()
+					let contents = $('#content').val();
+					contents = contents.trim();
+					let caReason = reasonName + ' : ' + contents
+					let cancelData = {
+						'cancelCode' : $('#cancelCode').val(),
+						'orderDetailCode' : $('#orderDetailCode').val(),
+						'productName' : $('#productName').val(),
+						'cancelReason' : caReason,
+					}
+					$.ajax({
+						type : 'POST',
+						url : '/buyer/cancelInsert',
+						contentType : 'application/json',
+						data : JSON.stringify(cancelData),
+						success : function(response) {
+							alert('취소 신청이 성공적으로 처리되었습니다.');
+							location.href="/page/buyer/orderList";
+						},
+						error : function(error) {
+							console.error('취소 실패.');
+							console.error(error);
+						}
+					});
+					
+				});
+	//일반 사용자 여기까지
+	
+	//tts 시작 
+	  let TTSIsOk = localStorage.getItem('ttsKey');
+	  let sessionAuthor;
+	  console.log(sessionStorage.loginMember);          
+	  if(sessionStorage.loginMember != null){
+	      sessionAuthor = sessionStorage.loginMember.memberAuthor;
+	    }
+	          
+	  function ttsInit(){
+	     if(TTSIsOk == null || sessionAuthor == 3){
+	       let audioFileNow = new Audio();
+	       let firstMsg = "취소 신청 페이지입니다. 상품을 취소할 수 있습니다.";
+	       //let message = firstMsg;
 
-			// 반품 신청 버튼 클릭 시 AJAX 요청을 보냅니다.
-			$('#cancelBtn').on('click', function() {
-				// 사용자가 입력한 반품 사유와 주소 정보 가져오기
-				let selOption = $('#select option:selected').val();
-				if (selOption != "선택") {
-				} else {
-					alert("취소 사유를 선택해주세요.")
-					$('#select').focus();
-					return;
-				}
-				if ($('#content').val() != "") {
-				} else {
-					alert("자세한 취소 사유를 입력해주세요.")
-					$('#content').focus();
-					return;
-				}
-				let reasonName = $('#select option:selected').text().trim()
-				let contents = $('#content').val();
-				contents = contents.trim();
-				let caReason = reasonName + ' : ' + contents
-				let cancelData = {
-					'cancelCode' : $('#cancelCode').val(),
-					'orderDetailCode' : $('#orderDetailCode').val(),
-					'productName' : $('#productName').val(),
-					'cancelReason' : caReason,
-				}
+	       VoiceMenual(firstMsg);
+	           
+	   		$(document).ready(function() {
+				let checkBeforeInsert = {};
+				console.log(checkBeforeInsert);
 
-				$.ajax({
-					type : 'POST',
-					url : '/buyer/cancelInsert',
-					contentType : 'application/json',
-					data : JSON.stringify(cancelData),
-					success : function(response) {
-						alert('취소 신청이 성공적으로 처리되었습니다.');
-						location.href="/page/buyer/orderList";
-					},
-					error : function(error) {
-						console.error('취소 실패.');
-						console.error(error);
+				// 반품 신청 버튼 클릭 시 AJAX 요청을 보냅니다.
+				$('#cancelBtn').on('keydown', function(e) {
+					if(e.key == 'Enter'){
+							e.preventDefault();
+							console.log('enter key')
+						// 사용자가 입력한 반품 사유와 주소 정보 가져오기
+						let selOption = $('#select option:selected').val();
+						if (selOption == "선택") {
+							selectOption('취소 사유를 선택해주세요.');
+							$('#select').focus();
+							return;
+						}
+						if ($('#content').val() == "") {
+							cancelReason("자세한 취소 사유가 입력되지 않아 취소되었습니다. 취소 사유 입력란으로 이동합니다.")
+							$('#content').focus();
+							return;
+						}
+						if ($('#bankName').val() == ""){
+							console.log('은행명')
+							owner('은행 이름이 입력되지 않아 취소되었습니다. 은행 이름 입력란으로 이동합니다.');
+							return;
+						}
+						if ($('#accountNumber').val() == ""){
+							console.log('계좌번호')
+							owner('계좌번호가 입력되지 않아 취소되었습니다. 계좌번호 입력란으로 이동합니다.');
+							return;
+						}
+						if ($('#accountOwner').val() == ""){
+							console.log('예금주')
+							owner('예금주가 입력되지 않아 취소되었습니다. 예금주 입력란으로 이동합니다.');
+							return;
+						}
+						let reasonName = $('#select option:selected').text().trim()
+						let contents = $('#content').val();
+						contents = contents.trim();
+						let caReason = reasonName + ' : ' + contents
+						let cancelData = {
+							'cancelCode' : $('#cancelCode').val(),
+							'orderDetailCode' : $('#orderDetailCode').val(),
+							'productName' : $('#productName').val(),
+							'cancelReason' : caReason,
+						}
+						$.ajax({
+							type : 'POST',
+							url : '/buyer/cancelInsert',
+							contentType : 'application/json',
+							data : JSON.stringify(cancelData),
+							success : function(response) {
+								VoiceMenual('취소 신청이 성공적으로 처리되었습니다.');
+								location.href="/page/buyer/orderList";
+							},
+							error : function(error) {
+								console.error('취소 실패.');
+								console.error(error);
+							}
+						});
 					}
 				});
-			});
-		});
-		
-		//tts 시작 
-	     let TTSIsOk = localStorage.getItem('ttsKey');
-	       let sessionAuthor;
-	      console.log(sessionStorage.loginMember);          
-	      if(sessionStorage.loginMember != null){
-	         sessionAuthor = sessionStorage.loginMember.memberAuthor;
-	      }
-	          
-	         function ttsInit(){
-	          if(TTSIsOk == null || sessionAuthor == 3){
-	           let audioFileNow = new Audio();
-	           let firstMsg = "취소 신청 페이지입니다. 상품을 취소할 수 있습니다.";
-	           //let message = firstMsg;
-
-	           VoiceMenual(firstMsg);
-
+			  });
+	   		
 	     //tts 이벤트 부여
 	     $('#orderCode').on('focus', orderCode);
 	     $('#orderDetailCode').on('focus', orderDetailCode);
@@ -179,19 +241,40 @@
 		 }
 		 function selectOption() {
 			 selectOp = $("#select option:selected").text();
+			 if(selectOp.val == "선택"){
+				 VoiceMenual("취소 사유를 선택해주세요.");
+			 }else{
+				 VoiceMenual("취소 사유를 선택하지 않아 취소되었습니다. 취소 사유를 선택해주세요");
+			 }
 			 VoiceMenual(selectOp);
 		 }
-		 function cancelReason() { 
-			 VoiceMenual("자세한 취소 사유를 입력해주세요.");
+		 function cancelReason(cancle) { 
+			 if(cancle.length > 0){
+				 VoiceMenual(cancle + "자세한 취소 사유를 입력해주세요.");
+			 }else{
+				 VoiceMenual("자세한 취소 사유를 입력해주세요.");
+			 }
 		 }
-		 function number() { 
-			 VoiceMenual("입금 계좌번호를 입력해주세요.");
+		 function number(cancle) {
+			 if(cancle.length > 0){
+			 	VoiceMenual(cancel + "입금 계좌번호를 입력해주세요.");				 
+			 }else{
+				 VoiceMenual("입금 계좌번호를 입력해주세요.");
+			 }
 		 }
-		 function owner() { 
-			 VoiceMenual("예금주를 입력해주세요.");
+		 function owner(cancle) { 
+			 if(cancle.length > 0){
+				 VoiceMenual(cancle + "예금주를 입력해주세요.");
+			 }else{
+				 VoiceMenual("예금주를 입력해주세요.");
+			 }
 		 }
-		 function bank() { 
-			 VoiceMenual("은행 명을 입력해주세요.");
+		 function bank(cancle) { 
+			 if(cancle.length > 0){
+				 VoiceMenual(cancle + "은행 명을 입력해주세요.");
+			 }else{
+				 VoiceMenual("은행 명을 입력해주세요.");
+			 }
 		 }
 		 function cancelBtn(){
 			 code = $('#orderCode').val();
@@ -207,6 +290,7 @@
 			 			  은행명은. ${bName}. 예금주는. ${aOwner}. 입금계좌번호는. ${aNumber}. 신청 사항을 확인하셨다면. 엔터키를 눌러주세요.`;
 			 VoiceMenual(check);
 		 }
+
 		 function retract(){
 			 VoiceMenual('취소 철회 버튼입니다. 취소 철회를 원하시면. 엔터키를 눌러주세요.');
 		 }

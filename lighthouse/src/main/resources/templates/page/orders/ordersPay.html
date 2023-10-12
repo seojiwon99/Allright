@@ -119,31 +119,32 @@
 
                       <!-- Title -->
                       
-                      <p class="mb-4 fs-sm fw-bold">  
+                      <p class="mb-4 fs-sm fw-bold" style="margin-left: 10px">  
                          <input type="hidden" th:value="${gets.productCode}" class="productNumber">
                          <input type="hidden" th:value="${gets.optionDetailCode}" class="optionDetailCode">
                          <input type="hidden" th:value="${gets.deliveryCost}" class="deliveryMoney">
                          <input type="hidden" name="couponUsePrice" class="text-body" th:value="${gets.productName}" ><br>
-                         상품이름 : <span class="text-muted pName" th:text="|${gets.productName}|"></span><br>
-                         상품금액 : <span class="text-muted pPay" style="text-decoration: line-through;" th:text="|${#numbers.formatInteger(gets.productCost,0,'COMMA')}|" id="selectPrice"></span>원 <br>
-                        <span class="text-muted sPay" th:text="|할인된 금액 : ${#numbers.formatInteger(gets.salePrice,0,'COMMA')}|"></span>원<br>
-                        <span class="text-muted oPay" th:text="|옵션 추가금액 : ${#numbers.formatInteger(gets.optionPrice,0,'COMMA')}|"></span>원
+                         상품이름 : <span class="text-muted pName" th:text="|${gets.productName}|" style="font-weight: bold;"></span><br>
+                         상품금액 : <span class="text-muted pPay" style="text-decoration: line-through; font-weight: bold;" th:text="|${#numbers.formatInteger(gets.productCost,0,'COMMA')}|" id="selectPrice"></span>원 <br>
+                        <span class="text-muted sPay" style="font-weight: bold;" th:text="|할인된 금액 : ${#numbers.formatInteger(gets.salePrice,0,'COMMA')}|"></span>원<br>
+                        <span class="text-muted oPay" style="font-weight: bold;" th:text="|옵션 추가금액 : ${#numbers.formatInteger(gets.optionPrice,0,'COMMA')}|"></span>원
                         <input type="hidden" class="selectValue" th:value="${(gets.salePrice + gets.optionPrice) * gets.cartCount}">
                         <div class="input-group mb-8">
-                          <input style="margin-top: 15px;" type="text" class="form-control cSelect" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2" id="couponSelect" tabindex="-1" readonly>
+                          <input style="margin-top: 15px; margin-left: 10px" type="text" class="form-control cSelect" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2" id="couponSelect" tabindex="-1" readonly>
                           <input type="hidden" class="myCouponCode">
                          <button type="button" class="btn btn-outline-secondary list-styled-link couponBtn" style="margin: 20px;" >쿠폰선택</button>
                          
                         </div> 
-                        <p>쿠폰 할인 금액 : <input type="text" style="border-width: 0 0 1px;" readonly class="couponSalePrice" tabindex="-1">원 
+                        <p style="margin-left: 10px">쿠폰 할인 금액 : <input type="text" style="border-width: 0 0 1px; width: 150px;" readonly class="couponSalePrice" tabindex="-1">원 
                           <button class="btn btn-outline-secondary couponResult" type="button">사용하기</button>
                         </p>         
                       <!-- Text -->
+                      
+                        <div class="fs-sm text-muted oName" th:text="|옵션 :${gets.optionLast}|" style="font-weight: bold;"></div>
+                        <div class="fs-sm text-muted pCnt" th:text="|구매수량 : ${gets.cartCount}|"  style="font-weight: bold;"></div>
 
-                      <div class="fs-sm text-muted oName" th:text="|옵션 :${gets.optionLast}|" style="font-weight: bold;"></div>
-                      <div class="fs-sm text-muted pCnt" th:text="|구매수량 : ${gets.cartCount}|"  style="font-weight: bold;"></div>
-
-                      <input type="hidden" th:value="${gets.cartCount}" class="cartCnt">
+                        <input type="hidden" th:value="${gets.cartCount}" class="cartCnt">
+                      
                     </div>
                   </div>
                </li>
