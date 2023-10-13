@@ -30,33 +30,19 @@
 			src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-
-
-
     <!-- header fragment 사용 -->
 <th:block th:replace="fragments/Sellerheader :: headerFragment"></th:block>
 
-<div class="col-12 col-lg-auto">
-<div class="row gx-0">
-  <th:block th:replace="fragments/seller_side :: sideFragment"></th:block>
-<div class="col-12 col-lg">
-
-
-<th:block layout:fragment="sellerContent"></th:block>
-
-<div class="panel-body">
-    <!-- <th:block layout:fragment="test"></th:block> -->
-    <!-- footer fragment 사용 -->
-    </div>
-    </div>
-    </div>
-  </div>
-
+	<div class="col-12 col-lg-auto">
+		<div class="row gx-0">
+	  		<th:block th:replace="fragments/seller_side :: sideFragment"></th:block>
+			<div class="col-9">
+				<th:block layout:fragment="sellerContent"></th:block>
+		    </div>
+	    </div>
+  	</div>
     
 <th:block th:replace="fragments/footer :: footerFragment"></th:block>
-
-
-
 
 </body>
 <!-- JAVASCRIPT -->

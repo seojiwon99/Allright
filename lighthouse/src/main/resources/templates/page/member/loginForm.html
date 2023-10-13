@@ -219,13 +219,7 @@
 			
 				
 				window.addEventListener("keydown", function(e){ 
-					if(e.key == 'Enter'){ // 엔터키로 중복확인
-						let focusNow = $(':focus')[0];
-						if(focusNow.id == 'loginBtn' || focusNow.id == 'loginPassword'){
-							e.preventDefault();
-							MemberLoginWithTTS()
-						}
-					}
+
 							
 							
 							
@@ -276,9 +270,21 @@
 					let msg = '비밀번호 입력란입니다. 엔터키를 눌러 로그인하실 수 있습니다.'
 					VoiceMenual(msg);
 				})
+				$('#loginPassword').on('keydown',function(){
+					if(e.key == 'Enter'){ // 엔터키로 중복확인
+						e.preventDefault();
+						MemberLoginWithTTS()
+					}
+				})
 				$('#loginBtn').on('focus',function(){
 					let msg = '로그인 버튼입니다. 엔터키를 눌러 로그인하실 수 있습니다.'
 					VoiceMenual(msg);
+				})
+				$('#loginBtn').on('keydown',function(){
+					if(e.key == 'Enter'){ // 엔터키로 중복확인
+						e.preventDefault();
+						MemberLoginWithTTS()
+					}					
 				})
 				$('#fMember').on('focus',function(){
 					let msg = '아이디찾기 링크입니다.'

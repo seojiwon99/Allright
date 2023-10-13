@@ -92,7 +92,6 @@
    from ar_member
    where member_id = #{memberId}
    AND member_email = #{memberEmail}
-   AND member_author = #{memberAuthor}
      </select>
      
      <update id="updateMemberPassword" parameterType="MemberVO">

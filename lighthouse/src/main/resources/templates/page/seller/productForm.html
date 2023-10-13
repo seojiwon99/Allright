@@ -3,7 +3,7 @@
    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/insertModifyPro}">
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <!-- Content -->
-<style type="text/css">
+<style>
    .card-img-top {
       position: relative;
       width: 540px;
@@ -25,6 +25,10 @@
    .modal {
       --bs-modal-width: 900px;
    }
+   
+  
+   
+  
 </style>
 
 
@@ -86,7 +90,7 @@
                         <label class="form-label" for="productName">
                            상품명 *
                         </label>
-                        <input class="form-control form-control-sm" id="productName" type="email" placeholder="상품명을 입력해주세요" name="productName" maxlength="70">
+                        <input class="form-control form-control-sm" id="productName" type="text" placeholder="상품명을 입력해주세요" name="productName" maxlength="70">
                      </div>
                   </div>
                   <div class="col-12 col-md-4">
@@ -95,7 +99,7 @@
                       <label class="form-label" for="productCost">
                          판매가 *
                       </label>
-                      <input class="form-control form-control-sm" type="number" id="productCost" name="productCost" maxlength="12" placeholder="판매가를 입력하세요">
+                      <input class="form-control form-control-sm" type="number" id="productCost" name="productCost" placeholder="판매가를 입력하세요" min="1">
                     </div>
   
                   </div>
@@ -105,7 +109,7 @@
                       <label class="form-label" for="accountLastName">
                         할인가 *
                       </label>
-                      <input type="number" id="salePrice" name="salePrice" class="form-control form-control-sm" maxlength="12" placeholder="할인가를 입력해주세요">
+                      <input type="number" id="salePrice" name="salePrice" class="form-control form-control-sm" max="99999999" placeholder="할인가를 입력해주세요" min="1">
                     </div>
   
                   </div>
@@ -115,7 +119,7 @@
                       <label class="form-label" for="productCount">
                         수량 *
                       </label>
-                      <input type="number" id="productCount" name="productCount" class="form-control form-control-sm" maxlength="9" placeholder="재고수량을 입력해주세요">
+                      <input type="number" id="productCount" name="productCount" class="form-control form-control-sm" max="99999999" placeholder="재고수량을 입력해주세요" min="1">
                     </div>
   
                   </div>
@@ -150,8 +154,8 @@
                   </div>
                   <!-- ///////// -->
                   <div class="col-12">
-                     <div class="form-group">
-                        <table class="table table-bordered table-sm mb-0" style="background-color: white;">
+                     <div class="tableWrapper form-group">
+                        <table class="table table-bordered table-sm mb-0" style="background-color: white;" id="userListTable">
                            <thead>
                              <tr>
                                <th scope="col">옵션명</th>
@@ -232,7 +236,7 @@
                        <label class="form-label" for="deliveryCost">
                         기본배송비 *
                        </label>
-                       <input class="form-control form-control-sm" type="number" id="deliveryCost" name="deliveryCost" maxlength="12" placeholder="0">
+                       <input class="form-control form-control-sm" type="number" id="deliveryCost" name="deliveryCost" max="99999999" placeholder="0" min="1">
                      </div>
    
                    </div>
@@ -242,7 +246,7 @@
                        <label class="form-label" for="exchangeCost">
                         교환배송비 *
                        </label>
-                       <input type="number" id="exchangeCost" name="exchangeCost" class="form-control form-control-sm" maxlength="12" placeholder="0">
+                       <input type="number" id="exchangeCost" name="exchangeCost" class="form-control form-control-sm" max="99999999" placeholder="0" min="1">
                      </div>
    
                    </div>
@@ -252,7 +256,7 @@
                        <label class="form-label" for="returnCost">
                          반품배송비 *
                        </label>
-                       <input type="number" id="returnCost" name="returnCost" class="form-control form-control-sm" maxlength="12" placeholder="0">
+                       <input type="number" id="returnCost" name="returnCost" class="form-control form-control-sm" max="99999999" placeholder="0" min="1">
                      </div>
    
                    </div>
@@ -502,18 +506,21 @@
          let test22 = "";
          let optbox = "";
          let optbox1 = "";
+         let numberBox = $('input[type="number"]');
 
          $(window).on("load", function () {
             optbox = $('.optionN');
             optbox1 = $('.optionV');
 
          })
+
+         
+
          $(document).ready(function () {
                // 페이지 이동 이벤트를 감지하기 위해 이벤트 핸들러를 추가합니다.
                localStorage.removeItem('detail');
                localStorage.removeItem('product');
                $(window).on("beforeunload", function() {
-                  console.log(test22);
                   // 사용자에게 메시지를 반환합니다. 이 메시지가 브라우저에 표시됩니다.
                   var currentURL = test22;
 
@@ -949,8 +956,7 @@
          function setThumbnail(event) {
             var reader = new FileReader();
 
-            reader.onload = function (event) {
-               // document.querySelector("div#image_container").removeChild();
+               reader.onload = function (event) {
                var div = document.querySelector("div#image_container");
                div.innerHTML = "";
                var divTag = document.createElement("div");
@@ -1015,6 +1021,7 @@
                let box0 = arr[0];
                let box1 = arr[1];
                let box2 = arr[2];
+               let idx2 = 0;
                console.log(box0[0]);
                if (optionV.length == 1) {
                   let idx = 0;
@@ -1035,8 +1042,10 @@
                      inputN.addClass("form-control");
                      inputN.attr('name', 'optionDetail[' + i + '].optionPrice');
                      inputN.attr('id', 'optionPrice' + idx);
+                     inputN.attr('min',1);
                      inputN.css("width", "100px");
                      inputN.attr('placeholder', 0);
+                     
                      td.append(inputN);
                      tr.append(td);
 
@@ -1046,6 +1055,7 @@
                      inputN.attr('name', 'optionDetail[' + i + '].optionCount');
                      inputN.attr('id', 'optionCount' + idx);
                      inputN.css("width", "100px");
+                     inputN.attr('min',1);
                      inputN.attr('placeholder', 0);
                      td.append(inputN);
                      tr.append(td);
@@ -1056,6 +1066,7 @@
                      inputN.attr('name', 'optionDetail[' + i + '].minOrder');
                      inputN.attr('id', 'minOrder' + idx);
                      inputN.css("width", "100px");
+                     inputN.attr('min',1);
                      inputN.attr('placeholder', 0);
                      td.append(inputN);
                      tr.append(td);
@@ -1066,11 +1077,13 @@
                      inputN.attr('name', 'optionDetail[' + i + '].maxOrder');
                      inputN.attr('id', 'maxOrder' + idx);
                      inputN.css("width", "100px");
+                     inputN.attr('min',1);
                      inputN.attr('placeholder', 0);
                      td.append(inputN);
                      tr.append(td);
                      tbody.append(tr);
                      idx++;
+                     idx2++
                   }
                } else if (optionV.length == 2) {
                   let idx = 0;
@@ -1093,6 +1106,7 @@
                         inputN.addClass("form-control form-control-sm");
                         inputN.attr('id', 'optionPrice' + idx);
                         inputN.css("width", "100px");
+                        inputN.attr('min',1);
                         inputN.attr('placeholder', 0);
                         td.append(inputN);
                         tr.append(td);
@@ -1103,6 +1117,7 @@
                         inputN.addClass("form-control form-control-sm");
                         inputN.attr('id', 'optionCount' + idx);
                         inputN.css("width", "100px");
+                        inputN.attr('min',1);
                         inputN.attr('placeholder', 0);
                         td.append(inputN);
                         tr.append(td);
@@ -1113,6 +1128,7 @@
                         inputN.addClass("form-control form-control-sm");
                         inputN.attr('id', 'minOrder' + idx);
                         inputN.css("width", "100px");
+                        inputN.attr('min',1);
                         inputN.attr('placeholder', 0);
                         td.append(inputN);
                         tr.append(td);
@@ -1123,12 +1139,14 @@
                         inputN.addClass("form-control form-control-sm");
                         inputN.attr('id', 'maxOrder' + idx);
                         inputN.css("width", "100px");
+                        inputN.attr('min',1);
                         inputN.attr('placeholder', 0);
                         td.append(inputN);
                         tr.append(td);
                         tbody.append(tr);
 
                         idx++;
+                        idx2++
                      }
                   }
 
@@ -1140,7 +1158,7 @@
                            let tr = $('<tr/>');
 
                            td = $('<td/>');
-                           input = $('<input />').attr('value', box0[i] + box1[j] + box0[x]);
+                           input = $('<input />').attr('value', box0[i] + box1[j] + box2[x]);
                            input.addClass("form-control form-control-sm");
                            input.attr('name', 'optionDetail[' + idx + '].optionLast');
                            input.attr('id', 'optionLast' + idx);
@@ -1154,6 +1172,7 @@
                            inputN.addClass("form-control form-control-sm");
                            inputN.attr('id', 'optionPrice' + idx);
                            inputN.css("width", "100px");
+                           inputN.attr('min',1);
                            inputN.attr('placeholder', 0);
                            td.append(inputN);
                            tr.append(td);
@@ -1164,6 +1183,7 @@
                            inputN.addClass("form-control form-control-sm");
                            inputN.attr('id', 'optionCount' + idx);
                            inputN.css("width", "100px");
+                           inputN.attr('min',1);
                            inputN.attr('placeholder', 0);
                            td.append(inputN);
                            tr.append(td);
@@ -1174,6 +1194,7 @@
                            inputN.addClass("form-control form-control-sm");
                            inputN.attr('id', 'minOrder' + idx);
                            inputN.css("width", "100px");
+                           inputN.attr('min',1);
                            inputN.attr('placeholder', 0);
                            td.append(inputN);
                            tr.append(td);
@@ -1184,16 +1205,25 @@
                            inputN.addClass("form-control form-control-sm");
                            inputN.attr('id', 'maxOrder' + idx);
                            inputN.css("width", "100px");
+                           inputN.attr('min',1);
                            inputN.attr('placeholder', 0);
                            td.append(inputN);
                            tr.append(td);
                            tbody.append(tr);
+                           idx++;
+                           idx2++
                         }
                      }
                   }
                }
                $('#optionNum').val("Y");
-
+               if(idx2 < 5){
+            	   let height = idx2 * 150;
+            	   $('.tableWrapper').css("height",height+"px");
+               }else{
+	               $('.tableWrapper').css("height","600px");
+            	   
+               }
             }
 
          })
@@ -1366,32 +1396,8 @@
          // 등록 이벤트
          $('.submit').on('click', function (e) {
             e.preventDefault();
-
-            let detailData = JSON.parse(localStorage.getItem("detail"));
-            if(detailData != null){
-               let textarea = $('<textarea>' + detailData.content + '</textarea>');
-               textarea.css("display", "none");
-               textarea.attr("name", "productContent");
-               $("#insertForm").prepend(textarea);
-               for(let i = 0; i<detailData.img.length; i++){
-                  let divTab = $('<div/>');
-                  let obj = detailData.img[i];
-                  for(var key in obj){
-                     let input = $('<input/>');
-                     $(input).val(obj[key]);
-                     input.attr("type", "hidden");
-                     input.attr("name","imgsVO["+i+"]."+key);
-                     divTab.append(input);
-                  }
-                  $(divTab).appendTo($("#insertForm"));
-
-            }
-            
-           
-
-            }
-
-
+            let chk = "N";
+         
             let select = $('select[name="categoryCode"]');
             if ($(select).val() == null || $(select).val() == "") {
                alert("카테고리를 넣어주세요");
@@ -1424,12 +1430,8 @@
                if (!changeOption()) {
                   return;
                }
-            }
-
-            let optionDetailChk = $("#optiontab tr");
-            let chk = "N";
-
-            $(optionDetailChk).each(function (idx, item) {
+               let optionDetailChk = $("#optiontab tr");
+               $(optionDetailChk).each(function (idx, item) {
                let n = 0;
                chk = "N";
                let count = 0;
@@ -1499,6 +1501,11 @@
             if (chk == "N") {
                return;
             }
+            }
+           
+           
+
+            
 
             // 옵션 검사 해야함
             let inputfile = $('#imgName');
@@ -1586,29 +1593,29 @@
                return;
             }
 
+            let detailData = JSON.parse(localStorage.getItem("detail"));
+            if(detailData != null){
+               let textarea = $('<textarea>' + detailData.content + '</textarea>');
+               textarea.css("display", "none");
+               textarea.attr("name", "productContent");
+               $("#insertForm").prepend(textarea);
+               for(let i = 0; i<detailData.img.length; i++){
+                  let divTab = $('<div/>');
+                  let obj = detailData.img[i];
+                  for(var key in obj){
+                     let input = $('<input/>');
+                     $(input).val(obj[key]);
+                     input.attr("type", "hidden");
+                     input.attr("name","imgsVO["+i+"]."+key);
+                     divTab.append(input);
+                  }
+                  $(divTab).appendTo($("#insertForm"));
 
-            // let detailData = JSON.parse(localStorage.getItem("detail"));
-            // let textarea = $('<textarea>' + detailData.content + '</textarea>');
-            // textarea.css("display", "none");
-            // textarea.attr("name", "productContent");
-            
-            // $("#insertForm").prepend(textarea);
-            // for(let i = 0; i<detailData.img.length; i++){
-            //    let divTab = $('<div/>');
-            //    let obj = detailData.img[i];
-            //    for(var key in obj){
-            //       let input = $('<input/>');
-            //       $(input).val(obj[key]);
-            //       input.attr("type", "hidden");
-            //       input.attr("name","imgsVO["+i+"]."+key);
-            //       divTab.append(input);
-            //    }
-            //    $(divTab).appendTo($("#insertForm"));
-               
-            // }
+               }
+            }
             test22 = "/insertProduct";
 
-            $("#insertForm").submit();
+            // $("#insertForm").submit();
          })
 
          // 상품명 유효성 검사
@@ -2324,6 +2331,7 @@
                sel.append(select);
             };
 
+          
 
 
 
@@ -2353,6 +2361,16 @@
             return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); 
          }  
 
+         $(document).on('keydown',numberBox ,function(e){
+           if($(':focus').prop('type') == 'number'){   
+              if(e.keyCode == 110 || e.keyCode == 109 || e.keyCode == 189 || e.keyCode == 190 || e.keyCode == 107){
+                 return false;
+               }
+               if(e.shiftKey && e.keyCode ==187){
+                  return false;
+               }
+            }
+         })
 
 
 
@@ -2377,7 +2395,26 @@
       </script>
 
 
+		<style>
+			.modal img{
+				width:100%;
+			}
+			
+			.tableWrapper {
 
+			    overflow: auto;
+			}
+		
+			#userListTable {
+			    border-collapse: collapse;
+			}
+			
+			#userListTable th {
+			    position: sticky;
+			    top: 0px;
+			    background-color:cornflowerblue;
+			}
+		</style>
       </div>
    </div>
 

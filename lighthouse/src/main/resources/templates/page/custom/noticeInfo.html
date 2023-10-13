@@ -19,7 +19,6 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
-
 					<!-- Breadcrumb -->
 					<ol class="breadcrumb mb-0 fs-xs text-gray-400">
 						<li class="breadcrumb-item"><a class="text-gray-400"
@@ -46,15 +45,15 @@
 				<table class="table table-bordered" style="border-top:1px solid black;">
 					<thead>
 						<tr>
-							<th>제목</th>
+							<th style="width:250px; text-align:center;">제목</th>
 							<td>[[${noticeInfo.noticeTitle}]]</td>
 						</tr>
 						<tr>
-							<th>작성자</th>
+							<th style="width:250px; text-align:center;">작성자</th>
 							<td>[[${noticeInfo.noticeWriter}]]</td>
 						</tr>
 						<tr>
-							<th>작성일자</th>
+							<th style="width:250px; text-align:center;">작성일자</th>
 							<td>[[${#dates.format(noticeInfo.noticeRegdate,'yyyy-MM-dd')}]]</td>
 						</tr>
 						<tr>

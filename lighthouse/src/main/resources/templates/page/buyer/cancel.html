@@ -149,29 +149,33 @@
 							console.log('enter key')
 						// 사용자가 입력한 반품 사유와 주소 정보 가져오기
 						let selOption = $('#select option:selected').val();
-						if (selOption == "선택") {
-							selectOption('취소 사유를 선택해주세요.');
+						if (selOption != "선택") {
+						} else {	
+							selected("취소 사유를 선택하지 않아 취소되었습니다. 취소 선택란으로 이동합니다.");
 							$('#select').focus();
 							return;
 						}
 						if ($('#content').val() == "") {
-							cancelReason("자세한 취소 사유가 입력되지 않아 취소되었습니다. 취소 사유 입력란으로 이동합니다.")
+							cancelReason("자세한 취소 사유가 입력되지 않아 취소되었습니다. 자세한 취소 사유 입력란으로 이동합니다.")
 							$('#content').focus();
 							return;
 						}
 						if ($('#bankName').val() == ""){
 							console.log('은행명')
-							owner('은행 이름이 입력되지 않아 취소되었습니다. 은행 이름 입력란으로 이동합니다.');
+							bank('은행 이름이 입력되지 않아 취소되었습니다. 은행 이름 입력란으로 이동합니다.');
+							$('#bankName').focus();
 							return;
 						}
 						if ($('#accountNumber').val() == ""){
 							console.log('계좌번호')
-							owner('계좌번호가 입력되지 않아 취소되었습니다. 계좌번호 입력란으로 이동합니다.');
+							number('계좌번호가 입력되지 않아 취소되었습니다. 계좌번호 입력란으로 이동합니다.');
+							$('#accountNumber').focus();
 							return;
 						}
 						if ($('#accountOwner').val() == ""){
 							console.log('예금주')
 							owner('예금주가 입력되지 않아 취소되었습니다. 예금주 입력란으로 이동합니다.');
+							$('#accountOwner').focus();
 							return;
 						}
 						let reasonName = $('#select option:selected').text().trim()
@@ -235,42 +239,41 @@
 			 prodName = $('#productName').val();   	 
 			 VoiceMenual("상품 명은" + prodName + "입니다.");
 		 }
-		 function selected() { 
+		 function selected(select) { 
 			 select =  $("#select").text();
-			 VoiceMenual(select);
-		 }
-		 function selectOption() {
-			 selectOp = $("#select option:selected").text();
-			 if(selectOp.val == "선택"){
+			 if(select == "취소 사유를 선택해주세요"){
 				 VoiceMenual("취소 사유를 선택해주세요.");
 			 }else{
-				 VoiceMenual("취소 사유를 선택하지 않아 취소되었습니다. 취소 사유를 선택해주세요");
+				 VoiceMenual("취소 사유를 선택하지 않아 취소되었습니다. 취소 사유 선택란으로 이동합니다.");
 			 }
+		 }
+		 function selectOption(selectOp) {
+			 selectOp = $("#select option:selected").text();
 			 VoiceMenual(selectOp);
 		 }
-		 function cancelReason(cancle) { 
-			 if(cancle.length > 0){
-				 VoiceMenual(cancle + "자세한 취소 사유를 입력해주세요.");
+		 function cancelReason(reCancle) { 
+			 if(reCancle.length > 0){
+				 VoiceMenual(reCancle + "자세한 취소 사유를 입력해주세요.");
 			 }else{
 				 VoiceMenual("자세한 취소 사유를 입력해주세요.");
 			 }
 		 }
-		 function number(cancle) {
-			 if(cancle.length > 0){
-			 	VoiceMenual(cancel + "입금 계좌번호를 입력해주세요.");				 
+		 function number(nuCancle) {
+			 if(nuCancle.length > 0){
+			 	VoiceMenual(canc + "입금 계좌번호를 입력해주세요.");				 
 			 }else{
 				 VoiceMenual("입금 계좌번호를 입력해주세요.");
 			 }
 		 }
-		 function owner(cancle) { 
-			 if(cancle.length > 0){
+		 function owner(owCancle) { 
+			 if(owCancle.length > 0){
 				 VoiceMenual(cancle + "예금주를 입력해주세요.");
 			 }else{
 				 VoiceMenual("예금주를 입력해주세요.");
 			 }
 		 }
-		 function bank(cancle) { 
-			 if(cancle.length > 0){
+		 function bank(baCancle) { 
+			 if(baCancle.length > 0){
 				 VoiceMenual(cancle + "은행 명을 입력해주세요.");
 			 }else{
 				 VoiceMenual("은행 명을 입력해주세요.");

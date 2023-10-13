@@ -38,6 +38,9 @@
 	</nav>
 	<!-- CONTENT -->
 	<section class="pt-7 pb-12">
+			<div class="col-12 text-center">
+				<h3 class="mb-3">공지사항</h3>
+			</div>
 		<div>
 			<div class="row justify-content-center">
 				<div class="col-12 col-lg-10 col-xl-8">
@@ -73,10 +76,11 @@
 							<tr th:each="notice,status : ${noticeList}"
 								th:onclick="|location.href='@{/custom/noticeInfo/(noticeCode=${notice.noticeCode},pageNum=${pageMaker.cri.pageNum},keyword=${pageMaker.cri.keyword})}'|"
 								class="noticeLi"
+								th:style="${notice.noticeType} == 'Y' ? 'font-weight:600' : ''"
 								tabindex="0">
 								<td style="display:none;"><input type="hidden" th:value="${notice.noticeCode}"
 										th:id="|code${status.index}|" class="noticeCode"></td>
-								<td th:id="|type${status.index}|">[[${notice.noticeType} == 'Y' ? '공지' :
+								<td th:id="|type${status.index}|" th:style="${notice.noticeType} == 'Y' ? 'color:#ff6f61' : ''">[[${notice.noticeType} == 'Y' ? '공지' :
 									${pageMaker.total} - (((${pageMaker.cri.pageNum}-1)* ${pageMaker.cri.amount}) +
 									${status.index})]]</td>
 								<td th:id="|title${status.index}|"
