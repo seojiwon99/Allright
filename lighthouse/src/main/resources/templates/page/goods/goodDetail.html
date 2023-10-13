@@ -88,7 +88,7 @@
 <body>
 	<div layout:fragment="content">
 		<!-- 단건 조회 -->
-		<section id="">
+		<section id="headerSection">
 			<div class="container">
 				<div class="row">
 					<div class="col-12">
@@ -297,7 +297,7 @@
 								href="javascript:document.querySelector('#descriptionTab').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })">
 								상세정보 </a> <a class="menu nav-link" id="rcon"
 								href="javascript:document.querySelector('#sizeTab').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })">리뷰
-								<strong class="fs-sm ms" name="reviewCount">([[${count}]])</strong>
+								<strong class="fs-sm ms" name="reviewCount" id="reviewCount">([[${count}]])</strong>
 							</a> <a class="menu nav-link" id="qcon"
 								href="javascript:document.querySelector('#qnaTap').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })">
 								Q&A <strong class="fs-sm" name="inquiryCont">([[${inquiryCount}]])</strong>
@@ -400,8 +400,11 @@
 
 		<script th:inline="javascript">
 		$(window).scroll(function () {
-			//var height = $(document).height(); //전체높이
-			//console.log(height);
+			var height = $(document).height(); //전체높이
+			console.log(height);
+			
+			var headerSection =$("#headerSection").height();
+			console.log(headerSection);
 			
 			var preHeight = $(document).scrollTop(); //현재 스크롤
 			preHeight = parseInt(preHeight);
@@ -417,19 +420,24 @@
 			var qnaSection =$("#qnaTap").offset().top;
 			qnaSection = parseInt(qnaSection);
 			
-			if(0 <= preHeight || preHeight <= 3352){
+			if(preHeight < headerSection){
+				$("#pcon").css("color","black");
+				$("#rcon").css("color","black");
+				$("#qcon").css("color","black");
+			}
+			if(headerSection <= preHeight || preHeight <= height - (reviewSection+qnaSection+headerSection)){
 				$("#pcon").css("color","#ff6f61");
 				$("#rcon").css("color","black");
 				$("#qcon").css("color","black");
 			}
 			
-			if(3353 <= preHeight ||  preHeight >= 4123){
+			if(reviewSection-200 <= preHeight ||  preHeight >= qnaSection){
 				$("#pcon").css("color","black");
 				$("#rcon").css("color","#ff6f61");
 				$("#qcon").css("color","black");
 			}
 			
-			if(preHeight >= 4124){
+			if(preHeight+400 >= qnaSection){
 				$("#pcon").css("color","black");
 				$("#rcon").css("color","black");
 				$("#qcon").css("color","#ff6f61");

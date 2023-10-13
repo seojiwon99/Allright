@@ -542,8 +542,10 @@
           alert("업로드 성공");
           console.log("rsult"+result);
           if(result == "insert"){
-        	 	console.log(result);
+        	 	
         	 	reviewPageLoad(1);
+        	 	let reviewCount = $('#reviewCount');
+        	 	console.log(reviewCount);
         	 	document.querySelector('#reviews').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
           	}
     	},
