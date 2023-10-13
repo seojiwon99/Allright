@@ -623,7 +623,7 @@
     paymentWidget.requestPayment({
       orderId: uuid,
       orderName: [[${productName}]],
-      successUrl: '/orders/credit',
+      successUrl: 'http://localhost:8090/orders/credit',
       failUrl: 'https://my-store.com/fail',
       customerEmail: [[${orderGet[0].memberEmail}]], 
       customerName: [[${orderGet[0].memberName}]]
