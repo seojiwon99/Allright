@@ -242,8 +242,8 @@ public class ProductServiceImpl implements ProductService {
 
 //	취소건 목록
 	@Override
-	public List<DetailVO> getStaticList(String memberId) {
-		return productMapper.selectStatsList(memberId);
+	public List<DetailVO> getStaticList(String memberId, String preBetw, String suBetw) {
+		return productMapper.selectStatsList(memberId, preBetw, suBetw);
 	}
 
 	@Override

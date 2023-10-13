@@ -16,8 +16,8 @@ google.charts.load('current', {'packages':['corechart']});
 
 		<div class="col-12 col-lg">
 
-			<button id="statisticsBtn">통계</button>
-			<button id="accountingBtn">정산</button>
+			<button class="btn-sm btn-dark" id="statisticsBtn">통계</button>
+			<button class="btn-sm btn-dark" id="accountingBtn">정산</button>
 
 			<div id="contentArea">
 				<!-- 비동기로 로드할 내용이 들어갈 영역 -->
@@ -35,9 +35,6 @@ $("#statisticsBtn").click(function () {
         method: "GET",
         success: function (data) {
             $("#contentArea").html(data); 
-            
-
-            
         },
         error: function () {
         }
