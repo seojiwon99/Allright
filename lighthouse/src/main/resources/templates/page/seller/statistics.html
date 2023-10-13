@@ -60,7 +60,7 @@ google.charts.load('current', {'packages':['corechart']});
 	        <td th:text="${static.productCode}"></td>
 	        <td th:text="${static.productName}"></td>
 	        <td th:text="${static.optionDetail[0].optionLast}"></td>
-	        <td th:text="${static.salePrice}"></td>
+	        <td th:text="|${#numbers.formatInteger(static.salePrice,3,'COMMA')}|"></td>
 	        <td th:text="${static.orderCnt}"></td>
 	        <td th:text="${static.cancelCnt}"></td>
 	        <td th:text="${static.returnCnt}"></td>
