@@ -1,7 +1,9 @@
 package com.ar.lighthouse.product.service;
 
 import java.util.List;
+import java.util.Map;
 
+import com.ar.lighthouse.admin.service.DeclareVO;
 import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.buyp.service.MyInquiryVO;
@@ -103,12 +105,19 @@ public interface ProductService {
 	public List<OptionVO> getOptionList(OptionVO optionVO);
 	
 	// 옵션 디테일
-	public List<OptionDetailVO> getOptionDetail(OptionVO optionVO);
+	public List<OptionDetailVO> getOptionDetail(OptionDetailVO optionDetailVO);
 	
 	// 택배사 코드 가져오기
 	List<CodeVO> getDeliveryList();
 	
 	//취소 승인 시 승인 여부 Y로 변경 - 석연
 	public int editCancelOk(String cancelCode);
+	
+
+	public int editReturnOk(String returnCode);
+
+	// 신고 체크
+	public Map<String, Object> sellerChk(String memberId);
+
 	
 }

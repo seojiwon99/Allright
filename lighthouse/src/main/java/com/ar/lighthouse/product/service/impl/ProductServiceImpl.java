@@ -1,12 +1,16 @@
 package com.ar.lighthouse.product.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ar.lighthouse.admin.service.DeclareVO;
 import com.ar.lighthouse.admin.service.MemberDetailVO;
+import com.ar.lighthouse.admin.service.SuspendVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.common.CodeVO;
@@ -243,8 +247,8 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<OptionDetailVO> getOptionDetail(OptionVO optionVO) {
-		return productMapper.selectOptionDetail(optionVO);
+	public List<OptionDetailVO> getOptionDetail(OptionDetailVO optionDetailVO) {
+		return productMapper.selectOptionDetail(optionDetailVO);
 	}
 
 
@@ -261,6 +265,12 @@ public class ProductServiceImpl implements ProductService {
 		return productMapper.updateCancelOk(cancelCode);
 
 	}
+    // 석연 - 반품 완료 시 Y로 상태 변경
+    @Override
+   	public int editReturnOk(String returnCode) {
+   		return productMapper.updateReturn(returnCode);
+
+   	}
 
 //  판매자 직접 취소
 	@Override
@@ -279,10 +289,11 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public int updateProductP(ProductVO productVO) {
 		int result = productMapper.updateProduct(productVO);
-		List<OptionVO> optionVO = new ArrayList();
+		int update = 0;
+
 		if (result > 0) {
 			String code = productVO.getProductCode();
-			if (productVO.getOption() == null || productVO.getOption().size() == 0) {
+			if (productVO.getOption() == null || productVO.getOption().size() == 0 ||productVO.getOptionDetail() ==null || productVO.getOptionDetail().size() == 0) {
 				System.out.println("@@@@@@@@@@@@@@@@");
 				OptionVO noptionVO = new OptionVO();
 				noptionVO.setProductCode(code);
@@ -290,30 +301,38 @@ public class ProductServiceImpl implements ProductService {
 				noptionVO.setOptionValue("없음");
 
 				productMapper.updateOption(noptionVO);
-			} else {
+				
+				OptionDetailVO detailVO = new OptionDetailVO();
+				detailVO.setProductCode(code);
+				detailVO.setOptionLast("없음");
+				detailVO.setOptionPrice(0);
+				detailVO.setMinOrder(1);
+				detailVO.setOptionCount(productVO.getProductCount());
+				update = productMapper.updateOptionDetail(detailVO);
+			}
+			else {
 				for (int i = 0; i < productVO.getOption().size(); i++) {
 
-//               if(productVO.getOption().get(i).getOptionCount() == 0) {
-//                  productVO.getOption().get(i).setOptionSellStatus("N");
-//               }
-					// value 짜르기
-//            String value = productVO.getOption().get(i).getOptionValue();
-//            String[] optVal = value.split(",");
-//            for(int j =0; j<optVal.length; j++) {
 //               
-//               OptionVO test = new OptionVO();
-//               test.setProductCode(code);
-//               test.setOptionOrder(length + 1);
-//               test.setOptionName(productVO.getOption().get(i).getOptionName());
-//               test.setOptionValue(optVal[j]);
-//               test.setOptionCount(1);
-//               length++;
-//               productMapper.insertOption(test);
-//            }
-					// System.out.println(productVO.getOption().get(i));
-					productVO.getOption().get(i).setProductCode(code);
-					System.out.println(productVO.getOption().get(i));
-					productMapper.insertOption(productVO.getOption().get(i));
+					String opCode = productVO.getOption().get(i).getProductCode();
+					System.out.println("optionCode : " +opCode);
+					if(productVO.getOption().get(i).getOptionCode() == null) {
+					//	insert
+						productVO.getOption().get(i).setProductCode(code);
+						productVO.getOptionDetail().get(i).setProductCode(code);
+						System.out.println("OPTION좀"+productVO.getOption().get(i));
+						productMapper.insertOption(productVO.getOption().get(i));
+						productMapper.insertOptionDetail(productVO.getOptionDetail().get(i));
+						
+					}else {
+					//  update
+						productVO.getOption().get(i).setProductCode(code);
+						System.out.println("detail" + productVO.getOption().get(i));
+						productVO.getOptionDetail().get(i).setProductCode(code);
+						productMapper.updateOption(productVO.getOption().get(i));
+						productMapper.updateOptionDetail(productVO.getOptionDetail().get(i));
+					}
+					
 
 					// System.out.println(productVO.getOption().get(i));
 				}
@@ -321,21 +340,14 @@ public class ProductServiceImpl implements ProductService {
 					for (int i = 0; i < productVO.getOptionDetail().size(); i++) {
 						productVO.getOptionDetail().get(i).setProductCode(code);
 						productMapper.updateOptionDetail(productVO.getOptionDetail().get(i));
+						update++;
 					}
-				} else {
-					OptionDetailVO detailVO = new OptionDetailVO();
-					detailVO.setProductCode(code);
-					detailVO.setOptionLast("없음");
-					detailVO.setOptionPrice(0);
-					detailVO.setOptionCount(productVO.getProductCount());
-					productMapper.updateOptionDetail(detailVO);
-
-				}
+				} 
 
 			}
 			// productMapper.insertOption(productVO.getOption());
 		}
-		return 1;
+		return update;
 	}
 	@Override
 	public void updateProductImg(ImgsVO imgVO) {
@@ -358,6 +370,14 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<MyInquiryVO> getSeaSellerInqu(MyInquiryVO myInquiryVO) {
 		return productMapper.selectSeaSellerInq(myInquiryVO);
+	}
+	@Override
+	public Map<String, Object> sellerChk(String memberId) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		SuspendVO vo = productMapper.sellChk(memberId);
+		map.put("정지 날짜", vo.getSuspEnddate());
+		return map;
 	}
 
 }

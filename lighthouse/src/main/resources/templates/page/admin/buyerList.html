@@ -65,25 +65,25 @@
 			  <input type="hidden" id="modalValue">
 			    <tr th:each="mem : ${memList}" th:onclick="testFunc([[${mem.memberId}]])">
 					
-						<td scope="row" th:text="${mem.memberId}"></td>
-						<td th:text="${mem.declareCount}"></td>
-						<td th:text="${mem.memberName}"></td>
-						<td th:text="${mem.memberTel}"></td>
-						<td th:text="${mem.memberEmail}"></td>
-						<td th:text="${mem.suspStatus}"></td>
-						<td>
+						<td scope="row" th:text="${mem.memberId}" style="cursor : pointer"></td>
+						<td th:text="${mem.declareCount}" style="cursor : pointer"></td>
+						<td th:text="${mem.memberName}" style="cursor : pointer"></td>
+						<td th:text="${mem.memberTel}" style="cursor : pointer"></td>
+						<td th:text="${mem.memberEmail}" style="cursor : pointer"></td>
+						<td th:text="${mem.suspStatus}" style="cursor : pointer"></td>
+						<td onclick="javascript: event.stopPropagation();">
 						<input type="radio" name="suspDay" value="101">/	
 						<input type="radio" name="suspDay" value="102">/
 						<input type="radio" name="suspDay" value="103">/
 						<input type="radio" name="suspDay" value="0">
 						</td>
-						<td>
+						<td onclick="javascript: event.stopPropagation();">
 						<select id="suspReasonSelect" style="width:55px">
 							<option th:each="reason : ${suspReason}" th:value="${reason.codeId}">[[${reason.codeName}]]</option>
 						</select>
 						
 						</td>
-						<td>
+						<td onclick="javascript: event.stopPropagation();">
 						<button class="btn btn-xxs btn-primary saveBtn" type="button" name="saveBtn">저장</button>
 						</td>
 				</tr>
@@ -212,6 +212,7 @@
 <!-- modal end -->
 	<script>
 	$('#memSearchBtn').on('click', function(){
+		let nowURL = new URL(location.href);
 		nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
 		if( $('#searchSelect').val() == "memberId"){
 			nowURL.searchParams.delete('memberName');
@@ -339,7 +340,14 @@
 				inputTags[4].value = rs.memberBirth;
 				inputTags[5].value = rs.businessNumber == null ? '구매자 고객' : rs.businessNumber;
 				inputTags[6].value = rs.declareCount+'/'+rs.suspCount;
-				inputTags[7].value = rs.suspStatus == null ? '사용 가능' : rs.suspStatus;
+				
+				if(rs.suspStatus == null){
+					inputTags[7].value = '사용 가능'
+				}else if(rs.suspStatus == 0){
+					inputTags[7].value = '사용 가능'
+				}else{
+					inputTags[7].value = rs.suspStatus
+				}
 				inputTags[8].value = rs.suspReason == null ? 'X' : rs.suspReason;
 				inputTags[9].value = (rs.suspRegdate == null ? 'X' : (rs.suspRegdate).substr(0,10)) + ' / ' +  (rs.suspEnddate == null ? 'X' : (rs.suspEnddate).substr(0,10));
 				

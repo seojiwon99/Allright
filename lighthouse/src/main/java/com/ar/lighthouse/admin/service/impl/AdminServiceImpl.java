@@ -210,6 +210,16 @@ public class AdminServiceImpl implements AdminService{
 		return adminMapper.selectBannerPath(eventImgCode);
 	}
 
+	@Override
+	public List<FaqVO> getAdminFaqList(Criteria cri, FaqVO faqVO) {
+		return adminMapper.selectFaqList(cri,faqVO);
+	}
+
+	@Override
+	public int getTotalFaqCount(FaqVO faqVO) {
+		return adminMapper.selectTotalFaq(faqVO);
+	}
+
 
 
 

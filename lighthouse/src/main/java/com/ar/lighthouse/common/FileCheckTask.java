@@ -63,8 +63,10 @@ public class FileCheckTask {
 		System.out.println("target" + targetDir);
 		
 		File[] removeFiles = targetDir.listFiles(file -> fileListPaths.contains(file.toPath()) == false);
-		for(File file : removeFiles) {
-			file.delete();
+		if(removeFiles  != null) {
+			for(File file : removeFiles) {
+				file.delete();
+			}
 		}
 	}
 }

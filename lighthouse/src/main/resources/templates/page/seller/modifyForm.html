@@ -1,182 +1,140 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/sellerHtml}">
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/insertModifyPro}">
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <!-- Content -->
+<style type="text/css">
+   .card-img-top {
+      position: relative;
+      width: 540px;
+      height: 480px;
+      margin: 0 auto;
+   }
 
+   .photo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      transition: transform .5s ease-out;
+   }
+      .modal {
+      --bs-modal-width: 900px;
+   }
+
+  
+</style>
 <div layout:fragment="sellerContent">
 
 
-   <div class="row gx-0">
-      <div class="col-12 col-lg-auto">
+  
 
-         <!-- NAVBAR -->
-         <nav class="navbar navbar-expand-lg navbar-vertical navbar-light sticky-start px-lg-7 ">
-            <div class="container-fluid">
-
-               <!-- Brand -->
-               <a class="navbar-brand" href="/sellerMain"> 판매자센터 </a>
-
-               <!-- Toggler -->
-               <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#navbarSidenavLeftCollapse" aria-controls="navbarSidenavLeftCollapse"
-                  aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-               </button>
-
-               <!-- Collapse -->
-               <div class="collapse navbar-collapse" id="navbarSidenavLeftCollapse">
-
-                  <!-- Nav -->
-                  <ul class="navbar-nav fs-lg mb-6 my-lg-12" id="sidenavParent">
-                     <li class="nav-item">
-                        <!-- Toggle --> <a class="nav-link dropdown-toggle" data-bs-toggle="collapse"
-                           href="#sidenavHome"> 상품관리 </a> <!-- Collapse -->
-                        <div class="collapse" id="sidenavHome" data-bs-parent="#sidenavParent">
-                           <ul class="list-styled fs-base fw-normal py-3 mb-0">
-                              <li class="list-styled-item"><a class="list-styled-link" href="/productList">상품 조회/수정</a>
-                              </li>
-                              <li class="list-styled-item"><a class="list-styled-link" href="/insertProduct">상품등록</a>
-                              </li>
-
-                           </ul>
-                        </div>
-
-                     </li>
-                     <li class="nav-item">
-                        <!-- Toggle --> <a class="nav-link dropdown-toggle" data-bs-toggle="collapse"
-                           href="#sidenavCatalog"> 판매관리 </a> <!-- Collapse -->
-                        <div class="collapse" id="sidenavCatalog" data-bs-parent="#sidenavParent">
-                           <div class="row">
-                              <div class="col-12 py-3">
-                                 <!-- Links -->
-                                 <ul class="list-styled fs-base">
-                                    <li class="list-styled-item"><a class="list-styled-link"
-                                          href="/orderManagement">주문확인/발송관리</a></li>
-                                    <li class="list-styled-item"><a class="list-styled-link"
-                                          href="/cancelProduct">취소관리</a></li>
-                                    <li class="list-styled-item"><a class="list-styled-link"
-                                          href="/exchangeList">교환반품관리</a></li>
-
-                                 </ul>
-
-                              </div>
-
-                     <li class="nav-item"><a class="nav-link" href="/settlementManagement">정산/통계관리</a></li>
-                     <li class="nav-item"><a class="nav-link" href="/productInquiry">문의관리</a></li>
-                     <li class="nav-item"><a class="nav-link" href="/sellerMypage">판매자정보</a></li>
-                     <li class="nav-item"><a class="nav-link" href="/sellerInquiry">고객센터</a></li>
-                  </ul>
-
-
-
-
-
-               </div>
-
+     <div class="col-12 col-lg" style="background-color: #E7E9EB;">
+         <!-- <div class="row">
+            <div class="col-12 text-center">
+              Heading
+              <h3 class="mb-10">상품 등록</h3>
             </div>
-         </nav>
-
-      </div>
-
-
-      <div class="col-12 col-lg">
-         <div class="jumbotron">
-            <div class="container">
-               <h1 class="display-3">상품 등록</h1>
-            </div>
-         </div>
-
-
-
-         <div class="container">
-            <form id="insertForm" class="form-horizontal" action="insertProduct" method="post" 
-               enctype="multipart/form-data">
-               <div id="categoryId">
-                  <div class="form-group row">
-                     <div>
-                        <label class="col-sm-2">카테고리</label>
-                        
-                        <div class="categorybox">
-                           <select id="categoryCode">
-                              <option value="1" class="disabledsel" disabled selected>카테고리선택</option>
-                              <option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}"
-                                 th:text="${category.categoryName}" th:if="${category.categoryLevel == 1}"></option>
-                           </select>
+          </div> -->
+         <div class="row">
+            <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
+              <!-- Form -->
+            <form id="updateForm" action="updateProduct" method="post" enctype="multipart/form-data">
+            <input type="text" name="productCode" id="productCode" th:value="${product[0].productCode}" class="visually-hidden"/>
+            <!-- <div th:each="code : ${product[0].option}">
+            <input type="text" name="optionCode" id="optionCode" th:value="${code.optionCode}" class="visually-hidden"/>
+            </div> -->
+            <div class="row">
+               <div class="col-12">
+                  <!-- 카테고리 들어갈곳 -->
+                  	<span>현재 카테고리 : </span><span th:text="${product[0].category[0].CategoryName}"></span>
+                     <div class="form-group">
+                        <label class="form-label">카테고리 선택 *</label>
+                        <div class="row gx-5">
+                           <div class="categorybox col-md-3">
+                              <label class="visually-hidden" for="categoryCode">
+                                 1단계 카테고리
+                              </label>
+                              <select class="form-select form-select-sm" id="categoryCode">
+                                 <option value="1" class="disabledsel" disabled selected>카테고리선택</option>
+                                 <option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}"
+                                    th:text="${category.categoryName}" th:if="${category.categoryLevel == 1}"></option>
+                              </select>
+                           </div>
+                           <div class="categorybox1 col-md-3" style="display: none;">
+                              <label class="visually-hidden" for="categoryCode01">
+                                 2단계 카테고리
+                              </label>
+                              <select class="disabledsel form-select form-select-sm" id="categoryCode01">
+                                 
+                              </select>
+                           </div>
+                           <div class="categorybox2 col-md-3" style="display: none;">
+                              <label class="visually-hidden" for="categoryCode02">
+                                 3단계 카테고리
+                              </label>
+                              <select class="disabledsel form-select form-select-sm" id="categoryCode02">
+                                 
+                              </select>
+                           </div>
+                           <div class="categorybox3 col-md-3" style="display: none;">
+                              <label class="visually-hidden" for="categoryCode03">
+                                 4단계 카테고리
+                              </label>
+                              <select class="disabledsel form-select form-select-sm" id="categoryCode03">
+                                 
+                              </select>
+                           </div>
                         </div>
-                        <div class="categorybox1" style="display: none;">
-                           <select id="categoryCode01" class="disabledsel">
-                              <!-- <option value="1" disabled selected>카테고리선택</option> -->
-                           </select>
-                        </div>
-                        <div class="categorybox2" style="display: none;">
-                           <select id="categoryCode02" class="disabledsel">
-                              <!-- <option value="1" disabled selected>카테고리선택</option> -->
-                           </select>
-                        </div>
-                        <div class="categorybox3" style="display: none;">
-                           <select id="categoryCode03" class="disabledsel">
-                              <!-- <option value="1" disabled selected>카테고리선택</option> -->
-                           </select>
-                        </div>
-                         
-
-                        <!-- <select th:field="*{getCategoryList}" id="ChildCate" style="display:none;">
-                           <option value="">카테고리선택</option>
-                           <option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}"
-                              th:text="${category.categoryName}"></option>
-                        </select>
-
-                        <select th:field="*{getCategoryList}" id="ChildOfChildCate" style="display:none;">
-                           <option value="">카테고리선택</option>
-                           <option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}"
-                              th:text="${category.categoryName}"></option>
-                        </select>
-
-                        <select th:field="*{getCategoryList}" id="thirdOfChildCate" style="display:none;">
-                           <option value="">카테고리선택</option>
-                           <option th:each="category : ${getCategoryList}" th:value="${category.categoryCode}"
-                              th:text="${category.categoryName}"></option>
-                        </select> -->
-                        <br>
-                        <strong id="firstCategoryCode"></strong><strong id="secondCategoryCode"></strong><strong
-                           id="thirdCategoryCode"></strong><strong id="quadCategoryCode"></strong>
                      </div>
                   </div>
-               </div>
 
 
             
-                <div class="form-group row">
-                  <label class="col-sm-2" for="productName">상품명</label>
-                  <div class="col-sm-3">
-                     <input type="text" id="productName" name="productName" class="form-control" th:value="${product[0].productName}">
+                 <!-- 여기! -->
+                  <div class="col-12">
+                     <!-- 상품명 -->
+                     <div class="form-group">
+                        <label class="form-label" for="productName">
+                           상품명 *
+                        </label>
+                        <input class="form-control form-control-sm" id="productName" type="email" placeholder="상품명을 입력해주세요" name="productName" maxlength="70" th:value="${product[0].productName}">
+                     </div>
                   </div>
-               </div>
-
-               <div class="form-group row">
-                  <label class="col-sm-2" for="productCost">판매가</label>
-                  <div class="col-sm-3">
-                     <input type="number" id="productCost" name="productCost" class="form-control" th:value="${product[0].productCost}"/>
+                  <div class="col-12 col-md-4">
+                    <!-- 판매가 -->
+                    <div class="form-group">
+                      <label class="form-label" for="productCost">
+                         판매가 *
+                      </label>
+                      <input class="form-control form-control-sm" type="number" id="productCost" name="productCost" maxlength="12" placeholder="판매가를 입력하세요" th:value="${product[0].productCost}">
+                    </div>
+  
                   </div>
-                  <label class="col-sm-2" for="salePrice">할인가</label>
-                  <div class="col-sm-3">
-                     <input type="number" id="salePrice" name="salePrice" class="form-control" th:value="${product[0].salePrice}">
+                  <div class="col-12 col-md-4">
+                    <!-- 할인가 -->
+                    <div class="form-group">
+                      <label class="form-label" for="accountLastName">
+                        할인가 *
+                      </label>
+                      <input type="number" id="salePrice" name="salePrice" class="form-control form-control-sm" maxlength="12" placeholder="할인가를 입력해주세요" th:value="${product[0].salePrice}">
+                    </div>
+  
                   </div>
-               </div>
-
-               <div class="countdiv form-group row">
-                  <label class="col-sm-2" for="optionCount">재고수량</label>
-                  <div class="col-sm-3">
-                     <input type="number" id="optionCount" name="productCount" class="form-control" th:value="${product[0].productCount}">
+                  <div class="col-12 col-md-4">
+                    <!-- 수량 -->
+                    <div class="countdiv form-group">
+                      <label class="form-label" for="productCount">
+                        수량 *
+                      </label>
+                      <input type="number" id="productCount" name="productCount" class="form-control form-control-sm" maxlength="9" placeholder="재고수량을 입력해주세요">
+                    </div>
+  
                   </div>
-               </div>
-               <!-- <div class="form-group row">
-                  <label class="col-sm-2" for="productContent">상품content</label>
-                  <div class="col-sm-3">
-                     <input type="text" id="productContent" name="productContent" class="form-control">
-                  </div>
-               </div> -->
 
                <div class="form-group row">
                   <label class="col-sm-2">옵션 개수</label>
@@ -189,20 +147,25 @@
                      </select> <input type="button" value="옵션등록" id="addOption">
                   </div>
                </div>
+               <th:block th:each="option,index : ${product[0].option}" style="display:none;">
+				    <input th:value="${option.optionName}" th:id="'optionNames'+${index.index}" style="display:none;">
+				    <input th:value="${option.optionValue}" th:id="'optionValues'+${index.index}" style="display:none;">
+				    <input th:value="${option.optionCode}" th:id="'optionCodes'+${index.index}" style="display:none;">
+				</th:block>
+
                <div class="optionText form-group row" style="display: none;">
                   <label class="col-sm-2">옵션</label>
-                  <div class="optionB row g-3"></div>
+                  <div class="optionB row g-3">
+                  </div>
                </div>	
-               <div class="form-group row" style="height: 200px; overflow: auto">
 
-                  <label class="col-sm-2" for="">옵션설정</label>
 
-                  <div class="col-sm-3">
-                     <table class="table">
-                        <thead>
+                  <div class="col-12">
+                     <div class="form-group">
+                        <table class="table table-bordered table-sm mb-0" style="background-color: white;">
+                           <thead>
                            <tr>
                               <th>옵션명</th>
-                              <th>옵션</th>
                               <th>옵션가격</th>
                               <th>옵션수량</th>
                               <th>최소구매수량</th>
@@ -210,137 +173,326 @@
                            </tr>
                         </thead>
                         <tbody id="optiontab">
-
+							<tr th:each="pro, index : ${product[0].optionDetail}" th:if="${product[0].option[0].optionName != '없음'}">
+							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].optionLast'" th:id="'optionLast' + ${index.index} + ''" th:value="${pro.optionLast}"></td>
+							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].optionPrice'" th:id="'optionPrice' + ${index.index} + ''" th:value="${pro.optionPrice}"></td>
+							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].optionCount'" th:id="'optionCount' + ${index.index} + ''" th:value="${pro.optionCount}"></td>
+							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].minOrder'" th:id="'minOrder' + ${index.index} + ''" th:value="${pro.minOrder}"></td>
+							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].maxOrder'" th:id="'maxOrder' + ${index.index} + ''" th:value="${pro.maxOrder}"></td>
+							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].optionDetailCode'" th:id="'optionDetailCode' + ${index.index} + ''" th:value="${pro.optionDetailCode}" style="display:none;"></td>
+							</tr>
                         </tbody>
                      </table>
                   </div>
                </div>
 
-               <div class="form-group row">
-                  <label class="col-sm-2" for="imgName">메인 이미지</label>
-                  <div class="col-sm-3">
-                     <input type="file" id="imgName" name="files" accept="image/*" onchange="setThumbnail(event);">
-                  </div>
-                  <div id="image_container" contenteditable="true"
-                     style="outline: none; margin: 0 auto; border: 1px solid black; margin-top: 30px">
-                     <img th:src="${fullImagePath}" th:alt="${detailImg.imgContent}">
+               <div class="col-12 col-lg-12">
+                     <div class="form-group mb-8">
+                        <div class="input-group mb-3">
+                           <label class="input-group-text" for="imgName">메인이미지</label>
+                           <input type="file" class="form-control" id="imgName" name="files" accept="image/*" onchange="setThumbnail(event);">
+                         </div>
+                           <div id="image_container">
+							<img th:src="|/upload/${detailImg.uploadPath}/${detailImg.uploadName}|" th:alt="${detailImg.imgContent}" style="width:200px; height:220px">
 
-
+                           </div>
+                     </div>
+                   </div>
+               <div class="col-12 col-lg-6">
+                     <div class="form-group mb-8">
+                       <label class="form-label">상세설명</label>
+                       <div>
+                         <input class="btn-check" type="button" name="detailBox" id="male" checked="">
+                         <label class="detailPro btn btn-sm btn-outline-border" for="detailBox">작성하러가기</label>
+                       </div>
+                     </div>
+                   </div>
+              <div class="col-12">
+                     <!-- 상품명 -->
+                     <div class="form-group">
+                        <label class="form-label" for="productBrand">
+                           브랜드 *
+                        </label>
+                        <input class="form-control form-control-sm" id="productBrand" type="text" placeholder="브랜드을 입력해주세요" name="productBrand" maxlength="30" th:value="${product[0].productBrand}">
+                     </div>
                   </div>
-               </div>
-               <div class="form-group row">
-                  <label class="col-sm-2" for="">상세설명</label>
-                  <div class="col-sm-3">
-                     <a target="_blank" class="detailPro"><strong name="productContent" class="form-control"
-                           style="background-color: #00C73C;">작성하러가기</strong></a>
+                  <div class="col-12">
+                     <!-- 상품명 -->
+                     <div class="form-group">
+                        <label class="form-label" for="productOrigin">
+                           원산지 *
+                        </label>
+                        <input class="form-control form-control-sm" id="productOrigin" type="text" placeholder="원산지을 입력해주세요" name="productOrigin" maxlength="15" th:value="${product[0].productOrigin}">
+                     </div>
                   </div>
-               </div>
-               <div class="form-group row">
-                  <label class="col-sm-2" for="productBrand">브랜드</label>
-                  <div class="col-sm-3">
-                     <input type="text" id="productBrand" name="productBrand" class="form-control" th:value="${product[0].productBrand}"/>
+                  <div class="col-12">
+                     <!-- 상품명 -->
+                     <div class="form-group">
+                        <label class="form-label" for="productMakeorigin">
+                           제조국 *
+                        </label>
+                        <input class="form-control form-control-sm" id="productMakeorigin" type="text" placeholder="제조국을 입력해주세요" name="productMakeorigin" maxlength="15" th:value="${product[0].productMakeorigin}">
+                     </div>
                   </div>
-               </div>
-               <div class="form-group row">
-                  <label class="col-sm-2" for="unitsInStock">상품인증</label>
-                  <div class="col-sm-3">
-                     <input type="text" id="unitsInStock" name="unitsInStock" class="form-control">
+                  <div class="col-12 col-md-4">
+                     <!-- 판매가 -->
+                     <div class="form-group">
+                       <label class="form-label" for="deliveryCost">
+                        기본배송비 *
+                       </label>
+                       <input class="form-control form-control-sm" type="number" id="deliveryCost" name="deliveryCost" maxlength="12" value="0" th:value="${product[0].deliveryCost}">
+                     </div>
+   
+                   </div>
+                   <div class="col-12 col-md-4">
+                     <!-- 할인가 -->
+                     <div class="form-group">
+                       <label class="form-label" for="exchangeCost">
+                        교환배송비 *
+                       </label>
+                       <input type="number" id="exchangeCost" name="exchangeCost" class="form-control form-control-sm" maxlength="12" value="0" th:value="${product[0].exchangeCost}">
+                     </div>
+   
+                   </div>
+                   <div class="col-12 col-md-4">
+                     <!-- 할인가 -->
+                     <div class="form-group">
+                       <label class="form-label" for="returnCost">
+                        반품배송비 *
+                       </label>
+                       <input type="number" id="returnCost" name="returnCost" class="form-control form-control-sm" maxlength="12" value="0" th:value="${product[0].returnCost}">
+                     </div>
+   
+                   </div>
+              <div class="col-12">
+                    <!-- Button -->
+                    <button type="submit" class="submit btn btn-primary">수정</button>
                   </div>
-               </div>
-               <div class="form-group row">
-                  <label class="col-sm-2" for="productOrigin">원산지</label>
-                  <div class="col-sm-3">
-                     <input type="text" id="productOrigin" name="productOrigin" class="form-control" th:value="${product[0].productOrigin}">
-                  </div>
-               </div>
-
-               <div class="form-group row">
-                  <label class="col-sm-2" for="productMakeorigin">제조국</label>
-                  <div class="col-sm-3">
-                     <input type="text" id="productMakeorigin" name="productMakeorigin" class="form-control" th:value="${product[0].productMakeorigin}">
-                  </div>
-               </div>
-               <div class="form-group row">
-                  <label class="col-sm-2" for="minOrder">최소구매수량</label>
-                  <div class="col-sm-3">
-                     <input type="number" id="minOrder" name="minOrder" class="form-control" th:value="${product[0].optionDetail[0].minOrder}">
-                  </div>
-               </div>
-               <div class="form-group row">
-                  <label class="col-sm-2" for="maxOrder">최대구매수량</label>
-                  <div class="col-sm-3">
-                     <input type="number" id="maxOrder" name="maxOrder" class="form-control" th:value="${product[0].optionDetail[0].maxOrder}">
-                  </div>
-               </div>
-               <div class="form-group row">
-                  <label class="col-sm-2" for="productLocation">출고지</label>
-                  <div class="col-sm-3">
-                     <input type="text" id="productLocation" name="productLocation" class="form-control" th:value="${product[0].productLocation}">
-                  </div>
-               </div>
-
-               <div class="form-group row">
-                  <label class="col-sm-2" for="deliveryCost">기본배송비</label>
-                  <div class="col-sm-3">
-                     <input type="number" id="deliveryCost" name="deliveryCost" class="form-control" th:value="${product[0].deliveryCost}">
-                  </div>
-               </div>
-               <div class="form-group row">
-                  <label class="col-sm-2" for="exchangeCost">교환배송비</label>
-                  <div class="col-sm-3">
-                     <input type="number" id="exchangeCost" name="exchangeCost" class="form-control" th:value="${product[0].exchangeCost}">
-                  </div>
-               </div>
-               <div class="form-group row">
-                  <label class="col-sm-2" for="returnCost">반품배송비</label>
-                  <div class="col-sm-3">
-                     <input type="number" id="returnCost" name="returnCost" class="form-control" th:value="${product[0].returnCost}">
-                  </div>
-               </div>
-               <div class="form-group row">
-                  <label class="col-sm-2">택배사</label>
-                  <div class="col-sm-3">
-                     <select id="deliveryService" name="deliveryService">
-                        <option value="" disabled="disabled" selected>택배사 선택</option>
-                        <option th:each="del : ${delivery}" th:value="${del.codeId}" th:text="${del.codeName}"></option>
-                     </select>
-                  </div>
-               </div>
-               <div class="form-group row">
-                  <div class="col-sm-offset-2 col-sm-10">
-                     <button type="submit" class="submit btn btn-primary">수정</button>
-                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Launch demo modal
-                      </button>
-                  </div>
-               </div>
-            </form>
-
+                </div>
+              </form>
          </div>
-         
       </div>
-      <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-     <div class="modal-content">
-       <div class="modal-header">
-         <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-       </div>
-       <div class="modal-body">
-         ...
-       </div>
-       <div class="modal-footer">
-         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-         <button type="button" class="btn btn-primary">Save changes</button>
-       </div>
-     </div>
-   </div>
- </div>
- </div>
+     <!-- Modal -->
+      <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h1 class="modal-title fs-8" id="exampleModalLabel">미리보기</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                  <section>
+                     <div class="container">
+                        <div class="row">
+                           <div class="col-12">
+                              <div class="row">
+                                 <div class="col-12 col-md-6">
+                                    <!-- Slider -->
+                                    <div class="flickity-nav mx-n2 mb-10 mb-md-0" style="height: 100%;">
+                                       <div class="Mimg ratio-1x1 bg-cover" style="height: 100%;">
+                                          <!-- 이미지 들어갈곳 -->
+                                       </div>
+                                    </div>
+                                 </div>
+
+                                 <div class="col-12 col-md-6 ps-lg-10">
+                                    <!-- Header -->
+                                    <div class="row mb-1">
+                                       <div class="col">
+                                          <!-- Preheading -->
+                                          <a class="Mcate text-muted">카테고리 들어가는곳</a>
+                                       </div>
+                                       <div class="col-auto">
+                                          <!-- Rating -->
+                                          <div class="rating fs-xs text-dark">
+                                             <div class="rating-item">
+                                                <i class="fas fa-star"></i>
+                                             </div>
+                                             <div class="rating-item">
+                                                <i class="fas fa-star"></i>
+                                             </div>
+                                             <div class="rating-item">
+                                                <i class="fas fa-star"></i>
+                                             </div>
+                                             <div class="rating-item">
+                                                <i class="fas fa-star"></i>
+                                             </div>
+                                             <div class="rating-item">
+                                                <i class="fas fa-star"></i>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+
+                                    <!-- Heading -->
+                                    <h3 class="MproName mb-2"></h3>
+
+                                    <!-- Price -->
+                                    <div class="mb-7">
+                                       <span
+                                          class="Mprice fs-lg fw-bold text-gray-350 text-decoration-line-through"></span>
+                                       <span class="MSale ms-1 fs-5 fw-bolder text-primary"></span>
+                                    </div>
+
+                                    <!-- Form -->
+                                    <div class="form-group"
+                                       style="font-size: 15px; border-bottom: 1px solid rgba(0, 0, 0, 0.3)">
+                                       <div style="padding-bottom: 8px; color: grey">
+                                          <span>배송정보 : </span> <span class="Mdelivery"></span>
+                                       </div>
+                                       <div style="padding-bottom: 8px; color: grey">
+                                          <span>배송비 : </span> <span class="Mdelprice"></span>
+                                       </div>
+                                       <div style="padding-bottom: 8px; color: grey">
+                                          <span>생산지 : </span> <span class="Mmaker"></span>
+                                       </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                       <!-- Label -->
+
+                                       <div class="mb-2" style="padding-bottom: 24px">
+                                          <!-- option -->
+                                          <div class="col-12 col-lg-auto">
+                                             <div class="selectbox">
+                                                <!-- <select class="selectbox form-select mb-2">
+                                                   <option class="selectbox1" value=""> 옵션들어가는곳
+                                                   </option>
+
+                                                </select>
+                                                <select class="selectbox1 form-select mb-2">
+                                                   <option class="selectbox1" value=""> 옵션들어가는곳
+                                                   </option>
+
+                                                </select> -->
+                                             </div>
+                                          </div>
+                                          <div class="col-12 col-lg-auto">
+                                             <div
+                                                style="display: flex; justify-content: space-between; padding: 20px 0px 40px 0px; color: black"
+                                                class="num">
+
+                                                <div>
+                                                   <span style="font-size: 22px; color: grey" id="realPrice">합계:0</span>
+                                                </div>
+                                             </div>
+                                          </div>
+                                          <div class="row gx-5 mb-7">
+                                             <div class="col-12 col-lg">
+                                                <!-- Submit -->
+                                                <button type="button" class="btn w-100 btn-dark mb-2">장바구니 <i
+                                                      class="fe fe-shopping-cart ms-2"></i>
+                                                </button>
+                                             </div>
+                                             <div class="col-12 col-lg-auto">
+                                                <!-- Wishlist -->
+                                                <button class="btn btn-outline-dark w-100 mb-2">
+                                                   찜 <i class="fe fe-heart ms-2"></i>
+                                                </button>
+
+                                             </div>
+                                          </div>
+
+                                          <p>
+                                             <span class="text-gray-500">아이디가 없나요?</span> <a
+                                                class="text-reset text-decoration-underline" id="loginTag">지금
+                                                바로 회원가입!</a>
+                                          </p>
+                                       </div>
+                                    </div>
+                                    <!-- Text -->
+
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </section>
+
+                  <!-- DESCRIPTION -->
+                  <section class="pt-11">
+                     <div class="container">
+                        <div class="row">
+                           <div class="col-12">
+                              <!-- Nav -->
+                              <div
+                                 class="nav nav-tabs nav-overflow justify-content-start justify-content-md-center border-bottom"
+                                 style="font-size: 24px; position: sticky; top: 0px; background-color: white; z-index: 1">
+                                 <a class="menu nav-link">
+                                    상세정보
+                                 </a>
+                                 <a class="menu nav-link">리뷰
+                                    <strong class="fs-sm ms" name="reviewCount">(0)</strong>
+                                 </a> <a class="menu nav-link">
+                                    Q&A <strong class="fs-sm" name="inquiryCont">(0)</strong>
+                                 </a>
+                              </div>
+                              <!-- Content -->
+                              <div class="tab-content">
+                                 <div class="">
+                                    <div style="padding-top: 48px">
+                                       <h5 class="mb-5 text-center">표기 정보</h5>
+                                       <table class="table">
+                                          <thead>
+                                             <tr>
+                                                <th scope="col" style="font-weight: 600">제품명</th>
+                                                <th scope="col" class="MproName"></th>
+                                                <th scope="row" style="font-weight: 600">판매자</th>
+                                                <th scope="row" id="sellerId" class="sellerName"></th>
+                                             </tr>
+                                          </thead>
+
+                                          <tbody>
+                                             <tr>
+                                                <th scope="row" style="font-weight: 600">사업자번호</th>
+                                                <th scope="row" class="sellerNum"></th>
+                                                <th scope="row" style="font-weight: 600">원가</th>
+                                                <th scope="row" class="Mprice">원가 </th>
+                                             </tr>
+                                             <tr>
+                                                <td scope="row" style="font-weight: 600">등록날짜</td>
+                                                <td scope="row" class="today"></td>
+                                             </tr>
+                                             <tr>
+                                                <td scope="row" style="font-weight: 600">배송방법</td>
+                                                <td scope="row" class="Mdelivery">배송방법</td>
+                                                <td scope="row" style="font-weight: 600">배송비</td>
+                                                <td scope="row" class="Mdelprice">배송비</td>
+                                             </tr>
+
+                                             <tr>
+                                                <td scope="row" style="font-weight: 600">생산지</td>
+                                                <td scope="row" class="Mmaker">생산지</td>
+                                             </tr>
+                                          </tbody>
+                                       </table>
+                                    </div>
+
+                                    <!-- 상세내용 -->
+                                    <div style="padding: 48px 0px">
+                                       <div class="Mdetail"></div>
+                                    </div>
+                                 </div>
+                              </div>
+
+                           </div>
+                        </div>
+                     </div>
+                  </section>
+</div>
+				</div>
+
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+               </div>
+            </div>
+         </div>
       <script th:inline="javascript">
       let productCode = window.localStorage.getItem('productCode');
          let test22="";
+         console.log(productCode);
          $(document).ready(function () {
         	 
         	 $(window).on('beforeunload', (event) => {
@@ -350,8 +502,160 @@
          			
          		     localStorage.clear();
   	   		    }
-  	   		  });
+  	   		  }); 
 	 
+        	 var val = [[${product[0].option.size}]];
+			 let optionz = [[${product[0].option[0].optionName}]]
+			 let optionc = [[${product[0].optionDetail[0].optionCount}]]
+			 let tq = $('#optionValues1').val();
+			 console.log(tq);
+			 let optionNames = [];
+             let optionValues = [];
+             let optionCodes=[];
+             for (var i = 0; i < val; i++) {
+                let inputName = $('#optionNames'+[i]).val();
+                let inputValue =$('#optionValues'+[i]).val();
+                let inputOpCode = $('#optionCodes'+[i]).val();
+                optionNames.push(inputName);
+                optionValues.push(inputValue);
+                optionCodes.push(inputOpCode);
+             }
+
+			 console.log(optionNames);
+			 console.log(optionCodes);
+			 console.log(optionc);
+			 if(optionz == '없음'){
+				$('#optCnt').val(0); 
+			 }else{
+	            $('#optCnt').val(val);
+			 }
+             console.log(val);
+                   // 옵션 input 창   
+               
+                if (val != 0 && optionz != '없음') {
+                     $('.optionText').show();
+                     $('#optionCount').val('');
+                     $('#productCount').val('');
+                     $('.countdiv').hide();
+                  } else {
+                     $('.optionText').hide();
+                     $('.countdiv').show();
+                     $('#productCount').val(optionc);
+                  }
+
+
+                  for (let i = 0; i < val; i++) {
+                     let divBox = $('<div/>');
+                     let div = $('<div/>').addClass("optionDiv col input-group mb-3");
+                     let span = $('<span/>');
+                     span.text("옵션명"+ (i+1));
+                     span.addClass("input-group-text");
+
+                     div.append(span);
+                     
+                     
+                     let optionN = $('<input name="option[' + i +
+                        '].optionName" class="optionN form-control" type="text" id="optionName' + i + '"/>');
+					optionN.val(optionNames[i]);
+                     
+                     
+                     div.append(optionN);
+                     $('.optionB').append(div);
+
+                     div = $('<div/>').addClass("optionDiv col input-group mb-3");
+                     span = $('<span/>');
+                     span.text("옵션값"+ (i+1));
+                     span.addClass("input-group-text");
+                     div.append(span);
+                     let optionV = $('<input name="option[' + i +
+                        '].optionValue" class="optionV form-control" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' + i +
+                        '" />');
+                     optionV.val(optionValues[i]);
+
+                     
+                     div.append(optionV);
+                     
+                     
+                     let optionCodeInput =$('<input name="option[' + i +
+                    	        '].optionCode" class="optionCode visually-hidden form-control" type="text" id="optionCode' + i + '" />');
+                     
+                     optionCodeInput.val(optionCodes[i]);
+                     div.append(optionCodeInput);
+                     
+                     divBox.append(div);
+                     $('.optionB').append(divBox);
+
+                  }
+               
+    
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               
+               // 옵션 input 창   
+               -
+               $('.optionsel').on('change', function (e) {
+            	   
+                  let val = $(this).val();
+                  
+                  $('.optionB').children().remove();
+                  $('#optiontab').children().remove();
+                  if (val != 0) {
+                     $('.optionText').show();
+                     $('#optionCount').val('');
+                     $('#productCount').val('');
+                     $('.countdiv').hide();
+                  } else {
+                     $('.optionText').hide();
+                     $('.countdiv').show();
+                  }
+
+
+                  for (let i = 0; i < val; i++) {
+                     let divBox = $('<div/>');
+                     let div = $('<div/>').addClass("optionDiv col input-group mb-3");
+                     let span = $('<span/>');
+                     span.text("옵션명"+ (i+1));
+                     span.addClass("input-group-text");
+						
+                     div.append(span);
+                     let optionN = $('<input name="option[' + i +
+                        '].optionName" class="optionN form-control" type="text" id="optionName' + i + '"/>');
+                     optionN.val(optionNames[i]);
+
+                     // let div = $('<div/>').addClass("optionDiv col-md-6");
+                     // let labelN = $("<label> /").text("옵션이름");
+                     // let optionN = $('<input name="option[' + i +
+                     //    '].optionName" class="optionN form-control" type="text" id="optionName' + i + '"/>');
+                     div.append(optionN);
+                     $('.optionB').append(div);
+
+                     div = $('<div/>').addClass("optionDiv col input-group mb-3");
+                     span = $('<span/>');
+                     span.text("옵션값"+ (i+1));
+                     span.addClass("input-group-text");
+                     div.append(span);
+                     let optionV = $('<input name="option[' + i +
+                        '].optionValue" class="optionV form-control" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' + i +
+                        '" />');
+                     optionV.val(optionValues[i]);
+
+                     div.append(optionV);
+                     divBox.append(div);
+                     $('.optionB').append(divBox);
+
+                  }
+               })
+
+         
+
+
         	 let userData = JSON.parse(localStorage.getItem("product"));
              let detailData = JSON.parse(localStorage.getItem("detail"));
              console.log(detailData);
@@ -440,7 +744,7 @@
                     }
                  }
 
-                if (userData.imgInfo !== "") {
+               /*  if (userData.imgInfo !== "") {
                     
                     console.log("asd");
                     let div = $("div#image_container");
@@ -462,7 +766,7 @@
                     divTag.append(inputTag);
 
                     div.append(divTag);
-                 }
+                 } */
 
                  if(Object.keys(userData.catemenu[0]).length != 0){
                     let obj = userData.catemenu[0];
@@ -477,11 +781,9 @@
                     }
 
                     $('#categoryCode01').attr("name","categoryCode");
-                    // console.log(keyword);
-                    // console.log(keyval);
+                   
                     $(select).val(keyval);
-                    // console.log(obj);
-                    // console.log(select);
+                   
                  }
 
                  if(Object.keys(userData.catemenu[1]).length != 0){
@@ -610,38 +912,38 @@
            })
           // 옵션 input 창   
           -
-          $('.optionsel').on('change', function (e) {
-              let val = $(this).val();
-              $('.optionB').children().remove();
-              // console.log(val);
-              if (val != 0) {
-                 $('.optionText').show();
-                 $('#optionCount').val('');
-                 $('.countdiv').hide();
-              } else {
-                 $('.optionText').hide();
-                 $('.countdiv').show();
-              }
-              for (let i = 0; i < val; i++) {
-                 let div = $('<div/>').addClass("optionDiv col-md-6");
-                 let labelN = $("<label> /").text("옵션이름");
-                 let optionN = $('<input name="option[' + i +
-                    '].optionName" class="optionN" type="text" id="optionName' + i + '"/>');
-                 div.append(labelN);
-                 div.append(optionN);
-                 $('.optionB').append(div);
+      //     $('.optionsel').on('change', function (e) {
+      //         let val = $(this).val();
+      //         $('.optionB').children().remove();
+      //         // console.log(val);
+      //         if (val != 0) {
+      //            $('.optionText').show();
+      //            $('#optionCount').val('');
+      //            $('.countdiv').hide();
+      //         } else {
+      //            $('.optionText').hide();
+      //            $('.countdiv').show();
+      //         }
+      //         for (let i = 0; i < val; i++) {
+      //            let div = $('<div/>').addClass("optionDiv col-md-6");
+      //            let labelN = $("<label> /").text("옵션이름");
+      //            let optionN = $('<input name="option[' + i +
+      //               '].optionName" class="optionN" type="text" id="optionName' + i + '"/>');
+      //            div.append(labelN);
+      //            div.append(optionN);
+      //            $('.optionB').append(div);
 
 
-                 let labelV = $("<label/>").text("옵션");
-                 let optionV = $('<input name="option[' + i +
-                    '].optionValue" class="optionV" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' + i +
-                    '" />');
-                 div.append(labelV);
-                 div.append(optionV);
-                 $('.optionB').append(div);
+      //            let labelV = $("<label/>").text("옵션");
+      //            let optionV = $('<input name="option[' + i +
+      //               '].optionValue" class="optionV" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' + i +
+      //               '" />');
+      //            div.append(labelV);
+      //            div.append(optionV);
+      //            $('.optionB').append(div);
 
-              }
-           })
+      //         }
+      //      })
 
 
 
@@ -776,81 +1078,35 @@
            }
         })
 
-       // $(document).on("change", "#ChildCate", function () {
-       //    let val = $(this).val();
-       //    $.ajax({
-       //          url: 'childOfCate',
-       //          type: 'get',
-       //          data: {
-       //             'categoryCode': val
-       //          }
-       //       })
-       //       .done(getCategoryList => {
-       //          console.log(getCategoryList);
-       //          if (val == null) {
-       //             $('#ChildOfChildCate').css('display', 'none');
-       //          }
-       //          $('#ChildOfChildCate').replaceWith(getCategoryList);
-       //          $('#ChildOfChildCate').css('display', '');
+ 		 $(document).on('click', '.submit', function (e) {
+            let option = $("input[name='optionName']").val();
+            console.log(option);
+            e.preventDefault();
+            // if($('#selectCategory').val() == null || $('#selectCategory').val() == '' ){
+            //    alert("카테고리를 선택해주세요");   
+            //    return;
+            // }
+            let form = $('#updateForm');
+            let data = $(form).find('input[type != hidden]');
+            /* $(data).each(function(idx,item){
+               if($(item).val() == null || $(item).val() == ''){
+                  let id = $(item).attr("id");
 
-       //          let selectedOptionText = $(this).find('option:selected').text();
+                  // console.log($(item).attr("id"));
+                  alert( $('label[for="'+ id+'"]').text()  + "를 입력해주세요");
+                  item.focus();
+                  return false;
+               }
+            })
 
-       //          $("#secondCategoryCode").text(selectedOptionText + ' >');
+            if($('#selectdelivery').val() == null || $('#selectdelivery').val() ==''){
+               alert("택배사를 선택 해주세요");
+               return;
+            } */
+            localStorage.removeItem('product')
+            form.submit();
 
-       //       })
-       //       .fail(reject => {
-       //          console.log(reject);
-       //       })
-      
-
-
-       // document.querySelector('form[name="insertForm"]')
-       //    .addEventListener(
-       //       'submit',
-       //       function (e) {
-       //          e.preventDefault();
-
-       //          let productCode = document.getElementsByName('productCode')[0];
-
-       //          if (productCode.value == '') {
-       //             alert('상품코드를 입력하세요');
-       //             productCode.focus();
-       //             return;
-       //          }
-       //          alert('상품등록이 완료되었습니다.')
-       //          insertForm.submit();
-       //       }
-       //    )
-
-       // $(document).on('click', '.submit', function (e) {
-       //    let option = $("input[name='optionName']").val();
-       //    console.log(option);
-       //    e.preventDefault();
-       //    // if($('#selectCategory').val() == null || $('#selectCategory').val() == '' ){
-       //    //    alert("카테고리를 선택해주세요");   
-       //    //    return;
-       //    // }
-       //    let form = $('#insertForm');
-       //    let data = $(form).find('input[type != hidden]');
-       //    /* $(data).each(function(idx,item){
-       //       if($(item).val() == null || $(item).val() == ''){
-       //          let id = $(item).attr("id");
-
-       //          // console.log($(item).attr("id"));
-       //          alert( $('label[for="'+ id+'"]').text()  + "를 입력해주세요");
-       //          item.focus();
-       //          return false;
-       //       }
-       //    })
-
-       //    if($('#selectdelivery').val() == null || $('#selectdelivery').val() ==''){
-       //       alert("택배사를 선택 해주세요");
-       //       return;
-       //    } */
-       //    localStorage.removeItem('product')
-       //    form.submit();
-
-       // })
+         })
 
        
 
@@ -877,7 +1133,9 @@
              var input = document.createElement('input');
              var textarea = document.createElement("textarea");
              textarea.setAttribute("name", "productImg[0].imgContent");
-
+             textarea.setAttribute("class","form-control");
+             textarea.setAttribute("id", "productImgCon");
+             
              divTag.append(textarea);
              divTag.append(srcinput);
              document.querySelector("div#image_container").append(divTag)
@@ -957,6 +1215,9 @@
                    inputN.attr('value', 0);
                    td.append(inputN);
                    tr.append(td);
+                   
+                  
+                   
                    tbody.append(tr);
                    idx++;
                 }
@@ -1118,18 +1379,15 @@
 
          // localstorage에 담고 보내기
          $('.detailPro').on('click', function (e) {
-        	 
-        	 localStorage.removeItem('product');
-             e.preventDefault();
-             
-            test22='/modifyProductContent?productCode=' + productCode;
-            console.log($('input[id="optionName0"]').val());
+            // localstorage 저장
+            localStorage.removeItem('product');
             e.preventDefault();
+
             let obj = {
                productName: $('input[name="productName"]').val(),
                productCost: $('input[name="productCost"]').val(),
                salePrice: $('input[name="salePrice"]').val(),
-               optionCount: $('input[name="optionCount"]').val(),
+               productCount: $('input[name="productCount"]').val(),
                files: $('input[name="files"]').val(),
                productBrand: $('input[name="productBrand"]').val(),
                optCnt: $('select[name="optCnt"]').val(),
@@ -1139,34 +1397,38 @@
                minOrder: $('input[name="minOrder"]').val(),
                maxOrder: $('input[name="maxOrder"]').val(),
                productLocation: $('input[name="productLocation"]').val(),
-               deliveryCost: $('input[name="deliveryCost"]').val(),
-               exchangeCost: $('input[name="exchangeCost"]').val(),
-               returnCost: $('input[name="returnCost"]').val(),
-               deliveryService: $('input[name="deliveryService"]').val(),
+               deliveryCost: $('input[name="deliveryCost"]').val() == "" ? 0 : $('input[name="deliveryCost"]')
+                  .val(),
+               exchangeCost: $('input[name="exchangeCost"]').val() == "" ? 0 : $('input[name="exchangeCost"]')
+                  .val(),
+               returnCost: $('input[name="returnCost"]').val() == "" ? 0 : $('input[name="returnCost"]').val(),
+               deliveryService: $('select[name="deliveryService"]').val(),
                imgInfo: $('#Imginform').val(),
+               productImgCon: $('#productImgCon').val(),
                option: [{
-                   optionName1: $('input[id="optionName0"]').val(),
-                   optionValue1: $('input[id="optionVal0"]').val(),
-                },
-                {
-                   optionName1: $('input[id="optionName1"]').val(),
-                   optionValue1: $('input[id="optionVal1"]').val(),
-                },
-                {
-                   optionName1: $('input[id="optionName2"]').val(),
-                   optionValue1: $('input[id="optionVal2"]').val(),
-                },
-             ],
-             optionDetail: [
+                     optionName1: $('input[id="optionName0"]').val(),
+                     optionValue1: $('input[id="optionVal0"]').val(),
+                  },
+                  {
+                     optionName1: $('input[id="optionName1"]').val(),
+                     optionValue1: $('input[id="optionVal1"]').val(),
+                  },
+                  {
+                     optionName1: $('input[id="optionName2"]').val(),
+                     optionValue1: $('input[id="optionVal2"]').val(),
+                  },
+               ],
+               optionDetail: [
 
-             ],
-             expire: Date.now() + 7200000,
-             catemenu : [
+               ],
+               expire: Date.now() + 7200000,
+               catemenu: [
 
-             ]
+               ],
+               optionNum: $('#optionNum').val(),
 
-             
-          }
+
+            }
           //let optionDetail = [];
           // 옵션 저장
           let leng = $('#optiontab').find('tr').length;
@@ -1228,7 +1490,17 @@
 
           obj.catemenu.push(catemenu4);
             window.localStorage.setItem("product", JSON.stringify(obj));
-            window.location.href = '/modifyProductContent?productCode=' + productCode;
+             /* window.location.href = '/modifyProductContent?productCode=' + productCode; */
+             
+            var _width = '700';
+		    var _height = '700';
+		 
+		    // 팝업을 가운데 위치시키기 위해 아래와 같이 값 구하기
+		    var _left = Math.ceil(( window.screen.width - _width )/2);
+		    var _top = Math.ceil(( window.screen.height - _height )/2); 
+		    
+		    let child = window.open('/modifyProductContent?productCode=' + productCode, 'productcontent', 'width='+ _width +', height='+ _height +', left=' + _left + ', top='+ _top);
+	        
          })
          
         // 임시저장
@@ -1238,35 +1510,223 @@
 
          // 등록 이벤트
          $('.submit').on('click',function(e){
-            // let select = $('select[name="categoryCode"]');
-            // console.log(select.length);
-            // if($(select).val() == null || $(select).val() == ""){
-            //    alert("카테고리를 넣어주세요");
-            //    return;
-            // }
-            
-            // if(!idChk($("#productName").val())){
-            //    return;
-            // }
+        	 e.preventDefault();
 
-            // if(!productCostChk($('#productCost').val())){
-            //    return;
-            // }
+             let detailData = JSON.parse(localStorage.getItem("detail"));
+             if(detailData != null){
+                let textarea = $('<textarea>' + detailData.content + '</textarea>');
+                textarea.css("display", "none");
+                textarea.attr("name", "productContent");
+                $("#updateForm").prepend(textarea);
+                for(let i = 0; i<detailData.img.length; i++){
+                   let divTab = $('<div/>');
+                   let obj = detailData.img[i];
+                   for(var key in obj){
+                      let input = $('<input/>');
+                      $(input).val(obj[key]);
+                      input.attr("type", "hidden");
+                      input.attr("name","imgsVO["+i+"]."+key);
+                      divTab.append(input);
+                   }
+                   $(divTab).appendTo($("#updateForm"));
 
-            // if(!salePriceChk($('#salePrice').val())){
-            //    return;
-            // }
+             }
+                
+                
+                
+             }
 
-            // if(!productCountChk($('#productCount').val())){
-            //    return;
-            // }
 
-            // if($('#optCnt').val() != 0){
-            //    if(!optionChk()){
-            //       return;
-            //    }
-            // }
 
+             if (!idChk($("#productName").val())) {
+                return;
+             }
+
+             if (!productCostChk($('#productCost').val())) {
+                return;
+             }
+
+             if (!salePriceChk($('#salePrice').val())) {
+                return;
+             }
+
+             if ($('#optCnt').val() == 0) {
+                if (!productCountChk($('#productCount').val())) {
+                   return;
+                }
+             }
+
+             if ($('#optCnt').val() != 0) {
+                if (!optionChk()) {
+                   return;
+                }
+
+                if (!changeOption()) {
+                   return;
+                }
+             }
+
+             let optionDetailChk = $("#optiontab tr");
+             let chk = "N";
+
+             $(optionDetailChk).each(function (idx, item) {
+                let n = 0;
+                chk = "N";
+                let count = 0;
+                let min = 0;
+                let max = 0;
+                let inputBox = $(item).find("input");
+                for (let i = 0; i < inputBox.length; i++) {
+                   let tbox = inputBox[i];
+                   if ($(tbox).attr("id") == "optionPrice" + idx) {
+                      if (!optPrice($(tbox).val())) {
+                         $(tbox).focus();
+                         break;
+                      }
+                      n++
+                   }
+                   
+                   if ($(tbox).attr("id") == "optionCount" + idx) {
+                      if (!optCount($(tbox).val())) {
+                         count = $(tbox).val();
+                         console.log("count" + count);
+                         $(tbox).focus();
+                         break;
+                      }
+                      console.log(count);
+                      n++
+                   }
+                   if ($(tbox).attr("id") == "minOrder" + idx) {
+                      min = $(tbox).val();
+                      if (!optMin($(tbox).val())) {
+                         $(tbox).focus();
+                         break;
+                      }
+                      console.log(min);
+                      // if($(tbox).val() <  count){
+                      //    $(tbox).focus();
+                      //    alert("최소수량이 수량보다 많습니다.");
+                      //    break;
+                      // }
+                      n++
+                   }
+                   if ($(tbox).attr("id") == "maxOrder" + idx) {
+                      max = $(tbox).val();
+                      if (!optMax($(tbox).val())) {
+                         $(tbox).focus();
+                         break;
+                      }
+                      
+                      // if($(tbox).val() >  count){
+                      //    $(tbox).focus();
+                      //    alert("최대수량이 수량보다 많습니다.");
+                      //    break;
+                      // }
+                      // if($(tbox).val() >  min){
+                      //    $(tbox).focus();
+                      //    alert("최대수량이 최소수량보다 적습니다.");
+                      //    break;
+                      // }
+                      n++
+                   }
+                }
+                if (n != 4) {
+                   return false;
+                }
+                chk = "Y";
+             })
+
+             if (chk == "N") {
+                return;
+             }
+
+             // 옵션 검사 해야함
+             let inputfile = $('#imgName');
+             let files = inputfile[0].files;
+             if (files.length == 0) {
+                alert("대표이미지를 등록해주세요");
+                inputfile.focus();
+                return;
+             }
+
+             if ($("#productImgCon").val() == "") {
+                alert("이미지 대체 텍스트를 입력해주세요");
+                inputfile.focus();
+                return;
+             }
+             let chk2 = $("#productImgCon").val();
+             if (chk2.length > 100) {
+                alert("이미지 대체 텍스트 100자 이내입니다.");
+                inputfile.focus();
+                return;
+             }
+
+             if (!imgChk(files[0].name, files[0].size)) {
+                inputfile.focus();
+                return;
+             }
+
+             if ($("#insertForm").find('textarea[name="productContent"]').length == 0) {
+                alert("상세 설명을 입력해주세요");
+                return;
+             }
+             if ($('textarea[name="productContent"]').val() == "") {
+                alert("상세 설명을 적어주세요");
+                return;
+             }
+
+             let detailImg = $(".imgName");
+             let detailContent = $(".imgContet");
+
+
+             for (let x = 0; x < detailImg.length; x++) {
+                let chk1 = detailImg[x];
+                let chk2 = detailContent[x];
+
+                if ($(chk1).val == "") {
+                   alert("상세 설명 이미지를 넣어주세요");
+                   return;
+                }
+                if ($(chk2).val() == "") {
+                   alert("상세 설명 이미지 대체텍스트를 넣어주세요");
+                }
+             }
+
+             // 브랜드 
+             if (!brandChk($("#productBrand").val())) {
+                return;
+             }
+
+             if (!orginchk($("#productOrigin").val())) {
+                return;
+             }
+
+             if (!makerChk($("#productMakeorigin").val())) {
+                return;
+             }
+             if(!locationChk($("#productLocation").val())){
+                return;
+             }
+
+             if (!deliveryCostChk($("#deliveryCost").val())) {
+                return;
+             }
+
+             if (!exchangeCostChk($("#exchangeCost").val())) {
+                return;
+             }
+
+             if (!returnCost($("#returnCost").val())) {
+                return;
+             }
+
+             if ($("#deliveryService").val() == "") {
+                alert("택배사를 선택해주세요");
+                $("#deliveryService").focus();
+                return;
+             }
+             
+             $('#updateForm').submit();
          })
 		 
 		

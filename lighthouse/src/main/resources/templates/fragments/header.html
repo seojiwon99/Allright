@@ -1,4 +1,5 @@
-<html lagn="ko" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <!--headerFragment 선언-->
 
 <div th:fragment="headerFragment">
@@ -296,12 +297,12 @@
                      <!-- 판매순위, 신상 -->
                      <li class="nav-item dropdown hovered">
                         <!-- Toggle --> 
-                        <a class="nav-link" data-bs-toggle="dropdown" href="#">New</a>
+                        <a class="nav-link"  href="/PList?order=new">New</a>
                      </li>
       
                      <li class="nav-item dropdown hovered">
                         <!-- Toggle --> 
-                        <a class="nav-link" data-bs-toggle="dropdown" href="#">Rank</a>
+                        <a class="nav-link"  href="/PList?order=best">Best</a>
                      </li>
             </ul>
             </div>
@@ -342,10 +343,10 @@
                      <a class="nav-link" href="#" th:if="${session.loginMember == null}"> <i class="fe fe-user"></i></a>
                      </li>
 
-                     <li class="nav-item ms-lg-n4"><a class="nav-link"
+                     <li class="nav-item ms-lg-n4" sec:authorize="hasAnyRole('ROLE_1','ROLE_3')"><a class="nav-link" 
                         th:href="${session.loginMember} == null ? @{/page/member/loginForm} : @{/page/buyer/wishList}"> <i class="fe fe-heart"></i>
                      </a></li>
-                     <li class="nav-item ms-lg-n4">
+                     <li class="nav-item ms-lg-n4" sec:authorize="hasAnyRole('ROLE_1','ROLE_3','ROLE_ANONYMOUS')">
                         <a class="nav-link" id="cartId" 
                         th:href="${session.loginMember} == null ? @{/page/member/loginForm} : @{/cart/cartView}"> 
                          <span> <i class="fe fe-shopping-cart"></i></span>
@@ -362,18 +363,7 @@
       if(getWithExpiry('ttsKey') == null){
          $('#sessionTTS')[0].checked = true;
       }
-      $('#customInq').on('click', function (e) {
-         let member = [[${session.loginMember}]];
-         if (member == null) {
-            alert("로그인 하셔야 서비스를 이용하실 수 있습니다.");
-            location.href="page/member/loginForm";
-            return;
-         }else{
-            location.href="/custom/inquiry";
 
-         }
-      })
-   
 
       $('#cartId').on('click', function (e) {
          let member = [[${session.loginMember}]];

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/sellerHtml}">
+	layout:decorate="~{layouts/insertModifyPro}">
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <!-- Content -->
 
@@ -11,88 +11,7 @@
 <div layout:fragment="sellerContent">
 
 
-	<div class="row gx-0">
-		<div class="col-12 col-lg-auto">
-
-			<!-- NAVBAR -->
-			<nav
-				class="navbar navbar-expand-lg navbar-vertical navbar-light sticky-start px-lg-7 ">
-				<div class="container-fluid">
-
-					<!-- Brand -->
-					<a class="navbar-brand" href="/sellerMain"> 판매자센터 </a>
-
-					<!-- Toggler -->
-					<button class="navbar-toggler" type="button"
-						data-bs-toggle="collapse"
-						data-bs-target="#navbarSidenavLeftCollapse"
-						aria-controls="navbarSidenavLeftCollapse" aria-expanded="false"
-						aria-label="Toggle navigation">
-						<span class="navbar-toggler-icon"></span>
-					</button>
-
-					<!-- Collapse -->
-					<div class="collapse navbar-collapse"
-						id="navbarSidenavLeftCollapse">
-
-						<!-- Nav -->
-						<ul class="navbar-nav fs-lg mb-6 my-lg-12" id="sidenavParent">
-							<li class="nav-item">
-								<!-- Toggle --> <a class="nav-link dropdown-toggle"
-								data-bs-toggle="collapse" href="#sidenavHome"> 상품관리 </a> <!-- Collapse -->
-								<div class="collapse" id="sidenavHome"
-									data-bs-parent="#sidenavParent">
-									<ul class="list-styled fs-base fw-normal py-3 mb-0">
-										<li class="list-styled-item"><a class="list-styled-link"
-											href="/productList">상품 조회/수정</a></li>
-										<li class="list-styled-item"><a class="list-styled-link"
-											href="insertProduct">상품등록</a></li>
-
-									</ul>
-								</div>
-
-							</li>
-							<li class="nav-item">
-								<!-- Toggle --> <a class="nav-link dropdown-toggle"
-								data-bs-toggle="collapse" href="#sidenavCatalog"> 판매관리 </a> <!-- Collapse -->
-								<div class="collapse" id="sidenavCatalog"
-									data-bs-parent="#sidenavParent">
-									<div class="row">
-										<div class="col-12 py-3">
-											<!-- Links -->
-											<ul class="list-styled fs-base">
-												<li class="list-styled-item"><a
-													class="list-styled-link" href="/orderManagement">주문확인/발송관리</a></li>
-												<li class="list-styled-item"><a
-													class="list-styled-link" href="/cancelProduct">취소관리</a></li>
-												<li class="list-styled-item"><a
-													class="list-styled-link" href="/exchangeList">교환반품관리</a></li>
-
-											</ul>
-								</div>
-									</div>
-										</div>
-
-										<li class="nav-item"><a class="nav-link"
-											href="/settlementManagement">정산/통계관리</a></li>
-										<li class="nav-item"><a class="nav-link"
-											href="/productInquiry">문의관리</a></li>
-										<li class="nav-item"><a class="nav-link"
-											href="/sellerMypage">판매자정보</a></li>
-										<li class="nav-item"><a class="nav-link"
-											href="/sellerInquiry">고객센터</a></li>
-						</ul>
-
-						
-						
-						
-
-					</div>
-
-				</div>
-			</nav>
-
-		</div>
+	
          <div class="col-12 col-lg">
 
       <h3>판매자 메인</h3>
@@ -100,6 +19,6 @@
 
       </div>
 </div>
-</div>
+
 
 </html>
