@@ -2,15 +2,131 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
    xmlns:th="http://www.thymeleaf.org"
    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-   layout:decorate="~{layouts/sellerHtml}">
+   layout:decorate="~{layouts/insertModifyPro}">
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <!-- Content -->
 
 
 
 
-<div layout:fragment="sellerContent">
+<div layout:fragment="sellerContent" >
+<style>
+._1Vof48UxmD_oVRNwPvxck {
+	background-color: rgb(248, 249, 250);
+	padding : 20px;
+}
+.pb-12{
+	background-color: rgb(248, 249, 250);
+	padding : 20px;
+	margin-top : 20px;
+}
 
+
+._KqV0-1BSnB {
+	float:left;
+}
+
+
+._4LshyCrDpi, ._3y2h2mGnkI, ._MN8nIh0X4y {
+    margin-left: 10px; /* 왼쪽 여백 추가 (선택적으로 조절) */
+    margin-top: 50px;
+    
+}
+._MN8nIh0X4y{
+margin-left:400px;
+}
+
+
+.btn-default2 .badge {
+	color: #8991a3;
+	background-color: #fff
+}
+
+.btn-primary2 {
+	color: #666;
+	background-color: #fff;
+	border-color: #dbdde2
+}
+
+.btn-primary2.focus, .btn-primary2:focus {
+	color: #666;
+	background-color: black;
+	border: 2px solid white;
+}
+
+.btn-primary2.active, .btn-primary2:active, .btn-primary2:hover, .open>.dropdown-toggle.btn-primary2
+	{
+	color: #666;
+	background-color: black;
+	border: 2px solid gray;
+}
+.btn-primary2.active.focus, .btn-primary2.active:focus, .btn-primary2.active:hover,
+	.btn-primary2:active.focus, .btn-primary2:active:focus, .btn-primary2:active:hover,
+	.open>.dropdown-toggle.btn-primary2.focus, .open>.dropdown-toggle.btn-primary2:focus,
+	.open>.dropdown-toggle.btn-primary2:hover {
+	color: #666;
+	background-color: #d4d4d4;
+	border-color: #949aa9
+}
+
+.btn-primary2.active, .btn-primary2:active, .open>.dropdown-toggle.btn-primary2
+	{
+	background-image: none
+}
+
+.btn-primary2.disabled.focus, .btn-primary2.disabled:focus,
+	.btn-primary2.disabled:hover, .btn-primary2[disabled].focus,
+	.btn-primary2[disabled]:focus, .btn-primary2[disabled]:hover, fieldset[disabled] .btn-primary2.focus,
+	fieldset[disabled] .btn-primary2:focus, fieldset[disabled] .btn-primary2:hover
+	{
+	background-color: #fff;
+	border-color: #dbdde2
+}
+
+#orderSearch {
+    border-radius: 10px; /* 테두리를 둥글게 만듭니다. */
+    color: #ffffff; /* 텍스트 색상을 흰색으로 지정합니다. */
+    padding: 10px 20px; /* 내용 주변의 여백을 조절합니다. */
+    border: none; /* 테두리를 없앱니다. */
+    margin-left:200px;
+}
+
+
+#orderSearch:hover {
+    background-color: gray; 
+}
+
+.btn{
+    border-radius: 10px; /* 테두리를 둥글게 만듭니다. */
+}
+.btn-primary2{
+ padding : 10px;
+}
+.searchDate{
+	margin-top:10px;
+}
+input, select, button{
+	border-radius: 5px;
+}
+.btnGo{
+	padding-left:10px;
+	padding-right:10px;
+	background-color:black;
+	color : white;
+}
+::-webkit-scrollbar {
+  width: 12px; /* 가로 스크롤바 너비 조절 */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* 스크롤바 트랙 배경색 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* 스크롤바 썸 배경색 */
+  border-radius: 6px; /* 스크롤바 썸 둥글게 만들기 */
+}
+</style>
 
   
       <div class="col-12 col-lg">
@@ -20,10 +136,11 @@
 
 
          <div style="float:left;">
-            <button type="button" id="chkDelBtn">전시중/전시중지</button>
+            <button type="button" id="chkDelBtn" class="btn btn-primary2">전시중/전시중지</button>
          </div>
-         <div>
-            <select id="optionList" style="float:right; margin-right:500px">
+         <div  class="detailSea">
+         	<label class="_MN8nIh0X4y">상세조건</label> 
+            <select class="_4LshyCrDpi" id="optionList" style="float:right; margin-right:500px">
                <option></option>
                <option value="상품등록일순">상품등록일순</option>
                <option value="상품명순">상품명순</option>
@@ -36,9 +153,9 @@
 
          <!-- CARDS -->
          <section class="pb-12">
-			<div style="width:100%; height: 500px; overflow:auto; border:1px; ">
-            <table border="1" class="table" id="getProductList">
-               <thead>
+			<div style="width:1450px; height: 500px; overflow: auto; border: 1px; position: relative;">
+			 <table border="1" class="table" id="getProductList" style="background-color:white;  white-space: nowrap;">
+               <thead style="position: sticky; top: 0; background-color: white;">
                   <tr>
                      <th><input type="checkbox" id="allCheck"></th>
                      <th>수정</th>
@@ -57,7 +174,7 @@
                      <td><input type="checkbox"></td>
                      <td> 
                      <a th:href="@{'/updateProduct?productCode=' + ${product.productCode}}">
-                             <button id="modifyForm" class="modifyForm" type="button">수정</button>
+                             <button id="modifyForm" class="btnGo" type="button">수정</button>
                             </a>
                             </td>
                      <td th:text="${product.productCode}"></td>
@@ -138,6 +255,8 @@
 
    $('#chkDelBtn').on('click',function(){
       let proList = [];
+      
+      console.log('hi');
       let checkTags = $('input[type="checkbox"]:checked').not('#allcheck');
       
       console.log(checkTags);
@@ -147,8 +266,7 @@
          let obj = {'productCode' : productCode};
          proList.push(obj);
       })
-   
-      
+    
       
       $.ajax({
          /* let val = $(this).val();
@@ -167,7 +285,7 @@
    
    });
    
-     $('#chkY').on('click',function(){
+  /*    $('#chkY').on('click',function(){
       let proList = [];
       let checkTags = $('input[type="checkbox"]:checked').not('#allcheck');
       
@@ -196,7 +314,7 @@
       .fail(reject => console.log(reject));
    
    });  
-
+ */
    
    function refreshList(){
       location.reload();

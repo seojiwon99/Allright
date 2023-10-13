@@ -131,6 +131,7 @@
 		        a.order_code,
 		        a.order_check,
 		        c.option_last,
+		        d.product_code,
 		        d.product_name,
 		        d.product_code,
 		        e.img_code,

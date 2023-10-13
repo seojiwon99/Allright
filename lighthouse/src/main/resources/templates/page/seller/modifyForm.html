@@ -34,12 +34,9 @@
   
 
      <div class="col-12 col-lg" style="background-color: #E7E9EB;">
-         <!-- <div class="row">
-            <div class="col-12 text-center">
-              Heading
+          <div class="row">
               <h3 class="mb-10">상품 등록</h3>
-            </div>
-          </div> -->
+          </div> 
          <div class="row">
             <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
               <!-- Form -->
@@ -136,16 +133,24 @@
   
                   </div>
 
-               <div class="form-group row">
-                  <label class="col-sm-2">옵션 개수</label>
-                  <div class="col-sm-3">
-                     <select id="optCnt" class="optionsel" name="optCnt">
+               <div class="col-12 col-md-3">
+                     <label class="form-label" for="accountPassword">
+                        옵션 *
+                     </label>
+                  <div class="form-group input-group input-group-merge" id="optionPlz">
+                     <select class="optionsel form-select form-select-sm" id="optCnt" name="optCnt">
                         <option value="0" selected>----</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
-                     </select> <input type="button" value="옵션등록" id="addOption">
-                  </div>
+                     </select> 
+                     <div class="input-group-append">
+                          <input type="hidden" value="N" id="optionNum" name="optionNum" readonly>
+                          <button class="btn btn btn-outline-info" type="button" id="addOption">
+                            옵션등록
+                          </button>
+                        </div>
+                    </div>
                </div>
                <th:block th:each="option,index : ${product[0].option}" style="display:none;">
 				    <input th:value="${option.optionName}" th:id="'optionNames'+${index.index}" style="display:none;">
@@ -153,23 +158,22 @@
 				    <input th:value="${option.optionCode}" th:id="'optionCodes'+${index.index}" style="display:none;">
 				</th:block>
 
-               <div class="optionText form-group row" style="display: none;">
-                  <label class="col-sm-2">옵션</label>
-                  <div class="optionB row g-3">
+                  
+                  <div class="optionB col-12 col-lg" style="margin-bottom: 15px;">
+                  
                   </div>
-               </div>	
 
 
                   <div class="col-12">
-                     <div class="form-group">
-                        <table class="table table-bordered table-sm mb-0" style="background-color: white;">
-                           <thead>
+                     <div class="tableWrapper form-group">
+                        <table class="table table-bordered table-sm mb-0" style="background-color: white;" id="userListTable">
+                        <thead>
                            <tr>
-                              <th>옵션명</th>
-                              <th>옵션가격</th>
-                              <th>옵션수량</th>
-                              <th>최소구매수량</th>
-                              <th>최대구매수량</th>
+                              <th scope="col">옵션명</th>
+                              <th scope="col">옵션가격</th>
+                              <th scope="col">옵션수량</th>
+                              <th scope="col">최소구매수량</th>
+                              <th scope="col">최대구매수량</th>
                            </tr>
                         </thead>
                         <tbody id="optiontab">
@@ -180,6 +184,8 @@
 							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].minOrder'" th:id="'minOrder' + ${index.index} + ''" th:value="${pro.minOrder}"></td>
 							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].maxOrder'" th:id="'maxOrder' + ${index.index} + ''" th:value="${pro.maxOrder}"></td>
 							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].optionDetailCode'" th:id="'optionDetailCode' + ${index.index} + ''" th:value="${pro.optionDetailCode}" style="display:none;"></td>
+							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].optionSellStatus'" th:id="'optionSellStatus' + ${index.index} + ''" th:value="${pro.optionSellStatus}" style="display:none;"></td>
+							
 							</tr>
                         </tbody>
                      </table>
@@ -202,7 +208,7 @@
                      <div class="form-group mb-8">
                        <label class="form-label">상세설명</label>
                        <div>
-                         <input class="btn-check" type="button" name="detailBox" id="male" checked="">
+                         <input class="btn-check" type="button" name="detailBox" id="male" checked>
                          <label class="detailPro btn btn-sm btn-outline-border" for="detailBox">작성하러가기</label>
                        </div>
                      </div>
@@ -493,22 +499,30 @@
       let productCode = window.localStorage.getItem('productCode');
          let test22="";
          console.log(productCode);
+         
+         $(window).on("load", function () {
+             optbox = $('.optionN');
+             optbox1 = $('.optionV');
+
+          })
+         
+         
          $(document).ready(function () {
         	 
         	 $(window).on('beforeunload', (event) => {
          		const currentURL = test22;
   	   		    
          		if (currentURL !== '/modifyProductContent?productCode='+ productCode) {
-         			
-         		     localStorage.clear();
-  	   		    }
+         			return "페이지를 떠나시겠습니까? 변경사항이 저장되지 않을 수 있습니다.";
+                }
   	   		  }); 
 	 
         	 var val = [[${product[0].option.size}]];
 			 let optionz = [[${product[0].option[0].optionName}]]
 			 let optionc = [[${product[0].optionDetail[0].optionCount}]]
+			 let optionSta = [[${product[0].optionDetail[0].optionSellStatus}]]
 			 let tq = $('#optionValues1').val();
-			 console.log(tq);
+			// console.log(optionSta);
 			 let optionNames = [];
              let optionValues = [];
              let optionCodes=[];
@@ -524,15 +538,16 @@
 			 console.log(optionNames);
 			 console.log(optionCodes);
 			 console.log(optionc);
-			 if(optionz == '없음'){
+			 if(optionz == '없음' ){
 				$('#optCnt').val(0); 
-			 }else{
+			 } 
+			 else{
 	            $('#optCnt').val(val);
 			 }
              console.log(val);
                    // 옵션 input 창   
                
-                if (val != 0 && optionz != '없음') {
+                if (val != 0 && optionz == '없음') {
                      $('.optionText').show();
                      $('#optionCount').val('');
                      $('#productCount').val('');
@@ -543,7 +558,7 @@
                      $('#productCount').val(optionc);
                   }
 
-
+                if(optionz != '없음'){
                   for (let i = 0; i < val; i++) {
                      let divBox = $('<div/>');
                      let div = $('<div/>').addClass("optionDiv col input-group mb-3");
@@ -556,8 +571,9 @@
                      
                      let optionN = $('<input name="option[' + i +
                         '].optionName" class="optionN form-control" type="text" id="optionName' + i + '"/>');
-					optionN.val(optionNames[i]);
-                     
+					if(optionz != '없음'){
+                     optionN.val(optionNames[i]);
+					}
                      
                      div.append(optionN);
                      $('.optionB').append(div);
@@ -570,8 +586,9 @@
                      let optionV = $('<input name="option[' + i +
                         '].optionValue" class="optionV form-control" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' + i +
                         '" />');
+                     if(optionz != '없음'){
                      optionV.val(optionValues[i]);
-
+                     }
                      
                      div.append(optionV);
                      
@@ -586,7 +603,7 @@
                      $('.optionB').append(divBox);
 
                   }
-               
+                }
     
                
                
@@ -599,7 +616,7 @@
                
                
                // 옵션 input 창   
-               -
+              /*  -
                $('.optionsel').on('change', function (e) {
             	   
                   let val = $(this).val();
@@ -627,8 +644,9 @@
                      div.append(span);
                      let optionN = $('<input name="option[' + i +
                         '].optionName" class="optionN form-control" type="text" id="optionName' + i + '"/>');
+                     if (optionz != '없음') {
                      optionN.val(optionNames[i]);
-
+                     }
                      // let div = $('<div/>').addClass("optionDiv col-md-6");
                      // let labelN = $("<label> /").text("옵션이름");
                      // let optionN = $('<input name="option[' + i +
@@ -644,15 +662,16 @@
                      let optionV = $('<input name="option[' + i +
                         '].optionValue" class="optionV form-control" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' + i +
                         '" />');
+                     if (optionz != '없음') {
                      optionV.val(optionValues[i]);
-
+                     }
                      div.append(optionV);
                      divBox.append(div);
                      $('.optionB').append(divBox);
 
                   }
                })
-
+ */
          
 
 
@@ -1150,7 +1169,7 @@
              alert("등록하실 옵션이 없습니다.")
           }else{
 
-             $('#optiontab').empty();
+             /* $('#optiontab').empty(); */
              let optionD = $('.optionDiv');
              let optionN = $('.optionN');
              let optionV = $('.optionV');
@@ -1508,7 +1527,7 @@
 
          });
 
-         // 등록 이벤트
+         // 수정 이벤트
          $('.submit').on('click',function(e){
         	 e.preventDefault();
 
@@ -1531,7 +1550,7 @@
                    $(divTab).appendTo($("#updateForm"));
 
              }
-                
+                test22 ='/modifyProductContent?productCode='+ productCode
                 
                 
              }
@@ -1736,7 +1755,27 @@
 		   
 
       </script>
+<style>
+			.modal img{
+				width:100%;
+			}
+			
+			.tableWrapper {
 
+			    overflow: auto;
+			    width: 960px;
+			}
+		
+			#userListTable {
+			    border-collapse: collapse;
+			}
+			
+			#userListTable th {
+			    position: sticky;
+			    top: 0px;
+			    background-color:cornflowerblue;
+			}
+		</style>
 
 
    </div>

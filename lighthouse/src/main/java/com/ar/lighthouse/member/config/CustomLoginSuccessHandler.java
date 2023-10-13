@@ -63,6 +63,8 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler{
             // 회원가입 - 로그인으로 넘어온 경우 "/"로 redirect
             if (prevPage.contains("/member/join")) {
                 uri = "/";
+            } else if(prevPage.contains("/member/loginForm")){
+            	uri = "/";
             } else {
                 uri = prevPage;
             }

@@ -2,12 +2,116 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
    xmlns:th="http://www.thymeleaf.org"
    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-   layout:decorate="~{layouts/sellerHtml}">
+   layout:decorate="~{layouts/insertModifyPro}">
 
 <!-- Content -->
 
 <div layout:fragment="sellerContent">
-   
+<style>
+._1Vof48UxmD_oVRNwPvxck {
+	background-color: rgb(248, 249, 250);
+	padding : 20px;
+}
+.pb-12{
+	background-color: rgb(248, 249, 250);
+	padding : 20px;
+	margin-top : 20px;
+}
+
+
+._KqV0-1BSnB {
+	float:left;
+}
+
+
+._4LshyCrDpi, ._3y2h2mGnkI, ._MN8nIh0X4y {
+    margin-left: 10px; /* 왼쪽 여백 추가 (선택적으로 조절) */
+    margin-top: 50px;
+    
+}
+._MN8nIh0X4y{
+margin-left:400px;
+}
+
+
+.btn-default2 .badge {
+	color: #8991a3;
+	background-color: #fff
+}
+
+.btn-primary2 {
+	color: #666;
+	background-color: #fff;
+	border-color: #dbdde2
+}
+
+.btn-primary2.focus, .btn-primary2:focus {
+	color: #666;
+	background-color: black;
+	border: 2px solid white;
+}
+
+.btn-primary2.active, .btn-primary2:active, .btn-primary2:hover, .open>.dropdown-toggle.btn-primary2
+	{
+	color: #666;
+	background-color: black;
+	border: 2px solid gray;
+}
+.btn-primary2.active.focus, .btn-primary2.active:focus, .btn-primary2.active:hover,
+	.btn-primary2:active.focus, .btn-primary2:active:focus, .btn-primary2:active:hover,
+	.open>.dropdown-toggle.btn-primary2.focus, .open>.dropdown-toggle.btn-primary2:focus,
+	.open>.dropdown-toggle.btn-primary2:hover {
+	color: #666;
+	background-color: #d4d4d4;
+	border-color: #949aa9
+}
+
+.btn-primary2.active, .btn-primary2:active, .open>.dropdown-toggle.btn-primary2
+	{
+	background-image: none
+}
+
+.btn-primary2.disabled.focus, .btn-primary2.disabled:focus,
+	.btn-primary2.disabled:hover, .btn-primary2[disabled].focus,
+	.btn-primary2[disabled]:focus, .btn-primary2[disabled]:hover, fieldset[disabled] .btn-primary2.focus,
+	fieldset[disabled] .btn-primary2:focus, fieldset[disabled] .btn-primary2:hover
+	{
+	background-color: #fff;
+	border-color: #dbdde2
+}
+
+#orderSearch {
+    border-radius: 10px; /* 테두리를 둥글게 만듭니다. */
+    color: #ffffff; /* 텍스트 색상을 흰색으로 지정합니다. */
+    padding: 10px 20px; /* 내용 주변의 여백을 조절합니다. */
+    border: none; /* 테두리를 없앱니다. */
+    margin-left:200px;
+}
+
+
+#orderSearch:hover {
+    background-color: gray; 
+}
+
+.btn{
+    border-radius: 10px; /* 테두리를 둥글게 만듭니다. */
+}
+.btn-primary2{
+ padding : 10px;
+}
+.searchDate{
+	margin-top:10px;
+}
+input, select, button{
+	border-radius: 5px;
+}
+.btnGo{
+	padding-left:10px;
+	padding-right:10px;
+	background-color:black;
+	color : white;
+}
+</style>  
 
 
 
@@ -52,19 +156,19 @@
 							</div>
 									
 									
-							<button type="button" id="orderSearch">검색</button>
+							<button type="button" id="orderSearch" class="btn btn-dark mb-2">검색</button>
 							</div>
 							
             <section class="pb-12">
                   <button type="button" id="returnOk" value="반품승인"
-                     style="background-color: yellow;">반품승인</button>
+                     class="btnGo">반품승인</button>
                   <button type="button" id="exchangeOk" value="교환승인"
-                     style="background-color: yellow;">교환승인</button>
+                     class="btnGo">교환승인</button>
 
                   <div
                      style="width: 100%; height: 300px; overflow: auto; border: 1px;">
-                     <table border="1" class="table" id="getProductList">
-                        <thead>
+                     <table border="1" class="table" id="getProductList" style="background-color:white;  white-space: nowrap;">
+                        <thead style="position: sticky; top: 0; background-color: white;">
                            <tr>
                               <th><input type="checkbox" id="allCheck"></th>
                               <th>주문번호</th>
@@ -136,7 +240,6 @@
                      </table>
                   </div>
             </section>
-         </div>
 
 
    <script>

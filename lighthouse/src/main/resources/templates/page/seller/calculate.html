@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-	<h3>정산이요</h3>
+
 	<table border="1" class="table" id="getProductList">
 					<thead>
 						<tr>
@@ -19,6 +20,7 @@
 							<th>정산완료일</th>
 						</tr>
 					</thead>
+						
 					<tbody id="calculateChkList">
 						<tr th:each="cal : ${calList}">
 							<td th:text="${cal.orderDetailCode}" />
@@ -33,5 +35,14 @@
 						<!-- 반복문 종료 -->
 					</tbody>
 				</table>
+				<h3 id="noList" style="text-align:center"></h3>
 </body>
+<script>
+var list = [[${calList}]]
+console.log(list.length);
+if(list.length == 0 ){
+	$('#noList').text('데이터가 없습니다.')	
+}
+
+</script>
 </html>

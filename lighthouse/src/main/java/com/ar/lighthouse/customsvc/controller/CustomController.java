@@ -33,7 +33,7 @@ public class CustomController {
 	CustomService customService;
 	
 	// faq 화면
-	@GetMapping("/custom/faqList")
+	@GetMapping("custom/faqList")
 	public String faqList(@RequestParam(required = false, defaultValue = "", value="faqType") String faqType, Model model) {
 		model.addAttribute("faqType", customService.getTypeList());
 		model.addAttribute("faqList", customService.getFaqList(faqType));
