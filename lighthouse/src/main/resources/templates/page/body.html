@@ -69,7 +69,7 @@
 
 						<!-- Image -->
 						<img th:src="|/upload/${product.uploadPath}/${product.uploadName}|" class="card-img-top w-100"
-							alt="..." style="width: 160px; height:160px"> 
+							alt="..." style="width: 160px; height:160px; border-radius:6px;"> 
 					</div>
 					<!-- <img class="card-img-top" th:src="@{/img/products/${product.uploadName}" alt="..."/> -->
 					<!-- 대체 콘텐트 -->
@@ -129,7 +129,7 @@
 						<div class="card-img" 
 							id="productOneImg">
 							<a class="d-block w-100 card-img-hover" id="sellerCard"th:href="|/goodDetail?productCode=${product.productCode}|"> <img class="card-img-top card-img w-100"
-								th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px;" />
+								th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px;  border-radius:6px;" />
 							</a>
 							<!-- Actions -->
 							<div class="card-actions">
@@ -222,7 +222,7 @@
 									<!-- Image -->
 									<a class="card-img-hover" id="bestCard" th:href="|/goodDetail?productCode=${product.productCode}|">
 										<img class="card-img-top card-img w-100"
-										th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px"/>
+										th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px; border-radius:6px;"/>
 									</a>
 
 									<!-- Actions -->
@@ -294,7 +294,7 @@
 									<!-- Image -->
 									<a class="card-img-hover" id="bestCard" th:href="|/goodDetail?productCode=${product.productCode}|">
 										<img class="card-img-top card-img w-100"
-										th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px"/>
+										th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px; border-radius:6px;"/>
 									</a>
 
 									<!-- Actions -->
@@ -365,7 +365,7 @@
 									<!-- Image -->
 									<a class="card-img-hover" id="bestCard" th:href="|/goodDetail?productCode=${product.productCode}|">
 										<img class="card-img-top card-img w-100"
-										th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px" />
+										th:src="|/upload/${product.uploadPath}/${product.uploadName}|" alt="..." style="height:250px; border-radius:6px;" />
 									</a>
 
 									<!-- Actions -->

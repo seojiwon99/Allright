@@ -15,9 +15,15 @@ google.charts.load('current', {'packages':['corechart']});
 	
 
 		<div class="col-12 col-lg">
-
-			<button class="btn-sm btn-dark" id="statisticsBtn">통계</button>
-			<button class="btn-sm btn-dark" id="accountingBtn">정산</button>
+			<div style="display:flex; justify-content:space-between; margin-bottom:30px">
+				<div class="col-3">
+					<h3>정산/통계</h3>
+				</div>
+				<div class="col-3">
+					<button class="btn-sm btn-dark" id="statisticsBtn">통계</button>
+					<button class="btn-sm btn-dark" id="accountingBtn">정산</button>
+				</div>
+			</div>
 
 			<div id="contentArea">
 				<!-- 비동기로 로드할 내용이 들어갈 영역 -->
@@ -28,7 +34,15 @@ google.charts.load('current', {'packages':['corechart']});
 
 
 <script type="text/javascript">
-
+$.ajax({
+    url: "statisticsPage", 
+    method: "GET",
+    success: function (data) {
+        $("#contentArea").html(data); 
+    },
+    error: function () {
+    }
+});
 $("#statisticsBtn").click(function () {
     $.ajax({
         url: "statisticsPage", 
