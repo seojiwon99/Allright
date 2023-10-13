@@ -23,14 +23,7 @@
 			</div>
 		</div>
 	</nav>
-	<style>
-	input::-webkit-inner-spin-button,
-	input::-webkit-outer-spin-button {
-	  appearance: none;
-	  -moz-appearance: none;
-	  -webkit-appearance: none;
-	}
-	</style>
+	
 	<!-- CONTENT -->
 	<section class="pt-7 pb-12">
 		<div class="container">
@@ -146,12 +139,14 @@
 							</div>
 							<div class="col-12 col-md-6">
 								<!-- Addr -->
-								<div class="form-group">
-									<label class="form-label" for="buyerAddr">
-										주소  </label> <input
-										class="form-control form-control-sm" id="buyerAddr"
-										type="text" placeholder="*"  th:value="${personalInfo.memberAddr}" required>
-								</div>
+	                        <div class="form-group">
+	                           <label class="form-label" for="buyerAddr">
+	                              주소  </label>
+	                              <button type="button" style="border-radius: 10px;background-color: black; color: white;" id="addrSearch">주소검색</button>
+	                              <input
+	                              class="form-control form-control-sm" id="buyerAddr"
+	                              type="text" placeholder="*"  th:value="${personalInfo.memberAddr}" required>
+	                        </div>
 							</div>
 							<div class="col-12 col-md-6">
 								<!-- Addr -->
@@ -193,7 +188,7 @@
 							</div>
 							<div class="col-12">
 								<!-- Button -->
-								<button class="btn btn-dark" type="button" id="updateBtn">수정완료</button>
+								<button class="btn btn-dark" type="button" id="updateBtn" style="border-radius: 10px;">수정완료</button>
 							</div>
 					
 					</form>
@@ -217,6 +212,7 @@
 		개인정보. 페이지 정보 듣기 위해서는 탭으로 이동하면 됩니다.
 	  </textarea>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
 	$(document).ready(function(){
 	$('#updateBtn').on('click', function(){
@@ -256,6 +252,16 @@
 	});
 	});
 	
+	$('#addrSearch').on('click',addrSearch); //주소 api
+	   function addrSearch() {
+	      new daum.Postcode({
+	         oncomplete: function(data) {
+	            $('#buyerAddr').val(data.address);
+	            $('#buyerDetailsAddr').val('');
+	            $('#buyerDetailsAddr').focus();
+	         }
+	      }).open();
+	   }
 	// 비밀번호 확인에서 일치 여부 확인
 	/*
 	$('#buyerPasswordCheck').on('focusout', function(e){

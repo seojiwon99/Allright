@@ -75,11 +75,12 @@
 					<!-- Order -->
 					<div class="card card-lg mb-5 border" >
 						<div class="card-body pb-0">
+							<div th:if="${cancelList.size != 0}">
 							<!-- 반복문 시작 -->
 							<!-- Info -->
 							<div class="card card-sm">
 								<div th:each="lists : ${cancelList}" class="order" id="test">
-									<div class="card-body bg-light">
+									<div class="card-body bg-light" style="border-radius: 15px;">
 										<div class="row cancelRow">
 											<div class="col-6 col-lg-3">
 												<h6 class="heading-xxxs text-muted">취소 번호:</h6>
@@ -111,11 +112,11 @@
 												</p>
 											</div>
 											<div class="col-6 col-lg-3">
-												<h6 class="heading-xxxs text-muted">결제 금액:</h6>
-												<p class="mb-0 fs-sm fw-bold">
-													<span class="paymentPrice" th:text="|${lists.paymentPrice}원|"></span>
-												</p>
-											</div>
+			                                    <h6 class="heading-xxxs text-muted">결제 금액:</h6>
+			                                    <p class="mb-0 fs-sm fw-bold">
+			                                       <span class="paymentPrice" th:text="|${#numbers.formatInteger(lists.paymentPrice,0,'COMMA')}원|"></span>
+			                                    </p>
+			                                 </div>
 											<div class="col-6 col-lg-3">
 												<h6 class="heading-xxxs text-muted">취소 접수 날짜:</h6>
 												<p class="mb-lg-0 fs-sm fw-bold">
@@ -126,14 +127,14 @@
 												</p>
 											</div>
 											<div class="col-6 col-lg-3">
-												<h6 class="heading-xxxs text-muted">취소 상태:</h6>
-												<p class="mb-0 fs-sm fw-bold">
-													<span class="cancelStatus" th:text="|${lists.cancelStatus}|"></span>
-												</p>
+												<h6 class="heading-xxxs text-muted">이미지:</h6>
+												<div class="row gx-5 mb-4 mb-lg-0">
+															<img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|"
+																style="max-width: 100%; height: auto">
+												</div>
 											</div>
-
 											<div class="col-6 col-lg-3">
-												<h6 class="heading-xxxs text-muted">취소 거절 여부:</h6>
+												<h6 class="heading-xxxs text-muted">취소 승인 여부:</h6>
 												<p class="mb-0 fs-sm fw-bold">
 													<span class="cancelRejectionCode" th:text="|${lists.cancelRejectionCode}|"></span>
 												</p>
@@ -143,51 +144,40 @@
 									<div class="card-footer">
 										<div class="row align-items-center">
 											<div class="col-12 col-lg-6">
-												<div class="row gx-5 mb-4 mb-lg-0">
-													<div class="col-3">
-														<div class="ratio ratio-1x1 bg-cover">
-															<img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|"
-																style="max-width: 100%; height: auto">
-														</div>
-													</div>
-													<!-- 
-													<div class="col-3">
-														<div class="ratio ratio-1x1 bg-cover"
-															style="background-image:">
-															<img th:src="@{/img/products/product-11.jpg}"
-																style="max-width: 100%; height: auto">
-														</div>
-													</div>
-													<div class="col-3">
-														<div class="ratio ratio-1x1 bg-cover">
-															<img th:src="@{/img/products/product-12.jpg}"
-																style="max-width: 100%; height: auto">
-														</div>
-													</div>
-													<div class="col-3">
-														<div class="ratio ratio-1x1 bg-cover"
-															style="background-image:">
-															<img th:src="@{/img/products/product-13.jpg}"
-																style="max-width: 100%; height: auto">
-														</div>
-													</div>
-													 -->
-												</div>
-											</div>
-											<div class="col-12 col-lg-6">
 												<div class="row gx-5">
 													<div class="col-6">
-														<button
-															class="btn btn-sm w-100 btn-outline-dark deleteBtn"
-															th:onclick="deleteCancel([[${lists.orderDetailCode}]])"
-															data-orderdetailcode="${lists.orderDetailCode}">
-															취소 철회</button>
-													</div>
+				                                       <button
+				                                             class="btn btn-sm w-100 btn-outline-dark deleteBtn"
+				                                             th:onclick="deleteCancel([[${lists.orderDetailCode}]])"
+				                                             th:data-orderdetailcode="${lists.orderDetailCode}"
+				                                             th:id="${lists.orderDetailCode}"
+				                                             style="background-color: black; color: white; border-radius: 10px">
+				                                             취소 철회</button>
+				                                     </div>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
+							</div>
+							</div>
+							<div id="noSearch" tabindex="0">
+							<th:block th:if="${cancelList.size == 0}">
+								<div>
+								     <ul>
+								      <li class="list-group-item">
+								        <div class="row align-items-center">
+								          <br>
+										  <a href="/page/buyer/orderList" tabindex=-1>
+										  <p style="padding: 10%; font-weight: bolder; text-align: center;">반품 신청한 상품이 없습니다.
+										  <br>주문 목록에서 신청 가능합니다.
+										  </p>
+										  </a>
+								        </div>
+								      </li>
+								      </ul>   
+							     </div>
+							</th:block>
 							</div>
 						</div>
 					</div>
@@ -210,9 +200,9 @@
     </textarea>
 	<script>
 	function deleteCancel(code){
-		let cancelDel = confirm('취소하시겠습니까?');
+		let cancelDel = confirm('주문 취소를 철회하시겠습니까?');
 		let cancelData = {
-			'orderDetailCode' : $('#orderDetailCode').text(),
+			'orderDetailCode' : code,
 		}
 		if(cancelDel){
 			$.ajax('/buyer/deleteCancel',{			
@@ -224,6 +214,24 @@
 					//alert("수정 완료");
 					console.log(data);
 					$('#test').replaceWith(data);
+   					if($('.order').length == 0){
+						let htmltags = `
+						<div>
+						     <ul>
+						      <li class="list-group-item">
+						        <div class="row align-items-center">
+						          <br>
+								  <a href="/page/buyer/orderList">
+								  <p style="padding: 10%; font-weight: bolder; text-align: center;">반품 신청한 상품이 없습니다.
+								  <br>주문 목록에서 신청 가능합니다.
+								  </p>
+								  </a>
+						        </div>
+						      </li>
+						      </ul>   
+					     </div>`
+					     $('#noSearch').append(htmltags);
+   					}
 			})
 			}else{
 				return;
@@ -245,11 +253,60 @@
           let message = firstMsg + $('#orderMenual').val();
 
           VoiceMenual(message);
+			
+          function deleteCancelForTTS(code){
+      		let cancelData = {
+      			'orderDetailCode' : code,
+      		}
+   			$.ajax('/buyer/deleteCancel',{			
+   				type : 'POST',
+   				contentType : 'application/json',
+   				data : JSON.stringify(cancelData)
+   			})
+   			.done(data => {
+   					//alert("수정 완료");
+   					console.log(data);
+   					$('#test').replaceWith(data);
+   					if($('.order').length == 0){
+						let htmltags = `
+						<div>
+						     <ul>
+						      <li class="list-group-item">
+						        <div class="row align-items-center">
+						          <br>
+								  <a href="/page/buyer/orderList">
+								  <p style="padding: 10%; font-weight: bolder; text-align: center;">취소 신청한 상품이 없습니다.
+								  <br>주문 목록에서 신청 가능합니다.
+								  </p>
+								  </a>
+						        </div>
+						      </li>
+						      </ul>   
+					     </div>`
+						$('#noSearch').append(htmltags);
+					     $('#noSearch').focus();
+					   // VoiceMenual('주문 취소 철회가 완료되었습니다. 현재 취소 신청한 상품이 없습니다. 주문 목록에서 신청 가능합니다. 엔터키를 누르면 주문 목록으로 이동합니다.')
+					    
+   					}
+   			})
 
+      		};
     //tts 이벤트 부여
     $('.cancelCode').on('focus', cancelListInfo);
     $('.deleteBtn').on('focus', deleteBtn);
+    $('#noSearch').on('focus', noSearch);
     //tts 이벤트 진행
+    $('.deleteBtn').on('keydown',function(e){
+       	if(e.key == 'Enter'){
+       	 e.preventDefault();
+	       	 if($(this).prop('class') == 'btn btn-sm w-100 btn-outline-dark deleteBtn'){
+	       		 deleteCancelForTTS(this.id);
+	       	 }
+        }
+    })
+    function noSearch(){
+    	VoiceMenual('취소 신청한 상품이 없습니다. 현재 주문 목록에서 신청 가능합니다. 엔터키를 누르면 주문 목록으로 이동합니다.');
+    }
     function cancelListInfo() {
     	let cancelCode = $(this).closest('.cancelRow').find('.cancelCode').text();
     	let orderCode = $(this).closest('.cancelRow').find('.orderCode').text();
@@ -263,8 +320,8 @@
     	
     	
     	let message = `취소번호는 ${cancelCode}. 주문번호는 ${orderCode}. 주문상세번호는 ${orderDetailCode}. 상품명은 ${productName}.
-    					상품 수량은 ${orderCnt}.  결제 금액은 ${paymentPrice}. 취소 접수날짜는 ${cancelRegdate}. 취소 상태는 ${cancelStatus}.
-    					취소 거절 여부는 ${cancelRejectionCode}. 입니다.`;
+    					상품 수량은 ${orderCnt}.  결제 금액은 ${paymentPrice}. 취소 접수날짜는 ${cancelRegdate}. 
+    					취소 승인 여부는 ${cancelRejectionCode}. 입니다.`;
     	
     	VoiceMenual(message);
     }
@@ -349,7 +406,7 @@
 	        type : mime
 	    });
 	}
-
+		
 	   window.addEventListener("keydown", function(e){ 
 	         console.log(e);
 	         if(e.altKey && e.key == 1){ //주문목록

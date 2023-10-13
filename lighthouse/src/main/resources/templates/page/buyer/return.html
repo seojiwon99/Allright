@@ -53,23 +53,18 @@
       			<div class="mb-3">
       				<textarea class="form-control" id="content" rows="5" placeholder="반품 사유를 입력해주세요"></textarea>
       			</div>
-      			
-      			<!-- 
       			<div class="mb-3">
-      				<label>입금 계좌번호</label>
-      				<input type="text" class="form-label">
-      			</div>
-      			<div class="mb-3">
-      				<label>예금주</label>
-      				<input type="text" class="form-label">
-      				<label>은행 명</label>
-      				<input type="text" class="form-label">
-      			</div>
-      			 -->
+						<label>은행 명</label> <input type="text" class="form-label" id="bankName">
+					</div>
+					<div class="mb-3">
+						<label>예금주</label> <input type="text" class="form-label" id="accountOwner">
+					</div>
+					<div class="mb-3">
+						<label>입금 계좌번호</label> <input type="text" class="form-label" id="accountNumber">
+					</div>
       			<div class="col-12 text-center">
-      			
-      			<button class="btn btn-dark" id="returnBtn">반품신청</button>
-      			<a class="btn btn-gray-500" type="button" th:href="@{/page/buyer/orderList}" id="retract">취소</a>
+      			<button class="btn btn-dark" id="returnBtn" style="border-radius: 10px">반품신청</button>
+      			<a class="btn btn-gray-500" type="button" th:href="@{/page/buyer/orderList}" id="retract" style="border-radius: 10px">취소</a>
       			</div>
       			
       		</div>
@@ -158,10 +153,9 @@
 						console.log('enter key')
 		   	      // 사용자가 입력한 반품 사유와 주소 정보 가져오기
 		   			let selOption = $('#select option:selected').val();
-		   		    if(selOption != "선택"){
-		   		  	}else{
-		   		  		console.log("반품 사유를 선택해주세요.")
-		   		  		selected("반품 사유를 선택하지 않아 취소되었습니다. 반품 사유 선택란으로 이동합니다.")
+		   		    if(selOption == "선택"){
+						console.log("반품 사유를 선택해주세요.")
+		   		  		selectOption("반품 사유를 선택하지 않아 취소되었습니다. 반품 사유 선택란으로 이동합니다.")
 		   		  		$('#select').focus();
 		   		  		return;
 		   		  	}
@@ -171,8 +165,25 @@
 		   		  		$('#content').focus();
 		   		  		return;
 		   		  	}
+		   		 	if ($('#bankName').val() == ""){
+						console.log('은행명')
+						bank('은행 이름이 입력되지 않아 취소되었습니다. 은행 이름 입력란으로 이동합니다.');
+						$('#bankName').focus();
+						return;
+					}
+					if ($('#accountNumber').val() == ""){
+						console.log('계좌번호')
+						number('계좌번호가 입력되지 않아 취소되었습니다. 계좌번호 입력란으로 이동합니다.');
+						$('#accountNumber').focus();
+						return;
+					}
+					if ($('#accountOwner').val() == ""){
+						console.log('예금주')
+						owner('예금주가 입력되지 않아 취소되었습니다. 예금주 입력란으로 이동합니다.');
+						$('#accountOwner').focus();
+						return;
+					}
 		   	  		let reasonName =  $('#select option:selected').text().trim()
-		   	  	  
 		   			let contents = $('#content').val();
 		   			contents = contents.trim()
 		   	  		let reReason = reasonName + ' : ' + contents
@@ -194,7 +205,7 @@
 		   	        data: JSON.stringify(returnData),
 		   	        success: function(response) {
 		   	          // AJAX 요청이 성공적으로 완료된 경우 처리
-		   	          alert('반품 신청이 성공적으로 처리되었습니다.');
+		   	          VoiceMenual('반품 신청이 성공적으로 처리되었습니다.');
 		   	          location.href="/page/buyer/orderList";
 		   	        },
 		   	        error: function(error) {
@@ -215,7 +226,9 @@
 	     $('#content').on('focus', returnReason)
 		 $('#retract').on('focus', retract);
 		 $('#returnBtn').on('focus', returnBtn);
-		
+		 $('#accountNumber').on('focus', number);
+		 $('#accountOwner').on('focus', owner);
+		 $('#bankName').on('focus', bank);
 		 
 		 // 이벤트 안의 전역변수
 		 let code;
@@ -225,9 +238,7 @@
 		 let selectOp;
 		 let codeName;
 		 let detailReason;
-		 let postCode;
-		 let address;
-		 let detailAddress;
+
 		 
 		 //tts 이벤트 진행
 	   function orderCode() {
@@ -242,13 +253,9 @@
 			 prodName = $('#productName').val();   	 
 			 VoiceMenual("상품 명은" + prodName + "입니다.");
 		 }
-		 function selected() { 
+		 function selected(select) { 
 			 select =  $("#select").text();
-			 if(select == '반품 사유를 선택해주세요'){
-				 VoiceMenual(select);
-			 }else{
-				 VoiceMenual("반품 사유를 선택하지 않아 취소되었습니다. 반품 사유 선택란으로 이동합니다." + select);
-			 }
+			 VoiceMenual(select + "..방향키로 이동하고 알맞은 교환 사유에서 엔터키를 눌러주세요");
 		 }
 		 function selectOption() { 
 			 selectOp =  $("#select option:selected").text();
@@ -257,6 +264,27 @@
 		 function returnReason() { 
 			 VoiceMenual("자세한 교환 사유를 입력해주세요.");
 		 }
+		 function number(nuReturn) {
+			 if(nuReturn.length > 0){
+			 	VoiceMenual(nuReturn + "입금 계좌번호를 입력해주세요.");				 
+			 }else{
+				 VoiceMenual("입금 계좌번호를 입력해주세요.");
+			 }
+		 }
+		 function owner(owReturn) { 
+			 if(owReturn.length > 0){
+				 VoiceMenual(owReturn + "예금주를 입력해주세요.");
+			 }else{
+				 VoiceMenual("예금주를 입력해주세요.");
+			 }
+		 }
+		 function bank(baReturn) { 
+			 if(baReturn.length > 0){
+				 VoiceMenual(baReturn + "은행 명을 입력해주세요.");
+			 }else{
+				 VoiceMenual("은행 명을 입력해주세요.");
+			 }
+		 }
 		 function returnBtn(){
 			 code = $('#orderCode').val();
 			 detailCode = $('#orderDetailCode').val();
@@ -264,8 +292,11 @@
 			 prodName = $('#productName').val();
 			 select =  $("#select").text();
 			 selectOp =  $("#select option:selected").text();
+			 let bName = $('#bankName').val();
+			 let aOwner = $('#accountOwner').val();
+			 let aNumber = $('#accountNumber').val();
 			 let check = `주문 반품 신청 버튼입니다. 주문 번호는. ${code}.  주문상세번호는.  ${detailCode}. 상품명은. ${prodName}. 교환 사유는. ${selectOp}. 교환 상세 사유는. ${detailReason}.
-			 			  신청 사항을 확인하셨다면. 엔터키를 눌러주세요.`;
+				 		  은행명은. ${bName}. 예금주는. ${aOwner}. 입금계좌번호는. ${aNumber}. 신청 사항을 확인하셨다면. 엔터키를 눌러주세요.`;
 			 VoiceMenual(check);
 		 }
 		 function retract(){

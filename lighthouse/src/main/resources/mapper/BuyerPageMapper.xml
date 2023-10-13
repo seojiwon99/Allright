@@ -139,13 +139,13 @@
 		        e.img_name,
 		        e.upload_name,
 		        e.img_content,
-		        cancel_status,
+		        NVL(cancel_status, '0') cancel_status,
 		        order_status_name(f.cancel_status) AS cancel_status_nm,
 		        f.cancel_regdate,
-		        return_status,
+		        NVL(return_status, '0') return_status,
 		        order_status_name(g.return_status) AS return_status_nm,
 		        g.return_regdate,
-		        exchange_status,
+		        NVL(exchange_status, '0') exchange_status,
 		        order_status_name(h.exchange_status) AS exchange_status_nm,
 		        h.exchange_regdate,
 		        e.upload_path,
@@ -283,11 +283,12 @@
 		              , issue_date
 		              , coupon_use
 		         FROM ar_my_coupon
-		         WHERE member_id = #{memberId}) pg
+		         WHERE member_id = #{memberId}
+		         and coupon_use = 'Y'
+		         ORDER BY coupon_code DESC) pg
          <![CDATA[
         WHERE rownum <= #{cri.pageNum} * #{cri.amount}
         ]]>
-        ORDER BY pg.coupon_code DESC
     )
     WHERE rn > (#{cri.pageNum} - 1) * #{cri.amount}
    </select>
@@ -433,15 +434,21 @@
            , b.payment_price
            , c.option_detail_code
            , d.product_name
-             , e.order_code
-             , e.member_id
+           , e.order_code
+           , e.member_id
+           , f.upload_name
+           , f.img_content
+           , f.upload_path
+           , f.img_order
       FROM ar_exchange a
       LEFT JOIN ar_order_detail b ON a.order_detail_code = b.order_detail_code
       LEFT JOIN ar_option_detail c ON c.option_detail_code = b.option_detail_code
       LEFT JOIN ar_products d ON d.product_code = c.product_code
-        LEFT JOIN ar_orders e ON e.order_code = b.order_code
-		WHERE e.member_id = #{memberId}
-		ORDER BY a.exchange_regdate DESC
+      LEFT JOIN ar_orders e ON e.order_code = b.order_code
+      LEFT JOIN ar_imgs f ON f.product_code = d.product_code
+	  WHERE e.member_id = #{memberId}
+	  AND f.img_order = '0'
+	  ORDER BY a.exchange_regdate DESC
 	</select>
 	
 	<!-- 취소 신청 넘어가는 값 -->

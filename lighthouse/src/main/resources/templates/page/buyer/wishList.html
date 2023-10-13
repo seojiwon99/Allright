@@ -81,6 +81,7 @@
 				<div class="col-12 col-md-9 col-lg-8 offset-lg-1" id="test">
 				<div>
 					<!-- Products -->
+						<div th:if="${wishList.size != 0}">
 							<div class="row wishRow" >
 								<!-- Item -->
 								<!-- 반복문 -->
@@ -113,6 +114,22 @@
 									</div>
 								</div>
 							</div>
+							</div>
+							<th:block th:if="${wishList.size == 0}">
+		                        <div>
+		                           <ul>
+		                             <li class="list-group-item">
+		                              <div class="row align-items-center">
+		                                <br>
+		                                <a href="/">
+		                                <p style="padding: 10%; font-weight: bolder; text-align: center;">찜 목록에 담긴 상품이 없습니다.
+		                                <br>원하는 상품 담아주세요!</p>
+		                                </a>
+		                              </div>
+		                             </li>
+		                           </ul>
+		                          </div>
+		                     </th:block>
 						</div>
 				<!-- Pagination -->
 					<nav class="d-flex justify-content-center justify-content-md-end mt-10">
@@ -166,7 +183,6 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 		    function deleteWish(code) {
-		        let favoriteDel = confirm('상품을 삭제하시겠습니까?'); 
 		        if(favoriteDel){
 		        	$.ajax('/buyer/deleteWish',{ // 실제 아이템을 삭제할 URL로 대체하세요.
 			            type: 'GET',
@@ -192,23 +208,29 @@
 		         sessionAuthor = sessionStorage.loginMember.memberAuthor;
 		      }
 		          
-		         function ttsInit(){
-		          if(TTSIsOk == null || sessionAuthor == 3){
-		           let audioFileNow = new Audio();
-		           let firstMsg = "나의 찜 페이지입니다. 나의 찜 목록에 대해서 확인할 수 있습니다.";
-		           let message = firstMsg + $('#orderMenual').val();
+		    function ttsInit(){
+		      if(TTSIsOk == null || sessionAuthor == 3){
+		        let audioFileNow = new Audio();
+		        let firstMsg = "나의 찜 페이지입니다. 나의 찜 목록에 대해서 확인할 수 있습니다.";
+		        let message = firstMsg + $('#orderMenual').val();
 
-		           VoiceMenual(message);
-
+		        VoiceMenual(message);
+			
 		     //tts 이벤트 부여
 		     $('.favoriteCode').on('focus', wishInfo);
-
+			 $('.card-action-end').on('focus', deleteBtn);
+			 $('.card-btn').on('focus', productBtn);
+			 
 		     //tts 이벤트 진행
+		     function productBtn(){
+		    	 VoiceMenual("상품 페이지 버튼입니다. 상품 페이지로 이동을 원하시면 엔터키를 눌러주세요.");
+		     }
+		     function deleteBtn() {
+				 VoiceMenual("찜 삭제버튼입니다. 삭제를 원하면 엔터키를 눌러주세요.");
+			 }
 		     function wishInfo() {
-		    	 let favoriteCode = $(this).parent().val();
 			     let productName = $(this).parent().parent().find('.productName').text();
 			     let productCost =  $(this).parent().parent().parent().find('.productCost').text();
-			     console.log(favoriteCode)
 				 console.log(productName)
 				 console.log(productCost)
 		    	 
