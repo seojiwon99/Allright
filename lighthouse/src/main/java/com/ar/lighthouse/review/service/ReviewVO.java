@@ -17,4 +17,5 @@ public class ReviewVO {
 	Date reviewRegdate;
 	ImgsVO reviewImg;
 	int reviewCount;
+	String reviewStatus;
 }

@@ -641,10 +641,10 @@
 	    	window.addEventListener("keydown", function(e){ 
 	
 	    			if(e.altKey && e.key == 1){ // 회원가입 페이지
-	    				if(memberId != null){
+	    				if(memberId == null){
 		    				location.href="/page/member/joinBuyerForm";
 	    				}else{
-	    					VoiceMenual('현재 로그인 되어 있습니다.')
+	    					VoiceMenual('현재 로그인 되어있지 않습니다.')
 	    				}
 	    			}
 	    			if(e.altKey && e.key == 2){ // 로그인 페이지
