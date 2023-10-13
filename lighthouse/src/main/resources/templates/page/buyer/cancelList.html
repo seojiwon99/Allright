@@ -127,14 +127,14 @@
 												</p>
 											</div>
 											<div class="col-6 col-lg-3">
-												<h6 class="heading-xxxs text-muted">취소 상태:</h6>
-												<p class="mb-0 fs-sm fw-bold">
-													<span class="cancelStatus" th:text="|${lists.cancelStatus}|"></span>
-												</p>
+												<h6 class="heading-xxxs text-muted">이미지:</h6>
+												<div class="row gx-5 mb-4 mb-lg-0">
+															<img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|"
+																style="max-width: 100%; height: auto">
+												</div>
 											</div>
-
 											<div class="col-6 col-lg-3">
-												<h6 class="heading-xxxs text-muted">취소 거절 여부:</h6>
+												<h6 class="heading-xxxs text-muted">취소 승인 여부:</h6>
 												<p class="mb-0 fs-sm fw-bold">
 													<span class="cancelRejectionCode" th:text="|${lists.cancelRejectionCode}|"></span>
 												</p>
@@ -144,44 +144,12 @@
 									<div class="card-footer">
 										<div class="row align-items-center">
 											<div class="col-12 col-lg-6">
-												<div class="row gx-5 mb-4 mb-lg-0">
-													<div class="col-3">
-														<div class="ratio ratio-1x1 bg-cover">
-															<img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|"
-																style="max-width: 100%; height: auto">
-														</div>
-													</div>
-													<!-- 
-													<div class="col-3">
-														<div class="ratio ratio-1x1 bg-cover"
-															style="background-image:">
-															<img th:src="@{/img/products/product-11.jpg}"
-																style="max-width: 100%; height: auto">
-														</div>
-													</div>
-													<div class="col-3">
-														<div class="ratio ratio-1x1 bg-cover">
-															<img th:src="@{/img/products/product-12.jpg}"
-																style="max-width: 100%; height: auto">
-														</div>
-													</div>
-													<div class="col-3">
-														<div class="ratio ratio-1x1 bg-cover"
-															style="background-image:">
-															<img th:src="@{/img/products/product-13.jpg}"
-																style="max-width: 100%; height: auto">
-														</div>
-													</div>
-													 -->
-												</div>
-											</div>
-											<div class="col-12 col-lg-6">
 												<div class="row gx-5">
 													<div class="col-6">
 														<button
 															class="btn btn-sm w-100 btn-outline-dark deleteBtn"
 															th:onclick="deleteCancel([[${lists.orderDetailCode}]])"
-															data-orderdetailcode="${lists.orderDetailCode}">
+															data-orderdetailcode="${lists.orderDetailCode}" style="border-radius: 10px; background-color: black; color: white;">
 															취소 철회</button>
 													</div>
 												</div>

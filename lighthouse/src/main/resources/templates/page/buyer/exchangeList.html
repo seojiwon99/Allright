@@ -132,11 +132,12 @@
                         </p>
                       </div>
                       <div class="col-6 col-lg-3">
-                        <h6 class="heading-xxxs text-muted">교환 상태:</h6>
-                        <p class="mb-0 fs-sm fw-bold">
-                          <span class="exchangeStatus" th:text="|${lists.exchangeStatus}|"></span>
-                        </p>
-                      </div>
+						<h6 class="heading-xxxs text-muted">이미지:</h6>
+							<div class="row gx-5 mb-4 mb-lg-0">
+								<img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|"
+									style="max-width: 100%; height: auto">
+							</div>
+					  </div>
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">교환 승인 날짜:</h6>
                         <p class="mb-0 fs-sm fw-bold">
@@ -153,42 +154,11 @@
                   </div>
                 <div class="card-footer">
                 <div class="row align-items-center">
-                  <div class="col-12 col-lg-6">
-                    <div class="row gx-5 mb-4 mb-lg-0">
-                      <div class="col-3">
-                        <!-- Image -->
-                        <div class="ratio ratio-1x1 bg-cover">
-                        <img th:src="@{/img/products/product-1.jpg}" style="max-width: 100%; height: auto">
-                        </div>
-                      </div>
-                      <div class="col-3">
-                        <!-- Image -->
-                        <div class="ratio ratio-1x1 bg-cover" style="background-image:">
-                        <img th:src="@{/img/products/product-11.jpg}" style="max-width: 100%; height: auto">
-                        </div>
-
-                      </div>
-                      <div class="col-3">
-                        <!-- Image -->
-                        <div class="ratio ratio-1x1 bg-cover">
-                        <img th:src="@{/img/products/product-12.jpg}" style="max-width: 100%; height: auto" >
-                        </div>
-
-                      </div>
-                      <div class="col-3">
-                        <!-- Image -->
-                        <div class="ratio ratio-1x1 bg-cover" style="background-image:">
-                        <img th:src="@{/img/products/product-13.jpg}" style="max-width: 100%; height: auto" >
-                        </div>
-
-                      </div>
-                    </div>
-                  </div>
 						<div class="col-12 col-lg-6">
 							<div class="row gx-5">
 								<div class="col-6">
 									<!-- Button -->
-									<button class="btn btn-sm w-100 btn-outline-dark deleteBtn" th:onclick="deleteExchange([[${lists.orderDetailCode}]])" data-orderdetailcode="${lists.orderDetailCode}">교환 취소</button>
+									<button class="btn btn-sm w-100 btn-outline-dark deleteBtn" th:onclick="deleteExchange([[${lists.orderDetailCode}]])" data-orderdetailcode="${lists.orderDetailCode}" style="border-radius: 10px; background-color: black; color: white;">교환 취소</button>
 								</div>
 							 </div>
 						</div>
@@ -198,17 +168,17 @@
                 </div>
                 </div>
 	                <th:block th:if="${exchangeList.size == 0}">
-									<div>
-									     <ul>
-									      <li class="list-group-item">
-									        <div class="row align-items-center">
-									          <br>
-									          <p style="padding: 10%; font-weight: bolder; text-align: center;">교환 신청한 상품이 없습니다.
-									          </p>
-									        </div>
-									      </li>
-									      </ul>   
-								     </div>
+						<div>
+							<ul>
+							    <li class="list-group-item">
+									<div class="row align-items-center">
+									    <br>
+									    <p style="padding: 10%; font-weight: bolder; text-align: center;">교환 신청한 상품이 없습니다.
+									  </p>
+									</div>
+								</li>
+							</ul>   
+						</div>
 					</th:block>
 				</div>
             </div>
@@ -235,6 +205,7 @@
 			let exchangeData = {
 					'orderDetailCode' : $('#orderDetailCode').text(),
 				}
+			if(exchangeDel){				
 			$.ajax({
 				url : '/buyer/deleteExchange',
 				type : 'POST',
@@ -249,6 +220,9 @@
 					console.log(error);
 				}
 			})
+			}else {
+				return;
+			}
 		};
 	
 		let TTSIsOk = localStorage.getItem('ttsKey');
@@ -265,6 +239,28 @@
 		let message = firstMsg + $('#orderMenual').val();
 		
 		VoiceMenual(message);
+		
+		
+		function deleteExchange(code){
+			let exchangeDel = confirm('삭제하시겠습니까?');
+			let exchangeData = {
+					'orderDetailCode' : $('#orderDetailCode').text(),
+				}
+			$.ajax({
+				url : '/buyer/deleteExchange',
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(exchangeData),
+				success : function(response){
+					alert("수정 완료");
+					$('#test').replaceWith(response);
+				},
+				fail : function(errer){
+					console.error('수정 중 오류')
+					console.log(error);
+				}
+			})
+		};
 		
 		//tts 이벤트 부여
 		$('.exchangeCode').on('focus', returnListInfo);

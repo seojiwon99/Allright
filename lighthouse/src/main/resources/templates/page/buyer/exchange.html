@@ -227,11 +227,10 @@
 					e.preventDefault();
 					console.log('enter key')
 		   	      	// 사용자가 입력한 교환 사유와 주소 정보 가져오기
-		   			let selOption = $('#select option:selected').val()
-		   		    if(selOption != "선택"){
-		   		  	}else{
-		   		  		console.log("교환 사유를 선택해주세요.")
-		   		  		selected("교환 사유를 선택하지 않아 취소되었습니다. 교환 사유 선택란으로 이동합니다.")
+		   			let selOption = $('#select option:selected').val();
+		   		    if(selOption == "선택"){
+						console.log("반품 사유를 선택해주세요.")
+		   		  		selectOption("반품 사유를 선택하지 않아 취소되었습니다. 반품 사유 선택란으로 이동합니다.")
 		   		  		$('#select').focus();
 		   		  		return;
 		   		  	}
@@ -324,13 +323,9 @@
 		 }
 		 function selected(select) { 
 			 select =  $("#select").text();
-			 if(select == "교환 사유를 선택해주세요"){
-			 	VoiceMenual(select + "교환 사유를 선택해주세요.");
-			 }else{
-				VoiceMenual("교환 사유를 선택하지 않아 취소되었습니다. 교환 사유 선택란으로 이동합니다." + select);
-			 }
+			 VoiceMenual(select + "..방향키로 이동하고 알맞은 교환 사유에서 엔터키를 눌러주세요");
 		 }
-		 function selectOption(selectOp) { 
+		 function selectOption() { 
 			 selectOp =  $("#select option:selected").text();
 			 VoiceMenual(selectOp);
 		 }

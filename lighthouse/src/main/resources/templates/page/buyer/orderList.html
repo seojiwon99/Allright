@@ -207,12 +207,18 @@
                       </div>
                     </div>
                   </div>
-                <div class="card-footer orderBtn">
-                <div class="row align-items-center" th:if="|${lists.returnStatus} != '0' or ${lists.cancelStatus} != '0' or ${lists.exchangeStatus} != '0'|">
+                <div class="card-footer ">
+                <div class="row align-items-center" th:if="${lists.returnStatus} == '0' and ${lists.cancelStatus} == '0' and ${lists.exchangeStatus} == '0'">
                     <!-- 리뷰  button -->
                       <div class="col-4" th:if="${lists.orderStatus} == '4'">
                         <a class="btn btn-sm w-100 btn-outline-dark reviewBtn" href="#" style="border-radius: 10px; background-color: black; color: white;">
                           리뷰 쓰기
+                        </a>
+                      </div>
+                    <!-- 주문 취소 Button -->
+                      <div class="col-4" th:if="${lists.orderStatus} == '2' or ${lists.orderStatus} == '1'" style ="margin-top : 5px;">
+                        <a class="btn btn-sm w-100 btn-outline-dark cancelBtn" th:href="@{/cancel}" style="border-radius: 10px; background-color: black; color: white;" >
+                          주문 취소
                         </a>
                       </div>
                     <!-- 교환 Button -->
@@ -225,12 +231,6 @@
                       <div class="col-4">
                         <a class="btn btn-sm w-100 btn-outline-dark retBtn" th:href="@{/return}" style="border-radius: 10px; background-color: black; color: white;">
                           반품
-                        </a>
-                      </div>
-                    <!-- 주문 취소 Button -->
-                      <div class="col-4" th:if="${lists.orderStatus} == '2' or ${lists.orderStatus} == '1'" style ="margin-top : 5px;">
-                        <a class="btn btn-sm w-100 btn-outline-dark cancelBtn" th:href="@{/cancel}" style="border-radius: 10px; background-color: black; color: white;" >
-                          주문 취소
                         </a>
                       </div>
                 </div>
@@ -259,7 +259,6 @@
                            th:text="${pageButtom}"></a>
                         </li>
                      </th:block>
-
                      <li class="page-item" th:if="${pageMaker.next}"><a
                         class="page-link page-link-arrow"
                         th:href="@{/page/buyer/orderList/(pageNum = ${pageMaker.endPage + 1})}">
@@ -286,7 +285,7 @@
     </textarea>
    <script>
    
-      document.querySelector(".orderBtn").addEventListener("click", function(e) {
+      document.querySelector(".orderList").addEventListener("click", function(e) {
       e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
       var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
        var url="";
@@ -363,7 +362,7 @@
         $('#optionList').on('change', optionSelect);
         $('#search').on('focus', search);
         $('#selectOption').on('focus', searchOption);
-        $('#selectOption').on('keyup', searchOk);
+        $('#selectOption').on('keydown', searchOk);
         $('.orderCode').on('focus', orderDetailInfo);
         $('.excBtn').on('focus', exchageBtn);
         $('.retBtn').on('focus', retBtn);

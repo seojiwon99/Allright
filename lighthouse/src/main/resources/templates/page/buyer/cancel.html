@@ -65,7 +65,6 @@
 						<label>입금 계좌번호</label> <input type="text" class="form-label" id="accountNumber">
 					</div>
 					<div class="col-12 text-center">
-
 						<button class="btn btn-dark" id="cancelBtn">주문취소신청</button>
 						<a class="btn btn-gray-500" type="button"
 							th:href="@{/page/buyer/orderList}" id="retract">취소</a>
@@ -149,12 +148,12 @@
 							console.log('enter key')
 						// 사용자가 입력한 반품 사유와 주소 정보 가져오기
 						let selOption = $('#select option:selected').val();
-						if (selOption != "선택") {
-						} else {	
-							selected("취소 사유를 선택하지 않아 취소되었습니다. 취소 선택란으로 이동합니다.");
-							$('#select').focus();
-							return;
-						}
+				   		if(selOption == "선택"){
+							console.log("반품 사유를 선택해주세요.")
+				   		  	selectOption("반품 사유를 선택하지 않아 취소되었습니다. 반품 사유 선택란으로 이동합니다.")
+				   		  	$('#select').focus();
+				   		  	return;
+				   		}
 						if ($('#content').val() == "") {
 							cancelReason("자세한 취소 사유가 입력되지 않아 취소되었습니다. 자세한 취소 사유 입력란으로 이동합니다.")
 							$('#content').focus();
@@ -241,14 +240,10 @@
 		 }
 		 function selected(select) { 
 			 select =  $("#select").text();
-			 if(select == "취소 사유를 선택해주세요"){
-				 VoiceMenual("취소 사유를 선택해주세요.");
-			 }else{
-				 VoiceMenual("취소 사유를 선택하지 않아 취소되었습니다. 취소 사유 선택란으로 이동합니다.");
-			 }
+			 VoiceMenual(select + "..방향키로 이동하고 알맞은 교환 사유에서 엔터키를 눌러주세요");
 		 }
-		 function selectOption(selectOp) {
-			 selectOp = $("#select option:selected").text();
+		 function selectOption() { 
+			 selectOp =  $("#select option:selected").text();
 			 VoiceMenual(selectOp);
 		 }
 		 function cancelReason(reCancle) { 
@@ -260,21 +255,21 @@
 		 }
 		 function number(nuCancle) {
 			 if(nuCancle.length > 0){
-			 	VoiceMenual(canc + "입금 계좌번호를 입력해주세요.");				 
+			 	VoiceMenual(nuCancle + "입금 계좌번호를 입력해주세요.");				 
 			 }else{
 				 VoiceMenual("입금 계좌번호를 입력해주세요.");
 			 }
 		 }
 		 function owner(owCancle) { 
 			 if(owCancle.length > 0){
-				 VoiceMenual(cancle + "예금주를 입력해주세요.");
+				 VoiceMenual(owCancle + "예금주를 입력해주세요.");
 			 }else{
 				 VoiceMenual("예금주를 입력해주세요.");
 			 }
 		 }
 		 function bank(baCancle) { 
 			 if(baCancle.length > 0){
-				 VoiceMenual(cancle + "은행 명을 입력해주세요.");
+				 VoiceMenual(baCancle + "은행 명을 입력해주세요.");
 			 }else{
 				 VoiceMenual("은행 명을 입력해주세요.");
 			 }
@@ -293,7 +288,6 @@
 			 			  은행명은. ${bName}. 예금주는. ${aOwner}. 입금계좌번호는. ${aNumber}. 신청 사항을 확인하셨다면. 엔터키를 눌러주세요.`;
 			 VoiceMenual(check);
 		 }
-
 		 function retract(){
 			 VoiceMenual('취소 철회 버튼입니다. 취소 철회를 원하시면. 엔터키를 눌러주세요.');
 		 }
