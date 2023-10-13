@@ -282,11 +282,12 @@
 		              , issue_date
 		              , coupon_use
 		         FROM ar_my_coupon
-		         WHERE member_id = #{memberId}) pg
+		         WHERE member_id = #{memberId}
+		         and coupon_use = 'Y'
+		         ORDER BY coupon_code DESC) pg
          <![CDATA[
         WHERE rownum <= #{cri.pageNum} * #{cri.amount}
         ]]>
-        ORDER BY pg.coupon_code DESC
     )
     WHERE rn > (#{cri.pageNum} - 1) * #{cri.amount}
    </select>

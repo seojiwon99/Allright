@@ -102,11 +102,12 @@
             <!-- Order -->
             <div class="card card-lg mb-5 border">
               <div class="card-body pb-0">
+              	<div th:if="${myCoupon.size != 0}">
 				<!-- 반복문 시작 -->
                 <!-- Info -->
 
                 <div class="card card-sm">
-                <div th:each="coupons : ${myCoupon}" th:if="${coupons.couponUse} == 'N'">
+                <div th:each="coupons : ${myCoupon}" th:if="${coupons.couponUse} == 'Y'">
                   <div class="card-body bg-light">
                     <div class="row couponRow">
                       <div class="col-6 col-lg-3">
@@ -163,6 +164,20 @@
                   </div>
                 </div>
 				</div>
+				</div>
+				<th:block th:if="${myCoupon.size == 0}">
+								<div>
+								     <ul>
+								      <li class="list-group-item">
+								        <div class="row align-items-center">
+								          <br>
+								          <p style="padding: 10%; font-weight: bolder; text-align: center;">보유하신 쿠폰이 없습니다.
+								          </p>
+								        </div>
+								      </li>
+								      </ul>   
+							     </div>
+							</th:block>
             </div>	
           </div>
           		<!-- Pagination -->

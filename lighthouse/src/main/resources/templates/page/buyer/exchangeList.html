@@ -81,10 +81,10 @@
 
           </div>
           <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
-			
             <!-- Order -->
             <div class="card card-lg mb-5 border">
               <div class="card-body pb-0">
+               <div th:if="${exchangeList.size != 0}">
 				<!-- 반복문 시작 -->
                 <!-- Info -->
                 <div class="card card-sm">
@@ -184,22 +184,37 @@
                       </div>
                     </div>
                   </div>
-					<div class="col-12 col-lg-6">
-						<div class="row gx-5">
-							<div class="col-6">
-								<!-- Button -->
-								<button class="btn btn-sm w-100 btn-outline-dark deleteBtn" th:onclick="deleteExchange([[${lists.orderDetailCode}]])" data-orderdetailcode="${lists.orderDetailCode}">교환 취소</button>
-							</div>
-						 </div>
-					</div>
-                  </div>
+						<div class="col-12 col-lg-6">
+							<div class="row gx-5">
+								<div class="col-6">
+									<!-- Button -->
+									<button class="btn btn-sm w-100 btn-outline-dark deleteBtn" th:onclick="deleteExchange([[${lists.orderDetailCode}]])" data-orderdetailcode="${lists.orderDetailCode}">교환 취소</button>
+								</div>
+							 </div>
+						</div>
+	                  </div>
+	                </div>
+	              </div>
                 </div>
-              </div>
                 </div>
+	                <th:block th:if="${exchangeList.size == 0}">
+									<div>
+									     <ul>
+									      <li class="list-group-item">
+									        <div class="row align-items-center">
+									          <br>
+									          <p style="padding: 10%; font-weight: bolder; text-align: center;">교환 신청한 상품이 없습니다.
+									          </p>
+									        </div>
+									      </li>
+									      </ul>   
+								     </div>
+					</th:block>
 				</div>
             </div>
           </div>
         </div>
+       </div>
     </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <textarea id="orderMenual" style="display: none;">

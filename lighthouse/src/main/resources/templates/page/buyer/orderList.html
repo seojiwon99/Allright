@@ -208,7 +208,7 @@
                     </div>
                   </div>
                 <div class="card-footer orderBtn">
-                <div class="row align-items-center" th:if="|${lists.returnStatusNm} != '신청' or ${lists.cancelStatusNm} != '신청' or ${lists.exchangeStatusNm} != '신청'|">
+                <div class="row align-items-center" th:if="|${lists.returnStatus} != '0' or ${lists.cancelStatus} != '0' or ${lists.exchangeStatus} != '0'|">
                     <!-- 리뷰  button -->
                       <div class="col-4" th:if="${lists.orderStatus} == '4'">
                         <a class="btn btn-sm w-100 btn-outline-dark reviewBtn" href="#" style="border-radius: 10px; background-color: black; color: white;">
@@ -285,6 +285,7 @@
       0번 다시듣기.
     </textarea>
    <script>
+   
       document.querySelector(".orderBtn").addEventListener("click", function(e) {
       e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
       var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 

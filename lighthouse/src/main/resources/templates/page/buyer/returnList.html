@@ -85,6 +85,7 @@
             <!-- Order -->
             <div class="card card-lg mb-5 border">
               <div class="card-body pb-0">
+              	<div th:if="${returnList.size != 0}">
 				<!-- 반복문 시작 -->
                 <!-- Info -->
                 <div class="card card-sm">
@@ -194,8 +195,20 @@
               </div>
                 </div>
 				</div>
-              
-
+				</div>
+				<th:block th:if="${returnList.size == 0}">
+								<div>
+								     <ul>
+								      <li class="list-group-item">
+								        <div class="row align-items-center">
+								          <br>
+								          <p style="padding: 10%; font-weight: bolder; text-align: center;">반품 신청한 상품이 없습니다.
+								          </p>
+								        </div>
+								      </li>
+								      </ul>   
+							     </div>
+							</th:block>
             </div>
 
           </div>

@@ -101,6 +101,7 @@
             <!-- myInquiry -->
             <div class="card card-lg mb-5 border">
 			  <div class="card-body pb-0" >
+			  <div th:if="${myInquiry.size != 0}">
 			    <div class="card card-sm">
 			      <div class="row inquiryRow">
 			        <table class="table">
@@ -170,6 +171,20 @@
 	                  </div>
 	                </div>
 				</div>
+				</div>
+				<th:block th:if="${myInquiry.size == 0}">
+								<div>
+								     <ul>
+								      <li class="list-group-item">
+								        <div class="row align-items-center">
+								          <br>
+								          <p style="padding: 10%; font-weight: bolder; text-align: center;">문의내역이 없습니다.
+								          </p>
+								        </div>
+								      </li>
+								      </ul>   
+							     </div>
+				</th:block>
             </div>
           </div>
           <!-- Pagination -->
