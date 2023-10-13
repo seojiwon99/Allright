@@ -10,7 +10,38 @@
      WITH RankedOrderDetail AS (
         SELECT *
 		FROM (
-		    SELECT rownum pn, pg.*
+		    SELECT rownum pn,  
+		    	order_cnt,
+		        order_price,
+		        payment_price,
+		        order_status,
+		        order_status_nm,
+		        order_detail_code,
+		        order_date,
+		        delivery_number,
+		        delivery_date,
+		        option_detail_code,
+		        order_code,
+		        order_check,
+		        option_last,
+		        product_name,
+		        product_code,
+		        img_code,
+		        img_order,
+		        img_name,
+		        upload_name,
+		        img_content,
+		        upload_path,
+		        NVL(cancel_status, '0') cancel_status,
+		        cancel_status_nm,
+		        cancel_regdate,
+		        NVL(return_status, '0') return_status,
+		        return_status_nm,
+		        return_regdate,
+		        NVL(exchange_status, '0') exchange_status,
+		        exchange_status_nm,
+		        exchange_regdate,
+		        rn
 		    FROM (
             SELECT 
 		        a.order_cnt,
@@ -26,6 +57,7 @@
 		        a.order_code,
 		        a.order_check,
 		        c.option_last,
+		        d.product_code,
 		        d.product_name,
 		        e.img_code,
 		        e.img_order,
@@ -99,7 +131,9 @@
 		        a.order_code,
 		        a.order_check,
 		        c.option_last,
+		        d.product_code,
 		        d.product_name,
+		        d.product_code,
 		        e.img_code,
 		        e.img_order,
 		        e.img_name,
@@ -485,11 +519,11 @@
 				(CANCEL_CODE
 				, ORDER_DETAIL_CODE
 				, CANCEL_REASON
-				, CANCEL_STATUS)
+				)
 		VALUES (ca_code
 				, #{orderDetailCode}
 				, #{cancelReason}
-				, 'U')
+				)
 	</insert>
 	
 	<!--반품 신청  -->
@@ -498,11 +532,11 @@
 				(RETURN_CODE
 			   , ORDER_DETAIL_CODE
 			   , RETURN_REASON
-			   , RETURN_STATUS)
+			   )
 		VALUES (re_code
 			   , #{orderDetailCode}
 			   , #{returnReason}
-			   , 'U')
+			   )
 	</insert>
 	
 	<!-- 교환 신청 -->
@@ -512,12 +546,12 @@
 				, ORDER_DETAIL_CODE
 				, EXCHANGE_REASON
 				, EXCHANGE_ADDR
-				, EXCHANGE_STATUS)
+				)
 		VALUES (ex_code
 				, #{orderDetailCode}
 				, #{exchangeReason}
 				, #{exchangeAddr}
-				, 'U')
+				)
 	</insert>
 	
 	<!-- 주문 취소 -->

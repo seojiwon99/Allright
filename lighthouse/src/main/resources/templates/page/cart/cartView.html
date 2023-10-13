@@ -6,6 +6,13 @@
 
 <!-- Content -->
 <div layout:fragment="content">
+	
+	<style>
+	  img {
+	    border-radius: 20px;
+	  }
+	</style>
+
     <!-- CONTENT -->
     <section class="pt-7 pb-12">
       <div class="container">
@@ -22,7 +29,7 @@
             <div>
               <input type="checkbox" id="allCheckbox" autocomplete="off">전체선택
              <button type="button" class="btn btn-sm btn-dark" id="chkDelBtn" style="float:right;" tabindex="-1">선택삭제</button>
-             <hr>
+             <hr style="margin-top: 40px;">
             </div> 
 
             <!-- List group -->
@@ -44,7 +51,7 @@
                     <input type="hidden" name="productCode" th:value="${lists.productCode}">
 
                     <!-- Image -->
-                    <a th:href="|http://localhost:8090/goodDetail?productCode=${lists.productCode}|" tabindex="-1">
+                    <a th:href="|/goodDetail?productCode=${lists.productCode}|" tabindex="-1">
                      <img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|" alt="..." class="img-fluid" tabindex="-1">
                     </a>
 
@@ -76,7 +83,7 @@
                       <!-- buy plus mius -->
                       <div class="num">
                         <input type="hidden" th:value="${lists.cartCode}">
-                        구매수량: <input type="number" th:value="${lists.cartCount}" style="width: 70px;" class="tts7">
+                        구매수량:<input type="number" th:value="${lists.cartCount}" style="width: 70px;" class="tts7" th:min="${lists.minOrder}" th:max="${lists.maxOrder}">
                           <input class="cartCountUpdate" type="button" value="변경" style="border-radius: 5px; background-color: #0a0a23; color: #fff;">
                       </div>
 
@@ -172,11 +179,12 @@
     </section>
     <!--cart 메뉴얼 tts-->
     <textarea id="cartMenual" style="display: none;">
-      1번 결제버튼 이동 후 엔터키 사용하면 주문페이지 이동.
-      2번 장바구니 상품 전체선택 포커싱.
+      1번 결제버튼. 이동.
+      2번 장바구니 상품 전체선택 이동.
       3번 첫번째 상품으로 이동.
       9번 메인 페이지 이동.
       0번 메뉴얼 다시 듣기.
+      상품 선택 위해서 alt. 2번부터. 시작부탁드립니다.
     </textarea>
 
     <script>     
@@ -200,6 +208,18 @@
     document.getElementById('deliveryPrice').innerText = '원';
     document.getElementById('totalPrice').innerText ='원';
   }
+
+  // 특문 막기 - 장바구니 수량
+  let numInput = document.querySelectorAll('input[type="number"]');
+  $.each(numInput, function(idx,t){
+    $(t).on('keydown',function(e){
+        if(e.key == '.' || e.key == '-' || e.key == '+'){
+          e.preventDefault();
+        }
+    })
+  })
+
+
   //장바구니 수량 변경 적용
   function cartCountUpdate(e) {
     let cartNumber = Number($(this).prev().prev().val()); 
@@ -243,7 +263,7 @@
   };
       
 
-  function formatComma(number) {
+  function formatComma(number) { //가격 콤마
       return number.toLocaleString();
       }
 
@@ -399,6 +419,8 @@ $('#payMove').on('click', function(){
     $('#payMove').on('focus',patMove); // 주문 페이지 안내 - 결제 클릭
     $('input[name="price"]').on('keydown', proKeydown);
     $('#shoping').on('focus',shoping);
+    $('.tts7').on('change',cartContModify); // 숫자 바뀔경우 적용
+  
 
     $('input[name="price"]').on('focus', function productDetail(){
        let proName = $(this).parent().parent().find('.tts1').text(); //상품명
@@ -409,10 +431,16 @@ $('#payMove').on('click', function(){
        let optionName = $(this).parent().parent().find('.tts6').text() //옵션종류, 옵션 값
        let buyCnt = $(this).parent().parent().find('.tts7').val() //구매수량
        let productMsg = `${proName}. ${proPrice}. ${proSalePrice}. ${optionVal}. ${proDelivery}. 선택한. ${optionName}. 구매수량은 ${buyCnt} 입니다.
-                        전체선택을 하지 않고 개별 선택의 경우 스페이스바로 선택해주세요.`;
+                        전체선택을 하지 않고 개별 선택의 경우 스페이스바로 선택해주세요. 주문수령 수정 원할 경우 .탭으로 이동 후 키보드 위, 아래로 수량 변경해주세요. 수정 원치 않은 경우. 탭 세번 클릭해주세요.`;
       
         VoiceMenual(productMsg);
     });
+
+    
+    function cartContModify() {
+      let cartsCnt2 = $(this).val();
+      VoiceMenual(cartsCnt2 + '...갯수 확인 되었다면 탭으로 이동해주세요. 이후 스페이스 두번 눌러주세요. 수정 후 페이지 재시작으로. 다시 상품. 선택해주세요.');
+    }
 
 
     console.log('hello js');
@@ -484,7 +512,7 @@ function allKeydown(e) {
       } 
 
       function productDel(e) {
-        VoiceMenual("현재 상품을 삭제 원할 경우 스페이스바 두번 눌러주세요.");
+        VoiceMenual("현재 상품을 삭제 원할 경우 스페이스바 두번 눌러주세요. 원치 않을 경우 탭으로 한번. 이동해주세요.");
       }
       function patMove(e) {
     	  

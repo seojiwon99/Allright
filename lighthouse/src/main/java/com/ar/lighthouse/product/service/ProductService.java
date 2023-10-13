@@ -92,7 +92,7 @@ public interface ProductService {
 //	정산건 목록
 	List<SellerCalVO> getCalList(SellerCalVO sellerCalVO);
 //	취소건 목록
-	List<DetailVO> getStaticList(String memberId);
+	List<DetailVO> getStaticList(String memberId, String preBetw, String suBetw);
 
 //	월별 주문 건수
 	List<DetailVO> getMonthlyCount(DetailVO detailVO);

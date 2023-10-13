@@ -6,7 +6,11 @@
     
 <!-- Content -->
 <div layout:fragment="content">
-    
+    <style>
+	  img {
+	    border-radius: 20px;
+	  }
+	</style>
     <!-- 결제 상품 정보 -->
  
     <!-- BREADCRUMB -->
@@ -65,7 +69,7 @@
                     <label class="form-label" for="checkoutBillingFirstName">이름 *</label>
                     <div class="input-group mb-8">                      
                       <input type="text" class="form-control" id="mName" placeholder="이름 작성" aria-label="Recipient's username" aria-describedby="button-addon2" th:value="${gets.memberName}" readonly>  
-                      <button class="btn btn-outline-secondary" type="button" id="deliveryInfo" style="width: 200px; margin: 10px; ">배송지 정보로 등록</button>                   
+                      <button class="btn btn-outline-secondary deliveryInfo" type="button" style="width: 200px; margin: 10px; background-color: black; color: white; ">배송지 정보로 등록</button>                   
                     </div>
                     </div>
                   </div>
@@ -111,7 +115,7 @@
                   <div class="row align-items-center">
                     <div class="col-3" style="width:200px; height:200px;">                   
                       <!-- Image -->
-                      <a th:href="|http://localhost:8090/goodDetail?productCode=${gets.productCode}|" class="img-fluid">
+                      <a th:href="|/goodDetail?productCode=${gets.productCode}|" class="img-fluid">
                         <img th:src="|/upload/${gets.uploadPath}/${gets.uploadName}|" alt="..." width="200px"; height="200px">
                       </a>
                     </div>
@@ -124,19 +128,19 @@
                          <input type="hidden" th:value="${gets.optionDetailCode}" class="optionDetailCode">
                          <input type="hidden" th:value="${gets.deliveryCost}" class="deliveryMoney">
                          <input type="hidden" name="couponUsePrice" class="text-body" th:value="${gets.productName}" ><br>
-                         상품이름 : <span class="text-muted pName" th:text="|${gets.productName}|" style="font-weight: bold;"></span><br>
-                         상품금액 : <span class="text-muted pPay" style="text-decoration: line-through; font-weight: bold;" th:text="|${#numbers.formatInteger(gets.productCost,0,'COMMA')}|" id="selectPrice"></span>원 <br>
+                         <span class="text-muted" style="font-weight: bold;"> 상품이름 : </span><span class="text-muted pName" th:text="|${gets.productName}|" style="font-weight: bold;"></span><br>
+                         <span class="text-muted"style="font-weight: bold;">상품금액 : </span><span class="text-muted pPay" style="text-decoration: line-through; font-weight: bold;" th:text="|${#numbers.formatInteger(gets.productCost,0,'COMMA')}|" id="selectPrice"></span>원 <br>
                         <span class="text-muted sPay" style="font-weight: bold;" th:text="|할인된 금액 : ${#numbers.formatInteger(gets.salePrice,0,'COMMA')}|"></span>원<br>
                         <span class="text-muted oPay" style="font-weight: bold;" th:text="|옵션 추가금액 : ${#numbers.formatInteger(gets.optionPrice,0,'COMMA')}|"></span>원
                         <input type="hidden" class="selectValue" th:value="${(gets.salePrice + gets.optionPrice) * gets.cartCount}">
                         <div class="input-group mb-8">
                           <input style="margin-top: 15px; margin-left: 10px" type="text" class="form-control cSelect" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2" id="couponSelect" tabindex="-1" readonly>
                           <input type="hidden" class="myCouponCode">
-                         <button type="button" class="btn btn-outline-secondary list-styled-link couponBtn" style="margin: 20px;" >쿠폰선택</button>
+                         <button type="button" class="btn btn-outline-secondary list-styled-link couponBtn" style="margin: 20px; background-color: black; color: white;" >쿠폰선택</button>
                          
                         </div> 
                         <p style="margin-left: 10px">쿠폰 할인 금액 : <input type="text" style="border-width: 0 0 1px; width: 150px;" readonly class="couponSalePrice" tabindex="-1">원 
-                          <button class="btn btn-outline-secondary couponResult" type="button">사용하기</button>
+                          <button class="btn btn-outline-secondary couponResult" type="button" style="background-color: black; color: white;">사용하기</button>
                         </p>         
                       <!-- Text -->
                       
@@ -151,7 +155,7 @@
             </ul>
                  <!-- Heading -->         
               <h6 class="mb-7" id="deliveryContent" tabindex="0">배송 정보</h6>
-   
+              <button class="btn btn-outline-secondary deliveryInfo" type="button" style="width: 200px; margin: 10px; background-color: black; color: white;" tabindex="-1">배송지 정보로 등록</button>       
                 <div class="col-12">
                   <!-- Address Line 1 -->
                   <div class="form-group">
@@ -165,7 +169,7 @@
                   <div class="form-group">
                     <div class="input-group mb-8">
                       <input type="text" class="form-control" placeholder="배송지  정보"  id="addr">
-                      <button class="btn btn-outline-secondary" type="button" id="addressSearch">주소검색</button>
+                      <button class="btn btn-outline-secondary" type="button" id="addressSearch" style="background-color: black; color: white;">주소검색</button>
                     </div>
                   </div>
                 </div>
@@ -533,7 +537,7 @@
     });
 
     // 배송 요청 사항 본인 내용 넘길 때 버튼
-    $('#deliveryInfo').on('click', function(e){
+    $('.deliveryInfo').on('click', function(e){
       $('#deliveryName').val($('#mName').val());
       $('#addr').val($('#mAddr1').val());
       $('#addrDt').val($('#mAddr2').val());
@@ -652,11 +656,11 @@
 
     //tts 내용 이벤트 부여
     $('#payment-button').on('focus', payInfo); //결제버튼 포커스
-    $('#deliveryInfo').on('focus', deliveryContent); // 배송지로 등록 포커스
-    $('#deliveryInfo').on('keyup', deliverySuccess); // 배송지 등록 완료
+    $('.deliveryInfo').on('focus', deliveryContent); // 배송지로 등록 포커스
+    $('.deliveryInfo').on('keyup', deliverySuccess); // 배송지 등록 완료
     $('a.img-fluid').on('focus',productInfo);
     $('#deliveryContent').on('focus',deliveryInfo); //배송지 정보 읽어 줌.
-    $('#selbox').on('focus', deliveryRequest); // 배송 요청 사항 안내
+    $('#selbox').on('change', deliveryRequest); // 배송 요청 사항 안내
     $('.couponBtn').on('focus',couponChoice); //쿠폰 선택 안내
     $('.cpCode').on('focus', couponInfo); // 각 쿠폰 안내
     $('#myCouponbox').on('focus',myCouponBox); // 나의 쿠폰함 안내
@@ -688,7 +692,7 @@
     }
     function deliverySuccess(e) { // 배송지 주소 입력시 성공 여부
       if(e.code == 'Space'){
-        $('#deliveryInfo').trigger('click');
+        $('.deliveryInfo').trigger('click');
 
         if($('#deliveryName').val() != '') {
           VoiceMenual('배송지 등록 되었습니다.')
@@ -754,14 +758,22 @@
         }
 
         let recipientMessage = `받는 사람 ${recipient}. 받는 주소 ${recipientAddr}. ${recipientAddrDt}. 연락처 ${recipientDeliverTel}. 요청사항 ${recipientSelbox}. 선택했습니다.
-                                만약 요청사항 선택하지 않은 경우. alt 4번으로 이동 후. 작성하시면 됩니다.`;
+                                만약 요청사항 선택하지 않은 경우. alt 5번으로 이동 후. 위.아래 키로 하시면 됩니다.`;
         VoiceMenual(recipientMessage);
     }
     function deliveryRequest() { //배송 요청 사항 정보 안내
-      let delRequest = "배송 요청 선택에는. 1번. 배송 전에 미리 연락 바랍니다." + 
-                        "2번. 부재 시 경비실에 맡겨주세요. 3번. 부재시 전화 또는 문자 남겨주세요." + 
-                        "4번. 직접 입력하여 요청 사항을 작성할 수 있습니다. 엔터키. 클릭 후. 내려가서 원하는 요청사항 선택하시면 됩니다.";
-          VoiceMenual(delRequest);
+        let deliveryRespon = $('#selbox').val();
+        if(deliveryRespon == 2) {
+          deliveryRespon = "배송 전에 미리 연락 바랍니다.";
+        } else if (deliveryRespon == 1) {
+          deliveryRespon = "부재 시 경비실에 맡겨주세요.";
+        } else if (deliveryRespon == 3) {
+          deliveryRespon = "부재시 전화 또는 문자 남겨주세요";
+        } else if (deliveryRespon == 4) {
+          deliveryRespon = "직접 입력 입니다. 작성 후 alt 4번으로 내용 다시 확인해 주세요.";
+          VoiceMenual(deliveryRespon);
+        }
+          VoiceMenual(deliveryRespon);
     }
 
     function couponChoice() { //현재 상품 쿠폰 선택 버튼
@@ -942,7 +954,7 @@ function base64ToBlob(base64, fileType) {
 				$('#payment-button').focus();
 			}
 			if(e.altKey && e.key == 2){ // 가입한 배송지 주소로 배송지 등록
-				$('#deliveryInfo').focus();
+				$('.deliveryInfo')[0].focus();
 			}
 			if(e.altKey && e.key == 3) {//첫번째 주문상품 이동
 			console.log($('.img-fluid'));
