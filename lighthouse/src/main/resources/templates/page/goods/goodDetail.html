@@ -401,18 +401,14 @@
 		<script th:inline="javascript">
 		$(window).scroll(function () {
 			var height = $(document).height(); //전체높이
-			console.log(height);
 			
 			var headerSection =$("#headerSection").height();
-			console.log(headerSection);
 			
 			var preHeight = $(document).scrollTop(); //현재 스크롤
 			preHeight = parseInt(preHeight);
-			console.log(preHeight);
 			
 			var pContentSection = $('#pContentSection').offset().top;// 상품상세
 			pContentSection = parseInt(pContentSection);
-			console.log(pContentSection);
 			
 			var reviewSection =$("#sizeTab").offset().top;
 			reviewSection = parseInt(reviewSection);
@@ -771,8 +767,6 @@
 	    	   let cartOptionList = [];
 	    	   
 	       	   	$(".optionDetailCodeName").each((idx,tag) => {
-	       	   		console.log("aaaaaaaaaaa"+idx);
-	       	   	console.log("bbbbbbbb"+tag);
 	       	   	   //optionCount
 		    	   let optCount=0;
 		    	   if($(".pCnt").val()){
