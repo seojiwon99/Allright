@@ -363,7 +363,13 @@
 				inputTags[4].value = rs.memberBirth;
 				inputTags[5].value = rs.businessNumber;
 				inputTags[6].value = rs.declareCount+'/'+rs.suspCount;
-				inputTags[7].value = rs.suspStatus == null ? '사용 가능' : rs.suspStatus;
+				if(rs.suspStatus == null){
+					inputTags[7].value = '사용 가능'
+				}else if(rs.suspStatus == 0){
+					inputTags[7].value = '사용 가능'
+				}else{
+					inputTags[7].value = rs.suspStatus
+				}
 				inputTags[8].value = rs.suspReason == null ? 'X' : rs.suspReason;
 				inputTags[9].value = (rs.suspRegdate == null ? 'X' : (rs.suspRegdate).substr(0,10)) + ' / ' +  (rs.suspEnddate == null ? 'X' : (rs.suspEnddate).substr(0,10));
 				

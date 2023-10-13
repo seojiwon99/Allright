@@ -7,7 +7,7 @@
 <!-- Content -->
 
 <div layout:fragment="content">
-	<div id="TTSFirst" tabindex=0></div>
+	<div tabindex=0 id="bannerTTS"></div>
 	<div data-flickity='{"prevNextButtons": true, "fade": true, "autoPlay" : true, "wrapAround": true }' id="bannerMain" tabindex=0>
 
 		<!-- Item -->
@@ -689,7 +689,7 @@
 	    				location.href = "/PList"
 	    			}
 	    			if(e.altKey && e.key == 6){ // 현재 페이지 둘러보기
-	    				$('#bannerMain').focus();
+	    				$('#bannerTTS').focus();
 	    			}
 	    			if(e.altKey && e.key == 7){ // 장바구니 페이지로 이동
 	 					if(memberId != null){
@@ -779,7 +779,7 @@
     			}
 	    	})
 	    	
-			$('#bannerMain').on('focus',function(){
+			$('#bannerTTS').on('focus',function(){
 				VoiceMenual('현재부터 Tab 키를 눌러 진행하실 수 있습니다.');
 			})	    	
 	    	$('.flickity-prev-next-button').attr('tabindex', -1);

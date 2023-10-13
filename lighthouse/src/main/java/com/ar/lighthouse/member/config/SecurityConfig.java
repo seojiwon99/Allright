@@ -25,6 +25,7 @@ public class SecurityConfig{
 //    		.antMatchers("/page/buyer/orderList").authenticated()
 //            .antMatchers("/wishList").authenticated()
             // /admin 요청에 대해서는 ROLE_ADMIN 역할을 가지고 있어야 함
+    		.antMatchers("/custom/inquiry").hasAnyAuthority("ROLE_1","ROLE_2", "ROLE_3", "ROLE_4")
     		.antMatchers("/seller/**").hasAuthority("ROLE_2")
             .antMatchers("/admin/**").hasAuthority("ROLE_4")
             .antMatchers("/page/buyer/**").hasAnyAuthority("ROLE_1", "ROLE_3")

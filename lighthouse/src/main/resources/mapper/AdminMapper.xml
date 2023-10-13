@@ -62,6 +62,49 @@
 		where faq_code = #{faqCode}  	
   	</select>
   	
+  	<select id="selectFaqList">
+  	select rt.*
+	FROM(
+	    select ROWNUM r, ft.*
+	    FROM(
+	        SELECT faq_code
+	                , find_inqtype(faq_type) type_name
+	                , question_title
+	                , question_answer
+	                , faq_type
+	        FROM ar_faq
+	        WHERE 1=1
+	        <if test="faqVO.questionTitle != null and !faqVO.questionTitle.equals('')">
+            and question_title like '%'||#{faqVO.questionTitle}||'%' 
+         	</if>
+         	<if test="faqVO.faqType != null and !(faqVO.faqType == 0)">
+  		  	and	faq_type = #{faqVO.faqType}
+  		  	</if>
+	        ORDER BY faq_code
+	        ) ft
+	         <![CDATA[
+	    WHERE ROWNUM <= #{cri.pageNum} * #{cri.amount}
+	    ]]>
+	    ) rt
+	WHERE rt.r > ( #{cri.pageNum} - 1) * #{cri.amount}
+  	
+  	
+  	
+  	</select>
+  	
+  	<select id="selectTotalFaq">
+  		 SELECT count(*)
+  		 FROM ar_faq
+  		 WHERE faq_code > 0 
+  		 <if test="questionTitle != null and !questionTitle.equals('')">
+            and question_title like '%'||#{questionTitle}||'%' 
+         </if>
+         <if test="faqType != null and !(faqType == 0)">
+  		  	and	faq_type = #{faqType}
+ 		  </if>
+  	</select>
+  	
+  	
   	<update id="updateNotice">
 	  	UPDATE ar_notice 
 		SET		notice_title = #{noticeTitle}
@@ -309,7 +352,7 @@
   	<select id="selectMemberDetailValue">
   	select *
 	from(
-			select m.*, s.susp_reason, s.susp_regdate, s.susp_enddate, d_count(m.member_id) as declare_count , (select count(*) from ar_suspend where member_id = m.member_id) as susp_count
+			select m.*, s.susp_reason, s.susp_status, s.susp_regdate, s.susp_enddate, d_count(m.member_id) as declare_count , (select count(*) from ar_suspend where member_id = m.member_id) as susp_count
 			from ar_member m LEFT JOIN ar_suspend s ON m.member_id = s.member_id
 			WHERE m.member_id = #{memberId}
 			ORDER BY s.SUSP_REGDATE desc)

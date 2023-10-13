@@ -61,11 +61,11 @@
 		        ar_exchange h ON a.order_detail_code = h.order_detail_code
 		    WHERE 
 		        b.member_id = #{memberId}
-		        and e.img_order = 0) pg
+		        and e.img_order = 0
+		    ORDER BY a.order_detail_code DESC) pg
 		    <![CDATA[
         WHERE rownum <= #{cri.pageNum} * #{cri.amount}
         ]]>
-        ORDER BY pg.order_detail_code DESC
     )
     WHERE pn > (#{cri.pageNum} - 1) * #{cri.amount}
     )
@@ -489,7 +489,7 @@
 		VALUES (ca_code
 				, #{orderDetailCode}
 				, #{cancelReason}
-				)
+				, 'U')
 	</insert>
 	
 	<!--반품 신청  -->
@@ -498,10 +498,11 @@
 				(RETURN_CODE
 			   , ORDER_DETAIL_CODE
 			   , RETURN_REASON
-			   )
+			   , RETURN_STATUS)
 		VALUES (re_code
 			   , #{orderDetailCode}
-			   , #{returnReason})
+			   , #{returnReason}
+			   , 'U')
 	</insert>
 	
 	<!-- 교환 신청 -->
@@ -510,11 +511,13 @@
 				(EXCHANGE_CODE
 				, ORDER_DETAIL_CODE
 				, EXCHANGE_REASON
-				, EXCHANGE_ADDR)
+				, EXCHANGE_ADDR
+				, EXCHANGE_STATUS)
 		VALUES (ex_code
 				, #{orderDetailCode}
 				, #{exchangeReason}
-				, #{exchangeAddr})
+				, #{exchangeAddr}
+				, 'U')
 	</insert>
 	
 	<!-- 주문 취소 -->
