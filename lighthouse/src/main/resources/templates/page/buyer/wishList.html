@@ -81,6 +81,7 @@
 				<div class="col-12 col-md-9 col-lg-8 offset-lg-1" id="test">
 				<div>
 					<!-- Products -->
+						<div th:if="${wishList.size != 0}">
 							<div class="row wishRow" >
 								<!-- Item -->
 								<!-- 반복문 -->
@@ -113,6 +114,22 @@
 									</div>
 								</div>
 							</div>
+							</div>
+							<th:block th:if="${wishList.size == 0}">
+		                        <div>
+		                           <ul>
+		                             <li class="list-group-item">
+		                              <div class="row align-items-center">
+		                                <br>
+		                                <a href="/">
+		                                <p style="padding: 10%; font-weight: bolder; text-align: center;">찜 목록에 담긴 상품이 없습니다.
+		                                <br>원하는 상품 담아주세요!</p>
+		                                </a>
+		                              </div>
+		                             </li>
+		                           </ul>
+		                          </div>
+		                     </th:block>
 						</div>
 				<!-- Pagination -->
 					<nav class="d-flex justify-content-center justify-content-md-end mt-10">

@@ -129,14 +129,13 @@
 						<div th:each="inqs : ${myInquiry}">
 					    <div class="modal fade" th:id="|modalProduct${inqs.customInquiryCode}|" tabindex="-1" role="dialog" aria-hidden="true">
 					      <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-					        <div class="modal-content">
+					        <div class="modal-content"  style="width: 800px;">
 					          <!-- Close -->
 					          <button type="button" tabindex="-1" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 					            <i class="fe fe-x" aria-hidden="true"></i>
 					          </button>
 					          <!-- Content -->
 					          <div class="container-fluid px-xl-0">
-					            <div class="row align-items-center mx-xl-0">
 					              <div class="col-12 col-lg-6 col-xl-7 py-9 px-md-9">
 					                <label class="h7">문의 제목 :</label>
 					                <h5 class="mb-3 inqTitle" tabindex="0" th:text="|${inqs.customInquiryTitle}|"></h5>
@@ -155,7 +154,7 @@
 					                  <div class="form-group mb-0">
 					                    <div class="row gx-5">
 					    	              <div class="col-12 col-lg">
-					                        <button type="submit" tabindex="0" class="btn w-100 btn-dark mb-2 closeBtn">
+					                        <button type="submit" tabindex="0" class="btn w-100 btn-dark mb-2 closeBtn" style="border-radius: 10px;">
 					                          닫기
 					                        </button>
 					                      </div>
@@ -163,7 +162,6 @@
 					                  </div>
 					                </form>
 					              </div>
-					            </div>
 					          </div>
 					        </div>
 					      </div>

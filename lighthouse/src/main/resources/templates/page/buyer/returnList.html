@@ -90,7 +90,7 @@
                 <!-- Info -->
                 <div class="card card-sm">
                 <div th:each="lists : ${returnList}" id="test">
-                  <div class="card-body bg-light">
+                  <div class="card-body bg-light" style="border-radius: 15px;">
                     <div class="row returnRow">
                       <div class="col-6 col-lg-3">
     					
@@ -129,7 +129,7 @@
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">결제 금액:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                          <span class="paymentPrice" th:text="|${lists.paymentPrice}원|"></span>
+                          <span class="paymentPrice" th:text="|${#numbers.formatInteger(lists.paymentPrice,0,'COMMA')}원|"></span>
                         </p>
                       </div>
                       <div class="col-6 col-lg-3">
@@ -161,7 +161,7 @@
 						<div class="row gx-5">
 							<div class="col-6">
 								<!-- Button -->
-								<button class="btn btn-sm w-100 btn-outline-dark deleteBtn" th:onclick="deleteReturn([[${lists.orderDetailCode}]])" data-orderdetailcode="${lists.orderDetailCode}" style="border-radius: 10px; background-color: black; color: white;">반품 취소</button>
+								<button class="btn btn-sm w-100 btn-outline-dark deleteBtn" th:onclick="deleteReturn([[${lists.orderDetailCode}]])" th:data-orderdetailcode="${lists.orderDetailCode}"  th:id="${lists.orderDetailCode}" style="border-radius: 10px; background-color: black; color: white; border-radius: 10px">반품 취소</button>
 							</div>
 						</div>
 				  </div>
@@ -170,19 +170,24 @@
                 </div>
 				</div>
 				</div>
+				<div id="noSearch">
 				<th:block th:if="${returnList.size == 0}">
 					<div>
 						 <ul>
 							<li class="list-group-item">
 								 <div class="row align-items-center">
 								  <br>
+								  <a href="/page/buyer/orderList">
 								  <p style="padding: 10%; font-weight: bolder; text-align: center;">반품 신청한 상품이 없습니다.
+								  <br>주문 목록에서 신청 가능합니다.
 								  </p>
+								  </a>
 								 </div>
 							</li>
 						 </ul>   
 					</div>
 				</th:block>
+				</div>
             </div>
 
           </div>
@@ -205,9 +210,9 @@
     </textarea>
 	<script>
 		function deleteReturn(code) {
-			let returnDel = confirm('삭제하시겠습니까?');
+			let returnDel = confirm('반품을 철회하시겠습니까?');
 			let returnData = {
-				 'orderDetailCode' : $('#orderDetailCode').text(),
+				 'orderDetailCode' : code,
 			}
 			if(returnDel){
 			$.ajax('/buyer/deleteReturn',{
@@ -219,6 +224,24 @@
 				
 				console.log(data);
 				$('#test').replaceWith(data);
+				if($('.order').length == 0){
+					let htmltags = `
+					<div>
+					     <ul>
+					      <li class="list-group-item">
+					        <div class="row align-items-center">
+					          <br>
+							  <a href="/page/buyer/orderList">
+							  <p style="padding: 10%; font-weight: bolder; text-align: center;">반품 신청한 상품이 없습니다.
+							  <br>주문 목록에서 신청 가능합니다.
+							  </p>
+							  </a>
+					        </div>
+					      </li>
+					      </ul>   
+				     </div>`
+					$('#noSearch').append(htmltags);
+					}
 			})
 			} else {
 				return;
@@ -239,12 +262,54 @@
         let message = firstMsg +$('#orderMenual').val();;
 
         VoiceMenual(message);
-
+        
+        function deleteReturnForTTS(code) {
+			let returnData = {
+				 'orderDetailCode' : code,
+			}
+			$.ajax('/buyer/deleteReturn',{
+				type : 'POST',
+				contentType:'application/json',
+				data : JSON.stringify(returnData)
+			})			
+			.done(data => {
+				VoiceMenual('반품 철회가 완료되었습니다.')
+				console.log(data);
+				$('#test').replaceWith(data);
+				if($('.order').length == 0){
+					let htmltags = `
+					<div>
+					     <ul>
+					      <li class="list-group-item">
+					        <div class="row align-items-center">
+					          <br>
+							  <a href="/page/buyer/orderList">
+							  <p style="padding: 10%; font-weight: bolder; text-align: center;">반품 신청한 상품이 없습니다.
+							  <br>주문 목록에서 신청 가능합니다.
+							  </p>
+							  </a>
+					        </div>
+					      </li>
+					      </ul>   
+				     </div>`
+					$('#noSearch').append(htmltags);
+				}
+			})
+		};
 	  //tts 이벤트 부여
 	  $('.returnCode').on('focus', returnListInfo);
 	  $('.deleteBtn').on('focus', deleteBtn);
 	  
 	  //tts 이벤트 진행
+	  $('.deleteBtn').on('keydown',function(e){
+       	if(e.key == 'Enter'){
+       	 e.preventDefault();
+	       	 if($(this).prop('class') == 'btn btn-sm w-100 btn-outline-dark deleteBtn'){
+	       		deleteReturnForTTS(this.id);
+	       	 }
+        }
+     })
+    
 	  function returnListInfo() {
 		  	let returnCode = $(this).closest('.returnRow').find('.returnCode').text();
 		  	let orderCode = $(this).closest('.returnRow').find('.orderCode').text();
@@ -257,7 +322,7 @@
 		  	let returnProcessdate = $(this).closest('.returnRow').find('.returnProcessdate').text();
 		  	
 		  	let message = `반품번호는 ${returnCode}. 주문번호는 ${orderCode}. 주문상세번호는 ${orderDetailCode}. 상품명은 ${productName}.
-		  					상품 수량은 ${orderCnt}.  결제 금액은 ${paymentPrice}. 반품 접수날짜는 ${returnRegdate}. 반품 상태는 ${returnStatus}.
+		  					상품 수량은 ${orderCnt}.  결제 금액은 ${paymentPrice}. 반품 접수날짜는 ${returnRegdate}. 
 		  					반품 승인 날짜는 ${returnProcessdate}. 입니다.`;
 		  	
 		  	VoiceMenual(message);
