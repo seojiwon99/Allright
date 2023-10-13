@@ -164,7 +164,7 @@ public class ProductController {
    
    
 //   판매자 상품문의 답해주기
-   @PostMapping("addInquiryAns")
+   @PostMapping("seller/addInquiryAns")
    @ResponseBody
    public List<String> addInqury(@RequestBody List<ProductInquiryVO> addList) {
       List<String> addInquryList = new ArrayList<String>();
@@ -207,7 +207,7 @@ public class ProductController {
    }
 
 //orderOptionManagement 선택옵션 리스트
-   @GetMapping("orderOptionManagement")
+   @GetMapping("seller/orderOptionManagement")
    public String productOrderOption(Model model, DetailVO detailVO, HttpSession session) {
 
       MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
@@ -222,7 +222,7 @@ public class ProductController {
    }
    
 //   주문상태에 따른 list
-   @GetMapping("statusOrder")
+   @GetMapping("seller/statusOrder")
    public String orderStatusList(Model model, DetailVO detailVO, HttpSession session) {
       MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
       String memberId = memberVO.getMemberId();
@@ -235,7 +235,7 @@ public class ProductController {
    }
    
 //   판매자 직접 취소처리
-   @PostMapping("deleteOrderSelf")
+   @PostMapping("seller/deleteOrderSelf")
    @ResponseBody
    public List<String> deleteOrderSelf(@RequestBody List<DetailVO> orderCancelList){
       List<String> CancelSelf = new ArrayList<String>();
@@ -251,7 +251,7 @@ public class ProductController {
 
 //주문배송정보입력
 
-   @PostMapping("updateDelivery")
+   @PostMapping("seller/updateDelivery")
    @ResponseBody
    public List<DetailVO> updateDeliveryInfo(@RequestBody List<DetailVO> detailList) {
 
@@ -265,7 +265,7 @@ public class ProductController {
    }
 
 //  주문상태변경
-   @PostMapping("updateOrderStatus")
+   @PostMapping("seller/updateOrderStatus")
    @ResponseBody
    public List<String> updateOrder(@RequestBody List<DetailVO> orderStatus) {
 
@@ -334,7 +334,7 @@ public class ProductController {
    }
 
    // 상품 취소검색 기능
-   @GetMapping("cancelOption") // Model model, CancelVO cancelVO
+   @GetMapping("seller/cancelOption") // Model model, CancelVO cancelVO
    public String cancelSeaList(Model model, CancelVO cancelVO, HttpSession session) {
 
       MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
@@ -367,7 +367,7 @@ public class ProductController {
    }
 
 //교환/반품 상품 검색
-   @GetMapping("exchangeOption")
+   @GetMapping("seller/exchangeOption")
    public String exchangeSeaList(Model model, ExchangeVO exchangeVO, HttpSession session) {
 
       List<ExchangeVO> combinedSearch = new ArrayList<>();
@@ -391,7 +391,7 @@ public class ProductController {
    }
    
 //  상품상세설명등록 페이지
-   @GetMapping("modifyProductContent")
+   @GetMapping("seller/modifyProductContent")
    public String modifyProductContent(@RequestParam("productCode") String productCode,ImgsListVO imgsList, ProductVO productVO, Model model) {
       model.addAttribute("productCode", productCode);
       model.addAttribute("product", productService.updateProduct(productVO));
@@ -410,7 +410,7 @@ public class ProductController {
    }
 
 //  조건순 order by
-   @GetMapping("getOptionProduct")
+   @GetMapping("seller/getOptionProduct")
    public String productDetail(Model model, HttpSession session, ProductVO productVO) {
       MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
       String memberId = memberVO.getMemberId();
@@ -563,7 +563,7 @@ public class ProductController {
 	}
 
 //   상품수정
-   @PostMapping("updateProduct")
+   @PostMapping("seller/updateProduct")
    public String updateProduct(List<MultipartFile> files, ProductVO productVO, HttpServletRequest req,
          RedirectAttributes rtt, ImgsListVO imgsVO) {
 	   HttpSession session = req.getSession();
@@ -1029,7 +1029,7 @@ public class ProductController {
    
 
 //   선택전시상태변경
-   @PostMapping("updateExStatus")
+   @PostMapping("seller/updateExStatus")
    @ResponseBody
    public List<String> productDelete(@RequestBody List<ProductVO> productList) {
       List<String> delList = new ArrayList<String>();
@@ -1044,7 +1044,7 @@ public class ProductController {
 
   
 
-   @PostMapping("updateImg")
+   @PostMapping("seller/updateImg")
    public String updatedetailImg(Model model, ProductVO productVO, ImgsListVO imgsList, RedirectAttributes rttr) {
       model.addAttribute("product", productVO);
       rttr.addFlashAttribute("product", productVO);
