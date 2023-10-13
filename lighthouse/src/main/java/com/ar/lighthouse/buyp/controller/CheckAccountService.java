@@ -9,12 +9,19 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import javax.json.Json;
+
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 
 @Service
@@ -124,27 +131,108 @@ public class CheckAccountService {
 		String strUrl = "https://api.iamport.kr/users/getToken"; 
 		BufferedReader in = null;
 		
+		
 		try {
+	         // url Http 연결 생성
 				URL url = new URL(strUrl);
 				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-				conn.setRequestMethod("get");
-				conn.setDoOutput(true);
+				// POST 요청
+				conn.setRequestMethod("POST");
+				conn.setDoOutput(true);// outputStreamm으로 post 데이터를 넘김
+
 				conn.setRequestProperty("content-Type", "application/json");
-				System.out.println("여기@@@@@@@@@@@@@@@@@@");
+				conn.setRequestProperty("Accept", "application/json");
+
 				// 파라미터 세팅
+				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+
+				JSONObject requestData = new JSONObject();
+				requestData.put("imp_key", impKey);
+				requestData.put("imp_secret", impSecret);
+
+				bw.write(requestData.toString());
+				bw.flush();
+				bw.close();
+
+				int resposeCode = conn.getResponseCode();
+				System.out.println("responseCode============================================== : "+ resposeCode);
 				
-				in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-				
-				String inputLine;
-				StringBuffer response = new StringBuffer();
-				while((inputLine = in.readLine()) != null) { // response 출력
-					response.append(inputLine);
+				//
+				BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+				StringBuilder sb = new StringBuilder();
+				String line;
+				while ((line = br.readLine()) != null) {
+					sb.append(line + "\n");
 				}
+
+				br.close();
+
+				// 토큰 값 빼기
+				JsonElement jsonElement = JsonParser.parseString(sb.toString());
+		        String access_token = jsonElement.getAsJsonObject().getAsJsonObject("response").get("access_token").getAsString();
+				// System.out.println("Access Token: " + access_token);
+
+				String getPaymentUrl = "https://api.iamport.kr/banks";
+
+
+				URL bankurl = new URL(getPaymentUrl);
+				// System.out.println(bankurl);
+
+				HttpURLConnection getConn = (HttpURLConnection) bankurl.openConnection();
+				getConn.setRequestMethod("GET");
+				getConn.setRequestProperty("Content-Type", "application/json");
+				getConn.setRequestProperty("Authorization", "Bearer " + access_token);
+
+				int getResponseCode = getConn.getResponseCode();
+				 System.out.println("GET 응답코드 =============" + getResponseCode);
+				 
+				 
+				 //
+				// System.out.println("#########성공");
+
+					BufferedReader getBr = new BufferedReader(new InputStreamReader(getConn.getInputStream()));
+					StringBuilder getResponseSb = new StringBuilder();
+					String getLine;
+					while ((getLine = getBr.readLine()) != null) {
+						getResponseSb.append(getLine).append("\n");
+					}
+					getBr.close();
+
+					String getResponse = getResponseSb.toString();
+					System.out.println(getResponse);
+					// System.out.println("GET 응답 결과: " + getResponse);
+
+					JSONParser parser1 = new JSONParser();
+					JSONArray jsonArr =  new JSONArray();
+					Object obj = null;
+					try {
+						obj = parser1.parse(getResponse);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					JSONObject jsonObject = (JSONObject)obj;
+					jsonArr = (JSONArray)jsonObject.get("response");
 					
-				String jsonStr = response.toString();
+					
+					
+					if (jsonArr.size() > 0){
+					    for(int i=0; i<jsonArr.size(); i++){
+					        JSONObject jsonObj = (JSONObject)jsonArr.get(i);
+					        
+					        //(String)jsonObj.get("code");
+					        //(String)jsonObj.get("name");
+					    }
+					    // StudyingAzae, Soodal 출력
+					}
+					// 예금주만 값 빼기
+					//String bankHolderInfo = phoneJson1.getAsJsonObject("response").get("bank_holder").getAsString();
+					// System.out.println("bankHolderInfo: " + bankHolderInfo);
+
+				 
+				 
 				
-				
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
