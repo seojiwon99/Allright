@@ -3,6 +3,7 @@ package com.ar.lighthouse.product.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.admin.service.SuspendVO;
@@ -121,7 +122,7 @@ public interface ProductMapper {
 	public List<DetailVO> selectMonthlyCount(DetailVO detailVO);
 
 //		통계 목록
-	public List<DetailVO> selectStatsList(String memberId);
+	public List<DetailVO> selectStatsList(@Param("memberId") String memberId, @Param("preBetw") String preBetw, @Param("suBetw") String suBetw);
 
 	// 상품옵션 vo 리스트
 	public List<OptionVO> getOptionList(OptionVO optionVO);
@@ -138,8 +139,12 @@ public interface ProductMapper {
 	
 	//취소 승인 시 Y로 승인 상태 변경 - 석연
 	public int updateCancelOk(String cancelCode);
-	
+
+	//반품 승인 시 Y로 승인 상태 변경 - 석연
+	public int updateReturn(String returnCode);
+
 	// 정지 체크
 	public SuspendVO sellChk(String memberId);
+
 
 }

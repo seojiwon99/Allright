@@ -35,7 +35,7 @@
       			 <input type="hidden" th:value="${exchange}" id="hidden">
       			<div class="mb-3">
       				<label>주문번호</label>
-      				<input type="text" class="form-label" id="orderCode" th:value="${exchange.orderCode}" readonly>
+      				<input type="text" class="form-label" id="orderCode" th:value="${exchange.orderCode}" tabindex="0" readonly>
       				<label>주문상세번호</label>
       				<input type="text" class="form-label" id="orderDetailCode" th:value="${exchange.orderDetailCode}" readonly>
       			</div>
@@ -57,8 +57,8 @@
       			
       			</div>
       			<div class="mb-3">
-      				<input type="text" size=20 id="sample6_postcode" placeholder="우편번호" >
 					<input type="button" onclick="sample6_execDaumPostcode()" id="addrBtn" value="우편번호 찾기"><br>
+      				<input type="text" size=20 id="sample6_postcode" placeholder="우편번호" ><br>
 					<input type="text" size=40 id="sample6_address" placeholder="주소"><br>
 					<input type="text" size=40 id="sample6_detailAddress" placeholder="상세주소">
 					<input type="text" id="sample6_extraAddress" placeholder="">
@@ -139,10 +139,11 @@
 	  document.getElementById("orderCode").value = orderCode;
 	  document.getElementById("productName").value = productName;
 	  */
+	  
+	  //일반 사용자
 	  $(document).ready(function() {
 		  console.log($('#select option:selected'));
 		  let checkBeforeInsert = {};
-	
 		  console.log(checkBeforeInsert);
 	
 	    // 교환 신청 버튼 클릭 시 AJAX 요청을 보냅니다.
@@ -166,20 +167,12 @@
 		  		alert("주소를 입력해주세요")
 		  		return;
 		  	}
-  /*
-	  let exchangeCode = $('#exchangeCode').val();
-  	  let orderDetailCode = $('#orderDetailCode').val();
-      let productName = $('#productName').val();
-      let exchangeReason = $('#exchangeReason').val();
-      let content = $('#content').val();
-      let addr = $('#addr').val();
-      
-  */    
+
   		let reasonName =  $('#select option:selected').text().trim()
-  
 		let contents = $('#content').val();
 		contents = contents.trim()
   		let exReason = reasonName + ' : ' +contents
+  		
       // 교환 신청 데이터를 JSON 형식으로 만듭니다.
       let exchangeData = {
     	'exchangeCode': $('#exchangeCode').val(),
@@ -198,7 +191,7 @@
 	        success: function(response) {
 	          // AJAX 요청이 성공적으로 완료된 경우 처리
 	          alert('교환 신청이 성공적으로 처리되었습니다.');
-	          // 여기에서 필요한 추가 동작을 수행하세요.
+	          location.href="/page/buyer/orderList";
 	        },
 	        error: function(error) {
 	          // AJAX 요청이 실패한 경우 처리
@@ -208,7 +201,7 @@
 	      });
 	    });
 	  });
-		
+	//일반사용자 끝
 	  	//tts 시작 
 	     let TTSIsOk = localStorage.getItem('ttsKey');
 	       let sessionAuthor;
@@ -217,19 +210,85 @@
 	         sessionAuthor = sessionStorage.loginMember.memberAuthor;
 	      }
 	          
-	         function ttsInit(){
-	          if(TTSIsOk == null || sessionAuthor == 3){
-	           let audioFileNow = new Audio();
-	           let firstMsg = "교환 신청 페이지입니다. 주문 상품을 교환 신청할 수 있습니다.";
-	           //let message = firstMsg;
+	     function ttsInit(){
+	       if(TTSIsOk == null || sessionAuthor == 3){
+	         let audioFileNow = new Audio();
+	         let firstMsg = "교환 신청 페이지입니다. 주문 상품을 교환 신청할 수 있습니다.";
+	         VoiceMenual(firstMsg);
 
-	           VoiceMenual(firstMsg);
-
+	      $(document).ready(function() {
+	   		console.log($('#select option:selected'));
+	   		let checkBeforeInsert = {};
+	   		console.log(checkBeforeInsert);
+	   	
+	   	    // 교환 신청 버튼 클릭 시 AJAX 요청을 보냅니다.
+	   	    $('#exchangeBtn').on('keydown', function(e) {
+	   	    	if(e.key == 'Enter'){
+					e.preventDefault();
+					console.log('enter key')
+		   	      	// 사용자가 입력한 교환 사유와 주소 정보 가져오기
+		   			let selOption = $('#select option:selected').val()
+		   		    if(selOption != "선택"){
+		   		  	}else{
+		   		  		console.log("교환 사유를 선택해주세요.")
+		   		  		selected("교환 사유를 선택하지 않아 취소되었습니다. 교환 사유 선택란으로 이동합니다.")
+		   		  		$('#select').focus();
+		   		  		return;
+		   		  	}
+		   		  	if($('#content').val() == ""){
+		   		  		console.log("자세한 교환 사유를 입력해주세요")
+		   		  		exchangeReason("자세한 교환 사유를 입력하지 않아 취소되었습니다. 자세한 교환 사유를 입력해주세요.")
+		   		  		$('#content').focus();
+		   		  		return;
+		   		  	}
+		   		  	if($('#sample6_postcode').val() == ""){
+		   		  		console.log('우편번호')
+		   		  		exPostCode("우편 번호를 입력하지 않아 취소되었습니다. 우편번호 찾기 버튼으로 이동합니다.")
+		   		  		$('#addrBtn').focus();
+		   		  		return;
+		   		  	}
+	
+		     	let reasonName =  $('#select option:selected').text().trim()
+		   		let contents = $('#content').val();
+		   		contents = contents.trim()
+		     		let exReason = reasonName + ' : ' +contents
+		     		
+		         // 교환 신청 데이터를 JSON 형식으로 만듭니다.
+		         let exchangeData = {
+		       	   'exchangeCode': $('#exchangeCode').val(),
+		           'orderDetailCode': $('#orderDetailCode').val(),
+		           'productName': $('#productName').val(),
+		           'exchangeReason': exReason,
+		           'exchangeAddr': $('#sample6_address').val() + ', ' + $('#sample6_detailAddress').val() +$('#sample6_extraAddress').val() +', ' + $('#sample6_postcode').val()
+		         }
+	
+		         // AJAX 요청 보내기
+		   	      $.ajax({
+		   	        type: 'POST',
+		   	        url: '/buyer/exchangeInsert', // 실제 서버의 엔드포인트 URL로 변경해야 합니다.
+		   	        contentType: 'application/json',
+		   	        data: JSON.stringify(exchangeData),
+		   	        success: function(response) {
+		   	          // AJAX 요청이 성공적으로 완료된 경우 처리
+		   	          VoiceMenual('교환 신청이 성공적으로 처리되었습니다.');
+		   	          location.href="/page/buyer/orderList";
+		   	        },
+		   	        error: function(error) {
+		   	          // AJAX 요청이 실패한 경우 처리
+		   	          console.error('교환 신청 처리 중 오류가 발생했습니다.');
+		   	          console.error(error);
+		   	        }
+		   	      });
+	   	      }
+	   	    });
+	   	  });
+	     
 	     //tts 이벤트 부여
 	     $('#orderCode').on('focus', orderCode);
 	     $('#orderDetailCode').on('focus', orderDetailCode);
 	     $('#productName').on('focus', productName);
 	     $('#select').on('focus', selected);
+	     $('#select').on('change', selectOption);
 	     $('#content').on('focus', exchangeReason)
 		 $('#addrBtn').on('focus', addrBtn);
 		 $('#retract').on('focus', retract);
@@ -237,17 +296,18 @@
 		 $('#sample6_postcode').on('focus', exPostCode);
 		 $('#sample6_address').on('focus', exAddress);
 		 $('#sample6_detailAddress').on('focus', exDetailAddress);
-		 
+		 $('#sample6_extraAddress').on('focus', extraAddress);
 		 // 이벤트 안의 전역변수
 		 let code;
 		 let detailCode;
 		 let prodName;
 		 let select;
 		 let codeName;
-		 let reason;
+		 let detailReason;
 		 let postCode;
 		 let address;
 		 let detailAddress;
+		 let extraAddr;
 		 
 		 //tts 이벤트 진행
 	     function orderCode() {
@@ -259,35 +319,67 @@
 	    	 VoiceMenual("주문 상세 번호는" + detailCode + "입니다.");
 	     }
 		 function productName() { 
-			 prodName = $('#productName').val();   	 
+			 prodName = $('#productName').val();
 			 VoiceMenual("상품 명은" + prodName + "입니다.");
 		 }
-		 function selected() { 
+		 function selected(select) { 
 			 select =  $("#select").text();
-			 VoiceMenual(select);
+			 if(select == "교환 사유를 선택해주세요"){
+			 	VoiceMenual(select + "교환 사유를 선택해주세요.");
+			 }else{
+				VoiceMenual("교환 사유를 선택하지 않아 취소되었습니다. 교환 사유 선택란으로 이동합니다." + select);
+			 }
 		 }
-		 function exchangeReason() { 
-			 VoiceMenual("자세한 교환 사유를 입력해주세요.");
+		 function selectOption(selectOp) { 
+			 selectOp =  $("#select option:selected").text();
+			 VoiceMenual(selectOp);
 		 }
-		 function exPostCode() { 
-			 postCode = $('#sample6_postcode').text();
+		 function exchangeReason(detailReason) { 
+			 detailReason = $('#content').val();
+			 if(detailReason == ""){
+				 VoiceMenual(detailReason + "자세한 교환 사유를 입력해주세요.");
+			 }else{
+				 VoiceMenual("자세한 교환 사유를 입력하지 않아 취소되었습니다. 자세한 교환 사유를 입력해주세요.");
+			 }
+			 VoiceMenual(detailReason);
+		 }
+		 function exPostCode(postCode) { 
+			 postCode = $('#sample6_postcode').val();
+			 if(postCode == ""){
+				 VoiceMenual("우편번호를 입력하지 않아 취소되었습니다. 우편번호 찾기 버튼으로 이동합니다. 엔터키를 눌러 우편번호와 주소를 찾아주세요.");
+			 }else{
+				 VoiceMenual(postCode + "우편번호를 입력해주세요.");
+			 }
 			 VoiceMenual(postCode);
 		 }
 		 function exAddress() { 
-			 address = $('#sample6_address').text();
+			 address = $('#sample6_address').val();
 			 VoiceMenual(address);
 		 }
 		 function exDetailAddress() { 
-			 detailAddress = $('#sample6_detailAddress').text();
+			 detailAddress = $('#sample6_detailAddress').val();
 			 VoiceMenual(detailAddress);
 		 }
-		 function addrBtn(){
-			 VoiceMenual("우편 번호 찾기 버튼입니다. 엔터키를 눌러서 주소를 찾아주세요.");
+		 function extraAddress() { 
+			 extraAddr = $('#sample6_extraAddress').val();
+			 VoiceMenual(extraAddr);
+		 }
+		 function addrBtn() {
+			 VoiceMenual( "우편 번호 찾기 버튼입니다. 엔터키를 눌러서 주소를 찾아주세요.");
 		 }
 		 function exchangeBtn(){
-			 let detailReason = $('#content').val();
-			 let check = `주문 취소 신청 버튼입니다. 주문 번호는. ${code}.  주문상세번호는.  ${detailCode}. 상품명은. ${prodName}. 교환 상세 사유는. ${detailReason}.
-			 			  우편번호는. ${postCode}. 주소는. ${address}. 상세주소는. ${detailAddress}. 신청 사항을 확인하셨다면. 엔터키를 눌러주세요.`;
+			 code = $('#orderCode').val();
+			 detailCode = $('#orderDetailCode').val();
+			 prodName = $('#productName').val();
+			 select =  $("#select").text();
+			 selectOp =  $("#select option:selected").text();
+			 detailReason = $('#content').val();
+			 postCode = $('#sample6_postcode').val();
+			 address = $('#sample6_address').val();
+			 detailAddress = $('#sample6_detailAddress').val();
+			 extraAddr = $('#sample6_extraAddress').val();
+			 let check = `교환 취소 신청 버튼입니다. 주문 번호는. ${code}.  주문상세번호는.  ${detailCode}. 상품명은. ${prodName}. 교환 사유는. ${selectOp}. 교환 상세 사유는. ${detailReason}.
+			 			  우편번호는. ${postCode}. 주소는. ${address}. 상세주소는. ${detailAddress}. ${extraAddr}. 신청 사항을 확인하셨다면. 엔터키를 눌러주세요.`;
 			 VoiceMenual(check);
 		 }
 		 function retract(){

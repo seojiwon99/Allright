@@ -65,7 +65,7 @@
 			  <tbody>
 			  <button type="button"  class="visually-hidden" id="modalBtn"data-bs-toggle="modal" data-bs-target="#modalNewsletterVertical">Launch modal</button>
 			  <input type="hidden" id="modalValue">
-			    <tr th:each="mem : ${memList}" th:onclick="testFunc([[${mem.memberId}]])">
+			    <tr th:each="mem : ${memList}" th:onclick="testFunc([[${mem.memberId}]])" style="cursor : pointer">
 					
 						<td scope="row" th:text="${mem.memberId}"></td>
 						<td th:text="${mem.declareCount}"></td>
@@ -74,20 +74,20 @@
 						<td th:text="${mem.businessNumber}"></td>
 						<td th:text="${mem.memberEmail}"></td>
 						<td th:text="${mem.suspStatus}"></td>
-						<td>
+						<td onclick="javascript: event.stopPropagation();">
 						<input type="radio" name="suspDay" value="201">/	
 						<input type="radio" name="suspDay" value="202">/
 						<input type="radio" name="suspDay" value="203">/
 						<input type="radio" name="suspDay" value="0">
 						</td>
 						
-						<td>
+						<td onclick="javascript: event.stopPropagation();">
 						<select id="suspReasonSelect" style="width:55px">
 							<option th:each="reason : ${suspReason}" th:value="${reason.codeId}">[[${reason.codeName}]]</option>
 						</select>
 						
 						</td>
-						<td>
+						<td onclick="javascript: event.stopPropagation();">
 						<button class="btn btn-xxs btn-primary saveBtn" type="button" name="saveBtn">저장</button>
 						</td>
 				</tr>
@@ -278,7 +278,7 @@
 	
 	
 	//style
-	$('.table-sm thead th').css("font-size", "0.4rem");
+	$('.table-sm thead th').css("font-size", "0.8rem");
 	$('.table-sm thead th').css("padding", "1rem 1rem");
 	$('.table-sm tbody td').css("padding", "1rem 1rem");
 	$('.table-sm tbody td').css("font-size", "0.8rem");
@@ -363,7 +363,13 @@
 				inputTags[4].value = rs.memberBirth;
 				inputTags[5].value = rs.businessNumber;
 				inputTags[6].value = rs.declareCount+'/'+rs.suspCount;
-				inputTags[7].value = rs.suspStatus == null ? '사용 가능' : rs.suspStatus;
+				if(rs.suspStatus == null){
+					inputTags[7].value = '사용 가능'
+				}else if(rs.suspStatus == 0){
+					inputTags[7].value = '사용 가능'
+				}else{
+					inputTags[7].value = rs.suspStatus
+				}
 				inputTags[8].value = rs.suspReason == null ? 'X' : rs.suspReason;
 				inputTags[9].value = (rs.suspRegdate == null ? 'X' : (rs.suspRegdate).substr(0,10)) + ' / ' +  (rs.suspEnddate == null ? 'X' : (rs.suspEnddate).substr(0,10));
 				

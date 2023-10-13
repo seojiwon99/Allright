@@ -51,12 +51,12 @@
       <result column="product_cost" property="productCost" />
       <result column="sale_price" property="salePrice" />
       <collection property="optionDetail" resultMap="optionSelectList" />
-	</resultMap>
+   </resultMap>
 
-	<resultMap type="OptionDetailVO" id="optionSelectList">
-	   <result column="option_count" property="optionCount" />
-	   <result column="option_price" property="optionPrice" />
-	</resultMap>
+   <resultMap type="OptionDetailVO" id="optionSelectList">
+      <result column="option_count" property="optionCount" />
+      <result column="option_price" property="optionPrice" />
+   </resultMap>
   <select id="selectOptionProduct" resultMap="selectOptionProduct">
     SELECT *
     FROM ar_products p
@@ -67,21 +67,20 @@
     ) d
     ON p.product_code = d.product_code
     WHERE p.member_id = #{memberId}
-    <choose>
-        <when test="optionVal == '상품명순'">
-            ORDER BY product_name
-        </when>
-        <when test="optionVal == '상품등록일순'">
-            ORDER BY product_regdate
-        </when>
-    </choose>
     <if test="optionVal == '전시중'">
         AND product_exstatus = 'Y'
     </if>
     <if test="optionVal == '전시중지'">
         AND product_exstatus = 'N'
     </if>
-    ORDER BY product_regdate DESC
+    <choose>
+        <when test="optionVal == '상품명순'">
+            ORDER BY product_name
+        </when>
+        <when test="optionVal == '상품등록일순'">
+            ORDER BY product_regdate DESC
+        </when>
+    </choose>
 </select>
 
 
@@ -128,15 +127,15 @@
       m.member_email
       FROM
       ar_order_detail o
-	      JOIN
-	      		ar_orders r ON
-	      o.order_code = r.order_code
-	      JOIN
-	      		ar_option_detail x ON o.option_detail_code = x.option_detail_code
-	      JOIN
-	      		ar_products p ON x.product_code = p.product_code
-	      JOIN
-	      		ar_member m ON m.member_id = r.member_id
+         JOIN
+               ar_orders r ON
+         o.order_code = r.order_code
+         JOIN
+               ar_option_detail x ON o.option_detail_code = x.option_detail_code
+         JOIN
+               ar_products p ON x.product_code = p.product_code
+         JOIN
+               ar_member m ON m.member_id = r.member_id
       WHERE p.member_id = #{memberId}
       AND o.order_check != 'N'
       ORDER BY o.order_date DESC
@@ -163,15 +162,15 @@
       m.member_email
       FROM
       ar_order_detail o
-	      JOIN
-	      		ar_orders r ON
-	      o.order_code = r.order_code
-	      JOIN
-	      		ar_option_detail x ON o.option_detail_code = x.option_detail_code
-	      JOIN
-	      		ar_products p ON x.product_code = p.product_code
-	      JOIN
-	      		ar_member m ON m.member_id = r.member_id
+         JOIN
+               ar_orders r ON
+         o.order_code = r.order_code
+         JOIN
+               ar_option_detail x ON o.option_detail_code = x.option_detail_code
+         JOIN
+               ar_products p ON x.product_code = p.product_code
+         JOIN
+               ar_member m ON m.member_id = r.member_id
       WHERE p.member_id = #{memberId}
       AND o.order_status = #{orderStatus}
       AND o.order_status != 11
@@ -222,6 +221,7 @@ WHERE order_detail_code = #{orderDetailCode}
       <result column="max_order" property="MaxOrder" />
       <result column="option_count" property="optionCount" />
       <result column="option_price" property="optionPrice" />
+      <result column="option_sell_status" property="optionSellStatus"/>
    </resultMap>
    <resultMap type="OptionVO" id="midifiOption">
         <result column="option_code" property="optionCode" />
@@ -382,9 +382,18 @@ WHERE p.product_code = #{productCode}
 
    <!-- 석연 : 취소 승인 시 Y로 변경 -->
    <update id="updateCancelOk">
-	  update ar_cancel
-      set cancel_status = 'Y'  
-      WHERE cancel_code = #{cancelCode}
+     update ar_cancel
+      set cancel_status = 'Y',
+      CANCEL_DATE	= sysdate	  
+      WHERE cancel_code = #{cancelCode}    
+   </update>
+   
+    <!-- 석연 : 반품 승인 시 Y로 변경 -->
+   <update id="updateReturn">
+     update ar_return
+      set return_status = 'Y',
+      RETURN_PROCESSDATE = sysdate  
+      WHERE return_code = #{returnCode}    
    </update>
    
 
@@ -624,7 +633,7 @@ WHERE p.product_code = #{productCode}
       </if>
    </select>
 
-	
+   
    <!-- 판매자 상품문의 답해주기 -->
    <update id="updateInquiryAns">
       update ar_inquiry
@@ -679,24 +688,24 @@ WHERE p.product_code = #{productCode}
       WHERE
       o.order_status = 4
    </select>
-	
-	<!-- optionVo list -->
-	<select id="selectOptionList" resultType="OptionVO">
-		select * from ar_option where product_code = #{productCode}
-	</select>
-	
-	<!-- 옵션 디테일 -->
-	<select id="selectOptionDetail" resultType="OptionDetailVO">
-		select * from ar_option_detail where product_code = #{productCode}
-	</select>
+   
+   <!-- optionVo list -->
+   <select id="selectOptionList" resultType="OptionVO">
+      select * from ar_option where product_code = #{productCode}
+   </select>
+   
+   <!-- 옵션 디테일 -->
+   <select id="selectOptionDetail" resultType="OptionDetailVO">
+      select * from ar_option_detail where product_code = #{productCode}
+   </select>
 
-	<!-- option 리스트 -->
-	<select id="getOptionList" resultType="OptionDetailVO">
+   <!-- option 리스트 -->
+   <select id="getOptionList" resultType="OptionDetailVO">
 
-		select * from
-		ar_option_detail
-		where product_code = #{productCode}
-	</select>
+      select * from
+      ar_option_detail
+      where product_code = #{productCode}
+   </select>
 
 
 <!-- 통계리스트 -->
@@ -721,31 +730,34 @@ WHERE p.product_code = #{productCode}
       <result column="option_price" property="optionPrice" />
    </resultMap>
 
-	<select id="selectStatsList" resultMap="selectStatsList">
+   <select id="selectStatsList" resultMap="selectStatsList">
      select p.product_code
-				, p.product_name
-				, NVL(o.option_last,' ') as option_last
-				, COALESCE(o.option_detail_code,0) as option_detail_code
-				, (p.sale_price + o.option_price) AS sale_price
-				, COALESCE(sum(od.order_cnt),0) as order_cnt
-				, COALESCE(SUM(return_cnt(od.order_detail_code)),0) AS return_cnt
-				, COALESCE(SUM(cancel_cnt(od.order_detail_code)),0) AS cancel_cnt
-				, NVL((sum(od.order_cnt)- COALESCE(SUM(return_cnt(od.order_detail_code)),0)-
-				COALESCE(SUM(cancel_cnt(od.order_detail_code)),0))*NVL((p.sale_price + o.option_price),0) ,0) AS total_price
-		from ar_products p
-		LEFT OUTER JOIN ar_option_detail o
-						ON p.product_code = o.product_code
-		LEFT OUTER JOIN ar_order_detail od
-					ON o.option_detail_code = od.option_detail_code
-		FULL OUTER join ar_return r
-					ON od.order_detail_code = r.order_detail_code
-		where member_id = 'hky03017'
-		group by od.option_detail_code, o.option_last, o.option_price,
-				p.product_name,
-				o.option_detail_code, (p.sale_price + o.option_price), p.sale_price + o.option_price,
-				o.option_price, p.product_code
-		ORDER BY option_detail_code
-	</select>
+            , p.product_name
+            , NVL(o.option_last,' ') as option_last
+            , COALESCE(o.option_detail_code,0) as option_detail_code
+            , (p.sale_price + o.option_price) AS sale_price
+            , COALESCE(sum(od.order_cnt),0) as order_cnt
+            , COALESCE(SUM(return_cnt(od.order_detail_code)),0) AS return_cnt
+            , COALESCE(SUM(cancel_cnt(od.order_detail_code)),0) AS cancel_cnt
+            , NVL((sum(od.order_cnt)- COALESCE(SUM(return_cnt(od.order_detail_code)),0)-
+            COALESCE(SUM(cancel_cnt(od.order_detail_code)),0))*NVL((p.sale_price + o.option_price),0) ,0) AS total_price
+      from ar_products p
+      LEFT OUTER JOIN ar_option_detail o
+                  ON p.product_code = o.product_code
+      LEFT OUTER JOIN ar_order_detail od
+               ON o.option_detail_code = od.option_detail_code
+      FULL OUTER join ar_return r
+               ON od.order_detail_code = r.order_detail_code
+      where member_id = #{memberId}
+      <if test="preBetw != null and !preBetw.equals('')">
+      AND  TO_DATE(od.order_date, 'yy/MM/dd') BETWEEN TO_DATE(#{preBetw}) AND TO_DATE(#{suBetw})
+      </if>
+      group by od.option_detail_code, o.option_last, o.option_price,
+            p.product_name,
+            o.option_detail_code, (p.sale_price + o.option_price), p.sale_price + o.option_price,
+            o.option_price, p.product_code
+      ORDER BY option_detail_code
+   </select>
 
 <!-- 월별 주문건수 -->
 <select id="selectMonthlyCount" resultType="DetailVO">
@@ -804,10 +816,7 @@ ORDER BY EXTRACT(MONTH FROM order_date)
       WHERE order_detail_code =
       #{orderDetailCode}
    </update>
-
-
-
-
+     
 	<!-- 상품등록 OptionVO,ProductVO -->
 	<insert id="insertProduct"
 		parameterType="com.ar.lighthouse.product.service.ProductVO">
@@ -916,46 +925,52 @@ ORDER BY EXTRACT(MONTH FROM order_date)
       )
    </insert>
 
-	<!-- 상품 이미지 등록 -->
-	<insert id="insertProductImg" parameterType="ImgsVO">
-		<selectKey resultType="int" keyProperty="imgCode"
-			order="BEFORE">
-			SELECT NVL(MAX(img_code),0)+1 FROM ar_imgs
-		</selectKey>
-		insert into ar_imgs
-		(img_code
-		,parent_code
-		,img_order
-		,img_name
-		,upload_name
-		,img_content
-		,product_code
-		,upload_path
-		)
+   <!-- 상품 이미지 등록 -->
+   <insert id="insertProductImg" parameterType="ImgsVO">
+      <selectKey resultType="int" keyProperty="imgCode"
+         order="BEFORE">
+         SELECT NVL(MAX(img_code),0)+1 FROM ar_imgs
+      </selectKey>
+      insert into ar_imgs
+      (img_code
+      ,parent_code
+      ,img_order
+      ,img_name
+      ,upload_name
+      ,img_content
+      ,product_code
+      ,upload_path
+      )
 
-		values(
-		#{imgCode}
-		,
-		'0'
-		,#{imgOrder}
-		,#{imgName}
-		,#{uploadName}
-		,#{imgContent}
-		,#{productCode}
-		,#{uploadPath}
-		)
+      values(
+      #{imgCode}
+      ,
+      '0'
+      ,#{imgOrder}
+      ,#{imgName}
+      ,#{uploadName}
+      ,#{imgContent}
+      ,#{productCode}
+      ,#{uploadPath}
+      )
 
-	</insert>
+   </insert>
 
 <!-- 상품수정 -->
 
 <update id="updateProduct" parameterType="ProductVO">      
 UPDATE ar_products
 SET
+	<if test="categoryCode != null">
     category_code = #{categoryCode},
+    </if>
     product_name = #{productName},
+    <if test="productContent != null">
     product_content = #{productContent},
+    </if>
+    <if test="productLocation != null">
     product_location = #{productLocation},
+    </if>
     product_cost = #{productCost},
     sale_price = #{salePrice},
     product_brand = #{productBrand},
@@ -981,6 +996,7 @@ SET
     option_name = #{optionName},
     option_value = #{optionValue}
 WHERE product_code = #{productCode}
+and option_code = #{optionCode}
 </update>
     
     
@@ -993,12 +1009,19 @@ WHERE product_code = #{productCode}
 <update id="updateOptionDetail" parameterType="ProductVO">
 UPDATE ar_option_detail
 SET
+	<if test="optionLast != null">
     option_last = #{optionLast},
+    </if>
+    <if test="optionPrice != null">
     option_price = #{optionPrice},
+    </if>
+    <if test="optionCount != null">
     option_count = #{optionCount},
+    </if>
     option_sell_status = 'Y',
     option_exstatus = 'Y'
 WHERE product_code = #{productCode}
+and option_detail_code =#{optionDetailCode}
 </update>
     
     
@@ -1007,62 +1030,72 @@ WHERE product_code = #{productCode}
 <update id="updateProductImg" parameterType="ImgsVO">
 UPDATE ar_imgs
 SET
+	<if test="imgOrder != null">
     img_order = #{imgOrder},
+    </if>
+    <if test="imgName != null">
     img_name = #{imgName},
+    </if>
+    <if test="uploadName != null">
     upload_name = #{uploadName},
+    </if>
+    <if test="imgContent != null">
     img_content = #{imgContent},
+    </if>
+    <if test="uploadPath != null">
     upload_path = #{uploadPath}
+    </if>
 WHERE product_code = #{productCode}
 </update>
 
-	<!-- 김무준의 상세페이지~~ -->
-	<select id="selectInfo" resultType="ProductVO">
-		    select  
+   <!-- 김무준의 상세페이지~~ -->
+   <select id="selectInfo" resultType="ProductVO">
+          select  
             m.member_id
-			, p.product_code
-			, p.category_code
-			, p.product_name
-			, p.product_content
-			, p.product_location
-			, p.product_cost
-			, p.product_regdate       
-			, p.sale_price
-			, p.product_brand
-			, p.product_origin
-			, p.product_makeorigin
-			, p.delivery_cost
-			, p.return_cost
-			, p.exchange_cost
-			, p.delivery_service
-			, p.product_status
-  			, i.img_order
-			, i.upload_name
-			, i.img_content
+         , p.product_code
+         , p.category_code
+         , p.product_name
+         , p.product_content
+         , p.product_location
+         , p.product_cost
+         , p.product_regdate       
+         , p.sale_price
+         , p.product_brand
+         , p.product_origin
+         , p.product_makeorigin
+         , p.delivery_cost
+         , p.return_cost
+         , p.exchange_cost
+         , p.delivery_service
+         , p.product_status
+           , i.img_order
+         , i.upload_name
+         , i.img_content
             , i.upload_path
-			 , m.business_number
-			from ar_products p ,ar_imgs i, ar_member m
-			where p.product_code = i.product_code 
-			<![CDATA[
+          , m.business_number
+         from ar_products p ,ar_imgs i, ar_member m
+         where p.product_code = i.product_code 
+         <![CDATA[
             and rownum < 2
             ]]>
-			and p.member_id = m.member_id
-			and p.product_code = #{productCode}
-	</select>
-	
+         and p.member_id = m.member_id
+         and p.product_code = #{productCode}
+   </select>
+   
 
-	<!-- 택배사 가져오기 -->
-	<select id="selectDeliveryList" resultType="CodeVO">
-		SELECT *
-		FROM ar_code
-		WHERE master_code = '택배사 코드'
-	</select>
+   <!-- 택배사 가져오기 -->
+   <select id="selectDeliveryList" resultType="CodeVO">
+      SELECT *
+      FROM ar_code
+      WHERE master_code = '택배사 코드'
+   </select>
 
 
 
-	<select id="getImgsFiles">
-		SELECT *
-		FROM ar_imgs
-	</select>
+   <select id="getImgsFiles">
+      SELECT *
+      FROM ar_imgs
+   </select>
 
 <!-- 판매자 문의 -->
 <select id="selectSellerInquriy" resultType="com.ar.lighthouse.buyp.service.MyInquiryVO">
@@ -1079,6 +1112,7 @@ where member_id = #{memberId}
       </if>
 </select>
 
+
 <!-- 정지 사유 체크 -->
 <select id="sellChk" resultType="SuspendVO">
 	SELECT * 
@@ -1090,3 +1124,4 @@ where member_id = #{memberId}
 </select>
 
 </mapper>
+

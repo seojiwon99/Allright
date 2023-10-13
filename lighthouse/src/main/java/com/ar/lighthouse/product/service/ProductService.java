@@ -92,7 +92,7 @@ public interface ProductService {
 //	정산건 목록
 	List<SellerCalVO> getCalList(SellerCalVO sellerCalVO);
 //	취소건 목록
-	List<DetailVO> getStaticList(String memberId);
+	List<DetailVO> getStaticList(String memberId, String preBetw, String suBetw);
 
 //	월별 주문 건수
 	List<DetailVO> getMonthlyCount(DetailVO detailVO);
@@ -113,7 +113,11 @@ public interface ProductService {
 	//취소 승인 시 승인 여부 Y로 변경 - 석연
 	public int editCancelOk(String cancelCode);
 	
+
+	public int editReturnOk(String returnCode);
+
 	// 신고 체크
 	public Map<String, Object> sellerChk(String memberId);
+
 	
 }

@@ -9,52 +9,57 @@
 
 
 <div layout:fragment="sellerContent">
+	<!-- 상단 조건 -->
+	<div class="_1Vof48UxmD_oVRNwPvxck container w-100" style="margin-left:0px;
+	 margin-right:0px;
+	 max-width:1600px">
+	
+			<div class="row justify-content-between" style="margin-bottom:30px">
+				<div class="col-4">
+				<h3>문의 관리</h3>
+				</div>
+				<div class="col-4">
+					<div class="_KqV0-1BSnB col" style="margin-bottom:10px">
+						<button type="button" id="todayBtn" class="btn btn-dark btn-xs">
+							<span id="today">오늘</span>
+						</button>
+						<button type="button" id="weekBtn" class="btn btn-dark btn-xs">
+							<span id="week">1주일</span>
+						</button>
+						<button type="button" id="oneMonthBtn" class="btn btn-dark btn-xs">
+							<span id="onemonth">1개월</span>
+						</button>
+						<button type="button" id="threeMonthBtn" class="btn btn-dark btn-xs">
+							<span id="thmonth">3개월</span>
+						</button>
+					</div>
+					<!-- button -->
+					
+					<!--  date -->
+					<div class="searchDate col" style="margin-bottom:10px">
+						<span class="fs-sm">조회기간 : </span> <input type="DATE" id="from" name="from"
+							autocomplete="off"> <label for="to">~</label> <input
+							type="DATE" id="to" name="to" autocomplete="off">
+					</div>
+					<div class="detailSea col">
+						<label class="_MN8nIh0X4y fs-sm">상세조건 : </label> <select
+							class="_4LshyCrDpi" title="리스트 보기" >
+							<option selected value="">전체</option>
+							<option value="member_name">문의자명</option>
+							<option value="member_id">문의자ID</option>
+							<option value="product_code">상품코드</option>
+						</select> 
+						<input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
+						<button type="button" class="btn btn-dark btn-xxs" id="orderSearch">검색</button>
+					</div>
 
+				</div>
+			</div>
+	</div>
 
 	
 	
 			
-				<div class="_1Vof48UxmD_oVRNwPvxck">
-							
-								<div class="_KqV0-1BSnB">
-									<button type="button" id="todayBtn" class="btn btn-primary2">
-										<span id="today">오늘</span>
-									</button>
-									<button type="button" id="weekBtn" class="btn btn-primary2">
-										<span id="week">1주일</span>
-									</button>
-									<button type="button" id="oneMonthBtn" class="btn btn-primary2">
-										<span id="onemonth">1개월</span>
-									</button>
-									<button type="button" id="threeMonthBtn"
-										class="btn btn-primary2">
-										<span id="thmonth">3개월</span>
-									</button>
-
-									<div id="dateDisplay"></div>
-									<div class="searchDate">
-										<span>조회기간</span> <input type="DATE" id="from" name="from"
-											autocomplete="off"> <label for="to">~</label> <input
-											type="DATE" id="to" name="to" autocomplete="off">
-									</div>
-								</div>
-							
-
-
-							<div class="detailSea">
-									<label class="_MN8nIh0X4y">상세조건</label> <select
-										class="_4LshyCrDpi" title="리스트 보기">
-										<option selected value="">전체</option>
-										<option value="member_name">문의자명</option>
-										<option value="member_id">문의자ID</option>
-										<option value="product_code">상품코드</option>
-									</select> 
-									<input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
-							</div>
-									
-									
-							<button type="button" id="orderSearch">검색</button>
-							</div>
 							
 			<section class="pb-12">
 				<div
@@ -86,68 +91,76 @@
 								<td th:text="${inquiry.queContent}" id="queContent" class="visually-hidden">
 								</td>
 							</tr>
-
 							<!-- 반복문 종료 -->
 						</tbody>
 					</table>
+							<h3 id="noList" style="text-align:center"></h3>
 				</div>
 
-				<div class="collapse" id="inquiryForm">
-					<!-- Divider -->
-					<hr class="my-8" />
-				</div>
+
 					<!-- Form -->
-
-					<div class="row" id="inquiryForm">
-						<div class="prod-inquiry-list__container">
-							    <div class="row">
-							    	 <div class="col-12">
-								    <div class="col-6">
-								        <em class="prod-inquiry-item__label">질문</em>
-								        <span class="prod-inquiry-item__wrap" id="inquiryQueCon" required></span>
+					<div class="row collapse" id="inquiryForm">
+						<div class="prod-inquiry-list__container container">
+						    <div class="row justify-content-center">
+						    	 <div class="col-8">
+								    <div class="col">
+								    	<hr>
+								        <h5 id="inquiryMemberId">작성자 : </h5>
+								        <hr>
+								        <p class="prod-inquiry-item__wrap" id="inquiryQueCon" required style="width:500px;"></p>
 								    </div>
-								    <div class="col-6">
-								        <em class="prod-inquiry-item__reply__label">답변</em>
-								        <input class="prod-inquiry-item__wrap" style="width:80%; border-radius: 2px; margin-top: 50px; margin-bottom: 50px;" id="addContent" name="addContent" required placeholder="내용을 입력하세요">
-								    </div>
+								    <hr>
+								        <em class="prod-inquiry-item__reply__label">답변 : </em>
+								        <input class="prod-inquiry-item__wrap" style="width:90%; outline: none;  border:0;height:50px; margin-bottom:50px"  id="addContent" name="addContent" required placeholder="내용을 입력하세요">
+									<button id="inquiryAdd" class="btn btn-dark btn-sm"type="button">등록하기</button>
 								</div>
-						</div>
-							<button id="inquiryAdd" class="btn btn-dark btn-sm"
-												type="button">등록하기</button>
 							</div>
 						</div>
+					</div>
+				
+		
 
 			</section>
 
-		</div>
-	</div>
 	<script th:inline="javascript">
+	
+	 if($('tbody > tr').length == 0 ){
+			$('#noList').text('문의내역이 없습니다.')	
+		 }
+function initToggle(){
+	$('#getProductList tbody tr[data-bs-toggle="collapse"]').click(function(e) {
+	    let row = $(this);
+	    
+	    if(row.css('background-color') == 'rgba(0, 0, 0, 0)'){
+	    	$('#inquiryForm').addClass('show');
+	    	$('#inquiryForm').removeClass('collapsing');
+	    };
+	    $('tr').css('background-color', '');
+	    row.css('background-color','lightgray');
+	    let indexNu =row.find('td:nth-child(1)').text();
+	    let productCode = row.find('td:nth-child(2)').text();
+	    let productName = row.find('td:nth-child(3)').text();
+	    let queContent = row.find('td:nth-child(4)').text();
+	    let queAns = row.find('td:nth-child(8)').text();
+	    let queCodeValue = row.find('td:nth-child(7)').text();
+	    let memberId = row.find('td:nth-child(9)').text();
+	    let queContent2 = row.find('td:nth-child(10)').text();
+		console.log(memberId);
+	    
+	    $('#indexNu').val(indexNu);
+	    $('#queContent').val(queContent);
+	    $('#productCode').val(productCode);
+	    $('#productName').val(productName);
+		$('#addContent').val(queAns);
+		$('#inquiryMemberId').text('작성자 : ' + memberId);
+		$('#inquiryQueCon').text(queContent2);
+		
+	    $('#inquiryAdd').data('queCodeValue', queCodeValue);
+	});
+}
 		$(document).ready(
 				function() {
-				
-					$('#getProductList tbody tr[data-bs-toggle="collapse"]').click(function() {
-					    let row = $(this);
-					    let indexNu =row.find('td:nth-child(1)').text();
-					    let productCode = row.find('td:nth-child(2)').text();
-					    let productName = row.find('td:nth-child(3)').text();
-					    let queContent = row.find('td:nth-child(4)').text();
-					    let queAns = row.find('td:nth-child(8)').text();
-					    let queCodeValue = row.find('td:nth-child(7)').text();
-					    let memberId = row.find('td:nth-child(9)').text();
-					    let queContent2 = row.find('td:nth-child(10)').text();
-						console.log(indexNu);
-					    
-					    $('#indexNu').val(indexNu);
-					    $('#queContent').val(queContent);
-					    $('#productCode').val(productCode);
-					    $('#productName').val(productName);
-						$('#addContent').val(queAns);
-						$('#inquiryMemberId').val(memberId);
-						$('#inquiryQueCon').text(queContent2);
-						
-					    $('#inquiryAdd').data('queCodeValue', queCodeValue);
-					});
-
+					initToggle()
 					$('#inquiryAdd').click(function() {
 					    let queAns = $('#addContent').val();
 					    let queCodeValue = $('#inquiryAdd').data('queContent2'); 
@@ -205,7 +218,11 @@
 						.done(sellerInquiry=>{
 							console.log(sellerInquiry);
 							 $('#inquiryList').replaceWith(sellerInquiry); 
-							 
+							 initToggle()
+							$('#inquiryForm').removeClass('show');
+							 if($('tbody > tr').length == 0 ){
+								$('#noList').text('문의내역이 없습니다.')	
+							 }
 
 						})
 						.fail(reject=>{

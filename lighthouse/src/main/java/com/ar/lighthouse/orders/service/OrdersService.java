@@ -31,10 +31,10 @@ public interface OrdersService {
 	public int getOrderCode(String memberId);
 	
 	//사용한 쿠폰 N으로 변경
-	public int editNotCoupon(String memberId, int mycouponCode);
+	public int editNotCoupon(String memberId, int couponCode);
 	
 	//환불된 쿠폰 Y으로 변경
-	public int editRefundCoupon(String memberId, int mycouponCode);
+	public int editRefundCoupon(String memberId, int couponCode);
 	
 	//각 주문 결제 상품별 insert
 	public int addOrders(OrdersVO ordersVO);

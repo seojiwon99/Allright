@@ -13,7 +13,7 @@
 											    margin-top:30px;">
 						<!-- Form -->
 			<div>
-			<h2 class="fst-normal">문의 내역</h2>
+			<h2 class="fst-normal">미처리 문의 내역</h2>
 			</div>
 			<form class="navbar-form w-100" style="max-width: 550px; ">
 				<div class="input-group">
@@ -52,7 +52,7 @@
 			    </tr>
 			  </thead>
 			  <tbody>
-			    <tr th:each="inq : ${inqList}"  th:onclick="|location.href='@{/admin/inquiryDetail(customInquiryCode=${inq.customInquiryCode})}'|" >
+			    <tr th:each="inq : ${inqList}"  th:onclick="|location.href='@{/admin/inquiryDetail(customInquiryCode=${inq.customInquiryCode})}'|" style="cursor : pointer">
 					
 						<td scope="row" th:text="${inq.customInquiryCode}"></td>
 						<td th:text="${inq.customInquiryTitle}"></td>

@@ -41,28 +41,25 @@
  	<select id="selectCoupon" resultType="com.ar.lighthouse.orders.service.OrdersVO">
  	SELECT m.member_id, 
  	
- 	       c.coupon_content, 
- 	       c.coupon_code, 
- 	       c.coupon_condition, 
-		   c.coupon_name, 
-		   c.coupon_discount_price, 
-		   c.coupon_discount_rate, 
-		   c.coupon_max_price, 
-		   c.coupon_min_price,
-		   c.coupon_deadline, 
-		   c.coupon_base, 
+ 	       b.coupon_content, 
+ 	       b.coupon_code, 
+ 	       b.coupon_condition, 
+		   b.coupon_name, 
+		   b.coupon_discount_price, 
+		   b.coupon_discount_rate, 
+		   b.coupon_max_price, 
+		   b.coupon_min_price,
+		   b.coupon_deadline, 
 		   
  	       b.issue_date, 
- 	       b.mycoupon_code,
 		   b.end_date, 
 		   b.using_date
 		   
-    FROM ar_member     m
-    JOIN ar_coupon_box b    ON m.member_id = b.member_id
-    JOIN ar_coupons    c    ON b.coupon_code = c.coupon_code
+    FROM ar_member    m
+    JOIN AR_MY_COUPON b    ON m.member_id = b.member_id
     
-    WHERE m.member_id = #{memberId} 
-      AND coupon_use = 'Y'
+    WHERE m.member_id = #{memberId}
+    AND coupon_use = 'Y'
  	</select>
  	
  	<!-- 배송요청 사항 코드 -->
@@ -73,16 +70,16 @@
  	
  	<!-- 기간 지난, 사용한 쿠폰 사용불가로 변경 -->
  	<update id="updatetNotCoupon">
- 		UPDATE AR_COUPON_BOX 
+ 		UPDATE AR_MY_COUPON 
  		SET coupon_use = 'N' 
- 		WHERE MEMBER_ID = #{memberId} AND MYCOUPON_CODE = #{mycouponCode}
+ 		WHERE MEMBER_ID = #{memberId} AND COUPON_CODE = #{couponCode}
  	</update>
  	
   	<!-- 환불 받은 상품의 쿠폰 재사용 변경 -->
   	<update id="updateRefundCoupon">
-  		UPDATE AR_COUPON_BOX 
+  		UPDATE AR_MY_COUPON 
  		SET coupon_use = 'Y' 
- 		WHERE MEMBER_ID = #{memberId} AND MYCOUPON_CODE = #{mycouponCode}
+ 		WHERE MEMBER_ID = #{memberId} AND COUPON_CODE = #{couponCode}
   	</update>
   	
   	<!-- 토스페이먼츠 결제DB insert -->
@@ -121,7 +118,7 @@
   			   d.discount_price, 
   			   d.order_price, 
   			   d.payment_price,  
-  			   d.mycoupon_code,
+  			   d.coupon_code,
   			   p.delivery_cost
 		FROM ar_orders o
 		
@@ -205,7 +202,7 @@
 							   ORDER_PRICE,
 							   DISCOUNT_PRICE,
 							   PAYMENT_PRICE,
-							   MYCOUPON_CODE,
+							   COUPON_CODE,
 							   OPTION_COUPON_CHECK,
 							   DELIVERY_SERVICE) 
 					   VALUES					  
@@ -216,7 +213,7 @@
 							   #{OrdersVO.orderPrice},
 							   #{OrdersVO.discountPrice},
 							   #{OrdersVO.paymentPrice},
-							   #{OrdersVO.mycouponCode},
+							   #{OrdersVO.couponCode},
 							   #{OrdersVO.optionCouponCheck},
 							   #{OrdersVO.deliveryService})
 	</insert>

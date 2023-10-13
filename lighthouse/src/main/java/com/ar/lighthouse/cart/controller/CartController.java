@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ar.lighthouse.cart.service.CartService;
+import com.ar.lighthouse.cart.service.CartUpdateVO;
 import com.ar.lighthouse.cart.service.CartVO;
 import com.ar.lighthouse.member.service.MemberVO;
 import com.ar.lighthouse.product.service.OptionDetailVO;
@@ -35,7 +36,7 @@ public class CartController {
 
 		model.addAttribute("list", list);
 
-		return "/page/cart/cartView";
+		return "page/cart/cartView";
 	}
 
 	@GetMapping("cart/delete")
@@ -48,7 +49,7 @@ public class CartController {
 
 		List<CartVO> list = cartService.cartGetList(memberId);
 		model.addAttribute("list", list);
-		return "/page/cart/cartView :: #test";
+		return "page/cart/cartView :: #test";
 	}
 
 	@PostMapping("cart/delete")
@@ -65,14 +66,13 @@ public class CartController {
 		List<CartVO> list = cartService.cartGetList(memberId);
 		model.addAttribute("list", list);
 
-		return "/page/cart/cartView :: #test";
+		return "page/cart/cartView :: #test";
 
 	}
 
 	@PostMapping("cart/addCart")
 	@ResponseBody
 	public List<Long> addCart(CartVO cartVO, @RequestBody List<OptionDetailVO> optionDetailVO, HttpSession session) {
-		System.out.println("asdfasdfasdf" + optionDetailVO);
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 	
@@ -96,7 +96,6 @@ public class CartController {
 			}
 
 		}
-		System.out.println(lastODC);
 		// cartService.addCart(cartVO);
 		// lastODC <-- 받아서 값이 없다? 다 들어감. 값이 있다? optionDetailCode 가 안들어간거
 		return lastODC;
@@ -110,8 +109,15 @@ public class CartController {
 
 		vo.setMemberId(memberId);
 
-		System.out.println("aaaaaaaaaaaa" + cartService.checkCart(vo));
 		return cartService.checkCart(vo);
+	}
+	
+	@PostMapping("/cart/update")
+	@ResponseBody
+	public int cartCountUpdate(@RequestBody CartUpdateVO cartUpdateVO) {
+		cartService.editCartCnt(cartUpdateVO);
+		
+		return 0;
 	}
 
 }

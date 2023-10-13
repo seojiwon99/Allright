@@ -21,6 +21,7 @@
 											</div>
 												<!-- content -->
 											<input type="text" class="w-100" placeholder="이미지 설명을 입력해주세요." th:value="${b.imgContent}" name="" style="margin-bottom:10px">
+											<input type="text" class="w-100" style="margin-bottom: 10px;" th:value="${b.eventCode}" placeholder="URL 작성해주세요.">
 											<input type="file"  accept="images/* "  onchange="imageURL(this)">
 											<button class="btn btn-secondary btn-xxs saveBtn" th:value="${b.eventImgCode}">저장</button>
 											<button class="btn btn-secondary btn-xxs delBtn">삭제</button>
@@ -47,6 +48,7 @@
 										</div>
 										<!-- content -->
 										<input type="text" class="w-100" placeholder="이미지 설명을 입력해주세요." name="" style="margin-bottom:10px">
+										<input type="text" class="w-100" style="margin-bottom: 10px;" placeholder="URL 작성요령 (ex) goodDetail?productCode=상품코드는 (P0004)">
 										<input type="file"  accept="images/*"  onchange="imageURL(this)">
 											<button class="btn btn-secondary btn-xxs saveBtn">저장</button>
 											<button class="btn btn-secondary btn-xxs delBtn">삭제</button>
@@ -66,7 +68,7 @@
 								</div>
 				    
 				    </div>
-					<button class="btn btn-sm btn-primary" id="addBtn">배너 등록</button>	
+					<button class="btn btn-sm btn-primary" id="addBtn" data-bs-toggle="tooltip" data-bs-placement="top" title="URL 경로 작성요령 (ex) goodDetail?productCode=상품코드는 (P0004)">배너 등록</button>	
 				    </div>
 					</div>
 			</div>	
@@ -79,11 +81,16 @@
 		
 		$('.saveBtn').on('click', function(e){
 			e.preventDefault();
+
+			if(confirm('저장하시겠습니까?')){
+
+			
 			
 			let eventImgCode = this.value; //ar_event_img (pk)
 			let uploadFile = $(this).prev()[0].files[0]; //업로드 파일
-			let imgName = $(this).prev().prev().prev().children()[0]; //img Tag
-			let imgContent = $(this).prev().prev()[0].value; //대체 텍스트 
+			let imgName = $(this).prev().prev().prev().prev().children()[0]; //img Tag
+			let imgContent = $(this).prev().prev().prev()[0].value; //대체 텍스트 
+			let eventCode = $(this).prev().prev()[0].value; //대체 텍스트 
 			let bannerType = $(this).next().next().children().children()[0].checked//전시 여부
 			let imgOrder = $(this).next().next().children()[1].children[1].value; //배너 순서
 			
@@ -97,6 +104,7 @@
 				formData.append("imgContent", imgContent);
 				formData.append("bannerType", bannerType);
 				formData.append("eventImgCode", eventImgCode);
+				formData.append("eventCode", eventCode);
 				
 				
 				
@@ -109,6 +117,7 @@
 		            processData: false,
 					success : function(rs){
 						console.log(rs);
+						alert('저장되었습니다.');
 					},
 					error : function(err){
 						console.log(err);
@@ -131,16 +140,23 @@
 		            processData: false,
 					success : function(rs){
 						console.log(rs);
+						alert('등록되었습니다.');
 					},
 					error : function(err){
 						console.log(err);
 					}
 				})
 			} 
-
+			} else {
+				return false;
+			}
 		})
 		$('.delBtn').on('click', function(e){
 			e.preventDefault();
+
+			if(confirm('삭제하시겠습니까?')) {
+
+			
 			let eventImgCode = $(this).prev().val();
 			if(eventImgCode == ""){
 				$(this).parent().parent().remove();
@@ -155,6 +171,7 @@
 					},
 					success : function(rs){
 						console.log(rs);
+						alert('삭제되었습니다.');
 					},
 					error : function(err){
 						console.log(err);
@@ -162,6 +179,9 @@
 				})
 				$(this).parent().parent().remove();
 			};
+		} else {
+			return false;
+		}
 		})
 		
 		

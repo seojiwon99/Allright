@@ -718,9 +718,12 @@
 	   
 	   let imgs = [[${goods.uploadPath}]];
 	   let uploadN =[[${goods.uploadName}]];
+	   let photoURL = `url("/upload/${imgs}/${uploadN}")`;
+	   
+	   console.log(photoURL)
 	   $('.card-img-top')
 	    .append('<div class="photo"></div>')
-	    .children('.photo').css({"background-image" : `url(upload/${imgs}/${uploadN})`});
+	    .children('.photo').css({"background-image" : photoURL});
 	    
 	    $('.card-img-top')    
 	    .on('mouseover', function () {

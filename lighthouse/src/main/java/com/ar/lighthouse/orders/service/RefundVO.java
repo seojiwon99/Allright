@@ -30,7 +30,7 @@ public class RefundVO {
 	private int paymentPrice;
 	
 	//couponboxVO
-	private int mycouponCode;
+	private int couponCode;
 	
 	//ProductsVO
 	private int deliveryCost;

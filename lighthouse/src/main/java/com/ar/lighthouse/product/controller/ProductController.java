@@ -116,7 +116,7 @@ public class ProductController {
    }
 
    // 공지사항 화면(페이징)
-   @GetMapping("sellerInquiry")
+   @GetMapping("seller/sellerInquiry")
    public String noticeList(Model model, MyInquiryVO myInquiryVO, HttpSession session) {
 	      MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 	      String memberId = memberVO.getMemberId();
@@ -125,25 +125,23 @@ public class ProductController {
       return "page/seller/sellerInquiry";
    }
    
-	/*
-	 * // 공지사항 검색
-	 * 
-	 * @GetMapping("sellerSeaInquiry") public String sellerInquirySea(Model model,
-	 * MyInquiryVO myInquiryVO, HttpSession session) { MemberVO memberVO =
-	 * (MemberVO) session.getAttribute("loginMember"); String memberId =
-	 * memberVO.getMemberId();
-	 * 
-	 * myInquiryVO.setMemberId(memberId);
-	 * 
-	 * model.addAttribute("myInquiry",
-	 * productService.getSeaSellerInqu(myInquiryVO));
-	 * 
-	 * return "page/seller/sellerInquiry :: #sellerSeaInquiry"; }
-	 */
+	
+	  // 공지사항 검색
+	  
+	  @GetMapping("sellerSeaInquiry") public String sellerInquirySea(Model model,
+	  MyInquiryVO myInquiryVO, HttpSession session) {
+		  MemberVO memberVO = (MemberVO) session.getAttribute("loginMember"); String memberId =
+		  memberVO.getMemberId();
+	  
+		  myInquiryVO.setMemberId(memberId);
+		  model.addAttribute("myInquiry",productService.getSeaSellerInqu(myInquiryVO));
+	  
+	  return "page/seller/sellerInquiry :: #sellerSeaInquiry"; }
+	 
 
    
 //  판매자 상품문의페이지
-   @GetMapping("productInquiry")
+   @GetMapping("seller/productInquiry")
    public String productInquiry(Model model, ProductInquiryVO productInquiryVO, HttpSession session) {
       MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
       String memberId = memberVO.getMemberId();
@@ -152,7 +150,7 @@ public class ProductController {
    }
 
 //   상품문의 검색
-   @GetMapping("inquirySearch")
+   @GetMapping("seller/inquirySearch")
    public String searchInquiry(Model model, ProductInquiryVO productInquiryVO, HttpSession session) {
 	   MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 	      String memberId = memberVO.getMemberId();
@@ -180,13 +178,13 @@ public class ProductController {
    }
 
 //   상품문의 답변 폼
-   @GetMapping("inquiryAnsForm")
+   @GetMapping("seller/inquiryAnsForm")
    public String productInquiryAnsForm() {
       return "page/seller/inquiryAnsForm";
    }
 
 //  판매자 mypage
-   @GetMapping("sellerMypage")
+   @GetMapping("seller/sellerMypage")
    public String findMember(Model model, HttpSession session) {
 
       MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
@@ -197,7 +195,7 @@ public class ProductController {
    }
 
 // 주문/발송 페이지
-   @GetMapping("orderManagement")
+   @GetMapping("seller/orderManagement")
    public String productOrder(Model model, HttpSession session) {
 
       MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
@@ -278,7 +276,7 @@ public class ProductController {
    }
 
 //  정산/통계 페이지
-   @GetMapping("settlementManagement")
+   @GetMapping("seller/settlementManagement")
    public String getCalList(HttpSession session, ExchangeVO exchangeVO, ReturnVO returnVO) {
 
       MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
@@ -290,19 +288,22 @@ public class ProductController {
    }
 
 //  정산페이지
-   @GetMapping("calculatePage")
+   @GetMapping("seller/calculatePage")
    public String getCalculatePage(Model model, SellerCalVO sellerCalVO) {
       model.addAttribute("calList", productService.getCalList(sellerCalVO));
       return "page/seller/calculate";
    }
 
 //  통계페이지
-   @GetMapping("statisticsPage")
-   public String getstatisticsPage(DetailVO detailVO, HttpSession session, Model model) {
+   @GetMapping("seller/statisticsPage")
+   public String getstatisticsPage(HttpSession session, Model model
+		   , @RequestParam(required = false, defaultValue = "") String preBetw, @RequestParam(required = false, defaultValue = "") String suBetw) {
       MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
       String memberId = memberVO.getMemberId();
-
-      model.addAttribute("staticList", productService.getStaticList(memberId));
+      preBetw = preBetw.replaceAll("-", "/"); 
+      suBetw = suBetw.replaceAll("-", "/");
+      model.addAttribute("staticList", productService.getStaticList(memberId,preBetw,suBetw));
+      model.addAttribute("prev", preBetw);
 
       return "page/seller/statistics";
    }
@@ -321,7 +322,7 @@ public class ProductController {
 
 
 //  상품 취소관리 페이지
-   @GetMapping("cancelProduct") // Model model, CancelVO cancelVO
+   @GetMapping("seller/cancelProduct") // Model model, CancelVO cancelVO
    public String cancelProdructs(Model model, HttpSession session) {
       MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
       String memberId = memberVO.getMemberId();
@@ -345,7 +346,7 @@ public class ProductController {
    }
 
 //  교환 관리 페이지
-   @GetMapping("exchangeList")
+   @GetMapping("seller/exchangeList")
    public String exchangeProducts(Model model, ExchangeVO exchangeVO, ReturnVO returnVO, HttpSession session) {
       List<ExchangeVO> combinedInfo = new ArrayList<>();
 
@@ -397,7 +398,7 @@ public class ProductController {
 
 
 //판매자 상품목록
-   @GetMapping("productList")
+   @GetMapping("seller/productList")
    public String productList(Model model, HttpSession session) {
       MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
       String memberId = memberVO.getMemberId();
@@ -432,7 +433,7 @@ public class ProductController {
 
    
 //   수정폼
-   @GetMapping("updateProduct")
+   @GetMapping("/updateProduct")
    public String modifyForm(Model model,CategoryVO categoryVO, CodeVO codeVO,ProductVO productVO, ImgsListVO imgsList) {
       model.addAttribute("getCategoryList", mainPageService.getAllCategoryList());
       model.addAttribute("delivery", productService.getDeliveryList());
@@ -440,7 +441,6 @@ public class ProductController {
       model.addAttribute("detailImg", productService.goodsDetail(productVO));
       System.out.println("product : @@@@" + productService.updateProduct(productVO));
       return "page/seller/modifyForm";
-      
    }
    
 	/*
@@ -570,16 +570,16 @@ public class ProductController {
 		productVO.setMemberId(memberVO.getMemberId());
 
 		// productVO.setCategoryCode("MSU");
-		System.out.println(productVO);
+		System.out.println("왜" + productVO);
 		productService.updateProductP(productVO);
-
 		int i = 0;
+		System.out.println("files@@@" + files);
 		for (MultipartFile uploadFile : files) {
 			System.out.println("@@@@@@@@@@");
-			if (uploadFile.getContentType().startsWith("image") == false) {
-				System.err.println("this file is not image type");
-				return null;
-			}
+			/*
+			 * if (uploadFile.getContentType().startsWith("image") == false) {
+			 * System.err.println("this file is not image type"); return null; }
+			 */
 			String originalName = uploadFile.getOriginalFilename();
 			String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
 			productVO.getProductImg().get(i).setImgName(fileName);

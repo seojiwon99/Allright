@@ -105,7 +105,7 @@
     	 // console.log(item);
          if($(item).children('figcaption').text() == null || $(item).children('figcaption').text() == ''){
           alert("이미지 대체텍스트를 입력해주세요")
-   
+ 
             return false;
          }
 
@@ -118,16 +118,14 @@
           let text01 = src.split('/');
           let data = {
              imgName : text[1],
-             uploadPath : text01[1] + '/' + text01[2] + '/' + text01[3],
-             uploadName : text01[4],
+             uploadPath : text01[2] + '/' + text01[3] + '/' + text01[4],
+             uploadName : text01[5],
              imgContent : $(item).children('figcaption').text()
           };
           srcArr.push(data);
           idx2++;
        })
        
-       console.log("asdadsadsad" + idx2);
-       console.log("@@@@@@@@@@@@@@@@@@" + formTag.length);
        if(idx2 != formTag.length){
     	   e.preventDefault();
          return;
@@ -149,8 +147,10 @@
           form.append(divTag);
        }
       window.localStorage.setItem("detail",JSON.stringify(detailobj)); 
+	  alert("상세 설명이 등록 되었습니다.");
       window.close();
 
+      
       // $(form).submit();
   })
    </script>

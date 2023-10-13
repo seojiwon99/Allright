@@ -37,12 +37,12 @@
 							    margin-top: 30px;">
 				<div>
 				<a href="/admin/faq"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">전체</button></a>
-				<a href="/admin/faq/?faqType=1"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">취소/반품/교환</button></a>
-				<a href="/admin/faq/?faqType=2"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">주문/결제</button></a>
-				<a href="/admin/faq/?faqType=3"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">회원서비스</button></a>
-				<a href="/admin/faq/?faqType=4"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">환불</button></a>
-				<a href="/admin/faq/?faqType=5"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">배송</button></a>
-				<a href="/admin/faq/?faqType=6"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">기타</button></a>
+				<a href="/admin/faq/?faqType=1"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">취소/반품/교환</button><input class="aList" type="hidden" value="1"></a>
+				<a href="/admin/faq/?faqType=2"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">주문/결제</button><input class="aList" type="hidden" value="2"></a>
+				<a href="/admin/faq/?faqType=3"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">회원서비스</button><input class="aList" type="hidden" value="3"></a>
+				<a href="/admin/faq/?faqType=4"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">환불</button><input class="aList" type="hidden" value="4"></a>
+				<a href="/admin/faq/?faqType=5"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">배송</button><input class="aList" type="hidden" value="5"></a>
+				<a href="/admin/faq/?faqType=6"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">기타</button><input class="aList" type="hidden" value="6"></a>
 				</div>
 				<div>
 				<button class="btn btn-xxs btn-info" id="faqAddBtn">등록</button>				
@@ -61,7 +61,7 @@
 			    </tr>
 			  </thead>
 			  <tbody>
-			    <tr th:each="faq : ${faqList}" th:onclick="|location.href='@{/admin/faqDetail(faqCode=${faq.faqCode})}'|">
+			    <tr th:each="faq : ${faqList}" th:onclick="|location.href='@{/admin/faqDetail(faqCode=${faq.faqCode})}'|" style="cursor : pointer">
 					
 						<td scope="row" th:text="${faq.typeName}"></td>
 						<td th:text="${faq.questionTitle}"></td>
@@ -69,14 +69,67 @@
 				</tr>
 			  </tbody>
 			</table>
-				
+			<!-- Pagination -->
+					<nav class="d-flex justify-content-center justify-content-md-center mt-10">
+						<ul class="pagination pagination-sm text-gray-400">
+							<li class="page-item" th:if="${pageMaker.prev}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/admin/faq/(pageNum = ${pageMaker.startPage - 1},questionTitle=${param.questionTitle}, faqType=${param.faqType})}">
+									<i class="fa fa-caret-left"></i>
+							</a></li>
+							<th:block
+								th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+								<li th:if="${pageMaker.endPage} ne 0"
+									th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+									th:each="pageButtom : ${#numbers.sequence(start,end)}"
+									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
+									<a class="page-link" href="#"
+									th:href="@{/admin/faq/(pageNum= ${pageButtom},questionTitle=${param.questionTitle}, faqType=${param.faqType} )}"
+									th:text="${pageButtom}" style="font-size : x-large;"></a>
+								</li>
+							</th:block>
+
+							<li class="page-item" th:if="${pageMaker.next}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/admin/faq/(pageNum = ${pageMaker.endPage + 1},questionTitle=${param.questionTitle}, faqType=${param.faqType})}">
+									<i class="fa fa-caret-right"></i>
+							</a></li>
+						</ul>
+					</nav>
 					<!-- pagi end -->
 	</div><!-- container -->
 
-<script>
+<script th:inline="javascript">
+	$(document).ready(function(){
+
+		let faqListChk = [[${param.faqType}]];
+
+		if(faqListChk == null){
+			$('#noticeBtn').addClass('active');
+		}
+		
+		$('.aList').each(function(idx,el){
+			if(el.value == faqListChk[0]) {
+				let btnNow = $(el).prev();
+				btnNow.addClass('active');
+			}
+		})
+	})
+
 $('#faqSearchBtn').on('click', function(){
-	let url = "?customInquiryTitle=" + $('#faqSearchBar').val()
-	location.href =  url;
+	let nowURL = new URL(location.href);
+	nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
+	nowURL.searchParams.set('questionTitle', $('#faqSearchBar').val());
+	location.href = nowURL.href;
+})
+$('#faqSearchBar').on('keydown',function(e){
+	if(e.key == 'Enter'){
+		e.preventDefault();
+		let nowURL = new URL(location.href);
+		nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
+		nowURL.searchParams.set('questionTitle', $('#faqSearchBar').val());
+		location.href = nowURL.href;
+	}
 })
 
 $('#faqAddBtn').on('click',function(){

@@ -41,31 +41,31 @@
             <!-- Nav -->
             <nav class="mb-10 mb-md-0">
               <div class="list-group list-group-sm list-group-strong list-group-flush-x">
-                <a class="list-group-item list-group-item-action dropend-toggle active" id="orderList" th:href="@{/page/buyer/orderList}">
+                <a class="list-group-item list-group-item-action dropend-toggle active" id="orderList" th:href="@{/page/buyer/orderList}" tabindex="-1">
                   주문 목록
                 </a>
 				<ul class="list-styled mb-0">
 				<li class="nav-item">
 
                   <!-- Toggle -->
-                  <a class="list-group-item list-group-item-action dropend-toggle active" data-bs-toggle="collapse" href="#Collapse" aria-expanded="true">
+                  <a class="list-group-item list-group-item-action dropend-toggle active" data-bs-toggle="collapse" href="#Collapse" aria-expanded="true" tabindex="-1">
                    취소/반품/교환내역
                   </a>
                   <!-- Collapse -->
                   <div class="collapse" id="Collapse" data-simplebar-collapse="#seasonGroup">
                     <div class="form-group form-group-overflow mb-6" id="seasonGroup">
                       <div class="form-check mb-3">
-                        <a class="form-check-label" id="cancel"  href="cancelList">
+                        <a class="form-check-label" id="cancel"  href="cancelList" tabindex="-1">
                           취소
                         </a>
                       </div>
                       <div class="form-check mb-3">
-                        <a class="form-check-label" id="reList" href="returnList">
+                        <a class="form-check-label" id="reList" href="returnList" tabindex="-1">
                           반품
                         </a>
                       </div>
                       <div class="form-check">
-                        <a class="form-check-label" id="exchange" href="exchangeList">
+                        <a class="form-check-label" id="exchange" href="exchangeList" tabindex="-1">
                           교환
                         </a>
                       </div>
@@ -73,22 +73,22 @@
                   </div>
                  </li>
                 <li class="nav-item">
-                <a class="list-group-item list-group-item-action dropend-toggle" id="coupon" th:href="@{/page/buyer/myCoupon}">
+                <a class="list-group-item list-group-item-action dropend-toggle" id="coupon" th:href="@{/page/buyer/myCoupon}" tabindex="-1">
                   나의 쿠폰함
                 </a>
                 </li>
                 <li class="nav-item">
-                <a class="list-group-item list-group-item-action dropend-toggle" id="inquiry" th:href="@{/page/buyer/myInquiry}">
+                <a class="list-group-item list-group-item-action dropend-toggle" id="inquiry" th:href="@{/page/buyer/myInquiry}" tabindex="-1">
                   문의내역
                 </a>
                 </li>
                  <li class="nav-item">
-                <a class="list-group-item list-group-item-action dropend-toggle" id="wish" th:href="@{/page/buyer/wishList}">
+                <a class="list-group-item list-group-item-action dropend-toggle" id="wish" th:href="@{/page/buyer/wishList}" tabindex="-1">
                   찜 목록
                 </a>
                 </li>
                  <li class="nav-item">
-                <a class="list-group-item list-group-item-action dropend-toggle" id="myInfo" th:href="@{/page/buyer/personalInfo}">
+                <a class="list-group-item list-group-item-action dropend-toggle" id="myInfo" th:href="@{/page/buyer/personalInfo}" tabindex="-1">
                   개인정보 확인/수정
                 </a>
                 </li>
@@ -117,7 +117,7 @@
 			            <tr th:each="inqs,status : ${myInquiry}">
 			              <td style="display:none;"></td>
 			              <td th:id="|code${status.index}|" class="inquiryCode" tabindex="0" style="padding-left: 5px; padding-right: 5px; text-align: center;">[[${inqs.customInquiryCode}]]</td>
-			              <td th:id="|title${status.index}|" class="inquiryTitle" data-bs-toggle="modal" th:data-bs-target="|#modalProduct${inqs.customInquiryCode}|" style="text-align: center;">[[${inqs.customInquiryTitle}]]</td>
+			              <td th:id="|title${status.index}|" class="inquiryTitle" tabindex="0" data-bs-toggle="modal" th:data-bs-target="|#modalProduct${inqs.customInquiryCode}|" style="text-align: center; cursor : pointer; ">[[${inqs.customInquiryTitle}]]</td>
 			              <td th:id="|content${status.index}|" class="inquiryContent" style="width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:inline-block;">[[${inqs.customInquiryContent}]]</td>
 			              <td th:id="|regdate${status.index}|" class="inquiryRegdate" style="white-space: nowrap;">[[${#dates.format(inqs.customInquiryRegdate, 'yyyy-MM-dd')}]]</td>
 			              <td th:id="|answer${status.index}|" class="inquiryAnswerStatus" style="text-align: center;">[[${inqs.customInquiryAnswerStatus}]] </td>
@@ -130,7 +130,7 @@
 					      <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
 					        <div class="modal-content">
 					          <!-- Close -->
-					          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+					          <button type="button" tabindex="-1" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 					            <i class="fe fe-x" aria-hidden="true"></i>
 					          </button>
 					          <!-- Content -->
@@ -138,23 +138,23 @@
 					            <div class="row align-items-center mx-xl-0">
 					              <div class="col-12 col-lg-6 col-xl-7 py-9 px-md-9">
 					                <label class="h7">문의 제목 :</label>
-					                <h5 class="mb-3" th:text="|${inqs.customInquiryTitle}|"></h5>
+					                <h5 class="mb-3 inqTitle" tabindex="0" th:text="|${inqs.customInquiryTitle}|"></h5>
 					                <label class="h7">문의 날짜 :</label>
-					                <h5 class="mb-3" th:text="|${#dates.format(inqs.customInquiryRegdate, 'yyyy-MM-dd')}|"></h5>
+					                <h5 class="mb-3 inqDate" tabindex="0" th:text="|${#dates.format(inqs.customInquiryRegdate, 'yyyy-MM-dd')}|"></h5>
 					                <!-- Form -->
 					                <form>
 					                  <label class="h5">문의 내용 :</label>
 					                  <div class="form-group">
-					    				<textarea rows="5" cols="100" th:text="|${inqs.customInquiryContent}|"></textarea>
+					    				<textarea class="inqContent" tabindex="0" rows="5" cols="100" th:text="|${inqs.customInquiryContent}|"></textarea>
 					                  </div>
 					                  <label class="h5">답변 내용 :</label>
 					                  <div class="form-group">
-					    				<textarea rows="5" cols="100" th:text="|${inqs.customInquiryAnswer}|"></textarea>
+					    				<textarea class="inqAnswer" tabindex="0" rows="5" cols="100" th:text="|${inqs.customInquiryAnswer}|" readonly></textarea>
 					                  </div>
 					                  <div class="form-group mb-0">
 					                    <div class="row gx-5">
 					    	              <div class="col-12 col-lg">
-					                        <button type="submit" class="btn w-100 btn-dark mb-2">
+					                        <button type="submit" tabindex="0" class="btn w-100 btn-dark mb-2 closeBtn">
 					                          닫기
 					                        </button>
 					                      </div>
@@ -234,21 +234,54 @@
 
     //tts 이벤트 부여
     $('.inquiryCode').on('focus', inquiryInfo);
-
+	$('.inquiryTitle').on('focus', inquiryTitle);
+	$('.inqTitle').on('focus', inqTitle);
+	$('.inqDate').on('focus', inqDate);
+	$('.inqContent').on('focus', inqContent);
+	$('.inqAnswer').on('focus', inqAnswer);
+	$('.closeBtn').on('focus', closeBtn);
+	
     //tts 이벤트 진행
     function inquiryInfo() {
-   	 	let inquiryCode = $(this).closest('.inquiryRow').find('.inquiryCode').text();
-	    let inquiryTitle = $(this).closest('.inquiryRow').find('.inquiryTitle').text();
-	    let inquiryContent =  $(this).closest('.inquiryRow').find('.inquiryContent').text();
-	    let inquiryRegdate =  $(this).closest('.inquiryRow').find('.inquiryRegdate').text();
-	    let inquiryAnswerStatus = $(this).closest('.inquiryRow').find('.inquiryAnswerStatus').text();
+   	 	let inquiryCode = $(this).parent().find('.inquiryCode').text();
+	    let inquiryTitle = $(this).parent().find('.inquiryTitle').text();
+	    let inquiryContent =  $(this).parent().find('.inquiryContent').text();
+	    let inquiryRegdate =  $(this).parent().find('.inquiryRegdate').text();
+	    let inquiryAnswerStatus = $(this).parent().find('.inquiryAnswerStatus').text();
 	       	 
 	    let message= `문의 번호는 ${inquiryCode}. 문의 제목은 ${inquiryTitle}. 문의 내용은 ${inquiryContent}.
-			           작성 날짜는 ${inquiryRegdate}. 답변 여부는 ${inquiryAnswerStatus}. 입니다.`;
+			           작성 날짜는 ${inquiryRegdate}. 답변 여부는 ${inquiryAnswerStatus}. 문의 내역을 자세히 보고 싶으면 문의 제목을 클릭해주세요.`;
    	 
    	 VoiceMenual(message);
     }
-
+	function inquiryTitle(){
+		VoiceMenual("문의 내역을 자세히 보고 싶으면 클릭을 해주세요");
+	}
+	function inqTitle(){
+		let title = $(this).parent().find('.inqTitle').text();
+		VoiceMenual("문의 제목은" + title + "입니다.");
+	}
+	function inqDate(){
+		let date = $(this).parent().find('.inqDate').text();
+		VoiceMenual("문의 날짜는" + date + "입니다.");
+	}
+	function inqContent(){
+		let content = $(this).parent().find('.inqContent').text();
+		VoiceMenual("문의 내용은" + content + "입니다.");
+	}
+	function inqAnswer(){
+		let answer = $(this).parent().find('.inqAnswer').text()
+		if(answer == ''){
+			VoiceMenual("아직 답변을 받지 못했습니다.");
+		}else{
+			VoiceMenual("답변 내용은" + answer + "입니다.");
+		}
+	}
+	function closeBtn(){
+		
+		VoiceMenual("닫기 버튼입니다. 이 문의 사항을 닫고 싶으면 엔터키를 입력해주세요.");
+	}
+	
 		//tts 부분
 		console.log('hello js');
 		

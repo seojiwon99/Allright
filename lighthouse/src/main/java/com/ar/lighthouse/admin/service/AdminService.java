@@ -18,6 +18,10 @@ public interface AdminService {
 	public int addNotice(NoticeAdminVO noticeAdminVO);
 	//FAQ 등록
 	public int addFaq(FaqVO faqVO);
+	//FAQ 리스트
+	public List<FaqVO> getAdminFaqList(Criteria cri, FaqVO faqVO);
+	//FAQ 개수
+	public int getTotalFaqCount(FaqVO faqVO);
 	//공지 상세
 	public NoticeAdminVO getNoticeDetail(NoticeAdminVO noticeAdminVO);
 	//FAQ 상세

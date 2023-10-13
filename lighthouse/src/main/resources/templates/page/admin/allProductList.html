@@ -47,7 +47,7 @@
 	
 	
 	<!-- TABLE -->
-    		<table class="table table-bordered table-sm mb-0">
+    		<table class="table table-bordered table-sm mb-0" style="table-layout: fixed;">
 			  <thead>
 			    <tr>
 			      <th scope="col">상품코드</th>
@@ -64,11 +64,11 @@
 			    <tr th:each="pro : ${proList}">
 					
 						<td scope="row" th:text="${pro.productCode}"></td>
-						<td th:text="${pro.productName}"></td>
+						<td th:text="${pro.productName}" th:title="${pro.productName}" style="text-overflow: ellipsis; overflow: hidden; white-space:nowrap;"></td>
 						<td th:text="${pro.memberId}"></td>
 						<td th:text="${pro.memberTel}"></td>
 						<td th:text="${pro.businessNumber}"></td>
-						<td><a class="nav-link active" href="#!">Link</a></td>
+						<td><a class="nav-link active" target=_blank th:href="|/goodDetail?productCode=${pro.productCode}|">Link</a></td>
 						<td style="margin: 0 auto">
 						<select id="suspReasonSelect" style="width:70px;">
 							<option th:each="reason : ${suspReason}" th:value="${reason.codeId}" th:if="${#strings.contains(reason.codeId,'2')}">[[${reason.codeName}]]</option>
@@ -179,7 +179,7 @@
 	
 	
 	//style
-	$('.table-sm thead th').css("font-size", "0.4rem");
+	$('.table-sm thead th').css("font-size", "0.8rem");
 	$('.table-sm thead th').css("padding", "1rem 1rem");
 	$('.table-sm tbody td').css("padding", "1rem 1rem");
 	$('.table-sm tbody td').css("font-size", "0.8rem");

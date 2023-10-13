@@ -17,13 +17,15 @@
   			   g.upload_path,
                o.option_detail_code,
                o.option_last,
-               o.option_price
+               o.option_price,
+               o.max_order,
+               o.min_order
 			FROM ar_cart c
 			JOIN ar_option_detail o ON c.option_detail_code = o.option_detail_code
 			JOIN ar_products p ON o.product_code = p.product_code
 			JOIN ar_imgs g ON g.product_code = p.product_code
 			JOIN ar_member m ON m.member_id = c.member_id
-            where c.member_id = #{memberId} AND g.img_order =1
+            where c.member_id = #{memberId} AND g.img_order =0
   	</select>
   	
   	<delete id="deleteCart">
@@ -64,5 +66,10 @@
 			WHERE MEMBER_ID = #{memberId}
 			AND OPTION_DETAIL_CODE = #{optionDetailCode}
   	</select>
+  	
+  	<!-- 장바구니 수량 업데이트 -->
+  	<update id="updateCartCnt">
+  		UPDATE AR_CART SET CART_COUNT = #{cartCount} WHERE CART_CODE = #{cartCode}
+  	</update>
   	
   </mapper>
