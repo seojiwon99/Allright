@@ -1,5 +1,3 @@
-OrdersController
-
 package com.ar.lighthouse.orders.controller;
 
 import java.io.IOException;
