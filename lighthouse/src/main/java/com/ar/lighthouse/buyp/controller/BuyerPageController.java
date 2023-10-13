@@ -61,7 +61,7 @@ public class BuyerPageController {
 		List<DetailVO> orderList = buyerPageService.getDetailList(memberId, cri);
 		model.addAttribute("orderList", orderList);
 
-		return "/page/buyer/orderList";
+		return "page/buyer/orderList";
 	}
 
 	// 주문 Option 
@@ -88,7 +88,7 @@ public class BuyerPageController {
 		BuyInfoVO personalInfo = buyerPageService.getInfo(memberId);
 		model.addAttribute("personalInfo", personalInfo);
 
-		return "/page/buyer/personalInfo";
+		return "page/buyer/personalInfo";
 	}
 
 	// 취소/반품/교환
@@ -101,7 +101,7 @@ public class BuyerPageController {
 		List<TradeVO> tradeList = buyerPageService.getTradeList(memberId);
 		model.addAttribute("tradeList", tradeList);
 
-		return "/page/buyer/tradeList";
+		return "page/buyer/tradeList";
 	}
 
 	// 쿠폰내역
@@ -115,7 +115,7 @@ public class BuyerPageController {
 		List<CouponVO> myCoupon = buyerPageService.getCouponList(memberId, cri);
 		model.addAttribute("myCoupon", myCoupon);
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
-		return "/page/buyer/myCoupon";
+		return "page/buyer/myCoupon";
 	}
 
 	// 문의내역
@@ -130,7 +130,7 @@ public class BuyerPageController {
 		List<MyInquiryVO> myInquiry = buyerPageService.getMyQuiryList(memberId, cri);
 		model.addAttribute("myInquiry", myInquiry);
 
-		return "/page/buyer/myInquiry";
+		return "page/buyer/myInquiry";
 	}
 	
 	// 찜 내역
@@ -152,7 +152,7 @@ public class BuyerPageController {
 		model.addAttribute("wishList", wishList);
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 
-		return "/page/buyer/wishList";
+		return "page/buyer/wishList";
 	}
 
 	// 찜 내역 페이징
@@ -178,7 +178,7 @@ public class BuyerPageController {
 
 		model.addAttribute("cancelList", cancelList);
 
-		return "/page/buyer/cancelList";
+		return "page/buyer/cancelList";
 	}
 
 	// 반품 목록
@@ -192,7 +192,7 @@ public class BuyerPageController {
 
 		model.addAttribute("returnList", returnList);
 
-		return "/page/buyer/returnList";
+		return "page/buyer/returnList";
 	}
 
 	// 교환 목록
@@ -206,7 +206,7 @@ public class BuyerPageController {
 
 		model.addAttribute("exchangeList", exchangeList);
 
-		return "/page/buyer/exchangeList";
+		return "page/buyer/exchangeList";
 	}
 
 	// 교환 신청 페이지
@@ -355,7 +355,7 @@ public class BuyerPageController {
 		model.addAttribute("wishList", wishList);
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		
-		return "/page/buyer/wishList :: #test";
+		return "page/buyer/wishList :: #test";
 	}
 
 	// 찜 등록 , 상품 단건용 ,메인페이지용

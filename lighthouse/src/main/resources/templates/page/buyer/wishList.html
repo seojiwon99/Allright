@@ -88,26 +88,26 @@
 									<div class="card mb-7">
 										<!-- Image -->
 										<div class="card-img">
-											<!-- Action -->
-											<a
-												class="btn btn-xs btn-circle btn-white-primary card-action card-action-end" href="#" th:onclick="deleteWish([[${wishes.favoriteCode}]])" tabindex="-1">
-												<i class="fe fe-x"></i>
-											</a>
 											<!-- Button -->
-											<button class="btn btn-xs w-100 btn-dark card-btn"
-												data-bs-toggle="modal" data-bs-target="#modalProduct" tabindex="-1">
+											<a class="btn btn-xs w-100 btn-dark card-btn"
+												tabindex="0" th:href="|/goodDetail?productCode=${wishes.productCode}|">
 												<i class="fe fe-eye me-2 mb-1"></i> Quick View
-											</button>
+											</a>
 											<!-- Image -->
 											<img class="card-img-top favoriteCode"
 												th:src="|/upload/${wishes.uploadPath}/${wishes.uploadName}|"
 												th:alt="${wishes.imgContent}" th:value="${wishes.favoriteCode}" tabindex="0">
+											<!-- Action -->
+											<a
+												class="btn btn-xs btn-circle btn-white-primary card-action card-action-end" href="#" th:onclick="deleteWish([[${wishes.favoriteCode}]])" tabindex="0">
+												<i class="fe fe-x"></i>
+											</a>
 										</div>
 										<!-- Body -->
 										<div class="card-body fw-bold text-center">
-											<a class="text-body" href="product.html" tabindex="-1"></a>>
+											<a class="text-body" href="product.html" tabindex="-1"></a>
 											<span th:text="${wishes.productName}" class="productName" tabindex="-1"></span>
-											</a> <br> 
+											<br> 
 											<span class="text-muted"><span th:text="|${wishes.productCost}원|" tabindex="-1" class="productCost"></span></span>
 										</div>
 									</div>
