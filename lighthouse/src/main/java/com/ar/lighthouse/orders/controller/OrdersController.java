@@ -53,7 +53,6 @@ public class OrdersController {
 	@PostMapping("orders/pay")
 	public String orderList(HttpServletRequest request, Model model, @RequestParam (name = "cartCode") int[] cartCode) {
 		
-		System.out.println(cartCode);
 		HttpSession session = request.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
@@ -61,7 +60,6 @@ public class OrdersController {
 		List<CodeVO> codeList = ordersService.getCode();
 		
 		int[] lists = cartCode;
-		System.out.println(cartCode);
 		List<OrdersVO> orderGet = new ArrayList<OrdersVO>();
 		for(int cartNum : lists)  {
 			orderGet.add((ordersService.getOrders(memberId, cartNum)));  
@@ -88,7 +86,7 @@ public class OrdersController {
 		// 배송지 마스터 코드 전송
 		model.addAttribute("codeList",codeList);
 		 
-		return "/page/orders/ordersPay";
+		return "page/orders/ordersPay";
 	}
 	
 	//배송지, 배송 주문 테이블 Session 저장
@@ -127,7 +125,6 @@ public class OrdersController {
 			int couponUse = ordersService.editNotCoupon(memberId, couponCode);
 			idx++;
 		}
-		System.out.println("test3:"+optionCodeList);
 
 		//주문 데이터 저장 method (배송 등) 총 주문 결제 정보
 		ordersService.addOrderPay(memberId, deliveryVO);
@@ -167,7 +164,7 @@ public class OrdersController {
 					 orderCoupon.setOrderPrice(pay.getProductSalePrice());
 					 orderCoupon.setDiscountPrice(pay.getCouponPrice());			 
 					 orderCoupon.setPaymentPrice(pay.getProductSalePrice() - pay.getCouponPrice() + pay.getDeliveryCost());
-					System.out.println("asda@@@@@@@@@@@@@@@@@@@@@@@" + orderCoupon);
+					
 					ordersService.addOrders(orderCoupon);
 					 } else {
 						 continue;
@@ -179,7 +176,6 @@ public class OrdersController {
 						if(optionCodeList.contains(order.getOptionDetailCode())) { //쿠폰 할인 받은 상품
 							continue;
 						}else {
-							System.out.println("test2:"+order); // 쿠폰 할인 받지 않은 상품
 							order.setOrderCode(orderCode);
 							order.setOptionCouponCheck("N");
 							order.setOrderPrice(order.getCartCount() *(order.getOptionPrice() + order.getSalePrice()));
@@ -251,10 +247,8 @@ public class OrdersController {
 		//토스페이먼츠 환불  규연
 		@PostMapping(value = "/orders/cancel")
 		public String orderCancel(String refundList, HttpSession session) throws IOException, InterruptedException {
-		System.out.println("확인" + refundList);
 		ObjectMapper objectMapper = new ObjectMapper();
 		OrderChkVO[] orderchkList= objectMapper.readValue(refundList, OrderChkVO[].class);
-		System.out.println("확인" + orderchkList);
 		RefundVO newRefund = new RefundVO();
 		 for(OrderChkVO chk : orderchkList) {
 		 if(chk.getCancelReason() == "") {
@@ -264,7 +258,6 @@ public class OrdersController {
 		 RefundVO refund = ordersService.getRefund(chk.getOrderCode(), chk.getOrderDetailCode(), chk.getMemberId());
 		 
 		 //상품 취소 중 쿠폰 사용한 경우 쿠폰 반환
-		 System.out.println(refund.getCouponCode());
 			  if(refund.getCouponCode() != 0) { 
 				  ordersService.editRefundCoupon(chk.getMemberId(),refund.getCouponCode()); 
 			  }
@@ -285,7 +278,6 @@ public class OrdersController {
 				 .build();
 		
 		 HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-		 System.out.println(response.body());
 		 
 	 	String refundVal = response.body();
 		
@@ -299,7 +291,6 @@ public class OrdersController {
 				JsonNode refundableAmountNode = lastCancel.get("refundableAmount");
 					if(refundableAmountNode != null) {
 						refundAbleAmount = refundableAmountNode.asInt();
-						System.out.println("Last Value" + refundAbleAmount);
 				}
 			}
 			

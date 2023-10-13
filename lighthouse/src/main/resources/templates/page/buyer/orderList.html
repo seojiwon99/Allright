@@ -6,7 +6,11 @@
 
 <!-- Content -->
 <div layout:fragment="content">
-
+<style>
+  img {
+    border-radius: 20px;
+  }
+</style>
 <!-- CONTENT -->
     <section class="pt-7 pb-12">
       <div class="container">
@@ -91,7 +95,7 @@
                   <option value="product_name">상품명</option>
                </select>
                <input type="text" class="selectVal" id="search" value="" maxlength="50">
-               <button type="button" id="selectOption">검색</button>
+               <button type="button" id="selectOption" style="background-color: black; color: white;">검색</button>
                <div>
                   <span>조회기간</span> 
                   <input type="DATE" id="from" name="from" autocomplete="off"> 
@@ -107,7 +111,7 @@
                 <!-- Info -->
                 <div class="card card-sm orderList"  id="orderOption">
                 <div th:each="lists : ${orderList}" th:data-orderdetailcode="${lists.orderDetailCode}" class="order">
-                  <div class="card-body bg-light">
+                  <div class="card-body bg-light" style="border-radius: 15px;">
                     <div class="row orderRow">
                     <!-- 주문 번호 -->
                       <div class="col-6 col-lg-3">
@@ -130,9 +134,9 @@
                       <!-- 상품 이미지 -->
                       <div class="col-6 col-lg-3">
                         <h6 class="heading-xxxs text-muted">상품 이미지:</h6>
-                        <p class="mb-0 fs-sm fw-bold">
+                          <a th:href="|/goodDetail?productCode=${lists.productCode}|" tabindex="-1">
                           <img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|" style="max-width: 100%; height: auto" th:alt="${lists.imgContent}">
-                        </p>
+                          </a>
                       </div>
                     <!-- 상품명 -->
                       <div class="col-6 col-lg-3">
@@ -147,28 +151,28 @@
                       </div>
                     <!-- 수량 -->
                       <div class="col-6 col-lg-3">
-                        <h6 class="heading-xxxs text-muted">수량:</h6>
+                        <h6 class="heading-xxxs text-muted" style="margin-top: 10px">수량:</h6>
                         <p class="mb-0 fs-sm fw-bold">
                           <span class="orderCnt" th:text="|${lists.orderCnt}|"></span>
                         </p>
                       </div>
                     <!-- 주문 금액 -->
                       <div class="col-6 col-lg-3">
-                        <h6 class="heading-xxxs text-muted">주문 금액:</h6>
+                        <h6 class="heading-xxxs text-muted" style="margin-top: 10px">주문 금액:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                          <span class="paymentPrice" th:text="|${lists.paymentPrice}원|"></span>
+                          <span class="paymentPrice" th:text="|${#numbers.formatInteger(lists.paymentPrice,0,'COMMA')}원|"></span>
                         </p>
                       </div>
                     <!-- 배송 상태 -->
                       <div class="col-6 col-lg-3">
-                        <h6 class="heading-xxxs text-muted">배송 상태:</h6>
+                        <h6 class="heading-xxxs text-muted" style="margin-top: 10px">배송 상태:</h6>
                         <p class="mb-0 fs-sm fw-bold">
                           <span class="orderStatusNm" th:text="|${lists.orderStatusNm}|"></span>
                         </p>
                       </div>
                     <!-- 배달 완료 날짜 -->
                       <div class="col-6 col-lg-3">
-                        <h6 class="heading-xxxs text-muted">배송 완료 날짜:</h6>
+                        <h6 class="heading-xxxs text-muted" style="margin-top: 10px">배송 완료 날짜:</h6>
                         <p class="mb-0 fs-sm fw-bold">
                          <span class="deliveryDate" th:text="|${lists.deliveryDate}|"></span>
                         </p>
@@ -203,29 +207,29 @@
                       </div>
                     </div>
                   </div>
-                <div class="card-footer">
+                <div class="card-footer orderBtn">
                 <div class="row align-items-center" th:if="|${lists.returnStatusNm} != '신청' or ${lists.cancelStatusNm} != '신청' or ${lists.exchangeStatusNm} != '신청'|">
                     <!-- 리뷰  button -->
-                      <div class="col-6" th:if="${lists.orderStatus} == '4'">
-                        <a class="btn btn-sm w-100 btn-outline-dark reviewBtn" href="#">
+                      <div class="col-4" th:if="${lists.orderStatus} == '4'">
+                        <a class="btn btn-sm w-100 btn-outline-dark reviewBtn" href="#" style="border-radius: 10px; background-color: black; color: white;">
                           리뷰 쓰기
                         </a>
                       </div>
                     <!-- 교환 Button -->
-                      <div class="col-6">
-                        <a class="btn btn-sm w-100 btn-outline-dark excBtn" th:href="@{/exchange}" >
+                      <div class="col-4">
+                        <a class="btn btn-sm w-100 btn-outline-dark excBtn" th:href="@{/exchange}" style="border-radius: 10px; background-color: black; color: white;">
                           교환
                         </a>
                       </div>
                     <!-- 반품 Button -->
-                      <div class="col-6">
-                        <a class="btn btn-sm w-100 btn-outline-dark retBtn" th:href="@{/return}" >
+                      <div class="col-4">
+                        <a class="btn btn-sm w-100 btn-outline-dark retBtn" th:href="@{/return}" style="border-radius: 10px; background-color: black; color: white;">
                           반품
                         </a>
                       </div>
                     <!-- 주문 취소 Button -->
-                      <div class="col-6" th:if="${lists.orderStatus} == '2' or ${lists.orderStatus} == '1'" style ="margin-top : 5px">
-                        <a class="btn btn-sm w-100 btn-outline-dark cancelBtn" th:href="@{/cancel}" >
+                      <div class="col-4" th:if="${lists.orderStatus} == '2' or ${lists.orderStatus} == '1'" style ="margin-top : 5px;">
+                        <a class="btn btn-sm w-100 btn-outline-dark cancelBtn" th:href="@{/cancel}" style="border-radius: 10px; background-color: black; color: white;" >
                           주문 취소
                         </a>
                       </div>
@@ -281,7 +285,7 @@
       0번 다시듣기.
     </textarea>
    <script>
-	   document.querySelector(".orderList").addEventListener("click", function(e) {
+	   document.querySelector(".orderBtn").addEventListener("click", function(e) {
 	   e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
 	   var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
 	    var url="";

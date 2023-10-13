@@ -6,6 +6,13 @@
 
 <!-- Content -->
 <div layout:fragment="content">
+	
+	<style>
+	  img {
+	    border-radius: 20px;
+	  }
+	</style>
+
     <!-- CONTENT -->
     <section class="pt-7 pb-12">
       <div class="container">
@@ -44,7 +51,7 @@
                     <input type="hidden" name="productCode" th:value="${lists.productCode}">
 
                     <!-- Image -->
-                    <a th:href="|http://localhost:8090/goodDetail?productCode=${lists.productCode}|" tabindex="-1">
+                    <a th:href="|/goodDetail?productCode=${lists.productCode}|" tabindex="-1">
                      <img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|" alt="..." class="img-fluid" tabindex="-1">
                     </a>
 
