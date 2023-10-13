@@ -28,40 +28,47 @@
   	</resultMap>
   	
   	<select id="selectReviewList" resultMap="selectReviewInfo" resultType="reviewVO">
-		   SELECT *
-				FROM(SELECT 
-            	ROWNUM rn
-               , r.review_code
-		       , r.member_id
-		       , r.product_code
-		       , r.review_content
-		       , r.review_star
-		       , r.review_regdate
-		       , i.img_code
-		       , i.parent_code
-		       , i.img_order
-		       , i.img_name
-		       , i.upload_name
-		       , i.img_content
-		       , i.img_regdate
-		       , REPLACE(i.upload_path,'\','/') as upload_path
-			FROM ar_review r left outer join ar_imgs i
-			ON r.review_code = i.review_code
-			WHERE r.product_code = #{reviewVO.productCode}
-			<![CDATA[
-			AND	ROWNUM <= #{cri.pageNum} * #{cri.amount}
-			order by r.review_regdate desc )
+		SELECT *
+		FROM(SELECT 
+		           	ROWNUM rn
+		              , r.review_code
+			       , r.member_id
+			       , r.product_code
+			       , r.review_content
+			       , r.review_star
+			       , r.review_regdate
+			       , i.img_code
+			       , i.parent_code
+			       , i.img_order
+			       , i.img_name
+			       , i.upload_name
+			       , i.img_content
+			       , i.img_regdate
+			       , REPLACE(i.upload_path,'\','/') as upload_path
+				FROM ar_review r left outer join ar_imgs i
+				ON r.review_code = i.review_code
+				WHERE r.product_code = #{reviewVO.productCode}
+				AND r.review_status = 'N'
+				<![CDATA[
+				AND	ROWNUM <= #{cri.pageNum} * #{cri.amount}
+				order by r.review_regdate desc )
 		WHERE rn > ( #{cri.pageNum} - 1 ) * #{cri.amount}
 		]]>
 	order by review_regdate DESC
   	</select>
   	
   	<select id="countReview" parameterType="ReviewVO" resultType="int">
-  		SELECT count(*) as reviewCount FROM ar_review where product_code = #{productCode}
+  		SELECT count(*) as reviewCount 
+  		FROM ar_review 
+  		where product_code = #{productCode}
+  		AND review_status = 'N'
   	</select>
   	
   	<select id="reviewStarAvg" resultType="int">
-  		SELECT NVL(ROUND(AVG(REVIEW_STAR),0),0) as reviewStarAvg from ar_review where product_code = #{productCode}
+  		SELECT NVL(ROUND(AVG(REVIEW_STAR),0),0) as reviewStarAvg 
+  		from ar_review 
+  		where product_code = #{productCode}
+  		AND review_status = 'N'
   	</select>
   	
   	<insert id="insertReview" parameterType="ReviewVO">
@@ -137,14 +144,13 @@
   	</update>
   	
   	<!-- 리뷰 삭제 -->
-  	<delete id="deleteReview">
-  		DELETE FROM ar_review WHERE review_code = #{reviewCode}
-  	</delete>
+  	<update id="deleteReview">
+  		UPDATE ar_review
+  		SET review_status = 'Y'
+  		WHERE review_code = #{reviewCode}
+  	</update>
   	
-  	<!-- 리뷰 이미지 삭제--> 
-  	<delete id="reviewImgDelete">
-  		DELETE FROM ar_imgs where review_code = #{reviewCode}
-  	</delete>
+
   	
   	<!-- 리뷰신고 코드-->
   	<select id="reviewDeclareCode" resultType="CodeVO">
