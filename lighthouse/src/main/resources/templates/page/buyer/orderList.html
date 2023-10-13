@@ -286,9 +286,13 @@
    <script>
    
       document.querySelector(".orderList").addEventListener("click", function(e) {
-      e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
-      var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
-       var url="";
+    	console.log(e.target);
+    	let target = e.target;
+    	console.log($(target).prop("class"));
+    	if($(target).prop("class") == 'btn btn-sm w-100 btn-outline-dark excBtn'){
+      	e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
+      	var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
+        var url="";
          if( e.target.matches(".excBtn") ){
             var url = "/page/buyer/exchange";
             window.location.href = url+"?orderDetailCode=" + orderDetailCode;
@@ -301,6 +305,44 @@
          }else{
             return;
          }
+    	}
+    	
+    	if($(target).prop("class") == 'btn btn-sm w-100 btn-outline-dark retBtn'){
+          	e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
+          	var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
+            var url="";
+             if( e.target.matches(".excBtn") ){
+                var url = "/page/buyer/exchange";
+                window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+             }else if( e.target.matches(".cancelBtn") ){
+                var url = "/page/buyer/cancel"
+                window.location.href = url+"?orderDetailCode=" + orderDetailCode;      
+             }else if(e.target.matches(".retBtn")){
+                var url = "/page/buyer/return"
+                window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+             }else{
+                return;
+             }
+        	}
+    	
+    	if($(target).prop("class") == 'btn btn-sm w-100 btn-outline-dark cancelBtn'){
+          	e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
+          	var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
+            var url="";
+             if( e.target.matches(".excBtn") ){
+                var url = "/page/buyer/exchange";
+                window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+             }else if( e.target.matches(".cancelBtn") ){
+                var url = "/page/buyer/cancel"
+                window.location.href = url+"?orderDetailCode=" + orderDetailCode;      
+             }else if(e.target.matches(".retBtn")){
+                var url = "/page/buyer/return"
+                window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+             }else{
+                return;
+             }
+        	}
+    	
        });
       
       $('#selectOption').on('click', function(){
