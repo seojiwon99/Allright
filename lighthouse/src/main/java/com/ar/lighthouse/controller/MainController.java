@@ -67,5 +67,9 @@ public class MainController {
 		model.addAttribute("allCtg", service.getAllCategoryList());
 		return "page/goods/category";
 	}
-
+	
+	@GetMapping("checkTest")
+	public String ChkTest() {
+		return "page/test/checkTest";
+	}
 }
