@@ -790,10 +790,11 @@
 		    	   }else{
 		    		   opLast=$(tag).text();
 		    	   }
-		    	   
+		    	   let params = new URLSearchParams(document.location.search);
+		    	   let urlPCode = params.get("productCode");
 	   				let cartObj = {
 	   						memberId : $("#member").val(),
-	   						productCode : $("#productCode").val(),
+	   						productCode : urlPCode,
 	   						optionLast : opLast,
 	   						optionCount : optCount
 	   						}
