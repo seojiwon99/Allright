@@ -40,15 +40,15 @@
 											id="seasonGroup">
 											<div class="form-check mb-3">
 												<a class="form-check-label" 
-													href="cancelList" id="cancel" tabindex="-1"> 취소 </a>
+													href="/page/buyer/cancelList" id="cancel" tabindex="-1"> 취소 </a>
 											</div>
 											<div class="form-check mb-3">
 												<a class="form-check-label" 
-													href="returnList" id="reList" tabindex="-1"> 반품 </a>
+													href="/page/buyer/returnList" id="reList" tabindex="-1"> 반품 </a>
 											</div>
 											<div class="form-check">
 												<a class="form-check-label" 
-													href="exchangeList" id="exchange" tabindex="-1"> 교환 </a>
+													href="/page/buyer/exchangeList" id="exchange" tabindex="-1"> 교환 </a>
 											</div>
 										</div>
 									</div>
@@ -182,6 +182,33 @@
 						</div>
 					</div>
 				</div>
+								<!-- Pagination -->
+					<nav class="d-flex justify-content-center justify-content-md-end mt-10">
+						<ul class="pagination pagination-sm text-gray-400">
+							<li class="page-item" th:if="${pageMaker.prev}">
+								<a class="page-link page-link-arrow"
+									th:href="@{/page/buyer/cancelList/(pageNum = ${pageMaker.startPage - 1})}">
+										<i class="fa fa-caret-left"></i>
+								</a>
+							</li>
+							<th:block
+								th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+								<li th:if="${pageMaker.endPage} ne 0"
+									th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+									th:each="pageButtom : ${#numbers.sequence(start,end)}"
+									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
+									<a class="page-link" href="#"
+									th:href="@{/page/buyer/cancelList/(pageNum= ${pageButtom} )}"
+									th:text="${pageButtom}"></a>
+								</li>
+							</th:block>
+							<li class="page-item" th:if="${pageMaker.next}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/page/buyer/cancelList/(pageNum = ${pageMaker.endPage + 1})}">
+									<i class="fa fa-caret-right"></i>
+							</a></li>
+						</ul>
+					</nav>
 			</div>
 		</div>
 	</section>

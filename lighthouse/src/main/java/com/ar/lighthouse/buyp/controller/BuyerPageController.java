@@ -56,7 +56,7 @@ public class BuyerPageController {
 		// Criteria 객체 생성 및 'pageNum' 설정
 	    cri.setPageNum(pageNum);
 	    
-		int totalCnt = buyerPageService.getDetailCnt(cri);
+		int totalCnt = buyerPageService.getDetailCnt(memberId);
 		model.addAttribute("pageMaker", new PageDTO(cri, totalCnt));
 		List<DetailVO> orderList = buyerPageService.getDetailList(memberId, cri);
 		model.addAttribute("orderList", orderList);
@@ -111,7 +111,7 @@ public class BuyerPageController {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 
-	    int totalCnt = buyerPageService.getCouponCnt(cri);
+	    int totalCnt = buyerPageService.getCouponCnt(memberId);
 		List<CouponVO> myCoupon = buyerPageService.getCouponList(memberId, cri);
 		model.addAttribute("myCoupon", myCoupon);
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
@@ -125,7 +125,7 @@ public class BuyerPageController {
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 		
-		int totalCnt = buyerPageService.getInqCnt(cri);
+		int totalCnt = buyerPageService.getInqCnt(memberId);
 		model.addAttribute("pageMaker", new PageDTO(cri, totalCnt));
 		List<MyInquiryVO> myInquiry = buyerPageService.getMyQuiryList(memberId, cri);
 		model.addAttribute("myInquiry", myInquiry);
@@ -147,7 +147,7 @@ public class BuyerPageController {
 		// Criteria 객체 생성 및 'pageNum' 설정
 	    cri.setPageNum(pageNum);
 	    
-		int totalCnt = buyerPageService.getPageCnt(cri);
+		int totalCnt = buyerPageService.getPageCnt(memberId);
 		List<WishVO> wishList = buyerPageService.getWishList(memberId, cri);
 		model.addAttribute("wishList", wishList);
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
@@ -169,43 +169,44 @@ public class BuyerPageController {
 
 	// 취소 목록
 	@GetMapping("page/buyer/cancelList")
-	public String cancelList(Model model, HttpSession session) {
+	public String cancelList(Model model, HttpSession session, Criteria cri) {
 
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-
-		List<BuyCancelVO> cancelList = buyerPageService.getCancelList(memberId);
+		int totalCnt = buyerPageService.totalCancelCnt(memberId);
+		List<BuyCancelVO> cancelList = buyerPageService.getCancelList(cri, memberId);
 
 		model.addAttribute("cancelList", cancelList);
-
+		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		return "page/buyer/cancelList";
 	}
 
 	// 반품 목록
 	@GetMapping("page/buyer/returnList")
-	public String ReturnList(Model model, HttpSession session) {
+	public String ReturnList(Model model, HttpSession session, Criteria cri) {
 
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
 
-		List<BuyReturnVO> returnList = buyerPageService.getReturnList(memberId);
+		int totalCnt = buyerPageService.totalReturnCnt(memberId);		
+		List<BuyReturnVO> returnList = buyerPageService.getReturnList(cri, memberId);
 
 		model.addAttribute("returnList", returnList);
-
+		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		return "page/buyer/returnList";
 	}
 
 	// 교환 목록
 	@GetMapping("page/buyer/exchangeList")
-	public String ExchangeList(Model model, HttpSession session) {
+	public String ExchangeList(Model model, HttpSession session, Criteria cri) {
 
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-
-		List<BuyExchangeVO> exchangeList = buyerPageService.getExchangeList(memberId);
+		int totalCnt = buyerPageService.totalExchangeCnt(memberId);
+		List<BuyExchangeVO> exchangeList = buyerPageService.getExchangeList(cri, memberId);
 
 		model.addAttribute("exchangeList", exchangeList);
-
+		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		return "page/buyer/exchangeList";
 	}
 
@@ -349,7 +350,7 @@ public class BuyerPageController {
 		String memberId = memberVO.getMemberId();
 		buyerPageService.removeWish(favoriteCode);
 
-		int totalCnt = buyerPageService.getPageCnt(cri);
+		int totalCnt = buyerPageService.getPageCnt(memberId);
 		List<WishVO> wishList = buyerPageService.getWishList(memberId, cri);
 
 		model.addAttribute("wishList", wishList);

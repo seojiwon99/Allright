@@ -258,11 +258,12 @@
 				} else {
 					$("#queSecret").val("N");
 				}
-
+				let params = new URLSearchParams(document.location.search);
+		    	   let urlPCode = params.get("productCode");
 				let object = {
 					memberId : $("#memberId").val(),
 					queSecret : $("#queSecret").val(),
-					productCode : $("#productCode").val(),
+					productCode : urlPCode,
 					queContent : $("#queContent").val(),
 					sellerId : $("#sellerId").text(),
 				};

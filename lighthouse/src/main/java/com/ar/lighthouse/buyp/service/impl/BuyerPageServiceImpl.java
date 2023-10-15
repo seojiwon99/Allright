@@ -63,19 +63,19 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	}
 
 	@Override
-	public List<BuyCancelVO> getCancelList(String memberId) {
-		return buyerPageMapper.selectCancelList(memberId);
+	public List<BuyCancelVO> getCancelList(Criteria cri, String memberId) {
+		return buyerPageMapper.selectCancelList(cri, memberId);
 	}
 
 	@Override
-	public List<BuyReturnVO> getReturnList(String memberId) {
+	public List<BuyReturnVO> getReturnList(Criteria cri, String memberId) {
 
-		return buyerPageMapper.selectReturnList(memberId);
+		return buyerPageMapper.selectReturnList(cri, memberId);
 	}
 
 	@Override
-	public List<BuyExchangeVO> getExchangeList(String memberId) {
-		return buyerPageMapper.selectExchangeList(memberId);
+	public List<BuyExchangeVO> getExchangeList(Criteria cri, String memberId) {
+		return buyerPageMapper.selectExchangeList(cri, memberId);
 	}
 
 	@Override
@@ -144,8 +144,8 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	}
 
 	@Override
-	public int getPageCnt(Criteria cri) {
-		return buyerPageMapper.getPageCnt(cri);
+	public int getPageCnt(String memberId) {
+		return buyerPageMapper.getPageCnt(memberId);
 	}
 
 	@Override
@@ -165,20 +165,35 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	}
   
   @Override
-	public int getCouponCnt(Criteria cri) {
-		return buyerPageMapper.getCouponCnt(cri);
+	public int getCouponCnt(String memberId) {
+		return buyerPageMapper.getCouponCnt(memberId);
 	}
 
 
 	@Override
-	public int getInqCnt(Criteria cri) {
-		return buyerPageMapper.getInqCnt(cri);
+	public int getInqCnt(String memberId) {
+		return buyerPageMapper.getInqCnt(memberId);
 	}
 
 
 	@Override
-	public int getDetailCnt(Criteria cri) {
-		return buyerPageMapper.selectDetailCnt(cri);
+	public int getDetailCnt(String memberId) {
+		return buyerPageMapper.selectDetailCnt(memberId);
+	}
+
+	@Override
+	public int totalCancelCnt(String memberId) {
+		return buyerPageMapper.totalCancelCnt(memberId);
+	}
+
+	@Override
+	public int totalReturnCnt(String memberId) {
+		return buyerPageMapper.totalReturnCnt(memberId);
+	}
+
+	@Override
+	public int totalExchangeCnt(String memberId) {
+		return buyerPageMapper.totalExchangeCnt(memberId);
 	}
 
 

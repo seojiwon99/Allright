@@ -3,6 +3,7 @@ package com.ar.lighthouse.buyp.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.ar.lighthouse.buyp.service.BuyCancelVO;
 import com.ar.lighthouse.buyp.service.BuyExchangeVO;
@@ -34,11 +35,11 @@ public interface BuyerPageMapper {
 	
 	public List<WishVO> selectWishList(String memberId, Criteria cri);
 
-	public List<BuyCancelVO> selectCancelList(String memberId);
+	public List<BuyCancelVO> selectCancelList(@Param("cri") Criteria cri,@Param("memberId") String memberId);
 
-	public List<BuyReturnVO> selectReturnList(String memberId);
+	public List<BuyReturnVO> selectReturnList(@Param("cri") Criteria cri,@Param("memberId") String memberId);
 
-	public List<BuyExchangeVO> selectExchangeList(String memberId);
+	public List<BuyExchangeVO> selectExchangeList(@Param("cri") Criteria cri,@Param("memberId") String memberId);
 
 	public int insertExchange(BuyExchangeVO excVO);
 
@@ -66,7 +67,7 @@ public interface BuyerPageMapper {
 
 	public int deleteWish(int favoriteCode);
 
-	public int getPageCnt(Criteria cri);
+	public int getPageCnt(String memberId);
 
 	public List<DetailVO> selectOptionList(DetailVO detailVO);
 
@@ -76,13 +77,18 @@ public interface BuyerPageMapper {
 	// 찜 중복체크
 	public int checkWish(WishVO wishVO);
 	
-	public int getCouponCnt(Criteria cri);
+	public int getCouponCnt(String memberId);
 	
-	public int getInqCnt(Criteria cri);
+	public int getInqCnt(String memberId);
 	
 	public int selectPageList(Criteria cri);
 	
-	public int selectDetailCnt(Criteria cri);
+	public int selectDetailCnt(String memberId);
 	
+	public int totalCancelCnt(String memberId);
+	
+	public int totalReturnCnt(String memberId);
+	
+	public int totalExchangeCnt(String memberId);
 
 }

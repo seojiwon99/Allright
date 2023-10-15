@@ -11,7 +11,7 @@ public interface BuyerPageService {
 	public List<DetailVO> getDetailList(String memberId, Criteria cri);
 	
 	// 주문 갯수 가져오기 (페이징)
-	public int getDetailCnt(Criteria cri);
+	public int getDetailCnt(String memberId);
 
 	// 개인 정보 가져오기
 	public BuyInfoVO getInfo(String memberId);
@@ -32,13 +32,13 @@ public interface BuyerPageService {
 	public List<WishVO> getWishList(String memberId, Criteria cri);
 
 	// 취소 상세
-	public List<BuyCancelVO> getCancelList(String memberId);
+	public List<BuyCancelVO> getCancelList(Criteria cri,String memberId);
 
 	// 반품 상세
-	public List<BuyReturnVO> getReturnList(String memberId);
+	public List<BuyReturnVO> getReturnList(Criteria cri,String memberId);
 
 	// 교환 상세
-	public List<BuyExchangeVO> getExchangeList(String memberId);
+	public List<BuyExchangeVO> getExchangeList(Criteria cri,String memberId);
 
 	// 교환 신청
 	public int addExchange(BuyExchangeVO excVO);
@@ -80,7 +80,7 @@ public interface BuyerPageService {
 	public int removeWish(int favoriteCode);
 
 	// 전체 갯수 가져오기..?
-	public int getPageCnt(Criteria cri);
+	public int getPageCnt(String memberId);
 
 	// 주문 목록 option 선택
 	public List<DetailVO> getOptionList(DetailVO detailVO);
@@ -92,10 +92,14 @@ public interface BuyerPageService {
 	public int checkWish(WishVO wishVO);
 
 	//쿠폰 전체 갯수
-	public int getCouponCnt(Criteria cri);
+	public int getCouponCnt(String memberId);
 	
 	//문의 전체 갯수
-	public int getInqCnt(Criteria cri);
+	public int getInqCnt(String memberId);
 	
-
+	public int totalCancelCnt(String memberId);
+	
+	public int totalReturnCnt(String memberId);
+	
+	public int totalExchangeCnt(String memberId);
 }

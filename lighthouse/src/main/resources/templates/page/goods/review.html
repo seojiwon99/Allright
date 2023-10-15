@@ -84,9 +84,12 @@
 									name="memberId">[[${review.memberId}]]</div>
 								<div class="declareProductCode" style="display: none"
 									name="productCode">[[${review.productCode}]]</div>
-								<div style="display: none" class="declarePerson"
-									name="declareMember">[[${session.loginMember.memberId}]]</div>
-									
+								<th:block th:if="${session.loginMember != null}">
+								
+									<div style="display: none" class="declarePerson"
+										name="declareMember">[[${session.loginMember.memberId}]]</div>
+										
+								</th:block>
 								<div th:if="${review.reviewImg} != null" style="display: none">
 									[[${review.reviewImg.imgCode}]]</div>
 								<div class="review-body">
@@ -355,13 +358,13 @@
 		</section>
 
 		<script type="text/javascript">
-		let TTSIsOk = localStorage.getItem('ttsKey');
-				let sessionAuthor;
+		let TTSIsOkReview = localStorage.getItem('ttsKey');
+				let sessionAuthorReview;
 				if(sessionStorage.loginMember != null){
-					sessionAuthor = sessionStorage.loginMember.memberAuthor;
+					sessionAuthorReview = sessionStorage.loginMember.memberAuthor;
 				}
 				function ttsInit(){
-				if(TTSIsOk == null || sessionAuthor == 3){
+				if(TTSIsOkReview == null || sessionAuthorReview == 3){
 					$(document).ready(function(){
 						console.log("@@@@@@@@@@@@@@@@@@@@@@@");
 						$('.review').on('focus',reviewBox);

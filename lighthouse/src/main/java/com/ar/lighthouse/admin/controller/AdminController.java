@@ -72,6 +72,7 @@ public class AdminController {
 	
 	@GetMapping("admin/faq")
 	public String faqList(Criteria cri,Model model, FaqVO faqVO) {
+		System.out.println("=============================="+faqVO);
 		int totalCnt = adminService.getTotalFaqCount(faqVO);		
 		model.addAttribute("faqList", adminService.getAdminFaqList(cri , faqVO));
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
