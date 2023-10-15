@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/insertModifyPro}">
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
+<!-- Content -->
+<div layout:fragment="sellerContent">
+
+   <!-- BREADCRUMB -->
+   <nav class="py-5">
+      <div class="container">
+         <div class="row">
+            <div class="col-12">
+   
+               <!-- Breadcrumb -->
+               <ol class="breadcrumb mb-0 fs-xs text-gray-400">
+                  <li class="breadcrumb-item"><a class="text-gray-400"
+                     href="index.html">Home</a></li>
+                  <li class="breadcrumb-item active">My Page</li>
+               </ol>
+
+            </div>
+         </div>
+      </div>
+   </nav>
+   <style>
+   input::-webkit-inner-spin-button,
+   input::-webkit-outer-spin-button {
+     appearance: none;
+     -moz-appearance: none;
+     -webkit-appearance: none;
+   }
+   </style>
+   <!-- CONTENT -->
+   <section class="pt-7 pb-12">
+      <div class="container">
+         <div class="row">
+
+            <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
+            <h1>내 정보 수정</h1>
+               <!-- Form -->
+               <form>
+						<div class="row">
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label class="form-label" for="buyerName"> 
+										이름
+									</label> 
+									<input class="form-control form-control-sm"
+										id="buyerName" type="text" placeholder="*"
+										th:value="${personalInfo.memberName}" readonly>
+								</div>
+							</div>
+							<div class="col-12">
+								<!-- Email -->
+								<div class="form-group">
+									<label class="form-label" for="buyerEmail"> Email 주소  </label> 
+									<input class="form-control form-control-sm"
+										id="buyerEmail" type="email" placeholder="Email 주소"
+										th:value="${personalInfo.memberEmail}" required>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<!-- Password -->
+								<div class="form-group">
+									<label class="form-label" for="buyerPassword"> 
+										새 비밀번호
+									</label> 
+									<input class="form-control form-control-sm"
+										id="buyerPassword" type="password"  placeholder="비밀번호 수정을 원할 경우 입력해주세요">
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<!-- Password -->
+								<div class="form-group">
+									<label class="form-label" for="buyerPasswordCheck"> 
+										새 비밀번호 확인
+									</label> 
+									<input class="form-control form-control-sm"
+										id="buyerPasswordCheck" type="password"  placeholder="새 비밀번호 확인">
+								</div>
+
+							</div>
+							<div class="col-12 col-md-6">
+								<!-- Addr -->
+	                        <div class="form-group">
+	                           <label class="form-label" for="buyerAddr">
+	                              주소  </label>
+	                              <button type="button" style="border-radius: 10px;background-color: black; color: white;" id="addrSearch">주소검색</button>
+	                              <input
+	                              class="form-control form-control-sm" id="buyerAddr"
+	                              type="text" placeholder="*"  th:value="${personalInfo.memberAddr}" required>
+	                        </div>
+							</div>
+							<div class="col-12 col-md-6">
+								<!-- Addr -->
+								<div class="form-group">
+									<label class="form-label" for="buyerDetailsAddr"> 상세주소 </label> 
+									<input class="form-control form-control-sm" id="buyerDetailsAddr" type="text"
+										placeholder="*" th:value="${personalInfo.memberDetailsAddr}" required>
+								</div>
+							</div>
+							
+							<div class="col-12 col-md-6">
+								<!-- tel -->
+								<div class="form-group">
+									<label class="form-label" for="buyerTel"> 전화번호 </label> <input class="form-control form-control-sm"
+										id="buyerTel" type="text" 
+										placeholder="숫자만 입력해주세요" th:value="${personalInfo.memberTel}" maxlength="13" required>
+								</div>
+							</div>							
+							<div class="col-12 col-lg-6">
+								<!-- Birthday -->
+								<div class="form-group">
+									<!-- Label -->
+									<label class="form-label">생년월일</label>
+									<!-- Inputs -->
+									<div class="row gx-5">
+										<div class="col-auto">
+											<!-- Date -->
+											<label class="visually-hidden" for="buyerBirth">
+												Date </label> 
+
+												<input class="form-control form-control-sm" id="buyerBirth" type="text"  
+												 th:value="${personalInfo.memberBirth}" readonly required>
+
+										</div>
+									</div>
+
+								</div>
+							</div>
+							</div>
+							<div class="col-12">
+								<!-- Button -->
+								<button class="btn btn-dark" type="button" id="updateBtn" style="border-radius: 10px;">수정완료</button>
+							</div>
+					
+					</form>
+            </div>
+         </div>
+      </div>
+   </section>
+   <textarea id="orderMenual" style="display: none;">
+      다음은. 번호메뉴얼 안내입니다.
+      1번 주문목록.
+      2번 취소목록.
+      3번 반품목록.
+      4번 교환목록.
+      5번 나의 쿠폰함.
+      6번 문의내역.
+      7번 찜 목록.
+      8번 개인정보 확인/수정.
+      9번 메인페이지 이동.
+      0번 다시듣기.
+      개인정보. 페이지 정보 듣기 위해서는 탭으로 이동하면 됩니다.
+     </textarea>
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+   <script>
+   window.onload = function(){
+       document.getElementById("addrSearch").addEventListener("click", function(){ //주소입력칸을 클릭하면
+           //카카오 지도 발생
+           new daum.Postcode({
+               oncomplete: function(data) { //선택시 입력값 세팅
+                   document.getElementById("buyerAddr").value = data.address; // 주소 넣기
+                   document.getElementById("buyerDetailsAddr").focus(); //상세입력 포커싱
+               }
+           }).open();
+       });
+   }
+   $(document).ready(function(){
+   $('#updateBtn').on('click', function(){
+      let pwData = $('#memberPw').val();
+      //if( pwData != null){
+      //} else {
+      //   alert("새 비밀번호를 설정해주세요.")
+      //   $('#buyerPassword').focus();
+      //   return;
+      //}
+      
+      let infoData = {
+         'memberPw' : $('#buyerPassword').val(),
+         'memberPasswordCheck' : $('#buyerPasswordCheck').val(),
+         'memberAddr' : $('#buyerAddr').val(),
+         'memberEmail' : $('#buyerEmail').val(),
+         'memberDetailsAddr' : $('#buyerDetailsAddr').val(),
+         'memberTel' : $('#buyerTel').val(),
+         'memberBirth' : $('#buyerBirth').val()
+      }
+      
+      $.ajax({
+         url: '/buyer/personalInfoEdit',
+         type: 'POST',
+         contentType : 'application/json',
+         data : JSON.stringify(infoData),
+         success : function(response){
+
+               alert("수정 완료");
+               location.reload();
+
+         },
+         error: function(err){
+            console.error('정보 수정 중 오류.');
+            console.log(err);
+         }
+      })
+   });
+   });
+   
+   // 비밀번호 확인에서 일치 여부 확인
+   /*
+   $('#buyerPasswordCheck').on('focusout', function(e){
+      let password = $('#buyerPassword').val();
+      let passwordCheck = $('#buyerPasswordCheck').val();
+      
+      if(passwordCheck != password){
+         alert("비밀번호가 일치하지 않습니다.");
+         return;
+      }
+   });
+   */
+   
+   // 비밀번호 확인에서 pw 유효성 검사
+   $('#buyerPasswordCheck').on('focusout', chkPW);
+   function chkPW(){
+         let password = $('#buyerPassword').val();
+         let pwCheck = $('#buyerPasswordCheck').val();
+         if(password != ''){
+            
+            if(pwCheck != password){
+               alert("비밀번호가 일치하지 않습니다.");
+               return;
+            }
+            //let pw = $("#buyerPassword").val();
+            //let id = $("#id").val();
+             let checkNumber = pwCheck.search(/[0-9]/g);
+             let checkEnglish = pwCheck.search(/[a-z]/ig);
+          
+             if(!/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/.test(pwCheck)){            
+                 alert('숫자+영문자+특수문자 조합으로 8자리 이상 사용해야 합니다.');
+                 return false;
+             }else if(checkNumber <0 || checkEnglish <0){
+                 alert("숫자와 영문자를 혼용하여야 합니다.");
+                 return false;
+             }else if(/(\w)\1\1\1/.test(pwCheck)){
+                 alert('같은 문자를 4번 이상 사용하실 수 없습니다.');
+                 return false;
+             } else {
+   
+               console.log("통과");
+               
+               }
+      }
+   }
+   //전화번호 숫자 외 입력방지 및 auto hypen
+   $('#buyerTel').on('keyup', function(){
+       console.log(this.value);
+       this.value =  autoHypen(this.value);
+   })
+   function autoHypen(str){
+       str = str.replace(/[^0-9]/g, '');
+       var tmp = '';
+       if( str.length < 4){
+           return str;
+       }else if(str.length < 7){
+           tmp += str.substr(0, 3);
+           tmp += '-';
+           tmp += str.substr(3);
+           return tmp;
+       }else if(str.length < 11){
+           tmp += str.substr(0, 3);
+           tmp += '-';
+           tmp += str.substr(3, 3);
+           tmp += '-';
+           tmp += str.substr(6);
+           return tmp;
+       }else{              
+           tmp += str.substr(0, 3);
+           tmp += '-';
+           tmp += str.substr(3, 4);
+           tmp += '-';
+           tmp += str.substr(7);
+           return tmp;
+       }
+       return str
+   } 
+   
+   
+
+   </script>
+</div>
+</html>

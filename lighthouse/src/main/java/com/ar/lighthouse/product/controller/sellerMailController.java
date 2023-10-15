@@ -31,7 +31,7 @@ public class sellerMailController {
 	MemberService memberService;
 	
 
-    @PostMapping("sellerMailConfirm")
+    @PostMapping("seller/sellerMailConfirm")
     @ResponseBody
     public String sellerMailConfirm(@RequestBody List<MemberVO> memberInfoList) {
     	for (MemberVO memberInfo : memberInfoList) {

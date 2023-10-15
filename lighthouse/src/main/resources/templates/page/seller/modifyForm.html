@@ -48,7 +48,7 @@
             <div class="row">
                <div class="col-12">
                   <!-- 카테고리 들어갈곳 -->
-                  	<span>현재 카테고리 : </span><span th:text="${product[0].category[0].CategoryName}"></span>
+                  	<strong>현재 카테고리 * </strong><span class="form-control form-control-sm" th:text="${product[0].category[0].CategoryName}" style="width:200px; margin-bottom:10px;"></span>
                      <div class="form-group">
                         <label class="form-label">카테고리 선택 *</label>
                         <div class="row gx-5">
@@ -138,12 +138,11 @@
                         옵션 *
                      </label>
                   <div class="form-group input-group input-group-merge" id="optionPlz">
-                     <select class="optionsel form-select form-select-sm" id="optCnt" name="optCnt">
-                        <option value="0" selected>----</option>
+                     <input class="optionsel form-select form-select-sm" id="optCnt" name="optCnt" readonly>
+                        <!-- <option value="0" selected>----</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
-                        <option value="3">3</option>
-                     </select> 
+                        <option value="3">3</option> -->
                      <div class="input-group-append">
                           <input type="hidden" value="N" id="optionNum" name="optionNum" readonly>
                           <button class="btn btn btn-outline-info" type="button" id="addOption">
@@ -197,13 +196,16 @@
                         <div class="input-group mb-3">
                            <label class="input-group-text" for="imgName">메인이미지</label>
                            <input type="file" class="form-control" id="imgName" name="files" accept="image/*" onchange="setThumbnail(event);">
-                         </div>
-                           <div id="image_container">
-							<img th:src="|/upload/${detailImg.uploadPath}/${detailImg.uploadName}|" th:alt="${detailImg.imgContent}" style="width:200px; height:220px">
-
+                        </div>
+                        <div id="image_container">
+                           <div style="display:flex;">
+								<img th:src="|/upload/${detailImg.uploadPath}/${detailImg.uploadName}|" style="width:200px; height:220px">
+								<textarea name="productImg[0].imgContent" id="productImgCon" class="form-control" th:field="${detailImg.imgContent}"></textarea>
                            </div>
+                        </div>
                      </div>
-                   </div>
+                </div>
+                   
                <div class="col-12 col-lg-6">
                      <div class="form-group mb-8">
                        <label class="form-label">상세설명</label>
@@ -1122,8 +1124,10 @@
                alert("택배사를 선택 해주세요");
                return;
             } */
+            test22 ='/modifyProductContent?productCode='+ productCode
             localStorage.removeItem('product')
             form.submit();
+            
 
          })
 
@@ -1140,6 +1144,7 @@
              var div = document.querySelector("div#image_container");
              div.innerHTML ="";
              var divTag = document.createElement("div");
+             divTag.style.display = "flex";
              var img = document.createElement("img");
              img.setAttribute("src", event.target.result);
              img.style.width = "300px";
@@ -1518,9 +1523,10 @@
 		    var _left = Math.ceil(( window.screen.width - _width )/2);
 		    var _top = Math.ceil(( window.screen.height - _height )/2); 
 		    
-		    let child = window.open('/modifyProductContent?productCode=' + productCode, 'productcontent', 'width='+ _width +', height='+ _height +', left=' + _left + ', top='+ _top);
+		    let child = window.open('/seller/modifyProductContent?productCode=' + productCode, 'productcontent', 'width='+ _width +', height='+ _height +', left=' + _left + ', top='+ _top);
 	        
-         })
+         });
+       
          
         // 임시저장
          $('.storage').on('click',function(e){
@@ -1745,6 +1751,7 @@
                 return;
              }
              
+             test22 ='/modifyProductContent?productCode='+ productCode
              $('#updateForm').submit();
          })
 		 
