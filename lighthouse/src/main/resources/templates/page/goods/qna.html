@@ -236,7 +236,10 @@
 						<i class="fa fa-caret-right"></i>
 				</a></li>
 			</ul>
+			<input type="hidden" id="memberId"
+            th:value="${session.loginMember.memberId}" />
 		</nav>
+		
 
 		<th:block>
 			<script>
@@ -287,7 +290,7 @@
 					queContent : $("#queContent").val(),
 					sellerId : $("#sellerId").text(),
 				};
-
+				console.log(object);
 				$.ajax({
 					type : "post",
 					url : "insertInquiry",
