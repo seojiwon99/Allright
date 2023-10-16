@@ -642,7 +642,7 @@
     paymentWidget.requestPayment({
       orderId: uuid,
       orderName: [[${productName}]],
-      successUrl: 'http://localhost:8090/orders/credit',
+      successUrl: 'https://allright1.shop/orders/credit',
       failUrl: 'https://allright1.shop/orders/fail',
       customerEmail: [[${orderGet[0].memberEmail}]], 
       customerName: [[${orderGet[0].memberName}]]
@@ -701,7 +701,7 @@
       let deliveryPay = $('#deliveryPrice').text();
       let totalPay = $('#totalPrice').text();
       let payInfoMessage = `총 상품 금액은. ${productPay}원. 할인 받은 상품 금액은. ${salePay}원. 쿠폰 할인 금액은. ${couponPay}원.
-                            배송비는. ${deliveryPay}원. 총 결제 금액은. ${totalPay}원. 입니다. 결제 원할 경우. 엔터키 입력`;
+                            배송비는. ${deliveryPay}원. 총 결제 금액은. ${totalPay}원. 입니다. 결제 원할 경우. 엔터키 입력 후. 개인 화면리더기 실행. 부탁드립니다.`;
       VoiceMenual(payInfoMessage);
     }
 

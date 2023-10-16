@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.ar.lighthouse.coupon.service.CouponService;
 import com.ar.lighthouse.member.service.MemberService;
 import com.ar.lighthouse.member.service.MemberVO;
 
@@ -33,6 +34,9 @@ public class loginController {
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	CouponService couponService;
 	
 	@Autowired
 	MemberService memberService;
@@ -133,10 +137,11 @@ public class loginController {
 		
 		memberVO.setMemberPw(passwordEncoder.encode(memberVO.getMemberPw()));
 		System.out.println(memberVO.getMemberPw());
-		
+		couponService.addCoupon(memberVO.getMemberId());
 		String result = "";
-		if(memberService.addMember(memberVO)>0) {
+		if(memberService.addMember(memberVO)>0) {	
 			result = "success";
+			
 		}else {
 			result = "fail";
 		}
