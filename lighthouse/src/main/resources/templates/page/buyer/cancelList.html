@@ -158,17 +158,18 @@
 											</div>
 										</div>
 									</div>
+								<div><hr></div>
 								</div>
 							</div>
 							</div>
-							<div id="noSearch" tabindex="0">
+							<div id="noSearch" tabindex=-1>
 							<th:block th:if="${cancelList.size == 0}">
 								<div>
 								     <ul>
 								      <li class="list-group-item">
 								        <div class="row align-items-center">
 								          <br>
-										  <a href="/page/buyer/orderList" tabindex=-1>
+										  <a href="/page/buyer/orderList" id="noSearch">
 										  <p style="padding: 10%; font-weight: bolder; text-align: center;">반품 신청한 상품이 없습니다.
 										  <br>주문 목록에서 신청 가능합니다.
 										  </p>
@@ -249,7 +250,7 @@
 						        <div class="row align-items-center">
 						          <br>
 								  <a href="/page/buyer/orderList">
-								  <p style="padding: 10%; font-weight: bolder; text-align: center;">반품 신청한 상품이 없습니다.
+								  <p style="padding: 10%; font-weight: bolder; text-align: center;">취소 신청한 상품이 없습니다.
 								  <br>주문 목록에서 신청 가능합니다.
 								  </p>
 								  </a>
@@ -311,7 +312,7 @@
 						      </ul>   
 					     </div>`
 						$('#noSearch').append(htmltags);
-					     $('#noSearch').focus();
+					    $('#noSearch').focus();
 					   // VoiceMenual('주문 취소 철회가 완료되었습니다. 현재 취소 신청한 상품이 없습니다. 주문 목록에서 신청 가능합니다. 엔터키를 누르면 주문 목록으로 이동합니다.')
 					    
    					}

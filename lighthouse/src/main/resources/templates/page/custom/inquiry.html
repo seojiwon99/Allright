@@ -310,26 +310,26 @@
             data: JSON.stringify(obj),
             contentType: 'application/json',
             success: function (result) {
-                if (TTSIsOk == null || sessionAuthor == 3){
-                  if (result == 'success') {
-                     let msg = "문의 성공";
-                     VoiceReturnRead(msg);
-                     
-                     
-                     location.href = "/"
-                  } else {
-                     let msg = "문의 실패했습니다. 다시 등록해주세요";
-                     VoiceReturnRead(msg);
-                  }
-                }else{
-                  if (result == 'success') {
-                     alert("문의 성공");
-                     location.href = "/"
-                  } else {
-                     alert("문의 실패");
-                  }
-                   
-                }
+           	  if (TTSIsOk == null || sessionAuthor == 3){
+	               if (result == 'success') {
+	                  let msg = "문의 성공";
+	                  VoiceReturnRead(msg);
+	                  
+	                  
+	                  location.href = "/"
+	               } else {
+	                  let msg = "문의 실패했습니다. 다시 등록해주세요";
+	                  VoiceReturnRead(msg);
+	               }
+           	  }else{
+	               if (result == 'success') {
+	                  alert("문의 성공");
+	                  location.href = "/"
+	               } else {
+	                  alert("문의 실패");
+	               }
+           		  
+           	  }
             },
             error: function (err) {
                console.log(err);

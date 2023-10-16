@@ -14,10 +14,13 @@ import com.ar.lighthouse.customsvc.service.NoticeVO;
 public interface CustomMapper {
 	
 	// faq 목록 가져오기
-	public List<FaqVO> selectFaqList(@Param("faqType") String faqType);
+	public List<FaqVO> selectFaqList(@Param("faqType") String faqType, @Param("cri") Criteria cri);
 	
 	// faq 타입 목록 가졍괴
 	public List<FaqVO> selectFaqTypeList();
+	
+	// faq 갯수
+	public int getTotalFaqCount(@Param("faqType") String faqType);
 	
 	// 공지사항 목록 가져오기
 	public List<NoticeVO> selectNoticeList(Criteria cri);

@@ -164,18 +164,19 @@
 						</div>
 	                  </div>
 	                </div>
+	              <div><hr></div>
 	              </div>
                 </div>
                 </div>
-                <div id="noSearch">
+                <div  tabindex=-1>
 	                <th:block th:if="${exchangeList.size == 0}">
 						<div>
 							<ul>
 							    <li class="list-group-item">
 									<div class="row align-items-center">
 									  <br>
-									  <a href="/page/buyer/orderList">
-									  <p style="padding: 10%; font-weight: bolder; text-align: center;">반품 신청한 상품이 없습니다.
+									  <a href="/page/buyer/orderList" id="noSearch">
+									  <p style="padding: 10%; font-weight: bolder; text-align: center;">교환 신청한 상품이 없습니다.
 									  <br>주문 목록에서 신청 가능합니다.
 									  </p>
 									  </a>
@@ -255,7 +256,7 @@
 						        <div class="row align-items-center">
 						          <br>
 								  <a href="/page/buyer/orderList">
-								  <p style="padding: 10%; font-weight: bolder; text-align: center;">반품 신청한 상품이 없습니다.
+								  <p style="padding: 10%; font-weight: bolder; text-align: center;">교환 신청한 상품이 없습니다.
 								  <br>주문 목록에서 신청 가능합니다.
 								  </p>
 								  </a>
@@ -321,6 +322,7 @@
 						      </ul>   
 					     </div>`
 						$('#noSearch').append(htmltags);
+						$('#noSearch').focus();
 					}
 				},
 				fail : function(errer){
@@ -333,7 +335,7 @@
 		//tts 이벤트 부여
 		$('.exchangeCode').on('focus', returnListInfo);
 		$('.deleteBtn').on('focus', deleteBtn);
-		
+		$('#noSearch').on('focus', noSearch);
 		//tts 이벤트 진행
 		$('.deleteBtn').on('keydown', function(e){
        	if(e.key == 'Enter'){
@@ -343,7 +345,9 @@
 		       	 }
 	        }
 	    })
-		
+	    function noSearch(){
+	    	VoiceMenual('취소 신청한 상품이 없습니다. 현재 주문 목록에서 신청 가능합니다. 엔터키를 누르면 주문 목록으로 이동합니다.');
+	    }
 		
 		function returnListInfo() {
 		  	let exchangeCode = $(this).closest('.exRow').find('.exchangeCode').text();

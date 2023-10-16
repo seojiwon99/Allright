@@ -313,9 +313,9 @@ public class OrdersController {
          ordersService.addRefund(newRefund);
       
          //refundBalanceAmount 값 rders테이블,credit테이블 결제액 업데이트 
-         if(newRefund.getRefundTypecode().equals("C")) {
+         if(newRefund.getRefundType().equals("C")) {
             productService.editCancelOk(newRefund.getRefundTypecode());            
-         } else {
+         } else if(newRefund.getRefundType().equals("R")){
             productService.editReturnOk(newRefund.getRefundTypecode());
          }
          ordersService.editTossRefundAmount(paymentKey, refundAbleAmount);

@@ -219,7 +219,7 @@ img {
                                     </p>
                                  </div>
                                  <!-- 주문 확정 -->
-                                 <div class="col-6 col-lg-3">
+                                 <div class="col-6 col-lg-3" >
                                     <h6 class="heading-xxxs text-muted">주문 확정:</h6>
                                     <p class="mb-0 fs-sm fw-bold">
                                        <span class="orderCheck" th:if="${lists.orderCheck} == 'N'">취소된
@@ -234,12 +234,12 @@ img {
                                  th:if="${lists.returnStatus} == '0' and ${lists.cancelStatus} == '0' and ${lists.exchangeStatus} == '0'">
                                  <!-- 리뷰  button -->
                                  <div class="col-4" th:if="${lists.orderStatus} == '4'">
-                                    <a class="reviewBtn btn btn-sm w-100 btn-outline-dark"
+                                    <button class="reviewBtn btn btn-sm w-100 btn-outline-dark"
                                        data-bs-target="#reviewInsert" data-bs-toggle="modal"
                                        style="border-radius: 10px; background-color: black; color: white;"
-                                       
+                                       tabindex=0
                                        >
-                                       리뷰 쓰기 </a>
+                                       리뷰 쓰기 </button>
                                  </div>
                                  <!-- 주문 취소 Button -->
                                  <div class="col-4"
@@ -386,7 +386,7 @@ img {
                   class="d-flex justify-content-center justify-content-md-end mt-10">
                   <ul class="pagination pagination-sm text-gray-400">
                      <li class="page-item" th:if="${pageMaker.prev}"><a
-                        class="page-link page-link-arrow"
+                        class="page-link page-link-arrow" id=""
                         th:href="@{/page/buyer/orderList/(pageNum = ${pageMaker.startPage - 1})}">
                            <i class="fa fa-caret-left"></i>
                      </a></li>
@@ -402,7 +402,7 @@ img {
                         </li>
                      </th:block>
                      <li class="page-item" th:if="${pageMaker.next}"><a
-                        class="page-link page-link-arrow"
+                        class="page-link page-link-arrow" id="nextPage"
                         th:href="@{/page/buyer/orderList/(pageNum = ${pageMaker.endPage + 1})}">
                            <i class="fa fa-caret-right"></i>
                      </a></li>
@@ -427,16 +427,16 @@ img {
       8번 개인정보 확인/수정.
       9번 메인페이지 이동.
       0번 다시듣기.
+      q 이전페이지.
+      w 다음페이지.
     </textarea>
    <script>
    var tmpProductCode;
    
-   $('.reviewBtn').on('click',function(e){
-      let btn = $(this);
-      let btn2 = btn.parent().parent().parent().parent().children()[0];
-      let prodCode = $(btn2).find('input[type="hidden"]');
-      tmpProductCode = prodCode[0].value;
+  $('.reviewBtn').on('click',function(e){
+	  console.log("sadsadsad");
 
+   })
    /*--------------------------
    리뷰 등록
    ----------------------------*/
@@ -446,7 +446,7 @@ img {
          let productCode = $('.productCode').val();
          let star = $(".star").data("value");
          formData.append("reviewStar", star);
-        formData.append("productCode",tmpProductCode);
+         formData.append("productCode",tmpProductCode);
          
          for (let key of formData.keys()) {
               console.log(key, ":", formData.get(key));
@@ -468,7 +468,6 @@ img {
        },
      });
 });   
-   })
    
    /*--------------------------
    이미지 나타내기
@@ -504,8 +503,7 @@ img {
                 }
             
    
-   
-   
+
       document.querySelector(".orderList").addEventListener("click", function(e) {
        let target = e.target;
        console.log($(target).prop("class"));
@@ -616,7 +614,57 @@ img {
               let message = firstMsg + $('#orderMenual').val();
             let message2 = `다음은 검색 기준입니다. 검색 기준을 골라주세요 + ${optionSel}`;
               VoiceMenual(message + message2);
-   
+              
+        const movePage = function(page) {
+			const URLSearch = new URLSearchParams(location.search);
+				  URLSearch.set('pageNum', String(page));
+			const newParam = URLSearch.toString();
+			
+			window.open(location.pathname + '?' + newParam, '_self');
+		};   
+
+		//리뷰 버튼 tts 
+		var tmpProductCode;
+		   
+		   $('.reviewBtn').on('click',function(e){
+			  let btn = $(this);
+		      let btn2 = btn.parent().parent().parent().parent().children()[0];
+		      let prodCode = $(btn2).find('input[type="hidden"]');
+		      tmpProductCode = prodCode[0].value;
+
+		   /*--------------------------
+		   리뷰 등록
+		   ----------------------------*/
+		   $(".reviewInsertBtn").on("click", function () {
+		         let form = $("#reviewForm2")[0];
+		         const formData = new FormData(form);
+		         let productCode = $('.productCode').val();
+		         let star = $(".star").data("value");
+		         formData.append("reviewStar", star);
+		        formData.append("productCode",tmpProductCode);
+		         
+		         for (let key of formData.keys()) {
+		              console.log(key, ":", formData.get(key));
+		         }
+
+		      $.ajax({
+		        url: "/insertReview",
+		        type: "post",
+		        data: formData,
+		        enctype: "multipart/form-data",
+		        contentType: false,
+		        processData: false,
+		        success: function (result) {
+		          alert("정상적으로 등록되었습니다");
+		          location.reload();
+		       },
+		       error: function (err) {
+		           console.log(err);
+		       },
+		     });
+		});   
+		   })				 
+        
         //tts 이벤트 부여
         $('#optionList').on('focus', optionList);
         $('#optionList').on('change', optionSelect);
@@ -627,6 +675,7 @@ img {
         $('.excBtn').on('focus', exchageBtn);
         $('.retBtn').on('focus', retBtn);
         $('.cancelBtn').on('focus', cancelBtn);
+        $('.reviewBtn').on('focus', reviewBtn);
         
         //tts 이벤트 진행
         function optionList(){
@@ -657,12 +706,42 @@ img {
         let orderCnt = $(this).closest('.orderRow').find('.orderCnt').text();
         let paymentPrice = $(this).closest('.orderRow').find('.paymentPrice').text();
         let orderStatusNm = $(this).closest('.orderRow').find('.orderStatusNm').text();
+        
         let deliveryDate =  $(this).closest('.orderRow').find('.deliveryDate').text();
+        if(deliveryDate == ''){
+        	deliveryDate = '아직 도착하지 않았습니다';
+        }else{
+        	deliveryDate = $(this).closest('.orderRow').find('.deliveryDate').text();
+        }
+        
         let cancelStatusNm = $(this).closest('.orderRow').find('.cancelStatusNm').text();
+        if(cancelStatusNm == ''){
+        	cancelStatusNm = '취소 미신청';
+        }else{
+        	cancelStatusNm = $(this).closest('.orderRow').find('.cancelStatusNm').text();
+        }
+        
         let returnStatusNm = $(this).closest('.orderRow').find('.returnStatusNm').text();
+        if(returnStatusNm == ''){
+        	returnStatusNm = '반품 미신청';
+        }else{
+        	returnStatusNm = $(this).closest('.orderRow').find('.returnStatusNm').text();
+        }
+        
         let exchangeStatusNm = $(this).closest('.orderRow').find('.exchangeStatusNm').text();
+        if(exchangeStatusNm == ''){
+        	exchangeStatusNm = '교환 미신청';
+        }else{
+        	exchangeStatusNm = $(this).closest('.orderRow').find('.exchangeStatusNm').text();
+        }
+        
         let orderCheck = $(this).closest('.orderRow').find('.orderCheck').text();
-   
+        if(orderCheck == ''){
+        	orderCheck = '주문 확정 완료';
+        }else{
+        	orderCheck = $(this).closest('.orderRow').find('.orderCheck').text();
+        }
+        
         let message = `주문번호는 ${orderCode}. 주문 상세 번호는 ${orderDetailCode}. 주문날짜는 ${orderDate}.
                       상품명은 ${productName}. 옵션명은 ${optionLast}. 주문수량은 ${orderCnt}. 주문금액은 ${paymentPrice}.
                       배송상태는 ${orderStatusNm}. 배송 완료날짜 ${deliveryDate}. 취소여부는 ${cancelStatusNm}.
@@ -670,7 +749,9 @@ img {
    
           VoiceMenual(message);
         }
-        
+        function reviewBtn() {
+            VoiceMenual('리뷰 쓰기 버튼입니다. 리뷰 쓰기를 원하시면. 엔터키를 눌러주세요.');
+         }
         function exchageBtn() {
            VoiceMenual('교환 신청 버튼입니다. 교환을 원하시면. 엔터키를 눌러주세요.');
         }
@@ -797,6 +878,31 @@ img {
             else if(e.altKey && e.key == 0){ //다시 듣기
                 VoiceMenual($('#orderMenual').val());
              }
+            if(e.altKey && e.key == 'q'){ //이전 페이지로 가기
+				let nowURL = new URL(location.href);
+				let nowNum = nowURL.searchParams.get('pageNum');
+				let num;
+				if(nowNum == 1 || nowNum == undefined){
+					num = 1;
+					VoiceMenual('첫번째 페이지입니다. 이전 페이지가 없습니다.');
+					
+				}else{
+					num = Number(nowNum)-1;
+					movePage(num);
+				}
+			}
+            if(e.altKey && e.key == 'w'){ // 다음 페이지로 가기
+				let nowURL = new URL(location.href);
+				let nowNum = nowURL.searchParams.get('pageNum');
+				let num;
+				if(nowNum == undefined){
+					num = 2;
+				}else{
+					num = Number(nowNum)+1;
+				}
+					movePage(num);
+				
+			}
       })
      } //ttsInit()의 if문
    } // ttsInit() close

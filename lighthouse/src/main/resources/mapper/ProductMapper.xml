@@ -974,7 +974,9 @@ SET
     delivery_cost = #{deliveryCost},
     return_cost = #{returnCost},
     exchange_cost = #{exchangeCost},
+    <if test="deliveryService != null">
     delivery_service = #{deliveryService},
+    </if>
     product_exstatus = 'Y',
     product_updatedate = sysdate
 WHERE product_code = #{productCode}
@@ -1025,9 +1027,6 @@ and option_detail_code =#{optionDetailCode}
 <update id="updateProductImg" parameterType="ImgsVO">
 UPDATE ar_imgs
 SET
-	<if test="imgOrder != null">
-    img_order = #{imgOrder},
-    </if>
     <if test="imgName != null">
     img_name = #{imgName},
     </if>
@@ -1041,10 +1040,64 @@ SET
     upload_path = #{uploadPath}
     </if>
 WHERE product_code = #{productCode}
+AND img_order = #{imgOrder}
 </update>
+
+<update id="updateProductThImg" parameterType="ProductVO">
+    UPDATE ar_imgs
+    SET
+    	product_code = #{productCode}
+        <if test="uploadName != null">
+            ,upload_name = #{uploadName}
+        </if>
+        <if test="imgContent != null">
+            ,img_content = #{imgContent}
+        </if>
+        <if test="uploadPath != null">
+            ,upload_path = #{uploadPath}
+        </if>
+    WHERE product_code = #{productCode}
+    AND img_order = 0
+</update>
+
 
    <!-- 김무준의 상세페이지~~ -->
    <select id="selectInfo" resultType="ProductVO">
+          select  
+            m.member_id
+         , p.product_code
+         , p.category_code
+         , p.product_name
+         , p.product_content
+         , p.product_location
+         , p.product_cost
+         , p.product_regdate       
+         , p.sale_price
+         , p.product_brand
+         , p.product_origin
+         , p.product_makeorigin
+         , p.delivery_cost
+         , p.return_cost
+         , p.exchange_cost
+         , GET_DELI_NAME(p.delivery_service) as delivery_service
+         , p.product_status
+           , i.img_order
+         , i.upload_name
+         , i.img_content
+            , i.upload_path
+          , m.business_number
+         from ar_products p ,ar_imgs i, ar_member m
+         where p.product_code = i.product_code 
+         <![CDATA[
+            and rownum < 2
+            ]]>
+         and p.member_id = m.member_id
+         and p.product_code = #{productCode}
+   </select>
+   
+   
+      <!-- 홍규연의 상세페이지~~ -->
+   <select id="modifyInfo" resultType="ProductVO">
           select  
             m.member_id
          , p.product_code
@@ -1070,13 +1123,13 @@ WHERE product_code = #{productCode}
           , m.business_number
          from ar_products p ,ar_imgs i, ar_member m
          where p.product_code = i.product_code 
+         AND img_order = 0
          <![CDATA[
             and rownum < 2
             ]]>
          and p.member_id = m.member_id
          and p.product_code = #{productCode}
    </select>
-   
 
    <!-- 택배사 가져오기 -->
    <select id="selectDeliveryList" resultType="CodeVO">
