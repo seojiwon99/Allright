@@ -351,7 +351,7 @@
                         <!-- 상세내용 -->
                         <div style="padding: 48px 0px; margin: auto 0"
                            id="pContentSection">
-                           <div th:utext="${goods.productContent}" id="productContent"></div>
+                           <div th:utext="${goods.productContent}" id="productContent" tabindex="0"></div>
                         </div>
                      </div>
 
@@ -588,9 +588,10 @@
    option 선택 박스
    -------------------------*/  
    function changeOptionHandler(){
-  
+      console.log("1111111111");
       if(TTSIsOk == null || sessionAuthor == 3){
-         if(!$(this).hasClass("last")){            
+            console.log("sadasdsadas@@@@@");
+            if(!$(this).hasClass("last")){            
                $(this).next().attr("disabled",false);   
                 return;
             }
@@ -607,7 +608,7 @@
                
                //첫번째 제외 disabled
                $('.selectbox:gt(0)').attr("disabled",true);
-               console.log(optionVal);
+               console.log("@@@@@@@" + optionVal);
                
                let flag = true;
                //기존 선택 유무
@@ -620,7 +621,7 @@
                   }
                })
                if(flag == false) return;
-               
+               console.log("222222222222222222")
                //detailCode, 가격 찾기
                for(let i=0; i<optionDetail.length; i++){
                   if(optionDetail[i].optionLast == optionVal){
@@ -640,7 +641,7 @@
                      let liTag =`<li class="optionchoicebox"style=" padding:10px; margin-bottom:10px; background-color:#f8f8f8" tabindex="0">
                         <div style="display:flex; justify-content:space-between; padding-bottom:6px">
                            <span class="optionDetailCodeName" style="font-weight:600; color:#ff6f61">${optionVal}</span>
-                           <button class="optionCloseBtn" tabindex="-1" type="button" style="all: unset; cursor:pointer; color:#ff6f61">X</button>
+                           <button class="optionCloseBtn" type="button" style="all: unset; cursor:pointer; color:#ff6f61">X</button>
                         </div>
                         
                         <div style="padding-bottom:6px "> 
@@ -810,6 +811,10 @@
    
    //optionCloseBtn 지우기   
    $(document).on("click",".optionCloseBtn",function(e){
+      if(TTSIsOk == null || sessionAuthor == 3){
+         let msg = '옵션이 삭제되었습니다.'
+         VoiceReturnRead(msg);
+      }
       $(this).parent().parent().remove();
       calTotal();
    })
@@ -1046,7 +1051,7 @@
                            let msg="이미 장바구니에 존재하는 옵션이있습니다.";
                            VoiceReturnRead(msg);
                         }else{
-                           let msg = "장바구니로 이동하시려면 엔터키를 누르고 있으시려면 esc를 눌러주세요";
+                           let msg = "장바구니에 등록되었습니다. 장바구니로 이동하시려면 alt + y를 누르고 있으시려면 esc를 눌러주세요";
                            VoiceReturnRead(msg);
                            
                         }
@@ -1151,7 +1156,7 @@
              success:function(result){
                 console.log(result);
                 if(TTSIsOk == null || sessionAuthor == 3){
-                  let msg = "찜 목록으로 이동하시겠습니까? 이동하시려면 Shift + y를 눌러주세요";
+                  let msg = "찜 등록되었습니다. 찜 목록으로 이동하시겠습니까? 이동하시려면 Shift + y를 눌러주세요";
                   VoiceReturnRead(msg);
                 }else{
                    if(!confirm("찜 목록으로 이동하시겠습니까?")){
@@ -1280,16 +1285,22 @@
             $(document).on("change",".orderCnt",optionC);
 
             $(document).on("focus",".optionchoicebox",choicebox);
-            console.log($('.qnaList'));
             startVoice();
             
+            // 옵션 삭제 버튼
+            $(document).on("focus",'.optionCloseBtn',optiondel);
             // reviewBox focus -> 읽힘
             // $('.review').on('focus',reviewBox);
          })
 
+         // 옵션 삭제 버튼
+         function optiondel(e){
+            e.stopPropagation();
+            let msg = '옵션을 삭제하시려면 엔터키를 눌러주세요';
+            VoiceReturnRead(msg);
+         }
+
          function optionNum(e){
-            console.log(e);
-            console.log($(this).prop("max"));
             e.stopPropagation();
             let msg ="수량을 선택해주세요";
             VoiceReturnRead(msg);
@@ -1530,6 +1541,8 @@
                inquiryPageLoad(page);
             }else if(e.shiftKey && e.keyCode == 89){
                location.href="/page/buyer/wishList"; 
+            }else if(e.altKey && e.keyCode == 89){
+               location.href="cart/cartView"; 
             }
 
          });
