@@ -7,7 +7,10 @@ import com.ar.lighthouse.common.Criteria;
 public interface CustomService {
 	
 	// Faq 목록 가져오기
-	public List<FaqVO> getFaqList(String faqType);
+	public List<FaqVO> getFaqList(String faqType,Criteria cri);
+	
+	// faq 전체 갯수
+	public int getTotalFaqCount(String faqType);
 	
 	// Faq 타입들 가져오기
 	public List<FaqVO> getTypeList();
@@ -23,5 +26,7 @@ public interface CustomService {
 	
 	// 1:1문의 등록
 	public int addInquiry(InquiryVO inqVO);
+	
+	
 	
 }
