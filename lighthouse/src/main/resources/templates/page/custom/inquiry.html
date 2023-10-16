@@ -60,9 +60,6 @@
          sessionAuthor = sessionStorage.loginMember.memberAuthor;
       }
 
-      function ttsInit() {
-         if (TTSIsOk == null || sessionAuthor == 3) {
-
             // const speech = new webkitSpeechRecognition;
             const speech = new webkitSpeechRecognition;
 
@@ -102,6 +99,7 @@
                   url: 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
                   data: JSON.stringify(data),
                   dataType: 'JSON',
+                  async : false,
                   contentType: "application/json; charset=UTF-8",
                   success: function (res) {
                      var audioFile = new Audio();
@@ -109,7 +107,7 @@
                         "mp3");
                      audioFile.src = window.URL
                         .createObjectURL(audioBlob);
-                     audioFile.playbackRate = 1; //재생속도
+                     audioFile.playbackRate = 2; //재생속도
                      if (audioFileNow.paused == false) {
                         audioFileNow.pause();
                      }
@@ -145,6 +143,9 @@
                   type: mime
                });
             }
+      function ttsInit() {
+         if (TTSIsOk == null || sessionAuthor == 3) {
+
 
 
 
@@ -248,11 +249,11 @@
                   $('#content').focus();
                   return;
                }
-               ajaxFnc01(data);
+               ajaxFnc(data);
 
             })
 
-            function ajaxFnc01(obj) {
+           /*  function ajaxFnc01(obj) {
                console.log(obj);
                $.ajax({
                   url: '/custom/inquiryInsert',
@@ -275,7 +276,7 @@
                   }
                })
 
-            }
+            } */
 
 
          } //ttsInit()의 if문
@@ -309,12 +310,26 @@
             data: JSON.stringify(obj),
             contentType: 'application/json',
             success: function (result) {
-               if (result == 'success') {
-                  alert("문의 성공");
-                  location.href = "/"
-               } else {
-                  alert("문의 실패");
-               }
+           	  if (TTSIsOk == null || sessionAuthor == 3){
+	               if (result == 'success') {
+	                  let msg = "문의 성공";
+	                  VoiceReturnRead(msg);
+	                  
+	                  
+	                  location.href = "/"
+	               } else {
+	                  let msg = "문의 실패했습니다. 다시 등록해주세요";
+	                  VoiceReturnRead(msg);
+	               }
+           	  }else{
+	               if (result == 'success') {
+	                  alert("문의 성공");
+	                  location.href = "/"
+	               } else {
+	                  alert("문의 실패");
+	               }
+           		  
+           	  }
             },
             error: function (err) {
                console.log(err);

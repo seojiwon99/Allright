@@ -1538,20 +1538,6 @@
             let detailImg = $(".imgName");
             let detailContent = $(".imgContet");
 
-
-            for (let x = 0; x < detailImg.length; x++) {
-               let chk1 = detailImg[x];
-               let chk2 = detailContent[x];
-
-               if ($(chk1).val == "") {
-                  alert("상세 설명 이미지를 넣어주세요");
-                  return;
-               }
-               if ($(chk2).val() == "") {
-                  alert("상세 설명 이미지 대체텍스트를 넣어주세요");
-               }
-            }
-
             // 브랜드 
             if (!brandChk($("#productBrand").val())) {
                return;
@@ -1614,9 +1600,22 @@
                 alert("상세 설명을 적어주세요");
                 return;
              }
+
+		  for (let x = 0; x < detailImg.length; x++) {
+               let chk1 = detailImg[x];
+               let chk2 = detailContent[x];
+
+               if ($(chk1).val == "") {
+                  alert("상세 설명 이미지를 넣어주세요");
+                  return;
+               }
+               if ($(chk2).val() == "") {
+                  alert("상세 설명 이미지 대체텍스트를 넣어주세요");
+               }
+            }
             test22 = "/insertProduct";
 
-            // $("#insertForm").submit();
+            $("#insertForm").submit();
          })
 
          // 상품명 유효성 검사
@@ -1800,12 +1799,12 @@
                alert("숫자만 입력가능합니다.");
                return false;
             }
-            if (cost <= 1) {
-               alert("최소 금액은 1원 이상이여야합니다.");
+            if (cost <= 0) {
+               alert("최소 금액은 0원 이상이여야합니다.");
                return false;
             }
-            if (cost > 999999999999) {
-               alert("1000억 이상은 입력하실수 없습니다.");
+            if (cost > 99999999) {
+               alert("1억 이상은 입력하실수 없습니다.");
                return false;
             }
 
@@ -1822,7 +1821,7 @@
                alert("숫자만 입력가능합니다.");
                return false;
             }
-            if (cost < 0) {
+            if (cost <= 0) {
                alert("수량은 0보다 커야합니다.");
                return false;
             }
@@ -1843,7 +1842,7 @@
                alert("숫자만 입력가능합니다.");
                return false;
             }
-            if (cost < 1) {
+            if (cost <= 0) {
                alert("수량은 0보다 커야합니다.");
                return false;
             }
@@ -1864,7 +1863,7 @@
                alert("숫자만 입력가능합니다.");
                return false;
             }
-            if (cost < 1) {
+            if (cost <= 0) {
                alert("수량은 0보다 커야합니다.");
                return false;
             }
@@ -2044,13 +2043,13 @@
                $('#deliveryCost').focus();
                return false;
             }
-            if (cost <= 1) {
-               alert("최소 금액은 1원 이상이여야합니다.");
+            if (cost <= 0) {
+               alert("최소 금액은 0원 이상이여야합니다.");
                $('#deliveryCost').focus();
                return false;
             }
-            if (cost > 999999999999) {
-               alert("1000억 이상은 입력하실수 없습니다.");
+            if (cost > 99999999) {
+               alert("1억 이상은 입력하실수 없습니다.");
                $('#deliveryCost').focus();
                return false;
             }
@@ -2069,13 +2068,13 @@
                $('#exchangeCost').focus();
                return false;
             }
-            if (cost <= 1) {
-               alert("최소 금액은 1원 이상이여야합니다.");
+            if (cost <= 0) {
+               alert("최소 금액은 0원 이상이여야합니다.");
                $('#exchangeCost').focus();
                return false;
             }
-            if (cost > 999999999999) {
-               alert("1000억 이상은 입력하실수 없습니다.");
+            if (cost > 99999999) {
+               alert("1억 이상은 입력하실수 없습니다.");
                $('#exchangeCost').focus();
                return false;
             }
@@ -2094,13 +2093,13 @@
                $('#returnCost').focus();
                return false;
             }
-            if (cost <= 1) {
-               alert("최소 금액은 1원 이상이여야합니다.");
+            if (cost <= 0) {
+               alert("최소 금액은 0원 이상이여야합니다.");
                $('#returnCost').focus();
                return false;
             }
-            if (cost > 999999999999) {
-               alert("1000억 이상은 입력하실수 없습니다.");
+            if (cost > 99999999) {
+               alert("1억 이상은 입력하실수 없습니다.");
                $('#returnCost').focus();
                return false;
             }
