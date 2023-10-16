@@ -19,8 +19,13 @@ public class CustomServiceImpl implements CustomService{
 	CustomMapper customMapper;
 	
 	@Override
-	public List<FaqVO> getFaqList(String faqType) {
-		return customMapper.selectFaqList(faqType);
+	public List<FaqVO> getFaqList(String faqType,Criteria cri) {
+		return customMapper.selectFaqList(faqType,cri);
+	}
+	
+	@Override
+	public int getTotalFaqCount(String faqType) {
+		return customMapper.getTotalFaqCount(faqType);
 	}
 
 	@Override
@@ -47,6 +52,8 @@ public class CustomServiceImpl implements CustomService{
 	public List<FaqVO> getTypeList() {
 		return customMapper.selectFaqTypeList();
 	}
+
+	
 	
 
 }

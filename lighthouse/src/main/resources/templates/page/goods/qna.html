@@ -236,8 +236,12 @@
 						<i class="fa fa-caret-right"></i>
 				</a></li>
 			</ul>
-			<input type="hidden" id="memberId"
-            th:value="${session.loginMember.memberId}" />
+			
+			 <div th:if="${session.loginMember} != null">
+            <input type="hidden" id="memberId"
+               th:value="${session.loginMember.memberId}" />
+         </div>
+
 		</nav>
 		
 

@@ -34,9 +34,12 @@ public class CustomController {
 	
 	// faq 화면
 	@GetMapping("custom/faqList")
-	public String faqList(@RequestParam(required = false, defaultValue = "", value="faqType") String faqType, Model model) {
+	public String faqList(@RequestParam(required = false, defaultValue = "", value="faqType") String faqType, Model model,Criteria cri) {
 		model.addAttribute("faqType", customService.getTypeList());
-		model.addAttribute("faqList", customService.getFaqList(faqType));
+		int totalCnt = customService.getTotalFaqCount(faqType);
+		System.out.println(totalCnt);
+		model.addAttribute("faqList", customService.getFaqList(faqType,cri));
+		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		model.addAttribute("categories",service.getCategoryList());
 		model.addAttribute("allCtg", service.getAllCategoryList());
 		

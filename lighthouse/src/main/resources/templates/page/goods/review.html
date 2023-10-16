@@ -13,19 +13,17 @@
             <!-- review -->
             <div class="row" id="reviews">
 
-               <div class="col-12" id="sizeTab">
+              <div class="col-12" id="sizeTab">
                   <!-- Heading -->
-                  <h5 class="mb-10 text-center">리뷰</h5>
+                  <div>
+                     <h5 class="mb-6 text-center" style="font-weight: 600">고객리뷰</h5>
+                     <div class="mb-6 text-center">※ 리뷰 등록은 [마이페이지 > 주문 목록]에서
+                        확인하실 수 있습니다.</div>
+                  </div>
 
                   <!-- Header -->
-                  <div class="row align-items-center">
-                     <div class="col-12 col-md-auto">
-                        <!-- Dropdown -->
-                        <div class="dropdown mb-4 mb-md-0">
-                           <span style="font-weight: 600" tabindex="0" id="Reviewtitle">Reviews</span>
-                           <strong class="fs-sm ms-2" name="reviewCount">([[${count}]])</strong>
-                        </div>
-                     </div>
+                  <div class="row align-items-center"
+                     style="border: 1px solid rgba(0, 0, 0, 0.1); padding: 30px; display: flex; justify-content: center; align-items: center">
                      <div class="col-12 col-md text-md-center">
                         <!-- Rating -->
                         <div class="rating text-dark h6 mb-4 mb-md-0"
@@ -45,148 +43,32 @@
                            <div class="rating-item">
                               <i class="fas fa-star"></i>
                            </div>
+                           <span></span>
                         </div>
-
+                        <div style="font-weight: 600" tabindex="0" id="Reviewtitle">
+                           총 [[${count}]]건이 있습니다.</div>
                         <!-- Count -->
 
                      </div>
-                     <div class="col-12 col-md-auto">
-                        <!-- Button -->
+                     <!-- <div class="col-12 col-md-auto">
 
                         <a class="btn btn-sm btn-dark collapsed"
-
                            data-bs-toggle="collapse" href="#reviewForm"
-
                            aria-expanded="false" th:if="${session.loginMember != null}">
-                           리뷰 작성 </a> <a class="btn btn-sm btn-dark"
+                           리뷰 작성 </a> 
+                           
+                           <a class="btn btn-sm btn-dark"
                            th:if="${session.loginMember == null}"
                            href="javascript:parent.location.href='page/member/loginForm'"
                            tabindex="-1"> 로그인 </a>
-                     </div>
+                     </div> -->
                   </div>
 
-                  <div th:if="${count} == 0" style="text-align: center; padding-top: 150px">
+
+                  <div th:if="${count} == 0"
+                     style="text-align: center; padding-top: 150px">
                      <p style="font-size: 26px">등록된 리뷰가 없습니다</p>
                   </div>
-
-
-                  <!-- New Review -->
-                     <div class="collapse" id="reviewForm">
-                  <form method="post" id="reviewForm2" enctype="multipart/form-data">
-                        <!-- Divider -->
-                        <hr class="my-8" />
-
-                        <!-- Form -->
-                        <div>
-                           <!-- Text -->
-                           <div style="display: flex">
-                              <div>
-                                 <p class="mb-1 fs-xs"
-                                    style="padding-bottom: 10px; padding-right: 120px">이미지
-                                    선택</p>
-                                 <div class="mb-6 mb-md-0" style="width: 180px; height: 180px">
-                                    <div id="reviewDiv">
-                                       <img src=""
-                                          style="display: none; width: 180px; height: 180px"
-                                          id="reviewImages">
-                                    </div>
-                                    <span class="avatar-title circle"> 이미지 없음<i
-                                       class="fas fa-image"></i>
-                                    </span>
-                                    <div></div>
-                                 </div>
-
-
-                                 <input type="file" class="reviewimg" name="files"
-                                    onchange="readImg(this)" id="reviewimg" accept="image/*" />
-                              </div>
-
-                              <!-- Text -->
-                              <div>
-
-                                 <!-- Rating form -->
-                                 <div class="rating-form">
-                                    <p class="mb-1 fs-xs" style="padding-right: 10px">별점:</p>
-                                    <!-- Input -->
-                                    <input class="rating-input" type="range" min="0" max="5" />
-
-                                    <!-- Rating -->
-                                    <div class="star rating h5 text-dark" data-value="5">
-                                       <div class="rating-item">
-                                          <i class="fas fa-star"></i>
-                                       </div>
-                                       <div class="rating-item">
-                                          <i class="fas fa-star"></i>
-                                       </div>
-                                       <div class="rating-item">
-                                          <i class="fas fa-star"></i>
-                                       </div>
-                                       <div class="rating-item">
-                                          <i class="fas fa-star"></i>
-                                       </div>
-                                       <div class="rating-item">
-                                          <i class="fas fa-star"></i>
-                                       </div>
-                                    </div>
-                                 </div>
-
-
-
-                                 <div class="col-12" style="padding-top: 20px">
-                                    <textarea type="text" name="imgContent" id="imgContent"
-                                       class="form-control" placeholder="다른사람을 위한 대체 텍스트를 입력해주세요"
-                                       style="width: 600px; height: 200px; resize:none;"></textarea>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="row">
-                           <div class="col-12 mb-6 text-center"></div>
-
-                           <input type="hidden" th:value="${productCode}" id="productCode"
-                              name="productCode" />
-
-                           <div class="col-12 mb-6 text-center"
-                              style="display: flex; justify-content: center; align-items: center">
-
-                              <!-- Rating form -->
-                              <div class="rating-form">
-                                 <!-- Input -->
-                                 <input class="rating-input" type="range" min="1" max="5"
-                                    value="5" />
-
-
-                              </div>
-                           </div>
-
-                           <div class="col-12" th:if="${session.loginMember != null}">
-                              <!-- 유저네임 -->
-                              <div class="form-group">
-                                 <label class="visually-hidden" for="memberId"></label> <input
-                                    class="form-control form-control-sm" id="memberId"
-                                    name="memberId" type="text"
-                                    th:value="${session.loginMember.memberId}" readonly />
-                              </div>
-                           </div>
-
-                           <div class="col-12">
-                              <!-- 내용 -->
-                              <div class="form-group">
-                                 <label class="visually-hidden" for="reviewContent">Review:</label>
-                                 <textarea class="form-control form-control-sm" rows="5"
-                                    placeholder="내용을 입력해주세요" id="reviewContent"
-                                    name="reviewContent" required style="resize:none;"></textarea>
-                              </div>
-                           </div>
-                           <div class="col-12 text-center">
-                              <!-- Button -->
-                              <button class="btn btn-outline-dark" type="button"
-                                 id="insertBtn">리뷰 등록</button>
-                           </div>
-                        </div>
-                  </form>
-                     </div>
-
 
 
 
@@ -195,7 +77,15 @@
                      <!-- Review -->
                      <div class="review" th:each="review:${review}" tabindex="0">
                         <!-- 이미지 코드, 리뷰코드 -->
-                        <div style="display: none">[[${review.reviewCode}]]</div>
+                        <div style="display: none" name="reviewCode" id="reCode">[[${review.reviewCode}]]</div>
+                        <div class="declareReviewCode" style="display: none"
+                           name="reviewCode">[[${review.reviewCode}]]</div>
+                        <div class="declareMemberId" style="display: none"
+                           th:if="${review.memberId}" name="memberId">[[${review.memberId}]]</div>
+                        <div class="declareProductCode" style="display: none"
+                           name="productCode">[[${review.productCode}]]</div>
+
+
                         <div th:if="${review.reviewImg} != null" style="display: none">
                            [[${review.reviewImg.imgCode}]]</div>
                         <div class="review-body">
@@ -218,11 +108,20 @@
                               </div>
                               <div class="col-12 col-md">
                                  <!-- Header -->
+
                                  <div class="row mb-6">
                                     <div class="col-12">
+                                       <div class="col-12"
+                                          style="display: flex; justify-content: space-between;">
+                                          <!-- Time -->
+                                          <span class="fs-xm text"
+                                             th:text="${review.memberId.length} > 3 ? ${#strings.substring(review.memberId,0,5)}+'***' : ${inquiry.memberId}"></span>
+                                          <span class="fs-xs text-muted"
+                                             th:text="${#dates.format(review.reviewRegdate,'yyyy-MM-dd HH:mm')}"></span>
+                                       </div>
                                        <!-- Rating -->
                                        <div class="rating fs-sm text-dark" data-value="5"
-                                          style="padding: 0"
+                                          style="padding: 0; padding-top: 4px"
                                           th:with="start=1, end=(${review.reviewStar})">
                                           <div class="rating-item"
                                              th:each="p : ${#numbers.sequence(start, end)}">
@@ -242,32 +141,18 @@
                                           </div>
                                        </div>
                                     </div>
-                                    <div class="col-12">
-                                       <!-- Time -->
-                                       <span class="fs-xs text"
-                                          th:text="${review.memberId.length} > 3 ? ${#strings.substring(review.memberId,0,5)}+'***' : ${inquiry.memberId}"></span>
-                                       <span class="fs-xs text-muted"
-                                          th:text="${#dates.format(review.reviewRegdate,'yyyy-MM-dd HH:mm')}"></span>
-                                    </div>
                                  </div>
 
                                  <!-- Text -->
-                                 <p class="text-gray-500" th:text="${review.reviewContent}"
-                                    id="reviewContent"></p>
+                                 <div class="text-gray-500"
+                                    style="word-break: break-all; width: 580px"
+                                    th:text="${review.reviewContent}" id="reviewContent"></div>
 
                                  <!-- Footer -->
                                  <div class="row align-items-center">
                                     <div class="col-auto me-auto">
                                        <!-- 좋아요 -->
-                                       <div class="rate">
-                                          <a class="rate-item" data-toggle="vote" data-count="0"
-                                             tabindex="-1" href="#" role="button"> <i
-                                             class="fe fe-thumbs-up"></i>
-                                          </a> <a class="rate-item" data-toggle="vote" data-count="0"
-                                             tabindex="-1" href="#" role="button"> <i
-                                             class="fe fe-thumbs-down"></i>
-                                          </a>
-                                       </div>
+
                                     </div>
 
                                     <div class="col-auto">
@@ -285,10 +170,9 @@
                                              th:onclick="reviewDelete([[${review.reviewCode}]])"
                                              id="reviewDelBtn">삭제하기</button>
                                        </div>
-                                       <button class="btn btn-xs btn-outline-border" tabindex="-1"
+                                       <button class="declareButton btn btn-xs btn-outline-border" tabindex="-1"
                                           th:if=" ${session.loginMember == null} or ${session.loginMember.memberId != review.memberId}"
-                                          data-bs-toggle="modal" data-bs-target="#declareModal"
-                                          >신고하기</button>
+                                          data-bs-toggle="modal" data-bs-target="#declareModal">신고하기</button>
                                     </div>
                                  </div>
                               </div>
@@ -308,16 +192,7 @@
                                  </div>
                                  <div class="modal-body">
                                     <div class="mb-3">
-                                       <div class="declareReviewCode" style="display: none"
-                                          name="reviewCode">[[${review.reviewCode}]]</div>
-                                       <div class="declareMemberId" style="display: none"
-                                          name="memberId">[[${review.memberId}]]</div>
-                                       <div class="declareProductCode" style="display: none"
-                                          name="productCode">[[${review.productCode}]]</div>
 
-
-                                       <div style="display: none" class="declarePerson"
-                                          name="declareMember">[[${session.loginMember.memberId}]]</div>
                                        <div>
                                           <!--  <input type="hidden" name="memberId"
                                                             class="form-control">-->
@@ -348,95 +223,88 @@
                            </div>
                         </div>
                         <!-- 리뷰 신고폼 -->
-                     </div>
-
-                     <!--리뷰 수정폼! -->
-                     <div class="modal fade" id="exampleModal" tabindex="-1"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                           <div class="modal-content">
-                              <div class="modal-header">
-                                 <h5 class="modal-title" id="exampleModalLabel">리뷰수정</h5>
-                                 <button type="button" class="btn-close"
-                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                              <div class="modal-body">
-                                 <form id="editForm" method="post">
-                                    <div>
+                        <div class="modal fade" id="exampleModal" tabindex="-1"
+                           aria-labelledby="exampleModalLabel" aria-hidden="true">
+                           <div class="modal-dialog">
+                              <div class="modal-content">
+                                 <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">리뷰수정</h5>
+                                    <button type="button" class="btn-close"
+                                       data-bs-dismiss="modal" aria-label="Close"></button>
+                                 </div>
+                                 <div class="modal-body">
+                                    <form id="editForm" method="post">
                                        <div>
-                                          <div id="previewDiv"></div>
-                                          <input type="hidden" name="reviewCode" id="reviewNum" />
-                                          <!-- 수정전 이미지 -->
-                                          <img src="" id="reviewModifyImg" width="180px"
-                                             height="180px">
+                                          <div>
+                                             <div id="previewDiv"></div>
+                                             <input type="hidden" name="reviewCode" id="reviewNum" />
+                                             <!-- 수정전 이미지 -->
+                                             <img src="" id="reviewModifyImg" width="180px"
+                                                height="180px">
+                                          </div>
+                                          <div style="padding-top: 20px">
+                                             <span style="color: grey">수정할 이미지를 정해주세요</span> <input
+                                                type="file" class="reviewimg" name="files"
+                                                onchange="readURL(this)" id="reviewimg" accept="image/*" />
 
+
+                                          </div>
                                        </div>
-                                       <div style="padding-top: 20px">
-                                          <span style="color: grey">수정할 이미지를 정해주세요</span> <input
-                                             type="file" class="reviewimg" name="files"
-                                             onchange="readURL(this)" id="reviewimg" accept="image/*" />
+                                       <div class="col-12 mb-6 text-center">
+                                          <!-- Text -->
 
+                                          <!-- Rating form -->
+                                          <div class="rating-form" style="padding-top: 20px">
+                                             <!-- Input -->
+                                             <input class="rating-input" type="range" min="1" max="5"
+                                                value="5" />
 
-                                       </div>
-                                    </div>
-                                    <div class="col-12 mb-6 text-center">
-                                       <!-- Text -->
-
-                                       <!-- Rating form -->
-                                       <div class="rating-form" style="padding-top: 20px">
-                                          <!-- Input -->
-                                          <input class="rating-input" type="range" min="1" max="5"
-                                             value="5" />
-
-                                          <!-- Rating -->
-                                          <div class="star rating h5 text-dark" id="editStar"
-                                             data-value="3" name="reviewStar">
-                                             <div class="rating-item">
-                                                <i class="fas fa-star"></i>
-                                             </div>
-                                             <div class="rating-item">
-                                                <i class="fas fa-star"></i>
-                                             </div>
-                                             <div class="rating-item">
-                                                <i class="fas fa-star"></i>
-                                             </div>
-                                             <div class="rating-item">
-                                                <i class="fas fa-star"></i>
-                                             </div>
-                                             <div class="rating-item">
-                                                <i class="fas fa-star"></i>
+                                             <!-- Rating -->
+                                             <div class="star rating h5 text-dark" id="editStar"
+                                                data-value="3" name="reviewStar">
+                                                <div class="rating-item">
+                                                   <i class="fas fa-star"></i>
+                                                </div>
+                                                <div class="rating-item">
+                                                   <i class="fas fa-star"></i>
+                                                </div>
+                                                <div class="rating-item">
+                                                   <i class="fas fa-star"></i>
+                                                </div>
+                                                <div class="rating-item">
+                                                   <i class="fas fa-star"></i>
+                                                </div>
+                                                <div class="rating-item">
+                                                   <i class="fas fa-star"></i>
+                                                </div>
                                              </div>
                                           </div>
                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                       <div>
-                                          <label for="memberId" class="col-form-label">등록인</label> <input
-                                             type="text" name="memberId" class="form-control" readonly
-                                             th:if="${session.loginMember != null}"
-                                             th:value="${session.loginMember.memberId}">
+                                       <div class="mb-3">
+                                          <div>
+                                             <input type="hidden" name="memberId" class="form-control"
+                                                readonly th:if="${session.loginMember != null}"
+                                                th:value="${session.loginMember.memberId}">
+                                          </div>
+                                          <label for="message-text" class="col-form-label">리뷰
+                                             내용:</label>
+                                          <textarea class="form-control" id="message-text"
+                                             name="reviewContent"></textarea>
                                        </div>
-                                       <label for="message-text" class="col-form-label">리뷰
-                                          내용:</label>
-                                       <textarea class="form-control" id="message-text"
-                                          name="reviewContent"></textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                       <label for="messageText" class="col-form-label">이미지
-                                          소개 </label> <input type="text" class="form-control"
-                                          id="reviewImgContent" name="imgContent" />
-                                    </div>
-                                 </form>
-                              </div>
-                              <div class="modal-footer">
-                                 <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">닫기</button>
-                                 <button type="button" class="btn btn-primary"
-                                    id="reviewEditBtn">저장</button>
+                                    </form>
+                                 </div>
+                                 <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                       data-bs-dismiss="modal">닫기</button>
+                                    <button type="button" class="btn btn-primary"
+                                       id="reviewEditBtn">저장</button>
+                                 </div>
                               </div>
                            </div>
                         </div>
                      </div>
+
+                     <!--리뷰 수정폼! -->
                   </div>
 
 
@@ -475,7 +343,6 @@
 
                   <div class="pull-right"></div>
                </div>
-            </div>
 
          </div>
       </section>
@@ -673,6 +540,15 @@ function editReview(data){
      /*--------------------------
     리뷰 신고
     ----------------------------*/
+    let member = $("#hidden").val();   
+    
+    console.log(member);
+    $(".declareButton").on("click",function(){
+       if(member == ''){
+          alert("로그인 후 이용가능합니다");
+       }   
+    }) 
+    
     $("#reviewDeclareBtn").on("click",function(){
 
        let declareObj = {
