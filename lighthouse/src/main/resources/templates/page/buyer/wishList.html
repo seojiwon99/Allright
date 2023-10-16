@@ -37,17 +37,17 @@
                   <div class="collapse" id="Collapse" data-simplebar-collapse="#seasonGroup">
                     <div class="form-group form-group-overflow mb-6" id="seasonGroup">
                       <div class="form-check mb-3">
-                        <a class="form-check-label" id="cancel" href="cancelList" tabindex="-1">
+                        <a class="form-check-label" id="cancel" href="/page/buyer/cancelList" tabindex="-1">
                           취소
                         </a>
                       </div>
                       <div class="form-check mb-3">
-                        <a class="form-check-label" id="reList" href="returnList" tabindex="-1">
+                        <a class="form-check-label" id="reList" href="/page/buyer/returnList" tabindex="-1">
                           반품
                         </a>
                       </div>
                       <div class="form-check">
-                        <a class="form-check-label" id="exchange" href="exchangeList" tabindex="-1">
+                        <a class="form-check-label" id="exchange" href="/page/buyer/exchangeList" tabindex="-1">
                           교환
                         </a>
                       </div>
@@ -95,21 +95,28 @@
 												<i class="fe fe-eye me-2 mb-1"></i> Quick View
 											</a>
 											<!-- Image -->
-											<img class="card-img-top favoriteCode"
+											<img class="card-img-top favoriteCode" style="width:100%; height:250px"
 												th:src="|/upload/${wishes.uploadPath}/${wishes.uploadName}|"
 												th:alt="${wishes.imgContent}" th:value="${wishes.favoriteCode}" tabindex="0">
 											<!-- Action -->
 											<a
-												class="btn btn-xs btn-circle btn-white-primary card-action card-action-end" href="#" th:onclick="deleteWish([[${wishes.favoriteCode}]])" tabindex="0">
+												class="btn btn-xs btn-circle btn-white-primary card-action card-action-end wishDelBtn" href="#" th:onclick="deleteWish([[${wishes.favoriteCode}]])" tabindex="0">
 												<i class="fe fe-x"></i>
 											</a>
 										</div>
 										<!-- Body -->
 										<div class="card-body fw-bold text-center">
 											<a class="text-body" href="product.html" tabindex="-1"></a>
-											<span th:text="${wishes.productName}" class="productName" tabindex="-1"></span>
+											<span th:text="${wishes.productName}" class="productName w-100" tabindex="-1"
+											style="
+											display: inline-block;
+											white-space : nowrap;
+											overflow : hidden;
+											text-overflow : ellipsis;
+											cursor : pointer"
+											></span>
 											<br> 
-											<span class="text-muted"><span th:text="|${wishes.productCost}원|" tabindex="-1" class="productCost"></span></span>
+											<span class="text-muted"><span th:text="|${#numbers.formatInteger(wishes.salePrice,3,'COMMA')}원|" tabindex="-1" class="productCost"></span></span>
 										</div>
 									</div>
 								</div>
@@ -182,8 +189,11 @@
     </textarea>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
+	
+
 		    function deleteWish(code) {
-		        if(favoriteDel){
+		    	
+		        if(confirm('찜 목록에서 삭제하시겠습니까?')){
 		        	$.ajax('/buyer/deleteWish',{ // 실제 아이템을 삭제할 URL로 대체하세요.
 			            type: 'GET',
 			            data: { 
@@ -196,9 +206,9 @@
 		                
 		              })
 		            	
-		            } else {
-		              return;
-		            }
+	            } else {
+	              return;
+	            }
 		    };
 		  //tts 시작 
 		     let TTSIsOk = localStorage.getItem('ttsKey');
@@ -220,6 +230,28 @@
 		     $('.favoriteCode').on('focus', wishInfo);
 			 $('.card-action-end').on('focus', deleteBtn);
 			 $('.card-btn').on('focus', productBtn);
+			 
+				
+			 $(document).on('keydown','.wishDelBtn',function(e){
+				 if(e.key == 'Enter'){
+						e.preventDefault(); 
+						let codeThis = $(this).prev()[0].attributes[3].value
+						$.ajax('/buyer/deleteWish',{
+				            type: 'GET',
+				            data: { 
+				            	favoriteCode : codeThis 
+				            }
+			        	})
+			        	.done(data => {
+			                console.log(data);
+			                $('#test').replaceWith(data);
+			                VoiceMenual('찜 목록에서 삭제되었습니다.')
+			                
+		                 })
+					 }
+			 })
+
+
 			 
 		     //tts 이벤트 진행
 		     function productBtn(){

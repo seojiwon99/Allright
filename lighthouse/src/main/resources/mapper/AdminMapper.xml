@@ -482,7 +482,7 @@
 			                        <if test="noticeAdminVO.noticeTitle != null and !(noticeAdminVO.noticeTitle.equals('')) ">
 									AND notice_title LIKE '%' || #{noticeAdminVO.noticeTitle} || '%'
 									</if>
-			                        order by notice_type desc, notice_code desc) an
+			                        order by notice_type desc, notice_regdate desc) an
 			     			    <![CDATA[                   
 			                where rownum <= #{cri.pageNum} * #{cri.amount} ) rt
 			                ]]>

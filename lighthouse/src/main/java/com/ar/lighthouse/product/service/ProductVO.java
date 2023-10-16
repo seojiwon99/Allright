@@ -7,7 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.ar.lighthouse.admin.service.MemberDetailVO;
 import com.ar.lighthouse.buyp.service.DetailVO;
-
+import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.common.ImgsVO;
 
 import lombok.Data;
@@ -50,6 +50,7 @@ public class ProductVO {
 	List<DetailVO> detail;
 
 	List<OptionDetailVO> optionDetail;
+	
 	private String businessNumber;
 	//메인 썸네일 뿌릴 때 필요
 	private String imgContent;
@@ -58,4 +59,6 @@ public class ProductVO {
 	private int orderCnt;
 	
 	List<CategoryVO> category;
+	
+	List<CodeVO> code;
 }

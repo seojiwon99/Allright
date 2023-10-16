@@ -7,10 +7,10 @@
 <!-- Content -->
 <div layout:fragment="content">
     <style>
-	  img {
-	    border-radius: 20px;
-	  }
-	</style>
+     img {
+       border-radius: 30px;
+     }
+   </style>
     <!-- 결제 상품 정보 -->
  
     <!-- BREADCRUMB -->
@@ -69,7 +69,7 @@
                     <label class="form-label" for="checkoutBillingFirstName">이름 *</label>
                     <div class="input-group mb-8">                      
                       <input type="text" class="form-control" id="mName" placeholder="이름 작성" aria-label="Recipient's username" aria-describedby="button-addon2" th:value="${gets.memberName}" readonly>  
-                      <button class="btn btn-outline-secondary deliveryInfo" type="button" style="width: 200px; margin: 10px; background-color: black; color: white; ">배송지 정보로 등록</button>                   
+                      <button class="btn btn-outline-secondary deliveryInfo" type="button" style="width: 200px; margin: 10px; background-color: black; color: white; border-radius: 10px;">배송지 정보로 등록</button>                   
                     </div>
                     </div>
                   </div>
@@ -136,17 +136,17 @@
                         <div class="input-group mb-8">
                           <input style="margin-top: 15px; margin-left: 10px" type="text" class="form-control cSelect" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2" id="couponSelect" tabindex="-1" readonly>
                           <input type="hidden" class="myCouponCode">
-                         <button type="button" class="btn btn-outline-secondary list-styled-link couponBtn" style="margin: 20px; background-color: black; color: white;" >쿠폰선택</button>
+                         <button type="button" class="btn btn-outline-secondary list-styled-link couponBtn" style="margin: 20px; background-color: black; color: white; border-radius: 10px;">쿠폰선택</button>
                          
                         </div> 
                         <p style="margin-left: 10px">쿠폰 할인 금액 : <input type="text" style="border-width: 0 0 1px; width: 150px;" readonly class="couponSalePrice" tabindex="-1">원 
-                          <button class="btn btn-outline-secondary couponResult" type="button" style="background-color: black; color: white;">사용하기</button>
+                          <button class="btn btn-outline-secondary couponResult" type="button" style="background-color: black; color: white; border-radius: 10px;">사용하기</button>
                         </p>         
                       <!-- Text -->
                       
                         <div class="fs-sm text-muted oName" th:text="|옵션 :${gets.optionLast}|" style="font-weight: bold;"></div>
                         <div class="fs-sm text-muted pCnt" th:text="|구매수량 : ${gets.cartCount}|"  style="font-weight: bold;"></div>
-
+                        <span style="display: flex;"> 합계금액 : <div class="fs-sm text-muted tPay" th:data-total="|${#numbers.formatInteger(((gets.salePrice + gets.optionPrice) * gets.cartCount)+ gets.deliveryCost,0,'COMMA')}|" th:text="|${#numbers.formatInteger(((gets.salePrice + gets.optionPrice) * gets.cartCount)+ gets.deliveryCost,0,'COMMA')}|"  style="font-weight: bold;"></div></span>
                         <input type="hidden" th:value="${gets.cartCount}" class="cartCnt">
                       
                     </div>
@@ -155,7 +155,7 @@
             </ul>
                  <!-- Heading -->         
               <h6 class="mb-7" id="deliveryContent" tabindex="0">배송 정보</h6>
-              <button class="btn btn-outline-secondary deliveryInfo" type="button" style="width: 200px; margin: 10px; background-color: black; color: white;" tabindex="-1">배송지 정보로 등록</button>       
+              <button class="btn btn-outline-secondary deliveryInfo" type="button" style="width: 200px; margin: 10px; background-color: black; color: white; border-radius: 10px; border-radius: 10px;" tabindex="-1">배송지 정보로 등록</button>       
                 <div class="col-12">
                   <!-- Address Line 1 -->
                   <div class="form-group">
@@ -169,7 +169,7 @@
                   <div class="form-group">
                     <div class="input-group mb-8">
                       <input type="text" class="form-control" placeholder="배송지  정보"  id="addr">
-                      <button class="btn btn-outline-secondary" type="button" id="addressSearch" style="background-color: black; color: white;">주소검색</button>
+                      <button class="btn btn-outline-secondary" type="button" id="addressSearch" style="background-color: black; color: white; border-radius: 10px;">주소검색</button>
                     </div>
                   </div>
                 </div>
@@ -255,12 +255,12 @@
 
     
     <!-- 토스 결제 위젯 -->
-	<div class="title"></div>
-	  <div id="payment-method"></div>
-	  <div id="agreement"></div> 
+   <div class="title"></div>
+     <div id="payment-method"></div>
+     <div id="agreement"></div> 
   <!-- Button -->
   <div>
-    <button class="btn btn-dark" id="payment-button" style="padding: 10px; width: 200px; margin: auto; display: block;">결제하기</button>   
+    <button class="btn btn-dark" id="payment-button" style="padding: 10px; width: 200px; margin: auto; display: block; border-radius: 10px;">결제하기</button>   
   </div>
 
   <div>
@@ -403,7 +403,7 @@
         saleToal = saleToal + (getPrice[key].salePrice +  getPrice[key].optionPrice) * getPrice[key].cartCount;
       }
       result = result + deliveryPay;
-	   // 상품 가격
+      // 상품 가격
       for(let key in getPrice) {
         productTotal = productTotal + ((getPrice[key].productCost )* getPrice[key].cartCount);
       }
@@ -422,7 +422,7 @@
      
 
         let productNum = "";
-      	let coupon;     
+         let coupon;     
         let roundPrice = 0;
         let couponNum =0;
         const myModal =  new window.Modal(document.getElementById('modalNewsletterHorizontal'))
@@ -439,12 +439,15 @@
         function closeModal(){
           myModal.hide();
         }
-
+        $('#modalNewsletterHorizontal').on('hidden.bs.modal', function(){
+          $(coupon).closest(".list-group-item").find('.couponResult').focus();
+        })
+        
     $('#modalNewsletterHorizontal').on('shown.bs.modal', function(){
       $('#myCouponbox').focus();
       $('.select-button').off("click");
       $('.select-button').on('click',function(e){
-
+        
         let thisRow = $(this).closest('tr');
 
         let maxPrice =  thisRow.find('td:eq(0)').data('max'); // 최소 사용 금액
@@ -481,12 +484,12 @@
           return false;
         }
 
-        let flag=false;
+        let flag = false;
         $('.myCouponCode[value]').each(function(idx,el){
-          if(el.value == couponNum){            	
+          if(el.value == couponNum){               
             flag = true;
             return false;
-          }            	
+          }               
         })
         if(flag){
           alert("사용된 쿠폰입니다.");
@@ -498,6 +501,7 @@
         //$('#modalNewsletterHorizontal').modal('hide'); //모달 닫기
         closeModal();
         $(coupon).closest(".list-group-item").find('.couponResult').focus();
+        $(coupon).closest(".list-group-item").find('.couponResult').prop("disabled",false);
       });
       
     }) 
@@ -505,22 +509,37 @@
     
 
     let conponAll = 0;
+
     //총 금액에서 쿠폰 값 빼기
     $('.couponResult').on('click', function(e){
             conponAll = 0;
+           
             $('.couponSalePrice').each(function(idx,el){
               let formatNumber = el.value.replaceAll(",","");
               conponAll = conponAll + Number(formatNumber)
+             
             })
             
             console.log(conponAll);
 
             couDiscount = $('#couponSale').text(formatComma(conponAll));
 
-              
               Number($('#totalPrice').text(formatComma(result-conponAll)));
               toalPay  =  Number(result-conponAll);
+              
+              let price = $(this).closest('.list-group-item').find('.tPay').data('total')
+              price = price.replaceAll(",","");
+              console.log($(this).prev().val());
+              let salePayPrice = $(this).prev().val();
+              salePayPrice = salePayPrice.replaceAll(",","");
+              console.log(salePayPrice);
+
+              console.log($(this).closest('.list-group-item').find('.tPay').data('total'));
+              $(this).prop("disabled",true);
+              let couponProPay = $(this).closest('.list-group-item').find('.tPay').text((Number(price) - Number(salePayPrice)).toLocaleString('ko-KR'));
               console.log(toalPay);
+              console.log(couponProPay);
+              
             
         })
             
@@ -541,11 +560,11 @@
       $('#deliveryName').val($('#mName').val());
       $('#addr').val($('#mAddr1').val());
       $('#addrDt').val($('#mAddr2').val());
-      $('#deliveryTel').val($('#mTel').val());
+      $('#deliveryTel').val($('#mTel').val()); 
     });
     
    //토스 위젯
-   	const clientKey = 'test_ck_GjLJoQ1aVZJKQEvkvAWVw6KYe2RN' // 상점을 특정하는 키
+      const clientKey = 'test_ck_GjLJoQ1aVZJKQEvkvAWVw6KYe2RN' // 상점을 특정하는 키
     const customerKey = 'YbX2HuSlsC9uVJW6NMRMj' // 결제 고객을 특정하는 키
     
     // 할인 쿠폰 금액
@@ -573,7 +592,7 @@
     }
     $('.text-gray-300').last().focus();
     let amount = $('#totalPrice').text(); // 결제 금액
-    amount = amount.replace(",","");
+    amount = amount.replaceAll(",","");
     Number(amount);
     paymentWidget.renderPaymentMethods('#payment-method', amount)
     let uuid = self.crypto.randomUUID().slice(0,-10);
@@ -588,7 +607,7 @@
     // productCode productSalePrice
     let deliveryVO =
     {
-        orderPrice : amount,
+        orderPrice : Number(amount),
         orderAddr : $('#addr').val(),
         orderDetailsAddr : $('#addrDt').val(),
         recipientName : $('#deliveryName').val(),
@@ -625,6 +644,7 @@
       orderName: [[${productName}]],
       successUrl: 'http://localhost:8090/orders/credit',
       failUrl: 'https://localhost:8090/orders/fail',
+
       customerEmail: [[${orderGet[0].memberEmail}]], 
       customerName: [[${orderGet[0].memberName}]]
       }).catch(function (error) {
@@ -637,10 +657,10 @@
 
   let TTSIsOk = localStorage.getItem('ttsKey');
     let sessionAuthor;
-	   console.log(sessionStorage.loginMember);          
-	   if(sessionStorage.loginMember != null){
-	      sessionAuthor = sessionStorage.loginMember.memberAuthor;
-	   }
+      console.log(sessionStorage.loginMember);          
+      if(sessionStorage.loginMember != null){
+         sessionAuthor = sessionStorage.loginMember.memberAuthor;
+      }
        
       function ttsInit(){
        if(TTSIsOk == null || sessionAuthor == 3){
@@ -649,7 +669,7 @@
     
     let audioFileNow = new Audio();
     let firstMsg = "주문 결제 페이지입니다. 배송지, 상품 가격을 확인 후 결제 진행하시면 됩니다.";
-		let message =  firstMsg + $('#orderInfo').val();
+      let message =  firstMsg + $('#orderInfo').val();
     
       VoiceMenual(message); 
 
@@ -733,10 +753,10 @@
 
       let otName = $(this).parent().parent().find('.oName').text(); 
       let prCnt = $(this).parent().parent().find('.pCnt').text(); 
-
+      let payPrice = $(this).parent().parent().find('.tPay').text(); 
       let productDetailInfo = `선택된 상품의 이름은. ${prName}. 선택한. ${otName}. 할인 받지 않은 가격은. ${prPay}원. ${saPay}원.
 
-                              ${otPay}원. 선택한 쿠폰은. ${coSelect}. 쿠폰 할인 금액은. ${couponSalePay}원. 구매 ${prCnt}. 입니다. 쿠폰 선택 원할 경우 탭으로 이동 부탑드립니다.`;
+                              ${otPay}원. 선택한 쿠폰은. ${coSelect}. 쿠폰 할인 금액은. ${couponSalePay}원. 구매 ${prCnt}. 합계금액은. ${payPrice}원. 입니다. 쿠폰 선택 원할 경우 탭으로 이동 부탑드립니다.`;
       VoiceMenual(productDetailInfo);
     }
 
@@ -782,7 +802,7 @@
 
     function myCouponBox() { //나의 쿠폰함 안내.
       if(couponarry == '') {
-        VoiceMenual('현재 사용. 가능한. 쿠폰이 없습니다. ESC로 창을 닫아주세요.');
+        VoiceMenual('현재 사용 가능한. 쿠폰이 없습니다. ESC로 창을 닫아주세요.');
         return;
       }
       VoiceMenual('나의 쿠폰함입니다. 탭키로 이동하여 쿠폰 내용 확인 후. 쿠폰 선택하면 적용됩니다.');
@@ -860,10 +880,10 @@
 
         let flag=false;
         $('.myCouponCode[value]').each(function(idx,el){
-          if(el.value == couponNum){            	
+          if(el.value == couponNum){               
             flag = true;
             return false;
-          }            	
+          }               
         })
         if(flag){
           VoiceMenual("사용된 쿠폰입니다. 탭키를 눌러. 다음 쿠폰으로. 이동해주세요.");
@@ -915,9 +935,9 @@ function VoiceMenual(message) {
                     .createObjectURL(audioBlob);
             audioFile.playbackRate = 2; //재생속도
             if(audioFileNow.paused == false){
-            	audioFileNow.pause();
+               audioFileNow.pause();
             }
-    		audioFileNow = audioFile;
+          audioFileNow = audioFile;
             audioFileNow.play();
         
         },
@@ -948,34 +968,34 @@ function base64ToBlob(base64, fileType) {
 
 
 
-	window.addEventListener("keydown", function(e){ 
-			console.log(e);
-			if(e.altKey && e.key == 1){ //결제하기
-				$('#payment-button').focus();
-			}
-			if(e.altKey && e.key == 2){ // 가입한 배송지 주소로 배송지 등록
-				$('.deliveryInfo')[0].focus();
-			}
-			if(e.altKey && e.key == 3) {//첫번째 주문상품 이동
-			console.log($('.img-fluid'));
-				$('a.img-fluid')[0].focus();
-			}
+   window.addEventListener("keydown", function(e){ 
+         console.log(e);
+         if(e.altKey && e.key == 1){ //결제하기
+            $('#payment-button').focus();
+         }
+         if(e.altKey && e.key == 2){ // 가입한 배송지 주소로 배송지 등록
+            $('.deliveryInfo')[0].focus();
+         }
+         if(e.altKey && e.key == 3) {//첫번째 주문상품 이동
+         console.log($('.img-fluid'));
+            $('a.img-fluid')[0].focus();
+         }
       if(e.altKey && e.key == 4){ // 배송지 정보 조회
-				$('#deliveryContent').focus();
-			}
+            $('#deliveryContent').focus();
+         }
       if(e.altKey && e.key == 5){ // 배송 시 요청 선택
-				$('#selbox').focus();
-			}
+            $('#selbox').focus();
+         }
       if(e.altKey && e.key == 6){ // 주문자 정보 이동
-				$('#orderMan').focus();
-			}
+            $('#orderMan').focus();
+         }
       if(e.altKey && e.key == 9){ // 메인 페이지 이동
                 location.href = "/";
-			}
-			if(e.altKey && e.key == 0){ //다시 듣기
-				VoiceMenual($('#orderInfo').val());
-			}
-	})
+         }
+         if(e.altKey && e.key == 0){ //다시 듣기
+            VoiceMenual($('#orderInfo').val());
+         }
+   })
    } //ttsInit()의 if문
   } // ttsInit() close
    
