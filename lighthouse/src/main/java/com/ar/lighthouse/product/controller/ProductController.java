@@ -41,6 +41,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ar.lighthouse.admin.service.AdminService;
 import com.ar.lighthouse.admin.service.DeclareVO;
 import com.ar.lighthouse.admin.service.MemberDetailVO;
+import com.ar.lighthouse.buyp.service.BuyInfoVO;
+import com.ar.lighthouse.buyp.service.BuyerPageService;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.cart.service.CartService;
@@ -85,6 +87,8 @@ public class ProductController {
    @Autowired
    ProductService productService;
 
+   @Autowired
+   BuyerPageService buyerPageService;
 
    @Autowired
    ReviewService reviewService;
@@ -201,6 +205,7 @@ public class ProductController {
       MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
       String memberId = memberVO.getMemberId();
       model.addAttribute("orderList", productService.getProductOrder(memberId));
+      System.out.println("orderModel @@ :" + model);
       return "page/seller/orderManagement";
    }
 
@@ -433,7 +438,7 @@ public class ProductController {
 
    
 //   수정폼
-   @GetMapping("/updateProduct")
+   @GetMapping("seller/updateProduct")
    public String modifyForm(Model model,CategoryVO categoryVO, CodeVO codeVO,ProductVO productVO, ImgsListVO imgsList) {
       model.addAttribute("getCategoryList", mainPageService.getAllCategoryList());
       model.addAttribute("delivery", productService.getDeliveryList());
@@ -566,7 +571,7 @@ public class ProductController {
          RedirectAttributes rtt, ImgsListVO imgsVO) {
 	   HttpSession session = req.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-		System.out.println(productVO);
+		System.out.println("file!!!" + files);
 		productVO.setMemberId(memberVO.getMemberId());
 
 		// productVO.setCategoryCode("MSU");
@@ -582,8 +587,9 @@ public class ProductController {
 			 */
 			String originalName = uploadFile.getOriginalFilename();
 			String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
+			
 			productVO.getProductImg().get(i).setImgName(fileName);
-
+			
 			// 날짜 폴더 생성
 			String folderPath = makeFolder();
 			String uuid = UUID.randomUUID().toString(); // 유니크한 이름 때문에
@@ -1024,6 +1030,18 @@ public class ProductController {
 		return "redirect:/insertProduct";
 	}
 
+	// 구매자 개인정보
+	@GetMapping("seller/sellerInfo")
+	public String personalInfo(Model model, HttpSession session) {
+
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
+
+		BuyInfoVO personalInfo = buyerPageService.getInfo(memberId);
+		model.addAttribute("personalInfo", personalInfo);
+
+		return "page/seller/sellerInfo";
+	}
    
 
 //   선택전시상태변경
@@ -1042,7 +1060,7 @@ public class ProductController {
 
   
 
-   @PostMapping("seller/updateImg")
+   @PostMapping("updateImg")
    public String updatedetailImg(Model model, ProductVO productVO, ImgsListVO imgsList, RedirectAttributes rttr) {
       model.addAttribute("product", productVO);
       rttr.addFlashAttribute("product", productVO);

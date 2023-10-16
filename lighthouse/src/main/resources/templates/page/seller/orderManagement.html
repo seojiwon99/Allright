@@ -124,8 +124,13 @@ input, select, button{
   background: #888; /* 스크롤바 썸 배경색 */
   border-radius: 6px; /* 스크롤바 썸 둥글게 만들기 */
 }
+h3{
+	margin:30px;
+}
+
 </style>
 				<!---->
+				<h3>주문내역</h3>
 				<div class="_1Vof48UxmD_oVRNwPvxck">
 							
 								<div class="_KqV0-1BSnB">
@@ -228,7 +233,7 @@ input, select, button{
 										</div>
 									</div>
 								</div>
-								<div style="width:1650px; height: 500px; overflow: auto; border: 1px; position: relative;">
+								<div style="width:1450px; height: 500px; overflow: auto; border: 1px; position: relative;">
 								<table class="table" id="getProductList" style="background-color:white;  white-space: nowrap;">
 									<thead style="position: sticky; top: 0; background-color: white;">
 										<tr>
@@ -246,43 +251,43 @@ input, select, button{
 										</tr>
 									</thead>
 									<tbody id="orderChkList">
-										<tr th:each="order : ${orderList}"
-											th:data-ordercode="${order.orderDetailCode}">
-											<td><input type="checkbox"></td>
-											<td th:text="${order.orderDetailCode}" />
-											<td th:text="${order.productName}" />
-											<td th:if="${order.optionDetail != null and order.optionDetail.size() > 0}" th:text="${order.optionDetail[0].optionLast}" />
-											<td th:unless="${order.optionDetail != null and order.optionDetail.size() > 0}" />
+										<tr th:each="order : ${orderList}" th:data-ordercode="${order.orderDetailCode}">
+										    <td><input type="checkbox" style="position: flex;top: 0;z-index: 1;"></td>
+										    <td th:text="${order.orderDetailCode}" />
+										    <td th:text="${order.productName}" />
+										    <td th:if="${order.optionDetail != null and order.optionDetail.size() > 0}" th:text="${order.optionDetail[0].optionLast}" />
+										    <td th:unless="${order.optionDetail != null and order.optionDetail.size() > 0}" />
+										    <td th:text="${order.orderCnt}" />
+										    <td th:text="${order.memberName}" />
+										    <td th:text="${order.requestedTerm}" />
+										    <td th:text="${order.orderStatus}" />
+										    <td>
+											    <span th:each="code : ${order.code}">
+											        <input th:if="${code.codeName != null}" th:value="${code.codeName}" id="deliveryService" style="background-color: lightyellow;">
+											    </span>
+											    <input th:if="${#lists.isEmpty(order.code)}" th:value="${order.deliveryService}" id="deliveryService" style="background-color: lightyellow;"/>
+											</td>
 
-											<td th:text="${order.orderCnt}" />
-											<td th:text="${order.memberName}" />
-											<td th:text="${order.requestedTerm}" />
-											<td th:text="${order.orderStatus}"/>
-											<td th:if="${order.deliveryService != null}">
-												<input th:value="${order.deliveryService}" id="deliveryService"  style="background-color: lightyellow;">
-											</td>
-											<td th:unless="${order.deliveryService != null}">
-											<input th:value="${order.deliveryService}"  id="deliveryService">
-											</td>
-											<td th:if="${order.deliveryNumber != null}">
-											<input th:value="${order.deliveryNumber}" id="deliveryNumber" style="background-color: lightyellow;">
-											</td>
-											<td th:unless="${order.deliveryNumber != null}">
-											<input th:value="${order.deliveryNumber}" id="deliveryNumber" >
-											</td>
-											<td
-												th:text="${#dates.format(order.deliveryStart,'yyyy-MM-dd')}" />
-											<td th:text="${order.memberId}" class="visually-hidden"></td>
-											<td th:text="${order.memberEmail}" class="visually-hidden"></td>
-											<td th:text="${order.orderCode}" class="visually-hidden"></td>
+										    <td th:if="${order.deliveryNumber != null}">
+										        <input th:value="${order.deliveryNumber}" id="deliveryNumber" style="background-color: lightyellow;">
+										    </td>
+										    <td th:unless="${order.deliveryNumber != null}">
+										        <input th:value="${order.deliveryNumber}" id="deliveryNumber">
+										    </td>
+										    <td th:text="${#dates.format(order.deliveryStart,'yyyy-MM-dd')}" />
+										    <td th:text="${order.memberId}" class="visually-hidden"></td>
+										    <td th:text="${order.memberEmail}" class="visually-hidden"></td>
+										    <td th:text="${order.orderCode}" class="visually-hidden"></td>
 										</tr>
 										<!-- 반복문 종료 -->
 									</tbody>
 								</table>
+								<h3 id="noList" style="text-align: center" th:if="${#lists.isEmpty(orderList)}">주문내역이 없습니다.</h3>
 								</div>
 							</section>
+							
 
-			<script>
+<script>
    $(document).ready(function () {
        
          
@@ -307,7 +312,7 @@ input, select, button{
 			console.log(key,value,fromDate,toDate);
 
 			$.ajax({
-				url : 'orderOptionManagement',
+				url : '/seller/orderOptionManagement',
 				type : 'get',
 				data : {
 					"searchValue" : value, 
@@ -332,9 +337,14 @@ input, select, button{
         
          
          $('#cancelModal').on('click',function(){
-        	 
             let orderList =[];
             let checkTags = $('input[type="checkbox"]:checked').not('#allCheck');
+            
+            if (checkTags.length === 0) {
+                alert('상품을 선택하세요'); // 경고창 표시
+                return; // 작업 중지
+              }
+            
             checkTags.each((idx, tag) =>{
                let orderDetailCode = $(tag).closest('tr').find('td:eq(1)').text();
                let productName = $(tag).closest('tr').find('td:eq(2)').text();
@@ -370,60 +380,72 @@ input, select, button{
          
          })
          
-         $('#reasonSend').on('click', function(){
-        	 let memberInfo= $('#reasonSend').data('orderList');
-        	 
-        	  let email = memberInfo.map(function(member) {
-        	        return member.memberEmail;
-        	    });
-        	  console.log(email);
-        	 $.ajax({
-        		 url : 'sellerMailConfirm',
-        		 type : 'POST',
-        		 contentType : 'application/json',
-        		 data : JSON.stringify(memberInfo)
-        	 })
-        	 .done(data=>{
-        		 console.log(data);
-        		 
-        		 $.ajax({
-            		 url : 'deleteOrderSelf',
-            		 type : 'POST',
-            		 contentType : 'application/json',
-            		 data : JSON.stringify(memberInfo)
-            	 })
-            	 .done(data =>{
-            		 console.log(data);
-            		 let $form = $('<form>', {
-            	          method: 'POST',
-            	          action: 'orders/cancel'
-            	      });
+         $('#reasonSend').on('click', function () {
+    // 경고 팝업 표시
+    
 
-            	      let $input = $('<input>', {
-            	          type: 'hidden',
-            	          name: 'refundList',
-            	          value: JSON.stringify(memberInfo)
-            	      });
+    let memberInfo = $('#reasonSend').data('orderList');
 
-            	      $form.append($input);
+    let email = memberInfo.map(function (member) {
+        return member.memberEmail;
+    });
 
-            	      $form.appendTo('body').submit();
-            	      alert("주문취소가 완료되었습니다.");
-            		 refreshList();
-            	 })
-        	 })
-        	 .fail(reject =>{
-        		 console.log(reject);
-        	 })
-        	 
+    console.log(email);
+
+    // setTimeout 함수를 사용하여 2초 후에 다음 작업 실행
+    	alert('잠시만 기다려주세요...');
+    	setTimeout(function () {
+        $.ajax({
+            url: 'sellerMailConfirm',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(memberInfo)
+        })
+        .done(data => {
         	
-         })
+            console.log(data);
+            
+            $.ajax({
+                url: 'deleteOrderSelf',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(memberInfo)
+            })
+            .done(data => {
+                console.log(data);
+                let $form = $('<form>', {
+                    method: 'POST',
+                    action: '/orders/cancel'
+                });
+                let $input = $('<input>', {
+                    type: 'hidden',
+                    name: 'refundList',
+                    value: JSON.stringify(memberInfo)
+                });
+
+                $form.append($input);
+
+                $form.appendTo('body').submit();
+                alert("주문 취소가 완료되었습니다.");
+                refreshList();
+            })
+        })
+        .fail(reject => {
+            console.log(reject);
+        });
+    }, 1000); 
+})
+
 
          $('#checkOrderBtn').on('click', function(){
-			alert('hk');
 			orderChk =[];
 			let checkTags = $('input[type="checkbox"]:checked').not('#allCheck');
 
+			  if (checkTags.length === 0) {
+				    alert('상품을 선택하세요'); // 경고창 표시
+				    return; // 작업 중지
+				  }
+			  
 			checkTags.each((idx, tag)=>{
 				let orderDetailCode = $(tag).parent().next().text();
 				console.log(orderDetailCode);
@@ -446,41 +468,53 @@ input, select, button{
 		 })
       
 
-          $('#insertDeliveryBtn').on('click', function(){
-            let deliveryList =[];
-            let checkTags = $('#getProductList input[type="checkbox"]:checked').not('#allcheck');
+         $('#insertDeliveryBtn').on('click', function(){
+    let deliveryList =[];
+    let checkTags = $('#getProductList input[type="checkbox"]:checked').not('#allcheck');
 
-            // datasetter
-            
-            
-            checkTags.each((idx, tag) => {
-				let tr = $(tag).closest('tr')
-               let detailOrderCode = tr.data('ordercode');
-               let deliveryService = tr.find('#deliveryService').val();
-               let deliveryNumber =  tr.find('#deliveryNumber').val();
-			   console.log(deliveryService);
-			
-               let obj = {
-				'orderDetailCode' : detailOrderCode,
-				'deliveryService' : deliveryService,
-				'deliveryNumber' : deliveryNumber
-			};
-               deliveryList.push(obj);
-         })
+    if (checkTags.length === 0) {
+        alert('상품을 선택하세요');
+        return;
+    }
 
-         $.ajax('updateDelivery',{
+    let errorFlag = false; // 에러 플래그를 초기화
 
-            type:'post',
-            contentType : 'application/json',
-            data : JSON.stringify(deliveryList)
-            
-         })
-         .done(data => {
-            console.log(data);
-            refreshList();
-         })
-         .fail(reject => console.log(reject));
-      })
+    checkTags.each((idx, tag) => {
+        let tr = $(tag).closest('tr');
+        let detailOrderCode = tr.data('ordercode');
+        let deliveryService = tr.find('#deliveryService').val();
+        let deliveryNumber =  tr.find('#deliveryNumber').val();
+		console.log(deliveryService);
+        if (!deliveryService || !deliveryNumber) {
+            alert('deliveryService와 deliveryNumber 값을 입력해주세요.');
+            errorFlag = true; // 에러 플래그를 설정
+            return false; // 반복 중지
+        }
+
+        let obj = {
+            'orderDetailCode' : detailOrderCode,
+            'deliveryService' : deliveryService,
+            'deliveryNumber' : deliveryNumber
+        };
+        deliveryList.push(obj);
+    });
+
+    if (errorFlag) {
+        return; // 에러가 발생했으면 함수 종료
+    }
+
+    $.ajax('updateDelivery', {
+        type: 'post',
+        contentType: 'application/json',
+        data: JSON.stringify(deliveryList)
+    })
+    .done(data => {
+        console.log(data);
+        refreshList();
+    })
+    .fail(reject => console.log(reject));
+});
+
  
        function refreshList(){
          location.reload();
@@ -546,7 +580,7 @@ function displayDate(range) {
 
 	  
 	  // input 요소 선택 후 value 설정
-	  $('#to').val(formattedEndDate);
+	$('#to').val(formattedEndDate);
 	} else {
 	  // endDate가 null이면 input 요소 값을 비움
 	  $('#to').val('');
@@ -566,9 +600,28 @@ function displayDate(range) {
   }
            
 	  
-	  $('#paymentCom').on('click', function(){
-		let orderStatus = 1
-		$.ajax({
+$('#paymentCom').on('click', function(){
+	alert('gd');
+	let orderStatus = 1
+	$.ajax({
+		url:'statusOrder',
+		type : 'get',
+		data : {
+			orderStatus
+		}
+	})
+	.done(orderList=>{
+		console.log(orderList);
+		$('#orderChkList').replaceWith(orderList);
+	})		
+	.fail(reject =>{
+		console.log(reject);
+	})
+  });
+  
+  $('#orderChecked').on('click', function(){
+	  let orderStatus = 2
+	  $.ajax({
 			url:'statusOrder',
 			type : 'get',
 			data : {
@@ -582,44 +635,29 @@ function displayDate(range) {
 		.fail(reject =>{
 			console.log(reject);
 		})
-	  });
+  });
+  
+  
+  $('#deliveryGo').on('click', function(){
+	  let orderStatus = 3
+	  $.ajax({
+			url:'statusOrder',
+			type : 'get',
+			data : {
+				orderStatus
+			}
+		})
+		.done(orderList=>{
+			console.log(orderList);
+			$('#orderChkList').replaceWith(orderList);
+		})		
+		.fail(reject =>{
+			console.log(reject);
+		})
+  });
 	  
-	  $('#orderChecked').on('click', function(){
-		  let orderStatus = 2
-		  $.ajax({
-				url:'statusOrder',
-				type : 'get',
-				data : {
-					orderStatus
-				}
-			})
-			.done(orderList=>{
-				console.log(orderList);
-				$('#orderChkList').replaceWith(orderList);
-			})		
-			.fail(reject =>{
-				console.log(reject);
-			})
-	  });
 	  
-	  $('#deliveryGo').on('click', function(){
-		  let orderStatus = 3
-		  $.ajax({
-				url:'statusOrder',
-				type : 'get',
-				data : {
-					orderStatus
-				}
-			})
-			.done(orderList=>{
-				console.log(orderList);
-				$('#orderChkList').replaceWith(orderList);
-			})		
-			.fail(reject =>{
-				console.log(reject);
-			})
-	  });
-})    
+})    ;
          </script>
 		</div>
 </html>

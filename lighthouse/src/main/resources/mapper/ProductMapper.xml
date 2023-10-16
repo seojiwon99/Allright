@@ -100,14 +100,18 @@
       <result column="delivery_service" property="deliveryService" />
       <result column="delivery_number" property="deliveryNumber" />
       <result column="delivery_start" property="deliveryStart" />
-      <association property="optionDetail" resultMap="optionList2" />
+      <collection property="optionDetail" resultMap="optionList2" />
+      <collection property="code" resultMap="codeDelivery"></collection>
    </resultMap>
 
    <!-- OptionVO를 매핑하기 위한 resultMap -->
    <resultMap type="OptionDetailVO" id="optionList2">
       <result column="option_last" property="optionLast" />
       <result column="product_code" property="productCode" />
-
+   </resultMap>
+   <resultMap type="CodeVO" id="codeDelivery">
+   	  <result column="code_id" property="codeId"></result>
+   	  <result column="code_name" property="codeName"></result>
    </resultMap>
    <select id="selectOrderDetail" resultMap="selectOrderDetail">
       SELECT
@@ -124,7 +128,9 @@
       o.delivery_start,
       m.member_name,
       m.member_id,
-      m.member_email
+      m.member_email,
+      cd.code_id,
+      cd.code_name
       FROM
       ar_order_detail o
          JOIN
@@ -136,6 +142,7 @@
                ar_products p ON x.product_code = p.product_code
          JOIN
                ar_member m ON m.member_id = r.member_id
+        left outer JOIN ar_code cd ON cd.code_id = p.delivery_service
       WHERE p.member_id = #{memberId}
       AND o.order_check != 'N'
       ORDER BY o.order_date DESC
@@ -145,7 +152,7 @@
   
 
    <select id="selectStatusList" resultMap="selectOrderDetail">
-      SELECT
+           SELECT
       o.order_detail_code,
       o.order_code,
       delivery_code_name(o.order_status) AS
@@ -159,7 +166,9 @@
       o.delivery_start,
       m.member_name,
       m.member_id,
-      m.member_email
+      m.member_email,
+      cd.code_id,
+      cd.code_name
       FROM
       ar_order_detail o
          JOIN
@@ -171,6 +180,7 @@
                ar_products p ON x.product_code = p.product_code
          JOIN
                ar_member m ON m.member_id = r.member_id
+        left outer JOIN ar_code cd ON cd.code_id = p.delivery_service
       WHERE p.member_id = #{memberId}
       AND o.order_status = #{orderStatus}
       AND o.order_status != 11
@@ -270,55 +280,40 @@ WHERE p.product_code = #{productCode}
 </select>
 
    <!-- select주문 -->
-   <resultMap type="DetailVO" id="selectOrderOptionList">
-      <result column="member_id" property="memberId" />
-      <result column="member_name" property="memberName" />
-      <result column="product_name" property="productName" />
-      <result column="order_status" property="orderStatus" />
-      <result column="order_date" property="orderDate" />
-      <result column="order_detail_code" property="orderDetailCode" />
-      <result column="order_cnt" property="orderCnt" />
-      <result column="requested_term" property="requestedTerm" />
-      <result column="delivery_service" property="deliveryService" />
-      <result column="delivery_number" property="deliveryNumber" />
-      <result column="delivery_start" property="deliveryStart" />
-      <association property="optionDetail" resultMap="optionList3" />
-   </resultMap>
-
-   <!-- OptionVO를 매핑하기 위한 resultMap -->
-   <resultMap type="OptionDetailVO" id="optionList3">
-      <result column="option_last" property="optionLast" />
-      <result column="product_code" property="productCode" />
-
-   </resultMap>
    <select id="selectOrderOptionList"
-      resultMap="selectOrderOptionList">
+      resultMap="selectOrderDetail">
 
-      SELECT
+           SELECT
       o.order_detail_code,
+      o.order_code,
+      delivery_code_name(o.order_status) AS
+      order_status,
       p.product_name,
-      delivery_code_name(o.order_status) AS order_status,
       x.option_last,
       r.requested_term,
       o.order_cnt,
       o.delivery_service,
       o.delivery_number,
       o.delivery_start,
-      o.order_date,
-      m.member_name
+      m.member_name,
+      m.member_id,
+      m.member_email,
+      cd.code_id,
+      cd.code_name
       FROM
       ar_order_detail o
-      JOIN
-      ar_orders r ON o.order_code = r.order_code
-      JOIN
-      ar_option_detail x ON o.option_detail_code = x.option_detail_code
-      JOIN
-      ar_products p ON
-      x.product_code = p.product_code
-      JOIN
-      ar_member m ON m.member_id =
-      r.member_id
+         JOIN
+               ar_orders r ON
+         o.order_code = r.order_code
+         JOIN
+               ar_option_detail x ON o.option_detail_code = x.option_detail_code
+         JOIN
+               ar_products p ON x.product_code = p.product_code
+         JOIN
+               ar_member m ON m.member_id = r.member_id
+        left outer JOIN ar_code cd ON cd.code_id = p.delivery_service
       WHERE p.member_id = #{memberId}
+      AND o.order_check != 'N'
       <choose>
          <when test="searchKey == 'member_name'">
             AND m.member_name like '%'||#{searchValue}||'%'
