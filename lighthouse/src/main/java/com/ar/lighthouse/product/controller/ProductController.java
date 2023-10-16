@@ -443,7 +443,7 @@ public class ProductController {
       model.addAttribute("getCategoryList", mainPageService.getAllCategoryList());
       model.addAttribute("delivery", productService.getDeliveryList());
       model.addAttribute("product", productService.updateProduct(productVO));
-      model.addAttribute("detailImg", productService.goodsDetail(productVO));
+      model.addAttribute("detailImg", productService.modifyInfo(productVO));
       System.out.println("product : @@@@" + productService.updateProduct(productVO));
       return "page/seller/modifyForm";
    }
@@ -571,7 +571,7 @@ public class ProductController {
          RedirectAttributes rtt, ImgsListVO imgsVO) {
 	   HttpSession session = req.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-		System.out.println("file!!!" + files);
+		System.out.println("file!!!" + imgsVO);
 		productVO.setMemberId(memberVO.getMemberId());
 
 		// productVO.setCategoryCode("MSU");
@@ -580,16 +580,18 @@ public class ProductController {
 		int i = 0;
 		System.out.println("files@@@" + files);
 		for (MultipartFile uploadFile : files) {
+			if(!uploadFile.isEmpty()) {
 			System.out.println("@@@@@@@@@@");
 			/*
 			 * if (uploadFile.getContentType().startsWith("image") == false) {
 			 * System.err.println("this file is not image type"); return null; }
 			 */
 			String originalName = uploadFile.getOriginalFilename();
+			
 			String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
-			
+			System.out.println("file @@@!@#@! : " + fileName);
+			System.out.println("originalName:" +originalName  + "@@@");
 			productVO.getProductImg().get(i).setImgName(fileName);
-			
 			// 날짜 폴더 생성
 			String folderPath = makeFolder();
 			String uuid = UUID.randomUUID().toString(); // 유니크한 이름 때문에
@@ -602,31 +604,42 @@ public class ProductController {
 			String saveName = uploadPath + "/" + uploadFileName;
 
 			Path savePath = Paths.get(saveName);
-			try {
-				uploadFile.transferTo(savePath); // 파일의 핵심
-				// uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
-				productVO.getProductImg().get(i).setProductCode(productVO.getProductCode());
-				productVO.getProductImg().get(i).setImgOrder(i);
-				if (files.get(0) == uploadFile) {
-					int idx = originalName.indexOf(".");
-
-					FileOutputStream thumbnail = new FileOutputStream(
-							new File(uploadPath + "\\" + folderPath, "s_" + uuid + "_" + originalName));
-					FileInputStream input = new FileInputStream(
-							new File(uploadPath + "\\" + folderPath, uuid + "_" + originalName));
-					Thumbnailator.createThumbnail(input, thumbnail, 100, 100);
-
-					thumbnail.close();
-
+				try {
+					uploadFile.transferTo(savePath); // 파일의 핵심
+					// uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
+					productVO.getProductImg().get(i).setProductCode(productVO.getProductCode());
+					productVO.getProductImg().get(i).setImgOrder(i);
+					if (files.get(0) == uploadFile) {
+						int idx = originalName.indexOf(".");
+	
+						FileOutputStream thumbnail = new FileOutputStream(
+								new File(uploadPath + "\\" + folderPath, "s_" + uuid + "_" + originalName));
+						FileInputStream input = new FileInputStream(
+								new File(uploadPath + "\\" + folderPath, uuid + "_" + originalName));
+						Thumbnailator.createThumbnail(input, thumbnail, 100, 100);
+	
+						thumbnail.close();
+	
+					}
+					// System.out.println(productVO.getProductImg().get(i));
+					productService.updateProductImg(productVO.getProductImg().get(i));
+					i++;
+	
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-				// System.out.println(productVO.getProductImg().get(i));
-				productService.updateProductImg(productVO.getProductImg().get(i));
-				i++;
-
-			} catch (IOException e) {
-				e.printStackTrace();
+			}else {
+				System.out.println("@dddddddddddddddddddddddddddddd");
+				//productVO.getProductImg().get(0).setImgContent(productVO.getImgContent());
+				ProductVO noImgProductVO = new ProductVO();
+				noImgProductVO.setProductCode(productVO.getProductCode());
+				System.out.println("productCode : @@@2" + productVO.getProductCode());
+				noImgProductVO.setImgContent(productVO.getProductImg().get(0).getImgContent());
+				
+				productService.updateProductThImg(noImgProductVO);
+				
+				System.out.println(productVO.getProductImg().get(0));
 			}
-
 		}
 		if (imgsVO.getImgsVO() != null) {
 			for (int j = 0; j < imgsVO.getImgsVO().size(); j++) {

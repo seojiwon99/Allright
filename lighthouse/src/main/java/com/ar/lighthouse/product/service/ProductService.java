@@ -43,6 +43,8 @@ public interface ProductService {
 //	상품 이미지 수정
 	public void updateProductImg(ImgsVO imgVO);
 	
+//	상품 썸네일 수정
+	public int updateProductThImg(ProductVO productVO);
 //	orderManagement
 	List<DetailVO> getOrderOptionList(DetailVO detailVO);
 	
@@ -61,7 +63,8 @@ public interface ProductService {
 	
 	//상품 단건 상세페이지
 	public ProductVO goodsDetail(ProductVO productVO);
-
+//	상품 수정 이미지
+	public List<ProductVO> modifyInfo(ProductVO productVO);
 //	상품주문목록
 	List<DetailVO> getProductOrder(String memberId);
 	
