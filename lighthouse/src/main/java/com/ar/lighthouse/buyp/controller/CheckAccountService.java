@@ -220,20 +220,11 @@ public class CheckAccountService {
 					if (jsonArr.size() > 0){
 					    for(int i=0; i<jsonArr.size(); i++){
 					        JSONObject jsonObj = (JSONObject)jsonArr.get(i);
-					        System.out.println(jsonObj);
-					        //(String)jsonObj.get("code");
-					        //(String)jsonObj.get("name");
 					        list.add(jsonObj);
 					    }
 					    // StudyingAzae, Soodal 출력
 					}
-					System.out.println(list);
-					// 예금주만 값 빼기
-					//String bankHolderInfo = phoneJson1.getAsJsonObject("response").get("bank_holder").getAsString();
-					// System.out.println("bankHolderInfo: " + bankHolderInfo);
-
-				 
-				 
+	
 				
 
 			} catch (IOException e) {
