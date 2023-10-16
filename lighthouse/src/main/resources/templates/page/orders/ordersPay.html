@@ -592,7 +592,7 @@
     }
     $('.text-gray-300').last().focus();
     let amount = $('#totalPrice').text(); // 결제 금액
-    amount = amount.replace(",","");
+    amount = amount.replaceAll(",","");
     Number(amount);
     paymentWidget.renderPaymentMethods('#payment-method', amount)
     let uuid = self.crypto.randomUUID().slice(0,-10);
@@ -642,7 +642,7 @@
     paymentWidget.requestPayment({
       orderId: uuid,
       orderName: [[${productName}]],
-      successUrl: 'https://allright1.shop/orders/credit',
+      successUrl: 'http://localhost:8090/orders/credit',
       failUrl: 'https://allright1.shop/orders/fail',
       customerEmail: [[${orderGet[0].memberEmail}]], 
       customerName: [[${orderGet[0].memberName}]]
