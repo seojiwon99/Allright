@@ -1538,20 +1538,6 @@
             let detailImg = $(".imgName");
             let detailContent = $(".imgContet");
 
-
-            for (let x = 0; x < detailImg.length; x++) {
-               let chk1 = detailImg[x];
-               let chk2 = detailContent[x];
-
-               if ($(chk1).val == "") {
-                  alert("상세 설명 이미지를 넣어주세요");
-                  return;
-               }
-               if ($(chk2).val() == "") {
-                  alert("상세 설명 이미지 대체텍스트를 넣어주세요");
-               }
-            }
-
             // 브랜드 
             if (!brandChk($("#productBrand").val())) {
                return;
@@ -1614,9 +1600,22 @@
                 alert("상세 설명을 적어주세요");
                 return;
              }
+
+		  for (let x = 0; x < detailImg.length; x++) {
+               let chk1 = detailImg[x];
+               let chk2 = detailContent[x];
+
+               if ($(chk1).val == "") {
+                  alert("상세 설명 이미지를 넣어주세요");
+                  return;
+               }
+               if ($(chk2).val() == "") {
+                  alert("상세 설명 이미지 대체텍스트를 넣어주세요");
+               }
+            }
             test22 = "/insertProduct";
 
-            // $("#insertForm").submit();
+            $("#insertForm").submit();
          })
 
          // 상품명 유효성 검사
