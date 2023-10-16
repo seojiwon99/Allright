@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,11 +58,9 @@ public class CheckAccountController {
 	
 	@GetMapping("/bankList")
 	@ResponseBody
-	public Map<Object, Object> bankList(){
-		System.out.println("asdasda");
-		HashMap<Object, Object> map = new HashMap<Object, Object>();
-		map = checkAccountService.bankList();
-		return map;
+	public List<JSONObject> bankList(){
+		List<JSONObject> list = checkAccountService.bankList();
+		return list;
 	}
 
 }
