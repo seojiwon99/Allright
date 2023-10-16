@@ -26,6 +26,8 @@ public interface ProductMapper {
 
 	public List<ProductVO> selectProductList(String memberId);
 
+//	수정 썸네일 
+	public int updateProductThImg(ProductVO productVO);
 //		order by
 	public List<ProductVO> selectOptionProduct(ProductVO productVO);
 	
@@ -57,6 +59,9 @@ public interface ProductMapper {
 	// 옵션 상세등록
 	public int insertOptionDetail(OptionDetailVO optionDetailVO);
 
+	
+//	 modifyInfo
+	public List<ProductVO> modifyInfo(ProductVO productVO);
 	// 상품이미지 등록
 	public void insertProductImg(ImgsVO imgsVO);
 

@@ -63,55 +63,11 @@
    
    
   $('.addImgBtn').on('click',function(e){
-	  locacion.href='/modifyProductContent?productCode='+ productCode
-      /* e.preventDefault();
-      let form = $(this).closest('form');
-     $('.inform').remove();
-      let formTag = $('.ck .image');
 
-      let srcArr = [];
-      $(formTag).each(function(idx,item){
-         let src = $(item).children('img').attr('src');
-   
-         let text = src.split('_');
-         
-         let text01 = src.split('/');
-         console.log(text01);
-         let data = {
-            imgName : text[1],
-            uploadPath : text01[1] + '/' + text01[2] + '/' + text01[3],
-            uploadName : text01[4],
-            imgContent : $(item).children('figcaption').text()
-         };
-         srcArr.push(data);
-      })
-      
-      let idx = 0;
-      for(let i =0; i < srcArr.length; i++){
-         let divTag = $('<div/>').addClass('inform');
-         let obj = srcArr[i];
-         for(let item in obj){
-            console.log("key" + item );
-            console.log("value" + obj[item]);
-            let str = `
-               <input type="text" name="imgsVO[${idx}].${item}" value="${obj[item]}">
-            `;
-            
-            divTag.append(str);
-         }
-         idx++;
-         form.append(divTag);
-      }
-      
-      form.attr('method', 'post');
-      form.attr('action', '/updateImg');
-      form.submit();
-      console.log(srcArr);*/
+	  window.close();
   }) 
   
-/*   $('#textForm').sumbit(function(e){
-     e.preventDefaul();
-  }) */
+
   
   $(document).ready(function(e){
 	  let data = JSON.parse(localStorage.getItem("detail"));
@@ -123,10 +79,10 @@
  $('#submit').on('click',function(e){
       $('.inform').remove();
       $('textarea[name="productContent"]').remove();
-      // e.preventDefault();
+
       let data = editor.getData();
       let img = $(data).find('img');
-      // console.log(img);
+
       if(data == null || data == ''){
          alert("상세정보를 적어주세요");
          e.preventDefault();
@@ -139,30 +95,24 @@
       }
            
       let form = $(this).closest('form');
-
-      // let textarea = $('<textarea />');
-      // textarea.css("display", "none");
-      // textarea.attr('name','productContent');
-      
-      // $(textarea).text(data);
-      
-      // $(textarea).append(data);
-      // $(form).append(textarea);
       let detailobj ={
          content : data,
          img :[]
       }
 
       let formTag = $('.ck .image');
-
+      let idx2 = 0;
+      
        let srcArr = [];
        $(formTag).each(function(idx,item){
-    	 // console.log(item);
-         if($(item).children('figcaption').text() == null || $(item).children('figcaption').text() == ''){
-          alert("이미지 대체텍스트를 입력해주세요")
-            e.preventDefault(); 
-            return;
-         }
+      	 // console.log(item);
+           if($(item).children('figcaption').text() == null || $(item).children('figcaption').text() == ''){
+            alert("이미지 대체텍스트를 입력해주세요")
+   
+              return false;
+           }
+           
+           
           let src = $(item).children('img').attr('src');
             
           let text = src.split('_');
@@ -170,36 +120,38 @@
           let text01 = src.split('/');
           // console.log(text01);
           let data = {
-             imgName : text[1],
-             uploadPath : text01[1] + '/' + text01[2] + '/' + text01[3],
-             uploadName : text01[4],
-             imgContent : $(item).children('figcaption').text()
-          };
-          srcArr.push(data);
-       })
-       
-       let idx = 0;
-       for(let i =0; i < srcArr.length; i++){
-          let divTag = $('<div/>').addClass('inform');
-          let obj = srcArr[i];
-          let imgobj ={};
-          for(let item in obj){
-             // console.log("key" + item );
-             // console.log("value" + obj[item]);
-             let str = `
-                <input type="text" style="display:none;" name="imgsVO[${idx}].${item}" value="${obj[item]}" class="${item}">
-             `;
-             imgobj[item] = obj[item];
-             divTag.append(str);
+                  imgName : text[1],
+                  uploadPath : text01[2] + '/' + text01[3] + '/' + text01[4],
+                  uploadName : text01[5],
+                  imgContent : $(item).children('figcaption').text()
+               };
+               srcArr.push(data);
+               idx2++;
+            })
+            
+            if(idx2 != formTag.length){
+         	   e.preventDefault();
+              return;
             }
-            detailobj.img.push(imgobj)
-          idx++;
-          form.append(divTag);
-       }
-      
-      window.localStorage.setItem("detail",JSON.stringify(detailobj)); 
-      window.close();
-
+            let idx = 0;
+            for(let i =0; i < srcArr.length; i++){
+               let divTag = $('<div/>').addClass('inform');
+               let obj = srcArr[i];
+               let imgobj ={};
+               for(let item in obj){
+                  let str = `
+                     <input type="text" style="display:none;" name="imgsVO[${idx}].${item}" value="${obj[item]}" class="${item}">
+                  `;
+                  imgobj[item] = obj[item];
+                  divTag.append(str);
+                 }
+                 detailobj.img.push(imgobj)
+               idx++;
+               form.append(divTag);
+            }
+           window.localStorage.setItem("detail",JSON.stringify(detailobj)); 
+     	  alert("상세 설명이 등록 되었습니다.");
+           window.close();
       // form.submit();
   })
    </script>
