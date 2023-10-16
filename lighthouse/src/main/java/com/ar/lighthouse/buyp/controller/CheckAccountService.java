@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,7 +124,7 @@ public class CheckAccountService {
 		return map;
 	}
 	
-	public HashMap<Object,Object> bankList(){
+	public List<JSONObject> bankList(){
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
 		String impKey = "7445661700233425";
 		String impSecret = "SSyLPkStz6a8SvOq61mmjq12cJlN2ee3VS0v794Zrua0TwoPfM1Ya1hZLKEgwqQvsmEvQzJt3qyKUyQa";
@@ -131,6 +132,7 @@ public class CheckAccountService {
 		String strUrl = "https://api.iamport.kr/users/getToken"; 
 		BufferedReader in = null;
 		
+		List<JSONObject> list = new ArrayList<JSONObject>();
 		
 		try {
 	         // url Http 연결 생성
@@ -215,16 +217,17 @@ public class CheckAccountService {
 					jsonArr = (JSONArray)jsonObject.get("response");
 					
 					
-					
 					if (jsonArr.size() > 0){
 					    for(int i=0; i<jsonArr.size(); i++){
 					        JSONObject jsonObj = (JSONObject)jsonArr.get(i);
-					        
+					        System.out.println(jsonObj);
 					        //(String)jsonObj.get("code");
 					        //(String)jsonObj.get("name");
+					        list.add(jsonObj);
 					    }
 					    // StudyingAzae, Soodal 출력
 					}
+					System.out.println(list);
 					// 예금주만 값 빼기
 					//String bankHolderInfo = phoneJson1.getAsJsonObject("response").get("bank_holder").getAsString();
 					// System.out.println("bankHolderInfo: " + bankHolderInfo);
@@ -238,7 +241,7 @@ public class CheckAccountService {
 			}
 
 		
-		return map;
+		return list;
 	}
 	
 }

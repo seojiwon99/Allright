@@ -58,9 +58,6 @@
 					<div class="mb-3">
 						<label>은행 명</label> 
 						<select name="" id="bankName">
-							<option value="004">KB국민은행</option>
-							<option value="011">농협</option>
-							<option value="031">대구은행</option>
 						</select>
 					</div>
 					<div class="mb-3">
@@ -433,7 +430,17 @@
 					url:'/bankList',
 					type:'get',
 					success:function(result){
-						console.log("res" + result);
+						if(result != null){
+							for(let i = 0; i < result.length; i++){
+								let option = $("<option />");
+								$(option).val(result[i].code);
+								$(option).text(result[i].name);
+
+								$("#bankName").append(option);
+
+							}
+						}
+						console.log(result);
 					},
 					error:function(err){
 						console.log(err);

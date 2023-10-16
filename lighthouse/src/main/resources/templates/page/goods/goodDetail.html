@@ -1,457 +1,542 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layouts/default_layout}">
+   xmlns:th="http://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="~{layouts/default_layout}">
 <!-- Content -->
 
 <head>
 
 <style type="text/css">
 #productContent {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
 }
 
 #productContent figcaption {
-	display: none;
+   display: none;
 }
 
 .card-img-top {
-	position: relative;
-	width: 540px;
-	height: 480px;
-	background-repeat: no-repeat;
-	background-size: cover;
-	margin: 0 auto;
+   position: relative;
+   width: 540px;
+   height: 480px;
+   background-repeat: no-repeat;
+   background-size: cover;
+   margin: 0 auto;
 }
 
 .photo {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: cover;
-	transition: transform .5s ease-out;
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background-repeat: no-repeat;
+   background-position: center;
+   background-size: cover;
+   transition: transform .5s ease-out;
 }
 
 #test_obj {
-	position: fixed;
-	width: 100px;
-	height: 280px;
-	right: 50px;
-	top: 400px;
-	z-index: 2;
-	border: 1px solid rgba(0, 0, 0, 0.2);
+   position: fixed;
+   width: 100px;
+   height: 280px;
+   right: 50px;
+   top: 400px;
+   z-index: 2;
+   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 #buttons {
-	margin-left: 0;
-	padding-left: 0;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	background-color: rgba(255, 255, 255, 0.7);
+   margin-left: 0;
+   padding-left: 0;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   background-color: rgba(255, 255, 255, 0.7);
 }
 
 #buttons li {
-	list-style: none;
-	padding: 20px;
+   list-style: none;
+   padding: 20px;
 }
 
 #buttons li a {
-	text-decoration: none;
-	color: rgba(0, 0, 0, 1);
+   text-decoration: none;
+   color: rgba(0, 0, 0, 1);
 }
 
 #buttons button {
-	background: inherit;
-	border: none;
-	box-shadow: none;
-	border-radius: 0;
-	padding: 0;
-	overflow: visible;
-	cursor: pointer;
-	font-size: 16px;
-	color: #ff6f61;
+   background: inherit;
+   border: none;
+   box-shadow: none;
+   border-radius: 0;
+   padding: 0;
+   overflow: visible;
+   cursor: pointer;
+   font-size: 16px;
+   color: #ff6f61;
 }
 </style>
 
 </head>
 
 <body>
-	<div layout:fragment="content">
-		<!-- 단건 조회 -->
-		<section id="headerSection">
-			<div class="container">
-				<div class="row">
-					<div class="col-12">
-						<div class="row">
-							<div class="col-12 col-md-6">
-								<!-- Card -->
-								<div class="card">
-									<!-- Slider -->
-									<div class="mb-4"
-										data-flickity='{"draggable": false, "fade": true}'>
-										<!-- <img th:src="|upload/${goods.uploadPath}/${goods.uploadName}|" /> -->
-										<div class="card-img-top" data-scale="2"
-											th:style="|background-image: url(upload/${goods.uploadPath}/${goods.uploadName})|">
-										</div>
-										</a>
-									</div>
-								</div>
-							</div>
+   <div layout:fragment="content">
+      <!-- 단건 조회 -->
+      <section id="headerSection" class="productBox" tabindex="0">
+         <div class="container">
+            <div class="row">
+               <div class="col-12">
+                  <div class="row">
+                     <div class="col-12 col-md-6">
+                        <!-- Card -->
+                        <div class="card">
+                           <!-- Slider -->
+                           <div class="mb-4"
+                              data-flickity='{"draggable": false, "fade": true}'>
+                              <!-- <img th:src="|upload/${goods.uploadPath}/${goods.uploadName}|" /> -->
+                              <div class="card-img-top" data-scale="2"
+                                 th:style="|background-image: url(upload/${goods.uploadPath}/${goods.uploadName})|">
+                              </div>
+                              </a>
+                           </div>
+                        </div>
+                     </div>
 
-							<div class="col-12 col-md-6 ps-lg-10">
-								<!-- Header -->
-								<div class="row mb-1">
-									<div class="col">
-										<!-- Preheading -->
-										<a class="text-muted" href="shop.html"
-											th:text="${goods.categoryCode}"></a>
-									</div>
-									<div class="col-auto">
-										<!-- Rating -->
-										<div class="rating fs-xs text-dark"
-											th:data-value="${reviewAvg}">
-											<div class="rating-item">
-												<i class="fas fa-star"></i>
-											</div>
-											<div class="rating-item">
-												<i class="fas fa-star"></i>
-											</div>
-											<div class="rating-item">
-												<i class="fas fa-star"></i>
-											</div>
-											<div class="rating-item">
-												<i class="fas fa-star"></i>
-											</div>
-											<div class="rating-item">
-												<i class="fas fa-star"></i>
-											</div>
-										</div>
-									</div>
-								</div>
+                     <div class="col-12 col-md-6 ps-lg-10">
+                        <!-- Header -->
+                        <div class="row mb-1">
+                           <div class="col">
+                              <!-- Preheading 
+                              <a class="text-muted" href="shop.html"
+                                 th:text="${goods.categoryCode}"></a>-->
+                           </div>
+                           <div class="col-auto">
+                              <!-- Rating -->
+                              <div class="rating fs-xs text-dark"
+                                 th:data-value="${reviewAvg}">
+                                 <div class="rating-item">
+                                    <i class="fas fa-star"></i>
+                                 </div>
+                                 <div class="rating-item">
+                                    <i class="fas fa-star"></i>
+                                 </div>
+                                 <div class="rating-item">
+                                    <i class="fas fa-star"></i>
+                                 </div>
+                                 <div class="rating-item">
+                                    <i class="fas fa-star"></i>
+                                 </div>
+                                 <div class="rating-item">
+                                    <i class="fas fa-star"></i>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
 
-								<!-- Heading -->
-								<h3 class="mb-2" th:text="${goods.productName}"></h3>
+                        <!-- Heading -->
+                        <h3 class="mb-2" th:text="${goods.productName}"></h3>
 
-								<!-- Price -->
-								<div class="mb-7">
-									<span
-										class="fs-lg fw-bold text-gray-350 text-decoration-line-through"
-										th:text="${goods.productCost}+원"></span>
-									<!-- 할인가격 -->
-									<span class="ms-1 fs-5 fw-bolder text-primary" id="pprr">[[${goods.salePrice}]]</span>
-									<span>원</span> <input type="hidden" id="originPrice"
-										th:value="${goods.salePrice}">
-								</div>
+                        <!-- Price -->
+                        <div class="mb-7">
+                           <span
+                              class="fs-lg fw-bold text-gray-350 text-decoration-line-through"
+                              th:text="${goods.productCost}+원"></span>
+                           <!-- 할인가격 -->
+                           <span class="ms-1 fs-5 fw-bolder text-primary" id="pprr">[[${goods.salePrice}]]</span>
+                           <span>원</span> 
+                           <input type="hidden" id="originPrice" tabindex="-1" th:value="${goods.salePrice}">
+                        </div>
 
-								<!-- Form -->
-								<div class="form-group"
-									style="font-size: 15px; border-bottom: 1px solid rgba(0, 0, 0, 0.3)">
-									<div style="padding-bottom: 8px; color: grey">
-										<span>배송정보 : </span> <span>[[${goods.deliveryService}]]</span>
-									</div>
-									<div style="padding-bottom: 8px; color: grey">
-										<span>배송비 : </span> <span>[[${goods.deliveryCost}]]원</span>
-									</div>
-									<div style="padding-bottom: 8px; color: grey">
-										<span>생산지 : </span> <span>[[${goods.productOrigin}]]</span>
-									</div>
-								</div>
-
-
-								<div class="form-group">
-									<!-- Label -->
-
-									<div class="mb-2" style="padding-bottom: 24px">
-										<!-- option -->
-										<div class="col-12 col-lg-auto">
-
-											<div>
-												<select th:each="option:${options}"
-													class="selectbox form-select mb-2" id="sel"
-													th:disabled="!${optionStat.first}"
-													th:classappend="${optionStat.last} ? 'last' : '' "
-													th:if="${!(option.optionName).equals('없음')}">
-													<option class="selectbox1" value="">[[${option.optionName}]]</option>
-													<option class="selectbox1"
-														th:each="detail:${option.detailVO}"
-														th:value="${detail.optionName}">[[${detail.optionName}]]</option>
-												</select>
+                        <!-- Form -->
+                        <div class="form-group"
+                           style="font-size: 15px; border-bottom: 1px solid rgba(0, 0, 0, 0.3)">
+                           <div style="padding-bottom: 8px; color: grey">
+                              <span>배송정보 : </span> <span>[[${goods.deliveryService}]]</span>
+                           </div>
+                           <div style="padding-bottom: 8px; color: grey">
+                              <span>배송비 : </span> <span>[[${goods.deliveryCost}]]원</span>
+                           </div>
+                           <div style="padding-bottom: 8px; color: grey">
+                              <span>생산지 : </span> <span>[[${goods.productOrigin}]]</span>
+                           </div>
+                        </div>
 
 
+                        <div class="form-group">
+                           <!-- Label -->
 
-												<div style="font-size: 15px; color: rgba(0, 0, 0, 0.7);">
-													<div id="optionBox">
-														<ul id="noOptionView" class="col-12 col-lg-auto"
-															style="list-style: none; padding-left: 0px"
-															th:if="${options[0].optionName=='없음'}">
-															<li
-																style="border: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; margin-bottom: 10px;">
-																<div style="padding-bottom: 6px; display: flex; justify-content: space-between;"
-																	class="optionDetailCodeName">
-																	<div>
-																		<input type="hidden" name="optionLast" class="optLast"
-																			value="없음"> 개수 : <input type="number"
-																			class="noOptionOrderCnt" name="cartCount"
-																			th:min="${optionDetail[0].minOrder}"
-																			th:max="${optionDetail[0].maxOrder}"
-																			th:value="${optionDetail[0].minOrder}"
-																			th:data-maxcount="${optionDetail[0].optionCount}" />
-																	</div>
-																	<div>
-																		<span>남은 수량은
-																			[[${optionDetail[0].optionCount}]]개 입니다</span>
-																	</div>
-																</div>
-																<div style="padding-bottom: 6px">
-																	<input type="hidden" th:value="${goods.salePrice}"
-																		id="hiddenNoOptionP" />
-																</div>
-															</li>
-														</ul>
-													</div>
-												</div>
-											</div>
+                           <div class="mb-2" style="padding-bottom: 24px">
+                              <!-- option -->
+                              <div class="col-12 col-lg-auto">
 
-											<!-- 선택된박스 -->
-											<div style="font-size: 15px; color: rgba(0, 0, 0, 0.7);">
-												<div id="optionBox">
-													<ul id="optionView" class="col-12 col-lg-auto"
-														style="list-style: none; padding-left: 0px">
-
-													</ul>
-												</div>
-											</div>
-										</div>
-										<div class="col-12 col-lg-auto">
-											<div
-												style="display: flex; justify-content: space-between; padding: 20px 0px 40px 0px; color: black"
-												class="num">
-
-												<div>
-													<input class="changePrice" type="hidden" /> 합계: <span
-														style="font-size: 22px; color: #ff6f61; font-weight: 600"
-														id="realPrice" class="realPrice2"> <input
-														type="hidden" th:value="${goods.salePrice}" id="pri" />
-													</span> <span>원</span>
-												</div>
-											</div>
-
-										</div>
-										<div class="row gx-5 mb-7">
-
-
-											<div class="col-12 col-lg">
-												<!-- Submit -->
-												<button type="button" class="btn w-100 btn-dark mb-2"
-													onclick="cartCheck()">
-													장바구니 <i class="fe fe-shopping-cart ms-2"></i>
-												</button>
-											</div>
-											<div class="col-12 col-lg-auto">
-												<!-- Wishlist -->
-												<button class="btn btn-outline-dark w-100 mb-2"
-													onclick="checkWish()">
-													찜 <i class="fe fe-heart ms-2"></i>
-												</button>
-
-											</div>
-										</div>
-
-										<p th:if="${session.loginMember == null}">
-											<span class="text-gray-500">아이디가 없나요?</span> <a
-												class="text-reset text-decoration-underline" id="loginTag">지금
-												바로 회원가입!</a>
-										</p>
-									</div>
-								</div>
-								<!-- Text -->
-
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- DESCRIPTION -->
-		<section class="pt-11">
-			<div class="container">
-				<div class="row">
-					<div class="col-12">
-						<!-- Nav -->
-
-						<div
-							class="nav nav-tabs nav-overflow justify-content-start justify-content-md-center border-bottom"
-							style="font-size: 24px; position: sticky; top: 0px; background-color: white; z-index: 1">
-							<a class="menu nav-link" id="pcon"
-								href="javascript:document.querySelector('#descriptionTab').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })">
-								상세정보 </a> <a class="menu nav-link" id="rcon"
-								href="javascript:document.querySelector('#sizeTab').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })">리뷰
-								<strong class="fs-sm ms" name="reviewCount" id="reviewCount">([[${count}]])</strong>
-							</a> <a class="menu nav-link" id="qcon"
-								href="javascript:document.querySelector('#qnaTap').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })">
-								Q&A <strong class="fs-sm" name="inquiryCont">([[${inquiryCount}]])</strong>
-							</a>
-
-						</div>
-
-						<!-- Content -->
-						<div class="tab-content">
-							<div class="tab-pane fade show active" id="descriptionTab">
-								<div style="padding-top: 48px">
-									<h5 class="mb-5 text-center">표기 정보</h5>
-									<table class="table">
-										<thead>
-											<tr>
-												<th scope="col" style="font-weight: 600">제품명</th>
-												<th scope="col" th:text="${goods.productName}"></th>
-												<th scope="row" style="font-weight: 600">판매자</th>
-												<th scope="row" id="sellerId">[[${goods.memberId}]]</th>
-											</tr>
-										</thead>
-
-										<tbody>
-											<tr>
-												<th scope="row" style="font-weight: 600">사업자번호</th>
-												<th scope="row" th:text="${goods.businessNumber}"></th>
-												<th scope="row" style="font-weight: 600">원가</th>
-												<th scope="row" th:text="${goods.productCost}+원"></th>
-											</tr>
-											<tr>
-												<td scope="row" style="font-weight: 600">등록날짜</td>
-
-												<td scope="row"
-													th:text="${#dates.format(goods.productRegdate,'yyyy년 MM월 dd일')}"></td>
-											</tr>
-											<tr>
-												<td scope="row" style="font-weight: 600">배송방법</td>
-												<td scope="row" th:text="${goods.deliveryService}"></td>
-												<td scope="row" style="font-weight: 600">배송비</td>
-												<td scope="row" th:text="${goods.deliveryCost}+원"></td>
-											</tr>
-											<tr>
-												<td scope="row" style="font-weight: 600">생산지</td>
-												<td scope="row" th:text="${goods.productOrigin}"></td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-
-								<!-- 상세내용 -->
-								<div style="padding: 48px 0px; margin: auto 0"
-									id="pContentSection">
-									<div th:utext="${goods.productContent}" id="productContent"></div>
-								</div>
-							</div>
-
-							<div>
-
-								<!-- 리뷰-->
-								<div id="sizeTab"></div>
-
-							</div>
-
-
-						</div>
-
-						<!-- qna -->
-						<div id="qnaTap"></div>
-
-						<!-- js  -->
-						<div id="test_obj">
-							<ul id="buttons">
-								<li><a href="javascript:zoomIn()"><i
-										class="fas fa-plus-circle"></i>확대</a></li>
-								<li><a href="javascript:zoomOut()"><i
-										class="fas fa-minus-circle"></i>축소</a></li>
-								<li><a href="javascript:zoomReset()"><i
-										class="bi bi-plus-circle"></i>초기화</a></li>
-
-								<li>
-									<button type="button" class="topBtn">
-										<i class="fas fa-caret-up"></i>TOP
-									</button>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<input type="hidden" id="hidden" th:value="${session.loginMember}" />
-		<div th:if="${session.loginMember != null}">
-			<input type="hidden" id="member"
-				th:value="${session.loginMember.memberId}" />
-		</div>
-		<!-- REVIEWS -->
+                                 <div>
+                                    <select th:each="option:${options}"
+                                       class="selectbox form-select mb-2" id="sel"
+                                       th:disabled="!${optionStat.first}"
+                                       th:classappend="${optionStat.last} ? 'last' : '' "
+                                       th:if="${!(option.optionName).equals('없음')}">
+                                       <option class="selectbox1" value="">[[${option.optionName}]]</option>
+                                       <option class="selectbox1" tabindex="0"
+                                          th:each="detail:${option.detailVO}"
+                                          th:value="${detail.optionName}">[[${detail.optionName}]]</option>
+                                    </select>
 
 
 
+                                    <div style="font-size: 15px; color: rgba(0, 0, 0, 0.7);">
+                                       <div id="optionBox">
+                                          <ul id="noOptionView" class="col-12 col-lg-auto"
+                                             style="list-style: none; padding-left: 0px"
+                                             th:if="${options[0].optionName=='없음'}">
+                                             <li
+                                                style="border: 1px solid rgba(0, 0, 0, 0.2); padding: 10px; margin-bottom: 10px;">
+                                                <div style="padding-bottom: 6px; display: flex; justify-content: space-between;"
+                                                   class="optionDetailCodeName">
+                                                   <div>
+                                                      <input type="hidden" name="optionLast" class="optLast"
+                                                         value="없음"> 개수 : 
+                                                         <input type="number"
+                                                         class="noOptionOrderCnt" name="cartCount"
+                                                         th:min="${optionDetail[0].minOrder}"
+                                                         th:max="${optionDetail[0].maxOrder}"
+                                                         th:value="${optionDetail[0].minOrder}"
+                                                         th:data-maxcount="${optionDetail[0].optionCount}" />
+                                                   </div>
+                                                   <div>
+                                                      <span>남은 수량은
+                                                         [[${optionDetail[0].optionCount}]]개 입니다</span>
+                                                   </div>
+                                                </div>
+                                                <div style="padding-bottom: 6px">
+                                                   <input type="hidden" th:value="${goods.salePrice}"
+                                                      id="hiddenNoOptionP" />
+                                                </div>
+                                             </li>
+                                          </ul>
+                                       </div>
+                                    </div>
+                                 </div>
 
-		<script th:inline="javascript">
-		$(window).scroll(function () {
-			var height = $(document).height(); //전체높이
-			console.log(height);
-			
-			var headerSection =$("#headerSection").height();
-			console.log(headerSection);
-			
-			var preHeight = $(document).scrollTop(); //현재 스크롤
-			preHeight = parseInt(preHeight);
-			console.log(preHeight);
-			
-			var pContentSection = $('#pContentSection').offset().top;// 상품상세
-			pContentSection = parseInt(pContentSection);
-			console.log(pContentSection);
-			
-			var reviewSection =$("#sizeTab").offset().top;
-			reviewSection = parseInt(reviewSection);
-		
-			var qnaSection =$("#qnaTap").offset().top;
-			qnaSection = parseInt(qnaSection);
-			
-			if(preHeight < headerSection){
-				$("#pcon").css("color","black");
-				$("#rcon").css("color","black");
-				$("#qcon").css("color","black");
-			}
-			if(headerSection <= preHeight || preHeight <= height - (reviewSection+qnaSection+headerSection)){
-				$("#pcon").css("color","#ff6f61");
-				$("#rcon").css("color","black");
-				$("#qcon").css("color","black");
-			}
-			
-			if(reviewSection-200 <= preHeight ||  preHeight >= qnaSection){
-				$("#pcon").css("color","black");
-				$("#rcon").css("color","#ff6f61");
-				$("#qcon").css("color","black");
-			}
-			
-			if(preHeight+400 >= qnaSection){
-				$("#pcon").css("color","black");
-				$("#rcon").css("color","black");
-				$("#qcon").css("color","#ff6f61");
-			}
-			
-			
-			}); 
-		
-  		let reviewTitle = '';
-		let reviewPage = '';
-		let reviewEnd ='';
+                                 <!-- 선택된박스 -->
+                                 <div style="font-size: 15px; color: rgba(0, 0, 0, 0.7);">
+                                    <div id="optionBox">
+                                       <ul id="optionView" class="col-12 col-lg-auto"
+                                          style="list-style: none; padding-left: 0px">
 
-		let qnaPage = '';
-		let qnaEnd ='';
+                                       </ul>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-12 col-lg-auto">
+                                 <div
+                                    style="display: flex; justify-content: space-between; padding: 20px 0px 40px 0px; color: black"
+                                    class="num">
+
+                                    <div>
+                                       <input class="changePrice" type="hidden" /> 합계: <span
+                                          style="font-size: 22px; color: #ff6f61; font-weight: 600"
+                                          id="realPrice" class="realPrice2"> <input
+                                          type="hidden" th:value="${goods.salePrice}" id="pri" />
+                                       </span> <span>원</span>
+                                    </div>
+                                 </div>
+
+                              </div>
+                              <div class="row gx-5 mb-7">
+
+
+                                 <div class="col-12 col-lg">
+                                    <!-- Submit -->
+                                    <button type="button" class="cartAdd btn w-100 btn-dark mb-2"
+                                       onclick="cartCheck()">
+                                       장바구니 <i class="fe fe-shopping-cart ms-2"></i>
+                                    </button>
+                                 </div>
+                                 <div class="col-12 col-lg-auto">
+                                    <!-- Wishlist -->
+                                    <button class="gymAdd btn btn-outline-dark w-100 mb-2"
+                                       onclick="checkWish()">
+                                       찜 <i class="fe fe-heart ms-2"></i>
+                                    </button>
+
+                                 </div>
+                              </div>
+
+                              <p th:if="${session.loginMember == null}">
+                                 <span class="text-gray-500">아이디가 없나요?</span> <a
+                                    class="text-reset text-decoration-underline" id="loginTag">지금
+                                    바로 회원가입!</a>
+                              </p>
+                           </div>
+                        </div>
+                        <!-- Text -->
+
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      <!-- DESCRIPTION -->
+      <section class="pt-11">
+         <div class="container">
+            <div class="row">
+               <div class="col-12">
+                  <!-- Nav -->
+
+                  <div
+                     class="nav nav-tabs nav-overflow justify-content-start justify-content-md-center border-bottom"
+                     style="font-size: 24px; position: sticky; top: 0px; background-color: white; z-index: 1">
+                     <a class="menu nav-link" id="pcon" tabindex="-1"
+                        href="javascript:document.querySelector('#descriptionTab').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })">
+                        상세정보 </a> <a class="menu nav-link" id="rcon" tabindex="-1"
+                        href="javascript:document.querySelector('#sizeTab').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })">리뷰
+                        <strong class="fs-sm ms" name="reviewCount" id="reviewCount">([[${count}]])</strong>
+                     </a> <a class="menu nav-link" id="qcon" tabindex="-1"
+                        href="javascript:document.querySelector('#qnaTap').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' })">
+                        Q&A <strong class="fs-sm" name="inquiryCont">([[${inquiryCount}]])</strong>
+                     </a>
+
+                  </div>
+
+                  <!-- Content -->
+                  <div class="tab-content">
+                     <div class="detailBox tab-pane fade show active" id="descriptionTab" tabindex="0">
+                        <div class="" style="padding-top: 48px" >
+                           <h5 class="mb-5 text-center">표기 정보</h5>
+                           <table class="table">
+                              <thead>
+                                 <tr>
+                                    <th scope="col" style="font-weight: 600">제품명</th>
+                                    <th scope="col" th:text="${goods.productName}"></th>
+                                    <th scope="row" style="font-weight: 600">판매자</th>
+                                    <th scope="row" id="sellerId">[[${goods.memberId}]]</th>
+                                 </tr>
+                              </thead>
+
+                              <tbody>
+                                 <tr>
+                                    <th scope="row" style="font-weight: 600">사업자번호</th>
+                                    <th scope="row" th:text="${goods.businessNumber}"></th>
+                                    <th scope="row" style="font-weight: 600">원가</th>
+                                    <th scope="row" th:text="${goods.productCost}+원"></th>
+                                 </tr>
+                                 <tr>
+                                    <td scope="row" style="font-weight: 600">등록날짜</td>
+
+                                    <td scope="row"
+                                       th:text="${#dates.format(goods.productRegdate,'yyyy년 MM월 dd일')}"></td>
+                                 </tr>
+                                 <tr>
+                                    <td scope="row" style="font-weight: 600">배송방법</td>
+                                    <td scope="row" th:text="${goods.deliveryService}"></td>
+                                    <td scope="row" style="font-weight: 600">배송비</td>
+                                    <td scope="row" th:text="${goods.deliveryCost}+원"></td>
+                                 </tr>
+                                 <tr>
+                                    <td scope="row" style="font-weight: 600">생산지</td>
+                                    <td scope="row" th:text="${goods.productOrigin}"></td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+
+                        <!-- 상세내용 -->
+                        <div style="padding: 48px 0px; margin: auto 0"
+                           id="pContentSection">
+                           <div th:utext="${goods.productContent}" id="productContent"></div>
+                        </div>
+                     </div>
+
+                     <div>
+
+                        <!-- 리뷰-->
+                        <div id="sizeTab"></div>
+
+                     </div>
+
+
+                  </div>
+
+                  <!-- qna -->
+                  <div id="qnaTap" tabindex="0"></div>
+
+                  <!-- js  -->
+                  <div id="test_obj">
+                     <ul id="buttons">
+                        <li><a href="javascript:zoomIn()" tabindex="-1"><i
+                              class="fas fa-plus-circle"></i>확대</a></li>
+                        <li><a href="javascript:zoomOut()" tabindex="-1"><i
+                              class="fas fa-minus-circle"></i>축소</a></li>
+                        <li><a href="javascript:zoomReset()" tabindex="-1"><i
+                              class="bi bi-plus-circle"></i>초기화</a></li>
+
+                        <li>
+                           <button type="button" class="topBtn" tabindex="-1">
+                              <i class="fas fa-caret-up"></i>TOP
+                           </button>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <input type="hidden" id="hidden" th:value="${session.loginMember}" />
+      <div th:if="${session.loginMember != null}">
+         <input type="hidden" id="member"
+            th:value="${session.loginMember.memberId}" />
+         <input type="hidden" id="productCode" th:value="${goods.productCode}" name="productCode" />
+      </div>
+      <!-- REVIEWS -->
+
+
+
+
+      <script th:inline="javascript">
+         let TTSIsOk = localStorage.getItem('ttsKey');
+    let sessionAuthor;
+   console.log(sessionStorage.loginMember);          
+   if(sessionStorage.loginMember != null){
+      sessionAuthor = sessionStorage.loginMember.memberAuthor;
+   }
+
+    let audioFileNow = new Audio();
+
+         var AudioContext;
+         var audioContext;
+
+         let qna = [[${NqnaList}]];
+         let chk = false;
+         let idx = 0;
+         
+         window.onload = function() {
+            navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
+               AudioContext = window.AudioContext || window.webkitAudioContext;
+               audioContext = new AudioContext();
+            }).catch(e => {
+               console.error(`Audio permissions denied: ${e}`);
+            });
+
+         }
+
+         function VoiceReturnRead(text) {
+            var data = {
+               "voice": {
+                  "languageCode": "ko-KR",
+                  "name": "ko-KR-Neural2-B"
+               },
+               "input": {
+                  "text": text,
+
+               },
+               "audioConfig": {
+                  "audioEncoding": "mp3"
+               }
+            }
+
+            $.ajax({
+               type: 'POST',
+               url: 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
+               data: JSON.stringify(data),
+               dataType: 'JSON',
+               contentType: "application/json; charset=UTF-8",
+               success: function (res) {
+                  var audioFile = new Audio();
+                  let audioBlob = base64ToBlob(res.audioContent,
+                     "mp3");
+                  audioFile.src = window.URL
+                     .createObjectURL(audioBlob);
+                  audioFile.playbackRate = 1; //재생속도
+                  if(audioFileNow.paused == false){
+                     audioFileNow.pause();
+                  }
+                  audioFileNow = audioFile;
+                  audioFileNow.play();
+               
+
+               },
+               error: function (request, status, error) {
+                  alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
+               }
+            });
+         };
+
+         function base64ToBlob(base64, fileType) {
+            let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
+            let audioSrc = typeHeader + base64;
+            let arr = audioSrc.split(",");
+            let array = arr[0].match(/:(.*?);/);
+            let mime = (array && array.length > 1 ? array[1] : type) || type;
+            // url헤더 제거하고 btye로 변환
+            let bytes = window.atob(arr[1]);
+            // 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
+            let ab = new ArrayBuffer(bytes.length);
+            // 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
+            let ia = new Uint8Array(ab);
+            for (let i = 0; i < bytes.length; i++) {
+               ia[i] = bytes.charCodeAt(i);
+            }
+            return new Blob([ ab ], {
+               type : mime
+            });
+         }
+      $(window).scroll(function () {
+         var height = $(document).height(); //전체높이
+         
+         var headerSection =$("#headerSection").height();
+         
+         var preHeight = $(document).scrollTop(); //현재 스크롤
+         preHeight = parseInt(preHeight);
+         
+         var pContentSection = $('#pContentSection').offset().top;// 상품상세
+         pContentSection = parseInt(pContentSection);
+         
+         var reviewSection =$("#sizeTab").offset().top;
+         reviewSection = parseInt(reviewSection);
+      
+         var qnaSection =$("#qnaTap").offset().top;
+         qnaSection = parseInt(qnaSection);
+         
+         if(preHeight < headerSection){
+            $("#pcon").css("color","black");
+            $("#rcon").css("color","black");
+            $("#qcon").css("color","black");
+         }
+         if(headerSection <= preHeight || preHeight <= height - (reviewSection+qnaSection+headerSection)){
+            $("#pcon").css("color","#ff6f61");
+            $("#rcon").css("color","black");
+            $("#qcon").css("color","black");
+         }
+         
+         if(reviewSection-200 <= preHeight ||  preHeight >= qnaSection){
+            $("#pcon").css("color","black");
+            $("#rcon").css("color","#ff6f61");
+            $("#qcon").css("color","black");
+         }
+         
+         if(preHeight+400 >= qnaSection){
+            $("#pcon").css("color","black");
+            $("#rcon").css("color","black");
+            $("#qcon").css("color","#ff6f61");
+         }
+         
+         
+         }); 
+      
+        let reviewTitle = '';
+      let reviewPage = '';
+      let reviewEnd ='';
+
+      let qnaPage = '';
+      let qnaEnd ='';
       
    // 옵션 초기화      
    let optionDetail =[[${optionDetail}]];
@@ -464,6 +549,7 @@
       inquiryPageLoad(1);      
       changeOptionHandler();
       imgGlasses();
+      preventMinus();
       
       //이벤트 지정      
       $('.selectbox').on("change",changeOptionHandler)
@@ -479,10 +565,10 @@
       let productCode = [[${goods.productCode}]];
       let url = "reviewView?productCode="+productCode+"&pageNum="+p;
       $("#sizeTab").load(url,function(){
-				reviewTitle = $('#Reviewtitle');
-				reviewPage = $('#reviewpageNum').val();
-				reviewEnd = $('#reviewpageEnd').val();
-			})
+            reviewTitle = $('#Reviewtitle');
+            reviewPage = $('#reviewpageNum').val();
+            reviewEnd = $('#reviewpageEnd').val();
+         })
    }
    
    /*------------------------
@@ -492,9 +578,9 @@
       let productCode = [[${goods.productCode}]];
       let url = "inquiryView?productCode="+productCode+"&pageNum="+p;
      $("#qnaTap").load(url, function(){
-				qnaPage = $('#qnapageNum').val();
-				qnaEnd = $('#qnapageEnd').val();
-			})
+            qnaPage = $('#qnapageNum').val();
+            qnaEnd = $('#qnapageEnd').val();
+         })
    }
 
    
@@ -503,134 +589,220 @@
    -------------------------*/  
    function changeOptionHandler(){
   
-	//마지막 옵션이 아니면 다음옵션
-      if(!$(this).hasClass("last")){            
-         $(this).next().attr("disabled",false);   
-          return;
-      }
-      
-	//마지막 옵션
-         //선택 값            
-         let optionVal = '';
-         
-         //select 초기화
-         $('.selectbox').each(function(){
-            optionVal += $(this).val();
-            $(this).val('');
-         })
-         
-         //첫번째 제외 disabled
-         $('.selectbox:gt(0)').attr("disabled",true);
-         console.log(optionVal);
-         
-         let flag = true;
-         //기존 선택 유무
-         $(".optionDetailCodeName").each(function(){
-            if($(this).text()==optionVal){
-               alert("이미 선택된 옵션입니다");
-               flag = false;
-               return true;
+      if(TTSIsOk == null || sessionAuthor == 3){
+         if(!$(this).hasClass("last")){            
+               $(this).next().attr("disabled",false);   
+                return;
             }
-         })
-         if(flag == false) return;
-         
-         //detailCode, 가격 찾기
-         for(let i=0; i<optionDetail.length; i++){
-            if(optionDetail[i].optionLast == optionVal){
-               let code = optionDetail[i].optionDetailCode;
-               let originPrice = $("#originPrice").val();
-               let price = optionDetail[i].optionPrice;
-               let minOrder = optionDetail[i].minOrder; 
-               let maxOrder = optionDetail[i].maxOrder;
-               let optionCount = optionDetail[i].optionCount;
+            
+               //마지막 옵션
+               //선택 값            
+               let optionVal = '';
                
-               let sum = parseInt(originPrice) + parseInt(price);
+               //select 초기화
+               $('.selectbox').each(function(){
+                  optionVal += $(this).val();
+                  $(this).val('');
+               })
                
-               sum = replaceComma(sum);
+               //첫번째 제외 disabled
+               $('.selectbox:gt(0)').attr("disabled",true);
+               console.log(optionVal);
                
+               let flag = true;
+               //기존 선택 유무
+               $(".optionDetailCodeName").each(function(){
+                  if($(this).text()==optionVal){
+                     let msg = "이미 선택된 옵션입니다";
+                     VoiceReturnRead(msg);
+                     flag = false;
+                     return true;
+                  }
+               })
+               if(flag == false) return;
                
-               let optionView =$("#optionView");
-               let liTag =`<li style=" padding:10px; margin-bottom:10px; background-color:#f8f8f8">
-                  <div style="display:flex; justify-content:space-between; padding-bottom:6px">
-                     <span class="optionDetailCodeName" style="font-weight:600; color:#ff6f61">${optionVal}</span>
-                     <button class="optionCloseBtn" type="button" style="all: unset; cursor:pointer; color:#ff6f61">X</button>
-                  </div>
-                  
-                  <div style="padding-bottom:6px "> 
-                     <input type="hidden" name="optionDetailCode" value="${code}"> 
-                     개수 : <input type="hidden" value="${price}" name="optionPrice"> 
-                     <input type="number" class="orderCnt" name="cartCount" min="${minOrder}" max="${maxOrder}" value="${minOrder}" data-maxCount="${optionCount}" /> 
-                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>남은 수량은 ${optionCount}개 입니다</span>
-                  </div>
-                  
-                  <div style="padding-bottom:6px"> 가격 : <span><strong class="pp">${originPrice}</strong> (현재 할인가)</span> 
-                  + <span class="orderPrice"><strong class="salePrice">${price}</strong> (옵션가격)</span>
-                  </div>
-                  <div style="padding-bottom:6px"> 
-                  <strong style="display:none; " id="orPrice">${sum}</strong>
-                  총 가격 : <span class="changePriceShow"><strong>${sum}</strong></span>원
-                  </div>
-               </li>`;
-               $("#optionView").append(liTag);
+               //detailCode, 가격 찾기
+               for(let i=0; i<optionDetail.length; i++){
+                  if(optionDetail[i].optionLast == optionVal){
+                     let code = optionDetail[i].optionDetailCode;
+                     let originPrice = $("#originPrice").val();
+                     let price = optionDetail[i].optionPrice;
+                     let minOrder = optionDetail[i].minOrder; 
+                     let maxOrder = optionDetail[i].maxOrder;
+                     let optionCount = optionDetail[i].optionCount;
+                     
+                     let sum = parseInt(originPrice) + parseInt(price);
+                     
+                     sum = replaceComma(sum);
+                     
+                     
+                     let optionView =$("#optionView");
+                     let liTag =`<li class="optionchoicebox"style=" padding:10px; margin-bottom:10px; background-color:#f8f8f8" tabindex="0">
+                        <div style="display:flex; justify-content:space-between; padding-bottom:6px">
+                           <span class="optionDetailCodeName" style="font-weight:600; color:#ff6f61">${optionVal}</span>
+                           <button class="optionCloseBtn" tabindex="-1" type="button" style="all: unset; cursor:pointer; color:#ff6f61">X</button>
+                        </div>
+                        
+                        <div style="padding-bottom:6px "> 
+                           <input type="hidden" name="optionDetailCode" value="${code}"> 
+                           개수 : <input type="hidden" value="${price}" name="optionPrice"> 
+                           <input type="number" class="orderCnt" name="cartCount" min="${minOrder}" max="${maxOrder}" value="${minOrder}" data-maxCount="${optionCount}" /> 
+                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>남은 수량은 ${optionCount}개 입니다</span>
+                        </div>
+                        
+                        <div style="padding-bottom:6px"> 가격 : <span><strong class="pp">${originPrice}</strong> (현재 할인가)</span> 
+                        + <span class="orderPrice"><strong class="salePrice">${price}</strong> (옵션가격)</span>
+                        </div>
+                        <div style="padding-bottom:6px"> 
+                        <strong style="display:none; " id="orPrice">${sum}</strong>
+                        총 가격 : <span class="changePriceShow"><strong class="hap">${sum}</strong></span>원
+                        </div>
+                     </li>`;
+                     $("#optionView").append(liTag);
+      
+                     break;
+                    
+                     
+                  }
+               }
 
-               break;
-              
+               preventMinus();
+              calTotal();
+
+      }else{
+
+         //마지막 옵션이 아니면 다음옵션
+            if(!$(this).hasClass("last")){            
+               $(this).next().attr("disabled",false);   
+                return;
+            }
+            
+               //마지막 옵션
+               //선택 값            
+               let optionVal = '';
                
-               } //end of if
-            }//end of for
-       	// 전체 합계
-        calTotal();
+               //select 초기화
+               $('.selectbox').each(function(){
+                  optionVal += $(this).val();
+                  $(this).val('');
+               })
+               
+               //첫번째 제외 disabled
+               $('.selectbox:gt(0)').attr("disabled",true);
+               console.log(optionVal);
+               
+               let flag = true;
+               //기존 선택 유무
+               $(".optionDetailCodeName").each(function(){
+                  if($(this).text()==optionVal){
+      
+                     alert("이미 선택된 옵션입니다");
+                     flag = false;
+                     return true;
+                  }
+               })
+               if(flag == false) return;
+               
+               //detailCode, 가격 찾기
+               for(let i=0; i<optionDetail.length; i++){
+                  if(optionDetail[i].optionLast == optionVal){
+                     let code = optionDetail[i].optionDetailCode;
+                     let originPrice = $("#originPrice").val();
+                     let price = optionDetail[i].optionPrice;
+                     let minOrder = optionDetail[i].minOrder; 
+                     let maxOrder = optionDetail[i].maxOrder;
+                     let optionCount = optionDetail[i].optionCount;
+                     
+                     let sum = parseInt(originPrice) + parseInt(price);
+                     
+                     sum = replaceComma(sum);
+                     
+                     
+                     let optionView =$("#optionView");
+                     let liTag =`<li style=" padding:10px; margin-bottom:10px; background-color:#f8f8f8">
+                        <div style="display:flex; justify-content:space-between; padding-bottom:6px">
+                           <span class="optionDetailCodeName" style="font-weight:600; color:#ff6f61">${optionVal}</span>
+                           <button class="optionCloseBtn" type="button" style="all: unset; cursor:pointer; color:#ff6f61">X</button>
+                        </div>
+                        
+                        <div style="padding-bottom:6px "> 
+                           <input type="hidden" name="optionDetailCode" value="${code}"> 
+                           개수 : <input type="hidden" value="${price}" name="optionPrice"> 
+                           <input type="number" class="orderCnt" name="cartCount" min="${minOrder}" max="${maxOrder}" value="${minOrder}" data-maxCount="${optionCount}" /> 
+                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>남은 수량은 ${optionCount}개 입니다</span>
+                        </div>
+                        
+                        <div style="padding-bottom:6px"> 가격 : <span><strong class="pp">${originPrice}</strong> (현재 할인가)</span> 
+                        + <span class="orderPrice"><strong class="salePrice">${price}</strong> (옵션가격)</span>
+                        </div>
+                        <div style="padding-bottom:6px"> 
+                        <strong style="display:none; " id="orPrice">${sum}</strong>
+                        총 가격 : <span class="changePriceShow"><strong>${sum}</strong></span>원
+                        </div>
+                     </li>`;
+                     $("#optionView").append(liTag);
+      
+                     break;
+                    
+                     
+                     } //end of if
+                  }//end of for
+                // 전체 합계
+              preventMinus();
+              calTotal();
+      }
+
    }//end of function
    
    //옵션있는경우 계산
    function maxCount(tag){
-	  
-	   let count = $(tag).data("maxcount");
-	   console.log(count);
-	   
-	   let max = $('.orderCnt').attr("max"); 
-	   let tagNum = Number(tag.value);
-	   let maxNum = Number(max);
-	   
+     
+      let count = $(tag).data("maxcount");
+      console.log(count);
+      
+      let max = $('.orderCnt').attr("max"); 
+      let tagNum = Number(tag.value);
+      let maxNum = Number(max);
+      
        if(tagNum > maxNum){
-    	   alert("최대 수량을 선택하셨습니다1111.");
-    	   tag.value=max;
-    	   calTotal();
+          alert("최대 수량을 선택하셨습니다.");
+          tag.value=max;
+          calTotal();
        }else if(tagNum > count){
-    	   alert("최대 수량을 선택하셨습니다.");
-    		   tag.value = parseInt(count);
-    		   let par = $(tag).closest("li");
-			   let find = $(par).find(".changePriceShow").children();
-    		   console.log(find);
-			   let price = $(par).find(".pp").text(); 
-			   find.text(replaceComma(count * price));
-    		   calTotal();
+          alert("최대 수량을 선택하셨습니다.");
+             tag.value = parseInt(count);
+             let par = $(tag).closest("li");
+            let find = $(par).find(".changePriceShow").children();
+             console.log(find);
+            let price = $(par).find(".pp").text(); 
+            find.text(replaceComma(count * price));
+             calTotal();
        }else{
        };
    }
   //옵션이 없는경우
   function maxCountNoOption(tag){
-	  let count = $(tag).data("maxcount");
-	   console.log(count);
-	   
-	   let max = $('.orderCnt').attr("max"); 
-	   let tagNum = Number(tag.value);
-	   let maxNum = Number(max);
-	   
+     let count = $(tag).data("maxcount");
+      console.log(count);
+      
+      let max = $('.orderCnt').attr("max"); 
+      let tagNum = Number(tag.value);
+      let maxNum = Number(max);
+      
       if(tagNum > maxNum){
-   	   alert("최대 수량을 선택하셨습니다2222.");
-   	   tag.value=max;
-   	   calTotal();
+         alert("최대 수량을 선택하셨습니다.");
+         tag.value=max;
+         calTotal();
       }else if(tagNum > count){
-   	   alert("최대 수량을 선택하셨습니다222211.");
-   		   let hiddenPrice = $("#hiddenNoOptionP").val();
-   		   tag.value = parseInt(count);
-   		   console.log(hiddenPrice);
-   		   let rePrice = replaceComma(count * hiddenPrice);
-   		   console.log(rePrice);
-   		   $("#realPrice").text(rePrice);
-   		   
-   		
+         alert("최대 수량을 선택하셨습니다");
+            let hiddenPrice = $("#hiddenNoOptionP").val();
+            tag.value = parseInt(count);
+            console.log(hiddenPrice);
+            let rePrice = replaceComma(count * hiddenPrice);
+            console.log(rePrice);
+            $("#realPrice").text(rePrice);
+            
+         
       }else{
       };
   }
@@ -642,7 +814,7 @@
       calTotal();
    })
 
-	   
+      
    //옵션 가격 올리기
    $(document).on('change','.orderCnt',function(e){
       //개별 합계
@@ -654,44 +826,44 @@
       
       console.log(price * count);
       if(Number(count) > Number(max)){
-    	  let sum = price * max;
-    	  console.log(sum);
-    	  let strongStr = $('<strong/>').append(replaceComma(sum));
-	      $($(this).parent().next().next().children()[1]).html(strongStr);
-      }else{    	  
-	      let sum = price * count;
-	  	  console.log(sum); 
-	      let strongStr = $('<strong/>').append(replaceComma(sum));
-	      $($(this).parent().next().next().children()[1]).html(strongStr);
+         let sum = price * max;
+         console.log(sum);
+         let strongStr = $('<strong/>').append(replaceComma(sum));
+         $($(this).parent().next().next().children()[1]).html(strongStr);
+      }else{         
+         let sum = price * count;
+          console.log(sum); 
+         let strongStr = $('<strong/>').append(replaceComma(sum));
+         $($(this).parent().next().next().children()[1]).html(strongStr);
       }
-	
-		// 전체 합계
-	  calTotal();
+   
+      // 전체 합계
+     calTotal();
       maxCount(this);
    })
    
    function calTotal(){
-	      // 전체 합계
-	      let total = 0;
-	      $("#optionView li").each((idx,item)=>{
-	    	  
-		      let cnt = $(item).find('.orderCnt').val();
-		      let pr = $(item).find('.pp').text();
-		      let salePrice = $(item).find('.salePrice').text();
-		      
-		      pr = parseInt(pr);
-		      salePrice = parseInt(salePrice);
+         // 전체 합계
+         let total = 0;
+         $("#optionView li").each((idx,item)=>{
+            
+            let cnt = $(item).find('.orderCnt').val();
+            let pr = $(item).find('.pp').text();
+            let salePrice = $(item).find('.salePrice').text();
+            
+            pr = parseInt(pr);
+            salePrice = parseInt(salePrice);
 
-		      total += cnt * (pr + salePrice);
+            total += cnt * (pr + salePrice);
 
-		
-	      })
-			$("#realPrice").text(replaceComma(total));  
+      
+         })
+         $("#realPrice").text(replaceComma(total));  
    }
    
    //가격 점찍기
    function replaceComma(num){
-	   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); 
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); 
    }
    /*-------------------------
    옵션 없을 경우 가격
@@ -700,54 +872,51 @@
    $("#realPrice").append(replaceComma(pri));
    
    $('.noOptionOrderCnt').on("change",function(){
-	   
-	   let noOptionOrderCnt = $('.noOptionOrderCnt').val();
-	   let hiddenNoOptionP = $('#hiddenNoOptionP').val();
-	   
-	   let noOptionPtext = $('.noOptionP').text();
-	   
-	   let noOptionP = $('.noOptionP');
-	   
-	   let noOptionPrice = noOptionOrderCnt * hiddenNoOptionP;
-	   
-	   noOptionP.html(replaceComma(noOptionPrice));
-	   
-	   
-	   maxCountNoOption(this);
+      
+      let noOptionOrderCnt = $('.noOptionOrderCnt').val();
+      let hiddenNoOptionP = $('#hiddenNoOptionP').val();
+      
+      let noOptionPtext = $('.noOptionP').text();
+      
+      let noOptionP = $('.noOptionP');
+      
+      let noOptionPrice = noOptionOrderCnt * hiddenNoOptionP;
+      
+      noOptionP.html(replaceComma(noOptionPrice));
+      
+      
+      maxCountNoOption(this);
    })
    /*------------------------
    돋보기기능
    -------------------------*/
    function imgGlasses(){
-	   
-	   let imgs = [[${goods.uploadPath}]];
-	   let uploadN =[[${goods.uploadName}]];
-	   let photoURL = `url("/upload/${imgs}/${uploadN}")`;
-	   
-	   console.log(photoURL)
-	   $('.card-img-top')
-	    .append('<div class="photo"></div>')
-	    .children('.photo').css({"background-image" : photoURL});
-	    
-	    $('.card-img-top')    
-	    .on('mouseover', function () {
-	        $(this).children('.photo').css({
-	            'transform': 'scale(' + $(this).attr('data-scale') + ')'
-	        });
-	    })
-	
-	    $('.card-img-top')
-	    .on('mouseout', function () {
-	        $(this).children('.photo').css({
-	            'transform': 'scale(1)'
-	        });
-	    })
-	    $('.card-img-top')
-	    .on('mousemove', function (e) {
-	        $(this).children('.photo').css({
-	            'transform-origin': ((e.pageX - $(this).offset().left) / $(this).width()) * 100 + '% ' + ((e.pageY - $(this).offset().top) / $(this).height()) * 100 + '%'
-	        });
-	   })
+      
+      let imgs = [[${goods.uploadPath}]];
+      let uploadN =[[${goods.uploadName}]];
+      $('.card-img-top')
+       .append('<div class="photo"></div>')
+       .children('.photo').css({"background-image" : `url(upload/${imgs}/${uploadN})`});
+       
+       $('.card-img-top')    
+       .on('mouseover', function () {
+           $(this).children('.photo').css({
+               'transform': 'scale(' + $(this).attr('data-scale') + ')'
+           });
+       })
+   
+       $('.card-img-top')
+       .on('mouseout', function () {
+           $(this).children('.photo').css({
+               'transform': 'scale(1)'
+           });
+       })
+       $('.card-img-top')
+       .on('mousemove', function (e) {
+           $(this).children('.photo').css({
+               'transform-origin': ((e.pageX - $(this).offset().left) / $(this).width()) * 100 + '% ' + ((e.pageY - $(this).offset().top) / $(this).height()) * 100 + '%'
+           });
+      })
 
    }
    /*------------------------
@@ -761,119 +930,213 @@
       } 
    }
 
-   	/*------------------------
+      /*------------------------
     장바구니로~
     -------------------------*/
     function cartCheck(){
-    	let memberId = $("#hidden").val(); 
-   		
-        if(memberId==''){
-	           alert("로그인 후 사용가능합니다");
-	       }else{
-	    	   
-	    	   let cartOptionList = [];
-	    	   
-	       	   	$(".optionDetailCodeName").each((idx,tag) => {
-	       	   		console.log("aaaaaaaaaaa"+idx);
-	       	   	console.log("bbbbbbbb"+tag);
-	       	   	   //optionCount
-		    	   let optCount=0;
-		    	   if($(".pCnt").val()){
-		    		   optCount = $(".pCnt").val();
-		    		   
-		    	   }else if($('.noOptionOrderCnt').val()){
-		    		   optCount = $('.noOptionOrderCnt').val(); 
-		    	   }
-		    	   else{
-		    		   optCount= $(tag).parent().next().children()[2].value;
-		    	   }
-		    	   //optionLast
-		    	   let opLast ='';
-		    	   
-		    	   if($(".optLast").val()){
-		    		   opLast = $(".optLast").val();
-		    		   
-		    	   }else{
-		    		   opLast=$(tag).text();
-		    	   }
-		    	   
-	   				let cartObj = {
-	   						memberId : $("#member").val(),
-	   						productCode : $("#productCode").val(),
-	   						optionLast : opLast,
-	   						optionCount : optCount
-	   						}
-	      			cartOptionList.push(cartObj);
-	      		})
-	      			if(cartOptionList.length == 0){
-   						 	alert('옵션을 선택해 주세요');
-   						}else{
-			   				cart(cartOptionList);
-   						}
-	      		}
-   	}
+       let memberId = $("#hidden").val(); 
+       if(TTSIsOk == null || sessionAuthor == 3){
+         if(memberId == ''){
+            let msg = "로그인 후 사용가능합니다.";
+            VoiceReturnRead(msg);
+         }else{
+            let cartOptionList = [];
+             
+                   $(".optionDetailCodeName").each((idx,tag) => {
+                      
+                      //optionCount
+                let optCount=0;
+                if($(".pCnt").val()){
+                   optCount = $(".pCnt").val();
+                   
+                }else if($('.noOptionOrderCnt').val()){
+                   optCount = $('.noOptionOrderCnt').val(); 
+                }
+                else{
+                   optCount= $(tag).parent().next().children()[2].value;
+                }
+                //optionLast
+                let opLast ='';
+                
+                if($(".optLast").val()){
+                   opLast = $(".optLast").val();
+                   
+                }else{
+                   opLast=$(tag).text();
+                }
+                
+                  let cartObj = {
+                        memberId : $("#member").val(),
+                        productCode : $("#productCode").val(),
+                        optionLast : opLast,
+                        optionCount : optCount
+                        }
+                  cartOptionList.push(cartObj);
+               })
+                  if(cartOptionList.length == 0){
+                     let msg = "옵션을 선택해주세요";
+                     VoiceReturnRead(msg);
+                  }else{
+                        cart(cartOptionList);
+                  }  
+         }
+       }else{
+         if(memberId==''){
+              alert("로그인 후 사용가능합니다");
+          }else{
+             
+             let cartOptionList = [];
+             
+                   $(".optionDetailCodeName").each((idx,tag) => {
+                      
+                      //optionCount
+                let optCount=0;
+                if($(".pCnt").val()){
+                   optCount = $(".pCnt").val();
+                   
+                }else if($('.noOptionOrderCnt').val()){
+                   optCount = $('.noOptionOrderCnt').val(); 
+                }
+                else{
+                   optCount= $(tag).parent().next().children()[2].value;
+                }
+                //optionLast
+                let opLast ='';
+                
+                if($(".optLast").val()){
+                   opLast = $(".optLast").val();
+                   
+                }else{
+                   opLast=$(tag).text();
+                }
+                
+                  let cartObj = {
+                        memberId : $("#member").val(),
+                        productCode : $("#productCode").val(),
+                        optionLast : opLast,
+                        optionCount : optCount
+                        }
+                  cartOptionList.push(cartObj);
+               })
+                  if(cartOptionList.length == 0){
+                         alert('옵션을 선택해 주세요');
+                     }else{
+                        cart(cartOptionList);
+                     }
+               }
+       } 
+
+
+        
+      }
+
+
     function cart(arr){
-	    	   
-    		console.log(arr);
-	   			$.ajax({
-	   				url:"cart/addCart",
-	   				type:"post",  
-	   				data:JSON.stringify(arr),
-	   				contentType:"application/json",
-	   				success:function(result){
-	   					console.log(result);
-	   					
-	   					if(result > 0){
-							alert("이미 장바구니에 존재하는 옵션이있습니다.");
-	   					}else{
-	   						
-	   							if(!confirm("장바구니로 이동하시겠습니까?")){
-		   							console.log("이동x");
-		   						}else{
-		   							location.href="cart/cartView"; 
-	   						};
-	   						
-	   					}
-	   				},
-	   				fail:function(reject){
-	   					console.log(reject);
-	   				}
-	   			})
-	       
+             
+          console.log(arr);
+               $.ajax({
+                  url:"cart/addCart",
+                  type:"post",  
+                  data:JSON.stringify(arr),
+                  contentType:"application/json",
+                  success:function(result){
+                     console.log(result);
+                     if(TTSIsOk == null || sessionAuthor == 3){
+                        if(result > 0){
+                           let msg="이미 장바구니에 존재하는 옵션이있습니다.";
+                           VoiceReturnRead(msg);
+                        }else{
+                           let msg = "장바구니로 이동하시려면 엔터키를 누르고 있으시려면 esc를 눌러주세요";
+                           VoiceReturnRead(msg);
+                           
+                        }
+                     }else{
+                        if(result > 0){
+                        alert("이미 장바구니에 존재하는 옵션이있습니다.");
+                        }else{
+                           
+                              if(!confirm("장바구니로 이동하시겠습니까?")){
+                                 console.log("이동x");
+                              }else{
+                                 location.href="cart/cartView"; 
+                           };
+                           
+                        }
+
+                     }
+                  },
+                  fail:function(reject){
+                     console.log(reject);
+                  }
+               })
+          
         }
-   	
+      
     
    /*------------------------
    찜 목록으로
    -------------------------*/
    function checkWish(){
       let memberId = $("#hidden").val(); 
-       if(memberId==''){
-          alert("로그인 후 사용가능합니다");
-       }else{
-      
-      let wishObj = {
-             memberId : $("#member").val(),
-             productCode: $("#productCode").val()
-          }
-      console.log(wishObj);
-      
-       $.ajax({
-         url:"buyer/checkWish",
-         type:"get",
-         data:wishObj,
-         success:function(result){
-            if(result>0){
-               alert("이미 찜 목록에 존재합니다");
-            }else{
-               insertWish($("#member").val(), $("#productCode").val());         
+
+      if(TTSIsOk == null || sessionAuthor == 3){
+         if(memberId==''){
+            let msg = "로그인 후 사용가능합니다";
+            VoiceReturnRead(msg); 
+         }else{
+        
+        let wishObj = {
+               memberId : $("#member").val(),
+               productCode: $("#productCode").val()
             }
+        console.log(wishObj);
+        
+         $.ajax({
+           url:"buyer/checkWish",
+           type:"get",
+           data:wishObj,
+           success:function(result){
+              
+              if(result>0){
+               let msg ="이미 찜 목록에 존재합니다";
+               VoiceReturnRead(msg);
+              }else{
+                 insertWish($("#member").val(), $("#productCode").val());         
+              }
+           }
+         })
          }
-       })
-       }
+      }else{
+         if(memberId==''){
+            alert("로그인 후 사용가능합니다");
+         }else{
+        
+        let wishObj = {
+               memberId : $("#member").val(),
+               productCode: $("#productCode").val()
+            }
+        console.log(wishObj);
+        
+         $.ajax({
+           url:"buyer/checkWish",
+           type:"get",
+           data:wishObj,
+           success:function(result){
+              
+              if(result>0){
+                 alert("이미 찜 목록에 존재합니다");
+              }else{
+                 insertWish($("#member").val(), $("#productCode").val());         
+              }
+           }
+         })
+         }
+
+      }
     }
    
    function insertWish(member,code){
+
          let wishObj = {
              memberId : member,
              productCode: code
@@ -887,12 +1150,18 @@
              contentType:"application/json",
              success:function(result){
                 console.log(result);
-                if(!confirm("찜 목록으로 이동하시겠습니까?")){
-                
+                if(TTSIsOk == null || sessionAuthor == 3){
+                  let msg = "찜 목록으로 이동하시겠습니까? 이동하시려면 Shift + y를 눌러주세요";
+                  VoiceReturnRead(msg);
                 }else{
-                   location.href="/page/buyer/wishList";   
+                   if(!confirm("찜 목록으로 이동하시겠습니까?")){
+                   
+                   }else{
+                      location.href="/page/buyer/wishList";   
+                   }
+                   
+               
                 }
-                
              },
              fail:function(reject){
                 console.log(reject);
@@ -942,246 +1211,338 @@
    가격 점
    --------------*/
    function replacePrice(){
-	   
-	   let pprr = $("#pprr").text();
-	   console.log(pprr);
-	   let re = replaceComma(pprr);
-	   
-	   $("#pprr").html(re);
-	   
+      
+      let pprr = $("#pprr").text();
+      console.log(pprr);
+      let re = replaceComma(pprr);
+      
+      $("#pprr").html(re);
+      
    }
+   // -막기
+   function preventMinus(){
+	   
+	   let numInput = document.querySelectorAll('input[type="number"]');
+	   console.log(numInput);
+	   $.each(numInput, function(idx,t){
+	     $(t).on('keydown',function(e){
+	         if(e.key == '.' || e.key == '-' || e.key == '+'){
+	           e.preventDefault();
+	         }
+	     })
+	   })
+   }
+   
+   
    /*--------------
    TTS
    --------------*/
-	let TTSIsOk = localStorage.getItem('ttsKey');
-    let sessionAuthor;
-   console.log(sessionStorage.loginMember);          
-   if(sessionStorage.loginMember != null){
-      sessionAuthor = sessionStorage.loginMember.memberAuthor;
-   }
+   
        
       function ttsInit(){
        if(TTSIsOk == null || sessionAuthor == 3){
 
-		let audioFileNow = new Audio();
+     
 
-			var AudioContext;
-			var audioContext;
+         $(document).ready(function(){
+            console.log(qnaEnd);
+            
+            // $('.selectbox').off('change');
 
-			let qna = [[${NqnaList}]];
-			let chk = false;
-			let idx = 0;
-			
-			window.onload = function() {
-				navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
-					AudioContext = window.AudioContext || window.webkitAudioContext;
-					audioContext = new AudioContext();
-				}).catch(e => {
-					console.error(`Audio permissions denied: ${e}`);
-				});
+            $('.review').on('focus', reviewBox);
+            // 상세보기
+            $('.productBox').on('focus', proBox);
 
-			}
+            // 상세보기
+            $('.detailBox').on('focus', detailBox);
 
-			function VoiceReturnRead(text) {
-				var data = {
-					"voice": {
-						"languageCode": "ko-KR",
-						"name": "ko-KR-Neural2-B"
-					},
-					"input": {
-						"text": text,
+            // 리뷰
+            $('#Reviewtitle').on('focus',reviewStartBox);
 
-					},
-					"audioConfig": {
-						"audioEncoding": "mp3"
-					}
-				}
+            $('#qnaTap').on('focus',qnaStartBox);
 
-				$.ajax({
-					type: 'POST',
-					url: 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
-					data: JSON.stringify(data),
-					dataType: 'JSON',
-					contentType: "application/json; charset=UTF-8",
-					success: function (res) {
-						var audioFile = new Audio();
-						let audioBlob = base64ToBlob(res.audioContent,
-							"mp3");
-						audioFile.src = window.URL
-							.createObjectURL(audioBlob);
-						audioFile.playbackRate = 1; //재생속도
-						if(audioFileNow.paused == false){
-							audioFileNow.pause();
-						}
-						audioFileNow = audioFile;
-						audioFileNow.play();
-					
-
-					},
-					error: function (request, status, error) {
-						alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
-					}
-				});
-			};
-
-			function base64ToBlob(base64, fileType) {
-				let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
-				let audioSrc = typeHeader + base64;
-				let arr = audioSrc.split(",");
-				let array = arr[0].match(/:(.*?);/);
-				let mime = (array && array.length > 1 ? array[1] : type) || type;
-				// url헤더 제거하고 btye로 변환
-				let bytes = window.atob(arr[1]);
-				// 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
-				let ab = new ArrayBuffer(bytes.length);
-				// 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
-				let ia = new Uint8Array(ab);
-				for (let i = 0; i < bytes.length; i++) {
-					ia[i] = bytes.charCodeAt(i);
-				}
-				return new Blob([ ab ], {
-					type : mime
-				});
-			}
-
-			$(document).ready(function(){
-				startVoice();
-				
-				// reviewBox focus -> 읽힘
-				// $('.review').on('focus',reviewBox);
-			})
-	
-
-			function startVoice() {
-				let voice = $('#detailtext').text();
-				let text = '상품 상세보기 페이지입니다. 1. 상품정보 2. 상품 상세보기 3. 리뷰보기 4. 문의글 보기 메뉴를 선택해주세요. 9. 홈으로가기 0. 메뉴 다시듣기';
-				VoiceReturnRead(text);
-			}
+            $('.qnaList').on('focus',qnaBox);
 
 
-			idx2 = 0;
-			$(document).on('keydown',function(e){
-				if(e.keyCode == 48){
-					chk = false;
-					idx = 0;
-					startVoice();
-				}else if(e.keyCode == 49){
-					chk = false;
-					idx = 0;
-					let msg = "상품명 : " + [[${goods.productName}]] + "원가 :" + [[${goods.productName}]] + 
-					"할인가 :" + [[${goods.salePrice}]] + "배송정보 :" + [[${goods.deliveryService}]]+ 
-					"배송비" +[[${goods.deliveryCost}]] + "생산지" + [[${goods.productOrigin}]];
-					VoiceReturnRead(msg);
-				}else if(e.keyCode == 50){
-					chk = false;
-					idx = 0;
-					$('.menu').get(0).click();
-					let box = $('.detailPro');
-					let good = [[${goods.memberId}]];
-					let msg = $('.detailtitle').text() + " 제품명:" +[[${goods.productName}]] + " 판매자:" + [[${goods.memberId}]] + " 사업자번호:" 
-					+ [[${goods.productCost}]]+ " 원가:" + [[${goods.productCost}]] + " 등록날짜:" + [[${#dates.format(goods.productRegdate,'yyyy년 MM월 dd일')}]]
-					+ " 배송방법:" + [[${goods.deliveryService}]]+ " 베송비:" +[[${goods.deliveryCost}]] +"원" + " 생산지: " +[[${goods.productOrigin}]] ;  
-					VoiceReturnRead(msg);
-				}else if(e.keyCode == 51){
-					chk = false;
-					idx = 0;
-					$(reviewTitle).focus();
-					$('.menu').get(1).click();
-					let text = '리뷰목록입니다. q. 이전페이지 w. 다음페이지  tab키를 누르면 리뷰를 하나씩 읽어드립니다.';
-					VoiceReturnRead(text);
-					let page = reviewPage;
-				}else if(e.keyCode == 52){
-					$('#qnaTap').focus();
-					$('.menu').get(2).click();
-					chk = true;
-					idx = 0;
-					let text = 'qna목록입니다. tab키를 누르면 문의글을 하나씩 읽어드립니다.';
-					VoiceReturnRead(text);
-				}else if(e.keyCode == 57){
-					chk = false;
-					idx = 0;
-					location.href="/";
-				}else if(e.keyCode == 81){
-					chk = false;
-					idx = 0;
-					let page = reviewPage;
-					let title = reviewTitle;
+            $(".selectbox").on('focus', optionRead);
 
-					if(page == 1){
-						let msg ='리뷰 1페이지입니다.';
-						VoiceReturnRead(msg);
-						
-						return;
-					}
-					page--;
-					$(title).focus();
+            $('.selectbox').on('change',optionVal);
 
-					msg = page+'페이지 입니다. tab키를 두번 눌러주세요';
-					VoiceReturnRead(msg);
-					reviewPageLoad(page);
-				}else if(e.keyCode == 87){
-					chk = false;
-					idx = 0;
-					let page = Number(reviewPage);
-					let title = reviewTitle;
-					let endPage = reviewEnd;
+            // $(".selectbox").on("keyup",test);
 
-					if(page == reviewEnd){
-						let msg = '리뷰 마지막페이지입니다.';
-						VoiceReturnRead(msg);
-						return;
-					}
-					
-					page++
-					console.log(page);
-					msg = page+'페이지 입니다. tab키를 두번 눌러주세요';
-					VoiceReturnRead(msg);
+            $(".selectbox1").on('change', optiontext);
 
-					$(title).focus();
-					reviewPageLoad(page);
-				}else if(chk == true && e.keyCode == 9){
-					$('.menu').get(2).click();
-					
-					console.log(idx);
-					// $("#focusdiv").focus();
-					if(idx == qna.length){
-						msg = "다음글이 없습니다.";
-						VoiceReturnRead(msg);
-						idx = qna.length;
-						return;
-					}
-					msg = "문의내용" + qna[idx].queContent +  "작성자" + qna[idx].memberId;
-					idx++;
-					VoiceReturnRead(msg);
-				}else if(chk == true &&  e.shiftKey){
-					$('.menu').get(2).click();
-				
-					//$("#focusdiv").focus();
-					if(idx == 0){
-						msg = "이전 글없습니다.";
-						VoiceReturnRead(msg);
-						idx2 = 0;
-						return;
-					}else if(idx == 1){
-						msg = "이전 글없습니다.";
-						VoiceReturnRead(msg);
-						idx2 = 1;
-						return;
-					}
-					idx--;
-					msg = "문의내용" + qna[idx-1].queContent +  "작성자" + qna[idx-1].memberId;
-					VoiceReturnRead(msg);
-				}
-			});
-		
+            $('.cartAdd').on('focus',cartAdd);
+      
+            $(".gymAdd").on("focus",gymAdd);
+
+            $(document).on("focus",".orderCnt",optionNum);
+            $(document).on("change",".orderCnt",optionC);
+
+            $(document).on("focus",".optionchoicebox",choicebox);
+            console.log($('.qnaList'));
+            startVoice();
+            
+            // reviewBox focus -> 읽힘
+            // $('.review').on('focus',reviewBox);
+         })
+
+         function optionNum(e){
+            console.log(e);
+            console.log($(this).prop("max"));
+            e.stopPropagation();
+            let msg ="수량을 선택해주세요";
+            VoiceReturnRead(msg);
+         }
+
+         function optionC(){
+            if($(this).prop("max") < $(this).val()){
+               let msg = "최대수량이 넘었습니다.";
+               VoiceReturnRead(msg);
+               return;
+            }
+            let msg ="수량" + $(this).val();
+            VoiceReturnRead(msg);
+         }
+
+         function choicebox(){
+            console.log($(this).find(".orderCnt").val());
+            $(this).find(".optionDetailCodeName").text();
+            let msg = "옵션명" + $(this).find(".optionDetailCodeName").text() + "수량" + $(this).find(".orderCnt").val() + "가격 "
+            + $(this).find(".pp").text() + " " + $(this).find(".orderPrice").text() + "합계" + $(this).find(".hap").text();
+            VoiceReturnRead(msg);
+         }
+
+         function cartAdd(){
+            let msg = "총 금액"+ $('.realPrice2').text() + "입니다. 장바구니 추가하실려면 enter키를 눌러주세요";
+            VoiceReturnRead(msg);
+
+         }
+
+         function gymAdd(){
+            let msg = "찜하기를 하시려면 enter키를 눌러시고 찜목록으로 가실꺼면 enter키를 눌러주시고 취소하시려면 esc를 눌러주세요";
+            VoiceReturnRead(msg);
+         }
+
+         function optiontext(){
+            console.log($(this));
+            let msg ="";
+            VoiceReturnRead(msg);
+         }
+
+         function optionVal(){
+            console.log($(this));
+            console.log($(this).val());
+            let msg = $(this).val() + '선택 하셨습니다. 다음 옵션을 선택하시려면 tab키를 눌러주세요';
+            VoiceReturnRead(msg);
+         }
+
+         // option
+         function optionRead(){
+            console.log($(this).val());
+            console.log($('.selectbox').val());
+            let msg = '엔터키를 누른 후 옵션을 방향기로 선택하시고 엔터키를 눌러주세요';
+            VoiceReturnRead(msg);
+         }
+
+         function detailBox(){
+               let box = $('.detailPro');
+               let good = [[${goods.memberId}]];
+               let msg = $('.detailtitle').text() + " 제품명:" +[[${goods.productName}]] + " 판매자:" + [[${goods.memberId}]] + " 사업자번호:" 
+               + [[${goods.productCost}]]+ " 원가:" + [[${goods.productCost}]] + " 등록날짜:" + [[${#dates.format(goods.productRegdate,'yyyy년 MM월 dd일')}]]
+               + " 배송방법:" + [[${goods.deliveryService}]]+ " 베송비:" +[[${goods.deliveryCost}]] +"원" + " 생산지: " +[[${goods.productOrigin}]] ;  
+               VoiceReturnRead(msg);
+
+         }
+
+
+       
+
+    // 선택된 옵션 값을 업데이트하는 함수
+    function updateSelectedValue() {
+      var selectedValue = $("#selectbox option:selected").val();
+      console.log($("#selectedValue").text(selectedValue));
+      
+    }
+
+         // qna list
+         function qnaBox(e){
+            console.log("asdasd");
+            let text = $(this).children().eq(0).text();
+            let text1 = $(this).children().eq(1).text();
+            let text2 = $(this).children().eq(2).text();
+            let text3 = $(this).children().eq(3).text();
+
+            let msg = '답변 상태 '+ text + '내용'+ text1 + '작성자' + text2 + '등록 날짜' + text3;
+            VoiceReturnRead(msg);
+         }
+
+         // 상품
+         function proBox(){
+            let msg = "상품명 : " + [[${goods.productName}]] + "원가 :" + [[${goods.productCost}]] + 
+               "할인가 :" + [[${goods.salePrice}]] + "배송정보 :" + [[${goods.deliveryService}]]+ 
+               "배송비" +[[${goods.deliveryCost}]] + "생산지" + [[${goods.productOrigin}]];
+               VoiceReturnRead(msg);
+
+         }
+
+         // qna
+         function qnaStartBox(){
+            
+            let text = 'qna목록입니다. alt + a 이전페이지 alt + s 다음페이지 tab키를 누르면 문의글을 하나씩 읽어드립니다.';
+               VoiceReturnRead(text);
+
+         }
+
+         function reviewStartBox(){
+            let text = '리뷰목록입니다. alt + q. 이전페이지 alt + w. 다음페이지  tab키를 누르면 리뷰를 하나씩 읽어드립니다.';
+            VoiceReturnRead(text);
+         }
+
+         function startVoice() {
+            let voice = $('#detailtext').text();
+            let text = '상품 상세보기 페이지입니다. 1. 상품정보 2. 상품 상세보기 3. 리뷰보기 4. 문의글 보기 메뉴를 선택해주세요. 9. 홈으로가기 0. 메뉴 다시듣기 alt + 번호를 눌러주세요';
+            VoiceReturnRead(text);
+         }
+
+         // 리뷰 읽기
+         function reviewBox(e) {
+               console.log(e);
+
+               let Imgcontent = $(this).find('#imgContent').val();
+               // let Id = $(this).find('#userId').text();
+               // let reg = $(this).find('#regdate').text();
+               let content = $(this).find('#reviewContent').text();
+               console.log(Imgcontent);
+               console.log(content);
+               let msg = "이미지 텍스트" + Imgcontent + " 내용 " + content;
+               VoiceReturnRead(msg);
+            }
+
+
+         idx2 = 0;
+         $(document).on('keydown',function(e){
+            if(e.keyCode == 48){
+               chk = false;
+               idx = 0;
+               startVoice();
+            }else if(e.altKey && e.keyCode == 49){
+            
+               chk = false;
+               idx = 0;
+               $('.productBox').focus();
+               
+            }else if(e.altKey && e.keyCode == 50){
+            	$(".detailBox").focus();
+               chk = false;
+               idx = 0;
+               $('.menu').get(0).click();
+              
+            }else if(e.altKey && e.keyCode == 51){
+               chk = false;
+               idx = 0;
+               $(reviewTitle).focus();
+               $('.menu').get(1).click();
+               
+               let page = reviewPage;
+            }else if(e.altKey && e.keyCode == 52){
+               $('#qnaTap').focus();
+               $('.menu').get(2).click();
+               chk = true;
+               idx = 0;
+            }else if(e.altKey && e.keyCode == 57){
+               chk = false;
+               idx = 0;
+               location.href="/";
+            }else if(e.altKey && e.keyCode == 81){
+               chk = false;
+               idx = 0;
+               let page = reviewPage;
+               let title = reviewTitle;
+               $(reviewTitle).focus();
+               if(page == 1){
+                  let msg ='리뷰 1페이지입니다.';
+                  VoiceReturnRead(msg);
+                  
+                  return;
+               }
+               page--;
+               $(title).focus();
+
+               msg = page+'페이지 입니다. tab키를 두번 눌러주세요';
+               VoiceReturnRead(msg);
+               reviewPageLoad(page);
+            }else if(e.altKey && e.keyCode == 87){
+               chk = false;
+               idx = 0;
+               let page = Number(reviewPage);
+               let title = reviewTitle;
+               let endPage = reviewEnd;
+               $(reviewTitle).focus();
+               if(page == reviewEnd){
+                  let msg = '리뷰 마지막페이지입니다.';
+                  VoiceReturnRead(msg);
+                  return;
+               }
+               
+               page++
+               console.log(page);
+               msg = page+'페이지 입니다. tab키를 두번 눌러주세요';
+               VoiceReturnRead(msg);
+
+               $(title).focus();
+               reviewPageLoad(page);
+            }else if(e.altKey && e.keyCode == 65){
+               chk = false;
+               idx = 0;
+               let page = Number(qnaPage);
+               console.log(page);
+               $('#qnaTap').focus();
+               if(page == 1){
+                  let msg ='q n a 1페이지입니다.';
+                  VoiceReturnRead(msg);
+                  
+                  return;
+               }
+               page--;
+               $(title).focus();
+
+               msg = page+'페이지 입니다. tab키를 두번 눌러주세요';
+               VoiceReturnRead(msg);
+               inquiryPageLoad(page);
+            }else if(e.altKey && e.keyCode == 83){
+               $('#qnaTap').focus();
+               chk = false;
+               idx = 0;
+               let page = Number(qnaPage);
+               let endPage = qnaEnd;
+               console.log(endPage);
+               if(page == endPage){
+                  let msg = 'qna 마지막페이지입니다.';
+                  VoiceReturnRead(msg);
+                  return;
+               }
+               
+               page++
+               msg = page+'페이지 입니다.';
+               VoiceReturnRead(msg);
+
+               inquiryPageLoad(page);
+            }else if(e.shiftKey && e.keyCode == 89){
+               location.href="/page/buyer/wishList"; 
+            }
+
+         });
+      
 
  } //ttsInit()의 if문
 } // ttsInit() close
     </script>
+    <th:block>
+    </th:block>
 
 
-
-	</div>
+   </div>
 
 </body>
 </html>

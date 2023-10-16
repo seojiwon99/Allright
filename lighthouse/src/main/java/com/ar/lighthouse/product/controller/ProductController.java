@@ -125,21 +125,19 @@ public class ProductController {
       return "page/seller/sellerInquiry";
    }
    
-	/*
-	 * // 공지사항 검색
-	 * 
-	 * @GetMapping("sellerSeaInquiry") public String sellerInquirySea(Model model,
-	 * MyInquiryVO myInquiryVO, HttpSession session) { MemberVO memberVO =
-	 * (MemberVO) session.getAttribute("loginMember"); String memberId =
-	 * memberVO.getMemberId();
-	 * 
-	 * myInquiryVO.setMemberId(memberId);
-	 * 
-	 * model.addAttribute("myInquiry",
-	 * productService.getSeaSellerInqu(myInquiryVO));
-	 * 
-	 * return "page/seller/sellerInquiry :: #sellerSeaInquiry"; }
-	 */
+	
+	  // 공지사항 검색
+	  
+	  @GetMapping("sellerSeaInquiry") public String sellerInquirySea(Model model,
+	  MyInquiryVO myInquiryVO, HttpSession session) {
+		  MemberVO memberVO = (MemberVO) session.getAttribute("loginMember"); String memberId =
+		  memberVO.getMemberId();
+	  
+		  myInquiryVO.setMemberId(memberId);
+		  model.addAttribute("myInquiry",productService.getSeaSellerInqu(myInquiryVO));
+	  
+	  return "page/seller/sellerInquiry :: #sellerSeaInquiry"; }
+	 
 
    
 //  판매자 상품문의페이지

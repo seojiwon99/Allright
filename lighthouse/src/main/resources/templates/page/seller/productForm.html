@@ -1533,14 +1533,7 @@
                return;
             }
 
-            if ($("#insertForm").find('textarea[name="productContent"]').length == 0) {
-               alert("상세 설명을 입력해주세요");
-               return;
-            }
-            if ($('textarea[name="productContent"]').val() == "") {
-               alert("상세 설명을 적어주세요");
-               return;
-            }
+          
 
             let detailImg = $(".imgName");
             let detailContent = $(".imgContet");
@@ -1613,6 +1606,14 @@
 
                }
             }
+            if ($("#insertForm").find('textarea[name="productContent"]').length == 0) {
+                alert("상세 설명을 입력해주세요");
+                return;
+             }
+             if ($('textarea[name="productContent"]').val() == "") {
+                alert("상세 설명을 적어주세요");
+                return;
+             }
             test22 = "/insertProduct";
 
             // $("#insertForm").submit();
