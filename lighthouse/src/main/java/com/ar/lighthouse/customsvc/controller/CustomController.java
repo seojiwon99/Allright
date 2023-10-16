@@ -37,7 +37,6 @@ public class CustomController {
 	public String faqList(@RequestParam(required = false, defaultValue = "", value="faqType") String faqType, Model model,Criteria cri) {
 		model.addAttribute("faqType", customService.getTypeList());
 		int totalCnt = customService.getTotalFaqCount(faqType);
-		System.out.println(totalCnt);
 		model.addAttribute("faqList", customService.getFaqList(faqType,cri));
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
 		model.addAttribute("categories",service.getCategoryList());
