@@ -59,8 +59,6 @@ public class CheckAccountController {
 	@GetMapping("/bankList")
 	@ResponseBody
 	public List<JSONObject> bankList(){
-		System.out.println("asdasda");
-		HashMap<Object, Object> map = new HashMap<Object, Object>();
 		List<JSONObject> list = checkAccountService.bankList();
 		return list;
 	}
