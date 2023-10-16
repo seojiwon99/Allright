@@ -1803,8 +1803,8 @@
                alert("최소 금액은 0원 이상이여야합니다.");
                return false;
             }
-            if (cost > 999999999999) {
-               alert("1000억 이상은 입력하실수 없습니다.");
+            if (cost > 99999999) {
+               alert("1억 이상은 입력하실수 없습니다.");
                return false;
             }
 
@@ -1821,7 +1821,7 @@
                alert("숫자만 입력가능합니다.");
                return false;
             }
-            if (cost < 0) {
+            if (cost <= 0) {
                alert("수량은 0보다 커야합니다.");
                return false;
             }
@@ -1842,7 +1842,7 @@
                alert("숫자만 입력가능합니다.");
                return false;
             }
-            if (cost < 1) {
+            if (cost <= 0) {
                alert("수량은 0보다 커야합니다.");
                return false;
             }
@@ -1863,7 +1863,7 @@
                alert("숫자만 입력가능합니다.");
                return false;
             }
-            if (cost < 1) {
+            if (cost <= 0) {
                alert("수량은 0보다 커야합니다.");
                return false;
             }
@@ -2043,13 +2043,13 @@
                $('#deliveryCost').focus();
                return false;
             }
-            if (cost <= 1) {
-               alert("최소 금액은 1원 이상이여야합니다.");
+            if (cost <= 0) {
+               alert("최소 금액은 0원 이상이여야합니다.");
                $('#deliveryCost').focus();
                return false;
             }
-            if (cost > 999999999999) {
-               alert("1000억 이상은 입력하실수 없습니다.");
+            if (cost > 99999999) {
+               alert("1억 이상은 입력하실수 없습니다.");
                $('#deliveryCost').focus();
                return false;
             }
@@ -2068,13 +2068,13 @@
                $('#exchangeCost').focus();
                return false;
             }
-            if (cost <= 1) {
-               alert("최소 금액은 1원 이상이여야합니다.");
+            if (cost <= 0) {
+               alert("최소 금액은 0원 이상이여야합니다.");
                $('#exchangeCost').focus();
                return false;
             }
-            if (cost > 999999999999) {
-               alert("1000억 이상은 입력하실수 없습니다.");
+            if (cost > 99999999) {
+               alert("1억 이상은 입력하실수 없습니다.");
                $('#exchangeCost').focus();
                return false;
             }
@@ -2093,13 +2093,13 @@
                $('#returnCost').focus();
                return false;
             }
-            if (cost <= 1) {
-               alert("최소 금액은 1원 이상이여야합니다.");
+            if (cost <= 0) {
+               alert("최소 금액은 0원 이상이여야합니다.");
                $('#returnCost').focus();
                return false;
             }
-            if (cost > 999999999999) {
-               alert("1000억 이상은 입력하실수 없습니다.");
+            if (cost > 99999999) {
+               alert("1억 이상은 입력하실수 없습니다.");
                $('#returnCost').focus();
                return false;
             }
