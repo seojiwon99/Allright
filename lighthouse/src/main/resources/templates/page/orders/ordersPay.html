@@ -620,7 +620,7 @@
       orderId: uuid,
       orderName: [[${productName}]],
       successUrl: 'http://localhost:8090/orders/credit',
-      failUrl: 'https://my-store.com/fail',
+      failUrl: 'https://localhost:8090/orders/fail',
       customerEmail: [[${orderGet[0].memberEmail}]], 
       customerName: [[${orderGet[0].memberName}]]
       }).catch(function (error) {
