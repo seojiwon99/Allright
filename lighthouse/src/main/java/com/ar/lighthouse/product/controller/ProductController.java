@@ -432,7 +432,7 @@ public class ProductController {
    public String productForm(Model model, CategoryVO categoryVO, CodeVO codeVO) {
       model.addAttribute("getCategoryList", mainPageService.getAllCategoryList());
       model.addAttribute("delivery", productService.getDeliveryList());
-      System.out.println(model);
+
       return "page/seller/productForm";
    }
 

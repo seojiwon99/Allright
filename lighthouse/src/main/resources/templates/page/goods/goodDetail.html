@@ -176,6 +176,7 @@
                               <div class="col-12 col-lg-auto">
 
                                  <div>
+                                    <input type="hidden" value="" id="selectVal" tabindex="-1">
                                     <select th:each="option:${options}"
                                        class="selectbox form-select mb-2" id="sel"
                                        th:disabled="!${optionStat.first}"
@@ -402,8 +403,9 @@
 
       <script th:inline="javascript">
          let TTSIsOk = localStorage.getItem('ttsKey');
-    let sessionAuthor;
-   console.log(sessionStorage.loginMember);          
+         let sessionAuthor;
+         
+        
    if(sessionStorage.loginMember != null){
       sessionAuthor = sessionStorage.loginMember.memberAuthor;
    }
@@ -543,6 +545,7 @@
    let optionLength = [[${#lists.size(options)}]];
    
    window.addEventListener("DOMContentLoaded", (event) => {
+	  let optvalue = "";
       //리뷰 로드
       replacePrice();
       reviewPageLoad(1);
@@ -582,15 +585,16 @@
             qnaEnd = $('#qnapageEnd').val();
          })
    }
-
+  
    
     /*------------------------
    option 선택 박스
    -------------------------*/  
    function changeOptionHandler(){
-      console.log("1111111111");
+      // optvalue = $(this).val();
       if(TTSIsOk == null || sessionAuthor == 3){
-            console.log("sadasdsadas@@@@@");
+            console.log($(this)[0].value);
+            $('#selectVal').val($(this)[0].value);
             if(!$(this).hasClass("last")){            
                $(this).next().attr("disabled",false);   
                 return;
@@ -608,8 +612,7 @@
                
                //첫번째 제외 disabled
                $('.selectbox:gt(0)').attr("disabled",true);
-               console.log("@@@@@@@" + optionVal);
-               
+     
                let flag = true;
                //기존 선택 유무
                $(".optionDetailCodeName").each(function(){
@@ -621,7 +624,7 @@
                   }
                })
                if(flag == false) return;
-               console.log("222222222222222222")
+
                //detailCode, 가격 찾기
                for(let i=0; i<optionDetail.length; i++){
                   if(optionDetail[i].optionLast == optionVal){
@@ -690,8 +693,7 @@
                
                //첫번째 제외 disabled
                $('.selectbox:gt(0)').attr("disabled",true);
-               console.log(optionVal);
-               
+   
                let flag = true;
                //기존 선택 유무
                $(".optionDetailCodeName").each(function(){
@@ -759,8 +761,7 @@
    function maxCount(tag){
      
       let count = $(tag).data("maxcount");
-      console.log(count);
-      
+   
       let max = $('.orderCnt').attr("max"); 
       let tagNum = Number(tag.value);
       let maxNum = Number(max);
@@ -774,7 +775,7 @@
              tag.value = parseInt(count);
              let par = $(tag).closest("li");
             let find = $(par).find(".changePriceShow").children();
-             console.log(find);
+   
             let price = $(par).find(".pp").text(); 
             find.text(replaceComma(count * price));
              calTotal();
@@ -784,8 +785,7 @@
   //옵션이 없는경우
   function maxCountNoOption(tag){
      let count = $(tag).data("maxcount");
-      console.log(count);
-      
+ 
       let max = $('.orderCnt').attr("max"); 
       let tagNum = Number(tag.value);
       let maxNum = Number(max);
@@ -798,9 +798,9 @@
          alert("최대 수량을 선택하셨습니다");
             let hiddenPrice = $("#hiddenNoOptionP").val();
             tag.value = parseInt(count);
-            console.log(hiddenPrice);
+
             let rePrice = replaceComma(count * hiddenPrice);
-            console.log(rePrice);
+
             $("#realPrice").text(rePrice);
             
          
@@ -829,15 +829,14 @@
       let count = $(this).val();  
       let max = $('.orderCnt').attr("max");
       
-      console.log(price * count);
       if(Number(count) > Number(max)){
          let sum = price * max;
-         console.log(sum);
+   
          let strongStr = $('<strong/>').append(replaceComma(sum));
          $($(this).parent().next().next().children()[1]).html(strongStr);
       }else{         
          let sum = price * count;
-          console.log(sum); 
+ 
          let strongStr = $('<strong/>').append(replaceComma(sum));
          $($(this).parent().next().next().children()[1]).html(strongStr);
       }
@@ -1038,7 +1037,6 @@
 
     function cart(arr){
              
-          console.log(arr);
                $.ajax({
                   url:"cart/addCart",
                   type:"post",  
@@ -1245,6 +1243,7 @@
    
        
       function ttsInit(){
+        
        if(TTSIsOk == null || sessionAuthor == 3){
 
      
@@ -1287,6 +1286,8 @@
             $(document).on("focus",".optionchoicebox",choicebox);
             startVoice();
             
+            $("#productContent").on("focus",imgDetail);
+
             // 옵션 삭제 버튼
             $(document).on("focus",'.optionCloseBtn',optiondel);
             // reviewBox focus -> 읽힘
@@ -1300,6 +1301,20 @@
             VoiceReturnRead(msg);
          }
 
+         // 이미지
+         function imgDetail(e){
+            e.stopPropagation();
+            let box = $(this).find("figcaption");
+            console.log(box);
+            let msg = '';
+            console.log(msg);
+            for(let i =0; i< box.length; i++){
+               msg += (i+1) + "번째 이미지 텍스트는 " + $(box[i]).text() + "    ";
+            }
+            console.log(msg);
+            // let msg = $(this).find('figcaption');
+            VoiceReturnRead(msg);
+         }
          function optionNum(e){
             e.stopPropagation();
             let msg ="수량을 선택해주세요";
@@ -1317,7 +1332,6 @@
          }
 
          function choicebox(){
-            console.log($(this).find(".orderCnt").val());
             $(this).find(".optionDetailCodeName").text();
             let msg = "옵션명" + $(this).find(".optionDetailCodeName").text() + "수량" + $(this).find(".orderCnt").val() + "가격 "
             + $(this).find(".pp").text() + " " + $(this).find(".orderPrice").text() + "합계" + $(this).find(".hap").text();
@@ -1336,23 +1350,30 @@
          }
 
          function optiontext(){
-            console.log($(this));
             let msg ="";
             VoiceReturnRead(msg);
          }
 
          function optionVal(){
-            console.log($(this));
-            console.log($(this).val());
-            let msg = $(this).val() + '선택 하셨습니다. 다음 옵션을 선택하시려면 tab키를 눌러주세요';
+            console.log();
+            let msg =  $('#selectVal').val()+ '옵션을 선택 하셨습니다.';
             VoiceReturnRead(msg);
          }
 
          // option
          function optionRead(){
-            console.log($(this).val());
-            console.log($('.selectbox').val());
-            let msg = '엔터키를 누른 후 옵션을 방향기로 선택하시고 엔터키를 눌러주세요';
+            let option = $(this).find("option");
+            console.log(option);
+            let msg = '';
+            for(let i =0; i< option.length; i++){
+               if($(option[i]).val() == ''){
+                  msg += '옵션 이름' + $(option[i]).text() + '..';
+               }else{
+                  msg += i + '번째 옵션'+ $(option[i]).text() +'..';
+               }
+            }
+            
+            msg += '이 있습니다. 엔터키를 누른 후 옵션을 방향기로 선택하시고 엔터키를 눌러주세요.';
             VoiceReturnRead(msg);
          }
 
@@ -1361,7 +1382,8 @@
                let good = [[${goods.memberId}]];
                let msg = $('.detailtitle').text() + " 제품명:" +[[${goods.productName}]] + " 판매자:" + [[${goods.memberId}]] + " 사업자번호:" 
                + [[${goods.productCost}]]+ " 원가:" + [[${goods.productCost}]] + " 등록날짜:" + [[${#dates.format(goods.productRegdate,'yyyy년 MM월 dd일')}]]
-               + " 배송방법:" + [[${goods.deliveryService}]]+ " 베송비:" +[[${goods.deliveryCost}]] +"원" + " 생산지: " +[[${goods.productOrigin}]] ;  
+               + " 배송방법:" + [[${goods.deliveryService}]]+ " 베송비:" +[[${goods.deliveryCost}]] +"원" + " 생산지: " +[[${goods.productOrigin}]] + "입니다."
+               + "  이미지 정보를 보고싶으면 tab키를 눌러주세요";  
                VoiceReturnRead(msg);
 
          }
@@ -1372,13 +1394,12 @@
     // 선택된 옵션 값을 업데이트하는 함수
     function updateSelectedValue() {
       var selectedValue = $("#selectbox option:selected").val();
-      console.log($("#selectedValue").text(selectedValue));
-      
+    
     }
 
          // qna list
          function qnaBox(e){
-            console.log("asdasd");
+   
             let text = $(this).children().eq(0).text();
             let text1 = $(this).children().eq(1).text();
             let text2 = $(this).children().eq(2).text();
@@ -1418,15 +1439,13 @@
 
          // 리뷰 읽기
          function reviewBox(e) {
-               console.log(e);
-
+         
                let Imgcontent = $(this).find('#imgContent').val();
                // let Id = $(this).find('#userId').text();
                // let reg = $(this).find('#regdate').text();
                let content = $(this).find('#reviewContent').text();
-               console.log(Imgcontent);
-               console.log(content);
-               let msg = "이미지 텍스트" + Imgcontent + " 내용 " + content;
+ 
+               let msg = " 내용 " + content;
                VoiceReturnRead(msg);
             }
 
@@ -1497,7 +1516,6 @@
                }
                
                page++
-               console.log(page);
                msg = page+'페이지 입니다. tab키를 두번 눌러주세요';
                VoiceReturnRead(msg);
 
@@ -1507,7 +1525,7 @@
                chk = false;
                idx = 0;
                let page = Number(qnaPage);
-               console.log(page);
+
                $('#qnaTap').focus();
                if(page == 1){
                   let msg ='q n a 1페이지입니다.';
