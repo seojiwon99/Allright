@@ -314,7 +314,7 @@ public class ProductController {
    }
    
 //   월별 주문 금액
-   @GetMapping("monthlyData")
+   @GetMapping("seller/monthlyData")
    @ResponseBody
    public List<DetailVO> getMonthlyCount(DetailVO detialVO, Model model){
       System.out.println(detialVO.getMonth());
