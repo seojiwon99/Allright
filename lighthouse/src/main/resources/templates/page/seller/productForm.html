@@ -1799,8 +1799,8 @@
                alert("숫자만 입력가능합니다.");
                return false;
             }
-            if (cost <= 1) {
-               alert("최소 금액은 1원 이상이여야합니다.");
+            if (cost <= 0) {
+               alert("최소 금액은 0원 이상이여야합니다.");
                return false;
             }
             if (cost > 999999999999) {
