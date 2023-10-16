@@ -40,8 +40,8 @@
 				<a href="/admin/faq/?faqType=1"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">취소/반품/교환</button><input class="aList" type="hidden" value="1"></a>
 				<a href="/admin/faq/?faqType=2"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">주문/결제</button><input class="aList" type="hidden" value="2"></a>
 				<a href="/admin/faq/?faqType=3"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">회원서비스</button><input class="aList" type="hidden" value="3"></a>
-				<a href="/admin/faq/?faqType=4"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">환불</button><input class="aList" type="hidden" value="4"></a>
-				<a href="/admin/faq/?faqType=5"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">배송</button><input class="aList" type="hidden" value="5"></a>
+				<a href="/admin/faq/?faqType=4"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">배송</button><input class="aList" type="hidden" value="4"></a>
+				<a href="/admin/faq/?faqType=5"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">상품</button><input class="aList" type="hidden" value="5"></a>
 				<a href="/admin/faq/?faqType=6"><button class="btn btn-xs btn-outline-info btn-underline mb-1" type="button" id="noticeBtn">기타</button><input class="aList" type="hidden" value="6"></a>
 				</div>
 				<div>
@@ -106,7 +106,8 @@
 
 		if(faqListChk == null){
 			$('#noticeBtn').addClass('active');
-		}
+		}else{
+			
 		
 		$('.aList').each(function(idx,el){
 			if(el.value == faqListChk[0]) {
@@ -114,6 +115,7 @@
 				btnNow.addClass('active');
 			}
 		})
+		}
 	})
 
 $('#faqSearchBtn').on('click', function(){
@@ -133,7 +135,7 @@ $('#faqSearchBar').on('keydown',function(e){
 })
 
 $('#faqAddBtn').on('click',function(){
-	location.href ="faqForm"
+	location.href ="/admin/faqForm"
 })
 </script>      
 </div>

@@ -109,9 +109,26 @@
 	</select>
      
      <select id="selectDetailCnt" resultType="int">
-     SELECT count(*)
-	 FROM ar_order_detail
-	 WHERE order_detail_code > 0
+     select count(*)
+	FROM 
+	    ar_order_detail a
+	JOIN 
+	    ar_orders b ON a.order_code = b.order_code
+	LEFT OUTER JOIN 
+	    ar_option_detail c ON a.option_detail_code = c.option_detail_code
+	LEFT OUTER JOIN 
+	    ar_products d ON c.product_code = d.product_code
+	LEFT OUTER JOIN 
+	    ar_imgs e ON e.product_code = d.product_code
+	LEFT OUTER JOIN 
+	    ar_cancel f ON a.order_detail_code = f.order_detail_code 
+	LEFT OUTER JOIN 
+	    ar_return g ON a.order_detail_code = g.order_detail_code
+	LEFT OUTER JOIN 
+	    ar_exchange h ON a.order_detail_code = h.order_detail_code
+	WHERE 
+	    b.member_id = #{memberId}
+	    and e.img_order = 0
      </select>
      
      <!-- 주문목록 옵션 -->
@@ -296,8 +313,9 @@
    <!-- 쿠폰 갯수(페이징)-->
    <select id="getCouponCnt" resultType="int">
    	SELECT count(*)
-  	FROM ar_coupons
-  	WHERE coupon_code > 0
+  	FROM AR_COUPON_BOX
+  	WHERE coupon_use = 'N'
+  	AND member_id = #{memberId}
    </select>
    
    <!-- 문의 내역 -->
@@ -316,7 +334,7 @@
    <select id="getInqCnt" resultType="int">
    	SELECT count(*)
 	FROM ar_custom_inquiry
-	WHERE custom_inquiry_code > 0
+	where member_id = #{memberId}
    </select>
    
    <!-- 찜 내역 (페이징) -->
@@ -352,13 +370,20 @@
    <!-- 찜 갯수 (페이징) -->
    <select id="getPageCnt" resultType="int">
    	SELECT count(*)
-  	FROM ar_favorite
-  	WHERE FAVORITE_CODE > 0
+  	FROM ar_favorite a
+    LEFT OUTER JOIN ar_products b ON a.product_code = b.product_code
+    LEFT OUTER JOIN ar_imgs c ON a.product_code = c.product_code
+    WHERE a.member_id = #{memberId}
+    AND c.img_order = '0'
    </select>
    
    <!-- 취소 상세 -->
-   <select id="selectCancelList" resultType="BuyCancelVO" parameterType="String">
-      SELECT a.cancel_code
+   <select id="selectCancelList" resultType="BuyCancelVO">
+    SELECT *
+    FROM(  
+      SELECT rownum rn , ct.*
+      FROM (
+        SELECT a.cancel_code
            , a.cancel_reason
            , a.cancel_regdate
            , a.cancel_retract_date
@@ -387,10 +412,20 @@
       WHERE f.member_id = #{memberId}
       and g.img_order = '0'
       ORDER BY a.cancel_regdate DESC
+      ) ct
+      <![CDATA[
+      WHERE ROWNUM <= #{cri.pageNum} * #{cri.amount}
+      ]]>
+      ) rt
+      WHERE rt.rn > ( #{cri.pageNum} - 1) * #{cri.amount}
    </select>
    
    <!-- 반품 상세 -->
-   <select id="selectReturnList" resultType="BuyReturnVO" parameterType="String">
+   <select id="selectReturnList" resultType="BuyReturnVO">
+       SELECT *
+    FROM(  
+      SELECT rownum rn , tt.*
+      FROM (
       select a.return_code
            , a.return_reason
            , a.return_regdate
@@ -417,10 +452,20 @@
       WHERE e.member_id = #{memberId}
       AND f.img_order = '0'
       ORDER BY a.return_regdate DESC
+            ) tt
+      <![CDATA[
+      WHERE ROWNUM <= #{cri.pageNum} * #{cri.amount}
+      ]]>
+      ) rt
+      WHERE rt.rn > ( #{cri.pageNum} - 1) * #{cri.amount}
    </select>
    
    <!-- 교환 상세 -->
-   <select id="selectExchangeList" resultType="BuyExchangeVO" parameterType="String">
+   <select id="selectExchangeList" resultType="BuyExchangeVO">
+       SELECT *
+    FROM(  
+      SELECT rownum rn , et.*
+      FROM (
       SELECT a.exchange_code
            , a.exchange_reason
            , a.exchange_regdate
@@ -449,6 +494,12 @@
 	  WHERE e.member_id = #{memberId}
 	  AND f.img_order = '0'
 	  ORDER BY a.exchange_regdate DESC
+	              ) et
+      <![CDATA[
+      WHERE ROWNUM <= #{cri.pageNum} * #{cri.amount}
+      ]]>
+      ) rt
+      WHERE rt.rn > ( #{cri.pageNum} - 1) * #{cri.amount}
 	</select>
 	
 	<!-- 취소 신청 넘어가는 값 -->
@@ -611,5 +662,51 @@
 		from ar_favorite
 		WHERE member_id = #{memberId}
 		AND product_code = #{productCode}
+	</select>
+	
+	
+	<select id="totalCancelCnt">
+    SELECT count(*) 
+    FROM ar_cancel a 
+    LEFT JOIN ar_cancel_reject b 
+    ON a.CANCEL_REJECTION_REASON = b.CANCEL_REJECTION_REASON 
+    LEFT JOIN ar_order_detail c 
+    ON c.order_detail_code = a.order_detail_code 
+    LEFT JOIN ar_option_detail d 
+    ON d.option_detail_code = c.option_detail_code 
+    LEFT JOIN ar_products e 
+    ON e.product_code = d.product_code 
+    LEFT JOIN ar_orders f 
+    ON c.order_code = f.order_code 
+    LEFT JOIN ar_imgs g 
+    ON g.product_code = e.product_code 
+    WHERE f.member_id = #{memberId}
+    and g.img_order = '0'
+	</select>
+	
+	<select id="totalReturnCnt">
+	  SELECT count(*)
+      FROM ar_return a
+      LEFT JOIN ar_order_detail b ON a.order_detail_code = b.order_detail_code
+      LEFT JOIN ar_option_detail c ON b.option_detail_code = c.option_detail_code
+      LEFT JOIN ar_products d ON d.product_code = c.product_code
+      LEFT JOIN ar_orders e ON e.order_code = b.order_code
+      LEFT JOIN ar_imgs f ON f.product_code = d.product_code
+      WHERE e.member_id = #{memberId}
+      AND f.img_order = '0'
+	
+	</select>
+	
+	<select id="totalExchangeCnt">
+		SELECT count(*)
+		FROM ar_exchange a
+	    LEFT JOIN ar_order_detail b ON a.order_detail_code = b.order_detail_code
+	    LEFT JOIN ar_option_detail c ON c.option_detail_code = b.option_detail_code
+	    LEFT JOIN ar_products d ON d.product_code = c.product_code
+	    LEFT JOIN ar_orders e ON e.order_code = b.order_code
+	    LEFT JOIN ar_imgs f ON f.product_code = d.product_code
+		WHERE e.member_id = #{memberId}
+		AND f.img_order = '0'
+	
 	</select>
   </mapper>

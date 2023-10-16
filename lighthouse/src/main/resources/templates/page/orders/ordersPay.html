@@ -592,7 +592,7 @@
     }
     $('.text-gray-300').last().focus();
     let amount = $('#totalPrice').text(); // 결제 금액
-    amount = amount.replace(",","");
+    amount = amount.replaceAll(",","");
     Number(amount);
     paymentWidget.renderPaymentMethods('#payment-method', amount)
     let uuid = self.crypto.randomUUID().slice(0,-10);
@@ -607,7 +607,7 @@
     // productCode productSalePrice
     let deliveryVO =
     {
-        orderPrice : amount,
+        orderPrice : Number(amount),
         orderAddr : $('#addr').val(),
         orderDetailsAddr : $('#addrDt').val(),
         recipientName : $('#deliveryName').val(),
