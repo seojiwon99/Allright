@@ -55,8 +55,20 @@
 			    <tr th:each="inq : ${inqList}" th:onclick="|location.href='@{/admin/inquiryDetail(customInquiryCode=${inq.customInquiryCode})}'|" style="cursor : pointer">
 					
 						<td scope="row" th:text="${inq.customInquiryCode}"></td>
-						<td th:text="${inq.customInquiryTitle}"></td>
-						<td th:text="${inq.customInquiryContent}"></td>
+												<td style="width:230px;">
+							<span class="w-100" style="display: inline-block;
+									white-space : nowrap;
+									overflow : hidden;
+									text-overflow : ellipsis;" th:text="${inq.customInquiryTitle}">
+							</span>
+						</td>
+						<td  style="max-width:400px;" >
+							<span class="w-100" style="display: inline-block;
+									white-space : nowrap;
+									overflow : hidden;
+									text-overflow : ellipsis;" th:text="${inq.customInquiryContent}">
+							</span>
+						</td>
 						<td th:text="${inq.memberId}"></td>
 						<td style="text-align:right;" class="" th:text="${#dates.format(inq.customInquiryRegdate,'yyyy-MM-dd')}"></td>
 				</tr>
