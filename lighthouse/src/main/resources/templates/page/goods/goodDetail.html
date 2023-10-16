@@ -729,7 +729,7 @@
                         <div style="padding-bottom:6px "> 
                            <input type="hidden" name="optionDetailCode" value="${code}"> 
                            개수 : <input type="hidden" value="${price}" name="optionPrice"> 
-                           <input type="number" class="orderCnt" name="cartCount" min="${minOrder}" max="${maxOrder}" value="${minOrder}" data-maxCount="${optionCount}" /> 
+                           <input type="number" class="orderCnt" name="cartCount" min="${minOrder}" max="${maxOrder}" value="1" data-maxCount="${optionCount}" /> 
                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>남은 수량은 ${optionCount}개 입니다</span>
                         </div>
                         
@@ -874,7 +874,8 @@
    옵션 없을 경우 가격
    -------------------------*/
    let pri = $("#pri").val();
-   $("#realPrice").append(replaceComma(pri));
+  $("#realPrice").append(replaceComma(pri));
+   console.log(pri);
    
    $('.noOptionOrderCnt').on("change",function(){
       
@@ -887,7 +888,9 @@
       
       let noOptionPrice = noOptionOrderCnt * hiddenNoOptionP;
       
-      noOptionP.html(replaceComma(noOptionPrice));
+      console.log(noOptionPrice);
+      
+      $(".realPrice2").html(replaceComma(noOptionPrice));
       
       
       maxCountNoOption(this);

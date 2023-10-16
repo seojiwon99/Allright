@@ -1061,7 +1061,7 @@ WHERE product_code = #{productCode}
          , p.delivery_cost
          , p.return_cost
          , p.exchange_cost
-         , p.delivery_service
+         , GET_DELI_NAME(p.delivery_service) as delivery_service
          , p.product_status
            , i.img_order
          , i.upload_name

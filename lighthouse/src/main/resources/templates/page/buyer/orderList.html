@@ -446,7 +446,7 @@ img {
          let productCode = $('.productCode').val();
          let star = $(".star").data("value");
          formData.append("reviewStar", star);
-        formData.append("productCode",tmpProductCode);
+         formData.append("productCode",tmpProductCode);
          
          for (let key of formData.keys()) {
               console.log(key, ":", formData.get(key));
