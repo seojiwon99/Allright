@@ -1,517 +1,382 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org/" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-   layout:decorate="~{layouts/no_layout}">
-
+<html xmlns:th="https://www.thymeleaf.org/"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/no_layout}">
 <head>
-   <meta charset="UTF-8">
-   <title>Insert title here</title>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+.inButtons a {
+	font-size: 15px;
+}
+
+.inButtons a:hover {
+	cursor: pointer;
+}
+</style>
 </head>
-
 <body>
-   <div layout:fragment="content">
-      <section class="pt-9 pb-11">
-         <div class="container">
-            <!-- review -->
-            <div class="row" id="reviews">
-
-               <div class="col-12" id="sizeTab">
-                  <!-- Heading -->
-                  <div>
-                     <h5 class="mb-6 text-center" style="font-weight: 600">고객리뷰</h5>
-                     <div class="mb-6 text-center">※ 리뷰 등록은 [마이페이지 > 주문 목록]에서
-                        확인하실 수 있습니다.</div>
-                  </div>
-
-                  <!-- Header -->
-                  <div class="row align-items-center"
-                     style="border: 1px solid rgba(0, 0, 0, 0.1); padding: 30px; display: flex; justify-content: center; align-items: center">
-                     <div class="col-12 col-md text-md-center">
-                        <!-- Rating -->
-                        <div class="rating text-dark h6 mb-4 mb-md-0" th:data-value="${reviewAvg}">
-                           <div class="rating-item">
-                              <i class="fas fa-star"></i>
-                           </div>
-                           <div class="rating-item">
-                              <i class="fas fa-star"></i>
-                           </div>
-                           <div class="rating-item">
-                              <i class="fas fa-star"></i>
-                           </div>
-                           <div class="rating-item">
-                              <i class="fas fa-star"></i>
-                           </div>
-                           <div class="rating-item">
-                              <i class="fas fa-star"></i>
-                           </div>
-                           <span></span>
-                        </div>
-                        <div style="font-weight: 600" tabindex="0" id="Reviewtitle">
-                           총 [[${count}]]건이 있습니다.</div>
-                        <!-- Count -->
-
-                     </div>
-                     <!-- <div class="col-12 col-md-auto">
-
-                        <a class="btn btn-sm btn-dark collapsed"
-                           data-bs-toggle="collapse" href="#reviewForm"
-                           aria-expanded="false" th:if="${session.loginMember != null}">
-                           리뷰 작성 </a> 
-                           
-                           <a class="btn btn-sm btn-dark"
-                           th:if="${session.loginMember == null}"
-                           href="javascript:parent.location.href='page/member/loginForm'"
-                           tabindex="-1"> 로그인 </a>
-                     </div> -->
-                  </div>
-
-
-                  <div th:if="${count} == 0" style="text-align: center; padding-top: 150px">
-                     <p style="font-size: 26px">등록된 리뷰가 없습니다</p>
-                  </div>
+	<div layout:fragment="content">
+		<div class="col-12" id="qnaTap">
+			<div style="padding-top: 48px">
+				<h5 class="mb-5 text-center">
+					Q&A <strong class="fs-sm" name="inquiryCont">([[${inquiryCount}]])</strong>
+				</h5>
+				<div
+					style="padding-bottom: 30px; display: flex; justify-content: end">
 
 
 
-                  <!-- Reviews -->
-                  <div class="mt-8">
-                     <!-- Review -->
-                     <div class="review" th:each="review:${review}" tabindex="0">
-                        <!-- 이미지 코드, 리뷰코드 -->
-                        <div style="display: none" name="reviewCode" id="reCode">[[${review.reviewCode}]]</div>
-                        <div class="declareReviewCode" style="display: none" name="reviewCode">[[${review.reviewCode}]]
-                        </div>
-                        <div class="declareMemberId" style="display: none" th:if="${review.memberId}" name="memberId">
-                           [[${review.memberId}]]</div>
-                        <div class="declareProductCode" style="display: none" name="productCode">
-                           [[${review.productCode}]]</div>
+					<a class="btn btn-sm btn-dark"
+						th:if="${session.loginMember != null}" data-bs-target="#qnaModal"
+						href="#inquiryForm" data-bs-toggle="modal" tabindex="-1"> 1:1 문의하기 </a>
+
+					<div class="modal fade" id="qnaModal" tabindex="-1"
+						aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">1:1 문의</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"
+										aria-label="Close" tabindex="-1"></button>
+								</div>
+								<div class="modal-body">
+									<div>
+										<div scope="col">
+										<div class=" form-control form-control-sm">
+											비밀글 : <input type="checkbox" id="queSecret" name="queSecret"
+												checked="checked" />
+												</div>
+										</div>
+										<div scope="col" style="padding-top: 20px">
+											<label class="visually-hidden" for="reviewContent">Review:</label>
+											<textarea class="form-control form-control-sm" rows="5"
+												placeholder="내용을 입력해주세요" id="queContent" name="queContent"
+												required></textarea>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" tabindex="-1"
+										data-bs-dismiss="modal">닫기</button>
+									<button id="inquiryAdd" class="btn btn-sm btn-dark" tabindex="-1"
+										type="button" onclick="inquiryAdd()">등록하기</button>
+								</div>
+							</div>
+						</div>
+					</div>
 
 
-                        <div th:if="${review.reviewImg} != null" style="display: none">
-                           [[${review.reviewImg.imgCode}]]</div>
-                        <div class="review-body">
-                           <div class="row">
-                              <div class="col-12 col-md-auto">
-                                 <!-- Avatar -->
-                                 <div class="mb-6 mb-md-0" style="width: 180px; height: 180px">
-                                    <span class="avatar-title circle" th:if="${review.reviewImg} == null"> 이미지 없음<i
-                                          class="fas fa-image"></i>
-                                    </span>
-                                    <div th:if="${review.reviewImg} != null">
-                                       <img id="showReviewImg"
-                                          th:src="|upload/${review.reviewImg.uploadPath}/${review.reviewImg.uploadName}|"
-                                          width="180px" height="180px"> <input type="hidden"
-                                          th:value="${review.reviewImg.imgContent}" id="imgContent">
-
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="col-12 col-md">
-                                 <!-- Header -->
-
-                                 <div class="row mb-6">
-                                    <div class="col-12">
-                                       <div class="col-12" style="display: flex; justify-content: space-between;">
-                                          <!-- Time -->
-                                          <span class="fs-xm text"
-                                             th:text="${review.memberId.length} > 3 ? ${#strings.substring(review.memberId,0,5)}+'***' : ${inquiry.memberId}"></span>
-                                          <span class="fs-xs text-muted"
-                                             th:text="${#dates.format(review.reviewRegdate,'yyyy-MM-dd HH:mm')}"></span>
-                                       </div>
-                                       <!-- Rating -->
-                                       <div class="rating fs-sm text-dark" data-value="5"
-                                          style="padding: 0; padding-top: 4px"
-                                          th:with="start=1, end=(${review.reviewStar})">
-                                          <div class="rating-item" th:each="p : ${#numbers.sequence(start, end)}">
-                                             <div class="rating-item">
-                                                <span class="fas fa-star"></span>
-                                             </div>
-                                          </div>
-
-                                          <div class="rating fs-sm text-dark" data-value="5"
-                                             th:with="start=(${review.reviewStar}), end=4">
-                                             <div class="rating-item" th:if="${review.reviewStar <5}"
-                                                th:each="p : ${#numbers.sequence(start, end)}">
-                                                <div class="rating-item">
-                                                   <i class="fas fa-star" style="opacity: 0.2"></i>
-                                                </div>
-                                             </div>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-
-                                 <!-- Text -->
-                                 <div class="text-gray-500" style="word-break: break-all; width: 580px"
-                                    th:text="${review.reviewContent}" id="reviewContent"></div>
-
-                                 <!-- Footer -->
-                                 <div class="row align-items-center">
-                                    <div class="col-auto me-auto">
-                                       <!-- 좋아요 -->
-
-                                    </div>
-
-                                    <div class="col-auto">
-                                       <!-- Button -->
-                                       <div th:if="${session.loginMember != null}">
-                                          <button type="button" 
-                                             th:if="${session.loginMember.memberId == review.memberId}"
-                                             data-bs-toggle="modal" data-bs-target="#exampleModal" id="reviewModifyBtn"
-                                             tabindex="-1" class="btn btn-xs btn-outline-border"
-                                             th:onclick="editReview([[${review}]])">수정</button>
-                                          <button th:if="${session.loginMember.memberId == review.memberId}"
-                                             class="btn btn-xs btn-outline-border" tabindex="-1"
-                                             th:onclick="reviewDelete([[${review.reviewCode}]])"
-                                             id="reviewDelBtn">삭제하기</button>
-                                       </div>
-                                       <button class="btn btn-xs btn-outline-border" tabindex="-1"
-                                          th:if=" ${session.loginMember == null} or ${session.loginMember.memberId != review.memberId}"
-                                          data-bs-toggle="modal" data-bs-target="#declareModal">신고하기</button>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-
-                        <!-- 신고폼 -->
-                        <div class="modal fade" id="declareModal" tabindex="-1" th:if="${session.loginMember != null}"
-                           aria-labelledby="exampleModalLabel" aria-hidden="true">
-                           <div class="modal-dialog">
-                              <div class="modal-content">
-                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">신고하기</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                       aria-label="Close"></button>
-                                 </div>
-                                 <div class="modal-body">
-                                    <div class="mb-3">
-
-                                       <div>
-                                          <!--  <input type="hidden" name="memberId"
-                                                            class="form-control">-->
-                                       </div>
-
-                                       <div class="mb-3">
-                                          <select class="form-select">
-                                             <option class="declareOption" name="declareReason" th:each="code:${codes}"
-                                                th:value="${code.codeId}" th:text="${code.codeName}"></option>
-                                          </select>
-                                       </div>
-
-                                       <label for="message-text" class="col-form-label">자세한
-                                          내용:</label>
-                                       <textarea class="form-control" id="declareContent"
-                                          name="declareContent"></textarea>
-                                    </div>
-
-                                 </div>
-                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                    <button type="button" class="btn btn-primary" id="reviewDeclareBtn">저장</button>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                        <!-- 리뷰 신고폼 -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                           aria-hidden="true">
-                           <div class="modal-dialog">
-                              <div class="modal-content">
-                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">리뷰수정</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                       aria-label="Close"></button>
-                                 </div>
-                                 <div class="modal-body">
-                                    <form id="editForm" method="post">
-                                       <div>
-                                          <div>
-                                             <div id="previewDiv"></div>
-                                             <input type="hidden" name="reviewCode" id="reviewNum" />
-                                             <!-- 수정전 이미지 -->
-                                             <img src="" id="reviewModifyImg" width="180px" height="180px">
-                                          </div>
-                                          <div style="padding-top: 20px">
-                                             <span style="color: grey">수정할 이미지를 정해주세요</span> <input type="file"
-                                                class="reviewimg" name="files" onchange="readURL(this)" id="reviewimg"
-                                                accept="image/*" />
 
 
-                                          </div>
-                                       </div>
-                                       <div class="col-12 mb-6 text-center">
-                                          <!-- Text -->
-
-                                          <!-- Rating form -->
-                                          <div class="rating-form" style="padding-top: 20px">
-                                             <!-- Input -->
-                                             <input class="rating-input" type="range" min="1" max="5" value="5" />
-
-                                             <!-- Rating -->
-                                             <div class="star rating h5 text-dark" id="editStar" data-value="3"
-                                                name="reviewStar">
-                                                <div class="rating-item">
-                                                   <i class="fas fa-star"></i>
-                                                </div>
-                                                <div class="rating-item">
-                                                   <i class="fas fa-star"></i>
-                                                </div>
-                                                <div class="rating-item">
-                                                   <i class="fas fa-star"></i>
-                                                </div>
-                                                <div class="rating-item">
-                                                   <i class="fas fa-star"></i>
-                                                </div>
-                                                <div class="rating-item">
-                                                   <i class="fas fa-star"></i>
-                                                </div>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class="mb-3">
-                                          <div>
-                                             <input type="hidden" name="memberId" class="form-control" readonly
-                                                th:if="${session.loginMember != null}"
-                                                th:value="${session.loginMember.memberId}">
-                                          </div>
-                                          <label for="message-text" class="col-form-label">리뷰
-                                             내용:</label>
-                                          <textarea class="form-control" id="message-text"
-                                             name="reviewContent"></textarea>
-                                       </div>
-                                    </form>
-                                 </div>
-                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                    <button type="button" class="btn btn-primary" id="reviewEditBtn">저장</button>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-
-                     <!--리뷰 수정폼! -->
-                  </div>
+					<a class="btn btn-sm btn-dark" tabindex="-1"
+						th:if="${session.loginMember == null}"
+						href="javascript:parent.location.href='page/member/loginForm'">
+						로그인 </a>
+				</div>
 
 
-                  <input type="hidden" th:value="${pageMaker.cri.pageNum}" id="reviewpageNum" tabindex="-1"> <input
-                     type="hidden" th:value="${pageMaker.endPage}" id="reviewpageEnd" tabindex="-1">
-                  <!-- Pagination -->
-                  <nav class="d-flex justify-content-center mt-9" id="inquiryBox" style="padding-bottom: 40px">
-                     <ul class="pagination pagination-sm text-gray-400">
-                        <li class="page-item"><a class="page-link page-link-arrow" th:if="${pageMaker.prev}" tabindex="-1"
-                              th:href="|javascript:reviewPageLoad(${pageMaker.startPage - 1})|">
-                              <i class="fa fa-caret-left"></i>
-                           </a></li>
-                        <th:block th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
-                           <li th:if="${pageMaker.endPage} ne 0"
-                              th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
-                              th:each="pageButtom : ${#numbers.sequence(start,end)}"
-                              th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
-                              <a class="page-link" th:href="|javascript:reviewPageLoad(${pageButtom})|" tabindex="-1"
-                                 th:text="${pageButtom}"></a>
-                           </li>
-                        </th:block>
 
-                        <li class="page-item" th:if="${pageMaker.next}"><a class="page-link page-link-arrow"
-                              th:href="|javascript:reviewPageLoad(${pageMaker.endPage + 1})|" tabindex="-1">
-                              <i class="fa fa-caret-right"></i>
-                           </a></li>
-                     </ul>
-                  </nav>
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">답변여부</th>
+							<th scope="col" width="40%">구매자 질문 내용</th>
+							<th scope="col-12">작성자</th>
+							<th scope="col-md-6">등록날짜</th>
+						</tr>
+					</thead>
+					<tbody th:each="inquiry:${inquiry}" id="inquiryList">
+						<!-- 숨겨지는 정보 -->
+						<span id="queAns" name="queAns" style="display: none">[[${inquiry.queAns}]]</span>
+						<span id="queCode" name="queCode" style="display: none">[[${inquiry.queCode}]]</span>
+						<input type="hidden" th:value="${inquiry.queSecret}" / tabindex="-1">
+						<tr th:onclick="|toggleOn([[${inquiry.queCode}]])|" tabindex="0" class="qnaList">
 
+							<td th:if="${inquiry.queAns == null}" class="qnaChk">답변 대기</td>
+							<td th:if="${inquiry.queAns != null}" style="font-weight: 600">답변
+								완료</td>
 
-                  <div class="pull-right"></div>
-               </div>
-            </div>
-
-         </div>
-      </section>
-   </div>
-   <input type="hidden" id="hidden" th:value="${session.loginMember}" tabindex="-1"/>
-   <div th:if="${session.loginMember != null}">
-      <input type="hidden" id="member" th:value="${session.loginMember.memberId}" />
-      <div style="display: none" class="declarePerson" name="declareMember">[[${session.loginMember.memberId}]]</div>
-   </div>
-   </section>
-
-   <script type="text/javascript">
-      let TTSIsOk = localStorage.getItem('ttsKey');
-      let sessionAuthor;
-      if (sessionStorage.loginMember != null) {
-         sessionAuthor = sessionStorage.loginMember.memberAuthor;
-      }
-      function ttsInit() {
-         if (TTSIsOk == null || sessionAuthor == 3) {
-
-            
-
-         } //ttsInit()의 if문
-      } // ttsInit() close
-
-      function checkExtension(fileName, fileSize) {
-         //이미지 세부사항
-         let regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
-         let maxSize = 5242880; //5mb
-         if (fileSize >= maxSize) {
-            alert("파일 사이즈 초과");
-            return false;
-         }
-         if (regex.test(filename)) {
-            alert("해당 종류 파일은 업로드가 불가합니다");
-            return false;
-         }
-         return true;
-      }
-
-      $(document).ready(function(){
-         console.log("여기요2");
-      })
+							<td class="inquiryGetAns" id="queCon"
+								th:if="${inquiry.queSecret != 'Y'} or ${session.loginMember != null} and ${session.loginMember.memberId == inquiry.memberId}"
+								th:text="${inquiry.queContent.length} > 12 ? ${#strings.substring(inquiry.queContent,0,12)}+'...' : ${inquiry.queContent}">
+								<input type="text"> <a href="#qnaForm"></a>
+							<td class="inquiryGetAns"
+								th:if="${inquiry.queSecret != 'N'} and ${session.loginMember == null or session.loginMember.memberId != inquiry.memberId} ">
+								<i class="fas fa-lock"></i> 비밀글입니다
+							</td>
+							<td class="userName"
+								th:text="${inquiry.memberId.length} > 3 ? ${#strings.substring(inquiry.memberId,0,5)}+'***' : ${inquiry.memberId}"></td>
 
 
-      /*--------------------------
-      리뷰 수정
-      ----------------------------*/
-      function editReview(data) {
+							<td class="regDate">[[${#dates.format(inquiry. queRegdate,'yyyy년 MM월 dd일
+								HH:mm')}]]</td>
+						</tr>
 
-         console.log(data);
-         let reviewCode = $("#reviewNum").val(data.reviewCode);
-         let reviewContent = $("#message-text").html(data.reviewContent);
-         if (data.reviewImg != null) {
-            let imgContent = $("#reviewImgContent").val(data.reviewImg.imgContent);
-            let img = $("#reviewModifyImg").attr("src", "upload/" + data.reviewImg.uploadPath + "/" + data.reviewImg.uploadName);
-         } else {
-            let img = $("#reviewModifyImg").attr("src", "");
-            let imgContent = $("#reviewImgContent").val("");
-         }
-         let reviewStars = $("#editStar").attr("data-value", data.reviewStar);
+						<!-- 답변 보기1 -->
+						<tr th:class="|inquiryGet${inquiry.queCode}|"
+							th:data-code="${inquiry.queCode}" id="ansQueCode"
+							th:if="${session.loginMember == null and inquiry.queSecret == 'N'} or ${session.loginMember != null and session.loginMember.memberId == inquiry.memberId} "
+							style="display: none; background-color: #f8f8f8">
+							<td class="inquiryGetAns" style="font-size: 18px"></td>
 
-         let form = $("#editForm")[0];
+							<td class="inquiryGetAns" id="answerForm">
+								<div class="hideInquiry"
+									style="font-size: 16px; width: 380px; word-break: break-all; border-bottom: 1px solid rgba(0, 0, 0, 0.1);">
+									Q:
+									<p style="white-space: pre;">[[${inquiry.queContent}]]</p>
+								</div> <textarea class="form-control form-control-sm" rows="5"
+									style="display: none;" id="que" readonly>[[${inquiry.queContent}]]</textarea>
+								<div th:if="${inquiry.queAns != null}"
+									style="font-size: 16px; width: 380px; word-break: break-all; padding-top: 20px">
+									A:
+									<p style="white-space: pre;">[[${inquiry.queAns}]]</p>
+								</div>
 
-         $("#reviewEditBtn").on("click", function () {
+								<div th:if="${session.loginMember != null}" class="inButtons"
+									style="display: flex; justify-content: space-around; padding-top: 20px; font-size: 16px;">
+									<div class="inquiryBtn">
+										<a id="modify" th:if="${inquiry.queAns == null}"
+											style="color: black" class="testBtn">수정</a>
+									</div>
 
-            const reviewFormData = new FormData(form);
+									<div style="display: none" id="modifyBtn">
+										<a style="color: grey;" class="edit"> 저장</a>
+									</div>
 
-            let star = $("#editStar").data("value");
-
-            reviewFormData.append("reviewStar", star);
-
-            for (let key of reviewFormData.keys()) {
-               console.log(key, ":", reviewFormData.get(key));
-
-            }
-
-            $.ajax({
-               url: "editReview",
-               type: "post",
-               data: reviewFormData,
-               enctype: "multipart/form-data",
-               contentType: false,
-               processData: false,
-               success: function (result) {
-                  console.log(result);
-                  alert("수정 성공");
-                  location.reload();
-                  document.querySelector('#reviews').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-
-               },
-               fail: function (reject) {
-                  console.log(reject);
-               }
-            })
-
-         })
-
-      }
-      /*--------------------------
-     리뷰 삭제
-     ----------------------------*/
-      function reviewDelete(idx) {
-         if (!confirm("정말로 삭제하시겠습니까?")) {
-            console.log("no");
-         } else {
-
-            console.log(idx);
-            $.ajax({
-               url: "removeReview",
-               type: "post",
-               contentType: "application/json",
-               data: JSON.stringify(idx),
-               success: function (result) {
-                  console.log("result" + result);
-                  if (result == "deleteReview") {
-                     console.log(result);
-                     alert("정상적으로 삭제되었습니다");
-                     reviewPageLoad(1);
-                     document.querySelector('#reviews').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-                  } else {
-                     alert("error");
-                  }
-               },
-               error: function (reject) {
-                  console.log(reject);
-               },
-
-            })
-         }
-      }
-
-      function readURL(obj) {
-
-         let reader = new FileReader();
-         if (!obj.files.length) {
-            return;
-         }
-         reader.readAsDataURL(obj.files[0]);
-         reader.onload = function (e) {
-            let img = $('#reviewModifyImg');
-            $(img).attr('src', e.target.result);
-            $('#previewDiv').append(img);
-         }
-      }
+									<div class="inquiryBtn">
+										<a class="inquiryBtn"
+											th:onclick="remove([[${inquiry.queCode}]])">삭제</a>
+									</div>
+								</div>
+							</td>
+							<td></td>
+							<td></td>
+						</tr>
 
 
-      /*--------------------------
-     리뷰 신고
-     ----------------------------*/
-      $("#reviewDeclareBtn").on("click", function () {
-         console.log("hihihi");
-         let memberId = $("#hidden").val();
-         console.log(memberId);
+						<!-- 답변 보기2 -->
+						<tr th:class="|inquiryGet${inquiry.queCode}|"
+							th:data-code="${inquiry.queCode}" id="ansQueCode"
+							th:if="${session.loginMember != null and session.loginMember.memberId != inquiry.memberId and inquiry.queSecret == 'N'}"
+							style="display: none; background-color: #f8f8f8">
+							<td class="inquiryGetAns" style="font-size: 18px">
+								<p style="font-size: 14px">Q&A 답변</p>
+							</td>
 
-         if (memberId == '') {
-            alert("로그인 후 사용가능합니다");
-         } else {
+							<td class="inquiryGetAns" id="answerForm">
+								<div class="hideInquiry"
+									style="font-size: 16px; width: 380px; word-break: break-all; border-bottom: 1px solid rgba(0, 0, 0, 0.3);">
+									Q:
+									<p style="white-space: pre;">[[${inquiry.queContent}]]</p>
+								</div> <textarea class="form-control form-control-sm" rows="5"
+									style="display: none; white-space: pre;" id="que" readonly>[[${inquiry.queContent}]]</textarea>
+								<div th:if="${inquiry.queAns != null}"
+									style="font-size: 15px; border: none; border-bottom: 1px solid rgba(0, 0, 0, 0.3); width: 380px; padding-top: 20px">
+									A:
+									<p style="white-space: pre;">[[${inquiry.queAns}]]</p>
+								</div>
+								<div
+									th:if="${session.loginMember != null and session.loginMember.memberId == inquiry.memberId}">
+									<div class="inquiryBtn">
+										<a id="modify" th:if="${inquiry.queAns == null}"
+											style="color: black" class="testBtn">수정</a>
+									</div>
 
-            let declareObj = {
-               reviewCode: $("#reCode").text(),
-               productCode: $(".declareProductCode").text(),
-               memberId: $(".declareMemberId").text(),
-               declareReason: $(".declareOption").val(),
-               declareContent: $("#declareContent").val(),
-               declareMember: $(".declarePerson").text(),
-            }
-            console.log(declareObj);
+									<div style="padding: 30px 10px 10px 10px; display: none"
+										id="modifyBtn">
+										<a style="color: grey;" class="edit"> 저장</a>
+									</div>
 
-            $.ajax({
-               url: "reviewDeclare",
-               type: "post",
-               headers: { "Content-Type": "application/json" },
-               data: JSON.stringify(declareObj),
-               success: function (result) {
-                  console.log(result);
-                  alert("정상적으로 접수 되었습니다");
-                  location.reload();
-                  document.querySelector('#reviews').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-               },
-               error: function (reject) {
-                  console.log(reject);
-               }
+									<div class="inquiryBtn">
+										<a class="inquiryBtn"
+											th:onclick="remove([[${inquiry.queCode}]])">삭제</a>
+									</div>
+								</div>
+							</td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
 
-            })
-         }
-      })
-   </script>
-   </div>
+				</table>
+			</div>
+
+
+		</div>
+
+
+
+		<input type="hidden" th:value="${pageMaker.cri.pageNum}"
+			id="qnapageNum" tabindex="-1"> <input type="hidden"
+			th:value="${pageMaker.endPage}" id="qnapageEnd" tabindex="-1">
+		<nav class="d-flex justify-content-center mt-9" id="inquiryBox"
+			style="padding-bottom: 40px">
+			<ul class="pagination pagination-sm text-gray-400">
+				<li class="page-item"><a class="page-link page-link-arrow"
+					th:if="${pageMaker.prev}"
+					th:href="|javascript:inquiryPageLoad(${pageMaker.startPage - 1})|">
+						<i class="fa fa-caret-left"></i>
+				</a></li>
+				<th:block
+					th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+					<li th:if="${pageMaker.endPage} ne 0"
+						th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+						th:each="pageButtom : ${#numbers.sequence(start,end)}"
+						th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
+						<a class="page-link"
+						th:href="|javascript:inquiryPageLoad(${pageButtom})|"
+						th:text="${pageButtom}"></a>
+					</li>
+				</th:block>
+
+				<li class="page-item" th:if="${pageMaker.next}"><a
+					class="page-link page-link-arrow"
+					th:href="|javascript:inquiryPageLoad(${pageMaker.endPage + 1})|">
+						<i class="fa fa-caret-right"></i>
+				</a></li>
+			</ul>
+			<input type="hidden" id="memberId"
+            th:value="${session.loginMember.memberId}" />
+		</nav>
+		
+
+
+		<script type="text/javascript">
+			//function goPage(p){
+			//location.href = 'inquiryView?productCode=[[${productCode}]]&pageNum='+p;
+			//}
+
+			//qna 조회
+			function toggleOn(idx) {
+				//$(".inquiryGet").css("display","");      
+				//$(".inquiryGet").css("background","lightgrey");
+				$('.inquiryGet' + idx).toggle();
+			};
+
+			//qna 등록
+			function inquiryAdd() {
+				if ($("#queSecret").is(":checked")) {
+					$("#queSecret").val("Y");
+				} else {
+					$("#queSecret").val("N");
+				}
+
+				let object = {
+					memberId : $("#memberId").val(),
+					queSecret : $("#queSecret").val(),
+					productCode : $("#productCode").val(),
+					queContent : $("#queContent").val(),
+					sellerId : $("#sellerId").text(),
+				};
+				console.log(object);
+				$.ajax({
+					type : "post",
+					url : "insertInquiry",
+					headers : {
+						"Content-Type" : "application/json"
+					},
+					data : JSON.stringify(object),
+
+					success : function(data) {
+						console.log(data);
+
+						location.reload(true);
+					},
+					error : function(e) {
+						console.log(e);
+					},
+				});
+			}
+
+			//qna 삭제
+			function remove(idx) {
+				console.log(idx);
+				if (!confirm('삭제 하시겠습니까?')) {
+					console.log("삭제 x");
+				} else {
+					console.log("삭제");
+					realRemove();
+				}
+				;
+
+				function realRemove() {
+					$.ajax({
+						url : "removeInquiry",
+						type : "post",
+						headers : {
+							"Content-Type" : "application/json"
+						},
+						data : JSON.stringify(idx),
+						success : function(result) {
+							console.log(result);
+							//$('#qnaTap').load(location.href + ' #qnaTap');
+							location.reload(true);
+
+						},
+						error : function(reject) {
+
+							console.log(reject);
+						}
+					})
+				}
+			}
+
+			//qna 수정
+			$('.testBtn').on(
+					'click',
+					function() {
+						let btn = $(this).parent();
+						let hideque = btn.parent().parent().parent().children()
+								.next().children()[0];
+						//$(".hideInquiry").css("display","none");
+						$(hideque).css("display", "none");
+
+						let queText = btn.parent().parent().parent().children()
+								.next().children().next();
+						let queCode = btn.parent().parent().parent().parent()
+								.children().next().next().data().code;
+						console.log(queCode);
+
+						queText.css("display", "block");
+						queText.attr("readonly", false);
+						btn.next().show();
+						btn.next().next().remove();
+						btn.remove();
+						//queCode = $("#ansQueCode").data("code");
+
+						$(".edit").on("click", function() {
+
+							if (!confirm("이대로 저장하시겠습니까?")) {
+
+							} else {
+								let tmpObj = {
+									queContent : queText.val(),
+									queCode : queCode
+								}
+
+								$.ajax({
+									url : "editInquiry",
+									type : "post",
+									headers : {
+										"Content-Type" : "application/json"
+									},
+									data : JSON.stringify(tmpObj),
+									success : function(result) {
+										console.log(result);
+										location.reload(true);
+									},
+									error : function(reject) {
+										console.log(reject);
+									}
+								})
+							}
+							;
+
+						})
+					})
+		</script>
+	</div>
 </body>
-
 </html>
+
