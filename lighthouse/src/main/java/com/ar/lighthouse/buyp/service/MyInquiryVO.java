@@ -20,4 +20,10 @@ public class MyInquiryVO {
 	
 //	member
 	String memberId;
+	
+	//검색
+   @DateTimeFormat(pattern="yyyy-MM-dd")
+   Date fromDate;
+   @DateTimeFormat(pattern="yyyy-MM-dd")
+   Date toDate;
 }
