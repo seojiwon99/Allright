@@ -253,7 +253,7 @@ public class OrdersController {
       
       
       //토스페이먼츠 환불  규연
-      @PostMapping(value = "/orders/cancel")
+      @PostMapping(value = "/seller/orders/cancel")
       public String orderCancel(String refundList, HttpSession session) throws IOException, InterruptedException {
       ObjectMapper objectMapper = new ObjectMapper();
       OrderChkVO[] orderchkList= objectMapper.readValue(refundList, OrderChkVO[].class);
@@ -321,7 +321,7 @@ public class OrdersController {
          ordersService.editTossRefundAmount(paymentKey, refundAbleAmount);
          ordersService.editOrderRefundAmount(chk.getOrderCode(), refundAbleAmount); 
       }
-         return newRefund.getRefundType().equals("C") ?  "redirect:/cancelProduct" : "redirect:/exchangeList";    
+         return newRefund.getRefundType().equals("C") ?  "redirect:/seller/cancelProduct" : "redirect:/seller/exchangeList";    
       }
     }
             
