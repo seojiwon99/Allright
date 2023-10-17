@@ -173,7 +173,7 @@ input, select, button{
                   <tr th:each="product : ${productList}">
                      <td><input type="checkbox"></td>
                      <td> 
-                     <a th:href="@{'/updateProduct?productCode=' + ${product.productCode}}">
+                     <a th:href="@{'/seller/updateProduct?productCode=' + ${product.productCode}}">
                              <button id="modifyForm" class="btnGo" type="button">수정</button>
                             </a>
                             </td>
@@ -192,6 +192,7 @@ input, select, button{
                   <!-- 반복문 종료 -->
                </tbody>
             </table>
+            <h3 id="noList" style="text-align: center" th:if="${#lists.isEmpty(productList)}">주문내역이 없습니다.</h3>
             </div>
          </section>
 
@@ -218,7 +219,6 @@ input, select, button{
    $('#optionList').on('change',function(){
       
       let val = $(this).val();
-      console.log(val);
       $.ajax({
          url : 'getOptionProduct',
          type :'get',
@@ -256,8 +256,12 @@ input, select, button{
    $('#chkDelBtn').on('click',function(){
       let proList = [];
       
-      console.log('hi');
       let checkTags = $('input[type="checkbox"]:checked').not('#allcheck');
+    
+      if (checkTags.length === 0) {
+    	    alert('상품을 선택하세요'); // 경고창 표시
+    	    return; // 작업 중지
+    	  }
       
       console.log(checkTags);
       
@@ -320,13 +324,11 @@ input, select, button{
       location.reload();
    }
    
-   $('.modifyForm').on('click', function () {
+    $('.btnGo').on('click', function () {
        let productCode = $(this).closest('tr').find('td:eq(2)').text();
-       alert('hk');
-       console.log(productCode);
 
        $.ajax({
-           url: 'updateProduct',
+           url: '/seller/updateProduct',
            type: 'get',
            data: {
                productCode
@@ -335,7 +337,7 @@ input, select, button{
        .done(data => {
            console.log(data);
            localStorage.setItem('productCode', productCode);
-           location.href = '/updateProduct?productCode=' + productCode ;
+           location.href = '/seller/updateProduct?productCode=' + productCode ;
            
 
         console.log('productCode 값:', productCode);
@@ -343,7 +345,7 @@ input, select, button{
        .fail(reject => {
            console.log(reject);
        });
-   });
+   }); 
 
    
 })

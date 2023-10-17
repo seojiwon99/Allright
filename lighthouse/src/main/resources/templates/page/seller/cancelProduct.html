@@ -123,6 +123,9 @@ input, select, button{
   background: #888; /* 스크롤바 썸 배경색 */
   border-radius: 6px; /* 스크롤바 썸 둥글게 만들기 */
 }
+h3{
+	margin : 20px;
+}
 </style>
 	
 		
@@ -132,8 +135,8 @@ input, select, button{
 				
 											
 
+				<h3>주문취소내역</h3>
 				<div class="_1Vof48UxmD_oVRNwPvxck">
-							
 								<div class="_KqV0-1BSnB">
 									<button type="button" id="todayBtn" class="btn btn-primary2">
 										<span id="today">오늘</span>
@@ -178,52 +181,53 @@ input, select, button{
 							
 					
 					<section class="pb-12">
+					<div class="chec" style="margin: 20px;">
 					<button type="button" id="cancelOk" class="btnGo">취소승인</button>
 					<button type="button" id="cancelReject" class="btnGo">취소거부</button>
+					</div>
 						<div style="width:1450px; height: 500px; overflow: auto; border: 1px; position: relative;">
-						
-						<table border="1" class="table" id="getProductList" style="background-color:white;  white-space: nowrap;">
-							<thead style="position: sticky; top: 0; background-color: white;">
-								<tr>
-									<th><input type="checkbox" id="allCheck"></th>
-									<th>주문번호</th>
-									<th>상품명</th>
-									<th>주문상태</th>
-									<th>취소이유</th>
-									<th>결제일</th>
-									<th>취소요청일</th>
-									<th>취소상태</th>
-									<th>구매자</th>
-								</tr>
-							</thead>
-							<tbody id="cancelList">
-								<tr th:each="cancel : ${cancelInfo}">
-									<td><input type="checkbox"></td>
-									<td th:text="${cancel.orderDetailCode}"></td>
-									<td th:text="${cancel.productName}"></td>
-									<td th:text="${cancel.orderStatus}"></td>
-									<td th:text="${cancel.cancelReason}"></td>
-									<td th:text="${#dates.format(cancel.chargeDate, 'yyyy-MM-dd')}"></td>
-									<td th:text="${#dates.format(cancel.cancelRegdate, 'yyyy-MM-dd')}"></td>
-									<td th:if="${cancel.cancelStatus} == 'Y'">취소승인</td>
-									<td th:unless="${cancel.cancelStatus} == 'Y'">취소대기</td>
-									<td th:text="${cancel.memberName}"></td>
-									<td th:text="${cancel.memberId}" class="visually-hidden"></td>
-									<td th:text="${cancel.orderCode}" class="visually-hidden"></td>
-									<td th:text="${cancel.cancelCode}" class="visually-hidden"></td>
-									
-
-								</tr>
-								<!-- 반복문 종료 -->
-							</tbody>
+						<table border="1" class="table" id="getProductList" style="background-color: white; white-space: nowrap;">
+						    <thead style="position: sticky; top: 0; background-color: white;">
+						        <tr>
+						            <th><input type="checkbox" id="allCheck"></th>
+						            <th>주문번호</th>
+						            <th>상품명</th>
+						            <th>주문상태</th>
+						            <th>취소이유</th>
+						            <th>결제일</th>
+						            <th>취소요청일</th>
+						            <th>취소상태</th>
+						            <th>구매자</th>
+						        </tr>
+						    </thead>
+						    <tbody id="cancelList">
+						        <tr th:each="cancel : ${cancelInfo}">
+						            <td><input type="checkbox"></td>
+						            <td th:text="${cancel.orderDetailCode}"></td>
+						            <td th:text="${cancel.productName}"></td>
+						            <td th:text="${cancel.orderStatus}"></td>
+						            <td th:text="${cancel.cancelReason}"></td>
+						            <td th:text="${#dates.format(cancel.chargeDate, 'yyyy-MM-dd')}"></td>
+						            <td th:text="${#dates.format(cancel.cancelRegdate, 'yyyy-MM-dd')}"></td>
+						            <td th:if="${cancel.cancelStatus} == 'Y'">취소승인</td>
+						            <td th:unless="${cancel.cancelStatus} == 'Y'">취소대기</td>
+						            <td th:text="${cancel.memberName}"></td>
+						            <td th:text="${cancel.memberId}" class="visually-hidden"></td>
+						            <td th:text="${cancel.orderCode}" class="visually-hidden"></td>
+						            <td th:text="${cancel.cancelCode}" class="visually-hidden"></td>
+						        </tr>
+						        <!-- 반복문 종료 -->
+						    </tbody>
 						</table>
+						<h3 id="noList" style="text-align: center" th:if="${#lists.isEmpty(cancelInfo)}">신청내역이 없습니다.</h3>
+
 						</div>
 					</section>
 
 
 	<script>
 $(document).ready(function () {		
-		
+
 		document.getElementById('allCheck')
 		.addEventListener('click', allCheckEvent);
 
@@ -233,7 +237,7 @@ $(document).ready(function () {
 		    checkTags.forEach(el => {
 		        el.checked = allCheckTag.checked;
 		    })
-		}
+		};
 		
 		$('#orderSearch').on('click',function(){
 			let key = $('._4LshyCrDpi').val();
@@ -265,10 +269,9 @@ $(document).ready(function () {
 				console.log(reject);
 			})
 			
-		})
-		
-		
-	 const currentDate = new Date();
+		});
+
+		const currentDate = new Date();
 		const koreanTime = new Date(currentDate).toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
 		const formattedDate = koreanTime.split('T')[0];
 	  $('#to').val(formattedDate);
@@ -345,10 +348,16 @@ function displayDate(range) {
 	  // startDate가 null이면 input 요소 값을 비움
 	  $('#from').val('');
 	}
-  }
-		
-$('#cancelOk').on('click',function(){
+  };
+
+  $('#cancelOk').on('click',function(){
     let checkTags = $('input[type=checkbox]:checked').not(allCheck);
+    
+    if (checkTags.length === 0) {
+        alert('상품을 선택하세요'); // 경고창 표시
+        return; // 작업 중지
+      }
+    
     refundListVO=[];
     checkTags.each((idx, tag)=>{
        let orderDetailCode = $(tag).parent().next().text();
@@ -370,12 +379,12 @@ $('#cancelOk').on('click',function(){
        }
        refundListVO.push(OrderChkVO);
     });
-    
-    console.log(refundListVO);
+
+	console.log(refundListVO);
      
       let $form = $('<form>', {
           method: 'POST',
-          action: 'orders/cancel'
+          action: '/seller/orders/cancel'
       });
 
       let $input = $('<input>', {
@@ -389,37 +398,41 @@ $('#cancelOk').on('click',function(){
       $form.appendTo('body').submit(); 
      
  });
- 
-	  
-	  $('#cancelReject').on('click', function(){
-		  let checkTags = $('input[type=checkbox]:checked').not(allCheck);
-		  cancelChk = [];
-		  checkTags.each((idx, tag)=>{
-			  let cancelCode = $(tag).closest('tr').find('td:eq(11)').text();
-			  console.log(cancelCode);
-			let obj = {
-					cancelCode
-			}
-			cancelChk.push(obj);
-		  })
-		
-		  $.ajax({
-			  url:'cancelReject',
-			  type: 'post',
-			  contentType : 'application/json',
-			  data : JSON.stringify(cancelChk)
-		  })
-		  .done(data=>{
-			  refreshList();
-		  })
-		  .fail(reject =>{
-			  console.log(reject);
-		  })
-	  });
-	  
-	  function refreshList(){
-         location.reload();
-      } 
+  
+ $('#cancelReject').on('click', function(){
+	let checkTags = $('input[type=checkbox]:checked').not(allCheck);
+	
+	if (checkTags.length === 0) {
+        alert('상품을 선택하세요'); // 경고창 표시
+        return; // 작업 중지
+      }
+	cancelChk = [];
+	checkTags.each((idx, tag)=>{
+		let cancelCode = $(tag).closest('tr').find('td:eq(11)').text();
+		console.log(cancelCode);
+	  let obj = {
+			  cancelCode
+	  }
+	  cancelChk.push(obj);
+	})
+  
+	$.ajax({
+		url:'cancelReject',
+		type: 'post',
+		contentType : 'application/json',
+		data : JSON.stringify(cancelChk)
+	})
+	.done(data=>{
+		refreshList();
+	})
+	.fail(reject =>{
+		console.log(reject);
+	})
+});
+
+function refreshList(){
+   location.reload();
+} 
 	  
 	  
 })

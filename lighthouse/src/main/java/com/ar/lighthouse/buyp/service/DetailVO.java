@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.product.service.OptionDetailVO;
 import com.ar.lighthouse.product.service.OptionVO;
 
@@ -98,4 +99,6 @@ public class DetailVO {
    OptionVO option;
    private String optionLast;
    List<OptionDetailVO> optionDetail;
+   
+   List<CodeVO> code;
 }

@@ -8,14 +8,15 @@
 
 <div layout:fragment="content">
 	<div tabindex=0 id="bannerTTS"></div>
-	<div data-flickity='{"prevNextButtons": true, "fade": true, "autoPlay" : true, "wrapAround": true }' id="bannerMain" tabindex=0>
+	<div class="px-lg-12 flickity-buttons-lg flickity-buttons-offset" 
+	data-flickity='{"prevNextButtons": true, "fade": true, "autoPlay" : true, "wrapAround": true}' id="bannerMain" tabindex=0>
 
 		<!-- Item -->
 		<div class="w-100 bg-cover" th:each="banner:${productbanner}">
 			<div class="container d-flex flex-column">
 				<div class="row align-items-center py-12" style="min-height: 550px">
 					<!-- productbanner -->
-					<a href="#" id="bannerHyper"><img class="w-100" alt="..." th:src="|/upload/${banner.uploadPath}/${banner.uploadName}|" style="height:400px"></a>
+					<a th:href="|/${banner.eventCode}|" id="bannerHyper"><img class="w-100" alt="..." th:src="|/upload/${banner.uploadPath}/${banner.uploadName}|" style="height:400px"></a>
 
 					<div style="display: none" th:text="${banner.imgContent}"></div>
 				</div>
@@ -38,8 +39,9 @@
 				</h2>
 			</div>
 		</div>
-		<div class="flickity-page-dots-progress"
-			data-flickity='{"pageDots": true}'>
+<!-- 		<div class="flickity-page-dots-progress" -->
+		<div class="flickity-buttons-lg flickity-buttons-offset px-lg-12 flickity-enabled is-draggable"
+			data-flickity='{"pageDots": true, "prevNextButtons": true, "wrapAround": true}'>
 			<!-- Item -->
 			<div class="col px-4" style="max-width: 200px; max-height: 300px;"
 				th:each="product : ${productList}">

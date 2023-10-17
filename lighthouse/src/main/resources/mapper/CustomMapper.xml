@@ -5,12 +5,33 @@
   <mapper namespace="com.ar.lighthouse.customsvc.mapper.CustomMapper">
   	
   	<!-- faq목록 가져오기 -->
-  	<select id="selectFaqList" resultType="FaqVO">
-  		SELECT faq_code
-  		     , question_title
-  		     , question_answer
-  		     , faq_type
-  		     , find_inqtype(faq_type) type_name
+  	<select id="selectFaqList">
+  		select rt.*
+	FROM(
+	    select ROWNUM r, ft.*
+	    FROM(
+	        SELECT faq_code
+	                , find_inqtype(faq_type) type_name
+	                , question_title
+	                , question_answer
+	                , faq_type
+	        FROM ar_faq
+	        WHERE 1=1
+         	<if test="faqType != null and !(faqType == 0)">
+  		  	and	faq_type = #{faqType}
+  		  	</if>
+	        ORDER BY faq_code
+	        ) ft
+	         <![CDATA[
+	    WHERE ROWNUM <= #{cri.pageNum} * #{cri.amount}
+	    ]]>
+	    ) rt
+	WHERE rt.r > ( #{cri.pageNum} - 1) * #{cri.amount}
+  	</select>
+  	
+  	<!-- faq 갯수 -->
+  	<select id="getTotalFaqCount" resultType="int">
+  		SELECT COUNT(*)
   		  FROM ar_faq
   		  <where>
   		  	<if test="faqType != null and !faqType.equals('')">

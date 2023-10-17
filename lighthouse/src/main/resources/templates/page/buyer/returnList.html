@@ -38,17 +38,17 @@
                   <div class="collapse" id="Collapse" data-simplebar-collapse="#seasonGroup">
                     <div class="form-group form-group-overflow mb-6" id="seasonGroup">
                       <div class="form-check mb-3">
-                        <a class="form-check-label" id="cancel" href="cancelList" tabindex="-1">
+                        <a class="form-check-label" id="cancel" href="/page/buyer/cancelList" tabindex="-1">
                           취소
                         </a>
                       </div>
                       <div class="form-check mb-3">
-                        <a class="form-check-label" id="reList" href="returnList" tabindex="-1">
+                        <a class="form-check-label" id="reList" href="/page/buyer/returnList" tabindex="-1">
                           반품
                         </a>
                       </div>
                       <div class="form-check">
-                        <a class="form-check-label" id="exchange" href="exchangeList" tabindex="-1">
+                        <a class="form-check-label" id="exchange" href="/page/buyer/exchangeList" tabindex="-1">
                           교환
                         </a>
                       </div>
@@ -167,17 +167,18 @@
 				  </div>
                 </div>
               </div>
+			<div><hr></div>
                 </div>
 				</div>
 				</div>
-				<div id="noSearch">
+				<div  tabindex=-1>
 				<th:block th:if="${returnList.size == 0}">
 					<div>
 						 <ul>
 							<li class="list-group-item">
 								 <div class="row align-items-center">
 								  <br>
-								  <a href="/page/buyer/orderList">
+								  <a href="/page/buyer/orderList" id="noSearch">
 								  <p style="padding: 10%; font-weight: bolder; text-align: center;">반품 신청한 상품이 없습니다.
 								  <br>주문 목록에서 신청 가능합니다.
 								  </p>
@@ -192,6 +193,33 @@
 
           </div>
         </div>
+        				<!-- Pagination -->
+					<nav class="d-flex justify-content-center justify-content-md-end mt-10">
+						<ul class="pagination pagination-sm text-gray-400">
+							<li class="page-item" th:if="${pageMaker.prev}">
+								<a class="page-link page-link-arrow"
+									th:href="@{/page/buyer/returnList/(pageNum = ${pageMaker.startPage - 1})}">
+										<i class="fa fa-caret-left"></i>
+								</a>
+							</li>
+							<th:block
+								th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+								<li th:if="${pageMaker.endPage} ne 0"
+									th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+									th:each="pageButtom : ${#numbers.sequence(start,end)}"
+									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
+									<a class="page-link" href="#"
+									th:href="@{/page/buyer/returnList/(pageNum= ${pageButtom} )}"
+									th:text="${pageButtom}"></a>
+								</li>
+							</th:block>
+							<li class="page-item" th:if="${pageMaker.next}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/page/buyer/returnList/(pageNum = ${pageMaker.endPage + 1})}">
+									<i class="fa fa-caret-right"></i>
+							</a></li>
+						</ul>
+					</nav>
       </div>
       </div>
     </section>
@@ -248,6 +276,7 @@
 			}
 		};
 		
+		//tts 시작
 	   let TTSIsOk = localStorage.getItem('ttsKey');
 	   let sessionAuthor;
 	   console.log(sessionStorage.loginMember);          
@@ -259,7 +288,7 @@
        if(TTSIsOk == null || sessionAuthor == 3){
         let audioFileNow = new Audio();
         let firstMsg = "반품 목록 페이지입니다. 반품 신청한 내역에 대해서 확인할 수 있습니다.";
-        let message = firstMsg +$('#orderMenual').val();;
+        let message = firstMsg +$('#orderMenual').val();
 
         VoiceMenual(message);
         
@@ -273,7 +302,7 @@
 				data : JSON.stringify(returnData)
 			})			
 			.done(data => {
-				VoiceMenual('반품 철회가 완료되었습니다.')
+				
 				console.log(data);
 				$('#test').replaceWith(data);
 				if($('.order').length == 0){
@@ -293,14 +322,18 @@
 					      </ul>   
 				     </div>`
 					$('#noSearch').append(htmltags);
+				    $('#noSearch').focus();
+				     
 				}
 			})
 		};
 	  //tts 이벤트 부여
 	  $('.returnCode').on('focus', returnListInfo);
 	  $('.deleteBtn').on('focus', deleteBtn);
+	  $('#noSearch').on('focus', noSearch);
 	  
 	  //tts 이벤트 진행
+	  
 	  $('.deleteBtn').on('keydown',function(e){
        	if(e.key == 'Enter'){
        	 e.preventDefault();
@@ -309,7 +342,11 @@
 	       	 }
         }
      })
-    
+     
+      function noSearch(){
+	    	VoiceMenual('반품 신청한 상품이 없습니다. 현재 주문 목록에서 신청 가능합니다. 엔터키를 누르면 주문 목록으로 이동합니다.');
+	  }
+	  
 	  function returnListInfo() {
 		  	let returnCode = $(this).closest('.returnRow').find('.returnCode').text();
 		  	let orderCode = $(this).closest('.returnRow').find('.orderCode').text();

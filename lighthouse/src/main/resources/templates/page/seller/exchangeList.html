@@ -111,10 +111,13 @@ input, select, button{
 	background-color:black;
 	color : white;
 }
+h3{
+	margin:30px;
+}
 </style>  
 
 
-
+			<h3>교환/반품 내역</h3>
             <div class="_1Vof48UxmD_oVRNwPvxck">
 							
 								<div class="_KqV0-1BSnB">
@@ -238,6 +241,7 @@ input, select, button{
                            <!-- 반복문 종료 -->
                         </tbody>
                      </table>
+                     <h3 id="noList" style="text-align: center" th:if="${#lists.isEmpty(exReList)}">신청내역이 없습니다.</h3>
                   </div>
             </section>
 
@@ -376,10 +380,15 @@ function displayDate(range) {
      
      
      $('#returnOk').on('click',function(){
-        alert('hk');
         let refundListVO=[];
         
         let checkTags = $('input[type=checkbox]:checked').not(allCheck);
+        
+        if (checkTags.length === 0) {
+            alert('상품을 선택하세요'); // 경고창 표시
+            return; // 작업 중지
+          }
+        
         checkTags.each((idx, tag)=>{
            let orderDetailCode = $(tag).closest('tr').find('td:eq(1)').text();
            let memberId = $(tag).closest('tr').find('td:eq(9)').text();
@@ -404,7 +413,7 @@ function displayDate(range) {
         
         let $form = $('<form>', {
              method: 'POST',
-             action: 'orders/cancel'
+             action: '/seller/orders/cancel'
          });
 
          let $input = $('<input>', {

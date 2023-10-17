@@ -387,5 +387,15 @@ public class ProductServiceImpl implements ProductService {
 		map.put("정지 날짜", vo.getSuspEnddate());
 		return map;
 	}
+	
+//	수정정보
+	@Override
+	public List<ProductVO> modifyInfo(ProductVO productVO) {
+		return productMapper.modifyInfo(productVO);
+	}
+	@Override
+	public int updateProductThImg(ProductVO productVO) {
+		return productMapper.updateProductThImg(productVO);
+	}
 
 }

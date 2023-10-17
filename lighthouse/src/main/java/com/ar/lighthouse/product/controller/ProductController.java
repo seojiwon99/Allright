@@ -41,6 +41,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ar.lighthouse.admin.service.AdminService;
 import com.ar.lighthouse.admin.service.DeclareVO;
 import com.ar.lighthouse.admin.service.MemberDetailVO;
+import com.ar.lighthouse.buyp.service.BuyInfoVO;
+import com.ar.lighthouse.buyp.service.BuyerPageService;
 import com.ar.lighthouse.buyp.service.DetailVO;
 import com.ar.lighthouse.buyp.service.MyInquiryVO;
 import com.ar.lighthouse.cart.service.CartService;
@@ -85,6 +87,8 @@ public class ProductController {
    @Autowired
    ProductService productService;
 
+   @Autowired
+   BuyerPageService buyerPageService;
 
    @Autowired
    ReviewService reviewService;
@@ -201,6 +205,7 @@ public class ProductController {
       MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
       String memberId = memberVO.getMemberId();
       model.addAttribute("orderList", productService.getProductOrder(memberId));
+      System.out.println("orderModel @@ :" + model);
       return "page/seller/orderManagement";
    }
 
@@ -309,7 +314,7 @@ public class ProductController {
    }
    
 //   월별 주문 금액
-   @GetMapping("monthlyData")
+   @GetMapping("seller/monthlyData")
    @ResponseBody
    public List<DetailVO> getMonthlyCount(DetailVO detialVO, Model model){
       System.out.println(detialVO.getMonth());
@@ -427,18 +432,18 @@ public class ProductController {
    public String productForm(Model model, CategoryVO categoryVO, CodeVO codeVO) {
       model.addAttribute("getCategoryList", mainPageService.getAllCategoryList());
       model.addAttribute("delivery", productService.getDeliveryList());
-      System.out.println(model);
+
       return "page/seller/productForm";
    }
 
    
 //   수정폼
-   @GetMapping("/updateProduct")
+   @GetMapping("seller/updateProduct")
    public String modifyForm(Model model,CategoryVO categoryVO, CodeVO codeVO,ProductVO productVO, ImgsListVO imgsList) {
       model.addAttribute("getCategoryList", mainPageService.getAllCategoryList());
       model.addAttribute("delivery", productService.getDeliveryList());
       model.addAttribute("product", productService.updateProduct(productVO));
-      model.addAttribute("detailImg", productService.goodsDetail(productVO));
+      model.addAttribute("detailImg", productService.modifyInfo(productVO));
       System.out.println("product : @@@@" + productService.updateProduct(productVO));
       return "page/seller/modifyForm";
    }
@@ -566,7 +571,7 @@ public class ProductController {
          RedirectAttributes rtt, ImgsListVO imgsVO) {
 	   HttpSession session = req.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-		System.out.println(productVO);
+		System.out.println("file!!!" + imgsVO);
 		productVO.setMemberId(memberVO.getMemberId());
 
 		// productVO.setCategoryCode("MSU");
@@ -575,15 +580,18 @@ public class ProductController {
 		int i = 0;
 		System.out.println("files@@@" + files);
 		for (MultipartFile uploadFile : files) {
+			if(!uploadFile.isEmpty()) {
 			System.out.println("@@@@@@@@@@");
 			/*
 			 * if (uploadFile.getContentType().startsWith("image") == false) {
 			 * System.err.println("this file is not image type"); return null; }
 			 */
 			String originalName = uploadFile.getOriginalFilename();
+			
 			String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
+			System.out.println("file @@@!@#@! : " + fileName);
+			System.out.println("originalName:" +originalName  + "@@@");
 			productVO.getProductImg().get(i).setImgName(fileName);
-
 			// 날짜 폴더 생성
 			String folderPath = makeFolder();
 			String uuid = UUID.randomUUID().toString(); // 유니크한 이름 때문에
@@ -596,31 +604,42 @@ public class ProductController {
 			String saveName = uploadPath + "/" + uploadFileName;
 
 			Path savePath = Paths.get(saveName);
-			try {
-				uploadFile.transferTo(savePath); // 파일의 핵심
-				// uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
-				productVO.getProductImg().get(i).setProductCode(productVO.getProductCode());
-				productVO.getProductImg().get(i).setImgOrder(i);
-				if (files.get(0) == uploadFile) {
-					int idx = originalName.indexOf(".");
-
-					FileOutputStream thumbnail = new FileOutputStream(
-							new File(uploadPath + "\\" + folderPath, "s_" + uuid + "_" + originalName));
-					FileInputStream input = new FileInputStream(
-							new File(uploadPath + "\\" + folderPath, uuid + "_" + originalName));
-					Thumbnailator.createThumbnail(input, thumbnail, 100, 100);
-
-					thumbnail.close();
-
+				try {
+					uploadFile.transferTo(savePath); // 파일의 핵심
+					// uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
+					productVO.getProductImg().get(i).setProductCode(productVO.getProductCode());
+					productVO.getProductImg().get(i).setImgOrder(i);
+					if (files.get(0) == uploadFile) {
+						int idx = originalName.indexOf(".");
+	
+						FileOutputStream thumbnail = new FileOutputStream(
+								new File(uploadPath + "\\" + folderPath, "s_" + uuid + "_" + originalName));
+						FileInputStream input = new FileInputStream(
+								new File(uploadPath + "\\" + folderPath, uuid + "_" + originalName));
+						Thumbnailator.createThumbnail(input, thumbnail, 100, 100);
+	
+						thumbnail.close();
+	
+					}
+					// System.out.println(productVO.getProductImg().get(i));
+					productService.updateProductImg(productVO.getProductImg().get(i));
+					i++;
+	
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-				// System.out.println(productVO.getProductImg().get(i));
-				productService.updateProductImg(productVO.getProductImg().get(i));
-				i++;
-
-			} catch (IOException e) {
-				e.printStackTrace();
+			}else {
+				System.out.println("@dddddddddddddddddddddddddddddd");
+				//productVO.getProductImg().get(0).setImgContent(productVO.getImgContent());
+				ProductVO noImgProductVO = new ProductVO();
+				noImgProductVO.setProductCode(productVO.getProductCode());
+				System.out.println("productCode : @@@2" + productVO.getProductCode());
+				noImgProductVO.setImgContent(productVO.getProductImg().get(0).getImgContent());
+				
+				productService.updateProductThImg(noImgProductVO);
+				
+				System.out.println(productVO.getProductImg().get(0));
 			}
-
 		}
 		if (imgsVO.getImgsVO() != null) {
 			for (int j = 0; j < imgsVO.getImgsVO().size(); j++) {
@@ -1024,6 +1043,18 @@ public class ProductController {
 		return "redirect:/insertProduct";
 	}
 
+	// 구매자 개인정보
+	@GetMapping("seller/sellerInfo")
+	public String personalInfo(Model model, HttpSession session) {
+
+		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		String memberId = memberVO.getMemberId();
+
+		BuyInfoVO personalInfo = buyerPageService.getInfo(memberId);
+		model.addAttribute("personalInfo", personalInfo);
+
+		return "page/seller/sellerInfo";
+	}
    
 
 //   선택전시상태변경
@@ -1042,7 +1073,7 @@ public class ProductController {
 
   
 
-   @PostMapping("seller/updateImg")
+   @PostMapping("updateImg")
    public String updatedetailImg(Model model, ProductVO productVO, ImgsListVO imgsList, RedirectAttributes rttr) {
       model.addAttribute("product", productVO);
       rttr.addFlashAttribute("product", productVO);

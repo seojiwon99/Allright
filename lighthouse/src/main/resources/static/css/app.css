@@ -4868,13 +4868,6 @@ td, th {
 	-moz-box-sizing: border-box; /* box-sizing:border-box; */
 }
 
-html {
-	position: relative;
-	height: 100%;
-	min-height: 100%;
-	font-size: 12px;
-	-webkit-tap-highlight-color: rgba(0, 0, 0, 0)
-}
 
 html.mobile {
 	font-size: 14px;
@@ -8047,11 +8040,15 @@ select[multiple].input-group-sm>.form-control, select[multiple].input-group-sm>.
 }
 
 .navbar {
-	position: relative;
-	min-height: 55px;
-	margin-bottom: 0;
-	border: 1px solid transparent
+	align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 1.5rem 0;
+    position: relative;
+    background-color: white;
 }
+
 
 @media ( min-width :768px) {
 	.navbar {
@@ -8164,7 +8161,6 @@ select[multiple].input-group-sm>.form-control, select[multiple].input-group-sm>.
 .navbar-brand {
 	float: left;
 	padding: 17.5px 5px;
-	font-size: 14px;
 	line-height: 20px;
 	height: 55px
 }
@@ -12272,27 +12268,7 @@ button.close {
 	}
 }
 
-@media ( min-width :768px) {
-	.seller-responsive-list.list-col-3 li {
-		padding: 15px 0;
-		width: 25%
-	}
-}
 
-@media ( max-width :767px) {
-	.seller-responsive-list.list-col-3 li {
-		width: 50%
-	}
-	.seller-responsive-list.list-col-3 li:nth-child(odd):before {
-		display: none
-	}
-}
-
-@media ( max-width :767px) {
-	.seller-responsive-list.list-col-3 {
-		padding: 0
-	}
-}
 
 .seller-list-inline li .inline-list-title {
 	margin-right: 10px
@@ -21030,10 +21006,6 @@ ng-include, ui-view {
 	}
 }
 
-.seller-tap-responsive.fix-width-col-3 li {
-	float: left;
-	width: 25%
-}
 
 @media ( max-width :767px) {
 	.seller-tap-responsive.fix-width-col-4-mobile {
@@ -23380,23 +23352,19 @@ ng-include, ui-view {
 		padding-right: 3px
 	}
 }
-
-.btn-group.fix-width-col-3 .btn {
-	min-width: 60px
+.col-3 {
+	flex: 0 0 auto;
+	width: 25%;
+	background-color : white;
+}
+	
+.py-12 {
+    padding-bottom: 6rem !important;
+    padding-top: 6rem !important;
+    background-color: white;
 }
 
-@media ( max-width :767px) {
-	.btn-group.fix-width-col-3 {
-		width: 100%
-	}
-	.btn-group.fix-width-col-3 .btn {
-		min-width: 0;
-		width: 25%
-	}
-	.btn-group.fix-width-col-3 .btn:nth-child(n+5) {
-		margin-top: -1px
-	}
-}
+
 
 .btn-group.fix-width-col-4 .btn {
 	min-width: 60px
@@ -33620,13 +33588,6 @@ hr.bar:before {
 	-webkit-flex: 0 0 8.333333%;
 	flex: 0 0 8.333333%;
 	max-width: 8.333333%
-}
-
-.flex-col-3 {
-	-ms-flex: 0 0 25%;
-	-webkit-flex: 0 0 25%;
-	flex: 0 0 25%;
-	max-width: 25%
 }
 
 .flex-col-4 {

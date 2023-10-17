@@ -607,7 +607,7 @@
     // productCode productSalePrice
     let deliveryVO =
     {
-        orderPrice : amount,
+        orderPrice : Number(amount),
         orderAddr : $('#addr').val(),
         orderDetailsAddr : $('#addrDt').val(),
         recipientName : $('#deliveryName').val(),
@@ -642,6 +642,7 @@
     paymentWidget.requestPayment({
       orderId: uuid,
       orderName: [[${productName}]],
+
       successUrl: 'https://allright1.shop/orders/credit',
       failUrl: 'https://allright1.shop/orders/fail',
       customerEmail: [[${orderGet[0].memberEmail}]], 
