@@ -119,7 +119,7 @@ public class loginController {
 	
 	@PostMapping("page/member/editPassword")
 	@ResponseBody
-	public boolean editPassword(@RequestBody MemberVO memberVO) {
+	public boolean editPassword(@RequestBody MemberVO memberVO) {	
 		System.out.println("edit" + memberVO);
 		memberVO.setMemberPw(passwordEncoder.encode(memberVO.getMemberPw()));
 		
