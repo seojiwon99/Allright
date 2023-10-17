@@ -69,7 +69,7 @@ public interface BuyerPageMapper {
 
 	public int getPageCnt(String memberId);
 
-	public List<DetailVO> selectOptionList(DetailVO detailVO);
+	public List<DetailVO> selectOptionList(@Param("detailVO") DetailVO detailVO,@Param("cri") Criteria cri);
 
 	// 찜insert
 	public int insertWish(WishVO wishVO);
@@ -90,5 +90,7 @@ public interface BuyerPageMapper {
 	public int totalReturnCnt(String memberId);
 	
 	public int totalExchangeCnt(String memberId);
+	
+	public int selectOptionCnt(DetailVO detailVO);
 
 }

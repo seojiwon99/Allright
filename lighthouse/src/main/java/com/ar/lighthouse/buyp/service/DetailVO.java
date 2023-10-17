@@ -65,6 +65,8 @@ public class DetailVO {
  String searchValue;
  String searchKey;
  
+ Integer pageNum;
+ Integer amount;
  @DateTimeFormat(pattern="yyyy-MM-dd")
  Date fromDate;
  
@@ -101,4 +103,7 @@ public class DetailVO {
    List<OptionDetailVO> optionDetail;
    
    List<CodeVO> code;
+   
+   // 
+   
 }
