@@ -206,13 +206,13 @@
 								}">[[${param.ctg}]]</li>
 							</ol>
 							
-							<span class="btn btn-xs btn-light fw-normal text-muted me-3 mb-3" th:if="${param.order != null
+							<span class="btn btn-xs btn-light fw-normal text-muted me-3 mb-3" style="margin-top:10px;"th:if="${param.order != null
 							and not #strings.isEmpty(param.order)}">[[${param.order}]]
 							<a class="text-reset ms-2 delCtg" href="#!" role="button"><i class="fe fe-x"></i></a>
 							<input type="hidden" value="order">
 							</span>
 							
-							<span class="btn btn-xs btn-light fw-normal text-muted me-3 mb-3"
+							<span class="btn btn-xs btn-light fw-normal text-muted me-3 mb-3" style="margin-top:10px;"
 							 th:if="${param.minPrice != null and param.maxPrice != null
 							 and not #strings.isEmpty(param.minPrice) and not #strings.isEmpty(param.maxPrice)
 							  }">[[${param.minPrice}]]원 ~ [[${param.maxPrice}]]원
@@ -220,7 +220,7 @@
 							 <input type="hidden" value="price">
 							 </span>
 							 
-							 <span class="btn btn-xs btn-light fw-normal text-muted me-3 mb-3"
+							 <span class="btn btn-xs btn-light fw-normal text-muted me-3 mb-3" style="margin-top:10px;"
 							 th:if="${param.wildCtg != null and not #strings.isEmpty(param.wildCtg)}">
 							 <a class="text-reset ms-2 delCtg" href="#!" role="button"><i class="fe fe-x"></i></a>
 							 <input type="hidden" value="wildCtg" id="wildCard">
@@ -241,10 +241,16 @@
 
 					<div class="row" style="padding-top: 30px">
 						<!-- Products -->
-						<th:block th:each="product : ${products}">
-							<div class="col-6 col-md-4">
-								<div class="card mb-7">
-									<div class="card-img">
+						<th:block th:each="product,idx : ${products}">
+							<hr th:if="${(idx.count%3) == 1 and idx.count != 1}" style="margin-top: 24px;">
+							<div class="col-6 col-md-4 product-wrap" 
+							onmouseover="this.style.boxShadow='0 2px 10px 0 rgba(0,0,0,0.2)'" 
+							onmouseout="this.style.boxShadow='0 0 0 0'"
+							>
+								<div class="card" style="margin-top: 1rem; margin-bottom: 1rem;">
+									<div class="card-img"
+									style="justify-content: center;
+    										display: flex;">
 										<a class="card-img card-img-hover" tabindex="0"
 											th:href="|/goodDetail?productCode=${product.product_code}|">
 											<img
@@ -252,7 +258,7 @@
 											style="height: 250px; width: 250px">
 										</a>
 										<!-- Actions -->
-										<div class="card-actions" tabindex=-1>
+										<div class="card-actions" tabindex=-1 style="width:44px; padding: 0;  margin-bottom:20px;">	
 											<span class="card-action" tabindex=-1>
 												<button class="btn btn-xs btn-circle btn-white-primary"
 													data-toggle="button" tabindex=-1>
@@ -264,7 +270,15 @@
 									</div>
 									<div class="card-body">
 										<!--                      <div class="fs-xs">[[${product.category_code}]]</div> -->
-										<div class="fw-bold" style="height: 48px">[[${product.product_name}]]</div>
+										<div class="fw-bold" 
+										style="
+											white-space : nowrap;
+											overflow : hidden;
+											text-overflow : ellipsis;
+											cursor : pointer;"
+										th:title="${product.product_name}"
+										th:onclick="|location.href='@{/goodDetail(productCode=${product.product_code})}'|"
+										>[[${product.product_name}]]</div>
 										<div class="fw-bold text-muted">
 											<span
 												class="fs-xs text-gray-350 text-decoration-line-through">[[${#numbers.formatInteger(product.product_cost,3,'COMMA')}]]</span>
@@ -278,6 +292,25 @@
 											<div class="rating fs-xs text-dark"
 												th:if="${product.product_star} == 0"
 												th:data-value="${product.product_star}+1">
+												<div class="rating-item">
+													<i class="fas fa-star"></i>
+												</div>
+												<div class="rating-item">
+													<i class="fas fa-star"></i>
+												</div>
+												<div class="rating-item">
+													<i class="fas fa-star"></i>
+												</div>
+												<div class="rating-item">
+													<i class="fas fa-star"></i>
+												</div>
+												<div class="rating-item">
+													<i class="fas fa-star"></i>
+												</div>
+											</div>
+											<div class="rating fs-xs text-dark"
+												th:if="${product.product_star} != 0"
+												th:data-value="${product.product_star}">
 												<div class="rating-item">
 													<i class="fas fa-star"></i>
 												</div>
@@ -426,7 +459,8 @@
 			priceSize = 'priceThree';
 		}else if(min == 200000 && max == 99999999){
 			priceSize = 'priceFour';
-		}else {
+		}else if(min != '' && max != ''){
+			console.log('max:', max, 'min:', min)
 			priceSize = 'priceRange';
 		}
 		$(priceFilters).each(function(idx,tag){
