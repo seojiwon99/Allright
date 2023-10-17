@@ -185,7 +185,7 @@
                   <!-- Mobile Phone -->
                   <div class="form-group mb-0">
                     <label class="form-label" for="checkoutBillingPhone">연락처 *</label>
-                    <input class="form-control form-control-sm"  type="tel" placeholder="010-0000-0000" required id="deliveryTel">
+                    <input class="form-control form-control-sm"  type="text" placeholder="010-0000-0000" required id="deliveryTel" maxlength="13">
                   </div>
                   
                 </div>
@@ -562,6 +562,40 @@
       $('#addrDt').val($('#mAddr2').val());
       $('#deliveryTel').val($('#mTel').val()); 
     });
+  //전화번호 숫자 외 입력방지 및 auto hypen
+	$('#deliveryTel').on('keyup', function(){
+	    console.log(this.value);
+	    this.value =  autoHypen(this.value);
+	})
+	function autoHypen(str){
+	    str = str.replace(/[^0-9]/g, '');
+	    var tmp = '';
+	    if( str.length < 4){
+	        return str;
+	    }else if(str.length < 7){
+	        tmp += str.substr(0, 3);
+	        tmp += '-';
+	        tmp += str.substr(3);
+	        return tmp;
+	    }else if(str.length < 11){
+	        tmp += str.substr(0, 3);
+	        tmp += '-';
+	        tmp += str.substr(3, 3);
+	        tmp += '-';
+	        tmp += str.substr(6);
+	        return tmp;
+	    }else{              
+	        tmp += str.substr(0, 3);
+	        tmp += '-';
+	        tmp += str.substr(3, 4);
+	        tmp += '-';
+	        tmp += str.substr(7);
+	        return tmp;
+	    }
+	    return str
+	} 
+    
+    
     
    //토스 위젯
       const clientKey = 'test_ck_GjLJoQ1aVZJKQEvkvAWVw6KYe2RN' // 상점을 특정하는 키
