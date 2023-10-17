@@ -191,7 +191,7 @@ img {
                                        완료 날짜:</h6>
                                     <p class="mb-0 fs-sm fw-bold">
                                        <span class="deliveryDate"
-                                          th:text="|${lists.deliveryDate}|"></span>
+                                          th:text="${#dates.format(lists.deliveryDate, 'yyyy-MM-dd')}"></span>
                                     </p>
                                  </div>
                                  <!-- 취소 여부 -->
