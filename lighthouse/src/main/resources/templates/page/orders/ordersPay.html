@@ -68,7 +68,7 @@
                     <div th:each="gets,index : ${orderGet}" th:if="${index.index} < 1">
                     <label class="form-label" for="checkoutBillingFirstName">이름 *</label>
                     <div class="input-group mb-8">                      
-                      <input type="text" class="form-control" id="mName" placeholder="이름 작성" aria-label="Recipient's username" aria-describedby="button-addon2" th:value="${gets.memberName}" readonly>  
+                      <input type="text" class="form-control" id="mName" placeholder="이름 작성" aria-label="Recipient's username" aria-describedby="button-addon2" th:value="${gets.memberName}" readonly tabindex="-1">  
                       <button class="btn btn-outline-secondary deliveryInfo" type="button" style="width: 200px; margin: 10px; background-color: black; color: white; border-radius: 10px;">배송지 정보로 등록</button>                   
                     </div>
                     </div>
@@ -80,7 +80,7 @@
                   <div class="col-12">
                   
                     <div class="form-group">
-                      <input class="form-control form-control-sm" id="mAddr" type="tel" placeholder="배송지 상세주소" required th:value="|${gets.memberAddr} , ${gets.memberDetailsAddr}|" readonly>
+                      <input class="form-control form-control-sm" id="mAddr" type="tel" placeholder="배송지 상세주소" required th:value="|${gets.memberAddr} , ${gets.memberDetailsAddr}|" readonly tabindex="-1">
                       <input type="hidden" id="mAddr1" th:value="${gets.memberAddr}"> 
                       <input type="hidden" id="mAddr2" th:value="${gets.memberDetailsAddr}">
                     </div>
@@ -90,7 +90,7 @@
                   <!-- Email -->
                     <div class="form-group">
                       <label class="form-label" for="checkoutBillingEmail">Email *</label>
-                      <input class="form-control form-control-sm" id="mEmail" type="email" placeholder="abc@abc.com" required th:value="${gets.memberEmail}" readonly>
+                      <input class="form-control form-control-sm" id="mEmail" type="email" placeholder="abc@abc.com" required th:value="${gets.memberEmail}" readonly tabindex="-1">
                   </div>
                   </div>
              
@@ -98,7 +98,7 @@
                   <!-- Mobile Phone -->
                     <div class="form-group">
                      <label class="form-label" for="checkoutBillingPhone">연락처 *</label>
-                     <input class="form-control form-control-sm" id="mTel" type="tel" placeholder="010-0000-0000" required th:value="${gets.memberTel}" readonly>
+                     <input class="form-control form-control-sm" id="mTel" type="tel" placeholder="010-0000-0000" required th:value="${gets.memberTel}" readonly tabindex="-1">
                     </div>
                  </div>
                 </div>
