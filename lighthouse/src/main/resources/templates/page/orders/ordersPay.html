@@ -898,7 +898,7 @@
         if(couDiscount < 100) {
           couDiscount  = couponDisRt * couDiscount / 100;
           if(couDiscount > maxPrice) { // 할인쿠폰 최대 사용 제한 조건
-            VoiceMenual(maxPrice + '원이. 최대 할인금액 입니다. 사용 원할 경우 탭키 두번 눌러주세요.');
+            VoiceMenual(maxPrice + '원이. 최대 할인금액 입니다. 사용 원할 경우 스페이스바 두번 눌러주세요.');
             couDiscount = maxPrice;
           }
         } else {
