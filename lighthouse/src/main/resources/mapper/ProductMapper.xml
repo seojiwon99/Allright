@@ -679,9 +679,11 @@ WHERE p.product_code = #{productCode}
       o.option_detail_code = x.option_detail_code
       JOIN ar_products p ON x.product_code =
       p.product_code
-      JOIN ar_member m ON r.member_id = m.member_id
+      JOIN ar_member m ON p.member_id = m.member_id
       WHERE
-      o.order_status = 4
+      m.member_id = #{memberId}
+      AND o.order_status = 4
+      ORDER BY c.settlement_date DESC
    </select>
    
    <!-- optionVo list -->
@@ -773,7 +775,7 @@ FROM (
     JOIN ar_option_detail o ON o.option_detail_code = od.option_detail_code
     JOIN ar_products p ON p.product_code = o.product_code
     WHERE EXTRACT(YEAR FROM order_date) = #{year}
-    AND p.member_id = 'hky03017'
+    AND p.member_id = #{memberId}
 ) subquery
 GROUP BY EXTRACT(MONTH FROM order_date)
 ORDER BY EXTRACT(MONTH FROM order_date)

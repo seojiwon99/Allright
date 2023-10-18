@@ -5,10 +5,39 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<body>
 
-	<table border="1" class="table" id="getProductList">
-					<thead>
+<body>
+<style>
+.btnGo{
+	padding-left:10px;
+	padding-right:10px;
+	background-color:black;
+	color : white;
+}
+
+input, select, button{
+	border-radius: 5px;
+}
+
+::-webkit-scrollbar {
+  width: 12px; /* 가로 스크롤바 너비 조절 */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* 스크롤바 트랙 배경색 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* 스크롤바 썸 배경색 */
+  border-radius: 6px; /* 스크롤바 썸 둥글게 만들기 */
+}
+h3{
+	margin:30px;
+}
+</style> 
+			<div style="width:1450px; height: 500px; overflow: auto; border: 1px; position: relative;">
+				<table border="1" class="table" id="getProductList" style="background-color: white; white-space: nowrap;">
+					<thead style="position: sticky; top: 0; background-color: white;">
 						<tr>
 							<th>주문상세코드</th>
 							<th>상품명</th>
@@ -21,7 +50,7 @@
 						</tr>
 					</thead>
 						
-					<tbody id="calculateChkList">
+					<tbody id="calculateChkList" th:if="${!#lists.isEmpty(calList)}">
 						<tr th:each="cal : ${calList}">
 							<td th:text="${cal.orderDetailCode}" />
 							<td th:text="${cal.productName}" />
@@ -34,15 +63,14 @@
 						</tr>
 						<!-- 반복문 종료 -->
 					</tbody>
+					
 				</table>
-				<h3 id="noList" style="text-align:center"></h3>
+				</div>
+				<h3 id="noList" style="text-align: center" th:if="${#lists.isEmpty(calList)}">데이터가 없습니다.</h3>
+                  
 </body>
 <script>
-var list = [[${calList}]]
-console.log(list.length);
-if(list.length == 0 ){
-	$('#noList').text('데이터가 없습니다.')	
-}
+
 
 </script>
 </html>

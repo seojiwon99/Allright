@@ -294,8 +294,10 @@ public class ProductController {
 
 //  정산페이지
    @GetMapping("seller/calculatePage")
-   public String getCalculatePage(Model model, SellerCalVO sellerCalVO) {
-      model.addAttribute("calList", productService.getCalList(sellerCalVO));
+   public String getCalculatePage(Model model, SellerCalVO sellerCalVO, HttpSession session) {
+	   MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+	   String memberId = memberVO.getMemberId();
+      model.addAttribute("calList", productService.getCalList(memberId));
       return "page/seller/calculate";
    }
 
@@ -313,16 +315,21 @@ public class ProductController {
       return "page/seller/statistics";
    }
    
+   
+   
+   
 //   월별 주문 금액
    @GetMapping("seller/monthlyData")
    @ResponseBody
-   public List<DetailVO> getMonthlyCount(DetailVO detialVO, Model model){
-      System.out.println(detialVO.getMonth());
-      List<DetailVO> list =productService.getMonthlyCount(detialVO);
+   public List<DetailVO> getMonthlyCount(DetailVO detailVO, Model model, HttpSession session){
+      MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+      String memberId = memberVO.getMemberId();
+      detailVO.setMemberId(memberId);
+      List<DetailVO> list = productService.getMonthlyCount(detailVO);
       for(DetailVO vo : list) {
          System.out.println(vo);
       }
-      return productService.getMonthlyCount(detialVO);
+      return productService.getMonthlyCount(detailVO);
    }
 
 
@@ -571,26 +578,16 @@ public class ProductController {
          RedirectAttributes rtt, ImgsListVO imgsVO) {
 	   HttpSession session = req.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
-		System.out.println("file!!!" + imgsVO);
 		productVO.setMemberId(memberVO.getMemberId());
 
-		// productVO.setCategoryCode("MSU");
-		System.out.println("왜" + productVO);
 		productService.updateProductP(productVO);
 		int i = 0;
-		System.out.println("files@@@" + files);
 		for (MultipartFile uploadFile : files) {
 			if(!uploadFile.isEmpty()) {
-			System.out.println("@@@@@@@@@@");
-			/*
-			 * if (uploadFile.getContentType().startsWith("image") == false) {
-			 * System.err.println("this file is not image type"); return null; }
-			 */
+			
 			String originalName = uploadFile.getOriginalFilename();
 			
 			String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
-			System.out.println("file @@@!@#@! : " + fileName);
-			System.out.println("originalName:" +originalName  + "@@@");
 			productVO.getProductImg().get(i).setImgName(fileName);
 			// 날짜 폴더 생성
 			String folderPath = makeFolder();
@@ -598,7 +595,6 @@ public class ProductController {
 			productVO.getProductImg().get(i).setUploadName(uuid + "_" + fileName);
 
 			String uploadFileName = folderPath + "/" + uuid + "_" + fileName;
-			// System.out.println("uploadFileName" + uploadFileName);
 			productVO.getProductImg().get(i).setUploadPath(folderPath);
 
 			String saveName = uploadPath + "/" + uploadFileName;
@@ -621,7 +617,6 @@ public class ProductController {
 						thumbnail.close();
 	
 					}
-					// System.out.println(productVO.getProductImg().get(i));
 					productService.updateProductImg(productVO.getProductImg().get(i));
 					i++;
 	
@@ -629,11 +624,8 @@ public class ProductController {
 					e.printStackTrace();
 				}
 			}else {
-				System.out.println("@dddddddddddddddddddddddddddddd");
-				//productVO.getProductImg().get(0).setImgContent(productVO.getImgContent());
 				ProductVO noImgProductVO = new ProductVO();
 				noImgProductVO.setProductCode(productVO.getProductCode());
-				System.out.println("productCode : @@@2" + productVO.getProductCode());
 				noImgProductVO.setImgContent(productVO.getProductImg().get(0).getImgContent());
 				
 				productService.updateProductThImg(noImgProductVO);

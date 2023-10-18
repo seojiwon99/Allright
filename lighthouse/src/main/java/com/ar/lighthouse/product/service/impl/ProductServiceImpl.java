@@ -231,8 +231,8 @@ public class ProductServiceImpl implements ProductService {
 
 	// 정산건 확인
 	@Override
-	public List<SellerCalVO> getCalList(SellerCalVO sellerCalVO) {
-		return productMapper.selectCalList(sellerCalVO);
+	public List<SellerCalVO> getCalList(String memberId) {
+		return productMapper.selectCalList(memberId);
 	}
 
 	@Override
