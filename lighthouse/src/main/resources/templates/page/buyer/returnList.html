@@ -140,18 +140,17 @@
 
                       </div>
                       <div class="col-6 col-lg-3">
-												<h6 class="heading-xxxs text-muted">이미지:</h6>
-												<div class="row gx-5 mb-4 mb-lg-0">
-															<img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|"
-																style="max-width: 100%; height: auto">
-												</div>
-											</div>
-                      <div class="col-6 col-lg-3">
-                        <h6 class="heading-xxxs text-muted">반품 승인 날짜:</h6>
+                        <h6 class="heading-xxxs text-muted">반품 승인 여부:</h6>
                         <p class="mb-0 fs-sm fw-bold">
-                         <span class="returnProcessdate" th:text="|${#dates.format(lists.returnProcessdate, 'yyyy-MM-dd')}|"></span>
+                         <span class="returnStatus" th:text="|${lists.returnStatus}|"></span>
                         </p>
                       </div>
+                      <div class="col-6 col-lg-3">
+						<h6 class="heading-xxxs text-muted">이미지:</h6>
+						<div class="row gx-5 mb-4 mb-lg-0">
+						<img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|" style="max-width: 100%; height: auto">
+						</div>
+					  </div>
                     </div>
                   </div>
                 <div class="card-footer">
@@ -159,7 +158,7 @@
                   
                   <div class="col-12 col-lg-6">
 						<div class="row gx-5">
-							<div class="col-6">
+							<div class="col-6" th:if="${lists.returnStatus != '승인'}">
 								<!-- Button -->
 								<button class="btn btn-sm w-100 btn-outline-dark deleteBtn" th:onclick="deleteReturn([[${lists.orderDetailCode}]])" th:data-orderdetailcode="${lists.orderDetailCode}"  th:id="${lists.orderDetailCode}" style="border-radius: 10px; background-color: black; color: white; border-radius: 10px">반품 취소</button>
 							</div>
@@ -356,11 +355,10 @@
 		  	let paymentPrice = $(this).closest('.returnRow').find('.paymentPrice').text();
 		  	let returnRegdate = $(this).closest('.returnRow').find('.returnRegdate').text();
 		  	let returnStatus = $(this).closest('.returnRow').find('.returnStatus').text();
-		  	let returnProcessdate = $(this).closest('.returnRow').find('.returnProcessdate').text();
 		  	
 		  	let message = `반품번호는 ${returnCode}. 주문번호는 ${orderCode}. 주문상세번호는 ${orderDetailCode}. 상품명은 ${productName}.
 		  					상품 수량은 ${orderCnt}.  결제 금액은 ${paymentPrice}. 반품 접수날짜는 ${returnRegdate}. 
-		  					반품 승인 날짜는 ${returnProcessdate}. 입니다.`;
+		  					반품 승인 여부는 ${returnStatus}. 입니다.`;
 		  	
 		  	VoiceMenual(message);
 	  	}

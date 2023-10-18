@@ -174,10 +174,9 @@ img {
                                     <a th:href="|/goodDetail?productCode=${lists.productCode}|"
                                        tabindex="-1"> <img
                                        th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|"
-                                       style="max-width: 100%; height: auto"
-                                       th:alt="${lists.imgContent}">
+                                       style="max-width: 100%; height: auto" class="productImg"
+                                       th:alt="${lists.imgContent}" tabindex=0>
                                     </a>
-                                       
                                  </div>
                                  <!-- 상품명 -->
                                  <div class="col-6 col-lg-3">
@@ -296,7 +295,7 @@ img {
                                  </div>
                               </div>
                            </div>
-
+							<div><hr></div>
                            <!-- 리뷰 등록 폼 -->
                            <div class="modal fade" id="reviewInsert" tabindex="-1"
                               aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -728,6 +727,15 @@ img {
 			
 			window.open(location.pathname + '?' + newParam, '_self');
 		};   
+		
+		$(document).ready(function() {
+		    $('.productImg').keydown(function(event) {
+		        if (event.which === 13) {
+		        	var url = $(this).closest('a').attr('href');
+		            window.location.href = url;
+		        }
+		    });
+		});
 
 		//리뷰 버튼 tts 
 		var tmpProductCode;
@@ -778,10 +786,11 @@ img {
         $('#selectOption').on('focus', searchOption);
         $('#selectOption').on('keydown', searchOk);
         $('.orderCode').on('focus', orderDetailInfo);
-        $('.excBtn').on('focus', exchageBtn);
+        $('.excBtn').on('focus', exchangeBtn);
         $('.retBtn').on('focus', retBtn);
         $('.cancelBtn').on('focus', cancelBtn);
         $('.reviewBtn').on('focus', reviewBtn);
+        $('.productImg').on('focus', imgAlt);
         
         //tts 이벤트 진행
         function optionList(){
@@ -791,7 +800,7 @@ img {
         function optionSelect() {
           let selectOp = $('#optionList option:selected').text();
           VoiceMenual(selectOp);
-       }
+        }
         function search(){
            let search = $('#search').text();
            VoiceMenual("검색 창입니다. 검색 기준에 맞게 입력해주세요.");
@@ -803,10 +812,25 @@ img {
         function searchOk(){
            VoiceMenual("검색이 완료되었습니다.");
         }
+        function optionSelect() {
+            let selectOp = $('#optionList option:selected').text();
+            VoiceMenual(selectOp);
+        }
+        function imgAlt(){
+        	let altImg = $(this).closest('.orderRow').find('.productImg').attr('alt');
+        	VoiceMenual('상품 이미지 설명은.' + altImg + '입니다.' + '상품 상세 페이지로 이동하려면 엔터키를 입력해주세요.');
+        }
         function orderDetailInfo() {
         let orderCode = $(this).closest('.orderRow').find('.orderCode').text();
         let orderDetailCode = $(this).closest('.orderRow').find('.orderDetailCode').text();
         let orderDate =  $(this).closest('.orderRow').find('.orderDate').text();
+        let img = $(this).closest('.orderRow').find('.productImg').attr('alt');
+        if(img == ''){
+        	img = '상품 이미지 설명이 없습니다.';
+        }else{
+        	img = $(this).closest('.orderRow').find('.productImg').attr('alt');
+        }
+        
         let productName =  $(this).closest('.orderRow').find('.productName').text();
         let optionLast = $(this).closest('.orderRow').find('.optionLast').text();
         let orderCnt = $(this).closest('.orderRow').find('.orderCnt').text();
@@ -849,7 +873,7 @@ img {
         }
         
         let message = `주문번호는 ${orderCode}. 주문 상세 번호는 ${orderDetailCode}. 주문날짜는 ${orderDate}.
-                      상품명은 ${productName}. 옵션명은 ${optionLast}. 주문수량은 ${orderCnt}. 주문금액은 ${paymentPrice}.
+                      상품 이미지 설명은 ${img}. 상품 상세페이지로 이동하려면 상품 이미지에서 엔터키를 눌러주세요. 상품명은 ${productName}. 옵션명은 ${optionLast}. 주문수량은 ${orderCnt}. 주문금액은 ${paymentPrice}.
                       배송상태는 ${orderStatusNm}. 배송 완료날짜 ${deliveryDate}. 취소여부는 ${cancelStatusNm}.
                       반품여부는 ${returnStatusNm}. 교환여부는 ${exchangeStatusNm}. 주문확정은 ${orderCheck}. 입니다.`;
    
@@ -858,7 +882,7 @@ img {
         function reviewBtn() {
             VoiceMenual('리뷰 쓰기 버튼입니다. 리뷰 쓰기를 원하시면. 엔터키를 눌러주세요.');
          }
-        function exchageBtn() {
+        function exchangeBtn() {
            VoiceMenual('교환 신청 버튼입니다. 교환을 원하시면. 엔터키를 눌러주세요.');
         }
         function retBtn() {
@@ -873,6 +897,13 @@ img {
             let orderCode = $(this).closest('.orderRow').find('.orderCode').text();
             let orderDetailCode = $(this).closest('.orderRow').find('.orderDetailCode').text();
             let orderDate =  $(this).closest('.orderRow').find('.orderDate').text();
+            let img = $(this).closest('.orderRow').find('.productImg').attr('alt');
+            if(img == ''){
+            	img = '대체 텍스트가 없습니다.';
+            }else{
+            	img = $(this).closest('.orderRow').find('.productImg').attr('alt');
+            }
+            
             let productName =  $(this).closest('.orderRow').find('.productName').text();
             let optionLast = $(this).closest('.orderRow').find('.optionLast').text();
             let orderCnt = $(this).closest('.orderRow').find('.orderCnt').text();
@@ -915,11 +946,12 @@ img {
             }
             
             let message = `주문번호는 ${orderCode}. 주문 상세 번호는 ${orderDetailCode}. 주문날짜는 ${orderDate}.
-                          상품명은 ${productName}. 옵션명은 ${optionLast}. 주문수량은 ${orderCnt}. 주문금액은 ${paymentPrice}.
-                          배송상태는 ${orderStatusNm}. 배송 완료날짜 ${deliveryDate}. 취소여부는 ${cancelStatusNm}.
-                          반품여부는 ${returnStatusNm}. 교환여부는 ${exchangeStatusNm}. 주문확정은 ${orderCheck}. 입니다.`;
-       
-              VoiceMenual(message);
+                상품 대체텍스트 설명은 ${img}. 상품명은 ${productName}. 옵션명은 ${optionLast}. 주문수량은 ${orderCnt}. 주문금액은 ${paymentPrice}.
+                배송상태는 ${orderStatusNm}. 배송 완료날짜 ${deliveryDate}. 취소여부는 ${cancelStatusNm}.
+                반품여부는 ${returnStatusNm}. 교환여부는 ${exchangeStatusNm}. 주문확정은 ${orderCheck}. 입니다.`;
+
+    		VoiceMenual(message);
+    		
             }
    //tts 부분
    
