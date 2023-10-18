@@ -154,7 +154,7 @@ function initToggle(){
 		$('#addContent').val(queAns);
 		$('#inquiryMemberId').text('작성자 : ' + memberId);
 		$('#inquiryQueCon').text(queContent2);
-		
+		console.log(queCodeValue);
 	    $('#inquiryAdd').data('queCodeValue', queCodeValue);
 	});
 }
@@ -163,7 +163,7 @@ function initToggle(){
 					initToggle()
 					$('#inquiryAdd').click(function() {
 					    let queAns = $('#addContent').val();
-					    let queCodeValue = $('#inquiryAdd').data('queContent2'); 
+					    let queCodeValue = $('#inquiryAdd').data('queCodeValue'); 
 					    console.log(queAns);
 					    console.log(queCodeValue);
 
@@ -179,6 +179,7 @@ function initToggle(){
 					        data: JSON.stringify(dataToSend),
 					        success: function(data) {
 					            console.log(data);
+					            alert('답변 등록이 완료되었습니다.');
 					            refreshList();
 					        },
 					        error: function(jqXHR, textStatus, errorThrown) {

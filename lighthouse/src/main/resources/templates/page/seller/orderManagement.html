@@ -8,7 +8,7 @@
 
 
 <div layout:fragment="sellerContent">
-<style>
+<!-- <style>
 ._1Vof48UxmD_oVRNwPvxck {
 	background-color: rgb(248, 249, 250);
 	padding : 20px;
@@ -103,15 +103,21 @@ margin-left:400px;
 .searchDate{
 	margin-top:10px;
 }
-input, select, button{
-	border-radius: 5px;
-}
+
+
+ -->
+<style>
 .btnGo{
 	padding-left:10px;
 	padding-right:10px;
 	background-color:black;
 	color : white;
 }
+
+input, select, button{
+	border-radius: 5px;
+}
+
 ::-webkit-scrollbar {
   width: 12px; /* 가로 스크롤바 너비 조절 */
 }
@@ -127,53 +133,56 @@ input, select, button{
 h3{
 	margin:30px;
 }
-
-</style>
-				<!---->
+</style> 
+				
+				
+				<div class="_1Vof48UxmD_oVRNwPvxck container w-100" style="margin-left:0px;
+	 margin-right:0px;
+	 max-width:1600px">
+	
+			<div class="row justify-content-between" style="margin-bottom:30px; margin-top:30px;">
+				<div class="col-4">
 				<h3>주문내역</h3>
-				<div class="_1Vof48UxmD_oVRNwPvxck">
-							
-								<div class="_KqV0-1BSnB">
-									<button type="button" id="todayBtn" class="btn btn-primary2">
-										<span id="today">오늘</span>
-									</button>
-									<button type="button" id="weekBtn" class="btn btn-primary2">
-										<span id="week">1주일</span>
-									</button>
-									<button type="button" id="oneMonthBtn" class="btn btn-primary2">
-										<span id="onemonth">1개월</span>
-									</button>
-									<button type="button" id="threeMonthBtn"
-										class="btn btn-primary2">
-										<span id="thmonth">3개월</span>
-									</button>
+				</div>
+				<div class="col-4">
+					<div class="_KqV0-1BSnB col" style="margin-bottom:10px">
+						<button type="button" id="todayBtn" class="btn btn-dark btn-xs">
+							<span id="today">오늘</span>
+						</button>
+						<button type="button" id="weekBtn" class="btn btn-dark btn-xs">
+							<span id="week">1주일</span>
+						</button>
+						<button type="button" id="oneMonthBtn" class="btn btn-dark btn-xs">
+							<span id="onemonth">1개월</span>
+						</button>
+						<button type="button" id="threeMonthBtn" class="btn btn-dark btn-xs">
+							<span id="thmonth">3개월</span>
+						</button>
+					</div>
+					<!-- button -->
+					
+					<!--  date -->
+					<div class="searchDate col" style="margin-bottom:10px">
+						<span class="fs-sm">조회기간 : </span> <input type="DATE" id="from" name="from"
+							autocomplete="off"> <label for="to">~</label> <input
+							type="DATE" id="to" name="to" autocomplete="off">
+					</div>
+					<div class="detailSea col">
+						<label class="_MN8nIh0X4y fs-sm">상세조건 : </label> <select
+							class="_4LshyCrDpi" title="리스트 보기" >
+							<option selected value="">전체</option>
+							<option value="member_name">문의자명</option>
+							<option value="member_id">문의자ID</option>
+							<option value="product_code">상품코드</option>
+						</select> 
+						<input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
+						<button type="button" class="btn btn-dark btn-xxs" id="orderSearch">검색</button>
+					</div>
 
-									<div id="dateDisplay"></div>
-									<div class="searchDate">
-										<span>조회기간</span> <input type="DATE" id="from" name="from"
-											autocomplete="off"> <label for="to">~</label> <input
-											type="DATE" id="to" name="to" autocomplete="off">
-									</div>
-								</div>
-							
+				</div>
+			</div>
+	</div>
 
-
-							<div class="detailSea">
-									<label class="_MN8nIh0X4y">상세조건</label> 
-									<select class="_4LshyCrDpi" title="리스트 보기">
-										<option selected value="">전체</option>
-										<option value="member_name">구매자명</option>
-										<option value="member_tel">구매자연락처</option>
-										<option value="member_id">구매자ID</option>
-										<option value="product_code">상품코드</option>
-										<option value="delivery_number">송장번호</option>
-									</select> 
-									<input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
-							</div>
-									
-									
-							<button type="button" id="orderSearch" class="btn btn-dark mb-2">검색</button>
-							</div>
 							
 							<section class="pb-12">
 								<div class="orderBtn" style="margin: 20px;">
@@ -182,7 +191,7 @@ h3{
 									<!-- 모달 버튼 -->
 									<input type="button" id="cancelModal" data-toggle="modal"
 										data-target="#myModal" style="background-color:red; color:white;" value="판매자 직접취소 처리">
-									<div style="float:right;">
+									<div style="float:right; margin-right:70px;">
 										<a href="orderManagement"><button type="button" class="btnGo">원래대로</button></a>
 										<button type="button" id="paymentCom" class="btnGo">결제완료건</button>
 										<button type="button" id="orderChecked" class="btnGo">주문확인건</button>
@@ -233,7 +242,7 @@ h3{
 										</div>
 									</div>
 								</div>
-								<div style="width:1600px; height: 500px; overflow: auto; border: 1px; position: relative;">
+								<div style="width:1400px; height: 500px; overflow: auto; border: 1px; position: relative;">
 								<table class="table" id="getProductList" style="background-color:white;  white-space: nowrap;">
 									<thead style="position: sticky; top: 0; background-color: white;">
 										<tr>
@@ -520,10 +529,7 @@ h3{
          location.reload();
       } 
       
-	  const currentDate = new Date();
-	  const koreanTime = new Date(currentDate).toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
-	  const formattedDate = koreanTime.split('T')[0];
-	  $('#to').val(formattedDate);
+	 
  
   
      // 버튼 클릭 이벤트 처리
@@ -540,6 +546,12 @@ h3{
 		displayDate('threeMonth');
 	  });
   
+	  const currentDate = new Date();
+	  const koreanTime = new Date(currentDate).toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
+	  const formattedDate = koreanTime.split('T')[0];
+	  console.log(koreanTime);
+	  $('#to').val(formattedDate);
+	  
 	  // 날짜 표시 함수
 function displayDate(range) {
 	const currentDate = new Date();
@@ -572,13 +584,9 @@ function displayDate(range) {
   
 	// endDate 값을 input 요소에 설정
 	if (startDate) {
-	endDate.setDate(endDate.getDate() + 1); // 일자를 +1 하기
 	const formattedEndDate = endDate.toISOString().split('T')[0];
 	console.log(formattedEndDate); 
 
-	//   formattedYear = formattedEndDate.
-
-	  
 	  // input 요소 선택 후 value 설정
 	$('#to').val(formattedEndDate);
 	} else {
@@ -601,7 +609,6 @@ function displayDate(range) {
            
 	  
 $('#paymentCom').on('click', function(){
-	alert('gd');
 	let orderStatus = 1
 	$.ajax({
 		url:'statusOrder',

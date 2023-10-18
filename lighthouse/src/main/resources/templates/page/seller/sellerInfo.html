@@ -134,7 +134,22 @@
 								<!-- Button -->
 								<button class="btn btn-dark" type="button" id="updateBtn" style="border-radius: 10px;">수정완료</button>
 							</div>
-					
+							<div class="mb-3" style="margin-top:20px;">
+						<label>은행 명</label> 
+						<select name="" id="bankName">
+							<option value="004">KB국민은행</option>
+							<option value="011">농협</option>
+							<option value="031">대구은행</option>
+						</select>
+					</div>
+					<div class="mb-3">
+						<label>예금주</label> <input type="text" class="form-label" id="accountOwner">
+					</div>
+					<div class="mb-3">
+						<label>입금 계좌번호</label> <input type="text" class="form-label" id="accountNumber">
+					</div>
+					<input type="hidden" value="N" id="bankChk">
+					<button type="button" class="btn btn-dark" id="bankCheck">계좌확인</button>
 					</form>
             </div>
          </div>
@@ -285,7 +300,46 @@
        return str
    } 
    
-   
+   function bankList(){
+		$.ajax({
+			url:'/bankList',
+			type:'get',
+			success:function(result){
+				console.log("res" + result);
+			},
+			error:function(err){
+				console.log(err);
+			}
+		})
+	}
+
+	$(document).ready(function(){
+		bankList();
+	})
+	
+	$('#bankCheck').on('click',function(){
+		let accountName = $('#accountOwner').val();
+		let bankName = $('#bankName').val();
+		let accountNumber = $('#accountNumber').val();
+		
+		$.ajax({
+			url:'/checkAccount?bank_code='+bankName +'&bank_num=' + accountNumber,
+			type:'post',
+			success:function(result){
+				console.log(result);
+				if(accountName == result.bankHolderInfo){
+					$('#bankChk').val('Y');
+					alert("인증 성공");
+				}else{
+					$('#bankChk').val('N');
+					alert("잘못된 계좌입니다.");
+				}
+			},
+			error:function(err){
+				console.log(err);
+			}
+		})
+	})
 
    </script>
 </div>

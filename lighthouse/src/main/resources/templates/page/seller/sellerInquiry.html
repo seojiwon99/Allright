@@ -78,7 +78,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<h3 id="noList" style="text-align:center"></h3>
+						<h3 id="noList" style="text-align:center" th:if="${#lists.isEmpty(myInquiry)}">문의내역이 없습니다.</h3>
 					</div>
 
 
@@ -95,7 +95,6 @@
 								    <hr>
 								        <em class="prod-inquiry-item__reply__label">답변 : </em>
 								        <input class="prod-inquiry-item__wrap" style="width:90%; outline: none;  border:0;height:50px; margin-bottom:50px"  id="inquiryAnswer" name="inquiryAnswer"required placeholder="답변이 없습니다." readonly>
-									<button id="inquiryAdd" class="btn btn-dark btn-sm"type="button">등록하기</button>
 								</div>
 							</div>
 						</div>

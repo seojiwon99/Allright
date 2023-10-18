@@ -35,7 +35,7 @@
 
      <div class="col-12 col-lg" style="background-color: #E7E9EB;">
           <div class="row">
-              <h3 class="mb-10">상품 등록</h3>
+              <h3 class="mb-10">상품 수정</h3>
           </div> 
          <div class="row">
             <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
@@ -498,7 +498,6 @@
       <script th:inline="javascript">
       let productCode = window.localStorage.getItem('productCode');
          let test22="";
-         console.log(productCode);
          
          $(window).on("load", function () {
              optbox = $('.optionN');
@@ -522,7 +521,6 @@
 			 let optionc = [[${product[0].optionDetail[0].optionCount}]]
 			 let optionSta = [[${product[0].optionDetail[0].optionSellStatus}]]
 			 let tq = $('#optionValues1').val();
-			// console.log(optionSta);
 			 let optionNames = [];
              let optionValues = [];
              let optionCodes=[];
@@ -535,16 +533,12 @@
                 optionCodes.push(inputOpCode);
              }
 
-			 console.log(optionNames);
-			 console.log(optionCodes);
-			 console.log(optionc);
 			 if(optionz == '없음' ){
 				$('#optCnt').val(0); 
 			 } 
 			 else{
 	            $('#optCnt').val(val);
 			 }
-             console.log(val);
                    // 옵션 input 창   
                
                 if (val != 0 && optionz == '없음') {
@@ -606,78 +600,13 @@
                 }
     
                
-               
-               
-               
-               
-               
-               
-               
-               
-               
-               // 옵션 input 창   
-              /*  -
-               $('.optionsel').on('change', function (e) {
-            	   
-                  let val = $(this).val();
-                  
-                  $('.optionB').children().remove();
-                  $('#optiontab').children().remove();
-                  if (val != 0) {
-                     $('.optionText').show();
-                     $('#optionCount').val('');
-                     $('#productCount').val('');
-                     $('.countdiv').hide();
-                  } else {
-                     $('.optionText').hide();
-                     $('.countdiv').show();
-                  }
-
-
-                  for (let i = 0; i < val; i++) {
-                     let divBox = $('<div/>');
-                     let div = $('<div/>').addClass("optionDiv col input-group mb-3");
-                     let span = $('<span/>');
-                     span.text("옵션명"+ (i+1));
-                     span.addClass("input-group-text");
-						
-                     div.append(span);
-                     let optionN = $('<input name="option[' + i +
-                        '].optionName" class="optionN form-control" type="text" id="optionName' + i + '"/>');
-                     if (optionz != '없음') {
-                     optionN.val(optionNames[i]);
-                     }
-                     // let div = $('<div/>').addClass("optionDiv col-md-6");
-                     // let labelN = $("<label> /").text("옵션이름");
-                     // let optionN = $('<input name="option[' + i +
-                     //    '].optionName" class="optionN form-control" type="text" id="optionName' + i + '"/>');
-                     div.append(optionN);
-                     $('.optionB').append(div);
-
-                     div = $('<div/>').addClass("optionDiv col input-group mb-3");
-                     span = $('<span/>');
-                     span.text("옵션값"+ (i+1));
-                     span.addClass("input-group-text");
-                     div.append(span);
-                     let optionV = $('<input name="option[' + i +
-                        '].optionValue" class="optionV form-control" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' + i +
-                        '" />');
-                     if (optionz != '없음') {
-                     optionV.val(optionValues[i]);
-                     }
-                     div.append(optionV);
-                     divBox.append(div);
-                     $('.optionB').append(divBox);
-
-                  }
-               })
- */
+     
+            
          
 
 
         	 let userData = JSON.parse(localStorage.getItem("product"));
              let detailData = JSON.parse(localStorage.getItem("detail"));
-             console.log(detailData);
              if (userData != null) {
                 if (Date.now() > userData.expire) {
                    localStorage.removeItem("product");
@@ -685,50 +614,14 @@
                    return;
                 }
                 let inputTag = $("#updateForm").find("input").not("[type='button']").not("[type='file']");
-                // let selectTag = $("#insertForm").find("select");
-                // for (let i = 0; i < selectTag.length; i++) {
-                //    inputTag.push(selectTag[i]);
-                // }
+               
 
                 $.each(userData, function (key, value) {
-                   // console.log(key);
                    for (let data of inputTag) {
                       let dataName = $(data).attr('name');
                       if (dataName == key) {
                          $(data).val(value);
-                         // if (dataName == 'optCnt' && $(data).val() != '') {
-                         //    let val = $(data).val();
-                         //    console.log(val);
-                         //    $('.optionB').children().remove();
-                         //    // console.log(val);
-                         //    if (val != 0) {
-                         //       $('.optionBox').show();
-                         //    } else {
-                         //       $('.optionBox').hide();
-                         //    }
-                         //    console.log(key);
-                         //    for (let i = 0; i < val; i++) {
-                         //       console.log(option[i].value);
-                         //       let div = $('<div/>').addClass("optionDiv col-md-6");
-                         //       let labelN = $("<label> /").text("옵션이름");
-                         //       let optionN = $('<input name="option[' + i +
-                         //          '].optionName1" class="optionN" type="text" id="optionName' + i +
-                         //          '"/ value="' + key[i].value + '">');
-                         //       div.append(labelN);
-                         //       div.append(optionN);
-                         //       $('.optionB').append(div);
-
-
-                         //       let labelV = $("<label/>").text("옵션");
-                         //       let optionV = $('<input name="option[' + i +
-                         //          '].optionValue1" class="optionV" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' +
-                         //          i + '" />');
-                         //       div.append(labelV);
-                         //       div.append(optionV);
-                         //       $('.optionB').append(div);
-
-                         //    }
-                         // }
+                         
                       }
 
                    }
@@ -763,29 +656,7 @@
                     }
                  }
 
-               /*  if (userData.imgInfo !== "") {
-                    
-                    console.log("asd");
-                    let div = $("div#image_container");
-                    let img = $("<img/>");
-                    $(img).attr('src', userData.imgInform);
-                    $(img).css("width", "300px");
-                    $(img).css("height", "300px");
-                    let divTag = $("<div />");
-
-                    divTag.append(img);
-                    let inputTag = $('<input/>');
-                    $(inputTag).val(userData.imgInform);
-                    $(inputTag).attr('id', "Imginform");
-
-                    let textarea = $('textarea');
-                    $(textarea).attr("name", "productImg[0].imgContent");
-
-                    divTag.append(textarea);
-                    divTag.append(inputTag);
-
-                    div.append(divTag);
-                 } */
+             
 
                  if(Object.keys(userData.catemenu[0]).length != 0){
                     let obj = userData.catemenu[0];
@@ -806,14 +677,12 @@
                  }
 
                  if(Object.keys(userData.catemenu[1]).length != 0){
-                    // console.log("asdafff");
                     $('.categorybox1').css('display','block');
 
                     let obj = userData.catemenu[1];
                     let keyword ='';
                     let select = $('#categoryCode01');
                     for(var key in obj){
-                       //console.log(key);
                        if(key.charAt(0) == 0){
                           keyword = key.substr(1);
                           keyval = obj[key];
@@ -838,16 +707,13 @@
                     }
                  }
 
-                 //console.log(Object.keys(userData.catemenu[2]).length);
                  if(Object.keys(userData.catemenu[2]).length != 0){
-                    //console.log("a333333333333");
                     $('.categorybox2').css('display','block');
 
                     let obj = userData.catemenu[2];
                     let keyword ='';
                     let select = $('#categoryCode02');
                     for(var key in obj){
-                       //console.log(key);
                        if(key.charAt(0) == 0){
                           keyword = key.substr(1);
                           keyval = obj[key];
@@ -873,14 +739,12 @@
                  }
 
                  if(Object.keys(userData.catemenu[3]).length != 0){
-                    //console.log("444444444444444");
                     $('.categorybox3').css('display','block');
 
                     let obj = userData.catemenu[3];
                     let keyword ='';
                     let select = $('#categoryCode03');
                     for(var key in obj){
-                       //console.log(key);
                        if(key.charAt(0) == 0){
                           keyword = key.substr(1);
                           keyval = obj[key];
@@ -901,7 +765,6 @@
               }
               if(detailData != null){
                  let formT = $('#insertForm');
-                 console.log(formT);
                  if(detailData.content != null || detailData.content != ''){
                     let textarea = $('<textarea>'+ detailData.content +'</textarea>');
                     textarea.css("display","none");
@@ -913,7 +776,6 @@
                     for(let i = 0; i<detailData.img.length; i++){
                        let divTab = $('<div/>');
                        let obj = detailData.img[i];
-                       console.log(obj);
                        for(var key in obj){
                           let input = $('<input/>');
                           $(input).val(obj[key]);
@@ -929,41 +791,7 @@
 
         
            })
-          // 옵션 input 창   
-          -
-      //     $('.optionsel').on('change', function (e) {
-      //         let val = $(this).val();
-      //         $('.optionB').children().remove();
-      //         // console.log(val);
-      //         if (val != 0) {
-      //            $('.optionText').show();
-      //            $('#optionCount').val('');
-      //            $('.countdiv').hide();
-      //         } else {
-      //            $('.optionText').hide();
-      //            $('.countdiv').show();
-      //         }
-      //         for (let i = 0; i < val; i++) {
-      //            let div = $('<div/>').addClass("optionDiv col-md-6");
-      //            let labelN = $("<label> /").text("옵션이름");
-      //            let optionN = $('<input name="option[' + i +
-      //               '].optionName" class="optionN" type="text" id="optionName' + i + '"/>');
-      //            div.append(labelN);
-      //            div.append(optionN);
-      //            $('.optionB').append(div);
-
-
-      //            let labelV = $("<label/>").text("옵션");
-      //            let optionV = $('<input name="option[' + i +
-      //               '].optionValue" class="optionV" type="text" placeholder="ex) 파랑,노랑,초록" id="optionVal' + i +
-      //               '" />');
-      //            div.append(labelV);
-      //            div.append(optionV);
-      //            $('.optionB').append(div);
-
-      //         }
-      //      })
-
+   
 
 
 
@@ -988,19 +816,15 @@
 
            $('#categoryCode01').attr("name","categoryCode");
 
-           // $('.disabledsel:eq(0)').attr("selected", "selected");
-           // console.log(option);
-           // console.log(cateBox);
+         
            let firoption = $('<option>' + "카테고리선택" + '</option>');
            firoption.attr('value', 1);
            firoption.addClass("optionBox");
            firoption.prop("selected", true);
 
            firoption.prop("disabled", true);
-           // firoption.attr("disabled");
            option.append(firoption);
            $(cateBox).each(function (idx, item) {
-              // console.log(item);
               if (item.parentCategoryCode == val) {
                  let opt = $('<option>' + item.categoryName + '</option>');
                  opt.attr('value', item.categoryCode);
@@ -1035,7 +859,6 @@
                  option.append(opt);
                  num++
               }
-              // console.log(num);
            })
            if (num != 0) {
               $('.categorybox2').css('display', 'block');
@@ -1051,7 +874,6 @@
               
               option.prepend(firoption);
            } else {
-              console.log("Asdasdaffff");
 
               $('#categoryCode01').attr('name', 'categoryCode');
               $('#categoryCode02').removeAttr('name');
@@ -1064,7 +886,6 @@
 
         $(document).on('change', '#categoryCode02', function () {
            let val = $(this).val();
-           // console.log(val);
            let cateBox = [[${getCategoryList}]];
            let option = $('#categoryCode03');
            $('.optionBox02').remove();
@@ -1072,7 +893,6 @@
            let num = 0;
           
            $(cateBox).each(function (idx, item) {
-              // console.log(item);
               if (item.parentCategoryCode == val) {
                  let opt = $('<option>' + item.categoryName + '</option>');
                  opt.attr('class', 'optionBox02');
@@ -1099,29 +919,9 @@
 
  		 $(document).on('click', '.submit', function (e) {
             let option = $("input[name='optionName']").val();
-            console.log(option);
             e.preventDefault();
-            // if($('#selectCategory').val() == null || $('#selectCategory').val() == '' ){
-            //    alert("카테고리를 선택해주세요");   
-            //    return;
-            // }
             let form = $('#updateForm');
             let data = $(form).find('input[type != hidden]');
-            /* $(data).each(function(idx,item){
-               if($(item).val() == null || $(item).val() == ''){
-                  let id = $(item).attr("id");
-
-                  // console.log($(item).attr("id"));
-                  alert( $('label[for="'+ id+'"]').text()  + "를 입력해주세요");
-                  item.focus();
-                  return false;
-               }
-            })
-
-            if($('#selectdelivery').val() == null || $('#selectdelivery').val() ==''){
-               alert("택배사를 선택 해주세요");
-               return;
-            } */
             test22 ='/modifyProductContent?productCode='+ productCode
             localStorage.removeItem('product')
             form.submit();
@@ -1137,8 +937,6 @@
           var reader = new FileReader();
 
           reader.onload = function (event) {
-             // console.log(event.target.result);
-             // document.querySelector("div#image_container").removeChild();
              var div = document.querySelector("div#image_container");
              div.innerHTML ="";
              var divTag = document.createElement("div");
@@ -1473,7 +1271,6 @@
              }else{
                 catemenu1[$(this).text()] = $(this).val();
              }
-             //console.log($(this):selected);
 
           });
           obj.catemenu.push(catemenu1);
@@ -1625,12 +1422,6 @@
                          $(tbox).focus();
                          break;
                       }
-                      console.log(min);
-                      // if($(tbox).val() <  count){
-                      //    $(tbox).focus();
-                      //    alert("최소수량이 수량보다 많습니다.");
-                      //    break;
-                      // }
                       n++
                    }
                    if ($(tbox).attr("id") == "maxOrder" + idx) {
@@ -1640,16 +1431,6 @@
                          break;
                       }
                       
-                      // if($(tbox).val() >  count){
-                      //    $(tbox).focus();
-                      //    alert("최대수량이 수량보다 많습니다.");
-                      //    break;
-                      // }
-                      // if($(tbox).val() >  min){
-                      //    $(tbox).focus();
-                      //    alert("최대수량이 최소수량보다 적습니다.");
-                      //    break;
-                      // }
                       n++
                    }
                 }
