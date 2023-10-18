@@ -307,8 +307,8 @@ public class ProductController {
 		   , @RequestParam(required = false, defaultValue = "") String preBetw, @RequestParam(required = false, defaultValue = "") String suBetw) {
       MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
       String memberId = memberVO.getMemberId();
-      preBetw = preBetw.replaceAll("-", "/"); 
-      suBetw = suBetw.replaceAll("-", "/");
+      //preBetw = preBetw.replaceAll("-", "/"); 
+      //suBetw = suBetw.replaceAll("-", "/");
       model.addAttribute("staticList", productService.getStaticList(memberId,preBetw,suBetw));
       model.addAttribute("prev", preBetw);
 
