@@ -33,7 +33,7 @@
                 LEFT JOIN ar_products r ON p.product_code = r.product_code
                 LEFT JOIN ar_imgs i ON p.product_code = i.product_code
                 
-            WHERE c.member_id = #{memberId} AND c.cart_code = #{cartCode} AND i.img_order = 1
+            WHERE c.member_id = #{memberId} AND c.cart_code = #{cartCode} AND i.img_order = 0
   	</select>
  
  

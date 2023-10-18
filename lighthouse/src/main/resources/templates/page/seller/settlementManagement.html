@@ -35,7 +35,7 @@ google.charts.load('current', {'packages':['corechart']});
 
 <script type="text/javascript">
 $.ajax({
-    url: "statisticsPage", 
+    url: "/seller/statisticsPage", 
     method: "GET",
     success: function (data) {
         $("#contentArea").html(data); 
@@ -45,7 +45,7 @@ $.ajax({
 });
 $("#statisticsBtn").click(function () {
     $.ajax({
-        url: "statisticsPage", 
+        url: "/seller/statisticsPage", 
         method: "GET",
         success: function (data) {
             $("#contentArea").html(data); 

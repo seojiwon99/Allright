@@ -16,7 +16,7 @@
 			<div class="container d-flex flex-column">
 				<div class="row align-items-center py-12" style="min-height: 550px">
 					<!-- productbanner -->
-					<a href="#" id="bannerHyper"><img class="w-100" alt="..." th:src="|/upload/${banner.uploadPath}/${banner.uploadName}|" style="height:400px"></a>
+					<a th:href="|/${banner.eventCode}|" id="bannerHyper"><img class="w-100" alt="..." th:src="|/upload/${banner.uploadPath}/${banner.uploadName}|" style="height:400px"></a>
 
 					<div style="display: none" th:text="${banner.imgContent}"></div>
 				</div>

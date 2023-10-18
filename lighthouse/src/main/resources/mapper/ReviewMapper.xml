@@ -29,9 +29,9 @@
   	
   	<select id="selectReviewList" resultMap="selectReviewInfo" resultType="reviewVO">
 		SELECT *
-		FROM(SELECT 
-		           	ROWNUM rn
-		              , r.review_code
+		FROM(SELECT ROWNUM rn, reviewt.*
+            FROM( SELECT 
+                    r.review_code
 			       , r.member_id
 			       , r.product_code
 			       , r.review_content
@@ -49,11 +49,11 @@
 				ON r.review_code = i.review_code
 				WHERE r.product_code = #{reviewVO.productCode}
 				AND r.review_status = 'N'
+				order by r.review_regdate desc )reviewt
 				<![CDATA[
-				AND	ROWNUM <= #{cri.pageNum} * #{cri.amount}
-				order by r.review_regdate desc )
-		WHERE rn > ( #{cri.pageNum} - 1 ) * #{cri.amount}
-		]]>
+                WHERE	ROWNUM <= #{cri.pageNum} * #{cri.amount}) rt
+                ]]>
+		WHERE rt.rn > ( #{cri.pageNum} - 1 ) * #{cri.amount}
 	order by review_regdate DESC
   	</select>
   	
