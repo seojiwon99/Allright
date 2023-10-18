@@ -169,7 +169,7 @@
                   <div class="form-group">
                     <div class="input-group mb-8">
                       <input type="text" class="form-control" placeholder="배송지  정보"  id="addr">
-                      <button class="btn btn-outline-secondary" type="button" id="addressSearch" style="background-color: black; color: white; border-radius: 10px;">주소검색</button>
+                      <button class="btn btn-outline-secondary" type="button" id="addressSearch" style="background-color: black; color: white; border-radius: 10px;" tabindex="-1">주소검색</button>
                     </div>
                   </div>
                 </div>
@@ -723,6 +723,15 @@
     $('.couponResult').on('keydown', couponRs); // 쿠폰 사용 안내
     $('.cpCode').on('keydown', couponCheck); // 쿠폰 alert 창 tts로 먼저 확인
     $('#orderMan').on('focus',orderManInfo); //주문자 정보
+    $('#deliveryName').on('focus', deliName); //주문자 받는사람
+    $('#addr').on('focus',deliAddr); // 주문자 주소
+    $('#addrDt').on('focus', deliAddrDt); // 주문자 상세주소
+    $('#deliveryTel').on('focus', deliTel); // 주문자 연락처
+    $('#selbox').on('focus', deliRequest); // 배송 요청사항
+    
+    function deliRequest() {
+      VoiceMenual('아래로 내리면서 배송 요청 사항 내용 확인 후 선택해주세요.');
+    }
 
     //tts 이벤트 진행
     function payInfo() { // 결제 전 금액 확인
@@ -810,7 +819,10 @@
         } else if (recipientSelbox == 4) {
           recipientSelbox = $('#selectDirect').val();
         }
-
+		if(recipient == '' || recipientAddr =='' || recipientAddrDt=='' || recipientDeliverTel == '') {
+			VoiceMenual("배송 정보 입력해주세요. 주문자 정보로 등록 원한 경우 alt. 2번 이동 후 배송지 등록해주세요. 직접입력. 원할 경우. 탭으로 이동해주세요.");
+			return;
+		}
         let recipientMessage = `받는 사람 ${recipient}. 받는 주소 ${recipientAddr}. ${recipientAddrDt}. 연락처 ${recipientDeliverTel}. 요청사항 ${recipientSelbox}. 선택했습니다.
                                 만약 요청사항 선택하지 않은 경우. alt 5번으로 이동 후. 위.아래 키로 하시면 됩니다.`;
         VoiceMenual(recipientMessage);
@@ -829,6 +841,20 @@
         }
           VoiceMenual(deliveryRespon);
     }
+    function deliName() {
+      VoiceMenual('받는 사람 이름을 작성해주세요. 작성 후 탭으로 이동');
+    }
+    function deliAddr() {
+      VoiceMenual('받는 사람 주소를 작성해주세요. 작성 후 탭으로 이동')
+    }
+    function deliAddrDt(){
+      VoiceMenual('받는 사람 상세 주소를 작성해주세요. 작성 후 탭으로 이동')
+    }
+    function deliTel() {
+      VoiceMenual('받는 사람 숫자만 입력하시면 됩니다. 연락처 작성해주세요. 작성 후 탭으로 이동');
+    }
+
+
 
     function couponChoice() { //현재 상품 쿠폰 선택 버튼
         VoiceMenual("현재 상품에 대한 쿠폰 선택 원할 경우 스페이스바 클릭하여 나의 쿠폰함으로 이동합니다.");
