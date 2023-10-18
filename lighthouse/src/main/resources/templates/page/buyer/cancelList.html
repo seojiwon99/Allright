@@ -127,17 +127,25 @@
 												</p>
 											</div>
 											<div class="col-6 col-lg-3">
+												<h6 class="heading-xxxs text-muted">취소 승인 여부:</h6>
+												<p class="mb-0 fs-sm fw-bold">
+													<span class="cancelStatus" th:text="|${lists.cancelStatus}|"></span>
+												</p>
+											</div>
+											<!-- 
+											<div class="col-6 col-lg-3">
+												<h6 class="heading-xxxs text-muted">취소 승인 날짜:</h6>
+												<p class="mb-0 fs-sm fw-bold">
+													<span class="cancelDate" th:text="|${#dates.format(lists.cancelDate, 'yyyy-MM-dd')}|"></span>
+												</p>
+											</div>
+											 -->
+											<div class="col-6 col-lg-3">
 												<h6 class="heading-xxxs text-muted">이미지:</h6>
 												<div class="row gx-5 mb-4 mb-lg-0">
 															<img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|"
 																style="max-width: 100%; height: auto">
 												</div>
-											</div>
-											<div class="col-6 col-lg-3">
-												<h6 class="heading-xxxs text-muted">취소 승인 여부:</h6>
-												<p class="mb-0 fs-sm fw-bold">
-													<span class="cancelRejectionCode" th:text="|${lists.cancelRejectionCode}|"></span>
-												</p>
 											</div>
 										</div>
 									</div>
@@ -145,7 +153,7 @@
 										<div class="row align-items-center">
 											<div class="col-12 col-lg-6">
 												<div class="row gx-5">
-													<div class="col-6">
+													<div class="col-6" th:if="${lists.cancelStatus != '승인'}">
 				                                       <button
 				                                             class="btn btn-sm w-100 btn-outline-dark deleteBtn"
 				                                             th:onclick="deleteCancel([[${lists.orderDetailCode}]])"
@@ -344,12 +352,11 @@
     	let paymentPrice = $(this).closest('.cancelRow').find('.paymentPrice').text();
     	let cancelRegdate = $(this).closest('.cancelRow').find('.cancelRegdate').text();
     	let cancelStatus = $(this).closest('.cancelRow').find('.cancelStatus').text();
-    	let cancelRejectionCode = $(this).closest('.cancelRow').find('.cancelRejectionCode').text();
     	
     	
     	let message = `취소번호는 ${cancelCode}. 주문번호는 ${orderCode}. 주문상세번호는 ${orderDetailCode}. 상품명은 ${productName}.
     					상품 수량은 ${orderCnt}.  결제 금액은 ${paymentPrice}. 취소 접수날짜는 ${cancelRegdate}. 
-    					취소 승인 여부는 ${cancelRejectionCode}. 입니다.`;
+    					취소 승인 여부는. ${cancelStatus}. 입니다.`;
     	
     	VoiceMenual(message);
     }
