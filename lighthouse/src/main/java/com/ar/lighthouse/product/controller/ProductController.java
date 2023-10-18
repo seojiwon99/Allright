@@ -567,7 +567,7 @@ public class ProductController {
 				productService.addProductImg(imgsVO.getImgsVO().get(j));
 			}
 		}
-		rtt.addFlashAttribute("msg", "등륵성공");
+		rtt.addFlashAttribute("msg", "상품이 등록되었습니다.");
 
 		return "redirect:/seller/productList";
 	}
