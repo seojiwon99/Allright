@@ -307,8 +307,8 @@ public class ProductController {
 		   , @RequestParam(required = false, defaultValue = "") String preBetw, @RequestParam(required = false, defaultValue = "") String suBetw) {
       MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
       String memberId = memberVO.getMemberId();
-      //preBetw = preBetw.replaceAll("-", "/"); 
-      //suBetw = suBetw.replaceAll("-", "/");
+      preBetw = preBetw.replaceAll("-", "/"); 
+      suBetw = suBetw.replaceAll("-", "/");
       model.addAttribute("staticList", productService.getStaticList(memberId,preBetw,suBetw));
       model.addAttribute("prev", preBetw);
 
@@ -516,13 +516,11 @@ public class ProductController {
 		System.out.println(files);
 		int i = 0;
 			for (MultipartFile uploadFile : files) {
-				System.out.println("asdasd");
 				if(!uploadFile.isEmpty()) {
-				System.out.println("@@@@@@@@@@@@@");
 				String originalName = uploadFile.getOriginalFilename();
 				String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
 				productVO.getProductImg().get(i).setImgName(fileName);
-				System.out.println(fileName);
+				
 				// 날짜 폴더 생성
 				String folderPath = makeFolder();
 				String uuid = UUID.randomUUID().toString(); // 유니크한 이름 때문에
@@ -569,7 +567,7 @@ public class ProductController {
 				productService.addProductImg(imgsVO.getImgsVO().get(j));
 			}
 		}
-		rtt.addFlashAttribute("msg", "상품이 등록되었습니다.");
+		rtt.addFlashAttribute("msg", "등륵성공");
 
 		return "redirect:/seller/productList";
 	}
