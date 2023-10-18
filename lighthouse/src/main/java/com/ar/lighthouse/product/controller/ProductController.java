@@ -518,6 +518,7 @@ public class ProductController {
 			for (MultipartFile uploadFile : files) {
 				System.out.println("asdasd");
 				if(!uploadFile.isEmpty()) {
+				System.out.println("@@@@@@@@@@@@@");
 				String originalName = uploadFile.getOriginalFilename();
 				String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
 				productVO.getProductImg().get(i).setImgName(fileName);
