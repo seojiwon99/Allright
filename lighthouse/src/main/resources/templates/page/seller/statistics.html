@@ -113,7 +113,7 @@ $('.btn-underline').on('click',function(){
 		return;
 	}
 	let nextmonth = (Number(MM.substr(0, MM.length-1))+1)
-	let yy = ($('#yearSelect').val()).slice(-2);
+	let yy = ($('#yearSelect').val());
 	let nextYY = yy;
 	if(nextmonth > 12){ // 12월이면 내년 1월
 		nextmonth = 1;
@@ -124,9 +124,10 @@ $('.btn-underline').on('click',function(){
 	MM = ('0' + MM.substr(0, MM.length-1)).slice(-2);	
 	
 	let dd = '01';
-	let preBetw = '20'+yy+'-'+MM+'-'+dd;
-	let suBetw = '20'+nextYY+'-'+nextMM+'-'+dd;
+	let preBetw = yy+'-'+MM+'-'+dd;
+	let suBetw = nextYY+'-'+nextMM+'-'+dd;
 	
+	console.log(preBetw);
 	changeByDate(preBetw, suBetw)
 })
 //안의 값 변경
@@ -234,7 +235,6 @@ function drawVisualization() {
         		  if($(item).data('num') == month){
         			  $(this).click();
         		  }
-        		  console.log(item);
         	  })
         }
         
