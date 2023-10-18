@@ -286,56 +286,58 @@
 	
 	
 	$('.saveBtn').on('click', function(e){
-		
-		let thisTr = $(this).parent().parent();
-		console.log(thisTr.children())
-		let memberId = thisTr.children()[0].innerText;
-		console.log(memberId);
-		
-		
- 		let suspStatus;
-		let inputTag = thisTr.children()[7].children;
-		for(let i of inputTag){
-			if($(i).prop('checked') == true){
-				suspStatus = $(i).val();
+		if(confirm('저장하시겠습니까?')){
+			let thisTr = $(this).parent().parent();
+			console.log(thisTr.children())
+			let memberId = thisTr.children()[0].innerText;
+			console.log(memberId);
+			
+			
+	 		let suspStatus;
+			let inputTag = thisTr.children()[7].children;
+			for(let i of inputTag){
+				if($(i).prop('checked') == true){
+					suspStatus = $(i).val();
+				}
 			}
+			console.log(suspStatus);
+			
+			let suspReason;
+			let selectTag = thisTr.children()[8].children[0];
+			suspReason = $(selectTag).val();
+			console.log(suspReason);
+			
+			
+			let obj = {
+				memberId : 	memberId,
+				suspStatus : suspStatus,
+				suspReason : suspReason
+			};
+			
+			console.log(obj);
+			$.ajax({
+				url : "/admin/suspendByAdmin",
+				type : "POST",
+				data : JSON.stringify(obj),
+				contentType : 'application/json',
+				success : function(rs){
+					if(rs == "0"){
+						thisTr.children()[6].innerText = "사용 가능"
+						}else if(rs == "201"){
+							thisTr.children()[6].innerText = "판매자 30일 정지"
+						}else if(rs == "202"){
+							thisTr.children()[6].innerText = "판매자 90일 정지"
+						}else if(rs == "203"){
+							thisTr.children()[6].innerText = "판매자 영구 정지"
+						}
+				},
+				error : function(err){
+					console.log(err);
+				}
+			})
+		}else{
+			return;
 		}
-		console.log(suspStatus);
-		
-		let suspReason;
-		let selectTag = thisTr.children()[8].children[0];
-		suspReason = $(selectTag).val();
-		console.log(suspReason);
-		
-		
-		let obj = {
-			memberId : 	memberId,
-			suspStatus : suspStatus,
-			suspReason : suspReason
-		};
-		
-		console.log(obj);
-		$.ajax({
-			url : "/admin/suspendByAdmin",
-			type : "POST",
-			data : JSON.stringify(obj),
-			contentType : 'application/json',
-			success : function(rs){
-				if(rs == "0"){
-					thisTr.children()[6].innerText = "사용 가능"
-					}else if(rs == "201"){
-						thisTr.children()[6].innerText = "판매자 30일 정지"
-					}else if(rs == "202"){
-						thisTr.children()[6].innerText = "판매자 90일 정지"
-					}else if(rs == "203"){
-						thisTr.children()[6].innerText = "판매자 영구 정지"
-					}
-			},
-			error : function(err){
-				console.log(err);
-			}
-		})
-		
 	})
 	
 	function testFunc(memberId){

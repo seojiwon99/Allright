@@ -451,10 +451,11 @@
 		let priceSize;
 		let max = urlParamMaxPrice[0];
 		let min = urlParamMinPrice[0];
+		console.log(min,max)
 		if(min == 0 && max == 50000){
 			priceSize = 'priceOne';
 		}else if(min == 50000 && max == 100000){
-			priceSize = 'priceTwe';
+			priceSize = 'priceTwo';
 		}else if(min == 100000 && max == 200000){
 			priceSize = 'priceThree';
 		}else if(min == 200000 && max == 99999999){

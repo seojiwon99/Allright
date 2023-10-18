@@ -110,7 +110,7 @@
 	$(document).ready(function(){
 		let pReason = [[${param.declareReason}]];
 
-		if(pReason == null){
+		if(pReason == null || pReason == ''){
 			$('#noticeBtn').addClass('active');
 		}
 

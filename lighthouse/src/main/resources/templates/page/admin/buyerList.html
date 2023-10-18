@@ -5,6 +5,10 @@
       layout:decorate="~{layouts/admin_layout2}">
 <!-- Content -->
 <div layout:fragment="content" class="col">
+<style>
+.form-control:disabled, .form-control[readonly] {
+    background-color: #666f7f9c;
+</style>
 	<!-- main 영역 -->
 	<div class="container" style="margin-left: 0px">
 		<div class="col" style="    display: flex;
@@ -123,7 +127,7 @@
 	</div><!-- container -->
 	
 <!-- Modal -->
-<div class="modal fade" id="modalNewsletterVertical" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="modalNewsletterVertical" tabindex="-1" role="dialog" aria-hidden="true" style="font-weight: 500">
   <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 700px">
     <div class="modal-content">
 
@@ -132,7 +136,7 @@
         <i class="fe fe-x" aria-hidden="true"></i>
       </button>
       <!-- Body -->
-      <div class="modal-body" >
+      <div class="modal-body" style="    height: 250px;">
         <!-- Form -->
         <form style="height:300px">
           <div class="row gx-5">
@@ -192,16 +196,16 @@
       </div>
 
 
-      <!-- Footer -->
-      <div class="modal-footer justify-content-center pt-0">
-        <!-- Checkbox -->
-        <div class="form-check">
-          <!-- Label -->
-          <label class="form-check-label fs-xs" for="modalNewsletterVerticalCheckbox" data-bs-dismiss="modal" aria-label="Close">
-            닫기
-          </label>
-        </div>
-      </div>
+<!--       Footer -->
+<!--       <div class="modal-footer justify-content-center pt-0"> -->
+<!--         Checkbox -->
+<!--         <div class="form-check" style="border: 1px solid gray; cursor:pointer" > -->
+<!--           Label -->
+<!--           <label class="form-check-label fs-xs" for="modalNewsletterVerticalCheckbox" data-bs-dismiss="modal" aria-label="Close" style="margin:5px; "> -->
+<!--             닫기 -->
+<!--           </label> -->
+<!--         </div> -->
+<!--       </div> -->
       
       
 
@@ -264,55 +268,61 @@
 	
 
 	$('.saveBtn').on('click', function(e){
-		
-		let thisTr = $(this).parent().parent();
-		console.log(thisTr.children())
-		let memberId = thisTr.children()[0].innerText;
-		console.log(memberId);	
-		
-		
- 		let suspStatus;
-		let inputTag = thisTr.children()[6].children;
-		for(let i of inputTag){
-			if($(i).prop('checked') == true){
-				suspStatus = $(i).val();
+		if(confirm('저장하시겠습니까?')){
+			
+			
+			let thisTr = $(this).parent().parent();
+			console.log(thisTr.children())
+			let memberId = thisTr.children()[0].innerText;
+			console.log(memberId);	
+			
+			
+	 		let suspStatus;
+			let inputTag = thisTr.children()[6].children;
+			for(let i of inputTag){
+				if($(i).prop('checked') == true){
+					suspStatus = $(i).val();
+				}
 			}
+			console.log(suspStatus);
+			
+			let suspReason;
+			let selectTag = thisTr.children()[7].children[0];
+			suspReason = $(selectTag).val();
+			console.log(suspReason);
+			
+			
+			let obj = {
+				memberId : 	memberId,
+				suspStatus : suspStatus,
+				suspReason : suspReason
+			};
+			
+			console.log(obj);
+			$.ajax({
+				url : "/admin/suspendByAdmin",
+				type : "POST",
+				data : JSON.stringify(obj),
+				contentType : 'application/json',
+				success : function(rs){
+					if(rs == "0"){
+						thisTr.children()[5].innerText = "사용 가능"
+						}else if(rs == "101"){
+							thisTr.children()[5].innerText = "구매자 30일 정지"
+						}else if(rs == "102"){
+							thisTr.children()[5].innerText = "구매자 90일 정지"
+						}else if(rs == "103"){
+							thisTr.children()[5].innerText = "구매자 영구 정지"
+						}
+				},
+				error : function(err){
+					console.log(err);
+				}
+			})
+		}else{
+			return;
 		}
-		console.log(suspStatus);
-		
-		let suspReason;
-		let selectTag = thisTr.children()[7].children[0];
-		suspReason = $(selectTag).val();
-		console.log(suspReason);
-		
-		
-		let obj = {
-			memberId : 	memberId,
-			suspStatus : suspStatus,
-			suspReason : suspReason
-		};
-		
-		console.log(obj);
-		$.ajax({
-			url : "/admin/suspendByAdmin",
-			type : "POST",
-			data : JSON.stringify(obj),
-			contentType : 'application/json',
-			success : function(rs){
-				if(rs == "0"){
-					thisTr.children()[5].innerText = "사용 가능"
-					}else if(rs == "101"){
-						thisTr.children()[5].innerText = "구매자 30일 정지"
-					}else if(rs == "102"){
-						thisTr.children()[5].innerText = "구매자 90일 정지"
-					}else if(rs == "103"){
-						thisTr.children()[5].innerText = "구매자 영구 정지"
-					}
-			},
-			error : function(err){
-				console.log(err);
-			}
-		})
+
 		
 	})
 	function testFunc(memberId){
