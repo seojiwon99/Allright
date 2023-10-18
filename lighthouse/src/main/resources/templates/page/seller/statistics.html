@@ -124,8 +124,8 @@ $('.btn-underline').on('click',function(){
 	MM = ('0' + MM.substr(0, MM.length-1)).slice(-2);	
 	
 	let dd = '01';
-	let preBetw = yy+'-'+MM+'-'+dd;
-	let suBetw = nextYY+'-'+nextMM+'-'+dd;
+	let preBetw = '20'+yy+'-'+MM+'-'+dd;
+	let suBetw = '20'+nextYY+'-'+nextMM+'-'+dd;
 	
 	changeByDate(preBetw, suBetw)
 })
