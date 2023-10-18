@@ -118,24 +118,25 @@
 		}
 	})
 
-$('#faqSearchBtn').on('click', function(){
-	let nowURL = new URL(location.href);
-	nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
-	nowURL.searchParams.set('questionTitle', $('#faqSearchBar').val());
-	location.href = nowURL.href;
-})
-$('#faqSearchBar').on('keydown',function(e){
-	if(e.key == 'Enter'){
-		e.preventDefault();
+	$('#faqSearchBtn').on('click', function(){
 		let nowURL = new URL(location.href);
 		nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
 		nowURL.searchParams.set('questionTitle', $('#faqSearchBar').val());
 		location.href = nowURL.href;
-	}
-})
-
-$('#faqAddBtn').on('click',function(){
-	location.href ="/admin/faqForm"
+	})
+	
+	$('#faqSearchBar').on('keydown',function(e){
+		if(e.key == 'Enter'){
+			e.preventDefault();
+			let nowURL = new URL(location.href);
+			nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
+			nowURL.searchParams.set('questionTitle', $('#faqSearchBar').val());
+			location.href = nowURL.href;
+		}
+	})
+	
+	$('#faqAddBtn').on('click',function(){
+		location.href ="/admin/faqForm"
 })
 </script>      
 </div>
