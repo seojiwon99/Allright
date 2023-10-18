@@ -402,72 +402,69 @@
 
 
       <script th:inline="javascript">
-         let TTSIsOk = localStorage.getItem('ttsKey');
-         let sessionAuthor;
+
+		let TTSIsOk = localStorage.getItem('ttsKey');
+		let sessionAuthor;
+		if(sessionStorage.loginMember != null){
+			sessionAuthor = sessionStorage.loginMember.memberAuthor;
+		}
+
+		let audioFileNow = new Audio();
+
+		var AudioContext;
+		var audioContext;
+	
+		let qna = [[${NqnaList}]];
+		let chk = false;
+		let idx = 0;
+
          
-        
-   if(sessionStorage.loginMember != null){
-      sessionAuthor = sessionStorage.loginMember.memberAuthor;
-   }
+		window.onload = function() {
+		navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
+			AudioContext = window.AudioContext || window.webkitAudioContext;
+			audioContext = new AudioContext();
+		}).catch(e => {
+			console.error(`Audio permissions denied: ${e}`);
+		});
 
-    let audioFileNow = new Audio();
+		}
 
-         var AudioContext;
-         var audioContext;
-
-         let qna = [[${NqnaList}]];
-         let chk = false;
-         let idx = 0;
-         
-         window.onload = function() {
-            navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
-               AudioContext = window.AudioContext || window.webkitAudioContext;
-               audioContext = new AudioContext();
-            }).catch(e => {
-               console.error(`Audio permissions denied: ${e}`);
-            });
-
-         }
-
-         function VoiceReturnRead(text) {
-            var data = {
-               "voice": {
-                  "languageCode": "ko-KR",
-                  "name": "ko-KR-Neural2-B"
-               },
-               "input": {
-                  "text": text,
-
-               },
-               "audioConfig": {
-                  "audioEncoding": "mp3"
-               }
-            }
+		function VoiceReturnRead(text) {
+			var data = {
+				"voice": {
+				"languageCode": "ko-KR",
+				"name": "ko-KR-Neural2-B"
+				},
+				"input": {
+				"text": text,
+				},
+				"audioConfig": {
+				"audioEncoding": "mp3"
+				}
+			}
 
             $.ajax({
-               type: 'POST',
-               url: 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
-               data: JSON.stringify(data),
-               dataType: 'JSON',
-               contentType: "application/json; charset=UTF-8",
-               success: function (res) {
-                  var audioFile = new Audio();
-                  let audioBlob = base64ToBlob(res.audioContent,
-                     "mp3");
-                  audioFile.src = window.URL
-                     .createObjectURL(audioBlob);
-                  audioFile.playbackRate = 1; //재생속도
-                  if(audioFileNow.paused == false){
-                     audioFileNow.pause();
-                  }
-                  audioFileNow = audioFile;
-                  audioFileNow.play();
-               
-
-               },
-               error: function (request, status, error) {
-                  alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
-               }
+				type: 'POST',
+				url: 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
+				data: JSON.stringify(data),
+				dataType: 'JSON',
+				contentType: "application/json; charset=UTF-8",
+				success: function (res) {
+					var audioFile = new Audio();
+					let audioBlob = base64ToBlob(res.audioContent,
+						"mp3");
+					audioFile.src = window.URL
+					.createObjectURL(audioBlob);
+					audioFile.playbackRate = 1; //재생속도
+					if(audioFileNow.paused == false){
+						audioFileNow.pause();
+					}
+					audioFileNow = audioFile;
+					audioFileNow.play();
+				},
+				error: function (request, status, error) {
+					alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
+				}
             });
          };
 
@@ -486,102 +483,103 @@
             for (let i = 0; i < bytes.length; i++) {
                ia[i] = bytes.charCodeAt(i);
             }
-            return new Blob([ ab ], {
+			return new Blob([ ab ], {
                type : mime
             });
-         }
-      $(window).scroll(function () {
-         var height = $(document).height(); //전체높이
+		}
          
-         var headerSection =$("#headerSection").height();
+		$(window).scroll(function () {
+			var height = $(document).height(); //전체높이
          
-         var preHeight = $(document).scrollTop(); //현재 스크롤
-         preHeight = parseInt(preHeight);
+			var headerSection =$("#headerSection").height();
          
-         var pContentSection = $('#pContentSection').offset().top;// 상품상세
-         pContentSection = parseInt(pContentSection);
+			var preHeight = $(document).scrollTop(); //현재 스크롤
+			preHeight = parseInt(preHeight);
          
-         var reviewSection =$("#sizeTab").offset().top;
-         reviewSection = parseInt(reviewSection);
+			var pContentSection = $('#pContentSection').offset().top;// 상품상세
+			pContentSection = parseInt(pContentSection);
+         
+			var reviewSection =$("#sizeTab").offset().top;
+			reviewSection = parseInt(reviewSection);
       
-         var qnaSection =$("#qnaTap").offset().top;
-         qnaSection = parseInt(qnaSection);
+			var qnaSection =$("#qnaTap").offset().top;
+			qnaSection = parseInt(qnaSection);
          
-         if(preHeight < headerSection){
-            $("#pcon").css("color","black");
-            $("#rcon").css("color","black");
-            $("#qcon").css("color","black");
-         }
-         if(headerSection <= preHeight || preHeight <= height - (reviewSection+qnaSection+headerSection)){
-            $("#pcon").css("color","#ff6f61");
-            $("#rcon").css("color","black");
-            $("#qcon").css("color","black");
-         }
+			if(preHeight < headerSection){
+            	$("#pcon").css("color","black");
+            	$("#rcon").css("color","black");
+            	$("#qcon").css("color","black");
+         	}
+         	if(headerSection <= preHeight || preHeight <= height - (reviewSection+qnaSection+headerSection)){
+	            $("#pcon").css("color","#ff6f61");
+	            $("#rcon").css("color","black");
+	            $("#qcon").css("color","black");
+         	}
          
-         if(reviewSection-200 <= preHeight ||  preHeight >= qnaSection){
-            $("#pcon").css("color","black");
-            $("#rcon").css("color","#ff6f61");
-            $("#qcon").css("color","black");
-         }
+         	if(reviewSection-200 <= preHeight ||  preHeight >= qnaSection){
+	            $("#pcon").css("color","black");
+	            $("#rcon").css("color","#ff6f61");
+	            $("#qcon").css("color","black");
+         	}
          
-         if(preHeight+400 >= qnaSection){
-            $("#pcon").css("color","black");
-            $("#rcon").css("color","black");
-            $("#qcon").css("color","#ff6f61");
-         }
+         	if(preHeight+400 >= qnaSection){
+	            $("#pcon").css("color","black");
+	            $("#rcon").css("color","black");
+	            $("#qcon").css("color","#ff6f61");
+         	}
          
          
-         }); 
+		}); 
       
-        let reviewTitle = '';
-      let reviewPage = '';
-      let reviewEnd ='';
+		let reviewTitle = '';
+		let reviewPage = '';
+		let reviewEnd ='';
 
-      let qnaPage = '';
-      let qnaEnd ='';
+		let qnaPage = '';
+		let qnaEnd ='';
       
-   // 옵션 초기화      
-   let optionDetail =[[${optionDetail}]];
-   let optionLength = [[${#lists.size(options)}]];
+		// 옵션 초기화      
+		let optionDetail =[[${optionDetail}]];
+		let optionLength = [[${#lists.size(options)}]];
    
-   window.addEventListener("DOMContentLoaded", (event) => {
-	  let optvalue = "";
-      //리뷰 로드
-      replacePrice();
-      reviewPageLoad(1);
-      inquiryPageLoad(1);      
-      changeOptionHandler();
-      imgGlasses();
-      preventMinus();
-      
-      //이벤트 지정      
-      $('.selectbox').on("change",changeOptionHandler)
-      //$('.cnt').on("change", cntChangeHandler);
-       $("#loginTag").on("click", loginTagClickHandler);
-      
-   });   
+
+		window.addEventListener("DOMContentLoaded", (event) => {
+			//리뷰 로드
+			replacePrice();
+			reviewPageLoad(1);
+			inquiryPageLoad(1);      
+			changeOptionHandler();
+			imgGlasses();
+			preventMinus();
+	      
+			//이벤트 지정      
+			$('.selectbox').on("change",changeOptionHandler)
+			//$('.cnt').on("change", cntChangeHandler);
+			$("#loginTag").on("click", loginTagClickHandler);
+		});   
+ 
    
-   /*------------------------
-   리뷰 페이지 로드
-   -------------------------*/     
-   function reviewPageLoad(p){
-      let productCode = [[${goods.productCode}]];
-      let url = "reviewView?productCode="+productCode+"&pageNum="+p;
-      $("#sizeTab").load(url,function(){
-            reviewTitle = $('#Reviewtitle');
-            reviewPage = $('#reviewpageNum').val();
-            reviewEnd = $('#reviewpageEnd').val();
-         })
-   }
+		/*------------------------
+		리뷰 페이지 로드
+		-------------------------*/     
+		function reviewPageLoad(p){
+			let productCode = [[${goods.productCode}]];
+			let url = "reviewView?productCode="+productCode+"&pageNum="+p;
+			$("#sizeTab").load(url,function(){
+	            reviewTitle = $('#Reviewtitle');
+	            reviewPage = $('#reviewpageNum').val();
+	            reviewEnd = $('#reviewpageEnd').val();
+			})
+		}
    
-   /*------------------------
-   qna 페이지 로드
-   -------------------------*/
-   function inquiryPageLoad(p){
-      let productCode = [[${goods.productCode}]];
-      let url = "inquiryView?productCode="+productCode+"&pageNum="+p;
-     $("#qnaTap").load(url, function(){
-            qnaPage = $('#qnapageNum').val();
+		/*------------------------
+		qna 페이지 로드
+		-------------------------*/
+		function inquiryPageLoad(p){
+		let productCode = [[${goods.productCode}]];
+		let url = "inquiryView?productCode="+productCode+"&pageNum="+p;
+		$("#qnaTap").load(url, function(){
+			qnaPage = $('#qnapageNum').val();
             qnaEnd = $('#qnapageEnd').val();
          })
    }
@@ -599,6 +597,7 @@
                $(this).next().attr("disabled",false);   
                 return;
             }
+
             
                //마지막 옵션
                //선택 값            
@@ -612,7 +611,7 @@
                
                //첫번째 제외 disabled
                $('.selectbox:gt(0)').attr("disabled",true);
-     
+
                let flag = true;
                //기존 선택 유무
                $(".optionDetailCodeName").each(function(){
@@ -670,63 +669,61 @@
                   }
                }
 
-               preventMinus();
-              calTotal();
+			preventMinus();
+			calTotal();
 
-      }else{
+		}else{
 
-         //마지막 옵션이 아니면 다음옵션
-            if(!$(this).hasClass("last")){            
-               $(this).next().attr("disabled",false);   
-                return;
-            }
+		//마지막 옵션이 아니면 다음옵션
+		if(!$(this).hasClass("last")){            
+			$(this).next().attr("disabled",false);   
+			return;
+		}
             
-               //마지막 옵션
-               //선택 값            
-               let optionVal = '';
+		//마지막 옵션
+		//선택 값            
+		let optionVal = '';
                
-               //select 초기화
-               $('.selectbox').each(function(){
-                  optionVal += $(this).val();
-                  $(this).val('');
-               })
+		//select 초기화
+		$('.selectbox').each(function(){
+			optionVal += $(this).val();
+			$(this).val('');
+		})
                
-               //첫번째 제외 disabled
-               $('.selectbox:gt(0)').attr("disabled",true);
-   
-               let flag = true;
-               //기존 선택 유무
-               $(".optionDetailCodeName").each(function(){
-                  if($(this).text()==optionVal){
-      
-                     alert("이미 선택된 옵션입니다");
-                     flag = false;
-                     return true;
-                  }
-               })
-               if(flag == false) return;
+		//첫번째 제외 disabled
+		$('.selectbox:gt(0)').attr("disabled",true);
                
-               //detailCode, 가격 찾기
-               for(let i=0; i<optionDetail.length; i++){
-                  if(optionDetail[i].optionLast == optionVal){
-                     let code = optionDetail[i].optionDetailCode;
-                     let originPrice = $("#originPrice").val();
-                     let price = optionDetail[i].optionPrice;
-                     let minOrder = optionDetail[i].minOrder; 
-                     let maxOrder = optionDetail[i].maxOrder;
-                     let optionCount = optionDetail[i].optionCount;
+			let flag = true;
+			//기존 선택 유무
+			$(".optionDetailCodeName").each(function(){
+				if($(this).text()==optionVal){
+					alert("이미 선택된 옵션입니다");
+					flag = false;
+					return true;
+				}
+			})
+			if(flag == false) return;
+
+               
+			//detailCode, 가격 찾기
+			for(let i=0; i<optionDetail.length; i++){
+				if(optionDetail[i].optionLast == optionVal){
+					let code = optionDetail[i].optionDetailCode;
+					let originPrice = $("#originPrice").val();
+					let price = optionDetail[i].optionPrice;
+					let minOrder = optionDetail[i].minOrder; 
+					let maxOrder = optionDetail[i].maxOrder;
+					let optionCount = optionDetail[i].optionCount;
                      
-                     let sum = parseInt(originPrice) + parseInt(price);
+					let sum = parseInt(originPrice) + parseInt(price);
+					sum = replaceComma(sum);
                      
-                     sum = replaceComma(sum);
-                     
-                     
-                     let optionView =$("#optionView");
-                     let liTag =`<li style=" padding:10px; margin-bottom:10px; background-color:#f8f8f8">
-                        <div style="display:flex; justify-content:space-between; padding-bottom:6px">
-                           <span class="optionDetailCodeName" style="font-weight:600; color:#ff6f61">${optionVal}</span>
-                           <button class="optionCloseBtn" type="button" style="all: unset; cursor:pointer; color:#ff6f61">X</button>
-                        </div>
+					let optionView =$("#optionView");
+					let liTag =`<li style=" padding:10px; margin-bottom:10px; background-color:#f8f8f8">
+						<div style="display:flex; justify-content:space-between; padding-bottom:6px">
+							<span class="optionDetailCodeName" style="font-weight:600; color:#ff6f61">${optionVal}</span>
+							<button class="optionCloseBtn" type="button" style="all: unset; cursor:pointer; color:#ff6f61">X</button>
+						</div>
                         
                         <div style="padding-bottom:6px "> 
                            <input type="hidden" name="optionDetailCode" value="${code}"> 
@@ -735,574 +732,546 @@
                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>남은 수량은 ${optionCount}개 입니다</span>
                         </div>
                         
-                        <div style="padding-bottom:6px"> 가격 : <span><strong class="pp">${originPrice}</strong> (현재 할인가)</span> 
-                        + <span class="orderPrice"><strong class="salePrice">${price}</strong> (옵션가격)</span>
+                        <div style="padding-bottom:6px"> 가격 : 
+                        	<span><strong class="pp">${originPrice}</strong> (현재 할인가)</span> 
+                        	+ <span class="orderPrice"><strong class="salePrice">${price}</strong> (옵션가격)</span>
                         </div>
                         <div style="padding-bottom:6px"> 
-                        <strong style="display:none; " id="orPrice">${sum}</strong>
-                        총 가격 : <span class="changePriceShow"><strong>${sum}</strong></span>원
+                        	<strong style="display:none; " id="orPrice">${sum}</strong>
+                        	총 가격 : <span class="changePriceShow"><strong>${sum}</strong></span>원
                         </div>
                      </li>`;
                      $("#optionView").append(liTag);
       
-                     break;
+						break;
                     
                      
-                     } //end of if
-                  }//end of for
-                // 전체 합계
-              preventMinus();
-              calTotal();
-      }
-
-   }//end of function
+						} //end of if
+					}//end of for
+			// 전체 합계
+			preventMinus();
+			calTotal();
+			}
+		}//end of function
    
-   //옵션있는경우 계산
-   function maxCount(tag){
+		//옵션있는경우 계산
+		function maxCount(tag){
      
-      let count = $(tag).data("maxcount");
-   
-      let max = $('.orderCnt').attr("max"); 
-      let tagNum = Number(tag.value);
-      let maxNum = Number(max);
+		let count = $(tag).data("maxcount");
       
-       if(tagNum > maxNum){
-          alert("최대 수량을 선택하셨습니다.");
-          tag.value=max;
-          calTotal();
-       }else if(tagNum > count){
-          alert("최대 수량을 선택하셨습니다.");
-             tag.value = parseInt(count);
-             let par = $(tag).closest("li");
-            let find = $(par).find(".changePriceShow").children();
-   
-            let price = $(par).find(".pp").text(); 
-            find.text(replaceComma(count * price));
-             calTotal();
-       }else{
-       };
-   }
-  //옵션이 없는경우
-  function maxCountNoOption(tag){
-     let count = $(tag).data("maxcount");
- 
-      let max = $('.orderCnt').attr("max"); 
-      let tagNum = Number(tag.value);
-      let maxNum = Number(max);
+		let max = $('.orderCnt').attr("max"); 
+		let tagNum = Number(tag.value);
+		let maxNum = Number(max);
       
-      if(tagNum > maxNum){
-         alert("최대 수량을 선택하셨습니다.");
-         tag.value=max;
-         calTotal();
-      }else if(tagNum > count){
-         alert("최대 수량을 선택하셨습니다");
-            let hiddenPrice = $("#hiddenNoOptionP").val();
-            tag.value = parseInt(count);
+			if(tagNum > maxNum){
+				alert("최대 수량을 선택하셨습니다.");
+				tag.value=max;
+				calTotal();
+			}else if(tagNum > count){
+				alert("최대 수량을 선택하셨습니다.");
+				tag.value = parseInt(count);
+				let par = $(tag).closest("li");
+	            let find = $(par).find(".changePriceShow").children();
+	            let price = $(par).find(".pp").text(); 
+	            find.text(replaceComma(count * price));
+				calTotal();
+			}else{
+			};
+		}
+		//옵션이 없는경우
+		function maxCountNoOption(tag){
+		let count = $(tag).data("maxcount");
+      
+		let max = $('.orderCnt').attr("max"); 
+		let tagNum = Number(tag.value);
+		let maxNum = Number(max);
+      
+			if(tagNum > maxNum){
+				alert("최대 수량을 선택하셨습니다.");
+				tag.value=max;
+				calTotal();
+			}else if(tagNum > count){
+				alert("최대 수량을 선택하셨습니다");
+				let hiddenPrice = $("#hiddenNoOptionP").val();
+				tag.value = parseInt(count);
+				let rePrice = replaceComma(count * hiddenPrice);
+				$("#realPrice").text(rePrice);
+			}else{
+			};
+		}
 
-            let rePrice = replaceComma(count * hiddenPrice);
-
-            $("#realPrice").text(rePrice);
-            
-         
-      }else{
-      };
-  }
    
-   
-   //optionCloseBtn 지우기   
-   $(document).on("click",".optionCloseBtn",function(e){
-      if(TTSIsOk == null || sessionAuthor == 3){
-         let msg = '옵션이 삭제되었습니다.'
-         VoiceReturnRead(msg);
-      }
-      $(this).parent().parent().remove();
-      calTotal();
-   })
+		//optionCloseBtn 지우기   
+		$(document).on("click",".optionCloseBtn",function(e){
+			if(TTSIsOk == null || sessionAuthor == 3){
+				let msg = '옵션이 삭제되었습니다.'
+				VoiceReturnRead(msg);
+			}
+		$(this).parent().parent().remove();
+		calTotal();
+		})
 
       
-   //옵션 가격 올리기
-   $(document).on('change','.orderCnt',function(e){
-      //개별 합계
-      let choose = $(this).parent().parent().find('strong')[2].innerText;    
-      let price = Number(choose.replace(',',''));
+		//옵션 가격 올리기
+		$(document).on('change','.orderCnt',function(e){
+		//개별 합계
+			let choose = $(this).parent().parent().find('strong')[2].innerText;    
+			let price = Number(choose.replace(',',''));
       
-      let count = $(this).val();  
-      let max = $('.orderCnt').attr("max");
+			let count = $(this).val();  
+			let max = $('.orderCnt').attr("max");
       
-      if(Number(count) > Number(max)){
-         let sum = price * max;
+			if(Number(count) > Number(max)){
+				let sum = price * max;
+				let strongStr = $('<strong/>').append(replaceComma(sum));
+				$($(this).parent().next().next().children()[1]).html(strongStr);
+			}else{         
+				let sum = price * count;
+				let strongStr = $('<strong/>').append(replaceComma(sum));
+				$($(this).parent().next().next().children()[1]).html(strongStr);
+			}
+
    
-         let strongStr = $('<strong/>').append(replaceComma(sum));
-         $($(this).parent().next().next().children()[1]).html(strongStr);
-      }else{         
-         let sum = price * count;
- 
-         let strongStr = $('<strong/>').append(replaceComma(sum));
-         $($(this).parent().next().next().children()[1]).html(strongStr);
-      }
-   
-      // 전체 합계
-     calTotal();
-      maxCount(this);
-   })
-   
-   function calTotal(){
+			// 전체 합계
+			calTotal();
+			maxCount(this);
+		})
+		
+		// 전체 합계 계산 함수
+		function calTotal(){
          // 전체 합계
-         let total = 0;
-         $("#optionView li").each((idx,item)=>{
+		let total = 0;
+		$("#optionView li").each((idx,item)=>{
+				let cnt = $(item).find('.orderCnt').val();
+            	let pr = $(item).find('.pp').text();
+            	let salePrice = $(item).find('.salePrice').text();
             
-            let cnt = $(item).find('.orderCnt').val();
-            let pr = $(item).find('.pp').text();
-            let salePrice = $(item).find('.salePrice').text();
-            
-            pr = parseInt(pr);
-            salePrice = parseInt(salePrice);
+            	pr = parseInt(pr);
+            	salePrice = parseInt(salePrice);
 
-            total += cnt * (pr + salePrice);
-
-      
-         })
-         $("#realPrice").text(replaceComma(total));  
-   }
+            	total += cnt * (pr + salePrice);
+			})
+			$("#realPrice").text(replaceComma(total));  
+		}
    
-   //가격 점찍기
-   function replaceComma(num){
-      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); 
-   }
-   /*-------------------------
-   옵션 없을 경우 가격
-   -------------------------*/
-   let pri = $("#pri").val();
-  $("#realPrice").append(replaceComma(pri));
-   console.log(pri);
+		//가격 점찍기 힘수
+		function replaceComma(num){
+			return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); 
+		}
+		
+		/*-------------------------
+		옵션 없을 경우 합계가격
+		-------------------------*/
+		let pri = $("#pri").val();
+		$("#realPrice").append(replaceComma(pri));
+		console.log(pri);
    
-   $('.noOptionOrderCnt').on("change",function(){
+		$('.noOptionOrderCnt').on("change",function(){
       
-      let noOptionOrderCnt = $('.noOptionOrderCnt').val();
-      let hiddenNoOptionP = $('#hiddenNoOptionP').val();
+			let noOptionOrderCnt = $('.noOptionOrderCnt').val();
+			let hiddenNoOptionP = $('#hiddenNoOptionP').val();
       
-      let noOptionPtext = $('.noOptionP').text();
+			let noOptionPtext = $('.noOptionP').text();
       
-      let noOptionP = $('.noOptionP');
+			let noOptionP = $('.noOptionP');
       
-      let noOptionPrice = noOptionOrderCnt * hiddenNoOptionP;
-      
-      console.log(noOptionPrice);
-      
-      $(".realPrice2").html(replaceComma(noOptionPrice));
+			let noOptionPrice = noOptionOrderCnt * hiddenNoOptionP;
       
       
-      maxCountNoOption(this);
-   })
-   /*------------------------
-   돋보기기능
-   -------------------------*/
-   function imgGlasses(){
+			$(".realPrice2").html(replaceComma(noOptionPrice));
+			maxCountNoOption(this);
+		})
+		/*------------------------
+		돋보기기능
+		-------------------------*/
+		function imgGlasses(){
       
-      let imgs = [[${goods.uploadPath}]];
-      let uploadN =[[${goods.uploadName}]];
-      $('.card-img-top')
-       .append('<div class="photo"></div>')
-       .children('.photo').css({"background-image" : `url(upload/${imgs}/${uploadN})`});
+		let imgs = [[${goods.uploadPath}]];
+		let uploadN =[[${goods.uploadName}]];
+		$('.card-img-top')
+		.append('<div class="photo"></div>')
+		.children('.photo').css({"background-image" : `url(upload/${imgs}/${uploadN})`});
        
-       $('.card-img-top')    
-       .on('mouseover', function () {
-           $(this).children('.photo').css({
-               'transform': 'scale(' + $(this).attr('data-scale') + ')'
-           });
-       })
+		$('.card-img-top')    
+		.on('mouseover', function () {
+			$(this).children('.photo').css({
+				'transform': 'scale(' + $(this).attr('data-scale') + ')'
+			});
+		})
    
-       $('.card-img-top')
-       .on('mouseout', function () {
-           $(this).children('.photo').css({
-               'transform': 'scale(1)'
-           });
-       })
+		$('.card-img-top')
+		.on('mouseout', function () {
+			$(this).children('.photo').css({
+			'transform': 'scale(1)'
+			});
+		})
        $('.card-img-top')
        .on('mousemove', function (e) {
-           $(this).children('.photo').css({
-               'transform-origin': ((e.pageX - $(this).offset().left) / $(this).width()) * 100 + '% ' + ((e.pageY - $(this).offset().top) / $(this).height()) * 100 + '%'
-           });
-      })
+			$(this).children('.photo').css({
+			'transform-origin': ((e.pageX - $(this).offset().left) / $(this).width()) * 100 + '% ' + ((e.pageY - $(this).offset().top) 
+					/ $(this).height()) * 100 + '%'
+				});
+			})
 
-   }
-   /*------------------------
-   회원가입창으로
-   -------------------------*/ 
-   function loginTagClickHandler() {
-      let result = confirm("회원가입 창으로 이동하시겠습니까?");
+		}
+		/*------------------------
+		회원가입창으로
+		-------------------------*/ 
+		function loginTagClickHandler() {
+		let result = confirm("회원가입 창으로 이동하시겠습니까?");
 
-      if (result) {
-         location.replace("/login");
-      } 
-   }
+		if (result) {
+			location.replace("page/member/loginForm");
+			} 
+		}
 
-      /*------------------------
-    장바구니로~
-    -------------------------*/
-    function cartCheck(){
-       let memberId = $("#hidden").val(); 
-       if(TTSIsOk == null || sessionAuthor == 3){
-         if(memberId == ''){
-            let msg = "로그인 후 사용가능합니다.";
-            VoiceReturnRead(msg);
-         }else{
-            let cartOptionList = [];
+		/*------------------------
+		장바구니로~
+		-------------------------*/
+		function cartCheck(){
+		let memberId = $("#hidden").val(); 
+		if(TTSIsOk == null || sessionAuthor == 3){
+		if(memberId == ''){
+			let msg = "로그인 후 사용가능합니다.";
+			VoiceReturnRead(msg);
+		}else{
+			let cartOptionList = [];
              
-                   $(".optionDetailCodeName").each((idx,tag) => {
+			$(".optionDetailCodeName").each((idx,tag) => {
                       
-                      //optionCount
-                let optCount=0;
-                if($(".pCnt").val()){
-                   optCount = $(".pCnt").val();
+			//optionCount
+			let optCount=0;
+			if($(".pCnt").val()){
+				optCount = $(".pCnt").val();
                    
-                }else if($('.noOptionOrderCnt').val()){
-                   optCount = $('.noOptionOrderCnt').val(); 
-                }
-                else{
-                   optCount= $(tag).parent().next().children()[2].value;
-                }
-                //optionLast
-                let opLast ='';
+			}else if($('.noOptionOrderCnt').val()){
+				optCount = $('.noOptionOrderCnt').val(); 
+			}
+			else{
+				optCount= $(tag).parent().next().children()[2].value;
+				}
+		//optionLast
+		let opLast ='';
                 
-                if($(".optLast").val()){
-                   opLast = $(".optLast").val();
+		if($(".optLast").val()){
+			opLast = $(".optLast").val();
                    
-                }else{
-                   opLast=$(tag).text();
-                }
+		}else{
+			opLast=$(tag).text();
+		}
                 
-                  let cartObj = {
-                        memberId : $("#member").val(),
-                        productCode : $("#productCode").val(),
-                        optionLast : opLast,
-                        optionCount : optCount
-                        }
-                  cartOptionList.push(cartObj);
-               })
-                  if(cartOptionList.length == 0){
-                     let msg = "옵션을 선택해주세요";
-                     VoiceReturnRead(msg);
-                  }else{
-                        cart(cartOptionList);
-                  }  
-         }
-       }else{
-         if(memberId==''){
-              alert("로그인 후 사용가능합니다");
-          }else{
-             
-             let cartOptionList = [];
-             
-                   $(".optionDetailCodeName").each((idx,tag) => {
-                      
-                      //optionCount
-                let optCount=0;
-                if($(".pCnt").val()){
-                   optCount = $(".pCnt").val();
-                   
-                }else if($('.noOptionOrderCnt').val()){
-                   optCount = $('.noOptionOrderCnt').val(); 
-                }
-                else{
-                   optCount= $(tag).parent().next().children()[2].value;
-                }
-                //optionLast
-                let opLast ='';
-                
-                if($(".optLast").val()){
-                   opLast = $(".optLast").val();
-                   
-                }else{
-                   opLast=$(tag).text();
-                }
-                
-                  let cartObj = {
-                        memberId : $("#member").val(),
-                        productCode : $("#productCode").val(),
-                        optionLast : opLast,
-                        optionCount : optCount
-                        }
-                  cartOptionList.push(cartObj);
-               })
-                  if(cartOptionList.length == 0){
-                         alert('옵션을 선택해 주세요');
-                     }else{
-                        cart(cartOptionList);
-                     }
-               }
-       } 
+			let cartObj = {
+				memberId : $("#member").val(),
+				productCode : $("#productCode").val(),
+				optionLast : opLast,
+				optionCount : optCount
+				}
+				cartOptionList.push(cartObj);
+				})
+				if(cartOptionList.length == 0){
+				let msg = "옵션을 선택해주세요";
+				VoiceReturnRead(msg);
+				}else{
+					cart(cartOptionList);
+				}  
+			}
+			}else{
+			if(memberId==''){
+				alert("로그인 후 사용가능합니다");
+			}else{
+					let cartOptionList = [];
+					$(".optionDetailCodeName").each((idx,tag) => {
+		                      
+					//optionCount
+					let optCount=0;
+					if($(".pCnt").val()){
+						optCount = $(".pCnt").val();
+		                   
+					}else if($('.noOptionOrderCnt').val()){
+						optCount = $('.noOptionOrderCnt').val(); 
+					}
+					else{
+						optCount= $(tag).parent().next().children()[2].value;
+					}
+					//optionLast
+					let opLast ='';
+		                
+					if($(".optLast").val()){
+						opLast = $(".optLast").val();
+		                   
+					}else{
+						opLast=$(tag).text();
+					}
+		                
+					let cartObj = {
+						memberId : $("#member").val(),
+						productCode : $("#productCode").val(),
+						optionLast : opLast,
+						optionCount : optCount
+					}
+					cartOptionList.push(cartObj);
+					})
+					if(cartOptionList.length == 0){
+						alert('옵션을 선택해 주세요');
+					}else{
+						cart(cartOptionList);
+					}
+				}
+			} 
+		}
 
 
-        
-      }
+		function cart(arr){
+		console.log(arr);
+		$.ajax({
+		url:"cart/addCart",
+		type:"post",  
+		data:JSON.stringify(arr),
+		contentType:"application/json",
+		success:function(result){
+			if(TTSIsOk == null || sessionAuthor == 3){
+				if(result.length > 0){
+					let msg="이미 장바구니에 존재하는 옵션이있습니다.";
+					VoiceReturnRead(msg);
+				}else{
+					let msg = "장바구니에 등록되었습니다. 장바구니로 이동하시려면 alt + y를 누르고 있으시려면 esc를 눌러주세요";
+					VoiceReturnRead(msg);                           
+				}
+			}else{
+				if(result.length > 0){
+					alert("이미 장바구니에 존재하는 옵션이있습니다.");
+				}else{
+					if(confirm("장바구니로 이동하시겠습니까?")){
+						location.href="cart/cartView"; 
+					};
 
-
-    function cart(arr){
-             
-               $.ajax({
-                  url:"cart/addCart",
-                  type:"post",  
-                  data:JSON.stringify(arr),
-                  contentType:"application/json",
-                  success:function(result){
-                     console.log(result);
-                     if(TTSIsOk == null || sessionAuthor == 3){
-                        if(result > 0){
-                           let msg="이미 장바구니에 존재하는 옵션이있습니다.";
-                           VoiceReturnRead(msg);
-                        }else{
-                           let msg = "장바구니에 등록되었습니다. 장바구니로 이동하시려면 alt + y를 누르고 있으시려면 esc를 눌러주세요";
-                           VoiceReturnRead(msg);
                            
-                        }
-                     }else{
-                        if(result > 0){
-                        alert("이미 장바구니에 존재하는 옵션이있습니다.");
-                        }else{
-                           
-                              if(!confirm("장바구니로 이동하시겠습니까?")){
-                                 console.log("이동x");
-                              }else{
-                                 location.href="cart/cartView"; 
-                           };
-                           
-                        }
+				}
 
-                     }
-                  },
-                  fail:function(reject){
-                     console.log(reject);
-                  }
-               })
+			}
+				},
+				fail:function(reject){
+					console.log(reject);
+				}
+			})
           
-        }
+		}
       
     
-   /*------------------------
-   찜 목록으로
-   -------------------------*/
-   function checkWish(){
-      let memberId = $("#hidden").val(); 
+		/*------------------------
+		찜 목록으로
+		-------------------------*/
+		function checkWish(){
+		let memberId = $("#hidden").val(); 
 
-      if(TTSIsOk == null || sessionAuthor == 3){
-         if(memberId==''){
-            let msg = "로그인 후 사용가능합니다";
+		if(TTSIsOk == null || sessionAuthor == 3){
+			if(memberId==''){
+			let msg = "로그인 후 사용가능합니다";
             VoiceReturnRead(msg); 
-         }else{
+		}else{
         
-        let wishObj = {
-               memberId : $("#member").val(),
-               productCode: $("#productCode").val()
-            }
-        console.log(wishObj);
+		let wishObj = {
+			memberId : $("#member").val(),
+			productCode: $("#productCode").val()
+		}
         
-         $.ajax({
-           url:"buyer/checkWish",
-           type:"get",
-           data:wishObj,
-           success:function(result){
+		$.ajax({
+			url:"buyer/checkWish",
+			type:"get",
+			data:wishObj,
+			success:function(result){
               
-              if(result>0){
-               let msg ="이미 찜 목록에 존재합니다";
-               VoiceReturnRead(msg);
-              }else{
-                 insertWish($("#member").val(), $("#productCode").val());         
-              }
-           }
-         })
-         }
-      }else{
-         if(memberId==''){
-            alert("로그인 후 사용가능합니다");
-         }else{
+				if(result>0){
+				let msg ="이미 찜 목록에 존재합니다";
+				VoiceReturnRead(msg);
+			}else{
+					insertWish($("#member").val(), $("#productCode").val());         
+					}
+				}
+			})
+		}
+		}else{
+			if(memberId==''){
+				alert("로그인 후 사용가능합니다");
+		}else{
         
-        let wishObj = {
-               memberId : $("#member").val(),
-               productCode: $("#productCode").val()
+		let wishObj = {
+			memberId : $("#member").val(),
+			productCode: $("#productCode").val()
             }
-        console.log(wishObj);
         
-         $.ajax({
-           url:"buyer/checkWish",
-           type:"get",
-           data:wishObj,
-           success:function(result){
+		$.ajax({
+			url:"buyer/checkWish",
+			type:"get",
+			data:wishObj,
+			success:function(result){
               
-              if(result>0){
-                 alert("이미 찜 목록에 존재합니다");
-              }else{
-                 insertWish($("#member").val(), $("#productCode").val());         
-              }
-           }
-         })
-         }
-
-      }
-    }
+				if(result>0){
+					alert("이미 찜 목록에 존재합니다");
+				}else{
+					insertWish($("#member").val(), $("#productCode").val());         
+							}
+						}
+					})
+				}
+	
+			}
+		}
    
-   function insertWish(member,code){
+		function insertWish(member,code){
 
-         let wishObj = {
-             memberId : member,
-             productCode: code
-          }
-         console.log(wishObj);
+		let wishObj = {
+			memberId : member,
+			productCode: code
+		}
+		console.log(wishObj);
          
-          $.ajax({
-             url:"buyer/addWish",
-             type:"post",
-             data:JSON.stringify(wishObj),
-             contentType:"application/json",
-             success:function(result){
-                console.log(result);
-                if(TTSIsOk == null || sessionAuthor == 3){
-                  let msg = "찜 등록되었습니다. 찜 목록으로 이동하시겠습니까? 이동하시려면 Shift + y를 눌러주세요";
-                  VoiceReturnRead(msg);
-                }else{
-                   if(!confirm("찜 목록으로 이동하시겠습니까?")){
+		$.ajax({
+			url:"buyer/addWish",
+			type:"post",
+			data:JSON.stringify(wishObj),
+			contentType:"application/json",
+			success:function(result){
+				if(TTSIsOk == null || sessionAuthor == 3){
+					let msg = "찜 등록되었습니다. 찜 목록으로 이동하시겠습니까? 이동하시려면 Shift + y를 눌러주세요";
+					VoiceReturnRead(msg);
+				}else{
+					if(!confirm("찜 목록으로 이동하시겠습니까?")){
                    
-                   }else{
-                      location.href="/page/buyer/wishList";   
-                   }
-                   
-               
-                }
-             },
-             fail:function(reject){
-                console.log(reject);
-             },
-          })
+					}else{
+						location.href="/page/buyer/wishList";   
+						}
+				}
+			},
+		fail:function(reject){
+				},
+			})
        
-    }
+		}
 
-   /*--------------
-   확대
-   --------------*/
-   let nowZoom = 100;
-   function zoomOut() {
-     nowZoom = nowZoom - 10;
-     if (nowZoom <= 70) nowZoom = 70;
-     $("#test_obj").css("width", "initial");
-     zooms();
-   }
-   function zoomIn() {
-     nowZoom = nowZoom + 10;
-     if (nowZoom >= 140) nowZoom = 140;
-     zooms();
-   }
-   function zoomReset() {
-     nowZoom = 100;
-     zooms();
-   }
+		/*--------------
+		확대
+		--------------*/
+		let nowZoom = 100;
+		function zoomOut() {
+			nowZoom = nowZoom - 10;
+				if (nowZoom <= 70) nowZoom = 70;
+				$("#test_obj").css("width", "initial");
+			zooms();
+			}
+		function zoomIn() {
+		nowZoom = nowZoom + 10;
+			if (nowZoom >= 140) nowZoom = 140;
+			zooms();
+			}
+		function zoomReset() {
+			nowZoom = 100;
+			zooms();
+		}
 
-   function zooms() {
-     document.body.style.zoom = nowZoom + "%";
-     if (nowZoom == 70) {
-       alert("더 이상 축소할 수 없습니다");
-     }
-     if (nowZoom == 140) {
-       alert("더 이상 확대할 수 없습니다");
-     }
-   }
+		function zooms() {
+			document.body.style.zoom = nowZoom + "%";
+			if (nowZoom == 70) {
+			alert("더 이상 축소할 수 없습니다");
+		}
+		if (nowZoom == 140) {
+			alert("더 이상 확대할 수 없습니다");
+			}
+		}
 
-   /*--------------
-   맨위로
-   --------------*/
-   $(".topBtn").on("click", function () {
-     window.scrollTo(0, 0);
-   });
+		/*--------------
+		맨위로
+		--------------*/
+		$(".topBtn").on("click", function () {
+			window.scrollTo(0, 0);
+		});
    
-   /*--------------
-   가격 점
-   --------------*/
-   function replacePrice(){
+		/*--------------
+		가격 점
+		--------------*/
+		function replacePrice(){
       
-      let pprr = $("#pprr").text();
-      console.log(pprr);
-      let re = replaceComma(pprr);
+			let pprr = $("#pprr").text();
+			console.log(pprr);
+			let re = replaceComma(pprr);
+	      
+			$("#pprr").html(re);
       
-      $("#pprr").html(re);
-      
-   }
-   // -막기
-   function preventMinus(){
+		}
+		// -막기
+		function preventMinus(){
 	   
-	   let numInput = document.querySelectorAll('input[type="number"]');
-	   console.log(numInput);
-	   $.each(numInput, function(idx,t){
-	     $(t).on('keydown',function(e){
-	         if(e.key == '.' || e.key == '-' || e.key == '+'){
-	           e.preventDefault();
-	         }
-	     })
-	   })
-   }
+			let numInput = document.querySelectorAll('input[type="number"]');
+			console.log(numInput);
+			$.each(numInput, function(idx,t){
+			$(t).on('keydown',function(e){
+				if(e.key == '.' || e.key == '-' || e.key == '+'){
+					e.preventDefault();
+					}
+				})
+			})
+		}
    
    
+
    /*--------------
    TTS
-   --------------*/
-   
-       
-      function ttsInit(){
-        
+   --------------*/   
+      function ttsInit(){      
        if(TTSIsOk == null || sessionAuthor == 3){
-
-     
-
-         $(document).ready(function(){
-            console.log(qnaEnd);
+		$(document).ready(function(){
             
-            // $('.selectbox').off('change');
+		// $('.selectbox').off('change');
+		
+		$('.review').on('focus', reviewBox);
+		// 상세보기
+		$('.productBox').on('focus', proBox);
 
-            $('.review').on('focus', reviewBox);
-            // 상세보기
-            $('.productBox').on('focus', proBox);
+		// 상세보기
+		$('.detailBox').on('focus', detailBox);
+	
+		// 리뷰
+		$('#Reviewtitle').on('focus',reviewStartBox);
 
-            // 상세보기
-            $('.detailBox').on('focus', detailBox);
+		$('#qnaTap').on('focus',qnaStartBox);
 
-            // 리뷰
-            $('#Reviewtitle').on('focus',reviewStartBox);
-
-            $('#qnaTap').on('focus',qnaStartBox);
-
-            $('.qnaList').on('focus',qnaBox);
+		$('.qnaList').on('focus',qnaBox);
 
 
-            $(".selectbox").on('focus', optionRead);
+		$(".selectbox").on('focus', optionRead);
 
-            $('.selectbox').on('change',optionVal);
+		$('.selectbox').on('change',optionVal);
 
-            // $(".selectbox").on("keyup",test);
+		// $(".selectbox").on("keyup",test);
 
-            $(".selectbox1").on('change', optiontext);
+		$(".selectbox1").on('change', optiontext);
 
-            $('.cartAdd').on('focus',cartAdd);
+		$('.cartAdd').on('focus',cartAdd);
       
-            $(".gymAdd").on("focus",gymAdd);
+		$(".gymAdd").on("focus",gymAdd);
 
-            $(document).on("focus",".orderCnt",optionNum);
-            $(document).on("change",".orderCnt",optionC);
+		$(document).on("focus",".orderCnt",optionNum);
+		$(document).on("change",".orderCnt",optionC);
 
-            $(document).on("focus",".optionchoicebox",choicebox);
-            startVoice();
+		$(document).on("focus",".optionchoicebox",choicebox);
+		startVoice();
             
-            $("#productContent").on("focus",imgDetail);
+
+    $("#productContent").on("focus",imgDetail);
 
             // 옵션 삭제 버튼
-            $(document).on("focus",'.optionCloseBtn',optiondel);
-            // reviewBox focus -> 읽힘
-            // $('.review').on('focus',reviewBox);
-         })
+          $(document).on("focus",'.optionCloseBtn',optiondel);
+          // reviewBox focus -> 읽힘
+          // $('.review').on('focus',reviewBox);
 
-         // 옵션 삭제 버튼
-         function optiondel(e){
-            e.stopPropagation();
-            let msg = '옵션을 삭제하시려면 엔터키를 눌러주세요';
-            VoiceReturnRead(msg);
-         }
+     })
+
+		// 옵션 삭제 버튼
+		function optiondel(e){
+			e.stopPropagation();
+			let msg = '옵션을 삭제하시려면 엔터키를 눌러주세요';
+			VoiceReturnRead(msg);
+		}
 
          // 이미지
          function imgDetail(e){
@@ -1321,6 +1290,7 @@
          function optionNum(e){
             e.stopPropagation();
             let msg ="수량을 선택해주세요";
+
             VoiceReturnRead(msg);
          }
 
@@ -1329,6 +1299,7 @@
                let msg = "최대수량이 넘었습니다.";
                VoiceReturnRead(msg);
                return;
+
             }
             let msg ="수량" + $(this).val();
             VoiceReturnRead(msg);
@@ -1344,7 +1315,6 @@
          function cartAdd(){
             let msg = "총 금액"+ $('.realPrice2').text() + "입니다. 장바구니 추가하실려면 enter키를 눌러주세요";
             VoiceReturnRead(msg);
-
          }
 
          function gymAdd(){
@@ -1394,6 +1364,7 @@
 
        
 
+
     // 선택된 옵션 값을 업데이트하는 함수
     function updateSelectedValue() {
       var selectedValue = $("#selectbox option:selected").val();
@@ -1423,21 +1394,19 @@
 
          // qna
          function qnaStartBox(){
-            
-            let text = 'qna목록입니다. alt + a 이전페이지 alt + s 다음페이지 tab키를 누르면 문의글을 하나씩 읽어드립니다.';
-               VoiceReturnRead(text);
-
+			let text = 'qna목록입니다. alt + a 이전페이지 alt + s 다음페이지 tab키를 누르면 문의글을 하나씩 읽어드립니다.';
+			VoiceReturnRead(text);
          }
 
-         function reviewStartBox(){
-            let text = '리뷰목록입니다. alt + q. 이전페이지 alt + w. 다음페이지  tab키를 누르면 리뷰를 하나씩 읽어드립니다.';
-            VoiceReturnRead(text);
-         }
+		function reviewStartBox(){
+			let text = '리뷰목록입니다. alt + q. 이전페이지 alt + w. 다음페이지  tab키를 누르면 리뷰를 하나씩 읽어드립니다.';
+			VoiceReturnRead(text);
+		}
 
-         function startVoice() {
-            let voice = $('#detailtext').text();
-            let text = '상품 상세보기 페이지입니다. 1. 상품정보 2. 상품 상세보기 3. 리뷰보기 4. 문의글 보기 메뉴를 선택해주세요. 9. 홈으로가기 0. 메뉴 다시듣기 alt + 번호를 눌러주세요';
-            VoiceReturnRead(text);
+		function startVoice() {
+			let voice = $('#detailtext').text();
+			let text = '상품 상세보기 페이지입니다. 1. 상품정보 2. 상품 상세보기 3. 리뷰보기 4. 문의글 보기 메뉴를 선택해주세요. 9. 홈으로가기 0. 메뉴 다시듣기 alt + 번호를 눌러주세요';
+			VoiceReturnRead(text);
          }
 
          // 리뷰 읽기
@@ -1543,34 +1512,34 @@
                VoiceReturnRead(msg);
                inquiryPageLoad(page);
             }else if(e.altKey && e.keyCode == 83){
-               $('#qnaTap').focus();
-               chk = false;
-               idx = 0;
-               let page = Number(qnaPage);
-               let endPage = qnaEnd;
-               console.log(endPage);
-               if(page == endPage){
-                  let msg = 'qna 마지막페이지입니다.';
-                  VoiceReturnRead(msg);
-                  return;
-               }
-               
-               page++
-               msg = page+'페이지 입니다.';
-               VoiceReturnRead(msg);
+	               $('#qnaTap').focus();
+	               chk = false;
+	               idx = 0;
+	               let page = Number(qnaPage);
+	               let endPage = qnaEnd;
+	               console.log(endPage);
+	               if(page == endPage){
+	                  let msg = 'qna 마지막페이지입니다.';
+	                  VoiceReturnRead(msg);
+	                  return;
+	               }
+	               
+	               page++
+	               msg = page+'페이지 입니다.';
+	               VoiceReturnRead(msg);
+	
+	               inquiryPageLoad(page);
+	            }else if(e.shiftKey && e.keyCode == 89){
+	               location.href="/page/buyer/wishList"; 
+	            }else if(e.altKey && e.keyCode == 89){
+	               location.href="cart/cartView"; 
+	            }
 
-               inquiryPageLoad(page);
-            }else if(e.shiftKey && e.keyCode == 89){
-               location.href="/page/buyer/wishList"; 
-            }else if(e.altKey && e.keyCode == 89){
-               location.href="cart/cartView"; 
-            }
-
-         });
+        	 });
       
 
- } //ttsInit()의 if문
-} // ttsInit() close
+			} //ttsInit()의 if문
+		} // ttsInit() close
     </script>
     <th:block>
     </th:block>

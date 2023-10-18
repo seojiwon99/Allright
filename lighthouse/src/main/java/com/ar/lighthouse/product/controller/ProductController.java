@@ -873,11 +873,11 @@ public class ProductController {
 				files.transferTo(savePath); // 파일의 핵심
 				// uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
 				imgsVO.setReviewCode(reviewVO.getReviewCode());
-				reviewService.removeReviewImg(imgsVO);
+				//reviewService.removeReviewImg(imgsVO);
 
 				reviewService.addReviewImg(imgsVO);
 
-				reviewService.editReviewImg(imgsVO);
+				//reviewService.editReviewImg(imgsVO);
 
 				reviewService.editReview(reviewVO);
 			} catch (IOException e) {
@@ -986,7 +986,6 @@ public class ProductController {
 			CodeVO codeVO, Criteria cri, OptionDetailVO optionDetailVO) {
 
 		ProductVO vo2 = productService.goodsDetail(vo);
-		System.out.println("aaaa@@@@@@@@@@@a" + vo2);
 		// 상품정보
 		model.addAttribute("goods", vo2);
 
@@ -1007,8 +1006,6 @@ public class ProductController {
 		optionVO.setProductCode(productCode);
 		model.addAttribute("options", productService.getOptionList(optionVO));
 		model.addAttribute("optionDetail", productService.getOptionDetail(optionDetailVO));
-		// 장바구니
-		System.out.println("aaaaa111111" + productService.getOptionDetail(optionDetailVO));
 
 		return "page/goods/goodDetail";
 	}
