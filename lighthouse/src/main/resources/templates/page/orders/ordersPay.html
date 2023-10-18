@@ -329,6 +329,9 @@
                     
                   </thead>
                   <tbody> 
+                  	<tr>
+                  	<td colspan="7"><button style="background-color: black; color: white;">선택취소</button></td>
+                  	</tr>
                     <tr class="clickable-row" th:each="couponRest : ${couponList}">
                       <td class="cpCode" th:text="${couponRest.couponCode}" th:data-max="${couponRest.couponMaxPrice}" th:data-min="${couponRest.couponMinPrice}" tabindex="0"></td>
                       <td class="cpName" th:text="${couponRest.couponName}"></td>
@@ -336,7 +339,7 @@
                       <td class="cpDiscount" th:text="${couponRest.couponDiscountPrice} == '0' ? |${couponRest.couponDiscountRate}%| : |${#numbers.formatInteger(couponRest.couponDiscountPrice,0,'COMMA')}원|"></td>
                       <td class="cpIssueDate" th:text="${#dates.format(couponRest.issueDate, 'yy/MM/dd')}"></td> 
                       <td class="cpEndDate" th:text="${#dates.format(couponRest.endDate, 'yy/MM/dd')}"></td>
-                      <td><button type="button" class="btn btn-warning btn-circle btn-xxs mb-1 select-button" tabindex="0"><i class="fe fe-check"></i></button></td>     
+                      <td><button type="button" class="btn btn-warning btn-circle btn-xxs mb-1 select-button" tabindex="0"><i class="fe fe-check"></i></button></td>
                     </tr>
                     </tbody>
                   </table>
