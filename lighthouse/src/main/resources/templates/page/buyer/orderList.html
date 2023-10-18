@@ -78,15 +78,14 @@ img {
                   </div>
                </nav>
             </div>
-            <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
+            <div class="col-12 col-md-9 col-lg-8 offset-lg-1" >
                <!-- Order -->
                <div style="margin-bottom:5px">
                    <div style="margin-bottom:5px">
                      <span>조회 기간 : </span> 
-                     <input type="DATE" id="from" name="from" autocomplete="off"> 
+                     <input type="DATE" id="from" name="from" autocomplete="off" th:value="${detailVO.fromDate}"> 
                      <label for="to">~</label> 
-                     <input type="DATE" id="to" name="to" autocomplete="off"> 
-                     <input class="count" tabindex="-1" readonly></input>
+                     <input type="DATE" id="to" name="to" autocomplete="off" th:value="${detailVO.toDate}"> 
                   </div>
 	               	<div style="margin-bottom:5px">
 		               	<label for="optionList">상세 조건 : </label>
@@ -94,22 +93,53 @@ img {
 		                     <!-- <option value="선택">선택</option> -->
 		                     <!-- <option value="payment_price">가격</option> -->
 		                     <!-- <option value="order_date">구매일자</option>-->
-		                     <option value="order_code">주문번호</option>
-		                     <option value="order_detail_code">주문상세번호</option>
-		                     <option value="product_name">상품명</option>
-		                  </select> <input type="text" class="selectVal" id="search" value=""
+		                     <option value="order_code" th:selected="${detailVO.searchKey=='order_code'}">주문번호</option>
+		                     <option value="order_detail_code" th:selected="${detailVO.searchKey=='order_detail_code'}">주문상세번호</option>
+		                     <option value="product_name" th:selected="${detailVO.searchKey=='product_name'}">상품명</option>
+		                  </select> <input type="text" class="selectVal" id="search" th:value="${detailVO.searchValue}"
 		                     maxlength="50">
 		                  <button type="button" id="selectOption"
 		                     style="background-color: black; color: white;">검색</button>
+		                     <input type="hidden" id="pageNum" value="1">
+                     <div>주문 <span class="count" th:text="${pageMaker.total}" tabindex="-1"></span> 건</div>
 	               	</div>
+	               	    </div>
+			<div id="orderOption">	               	    
+	           <!-- Pagination -->
+               <nav th:if="${pageMaker.endPage >1}"
+                  class="d-flex justify-content-center justify-content-md-end mt-10">
+                  <ul class="pagination pagination-sm text-gray-400">
+                     <li class="page-item" th:if="${pageMaker.prev}"><a
+                        class="page-link page-link-arrow" id=""
+                        th:href="|javascript:goPage(${pageMaker.startPage - 1})|">
+                           <i class="fa fa-caret-left"></i>
+                     </a></li>
+                     <th:block
+                        th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+                        <li th:if="${pageMaker.endPage} ne 0"
+                           th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+                           th:each="pageButtom : ${#numbers.sequence(start,end)}"
+                           th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
+                           <a class="page-link" href="#"
+                           th:href="|javascript:goPage(${pageButtom})|"
+                           th:text="${pageButtom}"></a>
+                        </li>
+                     </th:block>
+                     <li class="page-item" th:if="${pageMaker.next}"><a
+                        class="page-link page-link-arrow" id="nextPage"
+                        th:href="|javascript:goPage(${pageMaker.endPage + 1})|">
+                           <i class="fa fa-caret-right"></i>
+                     </a></li>
+                  </ul>
+               </nav>
 
-               </div>
+           
 
                <div class="card card-lg mb-5 border">
                   <div class="card-body pb-0">
                      <!-- 반복문 시작 -->
                      <!-- Info -->
-                     <div class="card card-sm orderList" id="orderOption">
+                     <div class="card card-sm orderList" >
                         <div th:each="lists : ${orderList}"
                            th:data-orderdetailcode="${lists.orderDetailCode}"
                            class="order">
@@ -191,7 +221,7 @@ img {
                                        완료 날짜:</h6>
                                     <p class="mb-0 fs-sm fw-bold">
                                        <span class="deliveryDate"
-                                          th:text="|${lists.deliveryDate}|"></span>
+                                          th:text="${#dates.format(lists.deliveryDate, 'yyyy-MM-dd')}"></span>
                                     </p>
                                  </div>
                                  <!-- 취소 여부 -->
@@ -231,7 +261,7 @@ img {
 
                            <div class="card-footer ">
                               <div class="row align-items-center"
-                                 th:if="${lists.returnStatus} == '0' and ${lists.cancelStatus} == '0' and ${lists.exchangeStatus} == '0'">
+                                 th:if="${lists.returnStatus} == '0' and ${lists.cancelStatus} == '0' and ${lists.exchangeStatus} == '0' and ${lists.orderCheck} != 'N' ">
                                  <!-- 리뷰  button -->
                                  <div class="col-4" th:if="${lists.orderStatus} == '4'">
                                     <button class="reviewBtn btn btn-sm w-100 btn-outline-dark"
@@ -387,7 +417,7 @@ img {
                   <ul class="pagination pagination-sm text-gray-400">
                      <li class="page-item" th:if="${pageMaker.prev}"><a
                         class="page-link page-link-arrow" id=""
-                        th:href="@{/page/buyer/orderList/(pageNum = ${pageMaker.startPage - 1})}">
+                        th:href="|javascript:goPage(${pageMaker.startPage - 1})|">
                            <i class="fa fa-caret-left"></i>
                      </a></li>
                      <th:block
@@ -397,18 +427,18 @@ img {
                            th:each="pageButtom : ${#numbers.sequence(start,end)}"
                            th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
                            <a class="page-link" href="#"
-                           th:href="@{/page/buyer/orderList/(pageNum= ${pageButtom} )}"
+                           th:href="|javascript:goPage(${pageButtom} )|"
                            th:text="${pageButtom}"></a>
                         </li>
                      </th:block>
                      <li class="page-item" th:if="${pageMaker.next}"><a
                         class="page-link page-link-arrow" id="nextPage"
-                        th:href="@{/page/buyer/orderList/(pageNum = ${pageMaker.endPage + 1})}">
+                        th:href="|javascript:goPage(${pageMaker.endPage + 1})|">
                            <i class="fa fa-caret-right"></i>
                      </a></li>
                   </ul>
                </nav>
-
+			</div>
             </div>
          </div>
       </div>
@@ -432,7 +462,20 @@ img {
     </textarea>
    <script>
    var tmpProductCode;
+   var searchVal;
+
+	$('.selectVal').one('change',function(){
+		searchVal = this.value;
+	})   
    
+   //페이지 이동
+   function goPage(pageNum){
+	   $('#pageNum').val(pageNum);
+	   $('.selectVal').val(searchVal);
+	   seach(searchVal);
+   }
+   
+
   $('.reviewBtn').on('click',function(e){
 	  console.log("sadsadsad");
 
@@ -564,38 +607,43 @@ img {
        });
       
       $('#selectOption').on('click', function(){
-         let key = $('#optionList').val();
-         let value = $('.selectVal').val();
-         
-         let fromDate = $('#from').val();
-         let toDate = $('#to').val();
-         
-         var itemCount = document.querySelectorAll(".order").length;
-         
-          // document.querySelector(".count").value = itemCount;
-         
-         
-         $.ajax({
-            url: '/page/buyer/orderOption',
-            type: 'get',
-            data: {
-               "searchKey": key,
-               "searchValue" : value,
-               fromDate,
-               toDate
-            }
-         })
-         .done(data => {
-            $('#orderOption').html(data);
-
-            itemCount = document.querySelectorAll(".order").length;
-            document.querySelector(".count").value = itemCount;
-         })
-         .fail(reject => {
-           console.log(reject);
-         })
+    	  $('#pageNum').val('1');
+    	  seach($('.selectVal').val())
        });
       
+      function seach(inputvalue){
+    	  let key = $('#optionList').val();
+          let value = inputvalue 
+          let pageNum = $('#pageNum').val();
+          let fromDate = $('#from').val();
+          let toDate = $('#to').val();
+          
+          var itemCount = document.querySelectorAll(".order").length;
+          
+           // document.querySelector(".count").value = itemCount;
+          
+          
+          $.ajax({
+             url: '/page/buyer/orderOption',
+             type: 'get',
+             data: {
+             	"pageNum" : pageNum,
+                "searchKey": key,
+                "searchValue" : value,
+                fromDate,
+                toDate
+             }
+          })
+          .done(data => {
+             $('#orderOption').html(data);
+
+             itemCount = document.querySelectorAll(".order").length;
+             document.querySelector(".count").innerText = itemCount;
+          })
+          .fail(reject => {
+            console.log(reject);
+          })
+      }
       
        //tts 시작 
         let TTSIsOk = localStorage.getItem('ttsKey');
