@@ -747,7 +747,7 @@ WHERE p.product_code = #{productCode}
                ON od.order_detail_code = r.order_detail_code
       where member_id = #{memberId}
       <if test="preBetw != null and !preBetw.equals('')">
-      AND  TO_DATE(od.order_date, 'yy-MM-dd') BETWEEN TO_DATE(#{preBetw}) AND TO_DATE(#{suBetw})
+      AND  TO_DATE(od.order_date, 'yyyy-MM-dd') BETWEEN TO_DATE(#{preBetw}) AND TO_DATE(#{suBetw})
       </if>
       group by od.option_detail_code, o.option_last, o.option_price,
             p.product_name,
