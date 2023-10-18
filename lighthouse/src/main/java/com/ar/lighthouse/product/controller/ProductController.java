@@ -516,11 +516,12 @@ public class ProductController {
 		System.out.println(files);
 		int i = 0;
 			for (MultipartFile uploadFile : files) {
+				System.out.println("asdasd");
 				if(!uploadFile.isEmpty()) {
 				String originalName = uploadFile.getOriginalFilename();
 				String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
 				productVO.getProductImg().get(i).setImgName(fileName);
-				
+				System.out.println(fileName);
 				// 날짜 폴더 생성
 				String folderPath = makeFolder();
 				String uuid = UUID.randomUUID().toString(); // 유니크한 이름 때문에
