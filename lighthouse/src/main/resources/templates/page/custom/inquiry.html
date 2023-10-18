@@ -312,7 +312,7 @@
             success: function (result) {
            	  if (TTSIsOk == null || sessionAuthor == 3){
 	               if (result == 'success') {
-	                  let msg = "문의 되었습니다.";
+	                  let msg = "등록 되었습니다.";
 	                  VoiceReturnRead(msg);
 	                  
 	                  
@@ -323,7 +323,7 @@
 	               }
            	  }else{
 	               if (result == 'success') {
-	                  alert("문의 되었습니다.");
+	                  alert("등록 되었습니다.");
 	                  location.href = "/"
 	               } else {
 	                  alert("문의 실패");
