@@ -629,6 +629,11 @@
 		if(filterObj['ctg'] != null){
 			nowURL.searchParams.set('wildCtg', filterObj['ctg']);
 		}
+		let preKeyword = [[${param.keyword}]];
+		console.log(preKeyword)
+		if(preKeyword != null || preKeyword != ''){
+			nowURL.searchParams.set('keyword', preKeyword);
+		}
 		location.href = nowURL.href;
 		
 	})
