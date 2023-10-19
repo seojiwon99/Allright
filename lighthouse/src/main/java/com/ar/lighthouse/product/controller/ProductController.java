@@ -540,9 +540,9 @@ public class ProductController {
 						int idx = originalName.indexOf(".");
 						
 						FileOutputStream thumbnail = new FileOutputStream(
-								new File(uploadPath + "\\" + folderPath, "s_" + uuid + "_" + originalName));
+								new File(uploadPath + "/" + folderPath, "s_" + uuid + "_" + originalName));
 						FileInputStream input = new FileInputStream(
-								new File(uploadPath + "\\" + folderPath, uuid + "_" + originalName));
+								new File(uploadPath + "/" + folderPath, uuid + "_" + originalName));
 						Thumbnailator.createThumbnail(input, thumbnail, 100, 100);
 						
 						thumbnail.close();
