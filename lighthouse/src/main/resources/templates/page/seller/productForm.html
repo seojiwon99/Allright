@@ -2043,7 +2043,7 @@
                $('#deliveryCost').focus();
                return false;
             }
-            if (cost <= 0) {
+            if (cost < 0) {
                alert("최소 금액은 0원 이상이여야합니다.");
                $('#deliveryCost').focus();
                return false;
@@ -2068,7 +2068,7 @@
                $('#exchangeCost').focus();
                return false;
             }
-            if (cost <= 0) {
+            if (cost < 0) {
                alert("최소 금액은 0원 이상이여야합니다.");
                $('#exchangeCost').focus();
                return false;
@@ -2093,7 +2093,7 @@
                $('#returnCost').focus();
                return false;
             }
-            if (cost <= 0) {
+            if (cost < 0) {
                alert("최소 금액은 0원 이상이여야합니다.");
                $('#returnCost').focus();
                return false;
