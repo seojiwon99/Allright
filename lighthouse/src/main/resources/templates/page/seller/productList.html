@@ -183,10 +183,8 @@ input, select, button{
                      <td th:text="${product.salePrice}"></td>
                      <td th:text="${product.deliveryCost}"></td>
                      <td
-                        th:text="${#dates.format(product.productRegdate,'yyyy-MM-dd')}">상품등록일</td>
-                     <td th:text="${product.productExstatus}">전시상
-                     
-                     태</td>
+                        th:text="${#dates.format(product.productRegdate,'yyyy-MM-dd')}"></td>
+                    <td th:text="${product.productExstatus} == 'C' ? '임시저장' : ${product.productExstatus}"></td>
                   </tr>
                   <!-- 반복문 종료 -->
                </tbody>
@@ -248,24 +246,35 @@ input, select, button{
        })
    }
    
+   
+  
+   
+   
    $('#chkDelBtn').on('click',function(){
       let proList = [];
-      
+      let productExstatusList = [];
       let checkTags = $('input[type="checkbox"]:checked').not('#allcheck');
-    
+     
       if (checkTags.length === 0) {
     	    alert('상품을 선택하세요'); // 경고창 표시
     	    return; // 작업 중지
     	  }
       
-      console.log(checkTags);
+      let productExstatus = ""
       
       checkTags.each((idx, tag) => {
          let productCode = $(tag).parent().next().next().text();
+         productExstatus = $(tag).closest('tr').find('td:last').text().trim();;
+         console.log(productExstatus)
+         if (productExstatus === '임시저장') {
+    	    alert(productCode + '번은 임시저장 상품입니다.'); // 경고창 표시
+    	    return; // 작업 중지
+    	  }
          let obj = {'productCode' : productCode};
          proList.push(obj);
       })
-    
+        
+      
       
       $.ajax({
          /* let val = $(this).val();

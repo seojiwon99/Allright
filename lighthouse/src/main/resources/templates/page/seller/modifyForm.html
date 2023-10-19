@@ -197,7 +197,7 @@
                         </div>
                         <div id="image_container">
                            <div style="display:flex;">
-								<img th:src="|/upload/${detailImg[0].uploadPath}/${detailImg[0].uploadName}|" style="width:200px; height:220px">
+								<img th:if="${detailImg != null and detailImg.size() > 0}" th:src="|/upload/${detailImg[0].uploadPath}/${detailImg[0].uploadName}|" style="width:200px; height:220px">
 								<textarea name="productImg[0].imgContent" id="productImgCon" class="form-control" th:text="${detailImg[0].imgContent}"></textarea>
                            </div>
                         </div>
