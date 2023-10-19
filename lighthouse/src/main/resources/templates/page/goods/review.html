@@ -437,13 +437,19 @@
 		/*--------------------------
 		리뷰 수정
 		----------------------------*/
+		
 		function editReview(data){
-		      
+			  				
 		      console.log(data);
 		      let reviewCode = $("#reviewNum").val(data.reviewCode);
 		      let reviewContent = $("#message-text").html(data.reviewContent);
-		      let imgContent = $("#reviewImgContent").val(data.reviewImg.imgContent);
-		      let img = $("#reviewModifyImg").attr("src", "upload/" + data.reviewImg.uploadPath + "/"+ data.reviewImg.uploadName);
+		      //let imgContent = $("#reviewImgContent").val(data.reviewImg.imgContent);
+		      let img;
+		      if(data.reviewImg == null){
+		    	  img=null;
+		      }else{
+			      img = $("#reviewModifyImg").attr("src", "upload/" + data.reviewImg.uploadPath + "/"+ data.reviewImg.uploadName);
+		      }
 		      let reviewStars = $("#editStar").attr("data-value",data.reviewStar);
 		      
 		      let form = $("#editForm")[0];
