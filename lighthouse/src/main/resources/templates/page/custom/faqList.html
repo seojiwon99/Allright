@@ -27,24 +27,27 @@
 				<div class="col-12 col-lg-10 col-xl-8">
 					<!-- Heading -->
 					<h3 class="mb-10 text-center">
-						<a href="/custom/faqList" tabindex="0" class="focus">Frequently Asked Questionss</a>
+						<a href="/custom/faqList" tabindex="0" class="focus">Frequently Asked Questions</a>
 					</h3>
 					<ul class="menu" style="display: flex; list-style: none; padding-left: 0;">
 						<li class="nav-item">
-							<a class="nav-link" th:href="@{/custom/faqList}" tabindex="-1">전체</a>
+							<a class="nav-link" th:href="@{/custom/faqList}" id="faqT" tabindex="-1">전체</a>
 						</li>
 						<th:block th:each="type, status : ${faqType}">
 							<li class="nav-item">
-								<a class="nav-link" tabindex="-1"
-									th:href="@{/custom/faqList/(faqType=${type.faqType})}">[[${type.typeName}]]</a></li>
+								<a class="list nav-link" tabindex="-1" th:data-val="${type.faqType}"
+									th:href="@{/custom/faqList/(faqType=${type.faqType})}">[[${type.typeName}]]</a></li>					
 						</th:block>
+						
 					</ul>
+					
 					<!-- Heading -->
 					<!-- <h5 class="mb-7">회원:</h5> -->
 					<!-- List group -->
 					<div class="start" tabindex="0">
 						
 					</div>
+					
 					<ul class="list-group list-group-flush-x mb-9" id="faqCollapseParentOne">
 						<th:block th:each="faq, status : ${faqList}" >
 							<input type="hidden" th:value="${status.size}" id="length">
@@ -65,6 +68,7 @@
 							</li>
 						</th:block>
 					</ul>
+		
 					<!-- Pagination -->
 					<nav class="d-flex justify-content-center justify-content-md-center mt-10">
 						<ul class="pagination pagination-sm text-gray-400">
@@ -107,6 +111,8 @@
     let sessionAuthor;
 
 	let member = [[${session.loginMember}]];
+	let cri  = [[${pageMaker}]];
+
    if(sessionStorage.loginMember != null){
       sessionAuthor = sessionStorage.loginMember.memberAuthor;
    }
@@ -167,7 +173,6 @@
     					audioFileNow = audioFile;
     					audioFileNow.play();
 
-
     				},
     				error: function (request, status, error) {
     					alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
@@ -218,11 +223,20 @@
 			}
 
     		$(document).ready(function () {
+    			let faqChk = [[${param.faqType}]];
+    			if(faqChk == null){
+    				$('#faqT').addClass('active');
+    			}else{
+	    			$('.list').each(function(idx,item){
+	    				if($(item).data('val') == faqChk[0]) {
+	    					$(item).addClass('active');
+	    				}
+	    			})
+    			}
 				$('.start').focus();
 				
     			startVoice(text);
     			
-				console.log(member);
     			$('.start').on('focus',startRead);
     			$('.fqlist').on('focus',listRead);
     			$('.end').on('focus',endRead);
@@ -240,7 +254,6 @@
 			}
 
     		function listRead(){
-    			console.log($(this));
     			let title = $(this).find('.title').text();
     			let content = $(this).find('.content').text();
     			let msg = "질문:" + title +  "내용:" + content;
@@ -261,9 +274,10 @@
 
     		function startVoice(text) {
     			let voice = $('#detailtext').text();
-    			let msg = text + "f a q 화면 입니다. 1. 전체 2. 취소 / 반품 / 교환 3. 주문 / 결제 4. 회원 서비스 5. 배송 6.상품 " 
-    			+ "6. f a q화면가기 7. 공지사항가기 8. 1:1문의하기"
-    			+ "9. 홈화면 0. 메뉴다시듣기 tab를 누르면 f a q를 하나씩 읽어드립니다.";
+    			let msg = text + "f a q 화면 입니다. 1. 전체 2. 취소 / 반품 / 교환 3. 주문 / 결제 4. 회원 서비스 5. 배송 6.상품 alt + 번호를 눌러주시고" + ".."
+    			+ "alt + q 이전페이지 alt + w 다음페이지고"
+    			+ "6번 f a q화면가기 7번 공지사항가기 8번 1:1문의하기" + ".."
+    			+ "9번 홈화면 0번 메뉴다시듣기 tab를 누르면 f a q를 하나씩 읽어드립니다.";
     			VoiceReturnRead(msg);
     		}
     		$(document).on('keydown',function(e){
@@ -288,7 +302,6 @@
 					}else if(e.keyCode == 55){
 						location.href = "/custom/notice";
 					}else if(e.keyCode == 56){
-						console.log(member);
 						if(member == null){
 							let text = "로그인하셔야 이용하실수있는 서비스입니다.";
 							VoiceReturnRead(text);
@@ -299,6 +312,42 @@
     					location.href="/";
     				}else if(e.keyCode == 9){
     					$('#faqCollapseParentOne').focus();
+    				}else if(e.altKey && e.keyCode == 81){
+						let pageMaker = [[${pageMaker}]];
+						let page = [[${pageMaker.cri}]];
+
+						let type = [[${param.faqType}]];
+						let type1 ='';
+						if(type == null){
+							type1 ='';
+						}else{
+							type1 = type[0];
+						}
+						if(pageMaker.startPage == page.pageNum){
+							let msg = '첫번째 페이지입니다.';
+    					 	VoiceReturnRead(msg);
+						}else{
+							location.href="/custom/faqList/?pageNum="+(page.pageNum-1)+"&faqType=" + type1;
+						}
+    			
+    				}else if(e.altKey && e.keyCode == 87){
+    					let pageMaker = [[${pageMaker}]];
+						let page = [[${pageMaker.cri}]];
+					
+						let type = [[${param.faqType}]];
+						let type1 ='';
+						if(type == null){
+							type1 ='';
+						}else{
+							type1 = type[0];
+						}
+						if(pageMaker.endPage == page.pageNum){
+							let msg = '마지막 페이지입니다.';
+    					 	VoiceReturnRead(msg);
+						}else{
+							location.href="/custom/faqList/?pageNum="+(page.pageNum+1)+"&faqType=" + type1;
+						}
+						
     				}
     			});
 	

@@ -2,7 +2,6 @@ package com.ar.lighthouse.member.controller;
 
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -135,8 +134,9 @@ public class loginController {
 		System.out.println(memberVO.getMemberPw());
 		
 		String result = "";
-		if(memberService.addMember(memberVO)>0) {
+		if(memberService.addMember(memberVO)>0) {	
 			result = "success";
+			memberService.addCoupon(memberVO.getMemberId());
 		}else {
 			result = "fail";
 		}

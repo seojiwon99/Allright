@@ -56,7 +56,7 @@ public class elaController {
     int port = 9200;
     String scheme = "http";
     HttpHost host = new HttpHost(hostname, port, scheme);
-    HttpHost hos = new HttpHost("6773-58-238-119-6.ngrok-free.app");
+    HttpHost hos = new HttpHost("0559-58-238-119-6.ngrok-free.app");
     //RestClientBuilder restClientBuilder = RestClient.builder(host);
     RestClientBuilder restClientBuilder = RestClient.builder(hos);
     

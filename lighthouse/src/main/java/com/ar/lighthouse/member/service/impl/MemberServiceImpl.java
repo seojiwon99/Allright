@@ -62,6 +62,11 @@ public class MemberServiceImpl implements MemberService{
 			return false;
 		}
 	}
+
+	@Override
+	public int addCoupon(String memberId) {
+		return memberMapper.insertCoupon(memberId);
+	}
 	
 	
 }

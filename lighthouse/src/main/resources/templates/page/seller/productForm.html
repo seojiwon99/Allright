@@ -41,6 +41,12 @@
               <!-- Form -->
             <form id="insertForm" class="form-horizontal" action="/insertProduct" method="post" enctype="multipart/form-data">
                <div class="row">
+                 <div class="col-12">
+                     <!-- 상품명 -->
+                     <div class="form-group">
+                           <h2>상품 등록</h2>
+                     </div>
+                  </div>
                <div class="col-12">
                   <!-- 카테고리 들어갈곳 -->
                      <div class="form-group">
@@ -1502,11 +1508,7 @@
                return;
             }
             }
-           
-           
-
-            
-
+                     
             // 옵션 검사 해야함
             let inputfile = $('#imgName');
             let files = inputfile[0].files;
@@ -1532,8 +1534,6 @@
                inputfile.focus();
                return;
             }
-
-          
 
             let detailImg = $(".imgName");
             let detailContent = $(".imgContet");
@@ -1566,7 +1566,7 @@
                return;
             }
 
-            if ($("#deliveryService").val() == "") {
+            if ($("#deliveryService").val() == null || $("#deliveryService").val() == "") {
                alert("택배사를 선택해주세요");
                $("#deliveryService").focus();
                return;
@@ -1615,7 +1615,7 @@
             }
             test22 = "/insertProduct";
 
-            $("#insertForm").submit();
+           	$("#insertForm").submit();
          })
 
          // 상품명 유효성 검사
@@ -1685,7 +1685,7 @@
                $('#salePrice').focus();
                return false;
             }
-            if (cost > $('#productCost').val()) {
+            if (Number(cost) > Number($('#productCost').val())) {
                console.log("cost" + cost);
                console.log($('#productCost').val());
                alert("할인가가 판매가보다 높을수 없습니다.");
@@ -1799,7 +1799,7 @@
                alert("숫자만 입력가능합니다.");
                return false;
             }
-            if (cost <= 0) {
+            if (cost < 0) {
                alert("최소 금액은 0원 이상이여야합니다.");
                return false;
             }
@@ -1863,7 +1863,7 @@
                alert("숫자만 입력가능합니다.");
                return false;
             }
-            if (cost <= 0) {
+            if (cost < 0) {
                alert("수량은 0보다 커야합니다.");
                return false;
             }
@@ -2043,7 +2043,7 @@
                $('#deliveryCost').focus();
                return false;
             }
-            if (cost <= 0) {
+            if (cost < 0) {
                alert("최소 금액은 0원 이상이여야합니다.");
                $('#deliveryCost').focus();
                return false;
@@ -2068,7 +2068,7 @@
                $('#exchangeCost').focus();
                return false;
             }
-            if (cost <= 0) {
+            if (cost < 0) {
                alert("최소 금액은 0원 이상이여야합니다.");
                $('#exchangeCost').focus();
                return false;
@@ -2093,7 +2093,7 @@
                $('#returnCost').focus();
                return false;
             }
-            if (cost <= 0) {
+            if (cost < 0) {
                alert("최소 금액은 0원 이상이여야합니다.");
                $('#returnCost').focus();
                return false;

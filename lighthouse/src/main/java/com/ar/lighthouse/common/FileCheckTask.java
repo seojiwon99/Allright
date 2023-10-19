@@ -43,22 +43,16 @@ public class FileCheckTask {
 	// 스케줄러
 	@Scheduled(cron = "0 0 2 * * *")
 	public void checkFiles() throws Exception{
-		// file list in database
-		System.out.println("asd");
-		log.warn("File check Task run......");
+
 		List<ImgsVO> fileList = chkMapper.getImgsFiles();
 		System.out.println(fileList);
 		
 		System.out.println("test" + fileList.stream().map(vo -> Paths.get("C:\\upload", vo.getUploadPath(), vo.getUploadName())));
-		// ready for check file in directory with database file list
+
 		List<Path> fileListPaths = fileList.stream()
 				.map(vo -> Paths.get("C:\\upload", vo.getUploadPath(), vo.getUploadName()))
 				.collect(Collectors.toList());
 		
-		System.out.println(fileListPaths);
-		// fileListPaths.forEach(p -> log.warn(p));
-		
-		// files in yesterday directory
 		File targetDir = Paths.get(uploadPath, getFolderYesterDay()).toFile();
 		System.out.println("target" + targetDir);
 		
