@@ -1508,11 +1508,7 @@
                return;
             }
             }
-           
-           
-
-            
-
+                     
             // 옵션 검사 해야함
             let inputfile = $('#imgName');
             let files = inputfile[0].files;
@@ -1538,8 +1534,6 @@
                inputfile.focus();
                return;
             }
-
-          
 
             let detailImg = $(".imgName");
             let detailContent = $(".imgContet");
@@ -1572,7 +1566,7 @@
                return;
             }
 
-            if ($("#deliveryService").val() == "") {
+            if ($("#deliveryService").val() == null || $("#deliveryService").val() == "") {
                alert("택배사를 선택해주세요");
                $("#deliveryService").focus();
                return;
@@ -1621,7 +1615,7 @@
             }
             test22 = "/insertProduct";
 
-            $("#insertForm").submit();
+           	$("#insertForm").submit();
          })
 
          // 상품명 유효성 검사
