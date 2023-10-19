@@ -78,7 +78,7 @@ img {
                   </div>
                </nav>
             </div>
-            <div class="col-12 col-md-9 col-lg-8 offset-lg-1" >
+            <div class="col-12 col-md-9" >
                <!-- Order -->
                <div style="margin-bottom:5px">
                    <div style="margin-bottom:5px">
@@ -105,33 +105,7 @@ img {
 	               	</div>
 	               	    </div>
 			<div id="orderOption">	               	    
-	           <!-- Pagination -->
-               <nav th:if="${pageMaker.endPage >1}"
-                  class="d-flex justify-content-center justify-content-md-end mt-10">
-                  <ul class="pagination pagination-sm text-gray-400">
-                     <li class="page-item" th:if="${pageMaker.prev}"><a
-                        class="page-link page-link-arrow" id=""
-                        th:href="|javascript:goPage(${pageMaker.startPage - 1})|">
-                           <i class="fa fa-caret-left"></i>
-                     </a></li>
-                     <th:block
-                        th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
-                        <li th:if="${pageMaker.endPage} ne 0"
-                           th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
-                           th:each="pageButtom : ${#numbers.sequence(start,end)}"
-                           th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
-                           <a class="page-link" href="#"
-                           th:href="|javascript:goPage(${pageButtom})|"
-                           th:text="${pageButtom}"></a>
-                        </li>
-                     </th:block>
-                     <li class="page-item" th:if="${pageMaker.next}"><a
-                        class="page-link page-link-arrow" id="nextPage"
-                        th:href="|javascript:goPage(${pageMaker.endPage + 1})|">
-                           <i class="fa fa-caret-right"></i>
-                     </a></li>
-                  </ul>
-               </nav>
+
 
            
 
@@ -145,122 +119,123 @@ img {
                            class="order">
                            <div class="card-body bg-light" style="border-radius: 15px;">
                               <div class="row orderRow">
+                              <div class="col-9">
+                              	 <div class="row">
                               <input type="hidden" th:value="${lists.productCode}"
                                                 class="productCode" name="productCode" />
                                  <!-- 주문 번호 -->
                                  <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted">주문 번호:</h6>
-                                    <p class="mb-lg-0 fs-sm fw-bold">
+                                    <h6 class="heading-xxs text-muted">주문 번호/상세:</h6>
+                                    <p class="mb-lg-0 fw-bold">
                                        <span class="orderCode" th:text="|${lists.orderCode}|"
-                                          tabindex="0"></span>
-                                    </p>
-                                    <h6 class="heading-xxxs text-muted">주문 상세 번호:</h6>
-                                    <p class="mb-lg-0 fs-sm fw-bold">
+                                          tabindex="0"></span>/
                                        <span class="orderDetailCode"
                                           th:text="|${lists.orderDetailCode}|"></span>
                                     </p>
                                  </div>
                                  <!-- 주문 날짜 -->
                                  <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted">주문 날짜:</h6>
-                                    <p class="mb-lg-0 fs-sm fw-bold">
+                                    <h6 class="heading-xxs text-muted">주문 날짜:</h6>
+                                    <p class="mb-lg-0 fw-bold">
                                        <span class="orderDate"
                                           th:text="${#dates.format(lists.orderDate, 'yyyy-MM-dd')}"></span>
                                     </p>
                                  </div>
-                                 <!-- 상품 이미지 -->
-                                 <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted">상품 이미지:</h6>
-                                    <a th:href="|/goodDetail?productCode=${lists.productCode}|"
-                                       tabindex="-1"> <img
-                                       th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|"
-                                       style="max-width: 100%; height: auto" class="productImg"
-                                       th:alt="${lists.imgContent}" tabindex=0>
-                                    </a>
-                                 </div>
                                  <!-- 상품명 -->
-                                 <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted">상품명:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
+                                 <div class="col-lg-6">
+                                    <h6 class="heading-xxs text-muted">상품명:</h6>
+                                    <p class="mb-0  fw-bold">
                                        <span class="productName" th:text="|${lists.productName}|"></span>
                                     </p>
-                                    <h6 class="heading-xxxs text-muted">옵션:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
-                                       <span class="optionLast" th:text="|${lists.optionLast}|"></span>
+                                    <p class="mb-0 fw-bold">
+                                       <span class="heading-xxs text-muted">옵션:</span><span class="optionLast" th:text="|${lists.optionLast}|"></span>
                                     </p>
                                  </div>
+                                 </div>
+                                 <div class="row mt-6">
                                  <!-- 수량 -->
                                  <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted" style="margin-top: 10px">수량:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
+                                    <h6 class="heading-xxs text-muted" style="margin-top: 10px">수량:</h6>
+                                    <p class="mb-0 fw-bold">
                                        <span class="orderCnt" th:text="|${lists.orderCnt}|"></span>
                                     </p>
                                  </div>
                                  <!-- 주문 금액 -->
                                  <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted" style="margin-top: 10px">주문
+                                    <h6 class="heading-xxs text-muted" style="margin-top: 10px">주문
                                        금액:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
+                                    <p class="mb-0 fw-bold">
                                        <span class="paymentPrice"
                                           th:text="|${#numbers.formatInteger(lists.paymentPrice,0,'COMMA')}원|"></span>
                                     </p>
                                  </div>
                                  <!-- 배송 상태 -->
                                  <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted" style="margin-top: 10px">배송
+                                    <h6 class="heading-xxs text-muted" style="margin-top: 10px">배송
                                        상태:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
+                                    <p class="mb-0 fw-bold">
                                        <span class="orderStatusNm"
                                           th:text="|${lists.orderStatusNm}|"></span>
                                     </p>
                                  </div>
                                  <!-- 배달 완료 날짜 -->
-                                 <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted" style="margin-top: 10px">배송
+                                 <div class="col-6 col-lg-3" th:if="${lists.deliveryDate} != null">
+                                    <h6 class="heading-xxs text-muted" style="margin-top: 10px">배송
                                        완료 날짜:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
+                                    <p class="mb-0 fw-bold">
                                        <span class="deliveryDate"
                                           th:text="${#dates.format(lists.deliveryDate, 'yyyy-MM-dd')}"></span>
                                     </p>
                                  </div>
+                                 <div class="row mt-6">
                                  <!-- 취소 여부 -->
-                                 <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted">취소 여부:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
-                                       <span class="cancelStatusNm"
+                                 <div class="col-6 col-lg-3" th:if="${lists.cancelStatus} != '0'">
+                                    <p class="mb-0 fw-bold">
+                                       <span class="heading-xxs text-muted">취소 여부: </span><span class="cancelStatusNm"
                                           th:text="${lists.cancelStatusNm}"></span>
                                     </p>
                                  </div>
                                  <!-- 반품 여부 -->
-                                 <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted">반품 여부:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
-                                       <span class="returnStatusNm"
+                                 <div class="col-6 col-lg-3" th:if="${lists.returnStatus} != '0'">
+                                    <p class="mb-0 fw-bold">
+                                       <span class="heading-xxs text-muted">반품 여부: </span><span class="returnStatusNm"
                                           th:text="|${lists.returnStatusNm}|"></span>
                                     </p>
                                  </div>
                                  <!-- 교환 여부 -->
-                                 <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted">교환 여부:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
-                                       <span class="exchangeStatusNm"
+                                 <div class="col-6 col-lg-3" th:if="${lists.exchangeStatus} != '0'" >
+                                    <p class="mb-0 fw-bold">
+                                       <span class="heading-xxs text-muted">교환 여부: </span><span class="exchangeStatusNm"
                                           th:text="|${lists.exchangeStatusNm}|"></span>
                                     </p>
                                  </div>
                                  <!-- 주문 확정 -->
-                                 <div class="col-6 col-lg-3" >
-                                    <h6 class="heading-xxxs text-muted">주문 확정:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
-                                       <span class="orderCheck" th:if="${lists.orderCheck} == 'N'">취소된
+                                 <div class="col-6 col-lg-6" th:if="${lists.orderCheck} == 'N'">
+                                    <p class="mb-0 fw-bold">
+                                       <span class="heading-xxs text-muted">주문 확정: </span><span class="orderCheck" >취소된
                                           상품</span>
                                     </p>
                                  </div>
+                                 </div>
+                                 </div>
+                                 </div>
+
+                               <div class="col-3">
+                                 <!-- 상품 이미지 -->
+                                    <a th:href="|/goodDetail?productCode=${lists.productCode}|"
+                                       tabindex="-1"> <img
+                                       th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|"
+                                       style="max-width: 100%; height: auto" class="productImg"
+                                       th:alt="${lists.imgContent}" tabindex=0>
+                                    </a>
+                               </div>
+                               
                               </div>
                            </div>
 
-                           <div class="card-footer ">
+                           <div class="card-footer" th:if="${lists.returnStatus} == '0' and ${lists.cancelStatus} == '0' and ${lists.exchangeStatus} == '0' and ${lists.orderCheck} != 'N' ">
                               <div class="row align-items-center"
-                                 th:if="${lists.returnStatus} == '0' and ${lists.cancelStatus} == '0' and ${lists.exchangeStatus} == '0' and ${lists.orderCheck} != 'N' ">
+                                 >
                                  <!-- 리뷰  button -->
                                  <div class="col-4" th:if="${lists.orderStatus} == '4'">
                                     <button class="reviewBtn btn btn-sm w-100 btn-outline-dark"
@@ -777,7 +752,39 @@ img {
 		       },
 		     });
 		});   
-		   })				 
+		   })
+/*--------------------------
+   이미지 나타내기
+   ----------------------------*/
+     function readImg(obj) {
+
+                let reader = new FileReader();
+                if(!obj.files.length) {
+                    return;
+                }
+                reader.readAsDataURL(obj.files[0]);
+                reader.onload = function (e) {            
+                        let imgs = $("#reviewImages");
+                       $(imgs).attr('src', e.target.result);
+                       $("#reviewImages").css("display","block");
+                       $(".avatar-title").css("display","none");
+                       
+                     }
+                }
+            
+     function readURL(obj) {
+
+                let reader = new FileReader();
+                if(!obj.files.length) {
+                    return;
+                }
+                reader.readAsDataURL(obj.files[0]);
+                reader.onload = function (e) {
+                       let img = $('#reviewModifyImg');
+                       $(img).attr('src', e.target.result);
+                       $('#previewDiv').append(img);
+                     }
+                }
         
         //tts 이벤트 부여
         $('#optionList').on('focus', optionList);

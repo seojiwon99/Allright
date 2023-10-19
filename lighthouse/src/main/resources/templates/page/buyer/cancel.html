@@ -41,11 +41,11 @@
 					</div>
 					<div class="mb-3">
 						<label>상품 명</label> 
-						<input type="text" class="form-label productName" id="productName" th:value="${cancel.productName}" readonly>
+						<input type="text" class="form-control productName" id="productName" th:value="${cancel.productName}"  readonly>
 					</div>
 					<div class="mb-3">
 						<!-- Select -->
-						<select class="form-select form-select-xxs w-auto" id="select">
+						<select class="form-select" id="select">
 							<option value="선택" class="select">취소 사유를 선택해주세요</option>
 							<option th:each="codes: ${codeList}" th:value="${codes.codeId}"
 								th:text="${codes.codeName}"></option>
@@ -56,18 +56,25 @@
 							placeholder="취소 사유를 입력해주세요" ></textarea>
 					</div>
 					<div class="mb-3">
-						<label>은행 명</label> 
-						<select name="" id="bankName">
+						<label class="form-label">은행 명</label> 
+						<select name="" id="bankName" class="form-control">
 						</select>
 					</div>
 					<div class="mb-3">
-						<label>예금주</label> <input type="text" class="form-label" id="accountOwner">
+						<label class="form-label">예금주</label> <input type="text" class="form-control" id="accountOwner">
 					</div>
 					<div class="mb-3">
-						<label>입금 계좌번호</label> <input type="text" class="form-label" id="accountNumber">
-					</div>
+						<label class="form-label">입금 계좌번호</label> 
 					<input type="hidden" value="N" id="bankChk">
-					<button class="btn btn-dark" id="bankCheck">계좌확인</button>
+					<div class="row">
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="accountNumber">
+						</div>
+						<div  class="col-sm-2 ">
+							<button class="btn btn-dark" id="bankCheck">계좌확인</button>
+						</div>
+					</div>
+					</div>
 					
 					<div class="col-12 text-center">
 
@@ -139,7 +146,7 @@
 						data : JSON.stringify(cancelData),
 						success : function(response) {
 							alert('취소 신청이 성공적으로 처리되었습니다.');
-							location.href="/page/buyer/orderList";
+							location.href="/page/buyer/cancelList";
 						},
 						error : function(error) {
 							console.error('취소 신청 실패.');
@@ -281,7 +288,7 @@
 							data : JSON.stringify(cancelData),
 							success : function(response) {
 								VoiceMenual('취소 신청이 성공적으로 처리되었습니다.');
-								location.href="/page/buyer/orderList";
+								location.href="/page/buyer/cancelList";
 							},
 							error : function(error) {
 								console.error('취소 실패.');
