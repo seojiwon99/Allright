@@ -33,13 +33,13 @@
       			<div class="mb-3">
       			 <input type="hidden" th:value="${exchange}" id="hidden">
       				<label>주문번호</label>
-      				<input type="text" class="form-label" id="orderCode" th:value="${exchange.orderCode}" tabindex="0" readonly>
+      				<input type="text" class="form-label" id="orderCode" th:value="${exchange.orderCode}" tabindex="0" readonly style="border: 0px">
       				<label>주문상세번호</label>
-      				<input type="text" class="form-label" id="orderDetailCode" th:value="${exchange.orderDetailCode}" readonly>
+      				<input type="text" class="form-label" id="orderDetailCode" th:value="${exchange.orderDetailCode}" readonly style="border: 0px">
       			</div>
       			<div class="mb-3">
-      				<label>상품명</label>
-      				<input type="text" class="form-control" id="productName" th:value="${exchange.productName}" readonly>
+      				<label>상품 명 : </label>
+      				<input type="text" class="form-control mt-2" id="productName" th:value="${exchange.productName}" readonly>
       			</div>
       			<div class="mb-3">
       			<!-- Select -->
@@ -49,7 +49,7 @@
                    </select>
       			</div>
       			<div class="mb-3">
-      				<textarea class="form-control" id="content" rows="5" placeholder="교환 사유를 입력해주세요"></textarea>
+      				<textarea class="form-control" id="content" rows="5" placeholder="자세한 교환 사유를 입력해주세요" style="resize: none;"></textarea>
       			</div>
       			<div class="mb-3">
       				<div>

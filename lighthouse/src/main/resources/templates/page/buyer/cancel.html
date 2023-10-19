@@ -32,16 +32,16 @@
 					<h2>취소 신청 </h2>
 					<div class="mb-3">
 						<input type="hidden" th:value="${cancel}" id="hidden"> 
-						<label>주문번호</label>
+						<label >주문번호 : </label>
 						<input type="text" class="form-label orderCode" id="orderCode"
-							th:value="${cancel.orderCode}" tabindex="0" readonly> 
-						<label>주문상세번호</label>
+							th:value="${cancel.orderCode}" tabindex="0" readonly style="border: 0px"> 
+						<label>주문상세번호 : </label>
 						<input type="text" class="form-label orderDetailCode" id="orderDetailCode"
-							th:value="${cancel.orderDetailCode}" readonly>
+							th:value="${cancel.orderDetailCode}" readonly style="border: 0px">
 					</div>
 					<div class="mb-3">
-						<label>상품 명</label> 
-						<input type="text" class="form-control productName" id="productName" th:value="${cancel.productName}"  readonly>
+						<label>상품 명 : </label> 
+						<input type="text" class="form-control mt-2 productName" id="productName" th:value="${cancel.productName}"  readonly>
 					</div>
 					<div class="mb-3">
 						<!-- Select -->
@@ -53,7 +53,7 @@
 					</div>
 					<div class="mb-3">
 						<textarea class="form-control cancelReason" id="content" rows="5"
-							placeholder="취소 사유를 입력해주세요" ></textarea>
+							placeholder="취소 사유를 입력해주세요" style="resize: none;"></textarea>
 					</div>
 					<div class="mb-3">
 						<label class="form-label">은행 명</label> 
@@ -71,16 +71,14 @@
 							<input type="text" class="form-control" id="accountNumber">
 						</div>
 						<div  class="col-sm-2 ">
-							<button class="btn btn-dark" id="bankCheck">계좌확인</button>
+							<button class="btn btn-dark" style="border-radius: 10px" id="bankCheck">계좌확인</button>
 						</div>
 					</div>
 					</div>
-					
-					<div class="col-12 text-center">
-
-						<button class="btn btn-dark" id="cancelBtn">주문취소신청</button>
+					<div class="mb-3">
+						<button class="btn btn-dark" style="border-radius: 10px" id="cancelBtn">주문취소신청</button>
 						<a class="btn btn-gray-500" type="button"
-							th:href="@{/page/buyer/orderList}" id="retract">취소</a>
+							th:href="@{/page/buyer/orderList}" style="border-radius: 10px" id="retract">취소</a>
 					</div>
 				</div>
 			</div>
