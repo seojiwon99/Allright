@@ -500,7 +500,7 @@ public class ProductController {
 	 * "page/seller/modifyForm :: #thirdOfChildCate"; }
 	 */
 
-   // 상품 등록
+ // 상품 등록
 	@PostMapping("/insertProduct")
 	public String addProduct(List<MultipartFile> files, ProductVO productVO, HttpServletRequest req,
 			RedirectAttributes rtt, ImgsListVO imgsVO) {
@@ -519,7 +519,6 @@ public class ProductController {
 				String originalName = uploadFile.getOriginalFilename();
 				String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
 				productVO.getProductImg().get(i).setImgName(fileName);
-				
 				// 날짜 폴더 생성
 				String folderPath = makeFolder();
 				String uuid = UUID.randomUUID().toString(); // 유니크한 이름 때문에
@@ -566,7 +565,7 @@ public class ProductController {
 				productService.addProductImg(imgsVO.getImgsVO().get(j));
 			}
 		}
-		rtt.addFlashAttribute("msg", "등륵성공");
+		rtt.addFlashAttribute("msg", "상품이 등록되었습니다.");
 
 		return "redirect:/seller/productList";
 	}
