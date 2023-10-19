@@ -129,7 +129,7 @@
                          <input type="hidden" th:value="${gets.deliveryCost}" class="deliveryMoney">
                          <input type="hidden" name="couponUsePrice" class="text-body" th:value="${gets.productName}" ><br>
                          <span class="text-muted" style="font-weight: bold;"> 상품이름 : </span><span class="text-muted pName" th:text="|${gets.productName}|" style="font-weight: bold;"></span><br>
-                         <span class="text-muted"style="font-weight: bold;">상품금액 : </span><span class="text-muted pPay" style="text-decoration: line-through; font-weight: bold;" th:text="|${#numbers.formatInteger(gets.productCost,0,'COMMA')}|" id="selectPrice"></span>원 <br>
+                         <span class="text-muted"style="font-weight: bold;">상품금액 : </span><span class="text-muted pPay" style="text-decoration: line-through; font-weight: bold;" th:text="|${#numbers.formatInteger(gets.productCost,0,'COMMA')}|" id="selectPrice"></span>원&nbsp&nbsp/&nbsp&nbsp
                         <span class="text-muted sPay" style="font-weight: bold;" th:text="|할인된 금액 : ${#numbers.formatInteger(gets.salePrice,0,'COMMA')}|"></span>원<br>
                         <span class="text-muted oPay" style="font-weight: bold;" th:text="|옵션 추가금액 : ${#numbers.formatInteger(gets.optionPrice,0,'COMMA')}|"></span>원
                         <input type="hidden" class="selectValue" th:value="${(gets.salePrice + gets.optionPrice) * gets.cartCount}">
@@ -139,11 +139,8 @@
                          <button type="button" class="btn btn-outline-secondary list-styled-link couponBtn" style="margin: 20px; background-color: black; color: white; border-radius: 10px;">쿠폰선택</button>
                          
                         </div> 
-                        <p style="margin-left: 10px">쿠폰 할인 금액 : <input type="text" style="border-width: 0 0 1px; width: 150px;" readonly class="couponSalePrice" tabindex="-1">원 
-                          
-                        </p>         
-                      <!-- Text -->
-                      
+                        <p style="margin-left: 10px">쿠폰 할인 금액 : <input type="text" style="border-width: 0 0 1px; width: 150px;" readonly class="couponSalePrice" tabindex="-1">원</p>         
+                     
                         <div class="fs-sm text-muted oName" th:text="|옵션 :${gets.optionLast}|" style="font-weight: bold;"></div>
                         <div class="fs-sm text-muted pCnt" th:text="|구매수량 : ${gets.cartCount}|"  style="font-weight: bold;"></div>
                         <span style="display: flex;"> 합계금액 : <div class="fs-sm text-muted tPay" th:data-total="|${#numbers.formatInteger(((gets.salePrice + gets.optionPrice) * gets.cartCount)+ gets.deliveryCost,0,'COMMA')}|" th:text="|${#numbers.formatInteger(((gets.salePrice + gets.optionPrice) * gets.cartCount)+ gets.deliveryCost,0,'COMMA')}|"  style="font-weight: bold;"></div></span>
@@ -313,6 +310,18 @@
                   border-radius: 16px;
                   width: 900px;
                 }
+                #cancel-button {
+                 background-color: black;
+                 color: white;
+                 width: 200px;
+                 height: 50px;
+                 border-radius: 15px;
+                 border: black;
+                 font-size: 15px;
+                 margin: auto; 
+                 display: block;
+                 margin-top: 10px;
+                         }
               </style>
               <!-- Heading -->
               <h4 id="myCouponbox" tabindex="0">나의 쿠폰함</h4>
@@ -331,9 +340,7 @@
                     
                   </thead>
                   <tbody> 
-                  	<tr>
-                  	<td colspan="7"><button id="cancel-button" style="background-color: black; color: white;">선택취소</button></td>
-                  	</tr>
+                  	
                     <tr class="clickable-row" th:each="couponRest : ${couponList}">
                       <td class="cpCode" th:text="${couponRest.couponCode}" th:data-max="${couponRest.couponMaxPrice}" th:data-min="${couponRest.couponMinPrice}" tabindex="0"></td>
                       <td class="cpName" th:text="${couponRest.couponName}"></td>
@@ -345,7 +352,8 @@
                     </tr>
                     </tbody>
                   </table>
-              </div>
+                </div>
+                <button id="cancel-button">선택취소</button>
             </div>
           </div>
        </div>
@@ -900,7 +908,7 @@
       
     }
     function couponCancel() {
-      VoiceMenual('선택한 쿠폰을 취소 원할 경우 스페이스바 눌러주세요. 다른 쿠폰 안내 원할 경우 탭으로 이동해주세요');
+      VoiceMenual('선택한 상품의 쿠폰을 취소 원할 경우 스페이스바 눌러주세요.');
     }
 
     function couponSelect(){ // 나의 쿠폰함 선택 버튼 안내.
