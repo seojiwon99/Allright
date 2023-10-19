@@ -67,12 +67,15 @@ public class BuyerPageController {
 	// 주문 Option 
 
 	@GetMapping("page/buyer/orderOption")
-	public String orderOption(Model model, HttpSession session, DetailVO detailVO) {
+	public String orderOption(Model model, HttpSession session, Criteria cri, DetailVO detailVO) {
+		System.out.println("cri=============" + cri);
+		System.out.println("detailVO=============" + detailVO);
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-
 		detailVO.setMemberId(memberId);
-		List<DetailVO> orderList = buyerPageService.getOptionList(detailVO);
+		int totalCnt = buyerPageService.getOptionCnt(detailVO);
+		model.addAttribute("pageMaker", new PageDTO(cri, totalCnt));
+		List<DetailVO> orderList = buyerPageService.getOptionList(detailVO, cri);
 		model.addAttribute("orderList", orderList);
 
 		return "page/buyer/orderList :: #orderOption";

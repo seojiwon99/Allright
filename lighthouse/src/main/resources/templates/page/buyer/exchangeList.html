@@ -131,6 +131,19 @@
                            <span class="exchangeRegdate" th:text= "|${#dates.format(lists.exchangeRegdate, 'yyyy-MM-dd')}|"></span>
                         </p>
                       </div>
+                     <div class="col-6 col-lg-3">
+                        <h6 class="heading-xxxs text-muted">교환 승인 여부:</h6>
+                        <p class="mb-0 fs-sm fw-bold">
+                         <span class="exchangeStatus" th:text="|${lists.exchangeStatus}|"></span>
+                        </p>
+                      </div>
+                      
+                      <div class="col-6 col-lg-3">
+                        <h6 class="heading-xxxs text-muted">교환 받을 주소:</h6>
+                        <p class="mb-0 fs-sm fw-bold">
+                         <span class="exchangeAddr" th:text="|${lists.exchangeAddr}|"></span>
+                        </p>
+                      </div>
                       <div class="col-6 col-lg-3">
 						<h6 class="heading-xxxs text-muted">이미지:</h6>
 							<div class="row gx-5 mb-4 mb-lg-0">
@@ -138,25 +151,13 @@
 									style="max-width: 100%; height: auto">
 							</div>
 					  </div>
-                      <div class="col-6 col-lg-3">
-                        <h6 class="heading-xxxs text-muted">교환 승인 날짜:</h6>
-                        <p class="mb-0 fs-sm fw-bold">
-                         <span class="exchangeProcessingdate" th:text="|${#dates.format(lists.exchangeProcessingdate, 'yyyy-MM-dd')}|"></span>
-                        </p>
-                      </div>
-                      <div class="col-6 col-lg-3">
-                        <h6 class="heading-xxxs text-muted">교환 받을 주소:</h6>
-                        <p class="mb-0 fs-sm fw-bold">
-                         <span class="exchangeAddr" th:text="|${lists.exchangeAddr}|"></span>
-                        </p>
-                      </div>
                     </div>
                   </div>
                 <div class="card-footer">
                 <div class="row align-items-center">
 						<div class="col-12 col-lg-6">
 							<div class="row gx-5">
-								<div class="col-6">
+								<div class="col-6" th:if="${lists.exchangeStatus != '승인'}">
 									<!-- Button -->
 									<button class="btn btn-sm w-100 btn-outline-dark deleteBtn" th:onclick="deleteExchange([[${lists.orderDetailCode}]])" th:data-orderdetailcode="${lists.orderDetailCode}" th:id="${lists.orderDetailCode}" style="border-radius: 10px; background-color: black; color: white;">교환 취소</button>
 								</div>
@@ -357,13 +358,15 @@
 		  	let orderCnt = $(this).closest('.exRow').find('.orderCnt').text();
 		  	let paymentPrice = $(this).closest('.exRow').find('.paymentPrice').text();
 		  	let exchangeRegdate = $(this).closest('.exRow').find('.exchangeRegdate').text();
+		  	
 		  	let exchangeStatus = $(this).closest('.exRow').find('.exchangeStatus').text();
-		  	let exchangeProcessingdate = $(this).closest('.exRow').find('.exchangeProcessingdate').text();
+		  	
+		  	
 		  	let exchangeAddr = $(this).closest('.exRow').find('.exchangeAddr').text();
 		  	
 		  	let message = `교환번호는 ${exchangeCode}. 주문번호는 ${orderCode}. 주문상세번호는 ${orderDetailCode}. 상품명은 ${productName}.
 		  					상품 수량은 ${orderCnt}.  결제 금액은 ${paymentPrice}. 교환 접수날짜는 ${exchangeRegdate}. 
-		  					교환 승인 날짜는 ${exchangeProcessingdate}. 교환 받을 주소는 ${exchangeAddr} 입니다.`;
+		  				   교환 승인 여부는 ${exchangeStatus}. 교환 받을 주소는 ${exchangeAddr}. 입니다.`;
 		  	
 		  	VoiceMenual(message);
 			}

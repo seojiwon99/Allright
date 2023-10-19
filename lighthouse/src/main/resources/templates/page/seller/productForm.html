@@ -1691,9 +1691,7 @@
                $('#salePrice').focus();
                return false;
             }
-            if (cost > $('#productCost').val()) {
-               console.log("cost" + cost);
-               console.log($('#productCost').val());
+            if (Number(cost) > Number($('#productCost').val())) {
                alert("할인가가 판매가보다 높을수 없습니다.");
                $('#salePrice').focus();
                return false;

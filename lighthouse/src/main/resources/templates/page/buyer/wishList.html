@@ -89,15 +89,15 @@
 									<div class="card mb-7">
 										<!-- Image -->
 										<div class="card-img">
+											<!-- Image -->
+											<img class="card-img-top favoriteCode" style="width:100%; height:250px"
+												th:src="|/upload/${wishes.uploadPath}/${wishes.uploadName}|"
+												th:alt="${wishes.imgContent}" th:value="${wishes.favoriteCode}" tabindex="0">
 											<!-- Button -->
 											<a class="btn btn-xs w-100 btn-dark card-btn"
 												tabindex="0" th:href="|/goodDetail?productCode=${wishes.productCode}|">
 												<i class="fe fe-eye me-2 mb-1"></i> Quick View
 											</a>
-											<!-- Image -->
-											<img class="card-img-top favoriteCode" style="width:100%; height:250px"
-												th:src="|/upload/${wishes.uploadPath}/${wishes.uploadName}|"
-												th:alt="${wishes.imgContent}" th:value="${wishes.favoriteCode}" tabindex="0">
 											<!-- Action -->
 											<a
 												class="btn btn-xs btn-circle btn-white-primary card-action card-action-end wishDelBtn" href="#" th:onclick="deleteWish([[${wishes.favoriteCode}]])" tabindex="0">
@@ -254,12 +254,6 @@
 
 			 
 		     //tts 이벤트 진행
-		     function productBtn(){
-		    	 VoiceMenual("상품 페이지 버튼입니다. 상품 페이지로 이동을 원하시면 엔터키를 눌러주세요.");
-		     }
-		     function deleteBtn() {
-				 VoiceMenual("찜 삭제버튼입니다. 삭제를 원하면 엔터키를 눌러주세요.");
-			 }
 		     function wishInfo() {
 			     let productName = $(this).parent().parent().find('.productName').text();
 			     let productCost =  $(this).parent().parent().parent().find('.productCost').text();
@@ -270,7 +264,13 @@
 		    	 
 		    	 VoiceMenual(message);
 		     }
-
+		     function productBtn(){
+		    	 VoiceMenual("상품 페이지 버튼입니다. 상품 페이지로 이동을 원하시면 엔터키를 눌러주세요.");
+		     }
+		     function deleteBtn() {
+				 VoiceMenual("찜 삭제버튼입니다. 삭제를 원하면 엔터키를 눌러주세요.");
+			 }
+		     
 				//tts 부분
 				console.log('hello js');
 				

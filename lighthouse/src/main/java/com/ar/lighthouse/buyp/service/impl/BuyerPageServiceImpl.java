@@ -149,8 +149,8 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	}
 
 	@Override
-	public List<DetailVO> getOptionList(DetailVO detailVO) {
-		return buyerPageMapper.selectOptionList(detailVO);
+	public List<DetailVO> getOptionList(DetailVO detailVO, Criteria cri) {
+		return buyerPageMapper.selectOptionList(detailVO, cri);
 	}
 
 	// 찜 등록
@@ -195,6 +195,13 @@ public class BuyerPageServiceImpl implements BuyerPageService {
 	public int totalExchangeCnt(String memberId) {
 		return buyerPageMapper.totalExchangeCnt(memberId);
 	}
+
+	@Override
+	public int getOptionCnt(DetailVO detailVO) {
+		return buyerPageMapper.selectOptionCnt(detailVO);
+	}
+
+	
 
 
 

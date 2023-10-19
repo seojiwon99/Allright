@@ -233,6 +233,7 @@ function drawVisualization() {
         	  $(test).each(function(idx,item){
         		  if($(item).data('num') == month){
         			  $(this).click();
+				  window.scrollTo({top:700, left:0, behavior:'auto'});
         		  }
         		  console.log(item);
         	  })
