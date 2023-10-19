@@ -69,7 +69,21 @@
 					
 					
 				
-      <script>
+      <script th:inline="javascript">
+      
+      let upEndDate = [[${noticeAdminVO.upEnddate}]]
+      let noticeType = [[${noticeAdminVO.noticeType}]]
+      console.log(upEndDate)
+      if(upEndDate == null && noticeType == 'Y'){
+    	  $('#selectDate')[0].value = 'noLimit'
+    	  console.log($('#selectDate')[0].value);
+    	  $('#upEnddate').remove();
+      }else if(upEndDate == null && noticeType == 'N'){
+    	  $('#selectDate')[0].value = 'no'
+        	  console.log($('#selectDate')[0].value);
+        	  $('#upEnddate').remove();
+      }
+      
       //   <input class="form-control form-control-sm w-25" id="contactName" type="date" required>
       $('#selectDate').on('change', function(){
           if($('#selectDate option:selected').val() == 'date'){

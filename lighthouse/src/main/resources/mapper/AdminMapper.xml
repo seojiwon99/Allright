@@ -80,7 +80,7 @@
          	<if test="faqVO.faqType != null and !(faqVO.faqType == 0)">
   		  	and	faq_type = #{faqVO.faqType}
   		  	</if>
-	        ORDER BY faq_code
+	        ORDER BY faq_code desc
 	        ) ft
 	         <![CDATA[
 	    WHERE ROWNUM <= #{cri.pageNum} * #{cri.amount}
