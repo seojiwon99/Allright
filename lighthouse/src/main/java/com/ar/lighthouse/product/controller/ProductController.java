@@ -529,6 +529,7 @@ public class ProductController {
 				productVO.getProductImg().get(i).setUploadPath(folderPath);
 				
 				String saveName = uploadPath + "/" + uploadFileName;
+            			saveName = saveName.replace("\\", "/");
 				
 				Path savePath = Paths.get(saveName);
 				try {
