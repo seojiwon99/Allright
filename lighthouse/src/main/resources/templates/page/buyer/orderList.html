@@ -434,8 +434,10 @@ img {
    var tmpProductCode;
    
   $('.reviewBtn').on('click',function(e){
-	  console.log("sadsadsad");
-
+	  let btn = $(this);
+      let btn2 = btn.parent().parent().parent().parent().children()[0];
+      let prodCode = $(btn2).find('input[type="hidden"]');
+      tmpProductCode = prodCode[0].value;
    })
    /*--------------------------
    리뷰 등록
