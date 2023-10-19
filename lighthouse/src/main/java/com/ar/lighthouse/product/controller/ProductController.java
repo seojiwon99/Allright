@@ -311,7 +311,7 @@ public class ProductController {
       suBetw = suBetw.replaceAll("-", "/");
       model.addAttribute("staticList", productService.getStaticList(memberId,preBetw,suBetw));
       model.addAttribute("prev", preBetw);
-
+      System.out.println("preBetw@@" + preBetw);
       return "page/seller/statistics";
    }
    

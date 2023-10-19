@@ -41,7 +41,7 @@ public class DetailVO {
    // 멤버 테이블
    String memberId;
    String memberName;
-   int memberTel;
+   String memberTel;
    String memberEmail;
 
    //상품 테이블 조인
