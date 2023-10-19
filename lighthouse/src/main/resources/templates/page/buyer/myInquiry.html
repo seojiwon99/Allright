@@ -99,11 +99,7 @@
           </div>
 			<div class="col-12 col-md-9 col-lg-8 offset-lg-1" style="margin-left: 20px;">
             <!-- myInquiry -->
-            <div class="card card-lg mb-5 border">
-			  <div class="card-body pb-0" >
-			  <div th:if="${myInquiry.size != 0}">
-			    <div class="card card-sm">
-			      <div class="row inquiryRow">
+			      <div class="row inquiryRow" th:if="${myInquiry.size != 0}">
 			        <table class="table">
 			          <thead>
 			            <tr>
@@ -138,14 +134,15 @@
 					          <div class="container-fluid px-xl-0">
 					              <div class="col-12 col-lg-6 col-xl-7 py-9 px-md-9">
 					                <label class="h7">문의 제목 :</label>
-					                <h5 class="mb-3 inqTitle" tabindex="0" th:text="|${inqs.customInquiryTitle}|"></h5>
+					                <span class="mb-3 inqTitle" style="font-size : 24px;" tabindex="0" th:text="|${inqs.customInquiryTitle}|"></span>
+					                <br>
 					                <label class="h7">문의 날짜 :</label>
-					                <h5 class="mb-3 inqDate" tabindex="0" th:text="|${#dates.format(inqs.customInquiryRegdate, 'yyyy-MM-dd')}|"></h5>
+					                <span class="mb-3 inqDate" style="font-size : 24px;" tabindex="0" th:text="|${#dates.format(inqs.customInquiryRegdate, 'yyyy-MM-dd')}|"></span>
 					                <!-- Form -->
-					                <form>
+					                <form class="mt-5">
 					                  <label class="h5">문의 내용 :</label>
 					                  <div class="form-group">
-					    				<textarea class="inqContent" tabindex="0" rows="5" cols="90" th:text="|${inqs.customInquiryContent}|"></textarea>
+					    				<textarea class="inqContent" tabindex="0" rows="5" cols="90" th:text="|${inqs.customInquiryContent}|" readonly></textarea>
 					                  </div>
 					                  <label class="h5">답변 내용 :</label>
 					                  <div class="form-group">
@@ -153,8 +150,8 @@
 					                  </div>
 					                  <div class="form-group mb-0">
 					                    <div class="row gx-5">
-					    	              <div class="col-12 col-lg">
-					                        <button type="submit" tabindex="0" class="btn w-100 btn-dark mb-2 closeBtn" style="border-radius: 10px;">
+					    	              <div class="col-12 col-lg" style="margin: auto; display:block;">
+					                        <button type="submit" tabindex="0" class="btn w-100 btn-dark mb-2 closeBtn" style="border-radius: 10px; margin: auto; display:block;">
 					                          닫기
 					                        </button>
 					                      </div>
@@ -163,25 +160,21 @@
 					                </form>
 					              </div>
 					          </div>
-					        </div>
-					      </div>
 						 </div>                     
-	                  </div>
-	                </div>
 				</div>
 				</div>
 				<th:block th:if="${myInquiry.size == 0}">
-								<div>
-								     <ul>
-								      <li class="list-group-item">
-								        <div class="row align-items-center">
-								          <br>
-								          <p style="padding: 10%; font-weight: bolder; text-align: center;">문의내역이 없습니다.
-								          </p>
-								        </div>
-								      </li>
-								      </ul>   
-							     </div>
+					<div>
+					     <ul>
+					      <li class="list-group-item">
+					        <div class="row align-items-center">
+					          <br>
+					          <p style="padding: 10%; font-weight: bolder; text-align: center;">문의내역이 없습니다.
+					          </p>
+					        </div>
+					      </li>
+					      </ul>   
+				     </div>
 				</th:block>
             </div>
           </div>

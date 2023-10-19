@@ -155,6 +155,7 @@ public class BuyerPageController {
 	    cri.setPageNum(pageNum);
 	    
 		int totalCnt = buyerPageService.getPageCnt(memberId);
+		cri.setAmount(9);
 		List<WishVO> wishList = buyerPageService.getWishList(memberId, cri);
 		model.addAttribute("wishList", wishList);
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
