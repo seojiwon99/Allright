@@ -100,6 +100,7 @@
       <result column="delivery_service" property="deliveryService" />
       <result column="delivery_number" property="deliveryNumber" />
       <result column="delivery_start" property="deliveryStart" />
+      <result column="member_tel" property="memberTel"/>
       <collection property="optionDetail" resultMap="optionList2" />
       <collection property="code" resultMap="codeDelivery"></collection>
    </resultMap>
@@ -130,7 +131,8 @@
       m.member_id,
       m.member_email,
       cd.code_id,
-      cd.code_name
+      cd.code_name,
+      m.member_tel
       FROM
       ar_order_detail o
          JOIN
@@ -168,7 +170,8 @@
       m.member_id,
       m.member_email,
       cd.code_id,
-      cd.code_name
+      cd.code_name,
+      m.member_tel
       FROM
       ar_order_detail o
          JOIN
@@ -299,7 +302,8 @@ WHERE p.product_code = #{productCode}
       m.member_id,
       m.member_email,
       cd.code_id,
-      cd.code_name
+      cd.code_name,
+      m.member_tel
       FROM
       ar_order_detail o
          JOIN
