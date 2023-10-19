@@ -319,7 +319,7 @@ public class BuyerPageController {
 		canVO.setMemberId(memberVO.getMemberId());
 
 		int deleteCancel = buyerPageService.removeCancel(canVO);
-		return deleteCancel == 1 ? "/page/buyer/cancelList :: #test" : "/page/buyer/cancelList";
+		return deleteCancel == 1 ? "page/buyer/cancelList :: #test" : "page/buyer/cancelList";
 	}
 
 	// 반품 취소
