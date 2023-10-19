@@ -111,7 +111,7 @@
 
             <ul class="list-group list-group-lg list-group-flush-y list-group-flush-x mb-7">
               
-                <li class="list-group-item" th:each="gets : ${orderGet}">
+                <li class="list-group-item" th:each="gets : ${orderGet}" style="padding-top: 10px;">
                   <div class="row align-items-center">
                     <div class="col-3" style="width:200px; height:200px;">                   
                       <!-- Image -->
@@ -123,27 +123,28 @@
 
                       <!-- Title -->
                       
-                      <p class="mb-4 fs-sm fw-bold" style="margin-left: 10px">  
+                      <p class="mb-1 fs-sm fw-bold" style="margin-left: 10px">
                          <input type="hidden" th:value="${gets.productCode}" class="productNumber">
                          <input type="hidden" th:value="${gets.optionDetailCode}" class="optionDetailCode">
                          <input type="hidden" th:value="${gets.deliveryCost}" class="deliveryMoney">
                          <input type="hidden" name="couponUsePrice" class="text-body" th:value="${gets.productName}" ><br>
-                         <span class="text-muted" style="font-weight: bold;"> 상품이름 : </span><span class="text-muted pName" th:text="|${gets.productName}|" style="font-weight: bold;"></span><br>
-                         <span class="text-muted"style="font-weight: bold;">상품금액 : </span><span class="text-muted pPay" style="text-decoration: line-through; font-weight: bold;" th:text="|${#numbers.formatInteger(gets.productCost,0,'COMMA')}|" id="selectPrice"></span>원&nbsp&nbsp/&nbsp&nbsp
-                        <span class="text-muted sPay" style="font-weight: bold;" th:text="|할인된 금액 : ${#numbers.formatInteger(gets.salePrice,0,'COMMA')}|"></span>원<br>
-                        <span class="text-muted oPay" style="font-weight: bold;" th:text="|옵션 추가금액 : ${#numbers.formatInteger(gets.optionPrice,0,'COMMA')}|"></span>원
+                         <span style="font-weight: bold;"> 상품이름 : </span><span class="pName" th:text="|${gets.productName}|" style="font-weight: bold;"></span><br>
+                         <span style="font-weight: bold;">상품금액 : </span><span class="pPay" style="text-decoration: line-through; font-weight: bold;" th:text="|${#numbers.formatInteger(gets.productCost,0,'COMMA')}|" id="selectPrice"></span>원&nbsp&nbsp/&nbsp&nbsp
+                        <span class="sPay" style="font-weight: bold;" th:text="|할인된 금액 : ${#numbers.formatInteger(gets.salePrice,0,'COMMA')}|"></span>원<br>
+                        <span class="oPay" style="font-weight: bold;" th:text="|옵션 추가금액 : ${#numbers.formatInteger(gets.optionPrice,0,'COMMA')}|"></span>원
+                      </p>
                         <input type="hidden" class="selectValue" th:value="${(gets.salePrice + gets.optionPrice) * gets.cartCount}">
-                        <div class="input-group mb-8">
+                        <div class="input-group mb-4">
                           <input style="margin-top: 15px; margin-left: 10px" type="text" class="form-control cSelect" placeholder="쿠폰 선택하세요." aria-label="Recipient's username" aria-describedby="button-addon2" id="couponSelect" tabindex="-1" readonly>
                           <input type="hidden" class="myCouponCode">
                          <button type="button" class="btn btn-outline-secondary list-styled-link couponBtn" style="margin: 20px; background-color: black; color: white; border-radius: 10px;">쿠폰선택</button>
                          
                         </div> 
-                        <p style="margin-left: 10px">쿠폰 할인 금액 : <input type="text" style="border-width: 0 0 1px; width: 150px;" readonly class="couponSalePrice" tabindex="-1">원</p>         
+                        <p style="margin-left: 10px; margin-bottom: 5px;">쿠폰 할인 금액 : <input type="text" style="border-width: 0 0 1px; width: 150px;" readonly class="couponSalePrice" tabindex="-1">원</p>         
                      
-                        <div class="fs-sm text-muted oName" th:text="|옵션 :${gets.optionLast}|" style="font-weight: bold;"></div>
-                        <div class="fs-sm text-muted pCnt" th:text="|구매수량 : ${gets.cartCount}|"  style="font-weight: bold;"></div>
-                        <span style="display: flex;"> 합계금액 : <div class="fs-sm text-muted tPay" th:data-total="|${#numbers.formatInteger(((gets.salePrice + gets.optionPrice) * gets.cartCount)+ gets.deliveryCost,0,'COMMA')}|" th:text="|${#numbers.formatInteger(((gets.salePrice + gets.optionPrice) * gets.cartCount)+ gets.deliveryCost,0,'COMMA')}|"  style="font-weight: bold;"></div></span>
+                        <span class="fs-sm oName" th:text="|옵션 :${gets.optionLast}|" style="font-weight: bold;"></span>&nbsp&nbsp/&nbsp&nbsp
+                        <span class="fs-sm pCnt" th:text="|구매수량 : ${gets.cartCount}|"  style="font-weight: bold;"></span>
+                        <span style="display: flex; font-weight: bold;"> 합계금액 : <div class="fs-sm tPay" th:data-total="|${#numbers.formatInteger(((gets.salePrice + gets.optionPrice) * gets.cartCount)+ gets.deliveryCost,0,'COMMA')}|" th:text="|${#numbers.formatInteger(((gets.salePrice + gets.optionPrice) * gets.cartCount)+ gets.deliveryCost,0,'COMMA')}|"  style="font-weight: bold;"></div></span>
                         <input type="hidden" th:value="${gets.cartCount}" class="cartCnt">
                       
                     </div>
