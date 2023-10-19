@@ -84,7 +84,7 @@
                       <!-- buy plus mius -->
                       <div class="num">
                         <input type="hidden" th:value="${lists.cartCode}">
-                        구매수량:<input type="number" th:value="${lists.cartCount}" style="width: 70px;" class="tts7" th:min="${lists.minOrder}" th:max="${lists.maxOrder}">
+                        구매수량:<input type="number" th:value="${lists.cartCount}" style="width: 70px;" class="tts7" th:min="${lists.minOrder}" th:max="${lists.maxOrder == 0 ||lists.maxOrder == null}  ? ${lists.optionCount}:${lists.maxOrder}">
                           <input class="cartCountUpdate" type="button" value="변경" style="border-radius: 5px; background-color: #0a0a23; color: #fff;">
                       </div>
 
@@ -226,6 +226,20 @@
   function cartCountUpdate(e) {
     let cartNumber = Number($(this).prev().prev().val()); 
     let cartModify = Number($(this).prev().val());
+
+    if(cartModify == 0) {
+      alert('0이하 숫자는 할 수 없습니다.');
+      $(this).prev().val(1);
+      return false;
+    }
+    let NumMax = $(this).prev().attr('max');
+    console.log(NumMax);
+    if(cartModify > NumMax) {
+      alert('최대 수량을 초과할 수 없습니다.');
+      $(this).prev().val(NumMax);
+      return false;
+    }
+    
       console.log(cartNumber);
       console.log(cartModify);
     let CartUpdateVO={};

@@ -238,4 +238,10 @@
 		WHERE ORDER_CODE = #{orderCode}
 	</update>
 	
+	<!-- 주문수량 연산 -->
+	<update id="updateOptionCount">
+		UPDATE AR_OPTION_DETAIL
+		SET OPTION_COUNT = OPTION_COUNT - #{cartCount}
+		WHERE OPTION_DETAIL_CODE = #{optionDetailCode}
+	</update>
   </mapper>

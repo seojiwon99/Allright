@@ -56,4 +56,7 @@ public interface OrdersMapper {
 	
 	//환불 order 테이블 환불 가능 금액 업데이트
 	public int updateOrderRefundAmount(int orderCode, int refundAmount);
+	
+	//주문 수량 연산
+	public int updateOptionCount(OrdersVO ordersVO);
 }

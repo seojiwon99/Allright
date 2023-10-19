@@ -47,4 +47,5 @@ public interface OrdersService {
 	
 	//환불 후 환불 가능 금액 orders 테이블 업데이트
 	public int editOrderRefundAmount(int orderCode, int refundAmount);
+	
 }
