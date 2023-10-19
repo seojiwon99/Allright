@@ -524,11 +524,12 @@ public class ProductController {
 				String uuid = UUID.randomUUID().toString(); // 유니크한 이름 때문에
 				productVO.getProductImg().get(i).setUploadName(uuid + "_" + fileName);
 				
-				String uploadFileName = folderPath + "/" + uuid + "_" + fileName;
+				String uploadFileName = folderPath + uuid + "_" + fileName;
 				// System.out.println("uploadFileName" + uploadFileName);
 				productVO.getProductImg().get(i).setUploadPath(folderPath);
 				
 				String saveName = uploadPath + "/" + uploadFileName;
+            			saveName = saveName.replace("\\", "/");
 				
 				Path savePath = Paths.get(saveName);
 				try {
