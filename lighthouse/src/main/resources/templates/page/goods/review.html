@@ -170,12 +170,13 @@
 															class="btn btn-xs btn-outline-border" tabindex="-1"
 															th:onclick="reviewDelete([[${review.reviewCode}]])"
 															id="reviewDelBtn">삭제하기</button>
+															<input type="hidden" th:value="${review.reviewCode}" />
 													</div>
 													<button class="declareButton btn btn-xs btn-outline-border"
 														tabindex="-1"
 														th:if=" ${session.loginMember == null} or ${session.loginMember.memberId != review.memberId}"
 														data-bs-toggle="modal" data-bs-target="#declareModal"
-														id="deBtn" th:data-memberid="${review.memberId}">신고하기</button>
+														id="deBtn" th:data-memberid="${review.memberId}" th:data-reviewNumber="${review.reviewCode}">신고하기</button>
 												</div>
 											</div>
 										</div>
@@ -197,6 +198,7 @@
 											<div class="modal-body">
 												<div class="mb-3">
 													<input type="hidden" id="userId" />
+													<input type="hidden" id="reviewNumber" />
 													<div class="memberIntro">
 														<!--  <input type="hidden" name="memberId"
                                                             class="form-control">-->
@@ -571,9 +573,11 @@
 			if(member == null){
 				alert("로그인 후 이용가능합니다");
 			}else{
-
 				let ID= $(this).data('memberid');
 	       		$("#userId").val(ID);
+	       		let rn = $(this).data('reviewnumber');
+	       		$("#reviewNumber").val(rn);
+	       		
 			}  
 		}) 
 		
@@ -587,7 +591,7 @@
 	       	//debugger
 	       	
 			let declareObj = {
-	            reviewCode : $("#reCode").text(),
+	            reviewCode : $("#reviewNumber").val(),
 	            productCode : test,
 	            memberId : $("#userId").val(),
 	            declareReason : $(".declareValue").val(),
