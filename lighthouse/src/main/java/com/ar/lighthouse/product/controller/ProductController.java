@@ -868,7 +868,7 @@ public class ProductController {
 
 				reviewService.addReviewImg(imgsVO);
 
-				//reviewService.editReviewImg(imgsVO);
+				reviewService.editReviewImg(imgsVO);
 
 				reviewService.editReview(reviewVO);
 			} catch (IOException e) {

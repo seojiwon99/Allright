@@ -1,805 +1,821 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-   xmlns:th="http://www.thymeleaf.org"
-   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-   layout:decorate="~{layouts/default_layout}">
-
-<!-- Content -->
-<div layout:fragment="content">
-   <style>
-img {
-   border-radius: 20px;
-}
-</style>
-   <!-- CONTENT -->
-   <section class="pt-7 pb-12">
-      <div class="container">
-         <div class="row">
-            <div class="col-12 text-center">
-
-               <!-- Heading -->
-               <h3 class="mb-10">주문 목록</h3>
-
-            </div>
-         </div>
-         <div class="row">
-            <div class="col-12 col-md-3">
-
-               <!-- Nav -->
-               <nav class="mb-10 mb-md-0">
-                  <div
-                     class="list-group list-group-sm list-group-strong list-group-flush-x">
-                     <a
-                        class="list-group-item list-group-item-action dropend-toggle active"
-                        id="orderList" th:href="@{/page/buyer/orderList}" tabindex="-1">
-                        주문 목록 </a>
-                     <ul class="list-styled mb-0">
-                        <li class="nav-item">
-                           <!-- Toggle --> <a
-                           class="list-group-item list-group-item-action dropend-toggle active"
-                           data-bs-toggle="collapse" href="#Collapse" aria-expanded="true"
-                           tabindex="-1"> 취소/반품/교환내역 </a> <!-- Collapse -->
-                           <div class="collapse" id="Collapse"
-                              data-simplebar-collapse="#seasonGroup">
-                              <div class="form-group form-group-overflow mb-6"
-                                 id="seasonGroup">
-                                 <div class="form-check mb-3">
-                                    <a class="form-check-label" id="cancel" href="cancelList"
-                                       tabindex="-1"> 취소 </a>
-                                 </div>
-                                 <div class="form-check mb-3">
-                                    <a class="form-check-label" id="reList" href="returnList"
-                                       tabindex="-1"> 반품 </a>
-                                 </div>
-                                 <div class="form-check">
-                                    <a class="form-check-label" id="exchange"
-                                       href="exchangeList" tabindex="-1"> 교환 </a>
-                                 </div>
-                              </div>
-                           </div>
-                        </li>
-                        <li class="nav-item"><a
-                           class="list-group-item list-group-item-action dropend-toggle"
-                           id="coupon" th:href="@{/page/buyer/myCoupon}" tabindex="-1">
-                              나의 쿠폰함 </a></li>
-                        <li class="nav-item"><a
-                           class="list-group-item list-group-item-action dropend-toggle"
-                           id="inquiry" th:href="@{/page/buyer/myInquiry}" tabindex="-1">
-                              문의내역 </a></li>
-                        <li class="nav-item"><a
-                           class="list-group-item list-group-item-action dropend-toggle"
-                           id="wish" th:href="@{/page/buyer/wishList}" tabindex="-1">
-                              찜 목록 </a></li>
-                        <li class="nav-item"><a
-                           class="list-group-item list-group-item-action dropend-toggle"
-                           id="myInfo" th:href="@{/page/buyer/personalInfo}" tabindex="-1">
-                              개인정보 확인/수정 </a></li>
-                     </ul>
-                  </div>
-               </nav>
-            </div>
-            <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
-               <!-- Order -->
-               <div style="margin-bottom:5px">
-                   <div style="margin-bottom:5px">
-                     <span>조회 기간 : </span> 
-                     <input type="DATE" id="from" name="from" autocomplete="off"> 
-                     <label for="to">~</label> 
-                     <input type="DATE" id="to" name="to" autocomplete="off"> 
-                     <input class="count" tabindex="-1" readonly></input>
-                  </div>
-	               	<div style="margin-bottom:5px">
-		               	<label for="optionList">상세 조건 : </label>
-		                  <select id="optionList" tabindex="0">
-		                     <!-- <option value="선택">선택</option> -->
-		                     <!-- <option value="payment_price">가격</option> -->
-		                     <!-- <option value="order_date">구매일자</option>-->
-		                     <option value="order_code">주문번호</option>
-		                     <option value="order_detail_code">주문상세번호</option>
-		                     <option value="product_name">상품명</option>
-		                  </select> <input type="text" class="selectVal" id="search" value=""
-		                     maxlength="50">
-		                  <button type="button" id="selectOption"
-		                     style="background-color: black; color: white;">검색</button>
-	               	</div>
-
-               </div>
-
-               <div class="card card-lg mb-5 border">
-                  <div class="card-body pb-0">
-                     <!-- 반복문 시작 -->
-                     <!-- Info -->
-                     <div class="card card-sm orderList" id="orderOption">
-                        <div th:each="lists : ${orderList}"
-                           th:data-orderdetailcode="${lists.orderDetailCode}"
-                           class="order">
-                           <div class="card-body bg-light" style="border-radius: 15px;">
-                              <div class="row orderRow">
-                              <input type="hidden" th:value="${lists.productCode}"
-                                                class="productCode" name="productCode" />
-                                 <!-- 주문 번호 -->
-                                 <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted">주문 번호:</h6>
-                                    <p class="mb-lg-0 fs-sm fw-bold">
-                                       <span class="orderCode" th:text="|${lists.orderCode}|"
-                                          tabindex="0"></span>
-                                    </p>
-                                    <h6 class="heading-xxxs text-muted">주문 상세 번호:</h6>
-                                    <p class="mb-lg-0 fs-sm fw-bold">
-                                       <span class="orderDetailCode"
-                                          th:text="|${lists.orderDetailCode}|"></span>
-                                    </p>
-                                 </div>
-                                 <!-- 주문 날짜 -->
-                                 <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted">주문 날짜:</h6>
-                                    <p class="mb-lg-0 fs-sm fw-bold">
-                                       <span class="orderDate"
-                                          th:text="${#dates.format(lists.orderDate, 'yyyy-MM-dd')}"></span>
-                                    </p>
-                                 </div>
-                                 <!-- 상품 이미지 -->
-                                 <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted">상품 이미지:</h6>
-                                    <a th:href="|/goodDetail?productCode=${lists.productCode}|"
-                                       tabindex="-1"> <img
-                                       th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|"
-                                       style="max-width: 100%; height: auto"
-                                       th:alt="${lists.imgContent}">
-                                    </a>
-                                       
-                                 </div>
-                                 <!-- 상품명 -->
-                                 <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted">상품명:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
-                                       <span class="productName" th:text="|${lists.productName}|"></span>
-                                    </p>
-                                    <h6 class="heading-xxxs text-muted">옵션:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
-                                       <span class="optionLast" th:text="|${lists.optionLast}|"></span>
-                                    </p>
-                                 </div>
-                                 <!-- 수량 -->
-                                 <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted" style="margin-top: 10px">수량:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
-                                       <span class="orderCnt" th:text="|${lists.orderCnt}|"></span>
-                                    </p>
-                                 </div>
-                                 <!-- 주문 금액 -->
-                                 <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted" style="margin-top: 10px">주문
-                                       금액:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
-                                       <span class="paymentPrice"
-                                          th:text="|${#numbers.formatInteger(lists.paymentPrice,0,'COMMA')}원|"></span>
-                                    </p>
-                                 </div>
-                                 <!-- 배송 상태 -->
-                                 <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted" style="margin-top: 10px">배송
-                                       상태:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
-                                       <span class="orderStatusNm"
-                                          th:text="|${lists.orderStatusNm}|"></span>
-                                    </p>
-                                 </div>
-                                 <!-- 배달 완료 날짜 -->
-                                 <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted" style="margin-top: 10px">배송
-                                       완료 날짜:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
-                                       <span class="deliveryDate"
-                                          th:text="|${lists.deliveryDate}|"></span>
-                                    </p>
-                                 </div>
-                                 <!-- 취소 여부 -->
-                                 <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted">취소 여부:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
-                                       <span class="cancelStatusNm"
-                                          th:text="${lists.cancelStatusNm}"></span>
-                                    </p>
-                                 </div>
-                                 <!-- 반품 여부 -->
-                                 <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted">반품 여부:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
-                                       <span class="returnStatusNm"
-                                          th:text="|${lists.returnStatusNm}|"></span>
-                                    </p>
-                                 </div>
-                                 <!-- 교환 여부 -->
-                                 <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted">교환 여부:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
-                                       <span class="exchangeStatusNm"
-                                          th:text="|${lists.exchangeStatusNm}|"></span>
-                                    </p>
-                                 </div>
-                                 <!-- 주문 확정 -->
-                                 <div class="col-6 col-lg-3">
-                                    <h6 class="heading-xxxs text-muted">주문 확정:</h6>
-                                    <p class="mb-0 fs-sm fw-bold">
-                                       <span class="orderCheck" th:if="${lists.orderCheck} == 'N'">취소된
-                                          상품</span>
-                                    </p>
-                                 </div>
-                              </div>
-                           </div>
-
-                           <div class="card-footer ">
-                              <div class="row align-items-center"
-                                 th:if="${lists.returnStatus} == '0' and ${lists.cancelStatus} == '0' and ${lists.exchangeStatus} == '0'">
-                                 <!-- 리뷰  button -->
-                                 <div class="col-4" th:if="${lists.orderStatus} == '4'">
-                                    <a class="reviewBtn btn btn-sm w-100 btn-outline-dark"
-                                       data-bs-target="#reviewInsert" data-bs-toggle="modal"
-                                       style="border-radius: 10px; background-color: black; color: white;"
-                                       
-                                       >
-                                       리뷰 쓰기 </a>
-                                 </div>
-                                 <!-- 주문 취소 Button -->
-                                 <div class="col-4"
-                                    th:if="${lists.orderStatus} == '2' or ${lists.orderStatus} == '1'"
-                                    style="margin-top: 5px;">
-                                    <a class="btn btn-sm w-100 btn-outline-dark cancelBtn"
-                                       th:href="@{/cancel}"
-                                       style="border-radius: 10px; background-color: black; color: white;">
-                                       주문 취소 </a>
-                                 </div>
-                                 <!-- 교환 Button -->
-                                 <div class="col-4">
-                                    <a class="btn btn-sm w-100 btn-outline-dark excBtn"
-                                       th:href="@{/exchange}"
-                                       style="border-radius: 10px; background-color: black; color: white;">
-                                       교환 </a>
-                                 </div>
-                                 <!-- 반품 Button -->
-                                 <div class="col-4">
-                                    <a class="btn btn-sm w-100 btn-outline-dark retBtn"
-                                       th:href="@{/return}"
-                                       style="border-radius: 10px; background-color: black; color: white;">
-                                       반품 </a>
-                                 </div>
-                              </div>
-                           </div>
-
-                           <!-- 리뷰 등록 폼 -->
-                           <div class="modal fade" id="reviewInsert" tabindex="-1"
-                              aria-labelledby="exampleModalLabel" aria-hidden="true">
-                              <div class="modal-dialog">
-                                 <div class="modal-content">
-                                    <div class="modal-header">
-                                       <h5 class="modal-title" id="exampleModalLabel">리뷰등록</h5>
-                                       <button type="button" class="btn-close"
-                                          data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                       <form method="post" id="reviewForm2"
-                                          enctype="multipart/form-data">
-
-                                          <div>
-                                             <!-- Text -->
-                                             <div>
-                                                <div>
-                                                   <p class="mb-1 fs-xs"
-                                                      style="padding-bottom: 10px; padding-right: 120px">이미지
-                                                      선택</p>
-                                                   <div class="mb-6 mb-md-0"
-                                                      style="width: 180px; height: 180px">
-                                                      <div id="reviewDiv">
-                                                         <img src=""
-                                                            style="display: none; width: 180px; height: 180px"
-                                                            id="reviewImages">
-                                                      </div>
-                                                      <span class="avatar-title circle"> 이미지 없음<i
-                                                         class="fas fa-image"></i>
-                                                      </span>
-                                                   </div>
-
-                                                   <input type="file" class="reviewimg" name="files"
-                                                      onchange="readImg(this)" id="reviewimg"
-                                                      accept="image/*" />
-                                                </div>
-
-                                                <!-- Text -->
-                                                <div>
-
-                                                   <!-- Rating form -->
-                                                   <div class="rating-form">
-                                                      <!-- Input -->
-                                                      <input class="rating-input" type="range" min="1"
-                                                         max="5" />
-
-                                                      <!-- Rating -->
-                                                      <div class="star rating h5 text-dark" data-value="5">
-                                                         <div class="rating-item">
-                                                            <i class="fas fa-star"></i>
-                                                         </div>
-                                                         <div class="rating-item">
-                                                            <i class="fas fa-star"></i>
-                                                         </div>
-                                                         <div class="rating-item">
-                                                            <i class="fas fa-star"></i>
-                                                         </div>
-                                                         <div class="rating-item">
-                                                            <i class="fas fa-star"></i>
-                                                         </div>
-                                                         <div class="rating-item">
-                                                            <i class="fas fa-star"></i>
-                                                         </div>
-                                                      </div>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="row">
-                                             <!-- productCode 넣기 -->
-                                              <input
-                                                type="hidden" id="member" name="memberId"
-                                                th:value="${session.loginMember.memberId}" />
-
-
-                                             <div class="col-12 mb-6 text-center"
-                                                style="display: flex; justify-content: center; align-items: center">
-
-                                                <!-- Rating form -->
-                                                <div class="rating-form">
-                                                   <!-- Input -->
-                                                   <input class="rating-input" type="range" min="1"
-                                                      max="5" value="5" />
-                                                </div>
-                                             </div>
-                                             <div class="col-12">
-                                                <!-- 내용 -->
-                                                <div class="form-group">
-                                                   <label class="visually-hidden" for="reviewContent">Review:</label>
-                                                   <textarea class="form-control form-control-sm" rows="5"
-                                                      placeholder="내용을 입력해주세요" id="reviewContent"
-                                                      name="reviewContent" required style="resize: none;"></textarea>
-                                                </div>
-                                             </div>
-
-                                          </div>
-                                       </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                       <button type="button" class="btn btn-secondary"
-                                          data-bs-dismiss="modal">닫기</button>
-                                       <button type="button"
-                                          class="reviewInsertBtn btn btn-primary">저장</button>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-
-
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <!-- Pagination -->
-               <nav
-                  class="d-flex justify-content-center justify-content-md-end mt-10">
-                  <ul class="pagination pagination-sm text-gray-400">
-                     <li class="page-item" th:if="${pageMaker.prev}"><a
-                        class="page-link page-link-arrow"
-                        th:href="@{/page/buyer/orderList/(pageNum = ${pageMaker.startPage - 1})}">
-                           <i class="fa fa-caret-left"></i>
-                     </a></li>
-                     <th:block
-                        th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
-                        <li th:if="${pageMaker.endPage} ne 0"
-                           th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
-                           th:each="pageButtom : ${#numbers.sequence(start,end)}"
-                           th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
-                           <a class="page-link" href="#"
-                           th:href="@{/page/buyer/orderList/(pageNum= ${pageButtom} )}"
-                           th:text="${pageButtom}"></a>
-                        </li>
-                     </th:block>
-                     <li class="page-item" th:if="${pageMaker.next}"><a
-                        class="page-link page-link-arrow"
-                        th:href="@{/page/buyer/orderList/(pageNum = ${pageMaker.endPage + 1})}">
-                           <i class="fa fa-caret-right"></i>
-                     </a></li>
-                  </ul>
-               </nav>
-
-            </div>
-         </div>
-      </div>
-
-
-
-   </section>
-   <textarea id="orderMenual" style="display: none;">
-      1번 주문목록.
-      2번 취소목록.
-      3번 반품목록.
-      4번 교환목록.
-      5번 나의 쿠폰함.
-      6번 문의내역.
-      7번 찜 목록.
-      8번 개인정보 확인/수정.
-      9번 메인페이지 이동.
-      0번 다시듣기.
-    </textarea>
-   <script>
-   var tmpProductCode;
-   
-   $('.reviewBtn').on('click',function(e){
-      let btn = $(this);
-      let btn2 = btn.parent().parent().parent().parent().children()[0];
-      let prodCode = $(btn2).find('input[type="hidden"]');
-      tmpProductCode = prodCode[0].value;
-
-   /*--------------------------
-   리뷰 등록
-   ----------------------------*/
-   $(".reviewInsertBtn").on("click", function () {
-         let form = $("#reviewForm2")[0];
-         const formData = new FormData(form);
-         let productCode = $('.productCode').val();
-         let star = $(".star").data("value");
-         formData.append("reviewStar", star);
-         formData.append("productCode",tmpProductCode);
-         
-         for (let key of formData.keys()) {
-              console.log(key, ":", formData.get(key));
-         }
-
-      $.ajax({
-        url: "/insertReview",
-        type: "post",
-        data: formData,
-        enctype: "multipart/form-data",
-        contentType: false,
-        processData: false,
-        success: function (result) {
-          alert("정상적으로 등록되었습니다");
-          location.reload();
-       },
-       error: function (err) {
-           console.log(err);
-       },
-     });
-});   
-   })
-   
-   /*--------------------------
-   이미지 나타내기
-   ----------------------------*/
-     function readImg(obj) {
-
-                let reader = new FileReader();
-                if(!obj.files.length) {
-                    return;
-                }
-                reader.readAsDataURL(obj.files[0]);
-                reader.onload = function (e) {            
-                        let imgs = $("#reviewImages");
-                       $(imgs).attr('src', e.target.result);
-                       $("#reviewImages").css("display","block");
-                       $(".avatar-title").css("display","none");
-                       
-                     }
-                }
-            
-     function readURL(obj) {
-
-                let reader = new FileReader();
-                if(!obj.files.length) {
-                    return;
-                }
-                reader.readAsDataURL(obj.files[0]);
-                reader.onload = function (e) {
-                       let img = $('#reviewModifyImg');
-                       $(img).attr('src', e.target.result);
-                       $('#previewDiv').append(img);
-                     }
-                }
-            
-   
-   
-   
-      document.querySelector(".orderList").addEventListener("click", function(e) {
-       let target = e.target;
-       console.log($(target).prop("class"));
-       if($(target).prop("class") == 'btn btn-sm w-100 btn-outline-dark excBtn'){
-         e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
-         var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
-        var url="";
-         if( e.target.matches(".excBtn") ){
-            var url = "/page/buyer/exchange";
-            window.location.href = url+"?orderDetailCode=" + orderDetailCode;
-         }else if( e.target.matches(".cancelBtn") ){
-            var url = "/page/buyer/cancel"
-            window.location.href = url+"?orderDetailCode=" + orderDetailCode;      
-         }else if(e.target.matches(".retBtn")){
-            var url = "/page/buyer/return"
-            window.location.href = url+"?orderDetailCode=" + orderDetailCode;
-         }else{
-            return;
-         }
-       }
-       
-       if($(target).prop("class") == 'btn btn-sm w-100 btn-outline-dark retBtn'){
-             e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
-             var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
-            var url="";
-             if( e.target.matches(".excBtn") ){
-                var url = "/page/buyer/exchange";
-                window.location.href = url+"?orderDetailCode=" + orderDetailCode;
-             }else if( e.target.matches(".cancelBtn") ){
-                var url = "/page/buyer/cancel"
-                window.location.href = url+"?orderDetailCode=" + orderDetailCode;      
-             }else if(e.target.matches(".retBtn")){
-                var url = "/page/buyer/return"
-                window.location.href = url+"?orderDetailCode=" + orderDetailCode;
-             }else{
-                return;
-             }
-           }
-       
-       if($(target).prop("class") == 'btn btn-sm w-100 btn-outline-dark cancelBtn'){
-             e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
-             var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
-            var url="";
-             if( e.target.matches(".excBtn") ){
-                var url = "/page/buyer/exchange";
-                window.location.href = url+"?orderDetailCode=" + orderDetailCode;
-             }else if( e.target.matches(".cancelBtn") ){
-                var url = "/page/buyer/cancel"
-                window.location.href = url+"?orderDetailCode=" + orderDetailCode;      
-             }else if(e.target.matches(".retBtn")){
-                var url = "/page/buyer/return"
-                window.location.href = url+"?orderDetailCode=" + orderDetailCode;
-             }else{
-                return;
-             }
-           }
-       
-       });
-      
-      $('#selectOption').on('click', function(){
-         let key = $('#optionList').val();
-         let value = $('.selectVal').val();
-         
-         let fromDate = $('#from').val();
-         let toDate = $('#to').val();
-         
-         var itemCount = document.querySelectorAll(".order").length;
-         
-          // document.querySelector(".count").value = itemCount;
-         
-         
-         $.ajax({
-            url: '/page/buyer/orderOption',
-            type: 'get',
-            data: {
-               "searchKey": key,
-               "searchValue" : value,
-               fromDate,
-               toDate
-            }
-         })
-         .done(data => {
-            $('#orderOption').html(data);
-
-            itemCount = document.querySelectorAll(".order").length;
-            document.querySelector(".count").value = itemCount;
-         })
-         .fail(reject => {
-           console.log(reject);
-         })
-       });
-      
-      
-       //tts 시작 
-        let TTSIsOk = localStorage.getItem('ttsKey');
-          let sessionAuthor;
-         console.log(sessionStorage.loginMember);          
-         if(sessionStorage.loginMember != null){
-            sessionAuthor = sessionStorage.loginMember.memberAuthor;
-         }
-             
-        function ttsInit(){
-             $('#optionList').focus();
-             if(TTSIsOk == null || sessionAuthor == 3){
-              let audioFileNow = new Audio();
-              let optionSel = $('#optionList').text();
-              let firstMsg = "주문 목록 페이지입니다. 주문한 내역에 대해서 확인할 수 있습니다.";
-              let message = firstMsg + $('#orderMenual').val();
-            let message2 = `다음은 검색 기준입니다. 검색 기준을 골라주세요 + ${optionSel}`;
-              VoiceMenual(message + message2);
-   
-        //tts 이벤트 부여
-        $('#optionList').on('focus', optionList);
-        $('#optionList').on('change', optionSelect);
-        $('#search').on('focus', search);
-        $('#selectOption').on('focus', searchOption);
-        $('#selectOption').on('keydown', searchOk);
-        $('.orderCode').on('focus', orderDetailInfo);
-        $('.excBtn').on('focus', exchageBtn);
-        $('.retBtn').on('focus', retBtn);
-        $('.cancelBtn').on('focus', cancelBtn);
-        
-        //tts 이벤트 진행
-        function optionList(){
-           let optionSel = $('#optionList').text();
-           VoiceMenual("검색 기준입니다." + optionSel);
-        }
-        function optionSelect() {
-          let selectOp = $('#optionList option:selected').text();
-          VoiceMenual(selectOp);
-       }
-        function search(){
-           let search = $('#search').text();
-           VoiceMenual("검색 창입니다. 검색 기준에 맞게 입력해주세요.");
-        }
-        function searchOption(){
-           let searchOpt = $('#selectOption').text();
-           VoiceMenual("검색을 원하시면 엔터키를 입력해주세요." + searchOpt);
-        } 
-        function searchOk(){
-           VoiceMenual("검색이 완료되었습니다.");
-        }
-        function orderDetailInfo() {
-        let orderCode = $(this).closest('.orderRow').find('.orderCode').text();
-        let orderDetailCode = $(this).closest('.orderRow').find('.orderDetailCode').text();
-        let orderDate =  $(this).closest('.orderRow').find('.orderDate').text();
-        let productName =  $(this).closest('.orderRow').find('.productName').text();
-        let optionLast = $(this).closest('.orderRow').find('.optionLast').text();
-        let orderCnt = $(this).closest('.orderRow').find('.orderCnt').text();
-        let paymentPrice = $(this).closest('.orderRow').find('.paymentPrice').text();
-        let orderStatusNm = $(this).closest('.orderRow').find('.orderStatusNm').text();
-        let deliveryDate =  $(this).closest('.orderRow').find('.deliveryDate').text();
-        let cancelStatusNm = $(this).closest('.orderRow').find('.cancelStatusNm').text();
-        let returnStatusNm = $(this).closest('.orderRow').find('.returnStatusNm').text();
-        let exchangeStatusNm = $(this).closest('.orderRow').find('.exchangeStatusNm').text();
-        let orderCheck = $(this).closest('.orderRow').find('.orderCheck').text();
-   
-        let message = `주문번호는 ${orderCode}. 주문 상세 번호는 ${orderDetailCode}. 주문날짜는 ${orderDate}.
-                      상품명은 ${productName}. 옵션명은 ${optionLast}. 주문수량은 ${orderCnt}. 주문금액은 ${paymentPrice}.
-                      배송상태는 ${orderStatusNm}. 배송 완료날짜 ${deliveryDate}. 취소여부는 ${cancelStatusNm}.
-                      반품여부는 ${returnStatusNm}. 교환여부는 ${exchangeStatusNm}. 주문확정은 ${orderCheck}. 입니다.`;
-   
-          VoiceMenual(message);
-        }
-        
-        function exchageBtn() {
-           VoiceMenual('교환 신청 버튼입니다. 교환을 원하시면. 엔터키를 눌러주세요.');
-        }
-        function retBtn() {
-           VoiceMenual('반품 신청 버튼입니다. 반품을 원하시면. 엔터키를 눌러주세요.');
-        }
-        function cancelBtn() {
-           VoiceMenual('주문 취소 신청 버튼입니다. 주문 취소을 원하시면. 엔터키를 눌러주세요.');
-        }
-    
-   //tts 부분
-   
-   var AudioContext;
-   var audioContext;
-   
-   window.onload = function() {
-       navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
-           AudioContext = window.AudioContext || window.webkitAudioContext;
-           audioContext = new AudioContext();
-       }).catch(e => {
-           console.error(`Audio permissions denied: ${e}`);
-       });
-   }
-   
-   
-   function VoiceMenual(message) {
-       var data = {
-           "voice" : {
-               "languageCode" : "ko-KR",
-               "name" : "ko-KR-Neural2-B"
-           },
-           "input" : {
-               "text" : message
-           },
-           "audioConfig" : {
-               "audioEncoding" : "mp3"
-           }
-       }
-       $.ajax({
-           type : 'POST',
-           url : 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
-           data : JSON.stringify(data),
-           dataType : 'JSON',
-           contentType : "application/json; charset=UTF-8",
-           success : function(res) {
-               $('#menuText').val(res.audioContent)
-               var audioFile = new Audio();
-               let audioBlob = base64ToBlob(res.audioContent,
-                       "mp3");
-               audioFile.src = window.URL
-                       .createObjectURL(audioBlob);
-               audioFile.playbackRate = 2; //재생속도
-               if(audioFileNow.paused == false){
-                  audioFileNow.pause();
-               }
-             audioFileNow = audioFile;
-               audioFileNow.play();
-           
-           },
-           error : function(request, status, error) {
-               alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
-           }
-       });
-   };
-   function base64ToBlob(base64, fileType) {
-       let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
-       let audioSrc = typeHeader + base64;
-       let arr = audioSrc.split(",");
-       let array = arr[0].match(/:(.*?);/);
-       let mime = (array && array.length > 1 ? array[1] : type) || type;
-       // url헤더 제거하고 btye로 변환
-       let bytes = window.atob(arr[1]);
-       // 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
-       let ab = new ArrayBuffer(bytes.length);
-       // 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
-       let ia = new Uint8Array(ab);
-       for (let i = 0; i < bytes.length; i++) {
-           ia[i] = bytes.charCodeAt(i);
-       }
-       return new Blob([ ab ], {
-           type : mime
-       });
-   }
-   
-      window.addEventListener("keydown", function(e){ 
-            if(e.altKey && e.key == 1){ //주문목록
-                $('#orderList').focus();
-                VoiceMenual('주문목록 페이지 원할 경우. 엔터키 입력');
-             }
-            else if(e.altKey && e.key == 2){ //취소내역
-               $(".collapse").addClass("show")
-                $('#cancel').focus();
-                VoiceMenual('취소. 페이지 원할 경우. 엔터키 입력');
-             }
-            else if(e.altKey && e.key == 3) {//반품내역
-               $(".collapse").addClass("show")
-                $('#reList').focus();
-                VoiceMenual('반품. 페이지 원할 경우. 엔터키 입력');
-             }
-            else if(e.altKey && e.key == 4){ // 교환내역
-               $(".collapse").addClass("show")
-                $('#exchange').focus();
-                VoiceMenual('교환. 페이지 원할 경우. 엔터키 입력');
-             }
-            else if(e.altKey && e.key == 5){ // 나의 쿠폰함
-                $('#coupon').focus();
-                VoiceMenual('쿠폰함. 페이지 원할 경우. 엔터키 입력');
-             }
-            else if(e.altKey && e.key == 6){ // 문의내역
-                $('#inquiry').focus();
-                VoiceMenual('문의내역. 페이지 원할 경우. 엔터키 입력');
-             }
-            else if(e.altKey && e.key == 7){ // 찜 목록
-                $('#wish').focus();
-                VoiceMenual("찜목록. 페이지 원할 경우. 엔터키 입력")
-             }
-            else if(e.altKey && e.key == 8){ // 배송 시 요청 선택
-                $('#myInfo').focus();
-                VoiceMenual('개인정보 확인,수정 페이지 입니다. 엔터키 입력.');
-             }
-            else if(e.altKey && e.key == 9){ // 메인 페이지 이동
-                    location.href = "/";
-             }
-            else if(e.altKey && e.key == 0){ //다시 듣기
-                VoiceMenual($('#orderMenual').val());
-             }
-      })
-     } //ttsInit()의 if문
-   } // ttsInit() close
-</script>
-</div>
-</html>
+	<!DOCTYPE html>
+	<html xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org"
+	   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	   layout:decorate="~{layouts/default_layout}">
+	
+	<!-- Content -->
+	<div layout:fragment="content">
+	   <style>
+	img {
+	   border-radius: 20px;
+	}
+	</style>
+	   <!-- CONTENT -->
+	   <section class="pt-7 pb-12">
+	      <div class="container">
+	         <div class="row">
+	            <div class="col-12 text-center">
+	
+	               <!-- Heading -->
+	               <h3 class="mb-10">주문 목록</h3>
+	
+	            </div>
+	         </div>
+	         <div class="row">
+	            <div class="col-12 col-md-3">
+	
+	               <!-- Nav -->
+	               <nav class="mb-10 mb-md-0">
+	                  <div
+	                     class="list-group list-group-sm list-group-strong list-group-flush-x">
+	                     <a
+	                        class="list-group-item list-group-item-action dropend-toggle active"
+	                        id="orderList" th:href="@{/page/buyer/orderList}" tabindex="-1">
+	                        주문 목록 </a>
+	                     <ul class="list-styled mb-0">
+	                        <li class="nav-item">
+	                           <!-- Toggle --> <a
+	                           class="list-group-item list-group-item-action dropend-toggle active"
+	                           data-bs-toggle="collapse" href="#Collapse" aria-expanded="true"
+	                           tabindex="-1"> 취소/반품/교환내역 </a> <!-- Collapse -->
+	                           <div class="collapse" id="Collapse"
+	                              data-simplebar-collapse="#seasonGroup">
+	                              <div class="form-group form-group-overflow mb-6"
+	                                 id="seasonGroup">
+	                                 <div class="form-check mb-3">
+	                                    <a class="form-check-label" id="cancel" href="cancelList"
+	                                       tabindex="-1"> 취소 </a>
+	                                 </div>
+	                                 <div class="form-check mb-3">
+	                                    <a class="form-check-label" id="reList" href="returnList"
+	                                       tabindex="-1"> 반품 </a>
+	                                 </div>
+	                                 <div class="form-check">
+	                                    <a class="form-check-label" id="exchange"
+	                                       href="exchangeList" tabindex="-1"> 교환 </a>
+	                                 </div>
+	                              </div>
+	                           </div>
+	                        </li>
+	                        <li class="nav-item"><a
+	                           class="list-group-item list-group-item-action dropend-toggle"
+	                           id="coupon" th:href="@{/page/buyer/myCoupon}" tabindex="-1">
+	                              나의 쿠폰함 </a></li>
+	                        <li class="nav-item"><a
+	                           class="list-group-item list-group-item-action dropend-toggle"
+	                           id="inquiry" th:href="@{/page/buyer/myInquiry}" tabindex="-1">
+	                              문의내역 </a></li>
+	                        <li class="nav-item"><a
+	                           class="list-group-item list-group-item-action dropend-toggle"
+	                           id="wish" th:href="@{/page/buyer/wishList}" tabindex="-1">
+	                              찜 목록 </a></li>
+	                        <li class="nav-item"><a
+	                           class="list-group-item list-group-item-action dropend-toggle"
+	                           id="myInfo" th:href="@{/page/buyer/personalInfo}" tabindex="-1">
+	                              개인정보 확인/수정 </a></li>
+	                     </ul>
+	                  </div>
+	               </nav>
+	            </div>
+	            <div class="col-12 col-md-9 col-lg-8 offset-lg-1">
+	               <!-- Order -->
+	               <div style="margin-bottom:5px">
+	                   <div style="margin-bottom:5px">
+	                     <span>조회 기간 : </span> 
+	                     <input type="DATE" id="from" name="from" autocomplete="off"> 
+	                     <label for="to">~</label> 
+	                     <input type="DATE" id="to" name="to" autocomplete="off"> 
+	                     <input class="count" tabindex="-1" readonly></input>
+	                  </div>
+		               	<div style="margin-bottom:5px">
+			               	<label for="optionList">상세 조건 : </label>
+			                  <select id="optionList" tabindex="0">
+			                     <!-- <option value="선택">선택</option> -->
+			                     <!-- <option value="payment_price">가격</option> -->
+			                     <!-- <option value="order_date">구매일자</option>-->
+			                     <option value="order_code">주문번호</option>
+			                     <option value="order_detail_code">주문상세번호</option>
+			                     <option value="product_name">상품명</option>
+			                  </select> <input type="text" class="selectVal" id="search" value=""
+			                     maxlength="50">
+			                  <button type="button" id="selectOption"
+			                     style="background-color: black; color: white;">검색</button>
+		               	</div>
+	
+	               </div>
+	
+	               <div class="card card-lg mb-5 border">
+	                  <div class="card-body pb-0">
+	                     <!-- 반복문 시작 -->
+	                     <!-- Info -->
+	                     <div class="card card-sm orderList" id="orderOption">
+	                        <div th:each="lists : ${orderList}"
+	                           th:data-orderdetailcode="${lists.orderDetailCode}"
+	                           class="order">
+	                           <div class="card-body bg-light" style="border-radius: 15px;">
+	                              <div class="row orderRow">
+	                              <input type="hidden" th:value="${lists.productCode}"
+	                                                class="productCode" name="productCode" />
+	                                 <!-- 주문 번호 -->
+	                                 <div class="col-6 col-lg-3">
+	                                    <h6 class="heading-xxxs text-muted">주문 번호:</h6>
+	                                    <p class="mb-lg-0 fs-sm fw-bold">
+	                                       <span class="orderCode" th:text="|${lists.orderCode}|"
+	                                          tabindex="0"></span>
+	                                    </p>
+	                                    <h6 class="heading-xxxs text-muted">주문 상세 번호:</h6>
+	                                    <p class="mb-lg-0 fs-sm fw-bold">
+	                                       <span class="orderDetailCode"
+	                                          th:text="|${lists.orderDetailCode}|"></span>
+	                                    </p>
+	                                 </div>
+	                                 <!-- 주문 날짜 -->
+	                                 <div class="col-6 col-lg-3">
+	                                    <h6 class="heading-xxxs text-muted">주문 날짜:</h6>
+	                                    <p class="mb-lg-0 fs-sm fw-bold">
+	                                       <span class="orderDate"
+	                                          th:text="${#dates.format(lists.orderDate, 'yyyy-MM-dd')}"></span>
+	                                    </p>
+	                                 </div>
+	                                 <!-- 상품 이미지 -->
+	                                 <div class="col-6 col-lg-3">
+	                                    <h6 class="heading-xxxs text-muted">상품 이미지:</h6>
+	                                    <a th:href="|/goodDetail?productCode=${lists.productCode}|"
+	                                       tabindex="-1"> <img
+	                                       th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|"
+	                                       style="max-width: 100%; height: auto"
+	                                       th:alt="${lists.imgContent}">
+	                                    </a>
+	                                       
+	                                 </div>
+	                                 <!-- 상품명 -->
+	                                 <div class="col-6 col-lg-3">
+	                                    <h6 class="heading-xxxs text-muted">상품명:</h6>
+	                                    <p class="mb-0 fs-sm fw-bold">
+	                                       <span class="productName" th:text="|${lists.productName}|"></span>
+	                                    </p>
+	                                    <h6 class="heading-xxxs text-muted">옵션:</h6>
+	                                    <p class="mb-0 fs-sm fw-bold">
+	                                       <span class="optionLast" th:text="|${lists.optionLast}|"></span>
+	                                    </p>
+	                                 </div>
+	                                 <!-- 수량 -->
+	                                 <div class="col-6 col-lg-3">
+	                                    <h6 class="heading-xxxs text-muted" style="margin-top: 10px">수량:</h6>
+	                                    <p class="mb-0 fs-sm fw-bold">
+	                                       <span class="orderCnt" th:text="|${lists.orderCnt}|"></span>
+	                                    </p>
+	                                 </div>
+	                                 <!-- 주문 금액 -->
+	                                 <div class="col-6 col-lg-3">
+	                                    <h6 class="heading-xxxs text-muted" style="margin-top: 10px">주문
+	                                       금액:</h6>
+	                                    <p class="mb-0 fs-sm fw-bold">
+	                                       <span class="paymentPrice"
+	                                          th:text="|${#numbers.formatInteger(lists.paymentPrice,0,'COMMA')}원|"></span>
+	                                    </p>
+	                                 </div>
+	                                 <!-- 배송 상태 -->
+	                                 <div class="col-6 col-lg-3">
+	                                    <h6 class="heading-xxxs text-muted" style="margin-top: 10px">배송
+	                                       상태:</h6>
+	                                    <p class="mb-0 fs-sm fw-bold">
+	                                       <span class="orderStatusNm"
+	                                          th:text="|${lists.orderStatusNm}|"></span>
+	                                    </p>
+	                                 </div>
+	                                 <!-- 배달 완료 날짜 -->
+	                                 <div class="col-6 col-lg-3">
+	                                    <h6 class="heading-xxxs text-muted" style="margin-top: 10px">배송
+	                                       완료 날짜:</h6>
+	                                    <p class="mb-0 fs-sm fw-bold">
+	                                       <span class="deliveryDate"
+	                                          th:text="|${lists.deliveryDate}|"></span>
+	                                    </p>
+	                                 </div>
+	                                 <!-- 취소 여부 -->
+	                                 <div class="col-6 col-lg-3">
+	                                    <h6 class="heading-xxxs text-muted">취소 여부:</h6>
+	                                    <p class="mb-0 fs-sm fw-bold">
+	                                       <span class="cancelStatusNm"
+	                                          th:text="${lists.cancelStatusNm}"></span>
+	                                    </p>
+	                                 </div>
+	                                 <!-- 반품 여부 -->
+	                                 <div class="col-6 col-lg-3">
+	                                    <h6 class="heading-xxxs text-muted">반품 여부:</h6>
+	                                    <p class="mb-0 fs-sm fw-bold">
+	                                       <span class="returnStatusNm"
+	                                          th:text="|${lists.returnStatusNm}|"></span>
+	                                    </p>
+	                                 </div>
+	                                 <!-- 교환 여부 -->
+	                                 <div class="col-6 col-lg-3">
+	                                    <h6 class="heading-xxxs text-muted">교환 여부:</h6>
+	                                    <p class="mb-0 fs-sm fw-bold">
+	                                       <span class="exchangeStatusNm"
+	                                          th:text="|${lists.exchangeStatusNm}|"></span>
+	                                    </p>
+	                                 </div>
+	                                 <!-- 주문 확정 -->
+	                                 <div class="col-6 col-lg-3">
+	                                    <h6 class="heading-xxxs text-muted">주문 확정:</h6>
+	                                    <p class="mb-0 fs-sm fw-bold">
+	                                       <span class="orderCheck" th:if="${lists.orderCheck} == 'N'">취소된
+	                                          상품</span>
+	                                    </p>
+	                                 </div>
+	                              </div>
+	                           </div>
+	
+	                           <div class="card-footer ">
+	                              <div class="row align-items-center"
+	                                 th:if="${lists.returnStatus} == '0' and ${lists.cancelStatus} == '0' and ${lists.exchangeStatus} == '0'">
+	                                 <!-- 리뷰  button -->
+	                                 <div class="col-4" th:if="${lists.orderStatus} == '4'">
+	                                    <a class="reviewBtn btn btn-sm w-100 btn-outline-dark"
+	                                       data-bs-target="#reviewInsert" data-bs-toggle="modal"
+	                                       style="border-radius: 10px; background-color: black; color: white;"
+	                                       >
+	                                       리뷰 쓰기 </a>
+	                                 </div>
+	                                 <!-- 주문 취소 Button -->
+	                                 <div class="col-4"
+	                                    th:if="${lists.orderStatus} == '2' or ${lists.orderStatus} == '1'"
+	                                    style="margin-top: 5px;">
+	                                    <a class="btn btn-sm w-100 btn-outline-dark cancelBtn"
+	                                       th:href="@{/cancel}"
+	                                       style="border-radius: 10px; background-color: black; color: white;">
+	                                       주문 취소 </a>
+	                                 </div>
+	                                 <!-- 교환 Button -->
+	                                 <div class="col-4">
+	                                    <a class="btn btn-sm w-100 btn-outline-dark excBtn"
+	                                       th:href="@{/exchange}"
+	                                       style="border-radius: 10px; background-color: black; color: white;">
+	                                       교환 </a>
+	                                 </div>
+	                                 <!-- 반품 Button -->
+	                                 <div class="col-4">
+	                                    <a class="btn btn-sm w-100 btn-outline-dark retBtn"
+	                                       th:href="@{/return}"
+	                                       style="border-radius: 10px; background-color: black; color: white;">
+	                                       반품 </a>
+	                                 </div>
+	                              </div>
+	                           </div>
+	
+	                           
+	
+	
+	                        </div>
+	                     </div>
+	                  </div>
+	               </div>
+	               <!-- Pagination -->
+	               <nav
+	                  class="d-flex justify-content-center justify-content-md-end mt-10">
+	                  <ul class="pagination pagination-sm text-gray-400">
+	                     <li class="page-item" th:if="${pageMaker.prev}"><a
+	                        class="page-link page-link-arrow"
+	                        th:href="@{/page/buyer/orderList/(pageNum = ${pageMaker.startPage - 1})}">
+	                           <i class="fa fa-caret-left"></i>
+	                     </a></li>
+	                     <th:block
+	                        th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+	                        <li th:if="${pageMaker.endPage} ne 0"
+	                           th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+	                           th:each="pageButtom : ${#numbers.sequence(start,end)}"
+	                           th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
+	                           <a class="page-link" href="#"
+	                           th:href="@{/page/buyer/orderList/(pageNum= ${pageButtom} )}"
+	                           th:text="${pageButtom}"></a>
+	                        </li>
+	                     </th:block>
+	                     <li class="page-item" th:if="${pageMaker.next}"><a
+	                        class="page-link page-link-arrow"
+	                        th:href="@{/page/buyer/orderList/(pageNum = ${pageMaker.endPage + 1})}">
+	                           <i class="fa fa-caret-right"></i>
+	                     </a></li>
+	                  </ul>
+	               </nav>
+	
+	
+	<!-- 리뷰 등록 폼 -->
+	                           <div class="modal fade" id="reviewInsert" tabindex="-1"
+	                              aria-labelledby="exampleModalLabel" aria-hidden="true">
+	                              <div class="modal-dialog">
+	                                 <div class="modal-content">
+	                                    <div class="modal-header">
+	                                       <h5 class="modal-title" id="exampleModalLabel">리뷰등록</h5>
+	                                       <button type="button" class="btn-close"
+	                                          data-bs-dismiss="modal" aria-label="Close"></button>
+	                                    </div>
+	                                    <div class="modal-body">
+	                                       <form method="post" id="reviewForm2"
+	                                          enctype="multipart/form-data">
+	
+	                                          <div>
+	                                             <!-- Text -->
+	                                             <div>
+	                                                <div>
+	                                                   <p class="mb-1 fs-xs"
+	                                                      style="padding-bottom: 10px; padding-right: 120px">이미지
+	                                                      선택</p>
+	                                                   <div class="mb-6 mb-md-0"
+	                                                      style="width: 180px; height: 180px">
+	                                                      <div id="reviewDiv">
+	                                                         <img src=""
+	                                                            style="display: none; width: 180px; height: 180px"
+	                                                            id="reviewImages">
+	                                                      </div>
+	                                                      <span class="avatar-title circle"> 이미지 없음<i
+	                                                         class="fas fa-image"></i>
+	                                                      </span>
+	                                                   </div>
+	
+	                                                   <input type="file" class="reviewimg" name="files"
+	                                                      onchange="readImg(this)" id="reviewimg"
+	                                                      accept="image/*" />
+	                                                </div>
+	
+	                                                <!-- Text -->
+	                                                <div>
+	
+	                                                   <!-- Rating form -->
+	                                                   <div class="rating-form">
+	                                                      <!-- Input -->
+	                                                      <input class="rating-input" type="range" min="1"
+	                                                         max="5" />
+	
+	                                                      <!-- Rating -->
+	                                                      <div class="star rating h5 text-dark" data-value="5">
+	                                                         <div class="rating-item">
+	                                                            <i class="fas fa-star"></i>
+	                                                         </div>
+	                                                         <div class="rating-item">
+	                                                            <i class="fas fa-star"></i>
+	                                                         </div>
+	                                                         <div class="rating-item">
+	                                                            <i class="fas fa-star"></i>
+	                                                         </div>
+	                                                         <div class="rating-item">
+	                                                            <i class="fas fa-star"></i>
+	                                                         </div>
+	                                                         <div class="rating-item">
+	                                                            <i class="fas fa-star"></i>
+	                                                         </div>
+	                                                      </div>
+	                                                   </div>
+	                                                </div>
+	                                             </div>
+	                                          </div>
+	                                          <div class="row">
+	                                             <!-- productCode 넣기 -->
+	                                              <input
+	                                                type="hidden" id="member" name="memberId"
+	                                                th:value="${session.loginMember.memberId}" />
+	
+	
+	                                             <div class="col-12 mb-6 text-center"
+	                                                style="display: flex; justify-content: center; align-items: center">
+	
+	                                                <!-- Rating form -->
+	                                                <div class="rating-form">
+	                                                   <!-- Input -->
+	                                                   <input class="rating-input" type="range" min="1"
+	                                                      max="5" value="5" />
+	                                                </div>
+	                                             </div>
+	                                             <div class="col-12">
+	                                                <!-- 내용 -->
+	                                                <div class="form-group">
+	                                                   <label class="visually-hidden" for="reviewContent">Review:</label>
+	                                                   <textarea class="form-control form-control-sm" rows="5"
+	                                                      placeholder="내용을 입력해주세요" id="reviewContent"
+	                                                      name="reviewContent" required style="resize: none;"></textarea>
+	                                                </div>
+	                                             </div>
+	
+	                                          </div>
+	                                       </form>
+	                                    </div>
+	                                    <div class="modal-footer">
+	                                       <button type="button" class="closeBtn btn btn-secondary"
+	                                          data-bs-dismiss="modal">닫기</button>
+	                                       <button type="button"
+	                                          class="reviewInsertBtn btn btn-primary">저장</button>
+	                                    </div>
+	                                 </div>
+	                              </div>
+	                           </div>
+	
+	            </div>
+	         </div>
+	      </div>
+	
+	
+	
+	
+	
+	   </section>
+	   <textarea id="orderMenual" style="display: none;">
+	      1번 주문목록.
+	      2번 취소목록.
+	      3번 반품목록.
+	      4번 교환목록.
+	      5번 나의 쿠폰함.
+	      6번 문의내역.
+	      7번 찜 목록.
+	      8번 개인정보 확인/수정.
+	      9번 메인페이지 이동.
+	      0번 다시듣기.
+	    </textarea>
+	   <script>
+	   //초기화
+	   $(document).on("click",".closeBtn",function(){
+		   
+		   let star = $(".star");
+		    console.log(star);
+		    $("#reviewImages").attr("src","");
+		    $('.star').attr('data-value',5)
+		    let reviewForm = $('#reviewForm2');
+		    $('#reviewForm2')[0].reset();
+	   })
+	   
+	   
+	   var tmpProductCode;
+	   
+	   $('.reviewBtn').on('click',function(e){
+	      let btn = $(this);
+	      let btn2 = btn.parent().parent().parent().parent().children()[0];
+	      let prodCode = $(btn2).find('input[type="hidden"]');
+	      tmpProductCode = prodCode[0].value;
+	
+	   /*--------------------------
+	   리뷰 등록
+	   ----------------------------*/
+	   $(".reviewInsertBtn").one("click", function () {
+	         let form = $("#reviewForm2")[0];
+	         const formData = new FormData(form);
+	         let productCode = $('.productCode').val();
+	         let star = $(".star").data("value");
+	         formData.append("reviewStar", star);
+	         formData.append("productCode",tmpProductCode);
+	         
+	         for (let key of formData.keys()) {
+	              console.log(key, ":", formData.get(key));
+	         }
+	
+	      $.ajax({
+	        url: "/insertReview",
+	        type: "post",
+	        data: formData,
+	        enctype: "multipart/form-data",
+	        contentType: false,
+	        processData: false,
+	        success: function (result) {
+	          alert("정상적으로 등록되었습니다");
+	          location.reload();
+	       },
+	       error: function (err) {
+	           console.log(err);
+	       },
+	     });
+	});   
+	   })
+	   
+	   /*--------------------------
+	   이미지 나타내기
+	   ----------------------------*/
+	     function readImg(obj) {
+	
+	                let reader = new FileReader();
+	                if(!obj.files.length) {
+	                    return;
+	                }
+	                reader.readAsDataURL(obj.files[0]);
+	                reader.onload = function (e) {            
+	                        let imgs = $("#reviewImages");
+	                       $(imgs).attr('src', e.target.result);
+	                       $("#reviewImages").css("display","block");
+	                       $(".avatar-title").css("display","none");
+	                       
+	                     }
+	                }
+	            
+	     function readURL(obj) {
+	
+	                let reader = new FileReader();
+	                if(!obj.files.length) {
+	                    return;
+	                }
+	                reader.readAsDataURL(obj.files[0]);
+	                reader.onload = function (e) {
+	                       let img = $('#reviewModifyImg');
+	                       $(img).attr('src', e.target.result);
+	                       $('#previewDiv').append(img);
+	                     }
+	                }
+	            
+	   
+	   
+	   
+	      document.querySelector(".orderList").addEventListener("click", function(e) {
+	       let target = e.target;
+	       console.log($(target).prop("class"));
+	       if($(target).prop("class") == 'btn btn-sm w-100 btn-outline-dark excBtn'){
+	         e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
+	         var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
+	        var url="";
+	         if( e.target.matches(".excBtn") ){
+	            var url = "/page/buyer/exchange";
+	            window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+	         }else if( e.target.matches(".cancelBtn") ){
+	            var url = "/page/buyer/cancel"
+	            window.location.href = url+"?orderDetailCode=" + orderDetailCode;      
+	         }else if(e.target.matches(".retBtn")){
+	            var url = "/page/buyer/return"
+	            window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+	         }else{
+	            return;
+	         }
+	       }
+	       
+	       if($(target).prop("class") == 'btn btn-sm w-100 btn-outline-dark retBtn'){
+	             e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
+	             var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
+	            var url="";
+	             if( e.target.matches(".excBtn") ){
+	                var url = "/page/buyer/exchange";
+	                window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+	             }else if( e.target.matches(".cancelBtn") ){
+	                var url = "/page/buyer/cancel"
+	                window.location.href = url+"?orderDetailCode=" + orderDetailCode;      
+	             }else if(e.target.matches(".retBtn")){
+	                var url = "/page/buyer/return"
+	                window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+	             }else{
+	                return;
+	             }
+	           }
+	       
+	       if($(target).prop("class") == 'btn btn-sm w-100 btn-outline-dark cancelBtn'){
+	             e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
+	             var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
+	            var url="";
+	             if( e.target.matches(".excBtn") ){
+	                var url = "/page/buyer/exchange";
+	                window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+	             }else if( e.target.matches(".cancelBtn") ){
+	                var url = "/page/buyer/cancel"
+	                window.location.href = url+"?orderDetailCode=" + orderDetailCode;      
+	             }else if(e.target.matches(".retBtn")){
+	                var url = "/page/buyer/return"
+	                window.location.href = url+"?orderDetailCode=" + orderDetailCode;
+	             }else{
+	                return;
+	             }
+	           }
+	       
+	       });
+	      
+	      $('#selectOption').on('click', function(){
+	         let key = $('#optionList').val();
+	         let value = $('.selectVal').val();
+	         
+	         let fromDate = $('#from').val();
+	         let toDate = $('#to').val();
+	         
+	         var itemCount = document.querySelectorAll(".order").length;
+	         
+	          // document.querySelector(".count").value = itemCount;
+	         
+	         
+	         $.ajax({
+	            url: '/page/buyer/orderOption',
+	            type: 'get',
+	            data: {
+	               "searchKey": key,
+	               "searchValue" : value,
+	               fromDate,
+	               toDate
+	            }
+	         })
+	         .done(data => {
+	            $('#orderOption').html(data);
+	
+	            itemCount = document.querySelectorAll(".order").length;
+	            document.querySelector(".count").value = itemCount;
+	         })
+	         .fail(reject => {
+	           console.log(reject);
+	         })
+	       });
+	      
+	      
+	       //tts 시작 
+	        let TTSIsOk = localStorage.getItem('ttsKey');
+	          let sessionAuthor;
+	         console.log(sessionStorage.loginMember);          
+	         if(sessionStorage.loginMember != null){
+	            sessionAuthor = sessionStorage.loginMember.memberAuthor;
+	         }
+	             
+	        function ttsInit(){
+	             $('#optionList').focus();
+	             if(TTSIsOk == null || sessionAuthor == 3){
+	              let audioFileNow = new Audio();
+	              let optionSel = $('#optionList').text();
+	              let firstMsg = "주문 목록 페이지입니다. 주문한 내역에 대해서 확인할 수 있습니다.";
+	              let message = firstMsg + $('#orderMenual').val();
+	            let message2 = `다음은 검색 기준입니다. 검색 기준을 골라주세요 + ${optionSel}`;
+	              VoiceMenual(message + message2);
+	   
+	        //tts 이벤트 부여
+	        $('#optionList').on('focus', optionList);
+	        $('#optionList').on('change', optionSelect);
+	        $('#search').on('focus', search);
+	        $('#selectOption').on('focus', searchOption);
+	        $('#selectOption').on('keydown', searchOk);
+	        $('.orderCode').on('focus', orderDetailInfo);
+	        $('.excBtn').on('focus', exchageBtn);
+	        $('.retBtn').on('focus', retBtn);
+	        $('.cancelBtn').on('focus', cancelBtn);
+	        
+	        //tts 이벤트 진행
+	        function optionList(){
+	           let optionSel = $('#optionList').text();
+	           VoiceMenual("검색 기준입니다." + optionSel);
+	        }
+	        function optionSelect() {
+	          let selectOp = $('#optionList option:selected').text();
+	          VoiceMenual(selectOp);
+	       }
+	        function search(){
+	           let search = $('#search').text();
+	           VoiceMenual("검색 창입니다. 검색 기준에 맞게 입력해주세요.");
+	        }
+	        function searchOption(){
+	           let searchOpt = $('#selectOption').text();
+	           VoiceMenual("검색을 원하시면 엔터키를 입력해주세요." + searchOpt);
+	        } 
+	        function searchOk(){
+	           VoiceMenual("검색이 완료되었습니다.");
+	        }
+	        function orderDetailInfo() {
+	        let orderCode = $(this).closest('.orderRow').find('.orderCode').text();
+	        let orderDetailCode = $(this).closest('.orderRow').find('.orderDetailCode').text();
+	        let orderDate =  $(this).closest('.orderRow').find('.orderDate').text();
+	        let productName =  $(this).closest('.orderRow').find('.productName').text();
+	        let optionLast = $(this).closest('.orderRow').find('.optionLast').text();
+	        let orderCnt = $(this).closest('.orderRow').find('.orderCnt').text();
+	        let paymentPrice = $(this).closest('.orderRow').find('.paymentPrice').text();
+	        let orderStatusNm = $(this).closest('.orderRow').find('.orderStatusNm').text();
+	        let deliveryDate =  $(this).closest('.orderRow').find('.deliveryDate').text();
+	        let cancelStatusNm = $(this).closest('.orderRow').find('.cancelStatusNm').text();
+	        let returnStatusNm = $(this).closest('.orderRow').find('.returnStatusNm').text();
+	        let exchangeStatusNm = $(this).closest('.orderRow').find('.exchangeStatusNm').text();
+	        let orderCheck = $(this).closest('.orderRow').find('.orderCheck').text();
+	   
+	        let message = `주문번호는 ${orderCode}. 주문 상세 번호는 ${orderDetailCode}. 주문날짜는 ${orderDate}.
+	                      상품명은 ${productName}. 옵션명은 ${optionLast}. 주문수량은 ${orderCnt}. 주문금액은 ${paymentPrice}.
+	                      배송상태는 ${orderStatusNm}. 배송 완료날짜 ${deliveryDate}. 취소여부는 ${cancelStatusNm}.
+	                      반품여부는 ${returnStatusNm}. 교환여부는 ${exchangeStatusNm}. 주문확정은 ${orderCheck}. 입니다.`;
+	   
+	          VoiceMenual(message);
+	        }
+	        
+	        function exchageBtn() {
+	           VoiceMenual('교환 신청 버튼입니다. 교환을 원하시면. 엔터키를 눌러주세요.');
+	        }
+	        function retBtn() {
+	           VoiceMenual('반품 신청 버튼입니다. 반품을 원하시면. 엔터키를 눌러주세요.');
+	        }
+	        function cancelBtn() {
+	           VoiceMenual('주문 취소 신청 버튼입니다. 주문 취소을 원하시면. 엔터키를 눌러주세요.');
+	        }
+	    
+	   //tts 부분
+	   
+	   var AudioContext;
+	   var audioContext;
+	   
+	   window.onload = function() {
+	       navigator.mediaDevices.getUserMedia({ audio: true }).then(() => {
+	           AudioContext = window.AudioContext || window.webkitAudioContext;
+	           audioContext = new AudioContext();
+	       }).catch(e => {
+	           console.error(`Audio permissions denied: ${e}`);
+	       });
+	   }
+	   
+	   
+	   function VoiceMenual(message) {
+	       var data = {
+	           "voice" : {
+	               "languageCode" : "ko-KR",
+	               "name" : "ko-KR-Neural2-B"
+	           },
+	           "input" : {
+	               "text" : message
+	           },
+	           "audioConfig" : {
+	               "audioEncoding" : "mp3"
+	           }
+	       }
+	       $.ajax({
+	           type : 'POST',
+	           url : 'https://texttospeech.googleapis.com/v1/text:synthesize?key=AIzaSyArcSKerGDYE7ngIVMaLhHCbNtmWN1-uac',
+	           data : JSON.stringify(data),
+	           dataType : 'JSON',
+	           contentType : "application/json; charset=UTF-8",
+	           success : function(res) {
+	               $('#menuText').val(res.audioContent)
+	               var audioFile = new Audio();
+	               let audioBlob = base64ToBlob(res.audioContent,
+	                       "mp3");
+	               audioFile.src = window.URL
+	                       .createObjectURL(audioBlob);
+	               audioFile.playbackRate = 2; //재생속도
+	               if(audioFileNow.paused == false){
+	                  audioFileNow.pause();
+	               }
+	             audioFileNow = audioFile;
+	               audioFileNow.play();
+	           
+	           },
+	           error : function(request, status, error) {
+	               alert("오류", "오류가 발생하였습니다. 관리자에게 문의해주세요.");
+	           }
+	       });
+	   };
+	   function base64ToBlob(base64, fileType) {
+	       let typeHeader = "data:application/" + fileType + ";base64,"; // base64 헤더 파일 유형 정의
+	       let audioSrc = typeHeader + base64;
+	       let arr = audioSrc.split(",");
+	       let array = arr[0].match(/:(.*?);/);
+	       let mime = (array && array.length > 1 ? array[1] : type) || type;
+	       // url헤더 제거하고 btye로 변환
+	       let bytes = window.atob(arr[1]);
+	       // 예외를 처리하고 0보다 작은 ASCII 코드를 0보다 큰 값으로 변환
+	       let ab = new ArrayBuffer(bytes.length);
+	       // 뷰 생성(메모리에 직접): 8비트 부호 없는 정수, 길이 1바이트
+	       let ia = new Uint8Array(ab);
+	       for (let i = 0; i < bytes.length; i++) {
+	           ia[i] = bytes.charCodeAt(i);
+	       }
+	       return new Blob([ ab ], {
+	           type : mime
+	       });
+	   }
+	   
+	      window.addEventListener("keydown", function(e){ 
+	            if(e.altKey && e.key == 1){ //주문목록
+	                $('#orderList').focus();
+	                VoiceMenual('주문목록 페이지 원할 경우. 엔터키 입력');
+	             }
+	            else if(e.altKey && e.key == 2){ //취소내역
+	               $(".collapse").addClass("show")
+	                $('#cancel').focus();
+	                VoiceMenual('취소. 페이지 원할 경우. 엔터키 입력');
+	             }
+	            else if(e.altKey && e.key == 3) {//반품내역
+	               $(".collapse").addClass("show")
+	                $('#reList').focus();
+	                VoiceMenual('반품. 페이지 원할 경우. 엔터키 입력');
+	             }
+	            else if(e.altKey && e.key == 4){ // 교환내역
+	               $(".collapse").addClass("show")
+	                $('#exchange').focus();
+	                VoiceMenual('교환. 페이지 원할 경우. 엔터키 입력');
+	             }
+	            else if(e.altKey && e.key == 5){ // 나의 쿠폰함
+	                $('#coupon').focus();
+	                VoiceMenual('쿠폰함. 페이지 원할 경우. 엔터키 입력');
+	             }
+	            else if(e.altKey && e.key == 6){ // 문의내역
+	                $('#inquiry').focus();
+	                VoiceMenual('문의내역. 페이지 원할 경우. 엔터키 입력');
+	             }
+	            else if(e.altKey && e.key == 7){ // 찜 목록
+	                $('#wish').focus();
+	                VoiceMenual("찜목록. 페이지 원할 경우. 엔터키 입력")
+	             }
+	            else if(e.altKey && e.key == 8){ // 배송 시 요청 선택
+	                $('#myInfo').focus();
+	                VoiceMenual('개인정보 확인,수정 페이지 입니다. 엔터키 입력.');
+	             }
+	            else if(e.altKey && e.key == 9){ // 메인 페이지 이동
+	                    location.href = "/";
+	             }
+	            else if(e.altKey && e.key == 0){ //다시 듣기
+	                VoiceMenual($('#orderMenual').val());
+	             }
+	      })
+	     } //ttsInit()의 if문
+	   } // ttsInit() close
+	</script>
+	</div>
+	</html>
