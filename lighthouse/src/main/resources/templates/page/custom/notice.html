@@ -325,7 +325,7 @@
 						}
 					}else if(e.keyCode == 57) {
                   location.href = "/";
-			   	}else if(e.shiftKey && e.keyCode==68){
+			   	}else if($('.noticeLi:focus').length != 0  && e.shiftKey && e.keyCode==68){
 					let child = $(':focus').children().eq(0);
 					let code = $(child).children().val(); 
 					let tt = $('#current').val();
