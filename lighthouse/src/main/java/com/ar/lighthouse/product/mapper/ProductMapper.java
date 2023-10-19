@@ -121,7 +121,7 @@ public interface ProductMapper {
 	public List<ExchangeVO> selectReturnList(ReturnVO returnVO);
 
 //		정산데이터
-	public List<SellerCalVO> selectCalList(SellerCalVO sellerCalVO);
+	public List<SellerCalVO> selectCalList(String memberId);
 	
 //	월별 주문건수
 	public List<DetailVO> selectMonthlyCount(DetailVO detailVO);

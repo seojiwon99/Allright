@@ -29,7 +29,8 @@
 
 					<a class="btn btn-sm btn-dark"
 						th:if="${session.loginMember != null}" data-bs-target="#qnaModal"
-						href="#inquiryForm" data-bs-toggle="modal" tabindex="-1"> 1:1 문의하기 </a>
+						href="#inquiryForm" data-bs-toggle="modal" tabindex="-1"> 1:1
+						문의하기 </a>
 
 					<div class="modal fade" id="qnaModal" tabindex="-1"
 						aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -43,10 +44,10 @@
 								<div class="modal-body">
 									<div>
 										<div scope="col">
-										<div class=" form-control form-control-sm">
-											비밀글 : <input type="checkbox" id="queSecret" name="queSecret"
-												checked="checked" />
-												</div>
+											<div class=" form-control form-control-sm">
+												비밀글 : <input type="checkbox" id="queSecret" name="queSecret"
+													checked="checked" />
+											</div>
 										</div>
 										<div scope="col" style="padding-top: 20px">
 											<label class="visually-hidden" for="reviewContent">Review:</label>
@@ -59,8 +60,8 @@
 								<div class="modal-footer">
 									<button type="button" class="btn btn-secondary" tabindex="-1"
 										data-bs-dismiss="modal">닫기</button>
-									<button id="inquiryAdd" class="btn btn-sm btn-dark" tabindex="-1"
-										type="button" onclick="inquiryAdd()">등록하기</button>
+									<button id="inquiryAdd" class="btn btn-sm btn-dark"
+										tabindex="-1" type="button" onclick="inquiryAdd()">등록하기</button>
 								</div>
 							</div>
 						</div>
@@ -90,8 +91,10 @@
 						<!-- 숨겨지는 정보 -->
 						<span id="queAns" name="queAns" style="display: none">[[${inquiry.queAns}]]</span>
 						<span id="queCode" name="queCode" style="display: none">[[${inquiry.queCode}]]</span>
-						<input type="hidden" th:value="${inquiry.queSecret}" / tabindex="-1">
-						<tr th:onclick="|toggleOn([[${inquiry.queCode}]])|" tabindex="0" class="qnaList">
+						<input type="hidden" th:value="${inquiry.queSecret}"
+							/ tabindex="-1">
+						<tr th:onclick="|toggleOn([[${inquiry.queCode}]])|" tabindex="0"
+							class="qnaList">
 
 							<td th:if="${inquiry.queAns == null}" class="qnaChk">답변 대기</td>
 							<td th:if="${inquiry.queAns != null}" style="font-weight: 600">답변
@@ -109,8 +112,8 @@
 								th:text="${inquiry.memberId.length} > 3 ? ${#strings.substring(inquiry.memberId,0,5)}+'***' : ${inquiry.memberId}"></td>
 
 
-							<td class="regDate">[[${#dates.format(inquiry. queRegdate,'yyyy년 MM월 dd일
-								HH:mm')}]]</td>
+							<td class="regDate">[[${#dates.format(inquiry.
+								queRegdate,'yyyy년 MM월 dd일 HH:mm')}]]</td>
 						</tr>
 
 						<!-- 답변 보기1 -->
@@ -120,9 +123,9 @@
 							style="display: none; background-color: #f8f8f8">
 							<td class="inquiryGetAns" style="font-size: 18px"></td>
 
-							<td class="inquiryGetAns" id="answerForm">
+							<td class="inquiryGetAns" id="answerForm" colspan=3>
 								<div class="hideInquiry"
-									style="font-size: 16px; width: 380px; word-break: break-all; border-bottom: 1px solid rgba(0, 0, 0, 0.1);">
+									style="font-size: 16px; word-break: break-all; border-bottom: 1px solid rgba(0, 0, 0, 0.1);">
 									Q:
 									<p style="white-space: pre;">[[${inquiry.queContent}]]</p>
 								</div> <textarea class="form-control form-control-sm" rows="5"
@@ -236,149 +239,139 @@
 						<i class="fa fa-caret-right"></i>
 				</a></li>
 			</ul>
-			
-			 <div th:if="${session.loginMember} != null">
-            <input type="hidden" id="memberId"
-               th:value="${session.loginMember.memberId}" />
-         </div>
+
+			<div th:if="${session.loginMember} != null">
+				<input type="hidden" id="memberId"
+					th:value="${session.loginMember.memberId}" />
+			</div>
 
 		</nav>
-		
+
 
 
 		<script type="text/javascript">
-			//function goPage(p){
-			//location.href = 'inquiryView?productCode=[[${productCode}]]&pageNum='+p;
-			//}
+		/*------------
+		qna 한건 조회
+		-------------*/
+		function toggleOn(idx) {
+			$('.inquiryGet' + idx).toggle();
+		};
 
-			//qna 조회
-			function toggleOn(idx) {
-				//$(".inquiryGet").css("display","");      
-				//$(".inquiryGet").css("background","lightgrey");
-				$('.inquiryGet' + idx).toggle();
+		/*------------
+		qna 등록
+		-------------*/
+		function inquiryAdd() {
+			if ($("#queSecret").is(":checked")) {
+				$("#queSecret").val("Y");
+			} else {
+				$("#queSecret").val("N");
+			}
+
+			let object = {
+				memberId : $("#memberId").val(),
+				queSecret : $("#queSecret").val(),
+				productCode : $("#productCode").val(),
+				queContent : $("#queContent").val(),
+				sellerId : $("#sellerId").text(),
 			};
-
-			//qna 등록
-			function inquiryAdd() {
-				if ($("#queSecret").is(":checked")) {
-					$("#queSecret").val("Y");
-				} else {
-					$("#queSecret").val("N");
-				}
-
-				let object = {
-					memberId : $("#memberId").val(),
-					queSecret : $("#queSecret").val(),
-					productCode : $("#productCode").val(),
-					queContent : $("#queContent").val(),
-					sellerId : $("#sellerId").text(),
-				};
-				console.log(object);
-				$.ajax({
-					type : "post",
-					url : "insertInquiry",
-					headers : {
-						"Content-Type" : "application/json"
+			$.ajax({
+				type : "post",
+				url : "insertInquiry",
+				headers : {
+					"Content-Type" : "application/json"
 					},
-					data : JSON.stringify(object),
-
-					success : function(data) {
-						console.log(data);
-
-						location.reload(true);
+				data : JSON.stringify(object),
+				success : function(data) {
+					console.log(data);
+					location.reload(true);
 					},
-					error : function(e) {
-						console.log(e);
+				error : function(e) {
+					console.log(e);
 					},
 				});
 			}
 
-			//qna 삭제
-			function remove(idx) {
-				console.log(idx);
-				if (!confirm('삭제 하시겠습니까?')) {
-					console.log("삭제 x");
-				} else {
-					console.log("삭제");
-					realRemove();
-				}
-				;
+		/*------------
+		qna 삭제
+		-------------*/
+		function remove(idx) {
+			console.log(idx);
+			if (!confirm('삭제 하시겠습니까?')) {
+				console.log("삭제 x");
+			} else {
+				console.log("삭제");
+				realRemove();
+			};
 
 				function realRemove() {
-					$.ajax({
-						url : "removeInquiry",
-						type : "post",
-						headers : {
-							"Content-Type" : "application/json"
+				$.ajax({
+					url : "removeInquiry",
+					type : "post",
+					headers : {
+						"Content-Type" : "application/json"
+					},
+					data : JSON.stringify(idx),
+					success : function(result) {
+						console.log(result);
+						location.reload(true);
 						},
-						data : JSON.stringify(idx),
-						success : function(result) {
-							console.log(result);
-							//$('#qnaTap').load(location.href + ' #qnaTap');
-							location.reload(true);
-
-						},
-						error : function(reject) {
-
-							console.log(reject);
-						}
-					})
-				}
+					error : function(reject) {
+						console.log(reject);
+					}
+				})
 			}
+		}
 
-			//qna 수정
-			$('.testBtn').on(
-					'click',
-					function() {
-						let btn = $(this).parent();
-						let hideque = btn.parent().parent().parent().children()
-								.next().children()[0];
-						//$(".hideInquiry").css("display","none");
-						$(hideque).css("display", "none");
+		/*------------
+		qna 수정
+		-------------*/
+		$('.testBtn').on('click', function() {
+				let btn = $(this).parent();
+				let hideque = btn.parent().parent().parent().children()
+						.next().children()[0];
+				
+				$(hideque).css("display", "none");
 
-						let queText = btn.parent().parent().parent().children()
-								.next().children().next();
-						let queCode = btn.parent().parent().parent().parent()
-								.children().next().next().data().code;
-						console.log(queCode);
+				let queText = btn.parent().parent().parent().children()
+						.next().children().next();
+				let queCode = btn.parent().parent().parent().parent()
+						.children().next().next().data().code;
+				console.log(queCode);
 
-						queText.css("display", "block");
-						queText.attr("readonly", false);
-						btn.next().show();
-						btn.next().next().remove();
-						btn.remove();
-						//queCode = $("#ansQueCode").data("code");
+				queText.css("display", "block");
+				queText.attr("readonly", false);
+				btn.next().show();
+				btn.next().next().remove();
+				btn.remove();
 
-						$(".edit").on("click", function() {
+				$(".edit").on("click", function() {
 
-							if (!confirm("이대로 저장하시겠습니까?")) {
+					if (!confirm("이대로 저장하시겠습니까?")) {
 
-							} else {
-								let tmpObj = {
-									queContent : queText.val(),
-									queCode : queCode
-								}
+					} else {
+						let tmpObj = {
+							queContent : queText.val(),
+							queCode : queCode
+						}
 
-								$.ajax({
-									url : "editInquiry",
-									type : "post",
-									headers : {
-										"Content-Type" : "application/json"
-									},
-									data : JSON.stringify(tmpObj),
-									success : function(result) {
-										console.log(result);
-										location.reload(true);
-									},
-									error : function(reject) {
-										console.log(reject);
-									}
-								})
+						$.ajax({
+							url : "editInquiry",
+							type : "post",
+							headers : {
+								"Content-Type" : "application/json"
+							},
+							data : JSON.stringify(tmpObj),
+							success : function(result) {
+								console.log(result);
+								location.reload(true);
+							},
+							error : function(reject) {
+								console.log(reject);
 							}
-							;
-
 						})
-					})
+					}
+				})
+			})
 		</script>
 	</div>
 </body>

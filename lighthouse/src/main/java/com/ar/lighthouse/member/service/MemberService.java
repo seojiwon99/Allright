@@ -14,4 +14,6 @@ public interface MemberService {
 	public int getMemberCrossCheck(MemberVO memberVO);
 	//멤버 비밀번호 수정
 	public boolean editMemberPassword(MemberVO memeberVO);
+	//회원 가입 시 쿠폰 발급
+	public int addCoupon(String memberId);
 }

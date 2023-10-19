@@ -12,7 +12,7 @@
 			<div class="container">
 				<!-- review -->
 				<div class="row" id="reviews">
-					
+
 					<div class="col-12" id="sizeTab">
 						<!-- Heading -->
 						<div>
@@ -79,7 +79,7 @@
 								<div class="declareReviewCode" style="display: none"
 									name="reviewCode">[[${review.reviewCode}]]</div>
 								<div class="declareMemberId" style="display: none"
-									 name="memberId">[[${review.memberId}]]</div>
+									name="memberId">[[${review.memberId}]]</div>
 								<div class="declareProductCode" style="display: none"
 									name="productCode">[[${review.productCode}]]</div>
 
@@ -114,8 +114,9 @@
 														<!-- Time -->
 														<span class="fs-xm text"
 															th:text="${review.memberId.length} > 3 ? ${#strings.substring(review.memberId,0,5)}+'***' : ${review.memberId}"></span>
-														<span class="memberD" style="display: none;" th:text="${review.memberId}"></span>
-														<span class="fs-xs text-muted"
+														<span class="memberD" style="display: none;"
+															th:text="${review.memberId}"></span> <span
+															class="fs-xs text-muted"
 															th:text="${#dates.format(review.reviewRegdate,'yyyy-MM-dd HH:mm')}"></span>
 													</div>
 													<!-- Rating -->
@@ -169,11 +170,13 @@
 															class="btn btn-xs btn-outline-border" tabindex="-1"
 															th:onclick="reviewDelete([[${review.reviewCode}]])"
 															id="reviewDelBtn">삭제하기</button>
+															<input type="hidden" th:value="${review.reviewCode}" />
 													</div>
 													<button class="declareButton btn btn-xs btn-outline-border"
 														tabindex="-1"
 														th:if=" ${session.loginMember == null} or ${session.loginMember.memberId != review.memberId}"
-														data-bs-toggle="modal" data-bs-target="#declareModal" id="deBtn" th:data-memberId="${review.memberId}" >신고하기</button>
+														data-bs-toggle="modal" data-bs-target="#declareModal"
+														id="deBtn" th:data-memberid="${review.memberId}" th:data-reviewNumber="${review.reviewCode}">신고하기</button>
 												</div>
 											</div>
 										</div>
@@ -191,19 +194,20 @@
 												<button type="button" class="closeBtn btn-close"
 													data-bs-dismiss="modal" aria-label="Close"></button>
 											</div>
-											
+
 											<div class="modal-body">
 												<div class="mb-3">
-
+													<input type="hidden" id="userId" />
+													<input type="hidden" id="reviewNumber" />
 													<div class="memberIntro">
 														<!--  <input type="hidden" name="memberId"
                                                             class="form-control">-->
-                                                            <input type="hidden" value="" class="declareMemberId"> 
+														<input type="hidden" value="" class="declareMemberId">
 													</div>
 
 													<div class="mb-3">
-														<select class="declareValue form-select">
-															<option class="declareOption" name="declareReason"
+														<select class="declareValue form-select" name="declareReason">
+															<option class="declareOption" 
 																th:each="code:${codes}" th:value="${code.codeId}"
 																th:text="${code.codeName}"></option>
 														</select>
@@ -212,7 +216,8 @@
 													<label for="message-text" class="col-form-label">자세한
 														내용:</label>
 													<textarea class="form-control" id="declareContent"
-														name="declareContent" placeholder="허위신고시 제재받으실 수 있습니다."></textarea>
+														required="required" name="declareContent"
+														placeholder="허위신고 시 제재를 받을 수 있습니다."></textarea>
 												</div>
 
 											</div>
@@ -226,8 +231,8 @@
 									</div>
 								</div>
 								<!-- 리뷰 신고폼 -->
-								
-								
+
+
 								<div class="modal fade" id="exampleModal" tabindex="-1"
 									aria-labelledby="exampleModalLabel" aria-hidden="true">
 									<div class="modal-dialog">
@@ -344,19 +349,16 @@
 								</a></li>
 							</ul>
 						</nav>
-						
+
 						<div th:if="${session.loginMember} != null">
-							<input type="hidden" class="declarePerson"
+							<input type="hidden" class="declarePerson" id="member"
 								th:value="${session.loginMember.memberId}" />
 						</div>
-
-						
-						
-
 					</div>
 
 				</div>
 		</section>
+		
 		<th:block>
 			<script th:inline="javascript">
             $(document).ready(function(){
@@ -365,253 +367,257 @@
 
             // 리뷰 읽기
             function reviewBox(e){
-               console.log(e);
+				console.log(e);
 
-               let Imgcontent = $(this).find('#imgContent').val();
-               // let Id = $(this).find('#userId').text();
-               // let reg = $(this).find('#regdate').text();
-               let content = $(this).find('#reviewContent').text();
-               console.log(Imgcontent);
-               console.log(content);
-               let msg = "이미지 텍스트" + Imgcontent + " 내용 "+ content;
-               VoiceReturnRead(msg);
-            }
+				let Imgcontent = $(this).find('#imgContent').val();
+				// let Id = $(this).find('#userId').text();
+				// let reg = $(this).find('#regdate').text();
+				let content = $(this).find('#reviewContent').text();
+				console.log(Imgcontent);
+				console.log(content);
+				let msg = "이미지 텍스트" + Imgcontent + " 내용 "+ content;
+				VoiceReturnRead(msg);
+			}
          </script>
 		</th:block>
 
 		<script type="text/javascript">
-      
-   function checkExtension(fileName, fileSize) {
-      //이미지 세부사항
-      let regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
-      let maxSize = 5242880; //5mb
-      if (fileSize >= maxSize) {
-            alert("파일 사이즈 초과");
-            return false;
-      }
-      if (regex.test(filename)) {
-         alert("해당 종류 파일은 업로드가 불가합니다");
-           return false;
-         }
-         return true;
-    }
+		
+		/*--------------------------
+		이미지 세부사항
+		----------------------------*/
+		function checkExtension(fileName, fileSize) {
+		let regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
+		let maxSize = 5242880; //5mb
+			if (fileSize >= maxSize) {
+				alert("파일 사이즈 초과");
+	            return false;
+			}
+			if (regex.test(filename)) {
+				alert("해당 종류 파일은 업로드가 불가합니다");
+				return false;
+			}
+	         return true;
+		}
    
-   /*--------------------------
-   리뷰 등록
-   ----------------------------*/
-   $("#insertBtn").on("click", function () {
-         let form = $("#reviewForm2")[0];
-         console.log(form);
-         const formData = new FormData(form);
-         let star = $(".star").data("value");
-         formData.append("reviewStar", star);
+		/*--------------------------
+		리뷰 등록 -> orderlist 로 이도
+		----------------------------
+		$("#insertBtn").on("click", function () {
+			let form = $("#reviewForm2")[0];
+			console.log(form);
+			const formData = new FormData(form);
+			let star = $(".star").data("value");
+			formData.append("reviewStar", star);
 
-         for (let key of formData.keys()) {
-              console.log(key, ":", formData.get(key));
-         }
+	         for (let key of formData.keys()) {
+	              console.log(key, ":", formData.get(key));
+	         }
 
-      $.ajax({
-        url: "insertReview",
-        type: "post",
-        data: formData,
-        enctype: "multipart/form-data",
-        contentType: false,
-        processData: false,
-        success: function (result) {
-          alert("업로드 성공");
-          console.log("rsult"+result);
-          if(result == "insert"){
-               console.log(result);
-               reviewPageLoad(1);
-               document.querySelector('#reviews').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-             }
-       },
-       error: function (err) {
-           console.log(err);
-       },
-     });
-});
+				$.ajax({
+		        url: "insertReview",
+		        type: "post",
+		        data: formData,
+		        enctype: "multipart/form-data",
+		        contentType: false,
+		        processData: false,
+		        success: function (result) {
+		          alert("업로드 성공");
+		          console.log("rsult"+result);
+		          if(result == "insert"){
+		               console.log(result);
+		               reviewPageLoad(1);
+		               document.querySelector('#reviews').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+		             }
+		       },
+		       error: function (err) {
+		           console.log(err);
+		       },
+	     	});
+		});*/
 
-/*--------------------------
-리뷰 수정
-----------------------------*/
-function editReview(data){
-      
-      console.log(data);
-      let reviewCode = $("#reviewNum").val(data.reviewCode);
-      let reviewContent = $("#message-text").html(data.reviewContent);
-      let imgContent = $("#reviewImgContent").val(data.reviewImg.imgContent);
-      let img = $("#reviewModifyImg").attr("src", "upload/" + data.reviewImg.uploadPath + "/"+ data.reviewImg.uploadName);
-      let reviewStars = $("#editStar").attr("data-value",data.reviewStar);
-      
-      let form = $("#editForm")[0];
+		/*--------------------------
+		리뷰 수정
+		----------------------------*/
+		
+		function editReview(data){
+			  				
+		      console.log(data);
+		      let reviewCode = $("#reviewNum").val(data.reviewCode);
+		      let reviewContent = $("#message-text").html(data.reviewContent);
+		      //let imgContent = $("#reviewImgContent").val(data.reviewImg.imgContent);
+		      let img;
+		      if(data.reviewImg == null){
+		    	  img=null;
+		      }else{
+			      img = $("#reviewModifyImg").attr("src", "upload/" + data.reviewImg.uploadPath + "/"+ data.reviewImg.uploadName);
+		      }
+		      let reviewStars = $("#editStar").attr("data-value",data.reviewStar);
+		      
+		      let form = $("#editForm")[0];
+		
+		       $("#reviewEditBtn").on("click",function(){
+		
+		           const reviewFormData = new FormData(form);
+		           
+		           let star = $("#editStar").data("value");
+		           
+		           reviewFormData.append("reviewStar",star);
+		        
+		           for (let key of reviewFormData.keys()) {
+		             console.log(key, ":", reviewFormData.get(key));
+		             
+		           }
+		           
+		           $.ajax({
+		              url:"editReview",
+		              type:"post",
+		              data: reviewFormData,
+		              enctype: "multipart/form-data",
+		               contentType: false,
+		               processData: false,
+		              success:function(result){
+		                 console.log(result);
+		                 alert("수정 성공");
+		                 location.reload();
+		                 document.querySelector('#reviews').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+		                 
+		              },
+		              fail:function(reject){
+		                 console.log(reject);
+		              }
+		           })
+		           
+		        })
+		        
+		   }  
+		/*--------------------------
+		리뷰 삭제
+		----------------------------*/
+		function reviewDelete(idx){
+	       if(!confirm("정말로 삭제하시겠습니까?")){
+	          console.log("no");
+	       }else{
+	       
+	       console.log(idx);  
+	       $.ajax({
+				url:"removeReview",
+				type:"post",
+				contentType:"application/json",
+				data:JSON.stringify(idx),
+				success:function(result){
+					console.log("result"+result);
+					if(result=="deleteReview"){
+	                console.log(result);
+	                alert("정상적으로 삭제되었습니다");
+	                location.reload();
+					}else{
+						alert("error");
+					}
+				},
+				error:function(reject){
+					console.log(reject);
+					},
+				})
+			} 
+		}
 
-       $("#reviewEditBtn").on("click",function(){
+		/*--------------------------
+		이미지 나타내기
+		----------------------------*/
+		function readImg(obj) {
 
-           const reviewFormData = new FormData(form);
-           
-           let star = $("#editStar").data("value");
-           
-           reviewFormData.append("reviewStar",star);
-        
-           for (let key of reviewFormData.keys()) {
-             console.log(key, ":", reviewFormData.get(key));
-             
-           }
-           
-           $.ajax({
-              url:"editReview",
-              type:"post",
-              data: reviewFormData,
-              enctype: "multipart/form-data",
-               contentType: false,
-               processData: false,
-              success:function(result){
-                 console.log(result);
-                 alert("수정 성공");
-                 location.reload();
-                 document.querySelector('#reviews').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-                 
-              },
-              fail:function(reject){
-                 console.log(reject);
-              }
-           })
-           
-        })
-        
-   }  
-    /*--------------------------
-   리뷰 삭제
-   ----------------------------*/
-    function reviewDelete(idx){
-       if(!confirm("정말로 삭제하시겠습니까?")){
-          console.log("no");
-       }else{
-       
-       console.log(idx);  
-       $.ajax({
-          url:"removeReview",
-          type:"post",
-          contentType:"application/json",
-          data:JSON.stringify(idx),
-          success:function(result){
-             console.log("result"+result);
-             if(result=="deleteReview"){
-                console.log(result);
-                alert("정상적으로 삭제되었습니다");
-                reviewPageLoad(1);
-            document.querySelector('#reviews').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-             }else{
-                alert("error");
-             }
-          },
-          error:function(reject){
-             console.log(reject);
-          },
-          
-       })
-    } 
-   }
-
-    /*--------------------------
-   이미지 나타내기
-   ----------------------------*/
-     function readImg(obj) {
-
-                let reader = new FileReader();
-                if(!obj.files.length) {
-                    return;
+			let reader = new FileReader();
+			if(!obj.files.length) {
+				return;
                 }
-                reader.readAsDataURL(obj.files[0]);
-                reader.onload = function (e) {            
-                        let imgs = $("#reviewImages");
-                       $(imgs).attr('src', e.target.result);
-                       $("#reviewImages").css("display","block");
-                       $(".avatar-title").css("display","none");
-                       
-                     }
-                }
+			reader.readAsDataURL(obj.files[0]);
+			reader.onload = function (e) {            
+				let imgs = $("#reviewImages");
+				$(imgs).attr('src', e.target.result);
+                $("#reviewImages").css("display","block");
+                $(".avatar-title").css("display","none");
+				}
+			}
             
-     function readURL(obj) {
-
-                let reader = new FileReader();
-                if(!obj.files.length) {
-                    return;
-                }
-                reader.readAsDataURL(obj.files[0]);
-                reader.onload = function (e) {
-                       let img = $('#reviewModifyImg');
-                       $(img).attr('src', e.target.result);
-                       $('#previewDiv').append(img);
-                     }
-                }
+		function readURL(obj) {
+			let reader = new FileReader();
+			if(!obj.files.length) {
+				return;
+			}
+			reader.readAsDataURL(obj.files[0]);
+			reader.onload = function (e) {
+				let img = $('#reviewModifyImg');
+				$(img).attr('src', e.target.result);
+				$('#previewDiv').append(img);
+			}
+		}
             
     
-     $(".closeBtn").on("click",function(){
-    	 let textarea = $("#declareContent");
-	       	console.log(textarea);
-	       	$(textarea).val('');
-     })
+		/*--------------------------
+	    신고 모달창 내용 초기화
+	    ----------------------------*/	
+		$(".closeBtn").on("click",function(){
+			let textarea = $("#declareContent");
+			console.log(textarea);
+			$(textarea).val('');
+		})
      
-     /*--------------------------
-    리뷰 신고
-    ----------------------------*/
-    let member = $("#hidden").val();   
+		/*--------------------------
+		리뷰 신고
+		----------------------------*/
+		let member = $("#member").val();   
     
-    console.log(member);
-    let declMemberId='';
-    $(".declareButton").on("click",function(){
-       if(member == ''){
-          alert("로그인 후 이용가능합니다");
-       }else{
-
-	       	console.log($(this));
-	       	let ID= $(this).data('memberid');
-	       	declMemberId = $(".declareMemberId").val(ID);
-	       	console.log(ID);
-	       	
-	       	reviewDeclare(ID);
-       }  
-    }) 
-    
-    
-    
-   
-    
-    function reviewDeclare(member){
+		
+		$(".declareButton").on("click",function(){
+			if(member == null){
+				alert("로그인 후 이용가능합니다");
+			}else{
+				let ID= $(this).data('memberid');
+	       		$("#userId").val(ID);
+	       		let rn = $(this).data('reviewnumber');
+	       		$("#reviewNumber").val(rn);
+	       		
+			}  
+		}) 
+		
+		reviewDeclare();
+		
+		function reviewDeclare(){
     	
-    $("#reviewDeclareBtn").on("click",function(){
-    	let test = "[[${param.productCode}]]";
-       let declareObj = {
-             reviewCode : $("#reCode").text(),
-             productCode : test,
-             memberId : member,
-             declareReason : $(".declareValue").val(),
-             declareContent : $("#declareContent").val(),
-             declareMember: $(".declarePerson").val(),
-               }
-       console.log(declareObj);
+			$("#reviewDeclareBtn").on("click",function(){
+			let test = "[[${param.productCode}]]";
+	       
+	       	//debugger
+	       	
+			let declareObj = {
+	            reviewCode : $("#reviewNumber").val(),
+	            productCode : test,
+	            memberId : $("#userId").val(),
+	            declareReason : $(".declareValue").val(),
+	            declareContent : $("#declareContent").val(),
+	            declareMember: $(".declarePerson").val(),
+            }
+			console.log(declareObj);
        
-         $.ajax({
-          url:"reviewDeclare",
-           type:"post",
-           headers: { "Content-Type": "application/json" },
-             data: JSON.stringify(declareObj),
-           success:function(result){
-              console.log(result);
-              alert("정상적으로 접수 되었습니다");
-              location.reload();
-              document.querySelector('#reviews').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-           },
-           error:function(reject){
-              console.log(reject);
-           }
+			$.ajax({
+				url:"reviewDeclare",
+				type:"post",
+				headers: { "Content-Type": "application/json" },
+				data: JSON.stringify(declareObj),
+				success:function(result){
+					console.log(result);
+					alert("정상적으로 접수 되었습니다");
+					location.reload();
+					document.querySelector('#reviews').scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+				},
+				error:function(reject){
+					console.log(reject);
+				}
                 
-       })
-    })
-    
-    }
+			})
+		})
+	}
    
     	
     

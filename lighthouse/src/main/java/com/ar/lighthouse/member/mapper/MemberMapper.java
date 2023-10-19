@@ -23,4 +23,6 @@ public interface MemberMapper {
 	public int updateMemberPassword(MemberVO memberVO);
 	
 	public MemberVO selectMemberVO(String memberId);
+	//회원 가입시 쿠폰 발급
+	public int insertCoupon(String memberId);
 }

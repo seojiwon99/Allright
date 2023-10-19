@@ -73,22 +73,23 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="notice,status : ${noticeList}"
-								th:onclick="|location.href='@{/custom/noticeInfo/(noticeCode=${notice.noticeCode},pageNum=${pageMaker.cri.pageNum},keyword=${pageMaker.cri.keyword})}'|"
-								class="noticeLi"
-								th:style="${notice.noticeType} == 'Y' ? 'font-weight:600' : ''"
-								tabindex="0">
-								<td style="display:none;"><input type="hidden" th:value="${notice.noticeCode}"
-										th:id="|code${status.index}|" class="noticeCode"></td>
-								<td th:id="|type${status.index}|" th:style="${notice.noticeType} == 'Y' ? 'color:#ff6f61' : ''">[[${notice.noticeType} == 'Y' ? '공지' :
-									${pageMaker.total} - (((${pageMaker.cri.pageNum}-1)* ${pageMaker.cri.amount}) +
-									${status.index})]]</td>
-								<td th:id="|title${status.index}|"
-									th:onclick="|location.href='@{/custom/noticeInfo/(noticeCode=${notice.noticeCode},pageNum=${pageMaker.cri.pageNum})}'|">
-									[[${notice.noticeTitle}]]</td>
-								<td th:id="|writer${status.index}|">[[${notice.noticeWriter}]]</td>
-								<td th:id="|date${status.index}|">[[${#dates.format(notice.noticeRegdate,'yyyy-MM-dd')}]]</td>
-                     </tr>
+						<tr th:each="notice,status : ${noticeList}"
+							th:onclick="|location.href='@{/custom/noticeInfo/(noticeCode=${notice.noticeCode},pageNum=${pageMaker.cri.pageNum},keyword=${pageMaker.cri.keyword})}'|"
+							class="noticeLi"
+							th:style="${notice.noticeType} == 'Y' ? 'font-weight:600' : ''"
+							tabindex="0">
+							<td style="display:none;">
+								<input type="hidden" th:value="${notice.noticeCode}" th:id="|code${status.index}|" class="noticeCode">
+							</td>
+							<td th:id="|type${status.index}|" th:style="${notice.noticeType} == 'Y' ? 'color:#ff6f61' : ''">[[${notice.noticeType} == 'Y' ? '공지' :
+								${pageMaker.total} - (((${pageMaker.cri.pageNum}-1)* ${pageMaker.cri.amount}) +
+								${status.index})]]</td>
+							<td th:id="|title${status.index}|"
+								th:onclick="|location.href='@{/custom/noticeInfo/(noticeCode=${notice.noticeCode},pageNum=${pageMaker.cri.pageNum})}'|">
+								[[${notice.noticeTitle}]]</td>
+							<td th:id="|writer${status.index}|">[[${notice.noticeWriter}]]</td>
+							<td th:id="|date${status.index}|">[[${#dates.format(notice.noticeRegdate,'yyyy-MM-dd')}]]</td>
+						</tr>
                   </tbody>
                </table>
 			   <div class="end" tabindex="0"></div>
@@ -324,7 +325,7 @@
 						}
 					}else if(e.keyCode == 57) {
                   location.href = "/";
-			   	}else if(e.shiftKey && e.keyCode==68){
+			   	}else if($('.noticeLi:focus').length != 0  && e.shiftKey && e.keyCode==68){
 					let child = $(':focus').children().eq(0);
 					let code = $(child).children().val(); 
 					let tt = $('#current').val();

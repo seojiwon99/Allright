@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ar.lighthouse.member.function.ranNumber;
@@ -46,5 +47,23 @@ public class SMSController {
         System.out.println(response);
 
         return sendRanNum;
+    }
+    
+    @PostMapping("/page/member/seller-one")
+    @ResponseBody
+    public String sendTwo(String phone, @RequestParam String productName) {
+        Message message = new Message();
+        // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
+        message.setFrom("01036095465");
+        message.setTo(phone);
+        System.out.println("@@@@@@@@@@@@" + productName + phone);
+        phone = phone.replaceAll("-", "");
+        String sendMsg = "All Right 쇼핑몰입니다. 주문하신 " + productName + " 상품이 발송되었습니다.";
+        message.setText(sendMsg);
+        
+        SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+        System.out.println(response);
+
+        return "성공";
     }
 }

@@ -7,7 +7,7 @@
 <!-- Content -->
 
 <div layout:fragment="sellerContent">
-<style>
+<!-- <style>
 ._1Vof48UxmD_oVRNwPvxck {
 	background-color: rgb(248, 249, 250);
 	padding : 20px;
@@ -126,59 +126,83 @@ input, select, button{
 h3{
 	margin : 20px;
 }
-</style>
-	
-		
+</style> -->
+<style>
+.btnGo{
+	padding-left:10px;
+	padding-right:10px;
+	background-color:black;
+	color : white;
+}
 
-	
-				<!---->
+input, select, button{
+	border-radius: 5px;
+}
+
+::-webkit-scrollbar {
+  width: 12px; /* 가로 스크롤바 너비 조절 */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* 스크롤바 트랙 배경색 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* 스크롤바 썸 배경색 */
+  border-radius: 6px; /* 스크롤바 썸 둥글게 만들기 */
+}
+h3{
+	margin:30px;
+}
+</style> 
 				
-											
-
-				<h3>주문취소내역</h3>
-				<div class="_1Vof48UxmD_oVRNwPvxck">
-								<div class="_KqV0-1BSnB">
-									<button type="button" id="todayBtn" class="btn btn-primary2">
-										<span id="today">오늘</span>
-									</button>
-									<button type="button" id="weekBtn" class="btn btn-primary2">
-										<span id="week">1주일</span>
-									</button>
-									<button type="button" id="oneMonthBtn" class="btn btn-primary2">
-										<span id="onemonth">1개월</span>
-									</button>
-									<button type="button" id="threeMonthBtn"
-										class="btn btn-primary2">
-										<span id="thmonth">3개월</span>
-									</button>
-
-									<div id="dateDisplay"></div>
-									<div class="searchDate">
-										<span>조회기간</span> <input type="DATE" id="from" name="from"
+				
+								<div class="_1Vof48UxmD_oVRNwPvxck container w-100" style="margin-left:0px;
+					 margin-right:0px;
+					 max-width:1600px">
+					
+							<div class="row justify-content-between" style="margin-bottom:30px; margin-top:30px;">
+								<div class="col-4">
+								<h3>취소내역</h3>
+								</div>
+								<div class="col-4">
+									<div class="_KqV0-1BSnB col" style="margin-bottom:10px">
+										<button type="button" id="todayBtn" class="btn btn-dark btn-xs">
+											<span id="today">오늘</span>
+										</button>
+										<button type="button" id="weekBtn" class="btn btn-dark btn-xs">
+											<span id="week">1주일</span>
+										</button>
+										<button type="button" id="oneMonthBtn" class="btn btn-dark btn-xs">
+											<span id="onemonth">1개월</span>
+										</button>
+										<button type="button" id="threeMonthBtn" class="btn btn-dark btn-xs">
+											<span id="thmonth">3개월</span>
+										</button>
+									</div>
+									<!-- button -->
+									
+									<!--  date -->
+									<div class="searchDate col" style="margin-bottom:10px">
+										<span class="fs-sm">조회기간 : </span> <input type="DATE" id="from" name="from"
 											autocomplete="off"> <label for="to">~</label> <input
 											type="DATE" id="to" name="to" autocomplete="off">
 									</div>
+									<div class="detailSea col">
+										<label class="_MN8nIh0X4y fs-sm">상세조건 : </label> <select
+											class="_4LshyCrDpi" title="리스트 보기" >
+											<option selected value="">전체</option>
+											<option value="member_name">문의자명</option>
+											<option value="member_id">문의자ID</option>
+											<option value="product_code">상품코드</option>
+										</select> 
+										<input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
+										<button type="button" class="btn btn-dark btn-xxs" id="orderSearch">검색</button>
+									</div>
+				
 								</div>
-							
-
-
-							<div class="detailSea">
-									<label class="_MN8nIh0X4y">상세조건</label> <select
-										class="_4LshyCrDpi" title="리스트 보기">
-										<option selected value="">전체</option>
-										<option value="member_name">구매자명</option>
-										<option value="member_tel">구매자연락처</option>
-										<option value="member_id">구매자ID</option>
-										<option value="product_code">상품코드</option>
-										<option value="delivery_number">송장번호</option>
-									</select> 
-									<input type="text" class="_3y2h2mGnkI" value="" maxlength="50">
 							</div>
-									
-									
-							<button type="button" id="orderSearch" class="btn btn-dark mb-2">검색</button>
-							</div>
-							
+					</div>							
 					
 					<section class="pb-12">
 					<div class="chec" style="margin: 20px;">
@@ -245,7 +269,6 @@ $(document).ready(function () {
 			let fromDate = $('#from').val();
 			let toDate = $('#to').val()
 			
-			console.log(key,value,fromDate,toDate);
 
 			$.ajax({
 				url : 'cancelOption',
@@ -263,7 +286,7 @@ $(document).ready(function () {
 				console.log(cancelInfo);
 				 $('#cancelList').replaceWith(cancelInfo); 
 				 
-
+	
 			})
 			.fail(reject=>{
 				console.log(reject);
@@ -323,9 +346,7 @@ function displayDate(range) {
   
 	// endDate 값을 input 요소에 설정
 	if (startDate) {
-	endDate.setDate(endDate.getDate() + 1); // 일자를 +1 하기
 	const formattedEndDate = endDate.toISOString().split('T')[0];
-	console.log(formattedEndDate); 
 
 	//   formattedYear = formattedEndDate.
 
@@ -367,7 +388,6 @@ function displayDate(range) {
        let refundType = "C";
        let cancelReason = $(tag).closest('tr').find('td:eq(4)').text();
        
-       console.log(memberId);
        
        let OrderChkVO ={
     		   orderDetailCode : orderDetailCode ,
@@ -380,7 +400,6 @@ function displayDate(range) {
        refundListVO.push(OrderChkVO);
     });
 
-	console.log(refundListVO);
      
       let $form = $('<form>', {
           method: 'POST',
@@ -409,7 +428,6 @@ function displayDate(range) {
 	cancelChk = [];
 	checkTags.each((idx, tag)=>{
 		let cancelCode = $(tag).closest('tr').find('td:eq(11)').text();
-		console.log(cancelCode);
 	  let obj = {
 			  cancelCode
 	  }

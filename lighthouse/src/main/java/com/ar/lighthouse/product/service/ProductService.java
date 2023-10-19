@@ -93,7 +93,7 @@ public interface ProductService {
 	List<ExchangeVO> getReturnList(ReturnVO returnVO);
 	
 //	정산건 목록
-	List<SellerCalVO> getCalList(SellerCalVO sellerCalVO);
+	List<SellerCalVO> getCalList(String memberId);
 //	취소건 목록
 	List<DetailVO> getStaticList(String memberId, String preBetw, String suBetw);
 

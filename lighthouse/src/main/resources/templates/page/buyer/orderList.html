@@ -78,14 +78,17 @@ img {
                   </div>
                </nav>
             </div>
+
             <div class="col-12 col-md-9" >
+
                <!-- Order -->
                <div style="margin-bottom:5px">
                    <div style="margin-bottom:5px">
                      <span>조회 기간 : </span> 
-                     <input type="DATE" id="from" name="from" autocomplete="off" th:value="${detailVO.fromDate}"> 
+                     <input type="DATE" id="from" name="from" autocomplete="off"> 
                      <label for="to">~</label> 
-                     <input type="DATE" id="to" name="to" autocomplete="off" th:value="${detailVO.toDate}"> 
+                     <input type="DATE" id="to" name="to" autocomplete="off"> 
+                     <input class="count" tabindex="-1" readonly></input>
                   </div>
 	               	<div style="margin-bottom:5px">
 		               	<label for="optionList">상세 조건 : </label>
@@ -93,27 +96,26 @@ img {
 		                     <!-- <option value="선택">선택</option> -->
 		                     <!-- <option value="payment_price">가격</option> -->
 		                     <!-- <option value="order_date">구매일자</option>-->
-		                     <option value="order_code" th:selected="${detailVO.searchKey=='order_code'}">주문번호</option>
-		                     <option value="order_detail_code" th:selected="${detailVO.searchKey=='order_detail_code'}">주문상세번호</option>
-		                     <option value="product_name" th:selected="${detailVO.searchKey=='product_name'}">상품명</option>
-		                  </select> <input type="text" class="selectVal" id="search" th:value="${detailVO.searchValue}"
+		                     <option value="order_code">주문번호</option>
+		                     <option value="order_detail_code">주문상세번호</option>
+		                     <option value="product_name">상품명</option>
+		                  </select> <input type="text" class="selectVal" id="search" value=""
 		                     maxlength="50">
 		                  <button type="button" id="selectOption"
 		                     style="background-color: black; color: white;">검색</button>
-		                     <input type="hidden" id="pageNum" value="1">
-                     <div>주문 <span class="count" th:text="${pageMaker.total}" tabindex="-1"></span> 건</div>
 	               	</div>
+
 	               	    </div>
 			<div id="orderOption">	               	    
 
 
-           
+
 
                <div class="card card-lg mb-5 border">
                   <div class="card-body pb-0">
                      <!-- 반복문 시작 -->
                      <!-- Info -->
-                     <div class="card card-sm orderList" >
+                     <div class="card card-sm orderList" id="orderOption">
                         <div th:each="lists : ${orderList}"
                            th:data-orderdetailcode="${lists.orderDetailCode}"
                            class="order">
@@ -184,7 +186,7 @@ img {
                                        완료 날짜:</h6>
                                     <p class="mb-0 fw-bold">
                                        <span class="deliveryDate"
-                                          th:text="${#dates.format(lists.deliveryDate, 'yyyy-MM-dd')}"></span>
+                                          th:text="|${lists.deliveryDate}|"></span>
                                     </p>
                                  </div>
                                  <div class="row mt-6">
@@ -213,6 +215,7 @@ img {
                                  <div class="col-6 col-lg-6" th:if="${lists.orderCheck} == 'N'">
                                     <p class="mb-0 fw-bold">
                                        <span class="heading-xxs text-muted">주문 확정: </span><span class="orderCheck" >취소된
+
                                           상품</span>
                                     </p>
                                  </div>
@@ -234,16 +237,16 @@ img {
                            </div>
 
                            <div class="card-footer" th:if="${lists.returnStatus} == '0' and ${lists.cancelStatus} == '0' and ${lists.exchangeStatus} == '0' and ${lists.orderCheck} != 'N' ">
-                              <div class="row align-items-center"
-                                 >
+                              <div class="row align-items-center">
+
                                  <!-- 리뷰  button -->
                                  <div class="col-4" th:if="${lists.orderStatus} == '4'">
-                                    <button class="reviewBtn btn btn-sm w-100 btn-outline-dark"
+                                    <a class="reviewBtn btn btn-sm w-100 btn-outline-dark"
                                        data-bs-target="#reviewInsert" data-bs-toggle="modal"
                                        style="border-radius: 10px; background-color: black; color: white;"
-                                       tabindex=0
+                                       
                                        >
-                                       리뷰 쓰기 </button>
+                                       리뷰 쓰기 </a>
                                  </div>
                                  <!-- 주문 취소 Button -->
                                  <div class="col-4"
@@ -270,14 +273,14 @@ img {
                                  </div>
                               </div>
                            </div>
-							<div><hr></div>
+
                            <!-- 리뷰 등록 폼 -->
                            <div class="modal fade" id="reviewInsert" tabindex="-1"
                               aria-labelledby="exampleModalLabel" aria-hidden="true">
                               <div class="modal-dialog">
                                  <div class="modal-content">
                                     <div class="modal-header">
-                                       <h5 class="modal-title" id="exampleModalLabel">리뷰수정</h5>
+                                       <h5 class="modal-title" id="exampleModalLabel">리뷰등록</h5>
                                        <button type="button" class="btn-close"
                                           data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
@@ -390,8 +393,8 @@ img {
                   class="d-flex justify-content-center justify-content-md-end mt-10">
                   <ul class="pagination pagination-sm text-gray-400">
                      <li class="page-item" th:if="${pageMaker.prev}"><a
-                        class="page-link page-link-arrow" id=""
-                        th:href="|javascript:goPage(${pageMaker.startPage - 1})|">
+                        class="page-link page-link-arrow"
+                        th:href="@{/page/buyer/orderList/(pageNum = ${pageMaker.startPage - 1})}">
                            <i class="fa fa-caret-left"></i>
                      </a></li>
                      <th:block
@@ -401,18 +404,18 @@ img {
                            th:each="pageButtom : ${#numbers.sequence(start,end)}"
                            th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
                            <a class="page-link" href="#"
-                           th:href="|javascript:goPage(${pageButtom} )|"
+                           th:href="@{/page/buyer/orderList/(pageNum= ${pageButtom} )}"
                            th:text="${pageButtom}"></a>
                         </li>
                      </th:block>
                      <li class="page-item" th:if="${pageMaker.next}"><a
-                        class="page-link page-link-arrow" id="nextPage"
-                        th:href="|javascript:goPage(${pageMaker.endPage + 1})|">
+                        class="page-link page-link-arrow"
+                        th:href="@{/page/buyer/orderList/(pageNum = ${pageMaker.endPage + 1})}">
                            <i class="fa fa-caret-right"></i>
                      </a></li>
                   </ul>
                </nav>
-			</div>
+
             </div>
          </div>
       </div>
@@ -431,28 +434,15 @@ img {
       8번 개인정보 확인/수정.
       9번 메인페이지 이동.
       0번 다시듣기.
-      q 이전페이지.
-      w 다음페이지.
     </textarea>
    <script>
    var tmpProductCode;
-   var searchVal;
-
-	$('.selectVal').one('change',function(){
-		searchVal = this.value;
-	})   
    
-   //페이지 이동
-   function goPage(pageNum){
-	   $('#pageNum').val(pageNum);
-	   $('.selectVal').val(searchVal);
-	   seach(searchVal);
-   }
-   
-
   $('.reviewBtn').on('click',function(e){
-	  console.log("sadsadsad");
-
+     let btn = $(this);
+      let btn2 = btn.parent().parent().parent().parent().children()[0];
+      let prodCode = $(btn2).find('input[type="hidden"]');
+      tmpProductCode = prodCode[0].value;
    })
    /*--------------------------
    리뷰 등록
@@ -580,102 +570,39 @@ img {
        
        });
       
-      document.querySelector("#orderOption").addEventListener("click", function(e) {
-          let target = e.target;
-          console.log($(target).prop("class"));
-          if($(target).prop("class") == 'btn btn-sm w-100 btn-outline-dark excBtn'){
-            e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
-            var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
-           var url="";
-            if( e.target.matches(".excBtn") ){
-               var url = "/page/buyer/exchange";
-               window.location.href = url+"?orderDetailCode=" + orderDetailCode;
-            }else if( e.target.matches(".cancelBtn") ){
-               var url = "/page/buyer/cancel"
-               window.location.href = url+"?orderDetailCode=" + orderDetailCode;      
-            }else if(e.target.matches(".retBtn")){
-               var url = "/page/buyer/return"
-               window.location.href = url+"?orderDetailCode=" + orderDetailCode;
-            }else{
-               return;
-            }
-          }
-          
-          if($(target).prop("class") == 'btn btn-sm w-100 btn-outline-dark retBtn'){
-                e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
-                var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
-               var url="";
-                if( e.target.matches(".excBtn") ){
-                   var url = "/page/buyer/exchange";
-                   window.location.href = url+"?orderDetailCode=" + orderDetailCode;
-                }else if( e.target.matches(".cancelBtn") ){
-                   var url = "/page/buyer/cancel"
-                   window.location.href = url+"?orderDetailCode=" + orderDetailCode;      
-                }else if(e.target.matches(".retBtn")){
-                   var url = "/page/buyer/return"
-                   window.location.href = url+"?orderDetailCode=" + orderDetailCode;
-                }else{
-                   return;
-                }
-              }
-          
-          if($(target).prop("class") == 'btn btn-sm w-100 btn-outline-dark cancelBtn'){
-                e.preventDefault(); // 기본 동작 방지 (링크 이동 방지)
-                var orderDetailCode = $(e.target).closest(".order").data("orderdetailcode"); 
-               var url="";
-                if( e.target.matches(".excBtn") ){
-                   var url = "/page/buyer/exchange";
-                   window.location.href = url+"?orderDetailCode=" + orderDetailCode;
-                }else if( e.target.matches(".cancelBtn") ){
-                   var url = "/page/buyer/cancel"
-                   window.location.href = url+"?orderDetailCode=" + orderDetailCode;      
-                }else if(e.target.matches(".retBtn")){
-                   var url = "/page/buyer/return"
-                   window.location.href = url+"?orderDetailCode=" + orderDetailCode;
-                }else{
-                   return;
-                }
-              }
-          
-          });
-      
       $('#selectOption').on('click', function(){
-    	  $('#pageNum').val('1');
-    	  seach($('.selectVal').val())
+         let key = $('#optionList').val();
+         let value = $('.selectVal').val();
+         
+         let fromDate = $('#from').val();
+         let toDate = $('#to').val();
+         
+         var itemCount = document.querySelectorAll(".order").length;
+         
+          // document.querySelector(".count").value = itemCount;
+         
+         
+         $.ajax({
+            url: '/page/buyer/orderOption',
+            type: 'get',
+            data: {
+               "searchKey": key,
+               "searchValue" : value,
+               fromDate,
+               toDate
+            }
+         })
+         .done(data => {
+            $('#orderOption').html(data);
+
+            itemCount = document.querySelectorAll(".order").length;
+            document.querySelector(".count").value = itemCount;
+         })
+         .fail(reject => {
+           console.log(reject);
+         })
        });
       
-      function seach(inputvalue){
-    	  let key = $('#optionList').val();
-          let value = inputvalue 
-          let pageNum = $('#pageNum').val();
-          let fromDate = $('#from').val();
-          let toDate = $('#to').val();
-          
-          var itemCount = document.querySelectorAll(".order").length;
-          
-           // document.querySelector(".count").value = itemCount;
-          
-          $.ajax({
-             url: '/page/buyer/orderOption',
-             type: 'get',
-             data: {
-             	"pageNum" : pageNum,
-                "searchKey": key,
-                "searchValue" : value,
-                fromDate,
-                toDate
-             }
-          })
-          .done(data => {
-             $('#orderOption').html(data);
-
-             itemCount = document.querySelectorAll(".order").length;
-             document.querySelector(".count").innerText = itemCount;
-          })
-          .fail(reject => {
-            console.log(reject);
-          })
-      }
       
        //tts 시작 
         let TTSIsOk = localStorage.getItem('ttsKey');
@@ -696,95 +623,54 @@ img {
               VoiceMenual(message + message2);
               
         const movePage = function(page) {
-			const URLSearch = new URLSearchParams(location.search);
-				  URLSearch.set('pageNum', String(page));
-			const newParam = URLSearch.toString();
-			
-			window.open(location.pathname + '?' + newParam, '_self');
-		};   
-		
-		$(document).ready(function() {
-		    $('.productImg').keydown(function(event) {
-		        if (event.which === 13) {
-		        	var url = $(this).closest('a').attr('href');
-		            window.location.href = url;
-		        }
-		    });
-		});
+         const URLSearch = new URLSearchParams(location.search);
+              URLSearch.set('pageNum', String(page));
+         const newParam = URLSearch.toString();
+         
+         window.open(location.pathname + '?' + newParam, '_self');
+      };   
 
-		//리뷰 버튼 tts 
-		var tmpProductCode;
-		   
-		   $('.reviewBtn').on('click',function(e){
-			  let btn = $(this);
-		      let btn2 = btn.parent().parent().parent().parent().children()[0];
-		      let prodCode = $(btn2).find('input[type="hidden"]');
-		      tmpProductCode = prodCode[0].value;
+      //리뷰 버튼 tts 
+      var tmpProductCode;
+         
+         $('.reviewBtn').on('click',function(e){
+           let btn = $(this);
+            let btn2 = btn.parent().parent().parent().parent().children()[0];
+            let prodCode = $(btn2).find('input[type="hidden"]');
+            tmpProductCode = prodCode[0].value;
 
-		   /*--------------------------
-		   리뷰 등록
-		   ----------------------------*/
-		   $(".reviewInsertBtn").on("click", function () {
-		         let form = $("#reviewForm2")[0];
-		         const formData = new FormData(form);
-		         let productCode = $('.productCode').val();
-		         let star = $(".star").data("value");
-		         formData.append("reviewStar", star);
-		        formData.append("productCode",tmpProductCode);
-		         
-		         for (let key of formData.keys()) {
-		              console.log(key, ":", formData.get(key));
-		         }
+         /*--------------------------
+         리뷰 등록
+         ----------------------------*/
+         $(".reviewInsertBtn").on("click", function () {
+               let form = $("#reviewForm2")[0];
+               const formData = new FormData(form);
+               let productCode = $('.productCode').val();
+               let star = $(".star").data("value");
+               formData.append("reviewStar", star);
+              formData.append("productCode",tmpProductCode);
+               
+               for (let key of formData.keys()) {
+                    console.log(key, ":", formData.get(key));
+               }
 
-		      $.ajax({
-		        url: "/insertReview",
-		        type: "post",
-		        data: formData,
-		        enctype: "multipart/form-data",
-		        contentType: false,
-		        processData: false,
-		        success: function (result) {
-		          alert("정상적으로 등록되었습니다");
-		          location.reload();
-		       },
-		       error: function (err) {
-		           console.log(err);
-		       },
-		     });
-		});   
-		   })
-/*--------------------------
-   이미지 나타내기
-   ----------------------------*/
-     function readImg(obj) {
-
-                let reader = new FileReader();
-                if(!obj.files.length) {
-                    return;
-                }
-                reader.readAsDataURL(obj.files[0]);
-                reader.onload = function (e) {            
-                        let imgs = $("#reviewImages");
-                       $(imgs).attr('src', e.target.result);
-                       $("#reviewImages").css("display","block");
-                       $(".avatar-title").css("display","none");
-                       
-                     }
-                }
-            
-     function readURL(obj) {
-
-                let reader = new FileReader();
-                if(!obj.files.length) {
-                    return;
-                }
-                reader.readAsDataURL(obj.files[0]);
-                reader.onload = function (e) {
-                       let img = $('#reviewModifyImg');
-                       $(img).attr('src', e.target.result);
-                       $('#previewDiv').append(img);
-                     }
-                }
+            $.ajax({
+              url: "/insertReview",
+              type: "post",
+              data: formData,
+              enctype: "multipart/form-data",
+              contentType: false,
+              processData: false,
+              success: function (result) {
+                alert("정상적으로 등록되었습니다");
+                location.reload();
+             },
+             error: function (err) {
+                 console.log(err);
+             },
+           });
+      });   
+         })             
         
         //tts 이벤트 부여
         $('#optionList').on('focus', optionList);
@@ -793,11 +679,10 @@ img {
         $('#selectOption').on('focus', searchOption);
         $('#selectOption').on('keydown', searchOk);
         $('.orderCode').on('focus', orderDetailInfo);
-        $('.excBtn').on('focus', exchangeBtn);
+        $('.excBtn').on('focus', exchageBtn);
         $('.retBtn').on('focus', retBtn);
         $('.cancelBtn').on('focus', cancelBtn);
         $('.reviewBtn').on('focus', reviewBtn);
-        $('.productImg').on('focus', imgAlt);
         
         //tts 이벤트 진행
         function optionList(){
@@ -807,7 +692,7 @@ img {
         function optionSelect() {
           let selectOp = $('#optionList option:selected').text();
           VoiceMenual(selectOp);
-        }
+       }
         function search(){
            let search = $('#search').text();
            VoiceMenual("검색 창입니다. 검색 기준에 맞게 입력해주세요.");
@@ -819,25 +704,10 @@ img {
         function searchOk(){
            VoiceMenual("검색이 완료되었습니다.");
         }
-        function optionSelect() {
-            let selectOp = $('#optionList option:selected').text();
-            VoiceMenual(selectOp);
-        }
-        function imgAlt(){
-        	let altImg = $(this).closest('.orderRow').find('.productImg').attr('alt');
-        	VoiceMenual('상품 이미지 설명은.' + altImg + '입니다.' + '상품 상세 페이지로 이동하려면 엔터키를 입력해주세요.');
-        }
         function orderDetailInfo() {
         let orderCode = $(this).closest('.orderRow').find('.orderCode').text();
         let orderDetailCode = $(this).closest('.orderRow').find('.orderDetailCode').text();
         let orderDate =  $(this).closest('.orderRow').find('.orderDate').text();
-        let img = $(this).closest('.orderRow').find('.productImg').attr('alt');
-        if(img == ''){
-        	img = '상품 이미지 설명이 없습니다.';
-        }else{
-        	img = $(this).closest('.orderRow').find('.productImg').attr('alt');
-        }
-        
         let productName =  $(this).closest('.orderRow').find('.productName').text();
         let optionLast = $(this).closest('.orderRow').find('.optionLast').text();
         let orderCnt = $(this).closest('.orderRow').find('.orderCnt').text();
@@ -846,41 +716,41 @@ img {
         
         let deliveryDate =  $(this).closest('.orderRow').find('.deliveryDate').text();
         if(deliveryDate == ''){
-        	deliveryDate = '아직 도착하지 않았습니다';
+           deliveryDate = '아직 도착하지 않았습니다';
         }else{
-        	deliveryDate = $(this).closest('.orderRow').find('.deliveryDate').text();
+           deliveryDate = $(this).closest('.orderRow').find('.deliveryDate').text();
         }
         
         let cancelStatusNm = $(this).closest('.orderRow').find('.cancelStatusNm').text();
         if(cancelStatusNm == ''){
-        	cancelStatusNm = '취소 미신청';
+           cancelStatusNm = '취소 미신청';
         }else{
-        	cancelStatusNm = $(this).closest('.orderRow').find('.cancelStatusNm').text();
+           cancelStatusNm = $(this).closest('.orderRow').find('.cancelStatusNm').text();
         }
         
         let returnStatusNm = $(this).closest('.orderRow').find('.returnStatusNm').text();
         if(returnStatusNm == ''){
-        	returnStatusNm = '반품 미신청';
+           returnStatusNm = '반품 미신청';
         }else{
-        	returnStatusNm = $(this).closest('.orderRow').find('.returnStatusNm').text();
+           returnStatusNm = $(this).closest('.orderRow').find('.returnStatusNm').text();
         }
         
         let exchangeStatusNm = $(this).closest('.orderRow').find('.exchangeStatusNm').text();
         if(exchangeStatusNm == ''){
-        	exchangeStatusNm = '교환 미신청';
+           exchangeStatusNm = '교환 미신청';
         }else{
-        	exchangeStatusNm = $(this).closest('.orderRow').find('.exchangeStatusNm').text();
+           exchangeStatusNm = $(this).closest('.orderRow').find('.exchangeStatusNm').text();
         }
         
         let orderCheck = $(this).closest('.orderRow').find('.orderCheck').text();
         if(orderCheck == ''){
-        	orderCheck = '주문 확정 완료';
+           orderCheck = '주문 확정 완료';
         }else{
-        	orderCheck = $(this).closest('.orderRow').find('.orderCheck').text();
+           orderCheck = $(this).closest('.orderRow').find('.orderCheck').text();
         }
         
         let message = `주문번호는 ${orderCode}. 주문 상세 번호는 ${orderDetailCode}. 주문날짜는 ${orderDate}.
-                      상품 이미지 설명은 ${img}. 상품 상세페이지로 이동하려면 상품 이미지에서 엔터키를 눌러주세요. 상품명은 ${productName}. 옵션명은 ${optionLast}. 주문수량은 ${orderCnt}. 주문금액은 ${paymentPrice}.
+                      상품명은 ${productName}. 옵션명은 ${optionLast}. 주문수량은 ${orderCnt}. 주문금액은 ${paymentPrice}.
                       배송상태는 ${orderStatusNm}. 배송 완료날짜 ${deliveryDate}. 취소여부는 ${cancelStatusNm}.
                       반품여부는 ${returnStatusNm}. 교환여부는 ${exchangeStatusNm}. 주문확정은 ${orderCheck}. 입니다.`;
    
@@ -889,7 +759,7 @@ img {
         function reviewBtn() {
             VoiceMenual('리뷰 쓰기 버튼입니다. 리뷰 쓰기를 원하시면. 엔터키를 눌러주세요.');
          }
-        function exchangeBtn() {
+        function exchageBtn() {
            VoiceMenual('교환 신청 버튼입니다. 교환을 원하시면. 엔터키를 눌러주세요.');
         }
         function retBtn() {
@@ -898,68 +768,7 @@ img {
         function cancelBtn() {
            VoiceMenual('주문 취소 신청 버튼입니다. 주문 취소을 원하시면. 엔터키를 눌러주세요.');
         }
-    	
-        $('#orderOption .orderCode').on('focus', orderDetailInfo1);
-        function orderDetailInfo1() {
-            let orderCode = $(this).closest('.orderRow').find('.orderCode').text();
-            let orderDetailCode = $(this).closest('.orderRow').find('.orderDetailCode').text();
-            let orderDate =  $(this).closest('.orderRow').find('.orderDate').text();
-            let img = $(this).closest('.orderRow').find('.productImg').attr('alt');
-            if(img == ''){
-            	img = '대체 텍스트가 없습니다.';
-            }else{
-            	img = $(this).closest('.orderRow').find('.productImg').attr('alt');
-            }
-            
-            let productName =  $(this).closest('.orderRow').find('.productName').text();
-            let optionLast = $(this).closest('.orderRow').find('.optionLast').text();
-            let orderCnt = $(this).closest('.orderRow').find('.orderCnt').text();
-            let paymentPrice = $(this).closest('.orderRow').find('.paymentPrice').text();
-            let orderStatusNm = $(this).closest('.orderRow').find('.orderStatusNm').text();
-            
-            let deliveryDate =  $(this).closest('.orderRow').find('.deliveryDate').text();
-            if(deliveryDate == ''){
-            	deliveryDate = '아직 도착하지 않았습니다';
-            }else{
-            	deliveryDate = $(this).closest('.orderRow').find('.deliveryDate').text();
-            }
-            
-            let cancelStatusNm = $(this).closest('.orderRow').find('.cancelStatusNm').text();
-            if(cancelStatusNm == ''){
-            	cancelStatusNm = '취소 미신청';
-            }else{
-            	cancelStatusNm = $(this).closest('.orderRow').find('.cancelStatusNm').text();
-            }
-            
-            let returnStatusNm = $(this).closest('.orderRow').find('.returnStatusNm').text();
-            if(returnStatusNm == ''){
-            	returnStatusNm = '반품 미신청';
-            }else{
-            	returnStatusNm = $(this).closest('.orderRow').find('.returnStatusNm').text();
-            }
-            
-            let exchangeStatusNm = $(this).closest('.orderRow').find('.exchangeStatusNm').text();
-            if(exchangeStatusNm == ''){
-            	exchangeStatusNm = '교환 미신청';
-            }else{
-            	exchangeStatusNm = $(this).closest('.orderRow').find('.exchangeStatusNm').text();
-            }
-            
-            let orderCheck = $(this).closest('.orderRow').find('.orderCheck').text();
-            if(orderCheck == ''){
-            	orderCheck = '주문 확정 완료';
-            }else{
-            	orderCheck = $(this).closest('.orderRow').find('.orderCheck').text();
-            }
-            
-            let message = `주문번호는 ${orderCode}. 주문 상세 번호는 ${orderDetailCode}. 주문날짜는 ${orderDate}.
-                상품 대체텍스트 설명은 ${img}. 상품명은 ${productName}. 옵션명은 ${optionLast}. 주문수량은 ${orderCnt}. 주문금액은 ${paymentPrice}.
-                배송상태는 ${orderStatusNm}. 배송 완료날짜 ${deliveryDate}. 취소여부는 ${cancelStatusNm}.
-                반품여부는 ${returnStatusNm}. 교환여부는 ${exchangeStatusNm}. 주문확정은 ${orderCheck}. 입니다.`;
-
-    		VoiceMenual(message);
-    		
-            }
+    
    //tts 부분
    
    var AudioContext;
@@ -1077,30 +886,30 @@ img {
                 VoiceMenual($('#orderMenual').val());
              }
             if(e.altKey && e.key == 'q'){ //이전 페이지로 가기
-				let nowURL = new URL(location.href);
-				let nowNum = nowURL.searchParams.get('pageNum');
-				let num;
-				if(nowNum == 1 || nowNum == undefined){
-					num = 1;
-					VoiceMenual('첫번째 페이지입니다. 이전 페이지가 없습니다.');
-					
-				}else{
-					num = Number(nowNum)-1;
-					movePage(num);
-				}
-			}
+            let nowURL = new URL(location.href);
+            let nowNum = nowURL.searchParams.get('pageNum');
+            let num;
+            if(nowNum == 1 || nowNum == undefined){
+               num = 1;
+               VoiceMenual('첫번째 페이지입니다. 이전 페이지가 없습니다.');
+               
+            }else{
+               num = Number(nowNum)-1;
+               movePage(num);
+            }
+         }
             if(e.altKey && e.key == 'w'){ // 다음 페이지로 가기
-				let nowURL = new URL(location.href);
-				let nowNum = nowURL.searchParams.get('pageNum');
-				let num;
-				if(nowNum == undefined){
-					num = 2;
-				}else{
-					num = Number(nowNum)+1;
-				}
-					movePage(num);
-				
-			}
+            let nowURL = new URL(location.href);
+            let nowNum = nowURL.searchParams.get('pageNum');
+            let num;
+            if(nowNum == undefined){
+               num = 2;
+            }else{
+               num = Number(nowNum)+1;
+            }
+               movePage(num);
+            
+         }
       })
      } //ttsInit()의 if문
    } // ttsInit() close
