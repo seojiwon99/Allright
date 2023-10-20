@@ -25,18 +25,15 @@
    </resultMap>
 
    <select id="selectProductList" resultMap="selectProductList">
-      SELECT *
-      FROM
-              ar_products p
-      left OUTER JOIN ( SELECT product_code,
-                    SUM(option_count) AS
-                    option_count
-                    FROM ar_option_detail
-                    GROUP BY product_code
-                    ) d
-      ON p.product_code = d.product_code
-      WHERE p.member_id = #{memberId}
-      ORDER BY product_regdate DESC
+        SELECT p.*, NVL(d.option_count, 0) AS option_count
+		FROM ar_products p
+		LEFT OUTER JOIN (
+		    SELECT product_code, SUM(option_count) AS option_count
+		    FROM ar_option_detail
+		    GROUP BY product_code
+		) d ON p.product_code = d.product_code
+		WHERE p.member_id = #{memberId}
+		ORDER BY p.product_regdate DESC
    </select>
 
 
@@ -58,15 +55,14 @@
       <result column="option_price" property="optionPrice" />
    </resultMap>
   <select id="selectOptionProduct" resultMap="selectOptionProduct">
-    SELECT *
-    FROM ar_products p
-    left OUTER JOIN (
-        SELECT product_code, SUM(option_count) AS option_count
-        FROM ar_option_detail
-        GROUP BY product_code
-    ) d
-    ON p.product_code = d.product_code
-    WHERE p.member_id = #{memberId}
+    SELECT p.*, NVL(d.option_count, 0) AS option_count
+		FROM ar_products p
+		LEFT OUTER JOIN (
+		    SELECT product_code, SUM(option_count) AS option_count
+		    FROM ar_option_detail
+		    GROUP BY product_code
+		) d ON p.product_code = d.product_code
+		WHERE p.member_id = #{memberId}
     <if test="optionVal == '전시중'">
         AND product_exstatus = 'Y'
     </if>
@@ -251,7 +247,7 @@ WHERE order_detail_code = #{orderDetailCode}
      <result column="most_category_name" property="mostCategoryName" />
    </resultMap>
 <select id="modifyProduct" resultMap="modifyProduct">
-   SELECT 
+SELECT 
     p.*, od.*, o.*, c.category_code, c.category_name, c.parent_category_code, c.category_level,
     (SELECT pc.category_name 
      FROM ar_category pc 
@@ -279,7 +275,7 @@ JOIN
     ar_option o ON o.product_code = p.product_code
 JOIN 
     ar_category c ON c.category_code = p.category_code
-WHERE p.product_code = #{productCode}
+	WHERE p.product_code = #{productCode}
 </select>
 
    <!-- select주문 -->
@@ -972,14 +968,30 @@ SET
     <if test="productLocation != null">
     product_location = #{productLocation},
     </if>
+    <if test="productCost != null">
     product_cost = #{productCost},
+    </if>
+    <if test="salePrice != null">
     sale_price = #{salePrice},
+    </if>
+    <if test="productBrand != null">
     product_brand = #{productBrand},
+    </if>
+    <if test="productOrigin != null">
     product_origin = #{productOrigin},
+    </if>
+    <if test="productMakeorigin != null">
     product_makeorigin = #{productMakeorigin},
+    </if>
+    <if test="deliveryCost != null">
     delivery_cost = #{deliveryCost},
+    </if>
+    <if test="returnCost != null">
     return_cost = #{returnCost},
+    </if>
+    <if test="exchangeCost != null">
     exchange_cost = #{exchangeCost},
+    </if>
     <if test="deliveryService != null">
     delivery_service = #{deliveryService},
     </if>
@@ -996,8 +1008,12 @@ WHERE product_code = #{productCode}
 <update id="updateOption" parameterType="ProductVO">
 UPDATE ar_option
 SET
+	<if test="optionName != null">
     option_name = #{optionName},
+    </if>
+    <if test="optionValue != null">
     option_value = #{optionValue}
+    </if>
 WHERE product_code = #{productCode}
 and option_code = #{optionCode}
 </update>
