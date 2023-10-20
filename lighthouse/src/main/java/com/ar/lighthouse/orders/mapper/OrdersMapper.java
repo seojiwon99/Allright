@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import com.ar.lighthouse.common.CodeVO;
 import com.ar.lighthouse.orders.service.CreditVO;
 import com.ar.lighthouse.orders.service.DeliveryVO;
+import com.ar.lighthouse.orders.service.OrderChkVO;
 import com.ar.lighthouse.orders.service.OrderPayVO;
 import com.ar.lighthouse.orders.service.OrdersVO;
 import com.ar.lighthouse.orders.service.RefundVO;
@@ -57,6 +58,9 @@ public interface OrdersMapper {
 	//환불 order 테이블 환불 가능 금액 업데이트
 	public int updateOrderRefundAmount(int orderCode, int refundAmount);
 	
-	//주문 수량 연산
+	//주문 수량 연산 재고 카운트
 	public int updateOptionCount(OrdersVO ordersVO);
+	
+	//환불 시 재고 복원
+	public int updateReturnCount(RefundVO refundVO);
 }

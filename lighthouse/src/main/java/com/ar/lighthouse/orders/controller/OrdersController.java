@@ -310,7 +310,8 @@ public class OrdersController {
          newRefund.setPaymentKey(paymentKey);
          newRefund.setRefundTypecode(chk.getRefundTypecode()); // 취소, 반품 구분 C , R
          newRefund.setRefundType(chk.getRefundType());
-           
+         newRefund.setOptionDetailCode(chk.getOptionDetailCode());
+         newRefund.setOrderCnt(chk.getOrderCnt());
          ordersService.addRefund(newRefund);
          
          //refundBalanceAmount 값 rders테이블,credit테이블 결제액 업데이트 
