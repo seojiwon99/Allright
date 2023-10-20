@@ -19,7 +19,8 @@
                o.option_last,
                o.option_price,
                o.max_order,
-               o.min_order
+               o.min_order,
+               o.option_count
 			FROM ar_cart c
 			JOIN ar_option_detail o ON c.option_detail_code = o.option_detail_code
 			JOIN ar_products p ON o.product_code = p.product_code

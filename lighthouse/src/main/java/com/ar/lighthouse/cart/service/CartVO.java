@@ -43,5 +43,6 @@ public class CartVO {
 	List<ProductVO> pCode;
 	private int maxOrder;
 	private int minOrder;
+	private int optionCount;
 
 }

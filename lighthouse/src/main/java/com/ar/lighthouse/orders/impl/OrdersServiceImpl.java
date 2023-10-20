@@ -102,6 +102,8 @@ public class OrdersServiceImpl implements OrdersService{
 	// 주문 결제한 각 주문상품 상세정보
 	public int addOrders(OrdersVO ordersVO) {
 	int orderSuccess = ordersMapper.insertOrders(ordersVO);
+	ordersMapper.updateOptionCount(ordersVO);
+	
 		return orderSuccess;
 	}
 
