@@ -145,7 +145,7 @@
 										</div>
 											
 										</div>
-											<div class="col-12 col-lg-6">
+											<div class="col-12 col-lg-6" th:if="${lists.cancelStatus != '승인'}">
 												<div class="row gx-5">
 													<div class="col-6" >
 				                                       <button
@@ -159,8 +159,7 @@
 												</div>
 											</div>
 									</div>
-									<div class="card-footer" th:if="${lists.cancelStatus != '승인'}">
-										<div class="row align-items-center">
+									
 							</div>
 							</div>
 							<div id="noSearch" tabindex=-1>
