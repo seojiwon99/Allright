@@ -271,7 +271,43 @@ img {
                               </div>
                            </div>
 							<div><hr></div>
-                           <!-- 리뷰 등록 폼 -->
+                          
+
+
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <!-- Pagination -->
+               <nav
+                  class="d-flex justify-content-center justify-content-md-end mt-10">
+                  <ul class="pagination pagination-sm text-gray-400">
+                     <li class="page-item" th:if="${pageMaker.prev}"><a
+                        class="page-link page-link-arrow" id=""
+                        th:href="|javascript:goPage(${pageMaker.startPage - 1})|">
+                           <i class="fa fa-caret-left"></i>
+                     </a></li>
+                     <th:block
+                        th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+                        <li th:if="${pageMaker.endPage} ne 0"
+                           th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+                           th:each="pageButtom : ${#numbers.sequence(start,end)}"
+                           th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
+                           <a class="page-link" href="#"
+                           th:href="|javascript:goPage(${pageButtom} )|"
+                           th:text="${pageButtom}"></a>
+                        </li>
+                     </th:block>
+                     <li class="page-item" th:if="${pageMaker.next}"><a
+                        class="page-link page-link-arrow" id="nextPage"
+                        th:href="|javascript:goPage(${pageMaker.endPage + 1})|">
+                           <i class="fa fa-caret-right"></i>
+                     </a></li>
+                  </ul>
+               </nav>
+				
+			</div>
+		     <!-- 리뷰 등록 폼 -->
                            <div class="modal fade" id="reviewInsert" tabindex="-1"
                               aria-labelledby="exampleModalLabel" aria-hidden="true">
                               <div class="modal-dialog">
@@ -379,40 +415,6 @@ img {
                                  </div>
                               </div>
                            </div>
-
-
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <!-- Pagination -->
-               <nav
-                  class="d-flex justify-content-center justify-content-md-end mt-10">
-                  <ul class="pagination pagination-sm text-gray-400">
-                     <li class="page-item" th:if="${pageMaker.prev}"><a
-                        class="page-link page-link-arrow" id=""
-                        th:href="|javascript:goPage(${pageMaker.startPage - 1})|">
-                           <i class="fa fa-caret-left"></i>
-                     </a></li>
-                     <th:block
-                        th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
-                        <li th:if="${pageMaker.endPage} ne 0"
-                           th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
-                           th:each="pageButtom : ${#numbers.sequence(start,end)}"
-                           th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
-                           <a class="page-link" href="#"
-                           th:href="|javascript:goPage(${pageButtom} )|"
-                           th:text="${pageButtom}"></a>
-                        </li>
-                     </th:block>
-                     <li class="page-item" th:if="${pageMaker.next}"><a
-                        class="page-link page-link-arrow" id="nextPage"
-                        th:href="|javascript:goPage(${pageMaker.endPage + 1})|">
-                           <i class="fa fa-caret-right"></i>
-                     </a></li>
-                  </ul>
-               </nav>
-			</div>
             </div>
          </div>
       </div>
