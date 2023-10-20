@@ -454,37 +454,49 @@ img {
 	  console.log("sadsadsad");
 
    })
-   /*--------------------------
-   리뷰 등록
-   ----------------------------*/
-   $(".reviewInsertBtn").on("click", function () {
-         let form = $("#reviewForm2")[0];
-         const formData = new FormData(form);
-         let productCode = $('.productCode').val();
-         let star = $(".star").data("value");
-         formData.append("reviewStar", star);
-         formData.append("productCode",tmpProductCode);
-         
-         for (let key of formData.keys()) {
-              console.log(key, ":", formData.get(key));
-         }
-
-      $.ajax({
-        url: "/insertReview",
-        type: "post",
-        data: formData,
-        enctype: "multipart/form-data",
-        contentType: false,
-        processData: false,
-        success: function (result) {
-          alert("정상적으로 등록되었습니다");
-          location.reload();
-       },
-       error: function (err) {
-           console.log(err);
-       },
-     });
-});   
+   //초기화
+	   $(document).on("click",".closeBtn",function(){
+		   
+		   let star = $(".star");
+		    console.log(star);
+		    $("#reviewImages").attr("src","");
+		    $('.star').attr('data-value',5)
+		    let reviewForm = $('#reviewForm2');
+		    $('#reviewForm2')[0].reset();
+	   })
+	
+	   /*--------------------------
+	   리뷰 등록
+	   ----------------------------*/
+	   $(".reviewInsertBtn").one("click", function () {
+	         let form = $("#reviewForm2")[0];
+	         const formData = new FormData(form);
+	         let productCode = $('.productCode').val();
+	         let star = $(".star").data("value");
+	         formData.append("reviewStar", star);
+	         formData.append("productCode",tmpProductCode);
+	         
+	         for (let key of formData.keys()) {
+	              console.log(key, ":", formData.get(key));
+	         }
+	
+	      $.ajax({
+	        url: "/insertReview",
+	        type: "post",
+	        data: formData,
+	        enctype: "multipart/form-data",
+	        contentType: false,
+	        processData: false,
+	        success: function (result) {
+	          alert("정상적으로 등록되었습니다");
+	          location.reload();
+	       },
+	       error: function (err) {
+	           console.log(err);
+	       },
+	     });
+	});   
+	   })
    
    /*--------------------------
    이미지 나타내기
