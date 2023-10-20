@@ -343,6 +343,7 @@ JOIN
       select
       c.cancel_code
       , d.order_detail_code
+      , d.option_detail_code
       , p.product_name
       , delivery_code_name(d.order_status) AS order_status
       , c.cancel_reason
@@ -352,6 +353,7 @@ JOIN
       , m.member_id
       , o.order_code
       , c.cancel_status
+      , d.order_cnt
       FROM ar_cancel c
       JOIN
       ar_order_detail d ON c.order_detail_code = d.order_detail_code
