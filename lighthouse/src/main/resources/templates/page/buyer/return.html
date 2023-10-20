@@ -6,13 +6,13 @@
 
 <!-- Content -->
 <div layout:fragment="content">
-   <!-- BREADCRUMB -->
+   <!-- BREADCRUMB 
    <nav class="py-5">
       <div class="container">
          <div class="row">
             <div class="col-12">
-
-               <!-- Breadcrumb -->
+	-->
+               <!-- Breadcrumb 
                <ol class="breadcrumb mb-0 fs-xs text-gray-400">
                   <li class="breadcrumb-item"><a class="text-gray-400"
                      href="index.html">Home</a></li>
@@ -23,7 +23,7 @@
          </div>
       </div>
    </nav>
-
+-->
    <!-- CONTENT -->
    <section class="pt-7 pb-15">
       <div class="container">
@@ -38,12 +38,12 @@
       			</div>
       			<div class="mb-3">
       				<label>상품 명 : </label>
-      				<input type="text" class="form-label mt-2" id="productName" th:value="${return.productName}" readonly>
+      				<input type="text" class="form-control mt-2" id="productName" th:value="${return.productName}" readonly>
       			</div>
       			<div class="mb-3">
       			
       			<!-- Select -->
-                   <select class="form-select form-select-xxs w-auto" id="select">
+                   <select class="form-select" id="select">
                       <option value="선택" id="select">반품 사유를 선택해주세요</option>
                       <option th:each="codes: ${codeList}" th:value="${codes.codeId}" th:text=${codes.codeName}></option>
                    </select>
@@ -83,6 +83,23 @@
    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
    <script>
    //일반 사용자
+   
+   $('#accountOwner').on('keyup', function(event){
+		  const owner = /[^ㄱ-ㅎ|가-힣]/g; // 한글만 허용
+		  const del = event.target;
+		  if (owner.test(del.value)) {
+		    del.value = del.value.replace(owner, '');
+		  }
+		}); 	
+		
+		$('#accountNumber').on('keyup', function(event){
+			  const num = /[^0-9]/g;
+			  const del = event.target;
+			  if (num.test(del.value)) {
+			    del.value = del.value.replace(num, '');
+			  }
+		}); 
+   
    $(document).ready(function() {
 		  let checkBeforeInsert = {};
 		  console.log(checkBeforeInsert);

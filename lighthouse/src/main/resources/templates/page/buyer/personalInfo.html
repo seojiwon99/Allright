@@ -264,7 +264,7 @@
 				
 				if(pwCheck != password){
 					alert("비밀번호가 일치하지 않습니다.");
-					return;
+					$('#buyerPassword').focus();
 				}
 				//let pw = $("#buyerPassword").val();
 				//let id = $("#id").val();
@@ -333,7 +333,7 @@
 	       if(TTSIsOk == null || sessionAuthor == 3){
 	        let audioFileNow = new Audio();
 	        let myName = $('#buyerName').val();
-	        let firstMsg = `개인정보 확인,수정 페이지입니다. 비밀번호, 이메일, 주소, 연락처 수정할 수 있습니다.`;
+	        let firstMsg = `개인정보 확인,수정 페이지입니다. 비밀번호, 이메일, 주소를 수정할 수 있습니다.`;
 	        let message = firstMsg + $('#orderMenual').val();
 	        let message2 = `이름은. ${myName} 입니다. 탭키를 눌러. 다음으로 이동해주세요.`
 
@@ -386,7 +386,7 @@
 			function buyerTel() {
 				myTel = $('#buyerTel').val();
 				let myTelMessage = `현재 전화번호는. ${myTel}. 입니다. 수정 원할 경우 백스페이스 후 작성 후. 탭으로 이동합니다. `;
-				VoiceMenual(myTelMessage);
+				//VoiceMenual(myTelMessage);
 			}
 			function buyerBirth() {
 				myBirth = $('#buyerBirth').val();
