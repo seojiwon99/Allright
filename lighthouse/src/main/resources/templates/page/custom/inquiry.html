@@ -226,33 +226,6 @@
                VoiceReturnRead(msg);
             }
 
-            $('#addBtn').on('click', function () {
-               let title = $('#title').val();
-               let content = $('#content').val();
-               console.log(title);
-               console.log(content);
-               let data = {
-                  customInquiryTitle: title,
-                  customInquiryContent: content
-               }
-
-               if (title == '') {
-                  let msg = '제목이 비어있습니다 엔터키를 누르고 제목을 입력해주세요.';
-                  VoiceReturnRead(msg);
-
-                  $('#title').focus();
-                  return;
-               }
-               if (content == '') {
-                  let msg = '내용이 비어있습니다 엔터키를 누르고 제목을 입력해주세요.';
-                  VoiceReturnRead(msg);
-                  $('#content').focus();
-                  return;
-               }
-               ajaxFnc(data);
-
-            })
-
          } //ttsInit()의 if문
       } // ttsInit() close
 

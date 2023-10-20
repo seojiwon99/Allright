@@ -89,6 +89,7 @@ public class OrdersServiceImpl implements OrdersService{
 	@Override
 	//토스페이먼츠 환불 DB 데이터 저장
 	public int addRefund(RefundVO refundVO) {
+		ordersMapper.updateReturnCount(refundVO);
 		return ordersMapper.insertRefund(refundVO);
 	}
 
@@ -102,6 +103,8 @@ public class OrdersServiceImpl implements OrdersService{
 	// 주문 결제한 각 주문상품 상세정보
 	public int addOrders(OrdersVO ordersVO) {
 	int orderSuccess = ordersMapper.insertOrders(ordersVO);
+	ordersMapper.updateOptionCount(ordersVO); // 주문한 수량만큼 재고 카운트
+	
 		return orderSuccess;
 	}
 

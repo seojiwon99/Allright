@@ -15,4 +15,6 @@ public class OrderChkVO {
 	private String refundTypecode;
 	private String refundType;
 	private String memberId;
+	private int optionDetailCode;
+	private int orderCnt;
 }

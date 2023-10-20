@@ -75,7 +75,9 @@
 
                     <!-- Text -->
                     <!--옵션 종류, 옵션 값-->
-                   <div class="ms-auto tts6" th:text="|옵션 : ${lists.optionLast}|"></div>
+                   <div class="d-flex mb-2 fw-bold">
+                   	<span class="ms-auto tts6" th:text="|옵션 : ${lists.optionLast}|"></span>
+                   </div>
                     
 
                     <!--Footer -->
@@ -84,7 +86,7 @@
                       <!-- buy plus mius -->
                       <div class="num">
                         <input type="hidden" th:value="${lists.cartCode}">
-                        구매수량:<input type="number" th:value="${lists.cartCount}" style="width: 70px;" class="tts7" th:min="${lists.minOrder}" th:max="${lists.maxOrder}">
+                        구매수량:<input type="number" th:value="${lists.cartCount}" style="width: 70px;" class="tts7" th:data-optioncnt="${lists.optionCount}"  th:min="${lists.minOrder}" th:max="${lists.maxOrder == 0 ||lists.maxOrder == null}  ? ${lists.optionCount}:${lists.maxOrder}">
                           <input class="cartCountUpdate" type="button" value="변경" style="border-radius: 5px; background-color: #0a0a23; color: #fff;">
                       </div>
 
@@ -199,7 +201,7 @@
     if(payMessage != null) {
         alert(payMessage);
     }
-
+	
     $('#allCheckbox').on('click',allCheckEvent);  // 전체선택
     $('input[name="price"]').on('change', checkedCart);
     $('#chkDelBtn').on('click',checkedDel);     //선택 삭제
@@ -226,6 +228,27 @@
   function cartCountUpdate(e) {
     let cartNumber = Number($(this).prev().prev().val()); 
     let cartModify = Number($(this).prev().val());
+
+    if(cartModify == 0) {
+      alert('0이하 숫자는 할 수 없습니다.');
+      $(this).prev().val(1);
+      return false;
+    }
+    let NumMax = $(this).prev().attr('max'); //최대 구매 수량
+    let optionNum = $(this).prev().data('optioncnt'); //잔여 수량
+
+    if(cartModify > optionNum || cartModify > NumMax) {
+      if(NumMax > optionNum) { // 잔여보다 최대가 많을 때
+	        alert('최대 수량을 초과할 수 없습니다.');
+	        $(this).prev().val(optionNum);
+	        cartModify = optionNum
+      } else{
+	      alert('최대 수량을 초과할 수 없습니다.');
+	      $(this).prev().val(NumMax);
+	      cartModify = NumMax
+      }
+    }
+    
       console.log(cartNumber);
       console.log(cartModify);
     let CartUpdateVO={};

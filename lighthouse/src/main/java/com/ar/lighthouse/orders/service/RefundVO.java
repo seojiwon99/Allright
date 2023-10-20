@@ -34,4 +34,8 @@ public class RefundVO {
 	
 	//ProductsVO
 	private int deliveryCost;
+	
+	//optionDetail
+	private int optionDetailCode;
+	private int orderCnt;
 }

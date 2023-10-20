@@ -1236,11 +1236,25 @@
 
          // 임시저장
          $(".storage").on("click", function (e) {
+        	 e.preventDefault();
+          
+             let select = $('select[name="categoryCode"]');
+             if ($(select).val() == null || $(select).val() == "") {
+                alert("카테고리를 넣어주세요");
+                return;
+             }
+             let inputfile = $('#imgName');
+             let files = inputfile[0].files;
+             if (files.length == 0) {
+                alert("대표이미지를 등록해주세요");
+                inputfile.focus();
+                return;
+             }
             e.preventDefault();
             let inputTag = $("<input/>");
             inputTag.attr("name", "productExstatus");
             inputTag.prop("type", "hidden");
-            $(inputTag).val("N");
+            $(inputTag).val("C");
 
             let detailData = JSON.parse(localStorage.getItem("detail"));
             if (detailData != null) {
@@ -1268,7 +1282,7 @@
                    }
                 }
              }
-
+			
             test22 = "/insertProduct"
             $("#insertForm").append(inputTag);
             $("#insertForm").submit();
@@ -1325,6 +1339,8 @@
                optionNum: $('#optionNum').val(),
 
 
+               
+               
             }
             //let optionDetail = [];
             // 옵션 저장
