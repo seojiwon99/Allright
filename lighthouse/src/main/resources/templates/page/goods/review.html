@@ -223,7 +223,7 @@
 											</div>
 											<div class="modal-footer">
 												<button type="button" class="closeBtn btn btn-secondary"
-													data-bs-dismiss="modal">닫기</button>
+													data-bs-dismiss="closeBtn modal">닫기</button>
 												<button type="button" class="btn btn-primary"
 													id="reviewDeclareBtn">저장</button>
 											</div>
@@ -244,7 +244,7 @@
 											</div>
 											<div class="modal-body">
 												<form id="editForm" method="post">
-													<div>
+													<div style="display: flex; justify-content: center; flex-direction: column; align-items: center">
 														<div>
 															<div id="previewDiv"></div>
 															<input type="hidden" name="reviewCode" id="reviewNum" />
@@ -304,7 +304,7 @@
 												</form>
 											</div>
 											<div class="modal-footer">
-												<button type="button" class="closeBtn btn btn-secondary"
+												<button type="button" class="modiCloseBtn btn btn-secondary"
 													data-bs-dismiss="modal">닫기</button>
 												<button type="button" class="btn btn-primary"
 													id="reviewEditBtn">저장</button>
@@ -439,12 +439,38 @@
 		/*--------------------------
 		리뷰 수정
 		----------------------------*/
+		/*
+		$('.modiCloseBtn').on("click",function(){
+			// let reviewCode = $("#reviewNum").val(data.reviewCode);
+		      //let reviewContent = $("#message-text").html(data.reviewContent);
+		      let img;
+		      if(data.reviewImg == null){
+		    	  img=null;
+		      }else{
+			      img = $("#reviewModifyImg").attr("src", "upload/" + data.reviewImg.uploadPath + "/"+ data.reviewImg.uploadName);
+		      }
+		      let reviewStars = $("#editStar").attr("data-value",data.reviewStar);
+		})
+		*/
+		//$('#reviewModifyBtn').on('click', modifyReviewForm)
+		 
+		//function modifyReviewForm(){}
+		
+		 $(document).on("click",".modiCloseBtn",function(){
+			   
+			   let star = $(".star");
+			    console.log(star);
+			    $("#reviewImages").attr("src","");
+			    $('.star').attr('data-value',5)
+			    let reviewForm = $('#editForm');
+			    $('#editForm')[0].reset();
+		   })
 		
 		function editReview(data){
 			  				
 		      console.log(data);
 		      let reviewCode = $("#reviewNum").val(data.reviewCode);
-		      let reviewContent = $("#message-text").html(data.reviewContent);
+		      let reviewContent = $("#message-text").text(data.reviewContent);
 		      //let imgContent = $("#reviewImgContent").val(data.reviewImg.imgContent);
 		      let img;
 		      if(data.reviewImg == null){
@@ -456,9 +482,11 @@
 		      
 		      let form = $("#editForm")[0];
 		
+		        
+		   }  
 		       $("#reviewEditBtn").on("click",function(){
-		
-		           const reviewFormData = new FormData(form);
+		    	   let formss = $("#editForm")[0]
+		           const reviewFormData = new FormData(formss);
 		           
 		           let star = $("#editStar").data("value");
 		           
@@ -489,8 +517,6 @@
 		           })
 		           
 		        })
-		        
-		   }  
 		/*--------------------------
 		리뷰 삭제
 		----------------------------*/
@@ -563,6 +589,7 @@
 			$(textarea).val('');
 		})
      
+		
 		/*--------------------------
 		리뷰 신고
 		----------------------------*/
