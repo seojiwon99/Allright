@@ -312,7 +312,7 @@ public class OrdersController {
          newRefund.setRefundType(chk.getRefundType());
            
          ordersService.addRefund(newRefund);
-      
+         
          //refundBalanceAmount 값 rders테이블,credit테이블 결제액 업데이트 
          if(newRefund.getRefundType().equals("C")) {
             productService.editCancelOk(newRefund.getRefundTypecode());            
