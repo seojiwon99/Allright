@@ -405,8 +405,9 @@ function displayDate(range) {
        }
        refundListVO.push(OrderChkVO);
     });
-
+		console.log(refundListVO);
      
+		alert('hk');
       let $form = $('<form>', {
           method: 'POST',
           action: '/seller/orders/cancel'
