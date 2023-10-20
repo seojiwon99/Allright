@@ -220,7 +220,7 @@ img {
                                  </div>
                                  </div>
 
-                               <div class="col-3">
+                               <div class="col-3" style="padding-left:0px;">
                                  <!-- 상품 이미지 -->
                                     <a th:href="|/goodDetail?productCode=${lists.productCode}|"
                                        tabindex="-1"> <img
@@ -345,11 +345,8 @@ img {
                                               <input
                                                 type="hidden" id="member" name="memberId"
                                                 th:value="${session.loginMember.memberId}" />
-
-
                                              <div class="col-12 mb-6 text-center"
                                                 style="display: flex; justify-content: center; align-items: center">
-
                                                 <!-- Rating form -->
                                                 <div class="rating-form">
                                                    <!-- Input -->
@@ -366,7 +363,6 @@ img {
                                                       name="reviewContent" required style="resize: none;"></textarea>
                                                 </div>
                                              </div>
-
                                           </div>
                                        </form>
                                     </div>

@@ -78,7 +78,7 @@
 							<div class="card card-sm order border mb-7" th:each="lists : ${cancelList}"  id="test">
 									<div class="card-body bg-light" style="border-radius: 15px;">
 										<div class="row cancelRow">
-										<div class="col-9">
+										<div class="col-9 mb-6">
 										 <div class="row">
 											<div class="col-lg-3">
 												<span class="heading-xxs text-muted">취소 번호:</span>
@@ -145,9 +145,6 @@
 										</div>
 											
 										</div>
-									</div>
-									<div class="card-footer" th:if="${lists.cancelStatus != '승인'}">
-										<div class="row align-items-center">
 											<div class="col-12 col-lg-6">
 												<div class="row gx-5">
 													<div class="col-6" >
@@ -160,7 +157,10 @@
 				                                             취소 철회</button>
 				                                     </div>
 												</div>
-								</div>
+											</div>
+									</div>
+									<div class="card-footer" th:if="${lists.cancelStatus != '승인'}">
+										<div class="row align-items-center">
 							</div>
 							</div>
 							<div id="noSearch" tabindex=-1>
