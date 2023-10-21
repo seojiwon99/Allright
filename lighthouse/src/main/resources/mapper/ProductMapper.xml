@@ -668,9 +668,9 @@ JOIN
    <select id="selectCalList" resultMap="selectCalList">
       select p.product_name
       , o.order_detail_code
-      , o.payment_price
-      , o.payment_price * (c.fee * 0.01) AS myPrice
-      , o.payment_price * (1 - (c.fee * 0.01)) AS yourPrice
+      , o.order_price
+      , c.settlement_amount
+      , c.fee
       , c.settlement_date
       , c.complet_date
       , m.member_name
