@@ -190,7 +190,7 @@
    $(function(){
         init();
         checkedCart();
-        
+    
    })
    
    
@@ -206,6 +206,7 @@
     $('input[name="price"]').on('change', checkedCart);
     $('#chkDelBtn').on('click',checkedDel);     //선택 삭제
     $('.cartCountUpdate').on('click',cartCountUpdate); // 장바구니 수령 변경
+    $('#allCheckbox').on('focus',allFocus); // 전체선택 포커스 될 경우 read
 
     document.getElementById('productPrice').innerText ='원';
     document.getElementById('salePrice').innerText = '원';
@@ -279,7 +280,8 @@
           .done(data => {
             console.log(data);
             $('#test').replaceWith(data);
-            init();
+            //init();
+            location.reload();
           })
            
         } else {
@@ -366,6 +368,7 @@
         .done(data => {
           $('#test').replaceWith(data);
           init();
+          $('#allCheckbox').focus();
         })
         .fail(reject => consolo.log(reject))
       } else {
@@ -439,7 +442,6 @@ $('#payMove').on('click', function(){
 
     $('#allCheckbox').on('focus',allFocus); // 전체선택 포커스 될 경우 read
     $('#allCheckbox').on('keydown',allKeydown); // 키 눌렀을 경우 읽어줌
-    
     $('.productDel').on('focus',productDel);  // 상품  삭제 read
     $('#payMove').on('focus',patMove); // 주문 페이지 안내 - 결제 클릭
     $('input[name="price"]').on('keydown', proKeydown);
@@ -542,7 +544,7 @@ function allKeydown(e) {
       }
       function patMove(e) {
          
-        if($('#totalPrice').text() == '0원') {
+        if($('#totalPrice').text() == '0원' || $('#totalPrice').text() == '원') {
           VoiceMenual('선택된 상품 금액이 없습니다. 전체상품으로 이동합니다. 상품 선택 후 진행해주세요.');
           $('#allCheckbox').focus();
           return;
