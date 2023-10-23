@@ -56,7 +56,7 @@ public class elaController {
     int port = 9200;
     String scheme = "http";
     HttpHost host = new HttpHost(hostname, port, scheme);
-    HttpHost hos = new HttpHost("0559-58-238-119-6.ngrok-free.app");
+    HttpHost hos = new HttpHost("b471-58-238-119-6.ngrok-free.app");
     //RestClientBuilder restClientBuilder = RestClient.builder(host);
     RestClientBuilder restClientBuilder = RestClient.builder(hos);
     
@@ -267,13 +267,8 @@ public class elaController {
 	
 	@GetMapping("PList")
 	public String elaTestCategory(Criteria cri, Model model, String keyword, String ctg, String order, Double minPrice, Double maxPrice, String wildCtg) {
-		System.out.println(keyword + "  /  " + ctg);
-		System.out.println("order : ====" + order);
-		System.out.println("==========================WILD=================="+ wildCtg);
-		
 		int totalCnt = -1;
 		List<Map<String, Object>> products = new ArrayList<Map<String,Object>>();
-		
 		
 		//필요한 조건들이 있다면 bool쿼리에 축적하여 쌓는방식
 		totalCnt = queryCount("ar_products",keyword,ctg, minPrice, maxPrice, wildCtg);

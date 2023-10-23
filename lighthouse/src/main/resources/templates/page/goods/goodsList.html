@@ -374,7 +374,6 @@
 						</ul>
 					</nav>
 					<!-- pagi end -->
-
 				</div>
 			</div>
 		</div>
@@ -419,10 +418,16 @@
 	let urlParamOrder = [[${param.order}]]
 	let urlParamMaxPrice = [[${param.maxPrice}]]
 	let urlParamMinPrice = [[${param.minPrice}]]
-	
+	let urlParamKeyword = [[${param.keyword}]]
 	let orderFilters = $('#seasonGroup').find('input');
 	let ctgFilters = $('.ps-5').find('input');
 	let priceFilters = $('input[type="checkbox"][name="pricefilter"]');
+	if(urlParamKeyword != null){
+		let keywordInput = document.querySelector('input[type="search"]');
+		console.log(keywordInput)
+		keywordInput.value = urlParamKeyword;
+		console.log(urlParamKeyword);
+	}
 	
 	//Order 저장
 	if(urlParamOrder != null){
@@ -934,14 +939,12 @@
 						VoiceMenual(msg);
 					}else{
 						if($(':focus')[0].className == 'card-img'){
-							console.log('no...');
 							return;
 						};
 						if($($(':focus')[0].labels).length>0){
 							let choiceUp = $(':focus').parent().parent().parent().prev()[0].innerText;
 							let choiceNow = $(':focus')[0].labels[0].innerText;
 							let choiceMsg = `${choiceUp}의 ${choiceNow}`
-							console.log('label');
 							VoiceMenual(choiceMsg);
 						}else{
 							if($(':focus')[0].id == 'priceRange'){
