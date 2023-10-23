@@ -104,17 +104,19 @@ img {
                      <div>주문 <span class="count" th:text="${pageMaker.total}" tabindex="-1"></span> 건</div>
 	               	</div>
 	            </div>
-
+		<div id="orderOption">
 					<div class="card card-lg mb-5 border">
 						<div class="card-body pb-0">
 							<!-- 반복문 시작 -->
 							<!-- Info -->
-							<div class="card card-sm orderList" id="orderOption">
+							<div class="card card-sm orderList" >
 								<div th:each="lists : ${orderList}"
 									th:data-orderdetailcode="${lists.orderDetailCode}"
 									class="order">
 									<div class="card-body bg-light" style="border-radius: 15px;">
 										<div class="row orderRow">
+											<div class="col-9">
+											<div class="row">
 											<input type="hidden" th:value="${lists.productCode}"
 												class="productCode" name="productCode" />
 											<!-- 주문 번호 -->
@@ -149,6 +151,8 @@ img {
 													<span class="optionLast" th:text="|${lists.optionLast}|"></span>
 												</p>
 											</div>
+											</div>
+											
 											<!-- 수량 -->
 											<div class="col-6 col-lg-3">
 												<h6 class="heading-xxxs text-muted" style="margin-top: 10px">수량:</h6>
@@ -215,6 +219,9 @@ img {
 														상품</span>
 												</p>
 											</div>
+											</div>
+											</div>
+											</div>
 											<!-- 상품 이미지 -->
 											<div class="col-6 col-lg-3"  style="padding-left:0px;">
 												<h6 class="heading-xxxs text-muted">상품 이미지:</h6>
@@ -262,42 +269,10 @@ img {
 										</div>
 									</div>
 									</div>
-
-
-
-
-
 								</div>
 							</div>
 						</div>
 					</div>
-					<!-- Pagination -->
-					<nav
-						class="d-flex justify-content-center justify-content-md-end mt-10">
-						<ul class="pagination pagination-sm text-gray-400">
-							<li class="page-item" th:if="${pageMaker.prev}"><a
-								class="page-link page-link-arrow"
-								th:href="@{/page/buyer/orderList/(pageNum = ${pageMaker.startPage - 1})}">
-									<i class="fa fa-caret-left"></i>
-							</a></li>
-							<th:block
-								th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
-								<li th:if="${pageMaker.endPage} ne 0"
-									th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
-									th:each="pageButtom : ${#numbers.sequence(start,end)}"
-									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
-									<a class="page-link" href="#"
-									th:href="@{/page/buyer/orderList/(pageNum= ${pageButtom} )}"
-									th:text="${pageButtom}"></a>
-								</li>
-							</th:block>
-							<li class="page-item" th:if="${pageMaker.next}"><a
-								class="page-link page-link-arrow"
-								th:href="@{/page/buyer/orderList/(pageNum = ${pageMaker.endPage + 1})}">
-									<i class="fa fa-caret-right"></i>
-							</a></li>
-						</ul>
-					</nav>
 
 
 					<!-- 리뷰 등록 폼 -->
@@ -403,8 +378,34 @@ img {
 								</div>
 							</div>
 						</div>
+					<!-- Pagination -->
+					<nav
+						class="d-flex justify-content-center justify-content-md-end mt-10">
+						<ul class="pagination pagination-sm text-gray-400">
+							<li class="page-item" th:if="${pageMaker.prev}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/page/buyer/orderList/(pageNum = ${pageMaker.startPage - 1})}">
+									<i class="fa fa-caret-left"></i>
+							</a></li>
+							<th:block
+								th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+								<li th:if="${pageMaker.endPage} ne 0"
+									th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+									th:each="pageButtom : ${#numbers.sequence(start,end)}"
+									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
+									<a class="page-link" href="#"
+									th:href="@{/page/buyer/orderList/(pageNum= ${pageButtom} )}"
+									th:text="${pageButtom}"></a>
+								</li>
+							</th:block>
+							<li class="page-item" th:if="${pageMaker.next}"><a
+								class="page-link page-link-arrow"
+								th:href="@{/page/buyer/orderList/(pageNum = ${pageMaker.endPage + 1})}">
+									<i class="fa fa-caret-right"></i>
+							</a></li>
+						</ul>
+					</nav>
 					</div>
-
 				</div>
 			</div>
 		</div>
