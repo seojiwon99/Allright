@@ -78,31 +78,32 @@ img {
 						</div>
 					</nav>
 				</div>
-				<div class="col-12 col-md-9 col-lg-8 offset-lg-1">
+				<div class="col-12 col-md-9">
 					<!-- Order -->
-					<div style="margin-bottom: 5px">
-						<div style="margin-bottom: 5px">
-							<span>조회 기간 : </span> <input type="DATE" id="from" name="from"
-								autocomplete="off"> <label for="to">~</label> <input
-								type="DATE" id="to" name="to" autocomplete="off"> <input
-								class="count" tabindex="-1" readonly></input>
-						</div>
-						<div style="margin-bottom: 5px">
-							<label for="optionList">상세 조건 : </label> <select id="optionList"
-								tabindex="0">
-								<!-- <option value="선택">선택</option> -->
-								<!-- <option value="payment_price">가격</option> -->
-								<!-- <option value="order_date">구매일자</option>-->
-								<option value="order_code">주문번호</option>
-								<option value="order_detail_code">주문상세번호</option>
-								<option value="product_name">상품명</option>
-							</select> <input type="text" class="selectVal" id="search" value=""
-								maxlength="50">
-							<button type="button" id="selectOption"
-								style="background-color: black; color: white;">검색</button>
-						</div>
-
-					</div>
+					<div style="margin-bottom:5px">
+                   <div style="margin-bottom:5px">
+                     <span>조회 기간 : </span> 
+                     <input type="DATE" id="from" name="from" autocomplete="off" th:value="${detailVO.fromDate}"> 
+                     <label for="to">~</label> 
+                     <input type="DATE" id="to" name="to" autocomplete="off" th:value="${detailVO.toDate}"> 
+                  </div>
+	               	<div style="margin-bottom:5px">
+		               	<label for="optionList">상세 조건 : </label>
+		                  <select id="optionList" tabindex="0">
+		                     <!-- <option value="선택">선택</option> -->
+		                     <!-- <option value="payment_price">가격</option> -->
+		                     <!-- <option value="order_date">구매일자</option>-->
+		                     <option value="order_code" th:selected="${detailVO.searchKey=='order_code'}">주문번호</option>
+		                     <option value="order_detail_code" th:selected="${detailVO.searchKey=='order_detail_code'}">주문상세번호</option>
+		                     <option value="product_name" th:selected="${detailVO.searchKey=='product_name'}">상품명</option>
+		                  </select> <input type="text" class="selectVal" id="search" th:value="${detailVO.searchValue}"
+		                     maxlength="50">
+		                  <button type="button" id="selectOption"
+		                     style="background-color: black; color: white;">검색</button>
+		                     <input type="hidden" id="pageNum" value="1">
+                     <div>주문 <span class="count" th:text="${pageMaker.total}" tabindex="-1"></span> 건</div>
+	               	</div>
+	            </div>
 
 					<div class="card card-lg mb-5 border">
 						<div class="card-body pb-0">
@@ -226,8 +227,6 @@ img {
 												</p>
 											</div>
 										</div>
-									</div>
-
 									<div class="card-footer ">
 										<div class="row align-items-center"
 											th:if="${lists.returnStatus} == '0' and ${lists.cancelStatus} == '0' and ${lists.exchangeStatus} == '0'">
@@ -263,6 +262,8 @@ img {
 											</div>
 										</div>
 									</div>
+									</div>
+
 
 
 
