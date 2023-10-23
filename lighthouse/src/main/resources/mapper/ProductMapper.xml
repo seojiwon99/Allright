@@ -673,7 +673,7 @@ JOIN
       , c.fee
       , c.settlement_date
       , c.complet_date
-      , m.member_name
+      , r.member_name
       FROM ar_calculate c
       JOIN ar_order_detail o ON o.order_detail_code = c.order_detail_code
       JOIN ar_orders r ON r.order_code = o.order_code
