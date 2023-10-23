@@ -419,11 +419,16 @@
 	let urlParamOrder = [[${param.order}]]
 	let urlParamMaxPrice = [[${param.maxPrice}]]
 	let urlParamMinPrice = [[${param.minPrice}]]
-	
+	let urlParamKeyword = [[${param.keyword}]]
 	let orderFilters = $('#seasonGroup').find('input');
 	let ctgFilters = $('.ps-5').find('input');
 	let priceFilters = $('input[type="checkbox"][name="pricefilter"]');
-	
+	if(urlParamKeyword != null){
+		let keywordInput = document.querySelector('input[type="search"]');
+		console.log(keywordInput)
+		keywordInput.value = urlParamKeyword;
+		console.log(urlParamKeyword);
+	}
 	//Order 저장
 	if(urlParamOrder != null){
 		$(orderFilters).each(function(idx,tag){
