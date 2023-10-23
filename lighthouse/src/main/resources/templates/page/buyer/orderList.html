@@ -138,17 +138,6 @@ img {
 														th:text="${#dates.format(lists.orderDate, 'yyyy-MM-dd')}"></span>
 												</p>
 											</div>
-											<!-- 상품 이미지 -->
-											<div class="col-6 col-lg-3">
-												<h6 class="heading-xxxs text-muted">상품 이미지:</h6>
-												<a th:href="|/goodDetail?productCode=${lists.productCode}|"
-													tabindex="-1"> <img
-													th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|"
-													style="max-width: 100%; height: auto"
-													th:alt="${lists.imgContent}">
-												</a>
-
-											</div>
 											<!-- 상품명 -->
 											<div class="col-6 col-lg-3">
 												<h6 class="heading-xxxs text-muted">상품명:</h6>
@@ -186,7 +175,7 @@ img {
 												</p>
 											</div>
 											<!-- 배달 완료 날짜 -->
-											<div class="col-6 col-lg-3">
+											<div class="col-6 col-lg-3"  th:if="${lists.deliveryDate} != null">
 												<h6 class="heading-xxxs text-muted" style="margin-top: 10px">배송
 													완료 날짜:</h6>
 												<p class="mb-0 fs-sm fw-bold">
@@ -195,7 +184,7 @@ img {
 												</p>
 											</div>
 											<!-- 취소 여부 -->
-											<div class="col-6 col-lg-3">
+											<div class="col-6 col-lg-3" th:if="${lists.cancelStatus} != '0'">
 												<h6 class="heading-xxxs text-muted">취소 여부:</h6>
 												<p class="mb-0 fs-sm fw-bold">
 													<span class="cancelStatusNm"
@@ -203,7 +192,7 @@ img {
 												</p>
 											</div>
 											<!-- 반품 여부 -->
-											<div class="col-6 col-lg-3">
+											<div class="col-6 col-lg-3" th:if="${lists.returnStatus} != '0'" >
 												<h6 class="heading-xxxs text-muted">반품 여부:</h6>
 												<p class="mb-0 fs-sm fw-bold">
 													<span class="returnStatusNm"
@@ -211,7 +200,7 @@ img {
 												</p>
 											</div>
 											<!-- 교환 여부 -->
-											<div class="col-6 col-lg-3">
+											<div class="col-6 col-lg-3" th:if="${lists.exchangeStatus} != '0'">
 												<h6 class="heading-xxxs text-muted">교환 여부:</h6>
 												<p class="mb-0 fs-sm fw-bold">
 													<span class="exchangeStatusNm"
@@ -219,12 +208,22 @@ img {
 												</p>
 											</div>
 											<!-- 주문 확정 -->
-											<div class="col-6 col-lg-3">
+											<div class="col-6 col-lg-3" th:if="${lists.orderCheck} == 'N'" >
 												<h6 class="heading-xxxs text-muted">주문 확정:</h6>
 												<p class="mb-0 fs-sm fw-bold">
 													<span class="orderCheck" th:if="${lists.orderCheck} == 'N'">취소된
 														상품</span>
 												</p>
+											</div>
+											<!-- 상품 이미지 -->
+											<div class="col-6 col-lg-3"  style="padding-left:0px;">
+												<h6 class="heading-xxxs text-muted">상품 이미지:</h6>
+												<a th:href="|/goodDetail?productCode=${lists.productCode}|"
+													tabindex="-1"> <img
+													th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|"
+													style="max-width: 100%; height: auto"
+													th:alt="${lists.imgContent}">
+												</a>
 											</div>
 										</div>
 									<div class="card-footer ">
