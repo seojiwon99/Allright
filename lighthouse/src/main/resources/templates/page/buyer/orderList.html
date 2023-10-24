@@ -478,11 +478,17 @@ img {
 	      tmpProductCode = prodCode[0].value;
 	      
 	   })
-	   /*--------------------------
+	  /*--------------------------
 	   리뷰 등록
 	   ----------------------------*/
-	   $(".reviewInsertBtn").one("click", function () {
-		   console.log("aaa");
+	   $(".reviewInsertBtn").on("click", function () {
+		   console.log($(".reviewText"));
+		   let reviewText = $(".reviewText").val(); 
+		   
+			if(reviewText==''){
+				alert("내용을 입력 해 주세요");
+			}else{
+				
 	         let form = $("#reviewForm2")[0];
 	         const formData = new FormData(form);
 	         let productCode = $('.productCode').val();
@@ -509,8 +515,9 @@ img {
 	           console.log(err);
 	       },
 	     });
+			}
+		   
 	});   
-	   
 	   /*--------------------------
 	   이미지 나타내기
 	   ----------------------------*/
