@@ -267,13 +267,8 @@ public class elaController {
 	
 	@GetMapping("PList")
 	public String elaTestCategory(Criteria cri, Model model, String keyword, String ctg, String order, Double minPrice, Double maxPrice, String wildCtg) {
-		System.out.println(keyword + "  /  " + ctg);
-		System.out.println("order : ====" + order);
-		System.out.println("==========================WILD=================="+ wildCtg);
-		
 		int totalCnt = -1;
 		List<Map<String, Object>> products = new ArrayList<Map<String,Object>>();
-		
 		
 		//필요한 조건들이 있다면 bool쿼리에 축적하여 쌓는방식
 		totalCnt = queryCount("ar_products",keyword,ctg, minPrice, maxPrice, wildCtg);

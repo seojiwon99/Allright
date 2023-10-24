@@ -374,7 +374,6 @@
 						</ul>
 					</nav>
 					<!-- pagi end -->
-
 				</div>
 			</div>
 		</div>
@@ -403,15 +402,12 @@
 	if(urlwild != null){
 		let wildCtg = urlwild[0]
 		let inText;
-		console.log(wildCtg);
 		for(let ctg of ctgs){
 			if(ctg.categoryCode == wildCtg){
 				inText = ctg.categoryName;	
-				console.log(ctg.categoryName);
 			}
 		}
 		let inspan = $('#wildCard').prev();
-		console.log(inspan)
 		inspan.before(inText);
 	}
 	
@@ -425,10 +421,9 @@
 	let priceFilters = $('input[type="checkbox"][name="pricefilter"]');
 	if(urlParamKeyword != null){
 		let keywordInput = document.querySelector('input[type="search"]');
-		console.log(keywordInput)
 		keywordInput.value = urlParamKeyword;
-		console.log(urlParamKeyword);
 	}
+	
 	//Order 저장
 	if(urlParamOrder != null){
 		$(orderFilters).each(function(idx,tag){
@@ -456,7 +451,6 @@
 		let priceSize;
 		let max = urlParamMaxPrice[0];
 		let min = urlParamMinPrice[0];
-		console.log(min,max)
 		if(min == 0 && max == 50000){
 			priceSize = 'priceOne';
 		}else if(min == 50000 && max == 100000){
@@ -466,7 +460,6 @@
 		}else if(min == 200000 && max == 99999999){
 			priceSize = 'priceFour';
 		}else if(min != '' && max != ''){
-			console.log('max:', max, 'min:', min)
 			priceSize = 'priceRange';
 		}
 		$(priceFilters).each(function(idx,tag){
@@ -477,9 +470,7 @@
 	}
 	//찜 등록
 	$($('.heart-icon').parent()).on('click',function(){
-    	console.log($(this).parent().next());	
     	let pCode = $(this).parent().next().val();
-    	console.log(pCode);
 
 	    if([[${session}]] == null){
 	    	alert('로그인이 필요한 기능입니다.')	
@@ -497,7 +488,6 @@
 					type: 'GET',
 					data: obj,
 					success : function(rs){
-						console.log(rs);					
 						if(rs == 0){
 							addWishInMain(obj)
 						}else if(rs > 0 ){
@@ -505,7 +495,6 @@
 						}
 					},
 					error : function(err){
-						console.log(err);
 					}
 				
 				})
@@ -520,7 +509,6 @@
 			data: JSON.stringify(obj),
 			contentType : 'application/json',
 			success : function(rs){
-				console.log(rs)
 				if(confirm('찜 등록하였습니다. 찜 목록 페이지로 이동하시겠습니까?')){
 						location.href="/page/buyer/wishList";   				
 				}
@@ -536,7 +524,6 @@
 	
    
 	let searchBars = document.querySelectorAll('input[type="search"]');
-	//console.log(searchBars);
 	let pSearch = searchBars[0];
  //엔터키 입력 시 검색
 	$(pSearch).on('keydown',function(e){
@@ -546,7 +533,6 @@
 			nowURL.searchParams.set('keyword', $(pSearch).val());
 			location.href = nowURL.href;
 		}
-		console.log('go');
 	})
 	
 	
@@ -614,7 +600,6 @@
 		if(ctgs.length>0){
 			filterObj['ctg'] = ctgs[0].id; 
 		}
-		console.log(filterObj);
 		if(ctgs.length == 0 && orderFilter.length == 0 && prices.length == 0 ){
 			 alert('조건을 선택해주세요.')
 			 return;
@@ -635,8 +620,7 @@
 			nowURL.searchParams.set('wildCtg', filterObj['ctg']);
 		}
 		let preKeyword = [[${param.keyword}]];
-		console.log(preKeyword)
-		if(preKeyword != null || preKeyword != ''){
+		if(preKeyword != null){
 			nowURL.searchParams.set('keyword', preKeyword);
 		}
 		location.href = nowURL.href;
@@ -647,7 +631,6 @@
 	$('.delCtg').on('click',function(){
 		let nowURL = new URL(location.href);
 		let urlTag = $(this).next().val();
-		console.log(urlTag);
 		if(urlTag == 'order'){
 			nowURL.searchParams.delete('order');
 		}
@@ -688,7 +671,6 @@
 	}
 	
 	function checkOnlyOne(e) {
-		console.log($(this).prop('checked'))
 		if($(this).prop('checked')){
 			 
 		     $('input[type="checkbox"][name="pricefilter"]').prop('checked',false);
@@ -712,7 +694,6 @@
 		}
 	}
 	function checkOnlyOneCtg(e) {
-		console.log($(this).prop('checked'))
 		if($(this).prop('checked')){
 			 
 			$('.ps-5').find('input').prop('checked',false);
@@ -733,19 +714,15 @@
 	let TTSIsOk = localStorage.getItem('ttsKey');
 	let sessionAuthor;
 	let sessionId = [[${session.loginMember}]]
-	console.log(sessionId);    		
 	if(sessionId != null){
 		sessionAuthor = sessionId.memberAuthor;
 	}
-	console.log(sessionAuthor);    
-	console.log(TTSIsOk);
   	function ttsInit(){
 	   	if(TTSIsOk == null || sessionAuthor == 3){
 	   		
 			   let audioFileNow = new Audio();
 			   
 				let NewProduct = [[${products}]];
-				console.log(NewProduct);
 			   
 			   
 			   const movePage = function(page) {
@@ -771,7 +748,6 @@
 					let divCardBody = $(this).parent().parent().children()[1];
 					let productName = $(divCardBody).children()[0].innerText;
 					let productPrice = $($(divCardBody).children()[1]).children()[1].innerText
-					console.log(productName, productPrice);
 					let productMsg = `상품 이름. :  ${productName}. 상품 가격. : ${productPrice}원`
 					VoiceMenual(productMsg);
 					
@@ -780,7 +756,6 @@
 				// 검색바 포커스 됐을 경우 TTS
 				$(pSearch).on('focus',function(){
 					VoiceMenual('검색창입니다. 마이크를 이용해 입력하시려면 alt 키와 6번을 동시에 입력해주세요. 그리고 말씀하신 후에 엔터키를 눌러주세요.')
-					console.log('go');
 				});
 				
 				
@@ -816,15 +791,12 @@
 				recognition.maxAlternatives = 10000;
 			
 				function sttToInput(HTMLTag){
-					console.log("sttToInput Start");
 					let speechToText = "";
 					let tagNow = HTMLTag.value;
 					recognition.addEventListener("result", (e) => {
-						console.log(HTMLTag);
 					  let interimTranscript = "";
 					  for (let i = e.resultIndex, len = e.results.length; i < len; i++) {
 					    let transcript = e.results[i][0].transcript;
-					    console.log(transcript);
 					    if (e.results[i].isFinal) { // 마지막이면 Text에 변환스크립트 concat
 					      speechToText += transcript;
 					    } else { //도중의 경우 interim, concat
@@ -833,9 +805,7 @@
 					  }
 					  let TotalSTT = speechToText + interimTranscript;	
 					  $(HTMLTag).val(TotalSTT);
-					  console.log('한뭉터기 끝')
 					});
-						console.log("sttToInput End");
 				}
 				recognition.addEventListener('end',function(){
 					let sttResultMsg = '입력하신 값 : '+pSearch.value;
@@ -843,7 +813,6 @@
 				})
 				
 				
-				console.log('hello js');
 	
 	var AudioContext;
 	var audioContext;
@@ -939,14 +908,12 @@
 						VoiceMenual(msg);
 					}else{
 						if($(':focus')[0].className == 'card-img'){
-							console.log('no...');
 							return;
 						};
 						if($($(':focus')[0].labels).length>0){
 							let choiceUp = $(':focus').parent().parent().parent().prev()[0].innerText;
 							let choiceNow = $(':focus')[0].labels[0].innerText;
 							let choiceMsg = `${choiceUp}의 ${choiceNow}`
-							console.log('label');
 							VoiceMenual(choiceMsg);
 						}else{
 							if($(':focus')[0].id == 'priceRange'){
@@ -982,7 +949,6 @@
 					}
 				}
 				if(e.altKey && e.key == 2){ // 상품 포커스
-					console.log(2);
 					let product = document.querySelector('a.card-img');
 					product.focus();
 				}
@@ -1022,7 +988,6 @@
 					location.href = "/"; // 장바구니로 이동
 				}
 				if(e.altKey && e.key == 6){ // 마이크로 입력하기
-					console.log(9);
 					let activeInput = document.activeElement
 					if(activeInput.tagName=='INPUT'){
 						recognition.addEventListener("start", sttToInput(activeInput))
@@ -1042,7 +1007,6 @@
 			VoiceMenual(msg);
 		})
 		$('.delCtg').on('focus',function(){
-			console.log($(this).parent().text())
 			let filters = $(this).parent().text();
 			let msg = `현재 적용된 필터.. ${filters}.입니다. 이 필터를 해제하시려면 엔터를 눌러주세요. `
 			VoiceMenual(msg);
@@ -1117,7 +1081,6 @@
 					 VoiceMenual('조건을 선택해주세요.')
 					 return;
 				}
-				console.log(filterObj);
 				// 실행코드
 				let nowURL = new URL(location.origin+"/PList");
 				nowURL.searchParams.set('pageNum', 1); // 1페이지로 이동
