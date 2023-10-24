@@ -476,11 +476,13 @@ img {
 	      let btn2 = btn.parent().parent().parent().parent().children()[0];
 	      let prodCode = $(btn2).find('input[type="hidden"]');
 	      tmpProductCode = prodCode[0].value;
-	
+	      
+	   })
 	   /*--------------------------
 	   리뷰 등록
 	   ----------------------------*/
 	   $(".reviewInsertBtn").one("click", function () {
+		   console.log("aaa");
 	         let form = $("#reviewForm2")[0];
 	         const formData = new FormData(form);
 	         let productCode = $('.productCode').val();
@@ -508,7 +510,6 @@ img {
 	       },
 	     });
 	});   
-	   })
 	   
 	   /*--------------------------
 	   이미지 나타내기
