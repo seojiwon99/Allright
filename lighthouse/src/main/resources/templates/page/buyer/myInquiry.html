@@ -6,24 +6,24 @@
 
 <!-- Content -->
 <div layout:fragment="content">
-<!-- BREADCRUMB -->
+<!-- BREADCRUMB 
 	<nav class="py-5">
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
 
-					<!-- Breadcrumb -->
+					<!-- Breadcrumb 
 					<ol class="breadcrumb mb-0 fs-xs text-gray-400">
 						<li class="breadcrumb-item"><a class="text-gray-400"
 							href="index.html">Home</a></li>
 						<li class="breadcrumb-item active">My Page</li>
 					</ol>
-
+					
 				</div>
 			</div>
 		</div>
 	</nav>
-
+-->
 	<!-- CONTENT -->
 	<section class="pt-7 pb-12">
 		<div class="container">
@@ -99,11 +99,7 @@
           </div>
 			<div class="col-12 col-md-9 col-lg-8 offset-lg-1" style="margin-left: 20px;">
             <!-- myInquiry -->
-            <div class="card card-lg mb-5 border">
-			  <div class="card-body pb-0" >
-			  <div th:if="${myInquiry.size != 0}">
-			    <div class="card card-sm">
-			      <div class="row inquiryRow">
+			      <div class="row inquiryRow" th:if="${myInquiry.size != 0}">
 			        <table class="table">
 			          <thead>
 			            <tr>
@@ -117,7 +113,7 @@
 			          <tbody>
 			            <tr th:each="inqs,status : ${myInquiry}">
 			              <td style="display:none;"></td>
-			              <td th:id="|code${status.index}|" class="inquiryCode" tabindex="0" style="padding-left: 5px; padding-right: 5px; text-align: center;">[[${inqs.customInquiryCode}]]</td>
+			              <td th:id="|code${status.index}|" class="inquiryCode"  style="padding-left: 5px; padding-right: 5px; text-align: center;">[[${inqs.customInquiryCode}]]</td>
 			              <td th:id="|title${status.index}|" class="inquiryTitle" tabindex="0" data-bs-toggle="modal" th:data-bs-target="|#modalProduct${inqs.customInquiryCode}|" style="text-align: center; cursor : pointer; ">[[${inqs.customInquiryTitle}]]</td>
 			              <td th:id="|content${status.index}|" class="inquiryContent" style="width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:inline-block;">[[${inqs.customInquiryContent}]]</td>
 			              <td th:id="|regdate${status.index}|" class="inquiryRegdate" style="white-space: nowrap;">[[${#dates.format(inqs.customInquiryRegdate, 'yyyy-MM-dd')}]]</td>
@@ -129,32 +125,33 @@
 						<div th:each="inqs : ${myInquiry}">
 					    <div class="modal fade" th:id="|modalProduct${inqs.customInquiryCode}|" tabindex="-1" role="dialog" aria-hidden="true">
 					      <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-					        <div class="modal-content"  style="width: 800px;">
+					        <div class="modal-content"  style="width: 800px; margin: auto;">
 					          <!-- Close -->
 					          <button type="button" tabindex="-1" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 					            <i class="fe fe-x" aria-hidden="true"></i>
 					          </button>
 					          <!-- Content -->
 					          <div class="container-fluid px-xl-0">
-					              <div class="col-12 col-lg-6 col-xl-7 py-9 px-md-9">
+					              <div class="col-12 py-9 px-md-9">
 					                <label class="h7">문의 제목 :</label>
-					                <h5 class="mb-3 inqTitle" tabindex="0" th:text="|${inqs.customInquiryTitle}|"></h5>
+					                <span class="mb-3 inqTitle" style="font-size : 24px;" tabindex="0" th:text="|${inqs.customInquiryTitle}|"></span>
+					                <br>
 					                <label class="h7">문의 날짜 :</label>
-					                <h5 class="mb-3 inqDate" tabindex="0" th:text="|${#dates.format(inqs.customInquiryRegdate, 'yyyy-MM-dd')}|"></h5>
+					                <span class="mb-3 inqDate" style="font-size : 24px;" tabindex="0" th:text="|${#dates.format(inqs.customInquiryRegdate, 'yyyy-MM-dd')}|"></span>
 					                <!-- Form -->
-					                <form>
+					                <form class="mt-5" id="modalClose">
 					                  <label class="h5">문의 내용 :</label>
 					                  <div class="form-group">
-					    				<textarea class="inqContent" tabindex="0" rows="5" cols="90" th:text="|${inqs.customInquiryContent}|"></textarea>
+					    				<textarea class="form-control inqContent" tabindex="0" rows="5" cols="90" th:text="|${inqs.customInquiryContent}|" readonly style="resize: none;"></textarea>
 					                  </div>
 					                  <label class="h5">답변 내용 :</label>
 					                  <div class="form-group">
-					    				<textarea class="inqAnswer" tabindex="0" rows="5" cols="90" th:text="|${inqs.customInquiryAnswer}|" readonly></textarea>
+					    				<textarea class="form-control inqAnswer" tabindex="0" rows="5" cols="90" th:text="|${inqs.customInquiryAnswer}|" readonly style="resize: none;"></textarea>
 					                  </div>
 					                  <div class="form-group mb-0">
 					                    <div class="row gx-5">
-					    	              <div class="col-12 col-lg">
-					                        <button type="submit" tabindex="0" class="btn w-100 btn-dark mb-2 closeBtn" style="border-radius: 10px;">
+					    	              <div class="col-12 col-lg" style="margin: auto; display:block;">
+					                        <button type="submit" tabindex="0" class="btn btn-dark mb-2 closeBtn" style="border-radius: 10px; margin: auto; display:block;">
 					                          닫기
 					                        </button>
 					                      </div>
@@ -163,25 +160,21 @@
 					                </form>
 					              </div>
 					          </div>
-					        </div>
-					      </div>
 						 </div>                     
-	                  </div>
-	                </div>
 				</div>
 				</div>
 				<th:block th:if="${myInquiry.size == 0}">
-								<div>
-								     <ul>
-								      <li class="list-group-item">
-								        <div class="row align-items-center">
-								          <br>
-								          <p style="padding: 10%; font-weight: bolder; text-align: center;">문의내역이 없습니다.
-								          </p>
-								        </div>
-								      </li>
-								      </ul>   
-							     </div>
+					<div>
+					     <ul>
+					      <li class="list-group-item">
+					        <div class="row align-items-center">
+					          <br>
+					          <p style="padding: 10%; font-weight: bolder; text-align: center;">문의내역이 없습니다.
+					          </p>
+					        </div>
+					      </li>
+					      </ul>   
+				     </div>
 				</th:block>
             </div>
           </div>
@@ -229,6 +222,24 @@
       0번 다시듣기.
     </textarea>
 	<script>
+	//모달 열기
+	$('.inquiryTitle').on('keydown', function (e) {
+	    if (e.which === 13) { // Enter 키를 눌렀을 때
+	        e.preventDefault(); // 기본 엔터 동작을 방지
+	        var modalId = $(this).data('bs-target');
+	        $(modalId).modal('show'); // 모달을 엽니다.
+	    }
+	});
+	// 모달 닫기
+	
+	$('.modal .btn-close').on('keydown', function (e) {
+	    if (e.which === 13) { // Enter 키를 눌렀을 때
+	        e.preventDefault(); // 기본 엔터 동작을 방지
+	        $(this).closest('.modal').modal('hide'); // 모달을 닫습니다.
+	    }
+	});
+	
+	
 	//tts 시작 
     let TTSIsOk = localStorage.getItem('ttsKey');
       let sessionAuthor;
@@ -246,7 +257,7 @@
           VoiceMenual(message);
 
     //tts 이벤트 부여
-    $('.inquiryCode').on('focus', inquiryInfo);
+    //$('.inquiryCode').on('focus', inquiryInfo);
 	$('.inquiryTitle').on('focus', inquiryTitle);
 	$('.inqTitle').on('focus', inqTitle);
 	$('.inqDate').on('focus', inqDate);
@@ -255,7 +266,7 @@
 	$('.closeBtn').on('focus', closeBtn);
 	
     //tts 이벤트 진행
-    function inquiryInfo() {
+    /*function inquiryInfo() {
    	 	let inquiryCode = $(this).parent().find('.inquiryCode').text();
 	    let inquiryTitle = $(this).parent().find('.inquiryTitle').text();
 	    let inquiryContent =  $(this).parent().find('.inquiryContent').text();
@@ -267,8 +278,18 @@
    	 
    	 VoiceMenual(message);
     }
+    */
 	function inquiryTitle(){
-		VoiceMenual("문의 내역을 자세히 보고 싶으면 클릭을 해주세요");
+    	let inquiryCode = $(this).parent().find('.inquiryCode').text();
+	    let inquiryTitle = $(this).parent().find('.inquiryTitle').text();
+	    let inquiryContent =  $(this).parent().find('.inquiryContent').text();
+	    let inquiryRegdate =  $(this).parent().find('.inquiryRegdate').text();
+	    let inquiryAnswerStatus = $(this).parent().find('.inquiryAnswerStatus').text();
+	       	 
+	    let message= `문의 번호는 ${inquiryCode}. 문의 제목은 ${inquiryTitle}. 문의 내용은 ${inquiryContent}.
+			           작성 날짜는 ${inquiryRegdate}. 답변 여부는 ${inquiryAnswerStatus}.`;
+   	 
+		VoiceMenual(message + "문의 내역을 자세히 보고 싶으면 엔터키를 입력해주세요");
 	}
 	function inqTitle(){
 		let title = $(this).parent().find('.inqTitle').text();

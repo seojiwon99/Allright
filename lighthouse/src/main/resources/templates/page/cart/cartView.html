@@ -59,25 +59,25 @@
                   <div class="col checkContent">
                     <!-- Title -->
                     <div class="d-flex mb-2 fw-bold">
-                    <span th:text= "|상품명 : ${lists.productName}|"class="tts1" tabindex="-1"></span>
-                      <span class="price ms-auto tts2" style="text-decoration: line-through;" th:text="| 상품금액 : ${#numbers.formatInteger(lists.productCost,0,'COMMA')}원|"></span>
+                    <span th:text= "|상품명 : ${lists.productName}|"class="ms-auto tts1" tabindex="-1"></span>
                     </div>
                     <div class="d-flex mb-2 fw-bold">
-                       <span class="ms-auto tts3" th:text="|할인된 금액 : ${#numbers.formatInteger(lists.salePrice,0,'COMMA')}원|"></span>
+                      <span class="price ms-auto tts2" style="text-decoration: line-through;" th:text="| 상품금액 : ${#numbers.formatInteger(lists.productCost,0,'COMMA')}원|"></span>
+                      &nbsp&nbsp/&nbsp&nbsp<span class="tts3" th:text="|할인된 금액 : ${#numbers.formatInteger(lists.salePrice,0,'COMMA')}원|"></span>
                     </div>
                     <div class="d-flex mb-2 fw-bold">
                        <span class="ms-auto tts4" th:text="|옵션 추가금액 : ${#numbers.formatInteger(lists.optionPrice,0,'COMMA')}원|"></span>
-                    </div>
-                    <div class="d-flex mb-2 fw-bold">
-                       <span class="ms-auto tts5" th:text="|배송비 : ${#numbers.formatInteger(lists.deliveryCost,0,'COMMA')}원|"></span>
-                    </div>
+                       &nbsp&nbsp/&nbsp&nbsp<span class="tts5" th:text="|배송비 : ${#numbers.formatInteger(lists.deliveryCost,0,'COMMA')}원|"></span>
+                    </div>                
                     <div class="d-flex mb-2 fw-bold">
                        <span class="ms-auto tts8" th:text="|합계금액 : ${#numbers.formatInteger(((lists.salePrice + lists.optionPrice) * lists.cartCount) + lists.deliveryCost ,0,'COMMA')}원|"></span>
                     </div>
 
                     <!-- Text -->
                     <!--옵션 종류, 옵션 값-->
-                   <div class="ms-auto tts6" th:text="|옵션 : ${lists.optionLast}|"></div>
+                   <div class="d-flex mb-2 fw-bold">
+                   	<span class="ms-auto tts6" th:text="|옵션 : ${lists.optionLast}|"></span>
+                   </div>
                     
 
                     <!--Footer -->
@@ -86,7 +86,7 @@
                       <!-- buy plus mius -->
                       <div class="num">
                         <input type="hidden" th:value="${lists.cartCode}">
-                        구매수량:<input type="number" th:value="${lists.cartCount}" style="width: 70px;" class="tts7" th:min="${lists.minOrder}" th:max="${lists.maxOrder}">
+                        구매수량:<input type="number" th:value="${lists.cartCount}" style="width: 70px;" class="tts7" th:data-optioncnt="${lists.optionCount}"  th:min="${lists.minOrder}" th:max="${lists.maxOrder == 0 ||lists.maxOrder == null}  ? ${lists.optionCount}:${lists.maxOrder}">
                           <input class="cartCountUpdate" type="button" value="변경" style="border-radius: 5px; background-color: #0a0a23; color: #fff;">
                       </div>
 
@@ -190,7 +190,7 @@
    $(function(){
         init();
         checkedCart();
-        
+    
    })
    
    
@@ -201,11 +201,12 @@
     if(payMessage != null) {
         alert(payMessage);
     }
-
+	
     $('#allCheckbox').on('click',allCheckEvent);  // 전체선택
     $('input[name="price"]').on('change', checkedCart);
     $('#chkDelBtn').on('click',checkedDel);     //선택 삭제
     $('.cartCountUpdate').on('click',cartCountUpdate); // 장바구니 수령 변경
+    $('#allCheckbox').on('focus',allFocus); // 전체선택 포커스 될 경우 read
 
     document.getElementById('productPrice').innerText ='원';
     document.getElementById('salePrice').innerText = '원';
@@ -228,6 +229,27 @@
   function cartCountUpdate(e) {
     let cartNumber = Number($(this).prev().prev().val()); 
     let cartModify = Number($(this).prev().val());
+
+    if(cartModify == 0) {
+      alert('0이하 숫자는 할 수 없습니다.');
+      $(this).prev().val(1);
+      return false;
+    }
+    let NumMax = $(this).prev().attr('max'); //최대 구매 수량
+    let optionNum = $(this).prev().data('optioncnt'); //잔여 수량
+
+    if(cartModify > optionNum || cartModify > NumMax) {
+      if(NumMax > optionNum) { // 잔여보다 최대가 많을 때
+	        alert('최대 수량을 초과할 수 없습니다.');
+	        $(this).prev().val(optionNum);
+	        cartModify = optionNum
+      } else{
+	      alert('최대 수량을 초과할 수 없습니다.');
+	      $(this).prev().val(NumMax);
+	      cartModify = NumMax
+      }
+    }
+    
       console.log(cartNumber);
       console.log(cartModify);
     let CartUpdateVO={};
@@ -258,7 +280,8 @@
           .done(data => {
             console.log(data);
             $('#test').replaceWith(data);
-            init();
+            //init();
+            location.reload();
           })
            
         } else {
@@ -345,6 +368,7 @@
         .done(data => {
           $('#test').replaceWith(data);
           init();
+          $('#allCheckbox').focus();
         })
         .fail(reject => consolo.log(reject))
       } else {
@@ -418,7 +442,6 @@ $('#payMove').on('click', function(){
 
     $('#allCheckbox').on('focus',allFocus); // 전체선택 포커스 될 경우 read
     $('#allCheckbox').on('keydown',allKeydown); // 키 눌렀을 경우 읽어줌
-    
     $('.productDel').on('focus',productDel);  // 상품  삭제 read
     $('#payMove').on('focus',patMove); // 주문 페이지 안내 - 결제 클릭
     $('input[name="price"]').on('keydown', proKeydown);
@@ -521,7 +544,7 @@ function allKeydown(e) {
       }
       function patMove(e) {
          
-        if($('#totalPrice').text() == '0원') {
+        if($('#totalPrice').text() == '0원' || $('#totalPrice').text() == '원') {
           VoiceMenual('선택된 상품 금액이 없습니다. 전체상품으로 이동합니다. 상품 선택 후 진행해주세요.');
           $('#allCheckbox').focus();
           return;

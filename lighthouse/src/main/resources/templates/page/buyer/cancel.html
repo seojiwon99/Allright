@@ -6,13 +6,13 @@
 
 <!-- Content -->
 <div layout:fragment="content">
-	<!-- BREADCRUMB -->
+	<!-- BREADCRUMB 
 	<nav class="py-5">
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
-
-					<!-- Breadcrumb -->
+-->
+					<!-- Breadcrumb 
 					<ol class="breadcrumb mb-0 fs-xs text-gray-400">
 						<li class="breadcrumb-item"><a class="text-gray-400"
 							href="index.html">Home</a></li>
@@ -23,7 +23,7 @@
 			</div>
 		</div>
 	</nav>
-
+-->
 	<!-- CONTENT -->
 	<section class="pt-7 pb-15">
 		<div class="container">
@@ -32,20 +32,20 @@
 					<h2>취소 신청 </h2>
 					<div class="mb-3">
 						<input type="hidden" th:value="${cancel}" id="hidden"> 
-						<label>주문번호</label>
+						<label >주문번호 : </label>
 						<input type="text" class="form-label orderCode" id="orderCode"
-							th:value="${cancel.orderCode}" tabindex="0" readonly> 
-						<label>주문상세번호</label>
+							th:value="${cancel.orderCode}" tabindex="0" readonly style="border: 0px"> 
+						<label>주문상세번호 : </label>
 						<input type="text" class="form-label orderDetailCode" id="orderDetailCode"
-							th:value="${cancel.orderDetailCode}" readonly>
+							th:value="${cancel.orderDetailCode}" readonly style="border: 0px">
 					</div>
 					<div class="mb-3">
-						<label>상품 명</label> 
-						<input type="text" class="form-label productName" id="productName" th:value="${cancel.productName}" readonly>
+						<label>상품 명 : </label> 
+						<input type="text" class="form-control mt-2 productName" id="productName" th:value="${cancel.productName}"  readonly>
 					</div>
 					<div class="mb-3">
 						<!-- Select -->
-						<select class="form-select form-select-xxs w-auto" id="select">
+						<select class="form-select" id="select">
 							<option value="선택" class="select">취소 사유를 선택해주세요</option>
 							<option th:each="codes: ${codeList}" th:value="${codes.codeId}"
 								th:text="${codes.codeName}"></option>
@@ -53,27 +53,32 @@
 					</div>
 					<div class="mb-3">
 						<textarea class="form-control cancelReason" id="content" rows="5"
-							placeholder="취소 사유를 입력해주세요" ></textarea>
+							placeholder="취소 사유를 입력해주세요" style="resize: none;"></textarea>
 					</div>
 					<div class="mb-3">
-						<label>은행 명</label> 
-						<select name="" id="bankName">
+						<label class="form-label">은행 명</label> 
+						<select name="" id="bankName" class="form-control">
 						</select>
 					</div>
 					<div class="mb-3">
-						<label>예금주</label> <input type="text" class="form-label" id="accountOwner">
+						<label class="form-label">예금주</label> <input type="text" class="form-control" id="accountOwner" >
 					</div>
 					<div class="mb-3">
-						<label>입금 계좌번호</label> <input type="text" class="form-label" id="accountNumber">
-					</div>
+						<label class="form-label">입금 계좌번호</label> 
 					<input type="hidden" value="N" id="bankChk">
-					<button class="btn btn-dark" id="bankCheck">계좌확인</button>
-					
-					<div class="col-12 text-center">
-
-						<button class="btn btn-dark" id="cancelBtn">주문취소신청</button>
+					<div class="row">
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="accountNumber">
+						</div>
+						<div  class="col-sm-2 ">
+							<button class="btn btn-dark" style="border-radius: 10px" id="bankCheck">계좌확인</button>
+						</div>
+					</div>
+					</div>
+					<div class="mb-3">
+						<button class="btn btn-dark" style="border-radius: 10px" id="cancelBtn">주문취소신청</button>
 						<a class="btn btn-gray-500" type="button"
-							th:href="@{/page/buyer/orderList}" id="retract">취소</a>
+							th:href="@{/page/buyer/orderList}" style="border-radius: 10px" id="retract">취소</a>
 					</div>
 				</div>
 			</div>
@@ -83,6 +88,23 @@
 	<script>
 	
 	//일반사용자
+	
+		$('#accountOwner').on('keyup', function(event){
+		  const owner = /[^ㄱ-ㅎ|가-힣]/g; // 한글만 허용
+		  const del = event.target;
+		  if (owner.test(del.value)) {
+		    del.value = del.value.replace(owner, '');
+		  }
+		}); 	
+		
+		$('#accountNumber').on('keyup', function(event){
+			  const num = /[^0-9]/g;
+			  const del = event.target;
+			  if (num.test(del.value)) {
+			    del.value = del.value.replace(num, '');
+			  }
+		}); 
+		
 		$('#cancelBtn').on('click', function(e) {
 					console.log('click')
 					// 사용자가 입력한 반품 사유와 주소 정보 가져오기
@@ -139,7 +161,7 @@
 						data : JSON.stringify(cancelData),
 						success : function(response) {
 							alert('취소 신청이 성공적으로 처리되었습니다.');
-							location.href="/page/buyer/orderList";
+							location.href="/page/buyer/cancelList";
 						},
 						error : function(error) {
 							console.error('취소 신청 실패.');
@@ -281,7 +303,7 @@
 							data : JSON.stringify(cancelData),
 							success : function(response) {
 								VoiceMenual('취소 신청이 성공적으로 처리되었습니다.');
-								location.href="/page/buyer/orderList";
+								location.href="/page/buyer/cancelList";
 							},
 							error : function(error) {
 								console.error('취소 실패.');

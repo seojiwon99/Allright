@@ -41,7 +41,7 @@ public class DetailVO {
    // 멤버 테이블
    String memberId;
    String memberName;
-   int memberTel;
+   String memberTel;
    String memberEmail;
 
    //상품 테이블 조인
@@ -65,6 +65,8 @@ public class DetailVO {
  String searchValue;
  String searchKey;
  
+ Integer pageNum;
+ Integer amount;
  @DateTimeFormat(pattern="yyyy-MM-dd")
  Date fromDate;
  
@@ -101,4 +103,7 @@ public class DetailVO {
    List<OptionDetailVO> optionDetail;
    
    List<CodeVO> code;
+   
+   // 
+   
 }

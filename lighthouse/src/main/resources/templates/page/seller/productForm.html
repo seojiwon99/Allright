@@ -1236,11 +1236,25 @@
 
          // 임시저장
          $(".storage").on("click", function (e) {
+        	 e.preventDefault();
+          
+             let select = $('select[name="categoryCode"]');
+             if ($(select).val() == null || $(select).val() == "") {
+                alert("카테고리를 넣어주세요");
+                return;
+             }
+             let inputfile = $('#imgName');
+             let files = inputfile[0].files;
+             if (files.length == 0) {
+                alert("대표이미지를 등록해주세요");
+                inputfile.focus();
+                return;
+             }
             e.preventDefault();
             let inputTag = $("<input/>");
             inputTag.attr("name", "productExstatus");
             inputTag.prop("type", "hidden");
-            $(inputTag).val("N");
+            $(inputTag).val("C");
 
             let detailData = JSON.parse(localStorage.getItem("detail"));
             if (detailData != null) {
@@ -1268,7 +1282,7 @@
                    }
                 }
              }
-
+			
             test22 = "/insertProduct"
             $("#insertForm").append(inputTag);
             $("#insertForm").submit();
@@ -1325,6 +1339,8 @@
                optionNum: $('#optionNum').val(),
 
 
+               
+               
             }
             //let optionDetail = [];
             // 옵션 저장
@@ -1508,11 +1524,7 @@
                return;
             }
             }
-           
-           
-
-            
-
+                     
             // 옵션 검사 해야함
             let inputfile = $('#imgName');
             let files = inputfile[0].files;
@@ -1538,8 +1550,6 @@
                inputfile.focus();
                return;
             }
-
-          
 
             let detailImg = $(".imgName");
             let detailContent = $(".imgContet");
@@ -1572,7 +1582,7 @@
                return;
             }
 
-            if ($("#deliveryService").val() == "") {
+            if ($("#deliveryService").val() == null || $("#deliveryService").val() == "") {
                alert("택배사를 선택해주세요");
                $("#deliveryService").focus();
                return;
@@ -1621,7 +1631,7 @@
             }
             test22 = "/insertProduct";
 
-            $("#insertForm").submit();
+           	$("#insertForm").submit();
          })
 
          // 상품명 유효성 검사
@@ -1692,6 +1702,8 @@
                return false;
             }
             if (Number(cost) > Number($('#productCost').val())) {
+               console.log("cost" + cost);
+               console.log($('#productCost').val());
                alert("할인가가 판매가보다 높을수 없습니다.");
                $('#salePrice').focus();
                return false;
@@ -1803,7 +1815,7 @@
                alert("숫자만 입력가능합니다.");
                return false;
             }
-            if (cost <= 0) {
+            if (cost < 0) {
                alert("최소 금액은 0원 이상이여야합니다.");
                return false;
             }
@@ -1867,7 +1879,7 @@
                alert("숫자만 입력가능합니다.");
                return false;
             }
-            if (cost <= 0) {
+            if (cost < 0) {
                alert("수량은 0보다 커야합니다.");
                return false;
             }
@@ -2047,7 +2059,7 @@
                $('#deliveryCost').focus();
                return false;
             }
-            if (cost <= 0) {
+            if (cost < 0) {
                alert("최소 금액은 0원 이상이여야합니다.");
                $('#deliveryCost').focus();
                return false;
@@ -2072,7 +2084,7 @@
                $('#exchangeCost').focus();
                return false;
             }
-            if (cost <= 0) {
+            if (cost < 0) {
                alert("최소 금액은 0원 이상이여야합니다.");
                $('#exchangeCost').focus();
                return false;
@@ -2097,7 +2109,7 @@
                $('#returnCost').focus();
                return false;
             }
-            if (cost <= 0) {
+            if (cost < 0) {
                alert("최소 금액은 0원 이상이여야합니다.");
                $('#returnCost').focus();
                return false;

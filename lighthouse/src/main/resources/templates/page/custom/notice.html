@@ -15,7 +15,7 @@
    0번 다시듣기
    tab키 다음공지읽어주기
    shift + tab 이전공지 
-   shift + d 누르면 공지상세보기
+   enter 누르면 공지상세보기
 </textarea>
 
 	<input type="hidden" value="0" id="index">
@@ -325,7 +325,7 @@
 						}
 					}else if(e.keyCode == 57) {
                   location.href = "/";
-			   	}else if(e.shiftKey && e.keyCode==68){
+			   	}else if($('.noticeLi:focus').length != 0  && e.keyCode == 13){
 					let child = $(':focus').children().eq(0);
 					let code = $(child).children().val(); 
 					let tt = $('#current').val();

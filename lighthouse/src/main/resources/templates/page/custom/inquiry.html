@@ -226,59 +226,6 @@
                VoiceReturnRead(msg);
             }
 
-            $('#addBtn').on('click', function () {
-               let title = $('#title').val();
-               let content = $('#content').val();
-               console.log(title);
-               console.log(content);
-               let data = {
-                  customInquiryTitle: title,
-                  customInquiryContent: content
-               }
-
-               if (title == '') {
-                  let msg = '제목이 비어있습니다 엔터키를 누르고 제목을 입력해주세요.';
-                  VoiceReturnRead(msg);
-
-                  $('#title').focus();
-                  return;
-               }
-               if (content == '') {
-                  let msg = '내용이 비어있습니다 엔터키를 누르고 제목을 입력해주세요.';
-                  VoiceReturnRead(msg);
-                  $('#content').focus();
-                  return;
-               }
-               ajaxFnc(data);
-
-            })
-
-           /*  function ajaxFnc01(obj) {
-               console.log(obj);
-               $.ajax({
-                  url: '/custom/inquiryInsert',
-                  type: 'post',
-                  data: JSON.stringify(obj),
-                  contentType: 'application/json',
-                  success: function (result) {
-                     if (result == 'success') {
-                        let txt = "문의 성공";
-                        VoiceReturnRead(txt);
-                        alert("문의 성공");
-                        location.href = "/"
-                     } else {
-                        let txt = "문의 실패";
-                        VoiceReturnRead(txt);
-                     }
-                  },
-                  error: function (err) {
-                     console.log(err);
-                  }
-               })
-
-            } */
-
-
          } //ttsInit()의 if문
       } // ttsInit() close
 
@@ -318,7 +265,7 @@
 	                  
 	                  location.href = "/"
 	               } else {
-	                  let msg = "문의 실패했습니다. 다시 등록해주세요";
+	                  let msg = "문의 실패하셨습니다. 다시 등록해주세요";
 	                  VoiceReturnRead(msg);
 	               }
            	  }else{
@@ -326,7 +273,7 @@
 	                  alert("등록 되었습니다.");
 	                  location.href = "/"
 	               } else {
-	                  alert("문의 실패");
+	                  alert("문의 실패하셨습니다. 다시 등록해주세요");
 	               }
            		  
            	  }

@@ -6,13 +6,13 @@
 
 <!-- Content -->
 <div layout:fragment="content">
-   <!-- BREADCRUMB -->
+   <!-- BREADCRUMB 
    <nav class="py-5">
       <div class="container">
          <div class="row">
             <div class="col-12">
-
-               <!-- Breadcrumb -->
+-->
+               <!-- Breadcrumb 
                <ol class="breadcrumb mb-0 fs-xs text-gray-400">
                   <li class="breadcrumb-item"><a class="text-gray-400"
                      href="index.html">Home</a></li>
@@ -23,49 +23,46 @@
          </div>
       </div>
    </nav>
-
+-->
    <!-- CONTENT -->
    <section class="pt-7 pb-15">
       <div class="container">
       	<div class="row justify-content-center">
       		<div class="col-12 col-lg-10 col-xl-8" id="exchForm">
       			<h2>교환 신청 페이지</h2>
- 
- 
-      			 <input type="hidden" th:value="${exchange}" id="hidden">
       			<div class="mb-3">
+      			 <input type="hidden" th:value="${exchange}" id="hidden">
       				<label>주문번호</label>
-      				<input type="text" class="form-label" id="orderCode" th:value="${exchange.orderCode}" tabindex="0" readonly>
+      				<input type="text" class="form-label" id="orderCode" th:value="${exchange.orderCode}" tabindex="0" readonly style="border: 0px">
       				<label>주문상세번호</label>
-      				<input type="text" class="form-label" id="orderDetailCode" th:value="${exchange.orderDetailCode}" readonly>
+      				<input type="text" class="form-label" id="orderDetailCode" th:value="${exchange.orderDetailCode}" readonly style="border: 0px">
       			</div>
       			<div class="mb-3">
-      				<label>상품명</label>
-      				<input type="text" class="form-label" id="productName" th:value="${exchange.productName}" readonly>
+      				<label>상품 명 : </label>
+      				<input type="text" class="form-control mt-2" id="productName" th:value="${exchange.productName}" readonly>
       			</div>
       			<div class="mb-3">
       			<!-- Select -->
-                   <select class="form-select form-select-xxs w-auto" id="select">
+                   <select class="form-select" id="select">
                       <option value="선택">교환 사유를 선택해주세요</option>
                       <option th:each="codes: ${codeList}" th:value="${codes.codeId}" th:text=${codes.codeName}></option>
                    </select>
       			</div>
       			<div class="mb-3">
-      				<textarea class="form-control" id="content" rows="5" placeholder="교환 사유를 입력해주세요"></textarea>
+      				<textarea class="form-control" id="content" rows="5" placeholder="자세한 교환 사유를 입력해주세요" style="resize: none;"></textarea>
       			</div>
       			<div class="mb-3">
-      			
+      				<div>
+      				<input type="text" size=20 id="sample6_postcode" placeholder="우편번호" >
+					<input type="text" size=40 id="sample6_address" placeholder="주소">
+					<button type="button" style="border-radius: 10px;background-color: black; color: white;" onclick="sample6_execDaumPostcode()" id="addrBtn" value="">우편번호 찾기</button>
+					</div>
+					<div class="pt-3">
+					<input type="text" class="form-control" id="sample6_detailAddress" placeholder="상세주소">
+					<input type="text" class="form-control" id="sample6_extraAddress" placeholder="">
+					</div>
       			</div>
-      			<div class="mb-3">
-					<input type="button" onclick="sample6_execDaumPostcode()" id="addrBtn" value="우편번호 찾기"><br>
-      				<input type="text" size=20 id="sample6_postcode" placeholder="우편번호" ><br>
-					<input type="text" size=40 id="sample6_address" placeholder="주소"><br>
-					<input type="text" size=40 id="sample6_detailAddress" placeholder="상세주소">
-					<input type="text" id="sample6_extraAddress" placeholder="">
-      			</div>
-      			
       			<div class="col-12 text-center">
-      			
       			<button class="btn btn-dark" id="exchangeBtn" style="border-radius: 10px">교환신청</button>
       			<a class="btn btn-gray-500" type="button" th:href="@{/page/buyer/orderList}" id="retract" style="border-radius: 10px">취소</a>
       			</div>
@@ -191,7 +188,7 @@
 	        success: function(response) {
 	          // AJAX 요청이 성공적으로 완료된 경우 처리
 	          alert('교환 신청이 성공적으로 처리되었습니다.');
-	          location.href="/page/buyer/orderList";
+	          location.href="/page/buyer/exchangeList";
 	        },
 	        error: function(error) {
 	          // AJAX 요청이 실패한 경우 처리
@@ -270,7 +267,7 @@
 		   	        success: function(response) {
 		   	          // AJAX 요청이 성공적으로 완료된 경우 처리
 		   	          VoiceMenual('교환 신청이 성공적으로 처리되었습니다.');
-		   	          location.href="/page/buyer/orderList";
+		   	          location.href="/page/buyer/exchangeList";
 		   	        },
 		   	        error: function(error) {
 		   	          // AJAX 요청이 실패한 경우 처리

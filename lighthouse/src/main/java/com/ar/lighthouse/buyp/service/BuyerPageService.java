@@ -83,7 +83,7 @@ public interface BuyerPageService {
 	public int getPageCnt(String memberId);
 
 	// 주문 목록 option 선택
-	public List<DetailVO> getOptionList(DetailVO detailVO);
+	public List<DetailVO> getOptionList(DetailVO detailVO, Criteria cri);
 
 	// 찜 insert
 	public int addWish(WishVO wishVO);
@@ -102,4 +102,6 @@ public interface BuyerPageService {
 	public int totalReturnCnt(String memberId);
 	
 	public int totalExchangeCnt(String memberId);
+	
+	public int getOptionCnt(DetailVO detailVO);
 }

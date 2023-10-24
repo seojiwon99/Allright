@@ -239,6 +239,8 @@ h3{
 						            <td th:text="${cancel.memberId}" class="visually-hidden"></td>
 						            <td th:text="${cancel.orderCode}" class="visually-hidden"></td>
 						            <td th:text="${cancel.cancelCode}" class="visually-hidden"></td>
+						            <td th:text="${cancel.orderCnt}" class="visually-hidden"></td>
+						            <td th:text="${cancel.optionDetailCode}" class="visually-hidden"></td>
 						        </tr>
 						        <!-- 반복문 종료 -->
 						    </tbody>
@@ -346,7 +348,6 @@ function displayDate(range) {
   
 	// endDate 값을 input 요소에 설정
 	if (startDate) {
-	endDate.setDate(endDate.getDate() + 1); // 일자를 +1 하기
 	const formattedEndDate = endDate.toISOString().split('T')[0];
 
 	//   formattedYear = formattedEndDate.
@@ -386,6 +387,8 @@ function displayDate(range) {
        let memberId = $(tag).closest('tr').find('td:eq(9)').text();
        let orderCode = $(tag).closest('tr').find('td:eq(10)').text();
        let refundTypecode = $(tag).closest('tr').find('td:eq(11)').text();
+       let orderCnt = $(tag).closest('tr').find('td:eq(12)').text();
+       let optionDetailCode = $(tag).closest('tr').find('td:eq(13)').text();
        let refundType = "C";
        let cancelReason = $(tag).closest('tr').find('td:eq(4)').text();
        
@@ -396,12 +399,15 @@ function displayDate(range) {
     		   refundTypecode : refundTypecode,
     		   refundType :refundType  ,
     		   cancelReason : cancelReason,
-    		   memberId : memberId
+    		   memberId : memberId,
+    		   orderCnt,
+    		   optionDetailCode
        }
        refundListVO.push(OrderChkVO);
     });
-
+		console.log(refundListVO);
      
+		alert('hk');
       let $form = $('<form>', {
           method: 'POST',
           action: '/seller/orders/cancel'
@@ -436,7 +442,7 @@ function displayDate(range) {
 	})
   
 	$.ajax({
-		url:'cancelReject',
+		url:'/seller/cancelReject',
 		type: 'post',
 		contentType : 'application/json',
 		data : JSON.stringify(cancelChk)

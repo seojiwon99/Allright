@@ -311,7 +311,6 @@ public class ProductController {
       suBetw = suBetw.replaceAll("-", "/");
       model.addAttribute("staticList", productService.getStaticList(memberId,preBetw,suBetw));
       model.addAttribute("prev", preBetw);
-
       return "page/seller/statistics";
    }
    
@@ -501,7 +500,7 @@ public class ProductController {
 	 * "page/seller/modifyForm :: #thirdOfChildCate"; }
 	 */
 
-   // 상품 등록
+ // 상품 등록
 	@PostMapping("/insertProduct")
 	public String addProduct(List<MultipartFile> files, ProductVO productVO, HttpServletRequest req,
 			RedirectAttributes rtt, ImgsListVO imgsVO) {
@@ -516,19 +515,16 @@ public class ProductController {
 		System.out.println(files);
 		int i = 0;
 			for (MultipartFile uploadFile : files) {
-				System.out.println("asdasd");
 				if(!uploadFile.isEmpty()) {
-				System.out.println("@@@@@@@@@@@@@");
 				String originalName = uploadFile.getOriginalFilename();
 				String fileName = originalName.substring(originalName.lastIndexOf("//") + 1);
 				productVO.getProductImg().get(i).setImgName(fileName);
-				System.out.println(fileName);
 				// 날짜 폴더 생성
 				String folderPath = makeFolder();
 				String uuid = UUID.randomUUID().toString(); // 유니크한 이름 때문에
 				productVO.getProductImg().get(i).setUploadName(uuid + "_" + fileName);
 				
-				String uploadFileName = folderPath + "/" + uuid + "_" + fileName;
+				String uploadFileName = folderPath +"/"+ uuid + "_" + fileName;
 				// System.out.println("uploadFileName" + uploadFileName);
 				productVO.getProductImg().get(i).setUploadPath(folderPath);
 				
@@ -544,9 +540,9 @@ public class ProductController {
 						int idx = originalName.indexOf(".");
 						
 						FileOutputStream thumbnail = new FileOutputStream(
-								new File(uploadPath + "\\" + folderPath, "s_" + uuid + "_" + originalName));
+								new File(uploadPath + "/" + folderPath, "s_" + uuid + "_" + originalName));
 						FileInputStream input = new FileInputStream(
-								new File(uploadPath + "\\" + folderPath, uuid + "_" + originalName));
+								new File(uploadPath + "/" + folderPath, uuid + "_" + originalName));
 						Thumbnailator.createThumbnail(input, thumbnail, 100, 100);
 						
 						thumbnail.close();
@@ -611,9 +607,9 @@ public class ProductController {
 						int idx = originalName.indexOf(".");
 	
 						FileOutputStream thumbnail = new FileOutputStream(
-								new File(uploadPath + "\\" + folderPath, "s_" + uuid + "_" + originalName));
+								new File(uploadPath + "/" + folderPath, "s_" + uuid + "_" + originalName));
 						FileInputStream input = new FileInputStream(
-								new File(uploadPath + "\\" + folderPath, uuid + "_" + originalName));
+								new File(uploadPath + "/" + folderPath, uuid + "_" + originalName));
 						Thumbnailator.createThumbnail(input, thumbnail, 100, 100);
 	
 						thumbnail.close();

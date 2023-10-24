@@ -99,7 +99,7 @@
                         <label class="form-label" for="productName">
                            상품명 *
                         </label>
-                        <input class="form-control form-control-sm" id="productName" type="email" placeholder="상품명을 입력해주세요" name="productName" maxlength="70" th:value="${product[0].productName}">
+                        <input class="form-control form-control-sm" id="productName" type="text" placeholder="상품명을 입력해주세요" name="productName" maxlength="70" th:value="${product[0].productName}">
                      </div>
                   </div>
                   <div class="col-12 col-md-4">
@@ -178,8 +178,8 @@
 							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].optionLast'" th:id="'optionLast' + ${index.index} + ''" th:value="${pro.optionLast}"></td>
 							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].optionPrice'" th:id="'optionPrice' + ${index.index} + ''" th:value="${pro.optionPrice}"></td>
 							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].optionCount'" th:id="'optionCount' + ${index.index} + ''" th:value="${pro.optionCount}"></td>
-							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].minOrder'" th:id="'minOrder' + ${index.index} + ''" th:value="${pro.minOrder}"></td>
-							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].maxOrder'" th:id="'maxOrder' + ${index.index} + ''" th:value="${pro.maxOrder}"></td>
+							    <td><input type="number" th:name="'optionDetail[' + ${index.index} + '].minOrder'" th:id="'minOrder' + ${index.index} + ''" th:value="${pro.minOrder}"></td>
+							    <td><input type="number" th:name="'optionDetail[' + ${index.index} + '].maxOrder'" th:id="'maxOrder' + ${index.index} + ''" th:value="${pro.maxOrder}"></td>
 							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].optionDetailCode'" th:id="'optionDetailCode' + ${index.index} + ''" th:value="${pro.optionDetailCode}" style="display:none;"></td>
 							    <td><input type="text" th:name="'optionDetail[' + ${index.index} + '].optionSellStatus'" th:id="'optionSellStatus' + ${index.index} + ''" th:value="${pro.optionSellStatus}" style="display:none;"></td>
 							
@@ -188,7 +188,8 @@
                      </table>
                   </div>
                </div>
-
+               
+			   <input type="text" th:value="${product[0].productExstatus}" id="productExSta" class="visually-hidden"/>
                <div class="col-12 col-lg-12">
                      <div class="form-group mb-8">
                         <div class="input-group mb-3">
@@ -474,7 +475,7 @@
                                           </tbody>
                                        </table>
                                     </div>
-
+									
                                     <!-- 상세내용 -->
                                     <div style="padding: 48px 0px">
                                        <div class="Mdetail"></div>
@@ -507,7 +508,8 @@
          
          
          $(document).ready(function () {
-        	 
+        	 localStorage.removeItem('detail');
+             localStorage.removeItem('product');
         	 $(window).on('beforeunload', (event) => {
          		const currentURL = test22;
   	   		    
@@ -761,7 +763,36 @@
                        }
                     }
                  }
-
+			
+                 if (userData.optionDetail.length > 0) {
+                     for (let i = 0; i < userData.optionDetail.length; i++) {
+                        let trtag = $("<tr/>");
+                        let obj = userData.optionDetail[i];
+                        for (var key in obj) {
+                           let tdTag = $("<td/>");
+                           let inputTag = $('<input/>');
+                           if (key == "optionLast") {
+                              inputTag.attr("name", "optionDetail[" + i + "]." + key);
+                              inputTag.attr("id", key + i);
+                              inputTag.addClass("form-control");
+                              inputTag.attr("type", "text");
+                              inputTag.prop("readonly", true);
+                              $(inputTag).val(obj[key]);
+                           } else {
+                              inputTag.attr("name", "optionDetail[" + i + "]." + key);
+                              inputTag.addClass("form-control");
+                              inputTag.attr("id", key + i);
+                              inputTag.attr("type", "number");
+                              inputTag.attr("placeholder", 0);
+                              inputTag.css("width", "100px");
+                              $(inputTag).val(obj[key]);
+                           }
+                           tdTag.append(inputTag);
+                           trtag.append(tdTag);
+                        }
+                        $('#optiontab').append(trtag);
+                     }
+                  }
               }
               if(detailData != null){
                  let formT = $('#insertForm');
@@ -917,17 +948,7 @@
            }
         })
 
- 		 $(document).on('click', '.submit', function (e) {
-            let option = $("input[name='optionName']").val();
-            e.preventDefault();
-            let form = $('#updateForm');
-            let data = $(form).find('input[type != hidden]');
-            test22 ='/modifyProductContent?productCode='+ productCode
-            localStorage.removeItem('product')
-            form.submit();
-            
 
-         })
 
        
 
@@ -1151,46 +1172,14 @@
                 }
              }
  
-             // for(let i = 0; i < optionD.length; i++){
-             //    let optionN = $(optionD[i]).children('.optionN').val();
-             //    let optionV = $(optionD[i]).children('.optionV').val();
-             //    let optionVal = optionV.split(',');
- 
-             //    for(let j = 0; j < optionVal.length; j++){
- 
-             //       let tr = $('<tr/>');
-             //       td = $('<td />');
-             //       let input = $('<input />').attr('value', optionN);
-             //       input.attr('name','option['+idx+'].optionName');
-             //       input.attr('readonly','true');
-             //       td.append(input);
-             //       tr.append(td);
- 
-             //       td = $('<td/>');
-             //       input = $('<input />').attr('value', optionVal[j]);
-             //       input.attr('name','option['+idx+'].optionValue');
-             //       input.attr('readonly','true');
-             //       td.append(input);
-             //       tr.append(td);
- 
-             //       // td = $('<td/>');
-             //       // let inputN = $('<input />').attr('type','number');
-             //       // inputN.attr('name','option['+idx+'].optionCount');
-             //       // inputN.attr('id','option['+idx+'].optionCount'+j);
-             //       // td.append(inputN);
-             //       // tr.append(td);
- 
-             //       // td = $('<td/>');
-             //       // inputN = $('<input />').attr('type','number');
-             //       // inputN.attr('name','option['+idx+'].optionPrice');
-             //       // inputN.attr('id','option['+idx+'].optionPrice'+j);
-             //       // td.append(inputN);
-             //       // tr.append(td);
- 
-             //       idx++;
-             //       tbody.append(tr);
-             //    }
-             // }
+             $('#optionNum').val("Y");
+             if(idx2 < 5){
+          	   let height = idx2 * 150;
+          	   $('.tableWrapper').css("height",height+"px");
+             }else{
+	               $('.tableWrapper').css("height","600px");
+          	   
+             }
           }
 
        })
@@ -1323,222 +1312,589 @@
          });
        
          
-        // 임시저장
-         $('.storage').on('click',function(e){
-
-         });
-
-         // 수정 이벤트
-         $('.submit').on('click',function(e){
-        	 e.preventDefault();
-
-             let detailData = JSON.parse(localStorage.getItem("detail"));
-             if(detailData != null){
-                let textarea = $('<textarea>' + detailData.content + '</textarea>');
-                textarea.css("display", "none");
-                textarea.attr("name", "productContent");
-                $("#updateForm").prepend(textarea);
-                for(let i = 0; i<detailData.img.length; i++){
-                   let divTab = $('<div/>');
-                   let obj = detailData.img[i];
-                   for(var key in obj){
-                      let input = $('<input/>');
-                      $(input).val(obj[key]);
-                      input.attr("type", "hidden");
-                      input.attr("name","imgsVO["+i+"]."+key);
-                      divTab.append(input);
-                   }
-                   $(divTab).appendTo($("#updateForm"));
-
-             }
-                test22 ='/modifyProductContent?productCode='+ productCode
-                
-                
-             }
 
 
+       $('.submit').on('click', function (e) {
+    	   e.preventDefault();
+           let chk = "N";
+           
+           if (!idChk($("#productName").val())) {
+               return;
+            }
 
-             if (!idChk($("#productName").val())) {
-                return;
-             }
+            if (!productCostChk($('#productCost').val())) {
+               return;
+            }
 
-             if (!productCostChk($('#productCost').val())) {
-                return;
-             }
+            if (!salePriceChk($('#salePrice').val())) {
+               return;
+            }
 
-             if (!salePriceChk($('#salePrice').val())) {
-                return;
-             }
+            if ($('#optCnt').val() == 0) {
+               if (!productCountChk($('#productCount').val())) {
+                  return;
+               }
+            }
 
-             if ($('#optCnt').val() == 0) {
-                if (!productCountChk($('#productCount').val())) {
-                   return;
-                }
-             }
+            
 
-             if ($('#optCnt').val() != 0) {
-                if (!optionChk()) {
-                   return;
-                }
+         // 옵션 검사 해야함
+            let inputfile = $('#imgName');
+            let files = inputfile[0].files;
+            
 
-                if (!changeOption()) {
-                   return;
-                }
-             }
+            if ($("#productImgCon").val() == "") {
+               alert("이미지 대체 텍스트를 입력해주세요");
+               inputfile.focus();
+               return;
+            }
+            let chk2 = $("#productImgCon").val();
+            if (chk2.length > 100) {
+               alert("이미지 대체 텍스트 100자 이내입니다.");
+               inputfile.focus();
+               return;
+            }
 
-             let optionDetailChk = $("#optiontab tr");
-             let chk = "N";
 
-             $(optionDetailChk).each(function (idx, item) {
-                let n = 0;
-                chk = "N";
-                let count = 0;
-                let min = 0;
-                let max = 0;
-                let inputBox = $(item).find("input");
-                for (let i = 0; i < inputBox.length; i++) {
-                   let tbox = inputBox[i];
-                   if ($(tbox).attr("id") == "optionPrice" + idx) {
-                      if (!optPrice($(tbox).val())) {
-                         $(tbox).focus();
-                         break;
-                      }
-                      n++
-                   }
-                   
-                   if ($(tbox).attr("id") == "optionCount" + idx) {
-                      if (!optCount($(tbox).val())) {
-                         count = $(tbox).val();
-                         console.log("count" + count);
-                         $(tbox).focus();
-                         break;
-                      }
-                      console.log(count);
-                      n++
-                   }
-                   if ($(tbox).attr("id") == "minOrder" + idx) {
-                      min = $(tbox).val();
-                      if (!optMin($(tbox).val())) {
-                         $(tbox).focus();
-                         break;
-                      }
-                      n++
-                   }
-                   if ($(tbox).attr("id") == "maxOrder" + idx) {
-                      max = $(tbox).val();
-                      if (!optMax($(tbox).val())) {
-                         $(tbox).focus();
-                         break;
-                      }
-                      
-                      n++
-                   }
-                }
-                if (n != 4) {
-                   return false;
-                }
-                chk = "Y";
-             })
+            let detailImg = $(".imgName");
+            let detailContent = $(".imgContet");
 
-             if (chk == "N") {
-                return;
-             }
+            // 브랜드 
+            if (!brandChk($("#productBrand").val())) {
+               return;
+            }
 
-             // 옵션 검사 해야함
-             let inputfile = $('#imgName');
-             let files = inputfile[0].files;
-             if (files.length == 0) {
-                alert("대표이미지를 등록해주세요");
-                inputfile.focus();
-                return;
-             }
+            if (!orginchk($("#productOrigin").val())) {
+               return;
+            }
 
-             if ($("#productImgCon").val() == "") {
-                alert("이미지 대체 텍스트를 입력해주세요");
-                inputfile.focus();
-                return;
-             }
-             let chk2 = $("#productImgCon").val();
-             if (chk2.length > 100) {
-                alert("이미지 대체 텍스트 100자 이내입니다.");
-                inputfile.focus();
-                return;
-             }
+            if (!makerChk($("#productMakeorigin").val())) {
+               return;
+            }
+            if(!locationChk($("#productLocation").val())){
+               return;
+            }
 
-             if (!imgChk(files[0].name, files[0].size)) {
-                inputfile.focus();
-                return;
-             }
+            if (!deliveryCostChk($("#deliveryCost").val())) {
+               return;
+            }
 
-             if ($("#insertForm").find('textarea[name="productContent"]').length == 0) {
-                alert("상세 설명을 입력해주세요");
-                return;
-             }
+            if (!exchangeCostChk($("#exchangeCost").val())) {
+               return;
+            }
+
+            if (!returnCost($("#returnCost").val())) {
+               return;
+            }
+
+            if ($("#deliveryService").val() == "") {
+               alert("택배사를 선택해주세요");
+               $("#deliveryService").focus();
+               return;
+            }
+            
+            let detailData = JSON.parse(localStorage.getItem("detail"));
+            if(detailData != null){
+               let textarea = $('<textarea>' + detailData.content + '</textarea>');
+               textarea.css("display", "none");
+               textarea.attr("name", "productContent");
+               $("#insertForm").prepend(textarea);
+               for(let i = 0; i<detailData.img.length; i++){
+                  let divTab = $('<div/>');
+                  let obj = detailData.img[i];
+                  for(var key in obj){
+                     let input = $('<input/>');
+                     $(input).val(obj[key]);
+                     input.attr("type", "hidden");
+                     input.attr("name","imgsVO["+i+"]."+key);
+                     divTab.append(input);
+                  }
+                  $(divTab).appendTo($("#insertForm"));
+
+               }
+            }
+            
              if ($('textarea[name="productContent"]').val() == "") {
                 alert("상세 설명을 적어주세요");
                 return;
              }
-
-             let detailImg = $(".imgName");
-             let detailContent = $(".imgContet");
-
-
              for (let x = 0; x < detailImg.length; x++) {
-                let chk1 = detailImg[x];
-                let chk2 = detailContent[x];
+                 let chk1 = detailImg[x];
+                 let chk2 = detailContent[x];
 
-                if ($(chk1).val == "") {
-                   alert("상세 설명 이미지를 넣어주세요");
-                   return;
-                }
-                if ($(chk2).val() == "") {
-                   alert("상세 설명 이미지 대체텍스트를 넣어주세요");
-                }
-             }
-
-             // 브랜드 
-             if (!brandChk($("#productBrand").val())) {
-                return;
-             }
-
-             if (!orginchk($("#productOrigin").val())) {
-                return;
-             }
-
-             if (!makerChk($("#productMakeorigin").val())) {
-                return;
-             }
-             if(!locationChk($("#productLocation").val())){
-                return;
-             }
-
-             if (!deliveryCostChk($("#deliveryCost").val())) {
-                return;
-             }
-
-             if (!exchangeCostChk($("#exchangeCost").val())) {
-                return;
-             }
-
-             if (!returnCost($("#returnCost").val())) {
-                return;
-             }
-
-             if ($("#deliveryService").val() == "") {
-                alert("택배사를 선택해주세요");
-                $("#deliveryService").focus();
-                return;
-             }
+                 if ($(chk1).val == "") {
+                    alert("상세 설명 이미지를 넣어주세요");
+                    return;
+                 }
+                 if ($(chk2).val() == "") {
+                    alert("상세 설명 이미지 대체텍스트를 넣어주세요");
+                 }
+              }
+             
              
              test22 ='/modifyProductContent?productCode='+ productCode
              $('#updateForm').submit();
          })
 		 
-		
-	
-		
+		// 상품명 유효성 검사
+         function idChk(id) {
+            if (id == '') {
+               alert("상품명을 입력해주세요");
+               $("#productName").focus();
+               $("#productName").select();
+               return false;
+            }
+            if (id.length > 50) {
+               alert("상품명은 1~50자 이하로 입력해주세요");
+               $("#productName").focus();
+               $("#productName").select();
+               return false;
+            }
 
-		   
+            return true;
+         }
+
+         // 판매가 체크
+         function productCostChk(cost) {
+            let check = /^[0-9]+$/;
+            if (cost == '') {
+               alert("판매가를 입력해주세요.");
+               $('#productCost').focus();
+               return false;
+            }
+            if (!check.test(cost)) {
+               alert("숫자만 입력가능합니다.");
+               $('#productCost').focus();
+               return false;
+            }
+            if (cost <= 1) {
+               alert("최소 금액은 1원 이상이여야합니다.");
+               $('#productCost').focus();
+               return false;
+            }
+            if (cost > 99999999) {
+               alert("1억 이상은 입력하실수 없습니다.");
+               $('#productCost').focus();
+               return false;
+            }
+            return true;
+         }
+
+         // 할인가 체크
+         function salePriceChk(cost) {
+            let check = /^[0-9]+$/;
+            if (cost == '') {
+               alert("할인가를 입력해주세요.");
+               $('#salePrice').focus();
+               return false;
+            }
+            if (!check.test(cost)) {
+               alert("숫자만 입력가능합니다.");
+               $('#salePrice').focus();
+               return false;
+            }
+            if (cost <= 1) {
+               alert("최소 금액은 1원 이상이여야합니다.");
+               $('#salePrice').focus();
+               return false;
+            }
+            if (cost > 99999999) {
+               alert("1억 이상은 입력하실수 없습니다.");
+               $('#salePrice').focus();
+               return false;
+            }
+            if (cost > $('#productCost').val()) {
+               console.log("cost" + cost);
+               console.log($('#productCost').val());
+               alert("할인가가 판매가보다 높을수 없습니다.");
+               $('#salePrice').focus();
+               return false;
+            }
+            return true;
+         }
+
+         // 상품 갯수 체크
+         function productCountChk(cost) {
+            let check = /^[0-9]+$/;
+            if (cost == '') {
+               alert("수량를 입력해주세요.");
+               $('#productCount').focus();
+               return false;
+            }
+            if (!check.test(cost)) {
+               alert("숫자만 입력가능합니다.");
+               $('#productCount').focus();
+               return false;
+            }
+            if (cost < 1) {
+               alert("수량은 0보다 커야합니다.");
+               $('#productCount').focus();
+               return false;
+            }
+            if (cost > 99999999) {
+               alert("수량은 1억개보다 작아야합니다.");
+               $('#productCount').focus();
+               return false;
+            }
+            return true;
+         }
+
+      // 옵션 등록 input 유효성 검사
+         function optionNChk(name, idx) {
+            if (name == "") {
+               alert((idx + 1) + "번째 옵션명을 적어주세요");
+               $('#optionName' + idx).focus();
+               return false;
+            }
+            if (name.length > 15) {
+               alert("옵션명 길이는 15자 입니다.");
+               $('#optionName' + idx).focus();
+               return false;
+            }
+
+            return true;
+         }
+
+         // 옵션 등록 input 유효성 검사
+         function optionVChk(val, idx) {
+            if (val == "") {
+               alert((idx + 1) + "번째 옵션값을 적어주세요");
+               $('#optionValue' + idx).focus();
+               return false;
+            }
+            if (val.length > 100) {
+               alert("100자 이내로 써주세요");
+               $('#optionValue' + idx).focus();
+               return false;
+            }
+
+            let value = val.split(",");
+            let length = value.length;
+            for (let x = 0; x < length; x++) {
+               if (value[x] == '') {
+                  alert("옵션 값 양식이 틀립니다.");
+                  $('#optionValue' + idx).focus();
+                  return false;
+               }
+
+            }
+            return true;
+         }
+
+
+         function optPrice(cost) {
+            let check = /^[0-9]+$/;
+            if (cost == '') {
+               alert("옵션가를 입력해주세요.");
+               return false;
+            }
+            if (!check.test(cost)) {
+               alert("숫자만 입력가능합니다.");
+               return false;
+            }
+            if (cost < 0) {
+               alert("최소 금액은 0원 이상이여야합니다.");
+               return false;
+            }
+            if (cost > 99999999) {
+               alert("1억 이상은 입력하실수 없습니다.");
+               return false;
+            }
+
+            return true;
+         }
+
+         function optCount(cost) {
+            let check = /^[0-9]+$/;
+            if (cost == '') {
+               alert("수량를 입력해주세요.");
+               return false;
+            }
+            if (!check.test(cost)) {
+               alert("숫자만 입력가능합니다.");
+               return false;
+            }
+            if (cost <= 0) {
+               alert("수량은 0보다 커야합니다.");
+               return false;
+            }
+            if (cost > 99999999) {
+               alert("수량은 1억개보다 작아야합니다.");
+               return false;
+            }
+            return true;
+         }
+
+         function optMin(cost) {
+            let check = /^[0-9]+$/;
+            if (cost == '') {
+               alert("옵션최소수량를 입력해주세요.");
+               return false;
+            }
+            if (!check.test(cost)) {
+               alert("숫자만 입력가능합니다.");
+               return false;
+            }
+            if (cost <= 0) {
+               alert("수량은 0보다 커야합니다.");
+               return false;
+            }
+            if (cost > 99999999) {
+               alert("수량은 1억개보다 작아야합니다.");
+               return false;
+            }
+            return true;
+         }
+
+         function optMax(cost) {
+            let check = /^[0-9]+$/;
+            // if (cost == '') {
+            //    alert("옵션최대수량를 입력해주세요.");
+            //    return false;
+            // }
+            if (!check.test(cost)) {
+               alert("숫자만 입력가능합니다.");
+               return false;
+            }
+            if (cost < 0) {
+               alert("수량은 0보다 커야합니다.");
+               return false;
+            }
+            if (cost > 99999999) {
+               alert("수량은 1억개보다 작아야합니다.");
+               return false;
+            }
+            return true;
+         }
+
+
+
+
+         // 옵션 값 변경 체크
+         function changeOption() {
+            let changechk1 = $('.optionN');
+            let changechk2 = $('.optionV');
+
+
+            if (optbox.length != changechk1.length) {
+               //$('#optionNum').val('N');
+               alert("옵션 값을 체크 해주세요");
+               $('#optionsel').focus();
+               return false;
+            }
+
+            if (optbox1.length != changechk2.length) {
+               //$('#optionNum').val('N');
+               alert("옵션 값을 체크 해주세요");
+               $('#optionsel').focus();
+               return false;
+            }
+            if (changechk1.length == 1) {
+               if ($(optbox).val() != $(changechk1).val()) {
+                  alert("옵션 값이 다릅니다.");
+                  changechk1.focus();
+                  return false;
+               }
+               if ($(optbox1).val() != $(changechk2).val()) {
+                  alert("옵션 값이 다릅니다.");
+                  changechk2.focus();
+                  return false;
+               }
+            } else {
+               for (let s = 0; s < changechk1.length; s++) {
+                  let b1 = optbox[s];
+                  let b2 = changechk1[s];
+                  if ($(b1).val() != $(b2).val()) {
+                     alert("옵션 값이 다릅니다.");
+                     return false;
+                  }
+               }
+
+               for (let s = 0; s < changechk2.length; s++) {
+                  let b1 = optbox1[s];
+                  let b2 = changechk2[s];
+                  if ($(b1).val() != $(b2).val()) {
+                     alert("옵션 값이 다릅니다.");
+                     return false;
+                  }
+               }
+
+            }
+
+
+            return true;
+
+         }
+
+         // 이미지 체크
+         function imgChk(name, size) {
+            var regex = new RegExp("(.*?)\.(jpg|jpeg|png|gif|jfif)$");
+            var maxSize = 5242880; // 5MB
+
+            if (size >= maxSize) {
+               alert("파일 사이즈가 5MB가 넘습니다.");
+               return false;
+            }
+
+            if (!regex.test(name)) {
+               alert("해당 종류의 파일은 업로드할 수 없습니다.");
+               return false;
+            }
+
+            return true;
+         }
+
+
+         // 브랜드 유효성 검사
+         function brandChk(val) {
+            if (val == "") {
+               alert("브랜드를 입력해주세요");
+               $("#productBrand").focus();
+               return false;
+            }
+            if (val.length > 30) {
+               alert("브랜드 30자 이내로 써주세요");
+               $("#productBrand").focus();
+               return false;
+            }
+
+            return true;
+         }
+
+         // 원산지
+         function orginchk(val) {
+            var pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
+            if (val == "") {
+               alert("원산지를 입력해주세요");
+               $("#productOrigin").focus();
+               return false;
+            }
+            if (pattern_spc.test(val)) {
+               alert("원산지에 특수문자는 입력하실수 없습니다.");
+               $("#productOrigin").focus();
+               return false;
+            }
+            if (val.length > 15) {
+               alert("원산지 15이내로 입력해주세요");
+               $("#productOrigin").focus();
+               return false;
+            }
+            return true;
+         }
+
+         // 제조국 유효성 검사
+         function makerChk(val) {
+            var pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
+            if (val == "") {
+               alert("제조국를 입력해주세요");
+               $("#productMakeorigin").focus();
+               return false;
+            }
+            if (pattern_spc.test(val)) {
+               alert("제조국에 특수문자는 입력하실수 없습니다.");
+               $("#productMakeorigin").focus();
+               return false;
+            }
+            if (val.length > 15) {
+               alert("제조국 15이내로 입력해주세요");
+               $("#productMakeorigin").focus();
+               return false;
+            }
+            return true;
+         }
+
+         // 출고지 유효성 검사
+         function locationChk(val) {
+            var pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
+            if (val == "") {
+               alert("출고지를 입력해주세요");
+               $("#productMakeorigin").focus();
+               return false;
+            }
+            if (pattern_spc.test(val)) {
+               alert("제조국에 특수문자는 입력하실수 없습니다.");
+               $("#productMakeorigin").focus();
+               return false;
+            }
+          
+            return true;
+         }
+
+         function deliveryCostChk(cost) {
+             let check = /^[0-9]+$/;
+             if (cost == '') {
+                alert("기본배송비를 입력해주세요.");
+                $('#deliveryCost').focus();
+                return false;
+             }
+             if (!check.test(cost)) {
+                alert("숫자만 입력가능합니다.");
+                $('#deliveryCost').focus();
+                return false;
+             }
+             if (cost < 0) {
+                alert("최소 금액은 0원 이상이여야합니다.");
+                $('#deliveryCost').focus();
+                return false;
+             }
+             if (cost > 99999999) {
+                alert("1억 이상은 입력하실수 없습니다.");
+                $('#deliveryCost').focus();
+                return false;
+             }
+             return true;
+          }
+
+          function exchangeCostChk(cost) {
+             let check = /^[0-9]+$/;
+             if (cost == '') {
+                alert("교환배송비를 입력해주세요.");
+                $('#exchangeCost').focus();
+                return false;
+             }
+             if (!check.test(cost)) {
+                alert("숫자만 입력가능합니다.");
+                $('#exchangeCost').focus();
+                return false;
+             }
+             if (cost < 0) {
+                alert("최소 금액은 0원 이상이여야합니다.");
+                $('#exchangeCost').focus();
+                return false;
+             }
+             if (cost > 99999999) {
+                alert("1억 이상은 입력하실수 없습니다.");
+                $('#exchangeCost').focus();
+                return false;
+             }
+             return true;
+          }
+
+          function returnCost(cost) {
+             let check = /^[0-9]+$/;
+             if (cost == '') {
+                alert("반품배송비를 입력해주세요.");
+                $('#returnCost').focus();
+                return false;
+             }
+             if (!check.test(cost)) {
+                alert("숫자만 입력가능합니다.");
+                $('#returnCost').focus();
+                return false;
+             }
+             if (cost < 0) {
+                alert("최소 금액은 0원 이상이여야합니다.");
+                $('#returnCost').focus();
+                return false;
+             }
+             if (cost > 99999999) {
+                alert("1억 이상은 입력하실수 없습니다.");
+                $('#returnCost').focus();
+                return false;
+             }
+             return true;
+          }
+
 
       </script>
 <style>

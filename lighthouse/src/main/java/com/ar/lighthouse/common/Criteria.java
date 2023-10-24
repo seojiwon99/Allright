@@ -1,5 +1,9 @@
 package com.ar.lighthouse.common;
 
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,6 +17,11 @@ public class Criteria {
 	private String type;
 	private String keyword;
 	
+	 @DateTimeFormat(pattern="yyyy-MM-dd")
+	 Date fromDate;
+	 
+	 @DateTimeFormat(pattern="yyyy-MM-dd")
+	 Date toDate;
 	public Criteria() {
 		this(1,10);
 	}

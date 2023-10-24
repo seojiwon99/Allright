@@ -9,8 +9,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,9 +42,11 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 
 public class BuyerPageController {
-
+	@Autowired
 	BuyerPageService buyerPageService;
 
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	// 주문목록
 	@GetMapping("page/buyer/orderList")
 	public String orderList(@RequestParam(value = "pageNum", required = false) Integer pageNum, Model model, HttpSession session, DetailVO detailVO, Criteria cri) {
@@ -67,12 +71,15 @@ public class BuyerPageController {
 	// 주문 Option 
 
 	@GetMapping("page/buyer/orderOption")
-	public String orderOption(Model model, HttpSession session, DetailVO detailVO) {
+	public String orderOption(Model model, HttpSession session, Criteria cri, DetailVO detailVO) {
+		System.out.println("cri=============" + cri);
+		System.out.println("detailVO=============" + detailVO);
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
 		String memberId = memberVO.getMemberId();
-
 		detailVO.setMemberId(memberId);
-		List<DetailVO> orderList = buyerPageService.getOptionList(detailVO);
+		int totalCnt = buyerPageService.getOptionCnt(detailVO);
+		model.addAttribute("pageMaker", new PageDTO(cri, totalCnt));
+		List<DetailVO> orderList = buyerPageService.getOptionList(detailVO, cri);
 		model.addAttribute("orderList", orderList);
 
 		return "page/buyer/orderList :: #orderOption";
@@ -148,6 +155,7 @@ public class BuyerPageController {
 	    cri.setPageNum(pageNum);
 	    
 		int totalCnt = buyerPageService.getPageCnt(memberId);
+		cri.setAmount(9);
 		List<WishVO> wishList = buyerPageService.getWishList(memberId, cri);
 		model.addAttribute("wishList", wishList);
 		model.addAttribute("pageMaker",new PageDTO(cri, totalCnt));
@@ -301,6 +309,9 @@ public class BuyerPageController {
 	public ResponseEntity<String> editInfo(@RequestBody BuyInfoVO buyInfoVO, HttpSession session) {
 
 		MemberVO memberVO = (MemberVO) session.getAttribute("loginMember");
+		
+		buyInfoVO.setMemberPw(passwordEncoder.encode(buyInfoVO.getMemberPw()));
+		
 		buyInfoVO.setMemberId(memberVO.getMemberId());
 
 		int updateInfo = buyerPageService.editInfo(buyInfoVO);
@@ -316,7 +327,7 @@ public class BuyerPageController {
 		canVO.setMemberId(memberVO.getMemberId());
 
 		int deleteCancel = buyerPageService.removeCancel(canVO);
-		return deleteCancel == 1 ? "/page/buyer/cancelList :: #test" : "/page/buyer/cancelList";
+		return deleteCancel == 1 ? "page/buyer/cancelList :: #test" : "page/buyer/cancelList";
 	}
 
 	// 반품 취소
@@ -327,7 +338,7 @@ public class BuyerPageController {
 		retVO.setMemberId(memberVO.getMemberId());
 
 		int deleteReturn = buyerPageService.removeReturn(retVO);
-		return deleteReturn == 1 ? "/page/buyer/returnList :: #test" : "/page/buyer/returnList";
+		return deleteReturn == 1 ? "page/buyer/returnList :: #test" : "page/buyer/returnList";
 	}
 
 	// 교환 취소
@@ -338,7 +349,7 @@ public class BuyerPageController {
 		excVO.setMemberId(memberVO.getMemberId());
 
 		int deleteExchange = buyerPageService.removeExchange(excVO);
-		return deleteExchange == 1 ? "/page/buyer/exchangeList :: #test" : "/page/buyer/exchangeList";
+		return deleteExchange == 1 ? "page/buyer/exchangeList :: #test" : "page/buyer/exchangeList";
 	}
 
 //	//찜 취소

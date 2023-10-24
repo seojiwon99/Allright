@@ -19,7 +19,7 @@ public class SellerCalVO {
 	int myPrice;
 	// productVO
 	String productName;
-	
+	int orderPrice;
 	// memberVO
 	String memberName;
 	

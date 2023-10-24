@@ -20,7 +20,6 @@
 			</div>
 			<div class="row">
 				<div class="col-12 col-md-3">
-
 					<!-- Nav -->
 					<nav class="mb-10 mb-md-0">
 						<div
@@ -68,150 +67,145 @@
 							</ul>
 						</div>
 					</nav>
-
 				</div>
-				<div class="col-12 col-md-9 col-lg-8 offset-lg-1">
-
+				<div class="col-12 col-md-9 ">
 					<!-- Order -->
-					<div class="card card-lg mb-5 border" >
-						<div class="card-body pb-0">
-							<div th:if="${cancelList.size != 0}">
-							<!-- 반복문 시작 -->
-							<!-- Info -->
-							<div class="card card-sm">
-								<div th:each="lists : ${cancelList}" class="order" id="test">
-									<div class="card-body bg-light" style="border-radius: 15px;">
-										<div class="row cancelRow">
-											<div class="col-6 col-lg-3">
-												<h6 class="heading-xxxs text-muted">취소 번호:</h6>
-												<p class="mb-lg-0 fs-sm fw-bold">
-													<span class="cancelCode" th:text="|${lists.cancelCode}|" tabindex="0" id="cancelCode"></span>
-												</p>
-											</div>
-											<div class="col-6 col-lg-3">
-												<h6 class="heading-xxxs text-muted">주문번호:</h6>
-												<p class="mb-0 fs-sm fw-bold">
-													<span class="orderCode" th:text="|${lists.orderCode}|"></span>
-												</p>
-												<h6 class="heading-xxxs text-muted">주문상세번호:</h6>
-												<p class="mb-0 fs-sm fw-bold">
-													<span class="orderDetailCode" th:text="|${lists.orderDetailCode}|"
-														id="orderDetailCode"></span>
-												</p>
-											</div>
-											<div class="col-6 col-lg-3">
-												<h6 class="heading-xxxs text-muted">상품명:</h6>
-												<p class="mb-0 fs-sm fw-bold">
-													<span class="productName" th:text="|${lists.productName}|"></span>
-												</p>
-											</div>
-											<div class="col-6 col-lg-3">
-												<h6 class="heading-xxxs text-muted">수량:</h6>
-												<p class="mb-0 fs-sm fw-bold">
-													<span class="orderCnt" th:text="|${lists.orderCnt}|"></span>
-												</p>
-											</div>
-											<div class="col-6 col-lg-3">
-			                                    <h6 class="heading-xxxs text-muted">결제 금액:</h6>
-			                                    <p class="mb-0 fs-sm fw-bold">
-			                                       <span class="paymentPrice" th:text="|${#numbers.formatInteger(lists.paymentPrice,0,'COMMA')}원|"></span>
-			                                    </p>
-			                                 </div>
-											<div class="col-6 col-lg-3">
-												<h6 class="heading-xxxs text-muted">취소 접수 날짜:</h6>
-												<p class="mb-lg-0 fs-sm fw-bold">
-													<time datetime="2019-10-01">
-														<span class="cancelRegdate"
-															th:text="|${#dates.format(lists.cancelRegdate, 'yyyy-MM-dd')}|"></span>
-													</time>
-												</p>
-											</div>
-											<div class="col-6 col-lg-3">
-												<h6 class="heading-xxxs text-muted">이미지:</h6>
-												<div class="row gx-5 mb-4 mb-lg-0">
-															<img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|"
-																style="max-width: 100%; height: auto">
-												</div>
-											</div>
-											<div class="col-6 col-lg-3">
-												<h6 class="heading-xxxs text-muted">취소 승인 여부:</h6>
-												<p class="mb-0 fs-sm fw-bold">
-													<span class="cancelRejectionCode" th:text="|${lists.cancelRejectionCode}|"></span>
-												</p>
-											</div>
+					<div th:if="${cancelList.size != 0}">
+						<!-- 반복문 시작 -->
+						<!-- Info -->
+						<div class="card card-sm order border mb-7" th:each="lists : ${cancelList}"  id="test">
+							<div class="card-body bg-light" style="border-radius: 15px;">
+								<div class="row cancelRow">
+									<div class="col-9 mb-6">
+									 <div class="row">
+										<div class="col-lg-3">
+											<span class="heading-xxs text-muted">취소 번호:</span>
+											<p class="mb-lg-0  fw-bold">
+												<span class="cancelCode" th:text="|${lists.cancelCode}|" tabindex="0" id="cancelCode"></span>
+											</p>
+										</div>
+										<div class="col-lg-3">
+											<span class="heading-xxs text-muted">주문번호/상세</span>
+											<p class="mb-0  fw-bold">
+												<span class="orderCode" th:text="|${lists.orderCode}|"></span>
+												/<span class="orderDetailCode" th:text="|${lists.orderDetailCode}|"
+													id="orderDetailCode"></span>
+											</p>
+										</div>
+										<div class="col-lg-6">
+											<span class="heading-xxs text-muted">상품명:</span>
+											<p class="mb-0  fw-bold">
+												<span class="productName" th:text="|${lists.productName}|"></span>
+											</p>
 										</div>
 									</div>
-									<div class="card-footer">
-										<div class="row align-items-center">
-											<div class="col-12 col-lg-6">
-												<div class="row gx-5">
-													<div class="col-6">
-				                                       <button
-				                                             class="btn btn-sm w-100 btn-outline-dark deleteBtn"
-				                                             th:onclick="deleteCancel([[${lists.orderDetailCode}]])"
-				                                             th:data-orderdetailcode="${lists.orderDetailCode}"
-				                                             th:id="${lists.orderDetailCode}"
-				                                             style="background-color: black; color: white; border-radius: 10px">
-				                                             취소 철회</button>
-				                                     </div>
-												</div>
-											</div>
+										<div class="row mt-6">
+										<div class="col-lg-3">
+		                                    <span class="heading-xxs text-muted">결제 금액:</span>
+		                                    <p class="mb-0  fw-bold">
+		                                       <span class="paymentPrice" th:text="|${#numbers.formatInteger(lists.paymentPrice,0,'COMMA')}원|"></span>
+		                                    </p>
+		                                 </div>
+										<div class="col-lg-3">
+											<span class="heading-xxs text-muted">취소 접수 날짜:</span>
+											<p class="mb-lg-0  fw-bold">
+												<time datetime="2019-10-01">
+													<span class="cancelRegdate"
+														th:text="|${#dates.format(lists.cancelRegdate, 'yyyy-MM-dd')}|"></span>
+												</time>
+											</p>
+										</div>
+										<div class="col-lg-3">
+											<span class="heading-xxs text-muted">취소 승인 여부:</span>
+											<p class="mb-0  fw-bold">
+												<span class="cancelStatus" th:text="|${lists.cancelStatus}|"></span>
+											</p>
+										</div>
+										<div class="col-lg-3">
+											<span class="heading-xxs text-muted">수량:</span>
+											<p class="mb-0  fw-bold">
+												<span class="orderCnt" th:text="|${lists.orderCnt}|"></span>
+											</p>
+										</div>
+										<!-- 
+										<div class="col-6 col-lg-3">
+											<h6 class="heading-xxxs text-muted">취소 승인 날짜:</h6>
+											<p class="mb-0 fs-sm fw-bold">
+												<span class="cancelDate" th:text="|${#dates.format(lists.cancelDate, 'yyyy-MM-dd')}|"></span>
+											</p>
+										</div>
+										 -->
+										 </div>
+									</div>
+									<div class="col-3" style="padding-left: 0px;">
+											<img th:src="|/upload/${lists.uploadPath}/${lists.uploadName}|"
+												style="max-width: 100%; height: auto">
+									</div>
+									<div class="col-12 col-lg-6" th:if="${lists.cancelStatus != '승인'}">
+										<div class="row gx-5">
+											<div class="col-6" >
+		                                       <button
+		                                             class="btn btn-sm w-100 btn-outline-dark deleteBtn"
+		                                             th:onclick="deleteCancel([[${lists.orderDetailCode}]])"
+		                                             th:data-orderdetailcode="${lists.orderDetailCode}"
+		                                             th:id="${lists.orderDetailCode}"
+		                                             style="background-color: black; color: white; border-radius: 10px">
+		                                             취소 철회</button>
+		                                     </div>
 										</div>
 									</div>
-								<div><hr></div>
 								</div>
-							</div>
-							</div>
-							<div id="noSearch" tabindex=-1>
-							<th:block th:if="${cancelList.size == 0}">
-								<div>
-								     <ul>
-								      <li class="list-group-item">
-								        <div class="row align-items-center">
-								          <br>
-										  <a href="/page/buyer/orderList" id="noSearch">
-										  <p style="padding: 10%; font-weight: bolder; text-align: center;">반품 신청한 상품이 없습니다.
-										  <br>주문 목록에서 신청 가능합니다.
-										  </p>
-										  </a>
-								        </div>
-								      </li>
-								      </ul>   
-							     </div>
-							</th:block>
 							</div>
 						</div>
 					</div>
+					<div id="noSearch" tabindex=-1>
+						<th:block th:if="${cancelList.size == 0}">
+							<div>
+							     <ul>
+							      <li class="list-group-item">
+							        <div class="row align-items-center">
+							          <br>
+									  <a href="/page/buyer/orderList" id="noSearch">
+									  <p style="padding: 10%; font-weight: bolder; text-align: center;">반품 신청한 상품이 없습니다.
+									  <br>주문 목록에서 신청 가능합니다.
+									  </p>
+									  </a>
+							        </div>
+							      </li>
+							      </ul>   
+						     </div>
+						</th:block>
+					</div>
+						</div>
+					</div>
 				</div>
-								<!-- Pagination -->
-					<nav class="d-flex justify-content-center justify-content-md-end mt-10">
-						<ul class="pagination pagination-sm text-gray-400">
-							<li class="page-item" th:if="${pageMaker.prev}">
-								<a class="page-link page-link-arrow"
-									th:href="@{/page/buyer/cancelList/(pageNum = ${pageMaker.startPage - 1})}">
-										<i class="fa fa-caret-left"></i>
-								</a>
-							</li>
-							<th:block
-								th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
-								<li th:if="${pageMaker.endPage} ne 0"
-									th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
-									th:each="pageButtom : ${#numbers.sequence(start,end)}"
-									th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
-									<a class="page-link" href="#"
-									th:href="@{/page/buyer/cancelList/(pageNum= ${pageButtom} )}"
-									th:text="${pageButtom}"></a>
-								</li>
-							</th:block>
-							<li class="page-item" th:if="${pageMaker.next}"><a
-								class="page-link page-link-arrow"
-								th:href="@{/page/buyer/cancelList/(pageNum = ${pageMaker.endPage + 1})}">
-									<i class="fa fa-caret-right"></i>
-							</a></li>
-						</ul>
-					</nav>
-			</div>
-		</div>
+						<!-- Pagination -->
+			<nav class="d-flex justify-content-center justify-content-md-end mt-10">
+				<ul class="pagination pagination-sm text-gray-400">
+					<li class="page-item" th:if="${pageMaker.prev}">
+						<a class="page-link page-link-arrow"
+							th:href="@{/page/buyer/cancelList/(pageNum = ${pageMaker.startPage - 1})}">
+								<i class="fa fa-caret-left"></i>
+						</a>
+					</li>
+					<th:block
+						th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}">
+						<li th:if="${pageMaker.endPage} ne 0"
+							th:with="start = ${pageMaker.startPage}, end = ${pageMaker.endPage}"
+							th:each="pageButtom : ${#numbers.sequence(start,end)}"
+							th:class="${pageMaker.cri.pageNum} eq ${pageButtom} ? 'page-item active' : 'page-item'">
+							<a class="page-link" href="#"
+							th:href="@{/page/buyer/cancelList/(pageNum= ${pageButtom} )}"
+							th:text="${pageButtom}"></a>
+						</li>
+					</th:block>
+					<li class="page-item" th:if="${pageMaker.next}"><a
+						class="page-link page-link-arrow"
+						th:href="@{/page/buyer/cancelList/(pageNum = ${pageMaker.endPage + 1})}">
+							<i class="fa fa-caret-right"></i>
+					</a></li>
+				</ul>
+			</nav>
 	</section>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<textarea id="orderMenual" style="display: none;">
@@ -344,12 +338,11 @@
     	let paymentPrice = $(this).closest('.cancelRow').find('.paymentPrice').text();
     	let cancelRegdate = $(this).closest('.cancelRow').find('.cancelRegdate').text();
     	let cancelStatus = $(this).closest('.cancelRow').find('.cancelStatus').text();
-    	let cancelRejectionCode = $(this).closest('.cancelRow').find('.cancelRejectionCode').text();
     	
     	
     	let message = `취소번호는 ${cancelCode}. 주문번호는 ${orderCode}. 주문상세번호는 ${orderDetailCode}. 상품명은 ${productName}.
     					상품 수량은 ${orderCnt}.  결제 금액은 ${paymentPrice}. 취소 접수날짜는 ${cancelRegdate}. 
-    					취소 승인 여부는 ${cancelRejectionCode}. 입니다.`;
+    					취소 승인 여부는. ${cancelStatus}. 입니다.`;
     	
     	VoiceMenual(message);
     }
